@@ -10,7 +10,8 @@ import { AssetStore } from "./AssetStore";
 import { without } from "../../utils/geometry/Functions";
 import { MeshObj } from "../models/game_objects/MeshObj";
 import { UI_Region } from "../plugins/UI_Plugin";
-import { SpriteView } from "../models/views/SpriteView";
+import { SpriteView, SpriteViewType } from "../models/views/SpriteView";
+import { SpriteObj } from "../models/game_objects/SpriteObj";
 
 export function isFeedback(type: string) {
     return type.endsWith('Feedback');
@@ -34,9 +35,9 @@ export class SceneStore extends AbstractViewStore<MeshView | SpriteView | PathVi
     }
 
     private addMeshView(meshView: MeshView) {
-        this.registry.engine.meshLoader.createInstance((<MeshView> meshView).obj)
+        this.registry.engine.meshes.createInstance((<MeshView> meshView).obj)
             .finally(() => {
-                const size = this.registry.engine.meshLoader.getDimensions(meshView.obj);
+                const size = this.registry.engine.meshes.getDimensions(meshView.obj);
                 meshView.dimensions.setWidth(size.x);
                 meshView.dimensions.setHeight(size.y);
                 this.registry.services.render.reRender(UI_Region.Canvas1);
@@ -63,13 +64,15 @@ export class SceneStore extends AbstractViewStore<MeshView | SpriteView | PathVi
         this.registry.stores.selectionStore.removeItem(view);
 
         if (view.viewType === ViewType.MeshView) {
-            this.registry.engine.meshLoader.deleteInstance(view.obj as MeshObj);
+            this.registry.engine.meshes.deleteInstance(view.obj as MeshObj);
+        } else if (view.viewType === SpriteViewType) {
+            this.registry.engine.sprites.deleteInstance(view.obj as SpriteObj);
         }
     }
 
     clear(): void {
         super.clear();
-        this.getMeshViews().forEach(meshView => this.registry.engine.meshLoader.deleteInstance(meshView.obj));
+        this.getMeshViews().forEach(meshView => this.registry.engine.meshes.deleteInstance(meshView.obj));
         this.views = [];
         this.controls = [];
     }

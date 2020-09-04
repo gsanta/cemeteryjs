@@ -1,109 +1,43 @@
-import { IMeshAdapter } from "../IMeshLoader";
+import { ParticleSystem, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { Mesh } from "babylonjs/Meshes/mesh";
+import { Scene } from "babylonjs/scene";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { AssetObj } from "../../models/game_objects/AssetObj";
 import { MeshObj } from "../../models/game_objects/MeshObj";
 import { Registry } from "../../Registry";
-import { Mesh } from "babylonjs/Meshes/mesh";
-import { AssetObj } from "../../models/game_objects/AssetObj";
-import { SceneLoader, ParticleSystem, Skeleton, StandardMaterial, Vector3, Texture } from "babylonjs";
-import { Scene } from "babylonjs/scene";
-import { BabylonEngineFacade } from "./BabylonEngineFacade";
-import { RectangleFactory } from "../../stores/RectangleFactory";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { Point } from "../../../utils/geometry/shapes/Point";
+import { IMeshLoaderAdapter } from "../IMeshLoaderAdapter";
+import { Bab_EngineFacade } from "./Bab_EngineFacade";
 
-export  class Bab_MeshLoader implements IMeshAdapter {
+export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     
     private loadedIds: Set<String> = new Set();
-    private pandingIds: Map<string, Promise<any>> = new Map();
 
-    private templates: Set<Mesh> = new Set();
-    private templatesById: Map<string, Mesh> = new Map();
-
-    meshes: Map<string, Mesh> = new Map();
-
-
-    private rectangleFactory: RectangleFactory = new RectangleFactory(0.1);
+    templates: Set<Mesh> = new Set();
+    templatesById: Map<string, Mesh> = new Map();
 
     private registry: Registry;
-    private engineFacade: BabylonEngineFacade;
+    private engineFacade: Bab_EngineFacade;
 
-    constructor(registry: Registry, engineFacade: BabylonEngineFacade) {
+    constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
     }
 
-    load(meshObj: MeshObj) {
+    async load(meshObj: MeshObj): Promise<void> {
         const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
 
         this.loadedIds.add(assetObj.id);
 
-        const promise = this.registry.services.localStore.loadAsset(assetObj)
-            .then(() => this.loadMesh(assetObj))
-            .catch(e => this.loadMesh(assetObj));
+        await this.registry.services.localStore.loadAsset(assetObj);
+        await this.loadMesh(assetObj)
 
-        this.pandingIds.set(assetObj.id, promise);
-        return <Promise<Mesh>> promise;
-    }
-
-    getDimensions(meshObj: MeshObj): Point {
-        const mesh = this.meshes.get(meshObj.id);
-        mesh.computeWorldMatrix();
-        mesh.getBoundingInfo().update(mesh._worldMatrix);
-
-        const boundingVectors = mesh.getHierarchyBoundingVectors();
-        const width = boundingVectors.max.x - boundingVectors.min.x;
-        const height = boundingVectors.max.z - boundingVectors.min.z;
-        let dimensions = new Point(width, height).mul(10);
-
-        dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
-        dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
-        return dimensions;
-    }
-
-    createInstance(meshObj: MeshObj): Promise<void> {
-        return new Promise(resolve => {
-            if (!meshObj.meshView.obj.modelId) {
-                const mesh = this.rectangleFactory.createMesh(meshObj.meshView, this.engineFacade.scene);
-                this.meshes.set(meshObj.id, mesh);
-                meshObj.meshView.obj.mesh = mesh;
-                return;
-            }
-    
-            this.load(meshObj)
-                .then(() => this.setupInstance(meshObj))
-                .then(() => resolve());
-        });
-    }
-
-    createMaterial(meshModel: MeshObj) {
-        const textureObj = this.registry.stores.assetStore.getAssetById(meshModel.meshView.obj.textureId);
-
-        if (!meshModel.meshView.obj.mesh) {
-            return;
-        }
-
-        this.registry.services.localStore.loadAsset(textureObj)
-            .then(() => {
-                (<StandardMaterial> meshModel.meshView.obj.mesh.material).diffuseTexture  = new Texture(textureObj.data,  this.engineFacade.scene);
-                (<StandardMaterial> meshModel.meshView.obj.mesh.material).specularTexture  = new Texture(textureObj.data,  this.engineFacade.scene);
-            });
-    }
-
-    deleteInstance(meshObj: MeshObj) {
-        const mesh = this.meshes.get(meshObj.id);
-        if (this.templates.has(mesh)) {
-            mesh.isVisible = false;
-        } else {
-            mesh.dispose();
-        }
-
-        this.meshes.delete(meshObj.id);
+        this.setupInstance(meshObj);
     }
 
     clear() {
         this.templates.forEach(template => template.dispose());
         this.templates.clear();
         this.templatesById = new Map();
-        this.meshes = new Map();
     }
 
     private setupInstance(meshObj: MeshObj) {
@@ -112,13 +46,13 @@ export  class Bab_MeshLoader implements IMeshAdapter {
 
         let clone: Mesh;
 
-        if (!this.meshes.has(meshObj.id)) {
+        if (!this.engineFacade.meshes.meshes.has(meshObj.id)) {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
             clone.name = meshObj.meshView.id;
         }
-        this.meshes.set(meshObj.id, clone);
+        this.engineFacade.meshes.meshes.set(meshObj.id, clone);
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
         
@@ -141,6 +75,20 @@ export  class Bab_MeshLoader implements IMeshAdapter {
 
         meshObj.meshView.obj.mesh = clone;
         this.createMaterial(meshObj);
+    }
+
+    createMaterial(meshModel: MeshObj) {
+        const textureObj = this.registry.stores.assetStore.getAssetById(meshModel.meshView.obj.textureId);
+
+        if (!meshModel.meshView.obj.mesh) {
+            return;
+        }
+
+        this.registry.services.localStore.loadAsset(textureObj)
+            .then(() => {
+                (<StandardMaterial> meshModel.meshView.obj.mesh.material).diffuseTexture  = new Texture(textureObj.data,  this.engineFacade.scene);
+                (<StandardMaterial> meshModel.meshView.obj.mesh.material).specularTexture  = new Texture(textureObj.data,  this.engineFacade.scene);
+            });
     }
 
     private loadMesh(asset: AssetObj): Promise<Mesh> {

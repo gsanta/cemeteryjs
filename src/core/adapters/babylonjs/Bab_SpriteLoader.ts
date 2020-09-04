@@ -1,11 +1,10 @@
-import { Sprite, SpritePackedManager, Vector3 } from "babylonjs";
-import { SpriteObj } from "../../models/game_objects/SpriteObj";
+import { SpritePackedManager } from "babylonjs";
 import { SpriteSheetObj } from "../../models/game_objects/SpriteSheetObj";
 import { Registry } from "../../Registry";
 import { ISpriteLoaderAdapter } from "../ISpriteLoaderAdapter";
-import { BabylonEngineFacade } from "./BabylonEngineFacade";
+import { Bab_EngineFacade } from "./Bab_EngineFacade";
 
-export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
+export class Bab_SpriteLoader implements ISpriteLoaderAdapter {
     private registry: Registry;
     managers: Map<string, SpritePackedManager> = new Map();
 
@@ -18,7 +17,7 @@ export class BabylonSpriteLoader implements ISpriteLoaderAdapter {
         const jsonAsset = this.registry.stores.assetStore.getAssetById(spriteSheetObj.jsonAssetId);
 
         if (!this.managers.has(spriteSheetObj.id)) {
-            const scene = (<BabylonEngineFacade> this.registry.engine).scene;
+            const scene = (<Bab_EngineFacade> this.registry.engine).scene;
             const json = atob(jsonAsset.data.split(',')[1]);
             this.managers.set(spriteSheetObj.id, new SpritePackedManager(imgAsset.data, imgAsset.data, 10, scene, json));
         }

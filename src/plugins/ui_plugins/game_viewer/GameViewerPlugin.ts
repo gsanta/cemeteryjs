@@ -9,7 +9,7 @@ import { Gizmos } from './Gizmos';
 import { GameViewerImporter } from './io/GameViewerImporter';
 import { NodeService } from './services/NodeService';
 import { GameViewerSettings } from './settings/GameViewerSettings';
-import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
+import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPluginId = 'game-viewer-plugin'; 
@@ -44,7 +44,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         super.mounted(htmlElement);
 
         this.registry.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
-        (this.registry.engine as BabylonEngineFacade).engine.resize();
+        (this.registry.engine as Bab_EngineFacade).engine.resize();
         // (this.registry.engine as BabylonEngineFacade).scene.registerAfterRender(() => {
         //     this.gizmos.update();
         // });

@@ -5,7 +5,7 @@ import { IControlledObject, ObjectCapability } from './IControlledObject';
 import { IListener } from './IListener';
 import { Preferences, defaultPreferences } from './preferences/Preferences';
 import { IEngineFacade } from "./adapters/IEngineFacade";
-import { BabylonEngineFacade } from "./adapters/babylonjs/BabylonEngineFacade";
+import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
 
 export class Registry {
     stores: Stores;
@@ -21,7 +21,7 @@ export class Registry {
         this.services.setup();
 
         this.plugins = new Plugins(this);
-        this.engine = new BabylonEngineFacade(this);
+        this.engine = new Bab_EngineFacade(this);
     }
 
     registerObject(object: IControlledObject) {

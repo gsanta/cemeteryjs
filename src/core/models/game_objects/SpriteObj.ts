@@ -24,6 +24,10 @@ export interface SpriteObjJson {
     spriteSheetId: string;
     frameName: string;
 
+    delete() {
+        this.spriteAdapter && this.spriteAdapter.deleteInstance(this);
+    }
+
     move(point: Point) {
         this.startPos.add(point);
 

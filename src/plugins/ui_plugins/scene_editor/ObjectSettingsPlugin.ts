@@ -95,15 +95,18 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         const importModelButton = row.fileUpload(MeshObjectSettingsProps.Model);
         importModelButton.label = 'Import Model';
         importModelButton.icon = 'import-icon';
+        importModelButton.width = '200px';
 
         row = layout.row({ key: MeshObjectSettingsProps.Texture });
         const importTextureButton = row.fileUpload(MeshObjectSettingsProps.Texture);
         importTextureButton.label = 'Import Texture';
         importTextureButton.icon = 'import-icon';
+        importTextureButton.width = '200px';
 
         row = layout.row({ key: MeshObjectSettingsProps.Thumbnail });
         const changeThumbnailButton = row.button(MeshObjectSettingsProps.Thumbnail);
         changeThumbnailButton.label = 'Change thumbnail';
+        changeThumbnailButton.width = '200px';
     }
 
     private renderSpriteObjectSettings(layout: UI_Layout) {

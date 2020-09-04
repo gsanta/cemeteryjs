@@ -22,24 +22,24 @@ export class GameViewerImporter extends AbstractPluginImporter {
         // this.setMeshDimensions();
     }
 
-    private loadAllMeshes(meshViews: MeshView[]): Promise<Mesh[]> {
-        return new Promise((resolve, reject) => {
-            const promises: Promise<Mesh>[] = [];
+    // private loadAllMeshes(meshViews: MeshView[]): Promise<Mesh[]> {
+    //     return new Promise((resolve, reject) => {
+    //         const promises: Promise<Mesh>[] = [];
 
-            meshViews
-                .filter(meshView => meshView.obj.modelId)
-                .forEach(meshView => {
-                    this.registry.engine.meshLoader.load(meshView.obj);
+    //         meshViews
+    //             .filter(meshView => meshView.obj.modelId)
+    //             .forEach(meshView => {
+    //                 this.registry.engine.meshLoader.load(meshView.obj);
                     
-                    const loadingMesh = this.registry.engine.meshLoader.load(meshView.obj);
-                    promises.push(loadingMesh);
-                });
+    //                 const loadingMesh = this.registry.engine.meshLoader.load(meshView.obj);
+    //                 promises.push(loadingMesh);
+    //             });
     
-            Promise.all(promises)
-                .then((meshes) => resolve(meshes))
-                .catch(() => reject());
-        });
-    }
+    //         Promise.all(promises)
+    //             .then((meshes) => resolve(meshes))
+    //             .catch(() => reject());
+    //     });
+    // }
 
     // private setMeshDimensions() {
     //     this.registry.stores.canvasStore.getMeshViews()

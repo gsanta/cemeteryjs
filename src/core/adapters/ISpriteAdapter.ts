@@ -7,4 +7,5 @@ export interface ISpriteAdapter {
     setScale(spriteObj: SpriteObj, scale: Point): void;
     createInstance(spriteObj: SpriteObj): void;
     updateInstance(spriteObj: SpriteObj): void;
+    deleteInstance(spriteObj: SpriteObj): void;
 }

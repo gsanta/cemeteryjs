@@ -106,16 +106,17 @@ export class MeshObjectSettingsController extends AbstractController<MeshObjectS
             .onGet((context) => this.meshView.yPos.toString());
 
         this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Model)
-            .onChange((val) => {
+            .onChange(async (val) => {
                 const asset = new AssetObj({data: val.data, assetType: AssetType.Model});
                 this.meshView.obj.modelId = this.registry.stores.assetStore.addObj(asset);
                 this.registry.services.localStore.saveAsset(asset);
-                this.registry.engine.meshLoader.deleteInstance(this.meshView.obj);
-                this.registry.engine.meshLoader.createInstance(this.meshView.obj);
+                this.registry.engine.meshes.deleteInstance(this.meshView.obj);
+                await this.registry.engine.meshes.createInstance(this.meshView.obj);
+                const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.obj)
+                this.meshView.dimensions.setWidth(realDimensions.x);
+                this.meshView.dimensions.setHeight(realDimensions.y);
                 this.registry.services.history.createSnapshot();
-            })
-            .onClick((val) => {
-                1
+                this.registry.services.render.reRenderAll();
             });
 
         this.createPropHandler<{data: string}>(MeshObjectSettingsProps.Texture)

@@ -3,15 +3,14 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { SpriteObj } from "../../models/game_objects/SpriteObj";
 import { Registry } from "../../Registry";
 import { ISpriteAdapter } from "../ISpriteAdapter";
-import { BabylonEngineFacade } from "./BabylonEngineFacade";
+import { Bab_EngineFacade } from "./Bab_EngineFacade";
 
-
-export class Babylon_SpriteAdapter implements ISpriteAdapter {
+export class Bab_Sprites implements ISpriteAdapter {
     private registry: Registry;
-    private engineFacade: BabylonEngineFacade;
+    private engineFacade: Bab_EngineFacade;
     sprites: Map<string, Sprite> = new Map();
 
-    constructor(registry: Registry, engineFacade: BabylonEngineFacade) {
+    constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
     }
@@ -52,5 +51,9 @@ export class Babylon_SpriteAdapter implements ISpriteAdapter {
         
         spriteObj.sprite = sprite;
         this.sprites.set(spriteObj.id, sprite);
+    }
+
+    deleteInstance(spriteObj: SpriteObj): void {
+        this.sprites.get(spriteObj.id).dispose();
     }
 }

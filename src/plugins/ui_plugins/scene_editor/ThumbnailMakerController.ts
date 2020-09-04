@@ -1,5 +1,5 @@
 import { Tools } from 'babylonjs';
-import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
+import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
@@ -24,7 +24,7 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
             .onClick(async () => {
                 const meshView = this.registry.stores.selectionStore.getView() as MeshView;
 
-                const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((plugin.engine as BabylonEngineFacade).engine, plugin.engine.getCamera().camera, 1000)
+                const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((plugin.engine as Bab_EngineFacade).engine, plugin.engine.getCamera().camera, 1000)
                 meshView.thumbnailData = thumbnail;
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Dialog);

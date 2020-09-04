@@ -5,7 +5,7 @@ import { Registry } from '../../../core/Registry';
 import { Camera3D } from '../../../core/models/misc/camera/Camera3D';
 import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
 import { EngineService } from '../../../core/services/EngineService';
-import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
+import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 
 export class AxisGizmo {
     private registry: Registry;
@@ -104,7 +104,7 @@ export class AxisGizmo {
         // const gameEngine =  this.plugin.pluginServices.byName<EngineService>(EngineService.serviceName);
         // const scene = gameEngine.getScene();
         // const engine = gameEngine.getEngine();
-        const engine = this.registry.engine as BabylonEngineFacade;
+        const engine = this.registry.engine as Bab_EngineFacade;
         const camera = (<Camera3D> this.registry.plugins.gameView.getCamera()).camera;
 
         this.updateOriginVector(engine.scene, engine.engine, camera);

@@ -9,7 +9,7 @@ import { PluginServices } from '../../../core/plugins/PluginServices';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
-import { BabylonEngineFacade } from '../../../core/adapters/babylonjs/BabylonEngineFacade';
+import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
 export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
@@ -19,7 +19,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     constructor(registry: Registry) {
         super(ThumbnailDialogPluginId, registry);
 
-        this.engine = new BabylonEngineFacade(this.registry);
+        this.engine = new Bab_EngineFacade(this.registry);
         
         [ToolType.Camera]
         .map(toolType => {
@@ -97,12 +97,12 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         this.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
 
         setTimeout(() => {
-            this.engine.meshLoader.createInstance(meshView.obj);
+            this.engine.meshes.createInstance(meshView.obj);
         }, 500);
     }
 
     unmounted() {
-        (this.engine as BabylonEngineFacade).engine.dispose();
+        (this.engine as Bab_EngineFacade).engine.dispose();
     }
 
     getStore() {

@@ -29,6 +29,11 @@ export class SpriteView extends View {
         this.obj.move(point.div(10).negateY());
     }
 
+    delete() {
+        this.obj.delete();
+        return [this];
+    }
+
     toJson(): SpriteViewJson {
         return {
             ...super.toJson(),
