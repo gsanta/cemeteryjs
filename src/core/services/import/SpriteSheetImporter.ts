@@ -12,7 +12,7 @@ export class SpriteSheetImporter implements IDataImporter {
     }
 
     async import(json: AppJson): Promise<void> {
-        const spriteSheetJsons = json.objs.find(obj => obj.objType === SpriteSheetObjType)?.objs || [];
+        const spriteSheetJsons = (json.objs || []).find(obj => obj.objType === SpriteSheetObjType)?.objs || [];
 
         spriteSheetJsons.forEach(spriteSheetJson => {
             const spriteSheetObj: SpriteSheetObj = new SpriteSheetObj();

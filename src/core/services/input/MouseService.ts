@@ -56,6 +56,10 @@ export class MouseService {
         this.registry.services.hotkey.focus();
     }
 
+    dndStart() {
+        this.registry.services.pointer.hoveredPlugin = this.plugin;
+    }
+
     dndDrop(point: Point) {
         const e = <MouseEvent> {x: point.x, y: point.y};
         this.registry.services.pointer.pointerUp(this.convertEvent(e, false));

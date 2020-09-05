@@ -7,6 +7,7 @@ import { JoinPointView } from '../../models/views/child_views/JoinPointView';
 import { UI_Column } from '../../ui_components/elements/UI_Column';
 import { NodeView } from '../../models/views/NodeView';
 import { NodeController } from './NodeController';
+import { ViewTag } from '../../models/views/View';
 
 export class NodeRenderer extends AbstractController {
     controller: AbstractController;
@@ -54,7 +55,7 @@ export class NodeRenderer extends AbstractController {
         rect.y = 0;
         rect.width = nodeView.dimensions.getWidth();
         rect.height = nodeView.dimensions.getHeight();
-        rect.strokeColor = this.getStrokeColor();
+        rect.strokeColor = nodeView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
         rect.fillColor = nodeView.model.color || 'white';
     }
 
@@ -127,17 +128,5 @@ export class NodeRenderer extends AbstractController {
         text.fontSize = '12px';
         text.isBold = true;
         joinPointView.isInput === false && (text.anchor = 'end');
-    }
-    
-    private getStrokeColor(defaultColor = 'black'): string {
-        // const selectionColor = this.registry.stores.selectionStore.contains(nodeView) ? colors.views.highlight : undefined;
-        // let hoverColor: string = undefined
-        // if (this.registry.plugins.getHoveredView()) {
-        //     const activeTool = this.registry.plugins.getHoveredView().toolHandler.getActiveTool();
-        //     hoverColor = this.registry.services.pointer.hoveredItem === nodeView ? activeTool.id === ToolType.Delete ? colors.views.delete : colors.views.highlight : undefined;
-        // }
-    
-        // return hoverColor || selectionColor || defaultColor;
-        return defaultColor;
     }
 }

@@ -9,6 +9,8 @@ export class UI_SvgLine extends UI_Element {
     }
 
     transform: string;
+    width: number;
+    stroke: string = 'black';
     x1: number;
     y1: number;
     x2: number;

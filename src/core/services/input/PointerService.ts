@@ -3,7 +3,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
 import { RenderTask } from "../RenderServices";
-import { View } from "../../models/views/View";
+import { View, ViewTag } from "../../models/views/View";
 import { ToolType } from "../../plugins/tools/Tool";
 import { UI_Region } from "../../plugins/UI_Plugin";
 import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
@@ -97,23 +97,29 @@ export class PointerService {
             this.isDrag = false;
         } else {
             this.hoveredItem = undefined;
+            (data as View).tags.delete(ViewTag.Hovered);
         }
 
+        this.registry.services.render.reRender(this.hoveredPlugin.region);
     }
 
     pointerOver() {
     }
 
+    // TODO data should be type of View
     pointerEnter(e: IPointerEvent, data: any) {
         if (data instanceof AbstractCanvasPlugin) {
             this.hoveredPlugin = data;
         } else {
             this.hoveredItem = data;
+            (data as View).tags.add(ViewTag.Hovered);
 
             this.registry.services.hotkey.executeHotkey({
                 isHover: true
             });
         }
+
+        this.registry.services.render.reRender(this.hoveredPlugin.region);
     }
 
     pointerWheel(e: IPointerEvent): void {

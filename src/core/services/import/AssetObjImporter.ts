@@ -12,7 +12,7 @@ export class AssetObjImporter implements IDataImporter {
     }
 
     async import(json: AppJson): Promise<void> {
-        const assetJsons = json.objs.find(obj => obj.objType === AssetObjType)?.objs || [];
+        const assetJsons = (json.objs || []).find(obj => obj.objType === AssetObjType)?.objs || [];
 
         const promises: Promise<void>[] = [];
 

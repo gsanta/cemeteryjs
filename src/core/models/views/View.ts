@@ -18,7 +18,8 @@ export interface ViewJson {
 }
 
 export enum ViewTag {
-    Selected = 'Selected'
+    Selected = 'Selected',
+    Hovered = 'Hovered'
 }
 
 export abstract class View {

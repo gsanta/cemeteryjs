@@ -20,8 +20,12 @@ export class ImportService {
     async import(file: string): Promise<void> {
         const json = <AppJson> JSON.parse(file);
 
-        for (let i = 0; i < this.importers.length; i++) {
-            await this.importers[i].import(json);
+        try {
+            for (let i = 0; i < this.importers.length; i++) {
+                await this.importers[i].import(json);
+            }
+        } catch (e) {
+            console.error(e);
         }
 
         const viewMap: Map<string, View> = new Map();

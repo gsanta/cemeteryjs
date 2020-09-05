@@ -15,6 +15,8 @@ import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
 import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from './NodeEditorController';
+import { ViewTag } from '../../../core/models/views/View';
+import { colors } from '../../../core/ui_components/react/styles';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -51,6 +53,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     nodeObjects: NodeModel;
 
     private camera: Camera2D;
+    private nodeEditorController: NodeEditorController;
 
     nodeTypes: string[] = [
         BuiltinNodeType.And,
@@ -72,10 +75,9 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
                 this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
 
-
+        this.nodeEditorController = new NodeEditorController(this, this.registry);
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
 
-        this.controllers.set(NodeEditorControllerId, new NodeEditorController(this, this.registry));
 
         this.exporter = new NodeEditorExporter(this, this.registry);
         this.importer = new NodeEditorImporter(this, this.registry);
@@ -109,6 +111,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         dropLayer.isDragging = !!this.dropItem;
 
         const toolbar = canvas.toolbar();
+        toolbar.controller = this.nodeEditorController;
 
         let tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
         tool.icon = 'select';
@@ -124,13 +127,16 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
+
+        let separator = toolbar.iconSeparator();
+        separator.placement = 'left';
         
-        let actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomIn});
+        let actionIcon = toolbar.actionIcon({prop: CanvasControllerProps.ZoomIn});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomOut});
+        actionIcon = toolbar.actionIcon({prop: CanvasControllerProps.ZoomOut});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
@@ -139,6 +145,12 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
         if (joinTool.start && joinTool.end) {
             const line = canvas.line()
+            line.css = {
+                pointerEvents: 'none',
+                stroke: colors.grey4,
+                strokeWidth: "3",
+                strokeDasharray: "12 3"
+            }
             line.x1 = joinTool.start.x;
             line.y1 = joinTool.start.y;
             line.x2 = joinTool.end.x;
@@ -155,11 +167,27 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
     private renderConnectionsInto(canvas: UI_SvgCanvas) {
         this.registry.stores.nodeStore.getConnections().forEach(connection => {
-            const line = canvas.line()
+            const line = canvas.line();
             line.x1 = connection.joinPoint1.getAbsolutePosition().x;
             line.y1 = connection.joinPoint1.getAbsolutePosition().y;
             line.x2 = connection.joinPoint2.getAbsolutePosition().x;
             line.y2 = connection.joinPoint2.getAbsolutePosition().y;
+            line.css = {
+                pointerEvents: 'none',
+                stroke: colors.grey4,
+                strokeWidth: "3"
+            }
+
+            const line2 = canvas.line();
+            line2.data = connection;
+            line2.css = {
+                stroke: connection.tags.has(ViewTag.Hovered) || connection.tags.has(ViewTag.Selected) ? colors.views.highlight : 'transparent',
+                strokeWidth: "6"
+            }
+            line2.x1 = connection.joinPoint1.getAbsolutePosition().x;
+            line2.y1 = connection.joinPoint1.getAbsolutePosition().y;
+            line2.x2 = connection.joinPoint2.getAbsolutePosition().x;
+            line2.y2 = connection.joinPoint2.getAbsolutePosition().y;
         });
     }
 

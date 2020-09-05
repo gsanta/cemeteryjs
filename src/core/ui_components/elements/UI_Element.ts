@@ -6,6 +6,13 @@ import { Point } from '../../../utils/geometry/shapes/Point';
 
 export const activeToolId = '__activeTool__'
 
+export interface UI_Element_Css {
+    stroke?: string;
+    strokeWidth?: string;
+    strokeDasharray?: string;
+    pointerEvents?: 'none' | 'all';
+}
+
 export abstract class UI_Element {
     elementType: UI_ElementType;
     id: string;
@@ -16,6 +23,8 @@ export abstract class UI_Element {
     key: string;
     isBold: boolean;
     data: any;
+
+    css?: UI_Element_Css = {};
 
     constructor(plugin: UI_Plugin) {
         this.plugin = plugin;

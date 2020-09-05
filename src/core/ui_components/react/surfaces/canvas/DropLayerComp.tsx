@@ -16,16 +16,6 @@ const DropLayerStyled = styled.div`
     left: 0;
 `;
 
-
-interface DropLayerProps {
-    onMouseOver: () => void;
-    onMouseOut: () => void;
-    onMouseMove: (e: MouseEvent) => void;
-    onDrop: (point: Point, droppedItemType: string) => void;
-    isDragging: boolean;
-    registry: Registry;
-}
-
 export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
     const types = props.element.acceptedDropIds;
 	const [{ isOver }, drop] = useDrop({
