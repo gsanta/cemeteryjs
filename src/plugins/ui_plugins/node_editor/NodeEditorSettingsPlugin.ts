@@ -1,6 +1,6 @@
 import { UI_Plugin, UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { NodeModel } from '../../../core/models/game_objects/NodeModel';
+import { NodeObj } from '../../../core/models/game_objects/NodeObj';
 import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
 import { NodeEditorSettingsController, NodeEditorSettingsControllerId, NodeEditorSettingsProps } from './NodeEditorSettingsController';
@@ -28,7 +28,7 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     }
 
     private renderNodesList(rootContainer: UI_Accordion) {
-        const nodeTypesByCategory: Map<string, NodeModel[]> = new Map();
+        const nodeTypesByCategory: Map<string, NodeObj[]> = new Map();
 
         this.registry.services.node.nodeTemplates.forEach(node => {
             if (!nodeTypesByCategory.get(node.category)) {
@@ -39,7 +39,7 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
 
         const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getById(NodeEditorPluginId);
 
-        Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeModel[]) => {
+        Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeObj[]) => {
             const accordion = rootContainer.accordion(null);
             accordion.title = nodes[0].category;
 

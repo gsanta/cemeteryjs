@@ -1,4 +1,4 @@
-import { BuiltinNodeType, NodeModel } from '../../../../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj } from '../../../../../core/models/game_objects/NodeObj';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 
 export class MoveNodeHandler extends AbstractNodeHandler {
@@ -18,12 +18,12 @@ export class MoveNodeHandler extends AbstractNodeHandler {
         // }
     }
 
-    private getInputMesh(): NodeModel {
+    private getInputMesh(): NodeObj {
         const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
         
         if (!joinedView) { return undefined; } 
 
-        let meshNode: NodeModel = undefined;
+        let meshNode: NodeObj = undefined;
 
         if (joinedView.model.type === BuiltinNodeType.Mesh) {
             meshNode = joinedView.model;

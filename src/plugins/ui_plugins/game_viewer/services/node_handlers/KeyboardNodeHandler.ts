@@ -1,5 +1,5 @@
 import { AbstractNodeHandler } from './AbstractNodeHandler';
-import { BuiltinNodeType, NodeModel } from '../../../../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj } from '../../../../../core/models/game_objects/NodeObj';
 import { Registry } from '../../../../../core/Registry';
 import { AbstractCanvasPlugin } from '../../../../../core/plugins/AbstractCanvasPlugin';
 
@@ -26,7 +26,7 @@ export class KeyboardNodeHandler extends AbstractNodeHandler {
         //     .forEach(node => this.handle(node));
     }
 
-    update(node: NodeModel) {
+    update(node: NodeObj) {
         super.update(node);
         if (this.registry.services.gamepad.downKeys.has(node.getParam('key').val)) {
             this.chain('output');

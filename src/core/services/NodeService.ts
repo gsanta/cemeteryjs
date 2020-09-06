@@ -13,12 +13,12 @@ import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
 import { NodePLugin } from '../plugins/NodePlugin';
 import { Registry } from '../Registry';
-import { NodeModel } from '../models/game_objects/NodeModel';
-import { defaultNodeViewConfig, NodeView } from '../models/views/NodeView';
+import { NodeObj } from '../models/game_objects/NodeObj';
+import { defaultNodeViewConfig, NodeView, NodeViewJson } from '../models/views/NodeView';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 
 export class NodeService {
-    nodeTemplates: Map<string, NodeModel> = new Map();
+    nodeTemplates: Map<string, NodeObj> = new Map();
     nodeTypes: string[] = [];
 
     private nodePlugins: Map<string, NodePLugin> = new Map();
@@ -61,7 +61,7 @@ export class NodeService {
         this.defaultNodeRenderer.render(ui_svgCanvas, nodeView, this.nodePlugins.get(nodeView.model.type).getController());
     }
 
-    createNodeView(nodeType: string, position: Point): NodeView {
+    createNodeViewAtPoint(nodeType: string, position: Point): NodeView {
         if (!this.nodePlugins.has(nodeType)) {
             throw new Error(`Node creator registered for node type ${nodeType}`);
         }

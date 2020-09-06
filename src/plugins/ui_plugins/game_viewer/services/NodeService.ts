@@ -1,4 +1,4 @@
-import { NodeModel, BuiltinNodeType } from '../../../../core/models/game_objects/NodeModel';
+import { NodeObj, BuiltinNodeType } from '../../../../core/models/game_objects/NodeObj';
 import { Registry } from '../../../../core/Registry';
 import { AbstractNodeHandler } from './node_handlers/AbstractNodeHandler';
 import { KeyboardNodeHandler } from './node_handlers/KeyboardNodeHandler';
@@ -14,7 +14,7 @@ import { EngineService } from '../../../../core/services/EngineService';
 export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'node-service';
     serviceName = NodeService.serviceName;
-    handlersByType: Map<string, AbstractNodeHandler<NodeModel>> = new Map();
+    handlersByType: Map<string, AbstractNodeHandler<NodeObj>> = new Map();
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(plugin, registry);
@@ -39,11 +39,11 @@ export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
 
     }
 
-    getHandler(node: NodeModel): AbstractNodeHandler<NodeModel> {
+    getHandler(node: NodeObj): AbstractNodeHandler<NodeObj> {
         return this.handlersByType.get(node.type);
     }
 
-    getNodesByType<T extends NodeModel>(nodeType: string): T[] {
+    getNodesByType<T extends NodeObj>(nodeType: string): T[] {
         return <T[]> this.registry.stores.nodeStore.nodesByType.get(nodeType) || [];
     }
 }

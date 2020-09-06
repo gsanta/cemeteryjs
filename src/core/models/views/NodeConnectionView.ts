@@ -2,7 +2,7 @@ import { ViewType, View, ViewJson } from "./View";
 import { JoinPointView } from "./child_views/JoinPointView";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeView } from "./NodeView";
-import { SlotName } from '../game_objects/NodeModel';
+import { SlotName } from '../game_objects/NodeObj';
 
 export interface NodeConnectionViewJson extends ViewJson {
     joinPoint1: {

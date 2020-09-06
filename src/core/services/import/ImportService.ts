@@ -32,13 +32,16 @@ export class ImportService {
 
         const promises: Promise<void>[] = [];
 
-        this.registry.plugins.getAll().forEach(plugin => {
-            if (plugin.importer) {
-                promises.push(plugin.importer.import(json, viewMap));
+        const plugins = this.registry.plugins.getAll().filter(plugin => plugin.importer);
+        
+        try {
+            for (let i = 0; i < plugins.length; i++) {
+                await plugins[i].importer.import(json, viewMap);
             }
-        });
+        } catch (e) {
+            console.error(e);
+        }
 
-        await Promise.all(promises);
         this.registry.services.render.reRenderAll();
     }
 }

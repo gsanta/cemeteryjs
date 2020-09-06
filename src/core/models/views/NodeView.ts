@@ -2,7 +2,7 @@ import { ViewSettings } from "../../../plugins/ui_plugins/AbstractSettings";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeModel, SlotName, NodeModelJson } from '../game_objects/NodeModel';
+import { NodeObj, SlotName, NodeModelJson } from '../game_objects/NodeObj';
 import { JoinPointView } from "./child_views/JoinPointView";
 import { ViewType, View, ViewJson } from "./View";
 
@@ -20,23 +20,23 @@ const SLOT_HEIGHT = 20;
 const INPUT_HEIGHT = 30;
 const NODE_PADDING = 10;
 
-export class NodeView<T extends NodeModel = NodeModel> extends View {
+export class NodeView extends View {
     readonly  viewType = ViewType.NodeView;
     id: string;
-    model: T;
+    model: NodeObj;
     dimensions: Rectangle;
     nodeGraph: NodeGraph;
     settings: ViewSettings<any, NodeView>;
 
     joinPointViews: JoinPointView[] = [];
 
-    constructor(nodeGraph: NodeGraph, config?: {nodeType: string, dimensions?: Rectangle, node: NodeModel}) {
+    constructor(nodeGraph: NodeGraph, config?: {nodeType: string, dimensions?: Rectangle, node: NodeObj}) {
         super();
         this.nodeGraph = nodeGraph;
-        this.model = <T> config.node;
-        this.model.nodeView = this;
         
         if (config) {
+            this.model = config.node;
+            this.model.nodeView = this;
             this.dimensions = config.dimensions;
             this.setup();
         }
@@ -75,8 +75,10 @@ export class NodeView<T extends NodeModel = NodeModel> extends View {
 
     fromJson(json: NodeViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
+        const obj = new NodeObj();
+        obj.fromJson(json.node, viewMap);
+        this.model = obj;
         this.setup();
-        this.model.fromJson(json.node, viewMap);
     }
 
     editPoints = [];

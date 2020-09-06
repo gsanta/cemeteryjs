@@ -1,7 +1,7 @@
 import { Registry } from '../Registry';
 import { NodeGraph } from '../services/node/NodeGraph';
 import { AbstractViewStore } from './AbstractViewStore';
-import { BuiltinNodeType, NodeModel } from '../models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj } from '../models/game_objects/NodeObj';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeView } from '../models/views/NodeView';
 import { View, ViewType } from '../models/views/View';
@@ -10,10 +10,10 @@ export class NodeStore extends AbstractViewStore<NodeView> {
     static id = 'node-store'; 
     id = NodeStore.id;
 
-    templates: NodeModel[] = [];
+    templates: NodeObj[] = [];
     actionTypes: string[] = [];
     graph: NodeGraph;
-    nodesByType: Map<string, NodeModel[]> = new Map();
+    nodesByType: Map<string, NodeObj[]> = new Map();
 
     private registry: Registry;
 

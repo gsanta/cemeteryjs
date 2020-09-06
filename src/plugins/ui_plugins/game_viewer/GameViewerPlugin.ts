@@ -1,6 +1,6 @@
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { BuiltinNodeType } from '../../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType } from '../../../core/models/game_objects/NodeObj';
 import { Canvas_3d_Plugin } from '../../../core/plugins/Canvas_3d_Plugin';
 import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';

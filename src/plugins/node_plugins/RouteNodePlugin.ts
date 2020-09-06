@@ -1,6 +1,6 @@
 import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
-import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeObj';
 
 export class RouteNodePlugin extends NodePLugin {
     private readonly controller: NodeController;
@@ -14,8 +14,8 @@ export class RouteNodePlugin extends NodePLugin {
         }
     ];
 
-    createNodeObject(): GeneralNodeModel {
-        return new GeneralNodeModel({
+    createNodeObject(): NodeObj {
+        return new NodeObj({
             type: BuiltinNodeType.Route,
             params: this.params,
             connections: [

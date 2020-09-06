@@ -1,4 +1,4 @@
-import { BuiltinNodeType, NodeModel } from '../../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj } from '../../../core/models/game_objects/NodeObj';
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../../core/plugins/AbstractCanvasPlugin';
 import { CanvasControllerId, CanvasControllerProps } from '../../../core/plugins/controllers/CanvasController';
 import { JoinTool } from '../../../core/plugins/tools/JoinTool';
@@ -50,7 +50,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     id = 'action-editor-plugin';
     region = UI_Region.Canvas1;
 
-    nodeObjects: NodeModel;
+    nodeObjects: NodeObj;
 
     private camera: Camera2D;
     private nodeEditorController: NodeEditorController;

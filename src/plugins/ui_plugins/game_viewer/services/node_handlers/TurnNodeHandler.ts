@@ -1,4 +1,4 @@
-import { BuiltinNodeType } from "../../../../../core/models/game_objects/NodeModel";
+import { BuiltinNodeType } from "../../../../../core/models/game_objects/NodeObj";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 
 export class TurnNodeHandler extends AbstractNodeHandler {

@@ -1,4 +1,3 @@
-import { DroppableItem } from '../../plugins/tools/DragAndDropTool';
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { NodeView, defaultNodeViewConfig } from '../views/NodeView';
 import { View } from '../views/View';
@@ -42,6 +41,21 @@ export interface JoinPointSlot {
 
 export interface NodeModelJson {
     type: string;
+    params: NodeParam[];
+    inputSlots: JoinPointSlot[];
+    outputSlots: JoinPointSlot[];
+    label: string;
+    color: string;
+    sizeX: number;
+    sizeY: number;
+    category: string;
+}
+
+export interface NodeConfig {
+    type: string;
+    params: NodeParam[];
+    connections: { direction: 'input' | 'output', name: string }[];
+    category: string; 
 }
 
 export interface NodeParam {
@@ -51,13 +65,13 @@ export interface NodeParam {
     valueType: 'string' | 'number';
 }
 
-export class NodeModel {
+export class NodeObj {
     nodeView: NodeView;
     type: BuiltinNodeType | string;
     category: string;
 
     private cachedParams: Map<string, NodeParam> = new Map();
-    readonly params: NodeParam[] = [];
+    params: NodeParam[] = [];
 
     isDirty = false;
     label: string;
@@ -66,10 +80,20 @@ export class NodeModel {
     inputSlots: JoinPointSlot[];
     outputSlots: JoinPointSlot[];
 
-    constructor(size: Point = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height), params: NodeParam[] = []) {
-        this.size = size;
+    constructor(config?: NodeConfig) {
+        this.size = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height);
 
-        this.params = params;
+        if (config) {
+            this.setup(config);
+        }
+    }
+
+    private setup(config: NodeConfig) {
+        this.type = config.type;
+        this.inputSlots = config.connections.filter(conn => conn.direction === 'input').map(conn => ({ name: conn.name }));
+        this.outputSlots = config.connections.filter(conn => conn.direction === 'output').map(conn => ({ name: conn.name }));
+        this.category = config.category;
+        this.params = config.params;
         this.params.forEach(param => this.cachedParams.set(param.name, param));
     }
 
@@ -87,7 +111,7 @@ export class NodeModel {
         return this.inputSlots.find(slot => slot.name === name) || this.outputSlots.find(slot => slot.name === name);
     }
 
-    getAllAdjacentNodes(): NodeModel[] {
+    getAllAdjacentNodes(): NodeObj[] {
         return this.nodeView.joinPointViews
             .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
             .map(joinPointView => joinPointView.getOtherNode().model);
@@ -95,38 +119,27 @@ export class NodeModel {
 
     toJson(): NodeModelJson {
         return {
-            type: this.type
+            type: this.type,
+            params: this.params,
+            inputSlots: this.inputSlots,
+            outputSlots: this.outputSlots,
+            label: this.label,
+            color: this.color,
+            sizeX: this.size.x,
+            sizeY: this.size.y,
+            category: this.category
         }
     }
 
     fromJson(json: NodeModelJson, viewMap: Map<string, View>) {
         this.type = <BuiltinNodeType> json.type;
-    }
-}
-
-export interface NodeConfig {
-    type: string;
-    params: NodeParam[];
-    connections: { direction: 'input' | 'output', name: string }[];
-    category: string; 
-}
-
-export class GeneralNodeModel extends NodeModel {
-    constructor(config: NodeConfig) {
-        super(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height), config.params);
-
-        this.type = config.type;
-        this.inputSlots = config.connections.filter(conn => conn.direction === 'input').map(conn => ({ name: conn.name }));
-        this.outputSlots = config.connections.filter(conn => conn.direction === 'output').map(conn => ({ name: conn.name }));
-        this.category = config.category;
-    }
-}
-
-export class DroppableNode implements DroppableItem {
-    itemType = 'Node'
-    nodeTemplate: NodeModel;
-
-    constructor(nodeTemplate: NodeModel) {
-        this.nodeTemplate = nodeTemplate;
+        this.params = json.params;
+        this.inputSlots = json.inputSlots;
+        this.outputSlots = json.outputSlots;
+        this.label = json.label;
+        this.color = json.color;
+        this.size = new Point(json.sizeX, json.sizeY);
+        this.category = json.category;
+        this.params.forEach(param => this.cachedParams.set(param.name, param));
     }
 }

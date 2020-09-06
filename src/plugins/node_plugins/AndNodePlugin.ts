@@ -1,14 +1,14 @@
 import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
-import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeCategory, NodeObj, NodeParam } from '../../core/models/game_objects/NodeObj';
 
 export class AndNodePlugin extends NodePLugin {
     private readonly controller: NodeController;
 
     private readonly params: NodeParam[] = []
 
-    createNodeObject(): GeneralNodeModel {
-        return new GeneralNodeModel({
+    createNodeObject(): NodeObj {
+        return new NodeObj({
             type: BuiltinNodeType.And,
             params: this.params,
             connections: [

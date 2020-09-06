@@ -1,10 +1,10 @@
-import { NodeModel, BuiltinNodeType } from "../../../../../core/models/game_objects/NodeModel";
+import { NodeObj, BuiltinNodeType } from "../../../../../core/models/game_objects/NodeObj";
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 
 export class SplitNodeHandler extends AbstractNodeHandler {
     nodeType: BuiltinNodeType.Split;
 
-    setInstance(node: NodeModel) {
+    setInstance(node: NodeObj) {
         if (node.type !== this.nodeType) {
             throw new Error(`This handler accepts type ${this.nodeType}, but called with ${node.type}`);
         }
@@ -15,7 +15,7 @@ export class SplitNodeHandler extends AbstractNodeHandler {
     handle() {
     }
 
-    searchFromRight<T extends NodeModel>(type: BuiltinNodeType): T {
+    searchFromRight<T extends NodeObj>(type: BuiltinNodeType): T {
         const joinedView = this.instance.nodeView.findJoinPointView('input').getOtherNode();
         if (joinedView) {
             if (joinedView.model.type === type) {

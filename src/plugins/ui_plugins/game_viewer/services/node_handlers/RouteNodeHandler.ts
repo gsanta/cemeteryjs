@@ -1,4 +1,4 @@
-import { BuiltinNodeType, NodeModel } from '../../../../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj } from '../../../../../core/models/game_objects/NodeObj';
 import { AbstractNodeHandler } from "./AbstractNodeHandler";
 import { RouteModel } from "../../../../../core/models/game_objects/RouteModel";
 import { ViewType } from "../../../../../core/models/views/View";
@@ -10,7 +10,7 @@ export class RouteNodeHandler extends AbstractNodeHandler {
 
     }
 
-    wake(node: NodeModel) {
+    wake(node: NodeObj) {
         super.wake(node);
         const meshNode = this.findNodeAtInputSlot('mesh', BuiltinNodeType.Mesh);
         const pathNode = this.findNodeAtInputSlot('path', BuiltinNodeType.Path);
@@ -28,7 +28,7 @@ export class RouteNodeHandler extends AbstractNodeHandler {
         route.play();
     }
     
-    update(node: NodeModel) {
+    update(node: NodeObj) {
         super.update(node);
         const meshNode = this.findNodeAtInputSlot('mesh', BuiltinNodeType.Mesh);
         const pathNode = this.findNodeAtInputSlot('path', BuiltinNodeType.Path);

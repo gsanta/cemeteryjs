@@ -1,13 +1,13 @@
-import { NodeModel } from '../../models/game_objects/NodeModel';
+import { NodeObj } from '../../models/game_objects/NodeObj';
 
 export class NodeGraph {
-    nodeGroups: Set<NodeModel>[] = [];
+    nodeGroups: Set<NodeObj>[] = [];
 
-    addNode(node: NodeModel) {
+    addNode(node: NodeObj) {
         this.nodeGroups.push(new Set([node]));
     }
 
-    deleteNode(node: NodeModel) {
+    deleteNode(node: NodeObj) {
         const group = this.findGroup(node);
         group.delete(node);
         const nodes = Array.from(group);
@@ -18,7 +18,7 @@ export class NodeGraph {
         nodes.forEach(node => node.updateNode(this));
     }
 
-    findConnectedNodeWithType<T extends NodeModel>(node: NodeModel, expectedType: string): T {
+    findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {
         const group = this.findGroup(node);
 
         for (let element of group) {
@@ -28,20 +28,20 @@ export class NodeGraph {
         }
     }
 
-    addConnection(node1: NodeModel, node2: NodeModel) {
+    addConnection(node1: NodeObj, node2: NodeObj) {
         const group1 = this.findGroup(node1);
         const group2 = this.findGroup(node2);
 
         if (group1 !== group2) {
             this.nodeGroups = this.nodeGroups.filter(group => group !== group1 && group !== group2);
 
-            const newGroup: Set<NodeModel> = new Set([...group1, ...group2]);
+            const newGroup: Set<NodeObj> = new Set([...group1, ...group2]);
             this.nodeGroups.push(newGroup);
             this.updateGroup(node1);
         }
     }
 
-    deleteConnection(node1: NodeModel, node2: NodeModel) {
+    deleteConnection(node1: NodeObj, node2: NodeObj) {
         const group = this.findGroup(node1);
         const nodes = Array.from(group);
         const splittedGroups = this.buildGroups(nodes);
@@ -51,22 +51,22 @@ export class NodeGraph {
         nodes.forEach(node => node.updateNode(this));
     }
 
-    updateGroup(node: NodeModel) {
+    updateGroup(node: NodeObj) {
         const group = this.findGroup(node);
         for (let element of group) {
             element.updateNode(this);
         }
     }
 
-    buildGroups(nodes: NodeModel[]): Set<NodeModel>[] {
+    buildGroups(nodes: NodeObj[]): Set<NodeObj>[] {
         if (!nodes.length) { return []; }
 
-        const nodeGroups: Set<NodeModel>[] = [];
-        const visited: Map<NodeModel, boolean> = new Map();
+        const nodeGroups: Set<NodeObj>[] = [];
+        const visited: Map<NodeObj, boolean> = new Map();
         const remainingNodes = new Set(nodes);
         nodes.forEach(node => visited.set(node, false));
         while(remainingNodes.size > 0) {
-            const nodeGroup: Set<NodeModel> = new Set();
+            const nodeGroup: Set<NodeObj> = new Set();
             nodeGroups.push(nodeGroup);
             this.traverseConnectedNodes(remainingNodes.values().next().value, remainingNodes, nodeGroup);
         }
@@ -74,11 +74,11 @@ export class NodeGraph {
         return nodeGroups;
     }
 
-    private findGroup(node: NodeModel) {
+    private findGroup(node: NodeObj) {
         return this.nodeGroups.find(group => group.has(node));
     }
 
-    private traverseConnectedNodes(node: NodeModel, remainingNodes: Set<NodeModel>, nodeGroup: Set<NodeModel>) {
+    private traverseConnectedNodes(node: NodeObj, remainingNodes: Set<NodeObj>, nodeGroup: Set<NodeObj>) {
         if (!remainingNodes.has(node)) { return; }
         remainingNodes.delete(node);
         nodeGroup.add(node);

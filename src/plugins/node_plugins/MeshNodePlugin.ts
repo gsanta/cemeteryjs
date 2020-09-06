@@ -1,7 +1,7 @@
 import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
 import { Registry } from '../../core/Registry';
-import { BuiltinNodeType, GeneralNodeModel, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeModel';
+import { BuiltinNodeType, NodeObj, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeObj';
 import { NodeEditorPluginId } from '../ui_plugins/node_editor/NodeEditorPlugin';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
 
@@ -35,8 +35,8 @@ export class MeshNodePlugin extends NodePLugin {
             .onGetValues(() => this.registry.stores.canvasStore.getMeshViews().map(meshConcept => meshConcept.id));            
     }
 
-    createNodeObject(): GeneralNodeModel {
-        return new GeneralNodeModel({
+    createNodeObject(): NodeObj {
+        return new NodeObj({
             type: BuiltinNodeType.Mesh,
             params: this.params,
             connections: [
