@@ -46,6 +46,8 @@ export class JoinTool extends AbstractTool {
             this.registry.stores.nodeStore.addConnection(connection);
             this.start = undefined;
             this.end = undefined;
+
+            this.registry.services.history.createSnapshot();
         }
     }
 

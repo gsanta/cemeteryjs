@@ -1,22 +1,22 @@
 import { BuiltinNodeType, NodeObj } from '../../../core/models/game_objects/NodeObj';
+import { Camera2D } from '../../../core/models/misc/camera/Camera2D';
+import { ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../../core/plugins/AbstractCanvasPlugin';
-import { CanvasControllerId, CanvasControllerProps } from '../../../core/plugins/controllers/CanvasController';
+import { CanvasControllerProps } from '../../../core/plugins/controllers/CanvasController';
 import { JoinTool } from '../../../core/plugins/tools/JoinTool';
 import { ToolType } from '../../../core/plugins/tools/Tool';
+import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { NodeStore } from '../../../core/stores/NodeStore';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
+import { colors } from '../../../core/ui_components/react/styles';
 import { Point } from '../../../utils/geometry/shapes/Point';
-import { Camera2D } from '../../../core/models/misc/camera/Camera2D';
-import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { NodeEditorExporter } from './io/NodeEditorExporter';
 import { NodeEditorImporter } from './io/NodeEditorImporter';
 import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from './NodeEditorController';
-import { ViewTag } from '../../../core/models/views/View';
-import { colors } from '../../../core/ui_components/react/styles';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -92,7 +92,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         const screenSize = getScreenSize(NodeEditorPluginId);
         screenSize && this.camera.resize(screenSize);
 
-        this.renderFunc && this.renderFunc();
+        this.registry.services.render.reRender(this.region);
     };
 
     getOffset() {
@@ -190,13 +190,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
             line2.y2 = connection.joinPoint2.getAbsolutePosition().y;
         });
     }
-
-    // dropItem(droppedItemId: string) {
-    //     const dropItemId = (<NodeEditorPlugin> this.plugin).droppableId;
-    //     this.registry.services.node.createNodeView(dropItemId, this.registry.services.pointer.pointer.curr);
-    //     (<NodeEditorPlugin> this.plugin).droppableId = undefined;
-    //     this.registry.services.render.reRender(UI_Region.Canvas1);
-    // }
 
     activated() {
         if (!this.toolHandler.getSelectedTool()) {

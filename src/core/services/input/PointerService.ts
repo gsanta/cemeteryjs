@@ -92,15 +92,17 @@ export class PointerService {
     pointerLeave(e: IPointerEvent, data: any): void {
         
         if (data instanceof AbstractCanvasPlugin) {
+            const leavingPlugin = this.hoveredPlugin;
             this.hoveredPlugin = undefined;
             this.isDown = false;
             this.isDrag = false;
+
+            this.registry.services.render.reRender(leavingPlugin.region);
         } else {
             this.hoveredItem = undefined;
             (data as View).tags.delete(ViewTag.Hovered);
         }
 
-        this.registry.services.render.reRender(this.hoveredPlugin.region);
     }
 
     pointerOver() {

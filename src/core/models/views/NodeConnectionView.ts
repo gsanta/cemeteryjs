@@ -70,7 +70,7 @@ export class NodeConnectionView extends View {
         const joinPoint1 = node1.findJoinPointView(json.joinPoint1.slotName as SlotName);
 
         const node2 = <NodeView> viewMap.get(json.joinPoint2.nodeId);
-        const joinPoint2 = node2.findJoinPointView(json.joinPoint1.slotName as SlotName);
+        const joinPoint2 = node2.findJoinPointView(json.joinPoint2.slotName as SlotName);
 
         this.setup(joinPoint1, joinPoint2);
     }

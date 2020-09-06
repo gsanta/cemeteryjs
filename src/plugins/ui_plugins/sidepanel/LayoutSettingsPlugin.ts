@@ -20,9 +20,9 @@ export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
 
     renderInto(layout: UI_Layout): UI_Layout {
         layout.controllerId = LayoutSettingsControllerId;
-        let row = layout.row({ key: LayoutSettingsProps.SelectedLayout });
+        let row = layout.row({ key: LayoutSettingsProps.Layout });
 
-        const layoutSelect = row.select(LayoutSettingsProps.SelectedLayout);
+        const layoutSelect = row.select(LayoutSettingsProps.Layout);
         layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'Layouts';
         layoutSelect.placeholder = 'Select Layout';
