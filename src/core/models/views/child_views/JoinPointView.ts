@@ -45,7 +45,7 @@ export class JoinPointView extends ChildView<NodeView> {
     private initPosition() {
         const yStart = this.parent.dimensions.topLeft.y + sizes.nodes.headerHeight;
         const x = this.isInput ? 0 : this.parent.dimensions.getWidth(); // this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
-        const slotIndex = this.isInput ? this.parent.model.inputSlots.findIndex(slot => slot.name === this.slotName) : this.parent.model.outputSlots.findIndex(slot => slot.name === this.slotName);
+        const slotIndex = this.isInput ? this.parent.obj.inputSlots.findIndex(slot => slot.name === this.slotName) : this.parent.obj.outputSlots.findIndex(slot => slot.name === this.slotName);
         const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + sizes.nodes.headerHeight;
         this.point = new Point(x, y);
 

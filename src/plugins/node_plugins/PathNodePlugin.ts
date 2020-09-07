@@ -28,10 +28,10 @@ export class PathNodePlugin extends NodePLugin {
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('path', context.clearTempVal());
+                element.data.obj.setParam('path', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('path'))
+            .onGet((context, element) => element.data.obj.getParam('path'))
             .onGetValues(() => this.registry.stores.canvasStore.getPathViews().map(path => path.id));            
     }
 

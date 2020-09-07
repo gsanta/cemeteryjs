@@ -48,13 +48,24 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
         reader.onabort = () => console.log('file reading was aborted')
         reader.onerror = () => console.log('file reading has failed')
         reader.onload = (e) => {
-            props.element.change({path: acceptedFiles[0].path, data: e.target.result as string});
+            var binary = '';
+            var bytes = new Uint8Array( reader.result as ArrayBuffer );
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode( bytes[ i ] );
+            }
+
+            const b64Text = `data:application/octet-stream;base64,${btoa(binary)}`;
+            console.log(b64Text);
+            props.element.change({path: acceptedFiles[0].path, data: b64Text});
         }
         // if (props.readDataAs === 'text') {
             // reader.readAsText(acceptedFiles[0]);
         // } else {
-            reader.readAsDataURL(acceptedFiles[0]);
-        // }
+            // }
+
+            //
+        reader.readAsArrayBuffer(acceptedFiles[0]);
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 

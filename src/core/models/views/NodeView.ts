@@ -23,7 +23,7 @@ const NODE_PADDING = 10;
 export class NodeView extends View {
     readonly  viewType = ViewType.NodeView;
     id: string;
-    model: NodeObj;
+    obj: NodeObj;
     dimensions: Rectangle;
     nodeGraph: NodeGraph;
     settings: ViewSettings<any, NodeView>;
@@ -35,19 +35,19 @@ export class NodeView extends View {
         this.nodeGraph = nodeGraph;
         
         if (config) {
-            this.model = config.node;
-            this.model.nodeView = this;
+            this.obj = config.node;
+            this.obj.nodeView = this;
             this.dimensions = config.dimensions;
             this.setup();
         }
     }
 
     private setup() {
-        this.model.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
-        this.model.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
+        this.obj.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
+        this.obj.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
 
-        const SLOTS_HEIGHT = this.model.inputSlots.length > this.model.outputSlots.length ? this.model.inputSlots.length * SLOT_HEIGHT : this.model.outputSlots.length * SLOT_HEIGHT;
-        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.model.params.length ? this.model.params.length : 1) + NODE_PADDING * 2;
+        const SLOTS_HEIGHT = this.obj.inputSlots.length > this.obj.outputSlots.length ? this.obj.inputSlots.length * SLOT_HEIGHT : this.obj.outputSlots.length * SLOT_HEIGHT;
+        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.params.length ? this.obj.params.length : 1) + NODE_PADDING * 2;
         this.dimensions.setHeight(height);
     }
 
@@ -69,15 +69,15 @@ export class NodeView extends View {
     toJson(): NodeViewJson  {
         return {
             ...super.toJson(),
-            node: this.model.toJson()
+            node: this.obj.toJson()
         }
     }
 
     fromJson(json: NodeViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
         const obj = new NodeObj();
-        obj.fromJson(json.node, viewMap);
-        this.model = obj;
+        obj.fromJson(json.node);
+        this.obj = obj;
         this.setup();
     }
 

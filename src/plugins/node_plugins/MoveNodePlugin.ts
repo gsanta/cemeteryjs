@@ -38,7 +38,7 @@ export class MoveNodePlugin extends NodePLugin {
             .onBlur(context => {
 
             })
-            .onGet((context, element) => element.data.model.getParam('move'))
+            .onGet((context, element) => element.data.obj.getParam('move'))
             .onGetValues(() => this.movementTypes);
 
         this.controller.createPropHandler('speed')
@@ -47,10 +47,10 @@ export class MoveNodePlugin extends NodePLugin {
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('speed', context.clearTempVal());
+                element.data.obj.setParam('speed', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('speed'));
+            .onGet((context, element) => element.data.obj.getParam('speed'));
             
     }
 

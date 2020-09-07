@@ -2,6 +2,7 @@ import { NodeGraph } from '../../services/node/NodeGraph';
 import { NodeView, defaultNodeViewConfig } from '../views/NodeView';
 import { View } from '../views/View';
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { IGameObj, ObjJson } from './IGameObj';
 
 export enum BuiltinNodeType {
     Keyboard = 'Keyboard',
@@ -39,7 +40,7 @@ export interface JoinPointSlot {
     name: string;
 }
 
-export interface NodeModelJson {
+export interface NodeModelJson extends ObjJson {
     type: string;
     params: NodeParam[];
     inputSlots: JoinPointSlot[];
@@ -65,7 +66,8 @@ export interface NodeParam {
     valueType: 'string' | 'number';
 }
 
-export class NodeObj {
+export class NodeObj implements IGameObj {
+    id: string;
     nodeView: NodeView;
     type: BuiltinNodeType | string;
     category: string;
@@ -114,11 +116,12 @@ export class NodeObj {
     getAllAdjacentNodes(): NodeObj[] {
         return this.nodeView.joinPointViews
             .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
-            .map(joinPointView => joinPointView.getOtherNode().model);
+            .map(joinPointView => joinPointView.getOtherNode().obj);
     }
 
     toJson(): NodeModelJson {
         return {
+            id: this.id,
             type: this.type,
             params: this.params,
             inputSlots: this.inputSlots,
@@ -131,7 +134,7 @@ export class NodeObj {
         }
     }
 
-    fromJson(json: NodeModelJson, viewMap: Map<string, View>) {
+    fromJson(json: NodeModelJson) {
         this.type = <BuiltinNodeType> json.type;
         this.params = json.params;
         this.inputSlots = json.inputSlots;

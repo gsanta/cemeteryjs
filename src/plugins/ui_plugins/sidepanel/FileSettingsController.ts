@@ -39,6 +39,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
             .onClick(() => {
                 this.registry.stores.selectionStore.clear();
                 this.registry.stores.canvasStore.clear();
+                this.registry.stores.nodeStore.clear();
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRenderAll();
             });

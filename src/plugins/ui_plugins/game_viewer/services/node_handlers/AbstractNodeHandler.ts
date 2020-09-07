@@ -19,8 +19,8 @@ export abstract class AbstractNodeHandler<T extends NodeObj = NodeObj> {
 
     protected chain(slotName: SlotName) {
         const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
-        const handler = this.getNodeService().getHandler(joinedView.model);
-        handler.instance = joinedView.model;
+        const handler = this.getNodeService().getHandler(joinedView.obj);
+        handler.instance = joinedView.obj;
         handler.handle();
     }
 
@@ -51,11 +51,11 @@ export abstract class AbstractNodeHandler<T extends NodeObj = NodeObj> {
 
         let node: T = undefined;
 
-        if (joinedView.model.type === nodeType) {
-            node = <T> joinedView.model;
+        if (joinedView.obj.type === nodeType) {
+            node = <T> joinedView.obj;
         } else {
-            const handler = this.getNodeService().getHandler(joinedView.model);
-            handler.instance = joinedView.model;
+            const handler = this.getNodeService().getHandler(joinedView.obj);
+            handler.instance = joinedView.obj;
             node = handler.searchFromRight<T>(nodeType);
         }
 

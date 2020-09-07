@@ -29,10 +29,10 @@ export class KeyboardNodePlugin extends NodePLugin {
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('key', context.clearTempVal());
+                element.data.obj.setParam('key', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('key'))
+            .onGet((context, element) => element.data.obj.getParam('key'))
             .onGetValues(() => getAllKeys());            
     }
 

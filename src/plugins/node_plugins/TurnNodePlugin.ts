@@ -31,10 +31,10 @@ export class TurnNodePlugin extends NodePLugin {
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('turn', context.clearTempVal());
+                element.data.obj.setParam('turn', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('turn'))
+            .onGet((context, element) => element.data.obj.getParam('turn'))
             .onGetValues(() => this.turns);            
     }
 

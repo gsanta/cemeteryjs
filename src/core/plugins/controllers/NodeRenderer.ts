@@ -26,7 +26,7 @@ export class NodeRenderer extends AbstractController {
     }
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
-        nodeView.model.params.map(param => {
+        nodeView.obj.params.map(param => {
             let row = column.row({key: param.name});
             row.height = '35px';
 
@@ -37,6 +37,7 @@ export class NodeRenderer extends AbstractController {
                     textField.type = 'number';
                     textField.label = param.name;
                     textField.isBold = true;
+                    textField.target = nodeView.id;
                 break;
                 case 'list':
                     const select = row.select(param.name);
@@ -44,6 +45,7 @@ export class NodeRenderer extends AbstractController {
                     select.label = param.name;
                     select.placeholder = param.name;
                     select.isBold = true;
+                    select.target = nodeView.id;
                 break;
             }
         });
@@ -56,7 +58,7 @@ export class NodeRenderer extends AbstractController {
         rect.width = nodeView.dimensions.getWidth();
         rect.height = nodeView.dimensions.getHeight();
         rect.strokeColor = nodeView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
-        rect.fillColor = nodeView.model.color || 'white';
+        rect.fillColor = nodeView.obj.color || 'white';
     }
 
     private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
@@ -83,14 +85,14 @@ export class NodeRenderer extends AbstractController {
         header.backgroundColor = colors.panelBackground;
         
         const title = header.text();
-        title.text = nodeView.model.type;
+        title.text = nodeView.obj.type;
         title.isBold = true;
         title.color = colors.textColor;
     }
     
     private renderJoinPoints(svgGroup: UI_SvgGroup, nodeView: NodeView) {
-        const inputSlots = nodeView.model.inputSlots;
-        const outputSlots = nodeView.model.outputSlots;
+        const inputSlots = nodeView.obj.inputSlots;
+        const outputSlots = nodeView.obj.outputSlots;
     
         inputSlots.forEach(inputSlot => {
             inputSlot

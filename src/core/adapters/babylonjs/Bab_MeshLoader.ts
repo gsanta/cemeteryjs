@@ -98,7 +98,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
                 asset.data,
                 undefined,
                 this.engineFacade.scene,
-                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[]) => resolve(this.createModelData(asset, meshes, skeletons)),
+                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], animGroups) => resolve(this.createModelData(asset, meshes, skeletons)),
                 () => { },
                 (scene: Scene, message: string) => { throw new Error(message); }
             );

@@ -25,11 +25,11 @@ export class MoveNodeHandler extends AbstractNodeHandler {
 
         let meshNode: NodeObj = undefined;
 
-        if (joinedView.model.type === BuiltinNodeType.Mesh) {
-            meshNode = joinedView.model;
+        if (joinedView.obj.type === BuiltinNodeType.Mesh) {
+            meshNode = joinedView.obj;
         } else {
-            const handler = this.getNodeService().getHandler(joinedView.model);
-            handler.instance = joinedView.model;
+            const handler = this.getNodeService().getHandler(joinedView.obj);
+            handler.instance = joinedView.obj;
             meshNode = handler.searchFromRight(BuiltinNodeType.Mesh);
         }
 

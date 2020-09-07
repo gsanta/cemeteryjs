@@ -54,11 +54,11 @@ export class NodeService {
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
-        if (!this.nodePlugins.has(nodeView.model.type)) {
-            throw new Error(`Node renderer registered for node type ${nodeView.model.type}`);
+        if (!this.nodePlugins.has(nodeView.obj.type)) {
+            throw new Error(`Node renderer registered for node type ${nodeView.obj.type}`);
         }
 
-        this.defaultNodeRenderer.render(ui_svgCanvas, nodeView, this.nodePlugins.get(nodeView.model.type).getController());
+        this.defaultNodeRenderer.render(ui_svgCanvas, nodeView, this.nodePlugins.get(nodeView.obj.type).getController());
     }
 
     createNodeViewAtPoint(nodeType: string, position: Point): NodeView {

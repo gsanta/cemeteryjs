@@ -28,10 +28,10 @@ export class MeshNodePlugin extends NodePLugin {
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })
             .onBlur((context, element) => {
-                element.data.model.setParam('mesh', context.clearTempVal());
+                element.data.obj.setParam('mesh', context.clearTempVal());
                 this.registry.services.render.reRenderAll();
             })
-            .onGet((context, element) => element.data.model.getParam('mesh'))
+            .onGet((context, element) => element.data.obj.getParam('mesh'))
             .onGetValues(() => this.registry.stores.canvasStore.getMeshViews().map(meshConcept => meshConcept.id));            
     }
 

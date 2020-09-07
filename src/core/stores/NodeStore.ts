@@ -33,20 +33,20 @@ export class NodeStore extends AbstractViewStore<NodeView> {
         nodeView.id = nodeView.id === undefined ? this.generateId(ViewType.NodeView) : nodeView.id;
         super.addItem(nodeView);
 
-        this.graph.addNode(nodeView.model);
+        this.graph.addNode(nodeView.obj);
         this.views.push(nodeView);
 
-        if (!this.nodesByType.has(nodeView.model.type)) {
-            this.nodesByType.set(nodeView.model.type, []);
+        if (!this.nodesByType.has(nodeView.obj.type)) {
+            this.nodesByType.set(nodeView.obj.type, []);
         }
-        this.nodesByType.get(nodeView.model.type).push(nodeView.model);
-        nodeView.model.updateNode(this.graph);
+        this.nodesByType.get(nodeView.obj.type).push(nodeView.obj);
+        nodeView.obj.updateNode(this.graph);
     }
 
     addConnection(connection: NodeConnectionView) {
         connection.id = connection.id === undefined ? this.generateId(ViewType.NodeConnectionView) : connection.id;
         super.addItem(connection);
-        this.graph.addConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
+        this.graph.addConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
         this.views.push(connection);
     }
 
@@ -60,10 +60,10 @@ export class NodeStore extends AbstractViewStore<NodeView> {
         switch(item.viewType) {
             case ViewType.NodeConnectionView:
                 const connection = <NodeConnectionView> item;
-                this.graph.deleteConnection(connection.joinPoint1.parent.model, connection.joinPoint2.parent.model);
+                this.graph.deleteConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
                 break;
             case ViewType.NodeView:
-                this.graph.deleteNode((<NodeView> item).model);
+                this.graph.deleteNode((<NodeView> item).obj);
                 break;
         }
 
