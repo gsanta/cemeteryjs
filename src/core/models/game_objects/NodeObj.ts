@@ -1,8 +1,9 @@
-import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeView, defaultNodeViewConfig } from '../views/NodeView';
-import { View } from '../views/View';
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { Registry } from '../../Registry';
+import { NodeGraph } from '../../services/node/NodeGraph';
+import { defaultNodeViewConfig, NodeView } from '../views/NodeView';
 import { IGameObj, ObjJson } from './IGameObj';
+import { AbstractController } from '../../plugins/controllers/AbstractController';
 
 export enum BuiltinNodeType {
     Keyboard = 'Keyboard',
@@ -82,6 +83,8 @@ export class NodeObj implements IGameObj {
     inputSlots: JoinPointSlot[];
     outputSlots: JoinPointSlot[];
 
+    static controller: AbstractController;
+
     constructor(config?: NodeConfig) {
         this.size = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height);
 
@@ -145,4 +148,6 @@ export class NodeObj implements IGameObj {
         this.category = json.category;
         this.params.forEach(param => this.cachedParams.set(param.name, param));
     }
+
+    execute(registry: Registry) {}
 }

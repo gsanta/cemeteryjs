@@ -1,6 +1,6 @@
 import { NodeObj } from '../models/game_objects/NodeObj';
-import { NodeController } from './controllers/NodeController';
 import { Registry } from '../Registry';
+import { AbstractController } from './controllers/AbstractController';
 
 export abstract class NodePLugin {
     protected readonly registry: Registry;
@@ -10,5 +10,5 @@ export abstract class NodePLugin {
     }
 
     abstract createNodeObject(): NodeObj;
-    abstract getController(): NodeController;
+    abstract getController(): AbstractController;
 }

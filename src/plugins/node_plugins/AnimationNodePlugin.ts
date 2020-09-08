@@ -1,4 +1,3 @@
-import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
 import { Registry } from '../../core/Registry';
 import { BuiltinNodeType, NodeObj, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeObj';
@@ -9,7 +8,7 @@ import { UI_InputElement } from '../../core/ui_components/elements/UI_InputEleme
 import { NodeViewJson, NodeView } from '../../core/models/views/NodeView';
 
 export class AnimationNodePlugin extends NodePLugin {
-    private readonly controller: NodeController;
+    private readonly controller: AbstractController;
 
     readonly animations: string[] = ['animation1', 'animation2'];
 
@@ -32,7 +31,7 @@ export class AnimationNodePlugin extends NodePLugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controller = new NodeController(registry.plugins.getById(NodeEditorPluginId), registry);
+        this.controller = new AbstractController(registry.plugins.getById(NodeEditorPluginId), registry);
         this.controller.registerPropControl('mesh', MeshPropControl);
 
         this.controller.createPropHandler<number>('animation')
@@ -84,21 +83,3 @@ const MeshPropControl: PropControl<string> = {
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
-
-// const AnimationPropControl: PropControl<string> = {
-//     values(context) {
-//         context.registry.stores.canvasStore.getMeshViews().map(meshView => meshView.id);
-//     },
-    
-//     defaultVal(context, element: UI_InputElement) {
-//         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-//         const meshParam = nodeView.obj.getParam('mesh').val;
-//         return context.registry.stores.canvasStore.getById(meshParam)?.id;
-//     },
-
-//     change(val: string, context, element: UI_InputElement) {
-//         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-//         nodeView.obj.setParam('mesh', val);
-//         context.registry.services.render.reRender(UI_Region.Canvas1);
-//     }
-// }

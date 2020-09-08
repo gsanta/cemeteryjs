@@ -6,7 +6,6 @@ import { sizes, colors } from '../../ui_components/react/styles';
 import { JoinPointView } from '../../models/views/child_views/JoinPointView';
 import { UI_Column } from '../../ui_components/elements/UI_Column';
 import { NodeView } from '../../models/views/NodeView';
-import { NodeController } from './NodeController';
 import { ViewTag } from '../../models/views/View';
 
 export class NodeRenderer extends AbstractController {
@@ -14,13 +13,13 @@ export class NodeRenderer extends AbstractController {
 
     private joinPointsHeight: number;
 
-    render(svgCanvas: UI_SvgCanvas, nodeView: NodeView, controller: NodeController) {
+    render(svgCanvas: UI_SvgCanvas, nodeView: NodeView) {
         const group = svgCanvas.group(nodeView.id);
         group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
 
         this.renderRect(group, nodeView);
         const column = this.renderContent(group, nodeView);
-        column.controller = controller;
+        column.controller = nodeView.obj.controller;
         column.data = nodeView;
         this.renderInputsInto(column, nodeView);
     }

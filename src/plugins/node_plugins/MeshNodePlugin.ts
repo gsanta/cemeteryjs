@@ -1,12 +1,12 @@
-import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
 import { Registry } from '../../core/Registry';
 import { BuiltinNodeType, NodeObj, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeObj';
 import { NodeEditorPluginId } from '../ui_plugins/node_editor/NodeEditorPlugin';
 import { UI_Region } from '../../core/plugins/UI_Plugin';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 
 export class MeshNodePlugin extends NodePLugin {
-    private readonly controller: NodeController;
+    private readonly controller: AbstractController;
 
     private readonly params: NodeParam[] = [
         {
@@ -20,7 +20,7 @@ export class MeshNodePlugin extends NodePLugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.controller = new NodeController(registry.plugins.getById(NodeEditorPluginId), registry);
+        this.controller = new AbstractController(registry.plugins.getById(NodeEditorPluginId), registry);
     
         this.controller.createPropHandler<number>('mesh')
             .onChange((val, context) => {

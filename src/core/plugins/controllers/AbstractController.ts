@@ -125,7 +125,7 @@ export class PropContext<T> {
     }
 }
 
-export abstract class AbstractController<P = any> {
+export class AbstractController<P = any> {
     id: string;
     private handlers: Map<P | GlobalControllerProps, PropHandler<any>> = new Map();
     private propControls: Map<P, PropControl<any>> = new Map();

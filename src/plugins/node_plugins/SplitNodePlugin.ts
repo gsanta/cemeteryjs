@@ -1,9 +1,9 @@
-import { NodeController } from '../../core/plugins/controllers/NodeController';
 import { NodePLugin } from '../../core/plugins/NodePlugin';
 import { BuiltinNodeType, NodeObj, NodeCategory, NodeParam } from '../../core/models/game_objects/NodeObj';
+import { AbstractController } from '../../core/plugins/controllers/AbstractController';
 
 export class SplitNodePlugin extends NodePLugin {
-    private readonly controller: NodeController;
+    private readonly controller: AbstractController;
 
     private readonly params: NodeParam[] = []
 
