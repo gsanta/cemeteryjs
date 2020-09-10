@@ -4,6 +4,7 @@ import { NodeGraph } from '../../services/node/NodeGraph';
 import { defaultNodeViewConfig, NodeView } from '../views/NodeView';
 import { IGameObj, ObjJson } from './IGameObj';
 import { AbstractController } from '../../plugins/controllers/AbstractController';
+import { NodeConnectionObj } from './NodeConnectionObj';
 
 export enum BuiltinNodeType {
     Keyboard = 'Keyboard',
@@ -82,6 +83,8 @@ export abstract class NodeObj implements IGameObj {
     size: Point;
     inputs: JoinPointSlot[] = [];
     outputs: JoinPointSlot[] = [];
+
+    connections: Map<string, NodeConnectionObj> = new Map();
 
     controller: AbstractController;
     graph: NodeGraph;

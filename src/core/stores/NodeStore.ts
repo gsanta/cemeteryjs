@@ -43,7 +43,7 @@ export class NodeStore extends AbstractViewStore<NodeView> {
     addConnection(connection: NodeConnectionView) {
         connection.id = connection.id === undefined ? this.generateId(ViewType.NodeConnectionView) : connection.id;
         super.addItem(connection);
-        this.registry.services.node.graph.addConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
+        this.registry.services.node.graph.addConnection(connection.obj);
         this.views.push(connection);
     }
 
@@ -57,7 +57,7 @@ export class NodeStore extends AbstractViewStore<NodeView> {
         switch(item.viewType) {
             case ViewType.NodeConnectionView:
                 const connection = <NodeConnectionView> item;
-                this.registry.services.node.graph.deleteConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
+                this.registry.services.node.graph.deleteConnection(connection.obj);
                 break;
             case ViewType.NodeView:
                 this.registry.services.node.graph.deleteNode((<NodeView> item).obj);
@@ -81,7 +81,7 @@ export class NodeStore extends AbstractViewStore<NodeView> {
     clear(): void {
         super.clear();
         this.views = [];
-        this.registry.services.node.graph = new NodeGraph();
+        this.registry.services.node.graph = new NodeGraph(this.registry);
         this.nodesByType = new Map();
     }
 

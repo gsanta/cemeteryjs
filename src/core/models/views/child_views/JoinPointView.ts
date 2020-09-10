@@ -52,9 +52,9 @@ export class JoinPointView extends ChildView<NodeView> {
     }
 
     move(delta: Point) {
-        // this.point = this.point.add(delta);
-        // this.dimensions = this.dimensions.translate(delta);
-        this.isInput ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
+        if (this.connection) {
+            this.isInput ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
+        }
     }
 
     delete() {

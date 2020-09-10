@@ -61,7 +61,7 @@ export class NodeView extends View {
         return Array.from(new Set(deletingViews));
     }
 
-    findJoinPointView(name: SlotName) {
+    findJoinPointView(name: string) {
         return this.joinPointViews.find(joinPointView => joinPointView.slotName === name);
     }
     

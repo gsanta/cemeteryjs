@@ -5,22 +5,22 @@ export class TurnNodeHandler extends AbstractNodeHandler {
     nodeType: BuiltinNodeType.Turn;
 
     handle() {
-        const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
+        // const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
 
-        if (joinedView) {
-            const handler = this.getNodeService().getHandler(joinedView.obj);
-            handler.instance = joinedView.obj;
-            const meshNode = handler.searchFromRight(BuiltinNodeType.Mesh);
+        // if (joinedView) {
+        //     const handler = this.getNodeService().getHandler(joinedView.obj);
+        //     handler.instance = joinedView.obj;
+        //     const meshNode = handler.searchFromRight(BuiltinNodeType.Mesh);
             
-            if (meshNode) {
-                const meshView = this.registry.stores.canvasStore.getMeshViewById(meshNode.getParam('mesh').val);
+        //     if (meshNode) {
+        //         const meshView = this.registry.stores.canvasStore.getMeshViewById(meshNode.getParam('mesh').val);
 
-                if (this.instance.getParam('turn').val === 'turn-left') {
-                    meshView.rotateBy(-0.02);
-                } else {
-                    meshView.rotateBy(0.02);
-                }
-            }
-        }
+        //         if (this.instance.getParam('turn').val === 'turn-left') {
+        //             meshView.rotateBy(-0.02);
+        //         } else {
+        //             meshView.rotateBy(0.02);
+        //         }
+        //     }
+        // }
     }
 }

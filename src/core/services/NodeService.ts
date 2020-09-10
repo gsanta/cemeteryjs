@@ -28,7 +28,7 @@ export class NodeService {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.graph = new NodeGraph();
+        this.graph = new NodeGraph(this.registry);
         
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {

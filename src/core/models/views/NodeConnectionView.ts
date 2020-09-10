@@ -23,24 +23,15 @@ export class NodeConnectionView extends View {
     point2: Point;
     obj: NodeConnectionObj;
 
-    constructor(config?: {joinPoint1: JoinPointView, joinPoint2: JoinPointView}) {
+    constructor() {
         super();
-        if (config) {
-            this.obj = new NodeConnectionObj();
-            // this.obj.joinPoint1 = config.joinPoint1.slotName;
-            // this.obj.joinPoint1 = config.joinPoint1.
-            this.setup(config.joinPoint1, config.joinPoint2);
-        }
-    }
-
-    private setup(joinPoint1: JoinPointView, joinPoint2: JoinPointView) {
-        // this.joinPoint1 = joinPoint1;
-        // this.joinPoint2 = joinPoint2;
-        this.updateDimensions();
+        this.obj = new NodeConnectionObj();
     }
 
     private updateDimensions() {
-        this.dimensions = Rectangle.fromTwoPoints(this.point1, this.point2);
+        if (this.point1 && this.point2) {
+            this.dimensions = Rectangle.fromTwoPoints(this.point1, this.point2);
+        }
     }
 
     move() {
@@ -76,6 +67,8 @@ export class NodeConnectionView extends View {
 
     fromJson(json: NodeConnectionViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
+        (viewMap.get(this.obj.node1) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
+        (viewMap.get(this.obj.node2) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 
