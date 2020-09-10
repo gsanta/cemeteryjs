@@ -12,6 +12,7 @@ import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFac
 import { ToolType } from '../../../core/plugins/tools/Tool';
 import { GameViewerController, GameViewerProps } from './GameViewerController';
 import { AxisGizmo } from './AxisGizmo';
+import { GameTool, GameToolType } from './tools/GameTool';
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPluginId = 'game-viewer-plugin'; 
@@ -35,6 +36,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
                 new NodeService(this, this.registry)
             ]
         );
+
+        this.toolHandler.registerTool(new GameTool(this, this.registry));
 
         this.controller = new GameViewerController(this, this.registry);
     }
@@ -70,12 +73,20 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         toolbar.controller = this.controller;
 
-        let tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Move});
+        let tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Camera});
         tool.icon = 'pan';
         let tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
         let separator = toolbar.iconSeparator();
+        separator.placement = 'left';
+
+        tool = toolbar.tool({controllerId: GameToolType, key: GameToolType});
+        tool.icon = 'games';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Game tool';
+
+        separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
         let actionIcon = toolbar.actionIcon({prop: GameViewerProps.ZoomIn});

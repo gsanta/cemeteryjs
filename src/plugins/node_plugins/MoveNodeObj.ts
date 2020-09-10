@@ -5,12 +5,20 @@ import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
+import { MeshControl } from "./MeshNodeObj";
+import { MeshView } from "../../core/models/views/MeshView";
 
 export class MoveNodeObj extends NodeObj {
     type = BuiltinNodeType.Move;
     category = NodeCategory.Default;
 
     params: NodeParam[] = [
+        {
+            name: 'mesh',
+            val: '',
+            inputType: 'list',
+            valueType: 'string'
+        },
         {
             name: 'move',
             val: '',
@@ -40,12 +48,20 @@ export class MoveNodeObj extends NodeObj {
         }
     ];
 
+    execute(registry: Registry) {
+        const meshId = this.getParam('mesh').val;
+
+        const meshView = registry.stores.canvasStore.getById(meshId) as MeshView;
+        meshView.obj.move('z', 2);
+    }
+
     newInstance(graph: NodeGraph): NodeObj {
         return new MoveNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {
         const controller = new AbstractController(null, registry);
+        controller.registerPropControl('mesh', MeshControl);
         controller.registerPropControl('move', MoveControl);
         controller.registerPropControl('speed', SpeedControl);
         return controller;

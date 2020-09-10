@@ -1,6 +1,7 @@
 import { MeshView } from '../views/MeshView';
 import { Quaternion, Vector3, Mesh } from 'babylonjs';
 import { IGameObj, ObjJson } from './IGameObj';
+import { IMeshAdapter } from '../../adapters/IMeshAdapter';
 
 
 export class MeshObj implements IGameObj {
@@ -17,12 +18,22 @@ export class MeshObj implements IGameObj {
     textureId: string;
     routeId: string;
 
+    meshAdapter: IMeshAdapter;
+
     getId() {
         return this.meshView.id;
     }
 
     getAnimations(): string[] {
         return this.meshView.animations;
+    }
+
+    move(axis: 'x' | 'y' | 'z', amount: number, space?: 'local' | 'global') {
+        // this.add(point);
+
+        if (this.meshAdapter) {
+            this.meshAdapter.translate(this, axis,  amount, space);
+        }
     }
 
     setRotation(angle: number) {

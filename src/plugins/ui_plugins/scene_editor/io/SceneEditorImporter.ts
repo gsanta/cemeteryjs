@@ -53,7 +53,8 @@ export class SceneEditorImporter extends AbstractPluginImporter {
     private createView(viewJson: ViewJson) {
         switch(viewJson.type) {
             case ViewType.MeshView:
-                return new MeshView();
+                const meshView = new MeshView();
+                meshView.obj.meshAdapter = this.registry.engine.meshes;
             case ViewType.PathView:
                 return new PathView();
             case SpriteViewType:

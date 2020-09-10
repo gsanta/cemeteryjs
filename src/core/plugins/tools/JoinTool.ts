@@ -44,9 +44,9 @@ export class JoinTool extends AbstractTool {
             this.startItem.connection = connection;
             endItem.connection = connection;
             connection.obj.joinPoint1 = this.startItem.slotName;
-            connection.obj.node1 = this.startItem.parent.id;
+            connection.obj.node1 = this.startItem.parent.obj;
             connection.obj.joinPoint2 = endItem.slotName;
-            connection.obj.node2 = endItem.parent.id;
+            connection.obj.node2 = endItem.parent.obj;
 
             connection.setPoint1(this.startItem.getAbsolutePosition());
             connection.setPoint2(endItem.getAbsolutePosition());
@@ -64,14 +64,6 @@ export class JoinTool extends AbstractTool {
         if (!this.registry.services.pointer.isDown) {
             this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
         }
-    }
-
-    hotkey(event: IHotkeyEvent) {
-        if (event.isHover && isJoinPointView(this.registry.services.pointer.hoveredItem)) {
-            this.registry.plugins.getHoveredView().toolHandler.setPriorityTool(this.id);
-            return true;
-        }
-        return false;
     }
 
     getCursor() {

@@ -26,7 +26,10 @@ export class KeyboardNodeObj extends NodeObj {
         }
     ];
     
-    execute(registry: Registry) {}
+    execute(registry: Registry) {
+        const connection = this.connections.get('output');
+        connection && connection.getOtherNode(this).execute(registry);
+    }
 
     newInstance(graph: NodeGraph): KeyboardNodeObj {
         return new KeyboardNodeObj(graph);
@@ -48,14 +51,10 @@ const KeyControl: PropControl<string> = {
         return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('key');
     },
 
-    change(val, context) {
+    change(val, context, element: UI_InputElement) {
         context.updateTempVal(val);
+        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        nodeView.obj.setParam('key', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
-    },
-
-    blur(context, element: UI_InputElement) {
-        const nodeObj = (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj;
-        nodeObj.setParam('key', context.clearTempVal());
-        context.registry.services.render.reRenderAll();
     }
 }

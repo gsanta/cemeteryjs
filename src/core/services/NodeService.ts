@@ -78,4 +78,8 @@ export class NodeService {
 
         return nodeView;
     }
+
+    executeNodes() {
+        this.registry.stores.nodeStore.getNodes().filter(node => node.obj.inputs.length === 0).forEach(node => node.obj.execute(this.registry));
+    }
 }

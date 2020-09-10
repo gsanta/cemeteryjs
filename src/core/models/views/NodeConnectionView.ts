@@ -1,10 +1,8 @@
-import { ViewType, View, ViewJson } from "./View";
-import { JoinPointView } from "./child_views/JoinPointView";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { NodeView } from "./NodeView";
-import { SlotName } from '../game_objects/NodeObj';
-import { NodeConnectionObj } from "../game_objects/NodeConnectionObj";
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { NodeConnectionObj } from "../game_objects/NodeConnectionObj";
+import { NodeView } from "./NodeView";
+import { View, ViewJson, ViewType } from "./View";
 
 export interface NodeConnectionViewJson extends ViewJson {
     point1X: number;
@@ -67,8 +65,8 @@ export class NodeConnectionView extends View {
 
     fromJson(json: NodeConnectionViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
-        (viewMap.get(this.obj.node1) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
-        (viewMap.get(this.obj.node2) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
+        (viewMap.get(this.obj.node1.id) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
+        (viewMap.get(this.obj.node2.id) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 

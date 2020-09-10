@@ -5,6 +5,7 @@ import { Registry } from "../../Registry";
 import { RectangleFactory } from "../../stores/RectangleFactory";
 import { IMeshAdapter } from "../IMeshAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
+import { Axis, Space } from "babylonjs";
 
 export  class Bab_Meshes implements IMeshAdapter {
     
@@ -17,6 +18,11 @@ export  class Bab_Meshes implements IMeshAdapter {
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
+    }
+
+    translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
+        const mesh = this.meshes.get(meshObj.id);
+        mesh.translate(axis === 'x' ? Axis.X : axis === 'y' ? Axis.Y : Axis.Z, amount, space === 'local' ? Space.LOCAL : Space.WORLD);
     }
 
     getDimensions(meshObj: MeshObj): Point {

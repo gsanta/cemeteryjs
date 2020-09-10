@@ -100,6 +100,7 @@ export class PointerService {
             this.registry.services.render.reRender(leavingPlugin.region);
         } else {
             this.hoveredItem = undefined;
+            this.hoveredPlugin.toolHandler.getActiveTool().out(data);
             (data as View).tags.delete(ViewTag.Hovered);
         }
 
@@ -119,6 +120,8 @@ export class PointerService {
             this.registry.services.hotkey.executeHotkey({
                 isHover: true
             });
+
+            this.hoveredPlugin.toolHandler.getActiveTool().over(data);
         }
 
         this.registry.services.render.reRender(this.hoveredPlugin.region);

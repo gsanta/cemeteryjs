@@ -22,14 +22,14 @@ export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
 
 export class AbstractTool implements Tool {
     rectangleSelection: Rectangle;
-    id: ToolType;
+    id: string;
 
     getCursor() { return Cursor.Default; }
     
     protected plugin: AbstractCanvasPlugin;
     protected registry: Registry;
 
-    constructor(type: ToolType, plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(type: string, plugin: AbstractCanvasPlugin, registry: Registry) {
         this.id = type;
         this.plugin = plugin;
         this.registry = registry;

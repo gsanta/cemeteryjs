@@ -1,5 +1,5 @@
 import { ChildView } from '../../models/views/child_views/ChildView';
-import { View } from '../../models/views/View';
+import { View, ViewType } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { RenderTask } from "../../services/RenderServices";
 import { isView, isFeedback } from '../../stores/SceneStore';
@@ -10,6 +10,7 @@ import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
+import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
 
 export class PointerTool extends AbstractTool {
     protected movingItem: View = undefined;
@@ -73,11 +74,19 @@ export class PointerTool extends AbstractTool {
     }
 
     over(item: View) {
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        if (item.viewType === JoinPointViewType) {
+            this.plugin.toolHandler.setPriorityTool(ToolType.Join);
+        } else {
+            this.registry.services.render.scheduleRendering(this.plugin.region);
+        }
     }
 
     out(item: View) {
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        if (item.viewType === JoinPointViewType) {
+            this.plugin.toolHandler.removePriorityTool(ToolType.Join);
+        } else {
+            this.registry.services.render.scheduleRendering(this.plugin.region);
+        }
     }
 
     private initMove(): boolean {

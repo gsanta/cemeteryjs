@@ -1,13 +1,13 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { NodeView } from "../NodeView";
-import { FeedbackType, ChildView } from "./ChildView";
+import { ChildView } from "./ChildView";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { sizes } from "../../../ui_components/react/styles";
 import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 
 export function isJoinPointView(view: View) {
-    return view && view.viewType === FeedbackType.NodeConnectorFeedback;
+    return view && view.viewType === JoinPointViewType;
 }
 
 export interface JoinPointViewJson extends ViewJson {
@@ -16,8 +16,9 @@ export interface JoinPointViewJson extends ViewJson {
     isInput: boolean;
 }
 
+export const JoinPointViewType = 'JoinPointViewType';
 export class JoinPointView extends ChildView<NodeView> {
-    viewType = FeedbackType.NodeConnectorFeedback;
+    viewType = JoinPointViewType;
     id: string;
     point: Point;
     parent: NodeView;

@@ -12,6 +12,7 @@ const panIcon = require('../../../../../../assets/images/icons/pan.svg');
 const selectIcon = require('../../../../../../assets/images/icons/select.svg');
 const deleteIcon = require('../../../../../../assets/images/icons/delete.svg');
 const zoomOutIcon = require('../../../../../../assets/images/icons/zoom_out.svg');
+const gamesIcon = require('../../../../../../assets/images/icons/games.svg');
 const zoomInIcon = require('../../../../../../assets/images/icons/zoom_in.svg');
 const fullScreenIcon = require('../../../../../../assets/images/icons/fullscreen.svg');
 const fullScreenExitIcon = require('../../../../../../assets/images/icons/fullscreen_exit.svg');
@@ -121,6 +122,10 @@ const ToolbarStyled = styled.div`
 
         &.sprite-icon {
             background-image: url(${spriteIcon});
+        }
+        
+        &.games-icon {
+            background-image: url(${gamesIcon});
         }
     }
 `;

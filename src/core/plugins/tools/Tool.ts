@@ -48,7 +48,7 @@ export enum Cursor {
 export interface Tool extends IHotkey {
     rectangleSelection: Rectangle;
     getCursor(): Cursor;
-    id: ToolType;
+    id: string;
     down(e: IPointerEvent): void;
     move(): void;
     drag(e: IPointerEvent): void;

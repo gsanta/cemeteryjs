@@ -15,6 +15,7 @@ export class MeshTool extends RectangleTool {
 
     protected createView(rect: Rectangle): View {
         const meshView: MeshView = new MeshView({dimensions: rect});
+        meshView.obj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
         meshView.setScale(1);
         meshView.color = 'grey';

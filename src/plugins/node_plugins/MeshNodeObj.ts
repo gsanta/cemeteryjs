@@ -36,7 +36,7 @@ export class MeshNodeObj extends NodeObj {
     }
 }
 
-const MeshControl: PropControl<string> = {
+export const MeshControl: PropControl<string> = {
     values(context) {
         return context.registry.stores.canvasStore.getMeshViews().map(meshConcept => meshConcept.id)
     },
@@ -45,14 +45,9 @@ const MeshControl: PropControl<string> = {
         return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('mesh');
     },
 
-    change(val, context) {
-        context.updateTempVal(val);
+    change(val, context, element: UI_InputElement) {
+        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        nodeView.obj.setParam('mesh', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
-    },
-    
-    blur(context, element: UI_InputElement) {
-        const nodeObj = (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj;
-        nodeObj.setParam('mesh', context.clearTempVal());
-        context.registry.services.render.reRenderAll();
     }
 }
