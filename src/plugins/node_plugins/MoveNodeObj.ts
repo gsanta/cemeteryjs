@@ -36,9 +36,6 @@ export class MoveNodeObj extends NodeObj {
     inputs = [
         {
             name: 'input'
-        },
-        {
-            name: 'mesh'
         }
     ];
 

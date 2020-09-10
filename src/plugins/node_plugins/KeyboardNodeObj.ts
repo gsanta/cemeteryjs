@@ -55,6 +55,7 @@ const KeyControl: PropControl<string> = {
         context.updateTempVal(val);
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
         nodeView.obj.setParam('key', val);
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

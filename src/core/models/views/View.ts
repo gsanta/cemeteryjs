@@ -1,6 +1,7 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { IGameObj } from "../game_objects/IGameObj";
+import { Registry } from "../../Registry";
 
 export enum ViewType {
     MeshView = 'MeshView',
@@ -41,10 +42,9 @@ export abstract class View {
         };
     }
 
-    fromJson(json: ViewJson, viewMap: Map<string, View>) {
+    fromJson(json: ViewJson, registry: Registry) {
         this.id = json.id;
         this.viewType = json.type;
         this.dimensions = json.dimensions && Rectangle.fromString(json.dimensions);
-        viewMap.set(this.id, this);
     }
 }

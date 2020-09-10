@@ -5,6 +5,7 @@ import { NodeConnectionView } from "../NodeConnectionView";
 import { sizes } from "../../../ui_components/react/styles";
 import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { Registry } from "../../../Registry";
 
 export function isJoinPointView(view: View) {
     return view && view.viewType === JoinPointViewType;
@@ -14,6 +15,7 @@ export interface JoinPointViewJson extends ViewJson {
     point: string;
     slotName: string;
     isInput: boolean;
+    connectionId: string;
 }
 
 export const JoinPointViewType = 'JoinPointViewType';
@@ -77,15 +79,17 @@ export class JoinPointView extends ChildView<NodeView> {
             ...super.toJson(),
             point: this.point.toString(),
             slotName: this.slotName,
-            isInput: this.isInput
+            isInput: this.isInput,
+            connectionId: this.connection.id
         }
     }
 
-    fromJson(json: JoinPointViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
+    fromJson(json: JoinPointViewJson, registry: Registry) {
+        super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
         this.slotName = json.slotName;
         this.isInput = json.isInput;
+        this.connection = registry.stores.nodeStore.getById(json.connectionId) as NodeConnectionView;
         this.initPosition();
     }
 }

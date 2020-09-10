@@ -42,7 +42,7 @@ export const MeshControl: PropControl<string> = {
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('mesh');
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('mesh').val;
     },
 
     change(val, context, element: UI_InputElement) {

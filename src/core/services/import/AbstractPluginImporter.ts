@@ -30,7 +30,7 @@ export abstract class AbstractPluginImporter {
         this.plugin = plugin;
     }
 
-    async abstract import(json: AppJson, viewMap: Map<string, View>): Promise<void>;
+    async abstract import(json: AppJson): Promise<void>;
 
     protected getPluginJson(json: AppJson): IPluginJson {
         return json.plugins.find(plugin => plugin.pluginId === this.plugin.id);

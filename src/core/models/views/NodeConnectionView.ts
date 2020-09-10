@@ -1,14 +1,16 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { NodeConnectionObj } from "../game_objects/NodeConnectionObj";
+import { NodeConnectionObj, NodeConnectionObjJson } from "../game_objects/NodeConnectionObj";
 import { NodeView } from "./NodeView";
 import { View, ViewJson, ViewType } from "./View";
+import { Registry } from "../../Registry";
 
 export interface NodeConnectionViewJson extends ViewJson {
     point1X: number;
     point1Y: number;
     point2X: number;
     point2Y: number;
+    obj: NodeConnectionObjJson;
 }
 
 export class NodeConnectionView extends View {
@@ -59,14 +61,16 @@ export class NodeConnectionView extends View {
             point1X: this.point1.x,
             point1Y: this.point1.y,
             point2X: this.point2.x,
-            point2Y: this.point2.y
+            point2Y: this.point2.y,
+            obj: this.obj.toJson()
         };
     }
 
-    fromJson(json: NodeConnectionViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
-        (viewMap.get(this.obj.node1.id) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
-        (viewMap.get(this.obj.node2.id) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
+    fromJson(json: NodeConnectionViewJson, registry: Registry) {
+        super.fromJson(json, registry);
+        this.obj.fromJson(json.obj, registry);
+        (registry.stores.nodeStore.getById(this.obj.node1.id) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
+        (registry.stores.nodeStore.getById(this.obj.node2.id) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 

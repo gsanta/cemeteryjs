@@ -8,12 +8,12 @@ import { ViewGroupJson } from "../../../../core/plugins/IPluginExporter";
 import { AppJson } from "../../../../core/services/export/ExportService";
 
 export class SceneEditorImporter extends AbstractPluginImporter {
-    async import(json: AppJson, viewMap: Map<string, View>): Promise<void> {
+    async import(json: AppJson): Promise<void> {
         const pluginJson = this.getPluginJson(json);
 
         // await this.importAssets(json);
 
-        pluginJson.viewGroups.forEach(viewGroup => this.importViewGroup(viewGroup, viewMap));
+        pluginJson.viewGroups.forEach(viewGroup => this.importViewGroup(viewGroup));
     }
 
     async importAssets(json: AppJson): Promise<void> {
@@ -31,11 +31,11 @@ export class SceneEditorImporter extends AbstractPluginImporter {
         await Promise.all(promises);
     }
 
-    private importViewGroup(viewGroup: ViewGroupJson, viewMap: Map<string, View>) {
+    private importViewGroup(viewGroup: ViewGroupJson) {
         viewGroup.views.map((viewJson: ViewJson) => {
             const view = this.createView(viewJson);
             // TODO why do we have to cast to any?
-            view.fromJson(viewJson as any, viewMap);
+            view.fromJson(viewJson as any, this.registry);
 
             this.registry.stores.canvasStore.addView(view);
             
@@ -55,6 +55,7 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             case ViewType.MeshView:
                 const meshView = new MeshView();
                 meshView.obj.meshAdapter = this.registry.engine.meshes;
+                return meshView;
             case ViewType.PathView:
                 return new PathView();
             case SpriteViewType:

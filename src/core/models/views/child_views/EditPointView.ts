@@ -2,6 +2,7 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { ChildView, FeedbackType } from "./ChildView";
 import { PathView } from "../PathView";
 import { View, ViewJson } from "../View";
+import { Registry } from "../../../Registry";
 
 export interface EditPointViewJson extends ViewJson {
     point: string;
@@ -41,9 +42,9 @@ export class EditPointView extends ChildView<PathView> {
         }
     }
 
-    fromJson(json: EditPointViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
+    fromJson(json: EditPointViewJson, registry: Registry) {
+        super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
-        this.parent = <PathView> viewMap.get(json.parentId)
+        this.parent = registry.stores.canvasStore.getById(json.parentId) as PathView;
     }
 }

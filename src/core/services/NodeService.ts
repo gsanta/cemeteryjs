@@ -61,7 +61,7 @@ export class NodeService {
         this.defaultNodeRenderer.render(ui_svgCanvas, nodeView);
     }
 
-    createNodeViewAtPoint(nodeType: string, position: Point): NodeView {
+    createNodeView(nodeType: string): NodeView {
         if (!this.nodeTemplates.has(nodeType)) {
             throw new Error(`Node creator registered for node type ${nodeType}`);
         }
@@ -69,10 +69,10 @@ export class NodeService {
         const nodeObject = this.nodeTemplates.get(nodeType).newInstance(this.graph);
         nodeObject.controller = this.nodeTemplates.get(nodeType).controller;
         
-        const topLeft = position;
-        const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
+        // const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
+        // new Rectangle(topLeft, bottomRight)
         
-        const nodeView = new NodeView({nodeType: nodeObject.type, dimensions: new Rectangle(topLeft, bottomRight), node: nodeObject});
+        const nodeView = new NodeView({nodeType: nodeObject.type, node: nodeObject});
         
         this.registry.stores.nodeStore.addNode(nodeView);
 

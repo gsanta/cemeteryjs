@@ -6,6 +6,7 @@ import { toVector3 } from '../../../utils/geometry/GeomUtils';
 import { toDegree } from '../../../utils/geometry/Measurements';
 import { ViewType, View, ViewJson } from './View';
 import { MeshObj } from '../game_objects/MeshObj';
+import { Registry } from '../../Registry';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -111,7 +112,7 @@ export class MeshView extends View implements IGameModel {
 
     setRotation(angle: number) {
         this.rotation = angle;
-        this.obj.setRotation(angle);
+        this.obj.rotate(angle);
     }
 
     rotate(angle: number) {
@@ -152,8 +153,8 @@ export class MeshView extends View implements IGameModel {
         }
     }
 
-    fromJson(json: MeshViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
+    fromJson(json: MeshViewJson, registry: Registry) {
+        super.fromJson(json, registry);
         this.rotation = json.rotation;
         this.obj.modelId = json.modelId;
         this.scale = json.scale;

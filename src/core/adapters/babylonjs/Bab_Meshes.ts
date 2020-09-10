@@ -5,7 +5,7 @@ import { Registry } from "../../Registry";
 import { RectangleFactory } from "../../stores/RectangleFactory";
 import { IMeshAdapter } from "../IMeshAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
-import { Axis, Space } from "babylonjs";
+import { Axis, Space, Quaternion, Vector3 } from "babylonjs";
 
 export  class Bab_Meshes implements IMeshAdapter {
     
@@ -23,6 +23,14 @@ export  class Bab_Meshes implements IMeshAdapter {
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
         const mesh = this.meshes.get(meshObj.id);
         mesh.translate(axis === 'x' ? Axis.X : axis === 'y' ? Axis.Y : Axis.Z, amount, space === 'local' ? Space.LOCAL : Space.WORLD);
+    }
+
+    rotate(meshObj: MeshObj, angle: number): void {
+        const mesh = this.meshes.get(meshObj.id);
+        if (mesh) {
+            mesh.rotation.y += angle;
+            // mesh.rotationQuaternion = Quaternion.RotationAxis(new Vector3(0, 1, 0), angle);
+        }
     }
 
     getDimensions(meshObj: MeshObj): Point {

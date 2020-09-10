@@ -5,6 +5,7 @@ import { EditPointView, EditPointViewJson } from './child_views/EditPointView';
 import { IGameModel } from "../game_objects/IGameModel";
 import { PathModel } from "../game_objects/PathModel";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
+import { Registry } from "../../Registry";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
@@ -146,11 +147,11 @@ export class PathView extends View implements IGameModel {
         }
     }
 
-    fromJson(json: PathViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
+    fromJson(json: PathViewJson, registry: Registry) {
+        super.fromJson(json, registry);
         json.editPoints.forEach((ep, index) => {
             const epView = new EditPointView();
-            epView.fromJson(ep, viewMap);
+            epView.fromJson(ep, registry);
             this.addEditPoint(epView, index > 0 ? this.editPoints[index - 1] : undefined);
         });
 

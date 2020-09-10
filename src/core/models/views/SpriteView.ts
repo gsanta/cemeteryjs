@@ -2,6 +2,7 @@ import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { SpriteObj, SpriteObjJson } from "../game_objects/SpriteObj";
 import { View, ViewJson } from "./View";
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { Registry } from "../../Registry";
 export const SpriteViewType = 'SpriteView';
 
 export interface SpriteViewJson extends ViewJson {
@@ -44,8 +45,8 @@ export class SpriteView extends View {
         }
     }
 
-    fromJson(json: SpriteViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
+    fromJson(json: SpriteViewJson, registry: Registry) {
+        super.fromJson(json, registry);
         this.thumbnailData = json.thumbnailData;
         this.obj.frameName = json.frameName;
         this.obj.spriteSheetId = json.spriteSheetId;

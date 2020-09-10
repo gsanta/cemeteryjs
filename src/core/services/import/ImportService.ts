@@ -28,15 +28,13 @@ export class ImportService {
             console.error(e);
         }
 
-        const viewMap: Map<string, View> = new Map();
-
         const promises: Promise<void>[] = [];
 
         const plugins = this.registry.plugins.getAll().filter(plugin => plugin.importer);
         
         try {
             for (let i = 0; i < plugins.length; i++) {
-                await plugins[i].importer.import(json, viewMap);
+                await plugins[i].importer.import(json);
             }
         } catch (e) {
             console.error(e);

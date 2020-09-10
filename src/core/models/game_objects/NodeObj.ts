@@ -1,9 +1,8 @@
-import { Point } from '../../../utils/geometry/shapes/Point';
+import { AbstractController } from '../../plugins/controllers/AbstractController';
 import { Registry } from '../../Registry';
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { defaultNodeViewConfig, NodeView } from '../views/NodeView';
+import { NodeView } from '../views/NodeView';
 import { IGameObj, ObjJson } from './IGameObj';
-import { AbstractController } from '../../plugins/controllers/AbstractController';
 import { NodeConnectionObj } from './NodeConnectionObj';
 
 export enum BuiltinNodeType {
@@ -38,27 +37,13 @@ export enum NodeCategory {
 
 export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2' | 'output1' | 'output2' | 'output3' | 'output4' | 'path'
 
-export interface JoinPointSlot {
+export interface NodeLink {
     name: string;
 }
 
-export interface NodeModelJson extends ObjJson {
+export interface NodeObjJson extends ObjJson {
     type: string;
     params: NodeParam[];
-    inputs: JoinPointSlot[];
-    outputs: JoinPointSlot[];
-    label: string;
-    color: string;
-    sizeX: number;
-    sizeY: number;
-    category: string;
-}
-
-export interface NodeConfig {
-    type: string;
-    params: NodeParam[];
-    connections: { direction: 'input' | 'output', name: string }[];
-    category: string; 
 }
 
 export interface NodeParam {
@@ -80,9 +65,8 @@ export abstract class NodeObj implements IGameObj {
     isDirty = false;
     label: string;
     color: string;
-    size: Point;
-    inputs: JoinPointSlot[] = [];
-    outputs: JoinPointSlot[] = [];
+    inputs: NodeLink[] = [];
+    outputs: NodeLink[] = [];
 
     connections: Map<string, NodeConnectionObj> = new Map();
 
@@ -90,7 +74,6 @@ export abstract class NodeObj implements IGameObj {
     graph: NodeGraph;
 
     constructor(nodeGraph: NodeGraph) {
-        this.size = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height);
         this.graph = nodeGraph;
 
         if (this.graph) {
@@ -123,30 +106,17 @@ export abstract class NodeObj implements IGameObj {
         return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
     }
 
-    toJson(): NodeModelJson {
+    toJson(): NodeObjJson {
         return {
             id: this.id,
             type: this.type,
             params: this.params,
-            inputs: this.inputs,
-            outputs: this.outputs,
-            label: this.label,
-            color: this.color,
-            sizeX: this.size.x,
-            sizeY: this.size.y,
-            category: this.category
         }
     }
 
-    fromJson(json: NodeModelJson) {
+    fromJson(json: NodeObjJson, registry: Registry) {
         this.type = <BuiltinNodeType> json.type;
         this.params = json.params;
-        this.inputs = json.inputs;
-        this.outputs = json.outputs;
-        this.label = json.label;
-        this.color = json.color;
-        this.size = new Point(json.sizeX, json.sizeY);
-        this.category = json.category;
         this.params.forEach(param => this.cachedParams.set(param.name, param));
     }
 

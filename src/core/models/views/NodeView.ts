@@ -2,9 +2,10 @@ import { ViewSettings } from "../../../plugins/ui_plugins/AbstractSettings";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeObj, SlotName, NodeModelJson } from '../game_objects/NodeObj';
+import { NodeObj, SlotName, NodeObjJson } from '../game_objects/NodeObj';
 import { JoinPointView } from "./child_views/JoinPointView";
 import { ViewType, View, ViewJson } from "./View";
+import { Registry } from "../../Registry";
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -12,7 +13,7 @@ export const defaultNodeViewConfig = {
 }
 
 export interface NodeViewJson extends ViewJson {
-    node: NodeModelJson;
+    nodeObj: NodeObjJson;
 }
 
 const HEADER_HIGHT = 30;
@@ -36,7 +37,7 @@ export class NodeView extends View {
         if (config) {
             this.obj = config.node;
             this.obj.nodeView = this;
-            this.dimensions = config.dimensions;
+            this.dimensions = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
             this.setup();
         }
     }
@@ -68,16 +69,13 @@ export class NodeView extends View {
     toJson(): NodeViewJson  {
         return {
             ...super.toJson(),
-            node: this.obj.toJson()
+            nodeObj: this.obj.toJson()
         }
     }
 
-    fromJson(json: NodeViewJson, viewMap: Map<string, View>) {
-        super.fromJson(json, viewMap);
-        // const obj = new NodeObj();
-        // obj.fromJson(json.node);
-        // this.obj = obj;
-        this.setup();
+    fromJson(json: NodeViewJson, registry: Registry) {
+        super.fromJson(json, registry);
+        this.obj.fromJson(json.nodeObj, registry);
     }
 
     editPoints = [];

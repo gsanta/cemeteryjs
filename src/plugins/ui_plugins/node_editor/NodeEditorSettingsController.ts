@@ -25,7 +25,8 @@ export class NodeEditorSettingsController extends AbstractController<string> {
                 this.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
             })
             .onDndEnd((context: PropContext<string>, element) => {
-                this.registry.services.node.createNodeViewAtPoint((element as UI_ListItem).listItemId, this.registry.services.pointer.pointer.curr);
+                const nodeView = this.registry.services.node.createNodeView((element as UI_ListItem).listItemId);
+                nodeView.dimensions.moveTo(this.registry.services.pointer.pointer.curr);
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })

@@ -4,12 +4,20 @@ import { UI_InputElement } from "../../core/ui_components/elements/UI_InputEleme
 import { NodeView } from "../../core/models/views/NodeView";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
+import { MeshControl } from "./MeshNodeObj";
+import { MeshView } from "../../core/models/views/MeshView";
 
 export class TurnNodeObj extends NodeObj {
     type = BuiltinNodeType.Turn;
     category = NodeCategory.Default;
 
     params: NodeParam[] = [
+        {
+            name: 'mesh',
+            val: '',
+            inputType: 'list',
+            valueType: 'string'
+        },
         {
             name: 'turn',
             val: '',
@@ -21,10 +29,7 @@ export class TurnNodeObj extends NodeObj {
     inputs = [
         {
             name: 'input'
-        },
-        {
-            name: 'mesh'
-        },
+        }
     ]
 
     outputs = [
@@ -33,12 +38,26 @@ export class TurnNodeObj extends NodeObj {
         }
     ];
 
+    execute(registry: Registry) {
+        const meshId = this.getParam('mesh').val;
+        const meshView = registry.stores.canvasStore.getById(meshId) as MeshView;
+
+        if (meshView) {
+            if (this.getParam('turn').val === 'turn-left') {
+                meshView.obj.rotate(-0.02);
+            } else {
+                meshView.obj.rotate(0.02);
+            }
+        }
+    }
+
     newInstance(graph: NodeGraph): NodeObj {
         return new TurnNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {
         const controller = new AbstractController(null, registry);
+        controller.registerPropControl('mesh', MeshControl);
         controller.registerPropControl('turn', TurnControl);
         return controller;
     }
@@ -57,7 +76,7 @@ const TurnControl: PropControl<string> = {
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
 
-        nodeView.obj.setParam('turn', context.clearTempVal());
-        this.registry.services.render.reRenderAll();
+        nodeView.obj.setParam('turn', val);
+        context.registry.services.render.reRenderAll();
     }
 }

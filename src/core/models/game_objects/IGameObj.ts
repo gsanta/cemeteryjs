@@ -1,3 +1,4 @@
+import { Registry } from "../../Registry";
 
 
 export interface ObjJson {
@@ -7,5 +8,5 @@ export interface IGameObj {
     id: string;
 
     toJson(): ObjJson;
-    fromJson(json: ObjJson);
+    fromJson(json: ObjJson, registry: Registry);
 }
