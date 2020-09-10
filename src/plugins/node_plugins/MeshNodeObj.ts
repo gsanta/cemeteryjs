@@ -4,6 +4,7 @@ import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { NodeView } from "../../core/models/views/NodeView";
 import { Registry } from "../../core/Registry";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class MeshNodeObj extends NodeObj {
     type = BuiltinNodeType.Mesh;
@@ -24,8 +25,8 @@ export class MeshNodeObj extends NodeObj {
         }
     ];
 
-    newInstance(): NodeObj {
-        return new MeshNodeObj();
+    newInstance(graph: NodeGraph): NodeObj {
+        return new MeshNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

@@ -3,6 +3,7 @@ import { PropControl, AbstractController } from "../../core/plugins/controllers/
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { NodeView } from "../../core/models/views/NodeView";
 import { Registry } from "../../core/Registry";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class TurnNodeObj extends NodeObj {
     type = BuiltinNodeType.Turn;
@@ -32,8 +33,8 @@ export class TurnNodeObj extends NodeObj {
         }
     ];
 
-    newInstance(): NodeObj {
-        return new TurnNodeObj();
+    newInstance(graph: NodeGraph): NodeObj {
+        return new TurnNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

@@ -1,6 +1,7 @@
 import { NodeObj, BuiltinNodeType, NodeCategory, NodeParam } from "../../core/models/game_objects/NodeObj";
 import { Registry } from "../../core/Registry";
 import { AbstractController } from "../../core/plugins/controllers/AbstractController";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 
 export class AndNodeObj extends NodeObj {
@@ -22,8 +23,8 @@ export class AndNodeObj extends NodeObj {
         }
     ];
 
-    newInstance(): NodeObj {
-        return new AndNodeObj();
+    newInstance(graph: NodeGraph): NodeObj {
+        return new AndNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

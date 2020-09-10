@@ -37,11 +37,6 @@ export class JoinPointView extends ChildView<NodeView> {
         }
     }
 
-    getOtherNode() {
-        if (!this.connection) { return; }
-        return this.connection.joinPoint1 === this ? this.connection.joinPoint2.parent : this.connection.joinPoint1.parent;
-    }
-
     private initPosition() {
         const yStart = this.parent.dimensions.topLeft.y + sizes.nodes.headerHeight;
         const x = this.isInput ? 0 : this.parent.dimensions.getWidth(); // this.parent.dimensions.topLeft.x : this.parent.dimensions.bottomRight.x;
@@ -59,7 +54,7 @@ export class JoinPointView extends ChildView<NodeView> {
     move(delta: Point) {
         // this.point = this.point.add(delta);
         // this.dimensions = this.dimensions.translate(delta);
-        this.connection && this.connection.updateDimensions();
+        this.isInput ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
     }
 
     delete() {

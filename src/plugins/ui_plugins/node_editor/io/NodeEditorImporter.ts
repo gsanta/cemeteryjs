@@ -11,7 +11,7 @@ export class NodeEditorImporter extends AbstractPluginImporter {
         const nodeJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ViewType.NodeView);
 
         nodeJsons.views.forEach((viewJson: NodeViewJson) => {
-            const nodeView: NodeView = new NodeView(this.registry.stores.nodeStore.graph);
+            const nodeView: NodeView = new NodeView();
             nodeView.fromJson(viewJson, viewMap);
 
             this.registry.stores.nodeStore.addNode(nodeView);

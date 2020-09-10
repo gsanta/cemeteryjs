@@ -1,7 +1,14 @@
 import { NodeObj } from '../../models/game_objects/NodeObj';
+import { NodeConnectionObj } from '../../models/game_objects/NodeConnectionObj';
+import { Registry } from '../../Registry';
 
 export class NodeGraph {
     nodeGroups: Set<NodeObj>[] = [];
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
 
     addNode(node: NodeObj) {
         this.nodeGroups.push(new Set([node]));
@@ -15,7 +22,6 @@ export class NodeGraph {
 
         this.nodeGroups = this.nodeGroups.filter(g => g !== group);
         this.nodeGroups.push(...splittedGroups);
-        nodes.forEach(node => node.updateNode(this));
     }
 
     findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {
@@ -28,8 +34,9 @@ export class NodeGraph {
         }
     }
 
-    addConnection(node1: NodeObj, node2: NodeObj) {
-        const group1 = this.findGroup(node1);
+    addConnection(nodeConnectionObj: NodeConnectionObj) {
+        const node1 = this.registry.stores.nodeStore.
+        const group1 = this.findGroup(nodeConnectionObj.node1);
         const group2 = this.findGroup(node2);
 
         if (group1 !== group2) {
@@ -37,7 +44,6 @@ export class NodeGraph {
 
             const newGroup: Set<NodeObj> = new Set([...group1, ...group2]);
             this.nodeGroups.push(newGroup);
-            this.updateGroup(node1);
         }
     }
 
@@ -48,14 +54,6 @@ export class NodeGraph {
 
         this.nodeGroups = this.nodeGroups.filter(g => g !== group);
         this.nodeGroups.push(...splittedGroups);
-        nodes.forEach(node => node.updateNode(this));
-    }
-
-    updateGroup(node: NodeObj) {
-        const group = this.findGroup(node);
-        for (let element of group) {
-            element.updateNode(this);
-        }
     }
 
     buildGroups(nodes: NodeObj[]): Set<NodeObj>[] {

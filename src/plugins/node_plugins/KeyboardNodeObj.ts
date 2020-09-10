@@ -5,6 +5,7 @@ import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { getAllKeys } from "../../core/services/input/KeyboardService";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class KeyboardNodeObj extends NodeObj {
     type = BuiltinNodeType.Keyboard;
@@ -27,12 +28,8 @@ export class KeyboardNodeObj extends NodeObj {
     
     execute(registry: Registry) {}
 
-    static instantiate(): NodeObj {
-        return new KeyboardNodeObj();
-    }
-
-    newInstance(): KeyboardNodeObj {
-        return new KeyboardNodeObj();
+    newInstance(graph: NodeGraph): KeyboardNodeObj {
+        return new KeyboardNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

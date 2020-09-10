@@ -3,49 +3,63 @@ import { JoinPointView } from "./child_views/JoinPointView";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeView } from "./NodeView";
 import { SlotName } from '../game_objects/NodeObj';
+import { NodeConnectionObj } from "../game_objects/NodeConnectionObj";
+import { Point } from "../../../utils/geometry/shapes/Point";
 
 export interface NodeConnectionViewJson extends ViewJson {
-    joinPoint1: {
-        nodeId: string;
-        slotName: string;
-    },
-    joinPoint2: {
-        nodeId: string;
-        slotName: string;
-    }
+    point1X: number;
+    point1Y: number;
+    point2X: number;
+    point2Y: number;
 }
 
 export class NodeConnectionView extends View {
     readonly  viewType = ViewType.NodeConnectionView;
 
-    joinPoint1: JoinPointView;
-    joinPoint2: JoinPointView;
+    // joinPoint1: JoinPointView;
+    // joinPoint2: JoinPointView;
     dimensions = undefined;
+    point1: Point;
+    point2: Point;
+    obj: NodeConnectionObj;
 
     constructor(config?: {joinPoint1: JoinPointView, joinPoint2: JoinPointView}) {
         super();
         if (config) {
+            this.obj = new NodeConnectionObj();
+            // this.obj.joinPoint1 = config.joinPoint1.slotName;
+            // this.obj.joinPoint1 = config.joinPoint1.
             this.setup(config.joinPoint1, config.joinPoint2);
         }
     }
 
     private setup(joinPoint1: JoinPointView, joinPoint2: JoinPointView) {
-        this.joinPoint1 = joinPoint1;
-        this.joinPoint2 = joinPoint2;
+        // this.joinPoint1 = joinPoint1;
+        // this.joinPoint2 = joinPoint2;
         this.updateDimensions();
     }
 
-    updateDimensions() {
-        this.dimensions = Rectangle.fromTwoPoints(this.joinPoint1.point, this.joinPoint2.point);
+    private updateDimensions() {
+        this.dimensions = Rectangle.fromTwoPoints(this.point1, this.point2);
     }
 
     move() {
         // action nodes will move their join points, so this object is automatically moved
     }
 
+    setPoint1(point: Point) {
+        this.point1 = point;
+        this.updateDimensions();
+    }
+
+    setPoint2(point: Point) {
+        this.point2 = point;
+        this.updateDimensions();
+    }
+
     delete() {
-        this.joinPoint1.connection = undefined;
-        this.joinPoint2.connection = undefined;
+        // this.joinPoint1.connection = undefined;
+        // this.joinPoint2.connection = undefined;
 
         return [this];
     }
@@ -53,25 +67,18 @@ export class NodeConnectionView extends View {
     toJson(): NodeConnectionViewJson {
         return {
             ...super.toJson(),
-            joinPoint1: {
-                nodeId: this.joinPoint1.parent.id,
-                slotName: this.joinPoint1.slotName
-            },
-            joinPoint2: {
-                nodeId: this.joinPoint2.parent.id,
-                slotName: this.joinPoint2.slotName
-            }
+            point1X: this.point1.x,
+            point1Y: this.point1.y,
+            point2X: this.point2.x,
+            point2Y: this.point2.y
         };
     }
 
     fromJson(json: NodeConnectionViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
-        const node1 = <NodeView> viewMap.get(json.joinPoint1.nodeId);
-        const joinPoint1 = node1.findJoinPointView(json.joinPoint1.slotName as SlotName);
+        this.point1 = new Point(json.point1X, json.point1Y);
+        this.point2 = new Point(json.point2X, json.point2Y);
 
-        const node2 = <NodeView> viewMap.get(json.joinPoint2.nodeId);
-        const joinPoint2 = node2.findJoinPointView(json.joinPoint2.slotName as SlotName);
-
-        this.setup(joinPoint1, joinPoint2);
+        this.updateDimensions();
     }
 }

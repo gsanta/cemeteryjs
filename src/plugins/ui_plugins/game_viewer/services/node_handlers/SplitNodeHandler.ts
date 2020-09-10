@@ -16,15 +16,16 @@ export class SplitNodeHandler extends AbstractNodeHandler {
     }
 
     searchFromRight<T extends NodeObj>(type: BuiltinNodeType): T {
-        const joinedView = this.instance.nodeView.findJoinPointView('input').getOtherNode();
-        if (joinedView) {
-            if (joinedView.obj.type === type) {
-                return <T> joinedView.obj;
-            } else {
-                const handler = this.getNodeService().getHandler(joinedView.obj);
-                handler.instance = joinedView.obj;
-                return handler.searchFromRight(type);
-            }
-        }
+        // const joinedView = this.instance.nodeView.findJoinPointView('input').getOtherNode();
+        // if (joinedView) {
+        //     if (joinedView.obj.type === type) {
+        //         return <T> joinedView.obj;
+        //     } else {
+        //         const handler = this.getNodeService().getHandler(joinedView.obj);
+        //         handler.instance = joinedView.obj;
+        //         return handler.searchFromRight(type);
+        //     }
+        // }
+        return null;
     }
 }

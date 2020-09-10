@@ -4,6 +4,7 @@ import { UI_InputElement } from "../../core/ui_components/elements/UI_InputEleme
 import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class AnimationNodeObj extends NodeObj {
     type = BuiltinNodeType.Animation;
@@ -29,12 +30,8 @@ export class AnimationNodeObj extends NodeObj {
         }
     ];
 
-    static instantiate(): NodeObj {
-        return new AnimationNodeObj();
-    }
-
-    newInstance(): AnimationNodeObj {
-        return new AnimationNodeObj();
+    newInstance(graph: NodeGraph): AnimationNodeObj {
+        return new AnimationNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

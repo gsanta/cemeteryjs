@@ -4,6 +4,7 @@ import { UI_InputElement } from "../../core/ui_components/elements/UI_InputEleme
 import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class PathNodeObj extends NodeObj {
     type = BuiltinNodeType.Path;
@@ -24,8 +25,8 @@ export class PathNodeObj extends NodeObj {
         }
     ];
 
-    newInstance(): NodeObj {
-        return new PathNodeObj();
+    newInstance(graph: NodeGraph): NodeObj {
+        return new PathNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

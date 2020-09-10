@@ -12,7 +12,6 @@ export class NodeStore extends AbstractViewStore<NodeView> {
 
     templates: NodeObj[] = [];
     actionTypes: string[] = [];
-    graph: NodeGraph;
     nodesByType: Map<string, NodeObj[]> = new Map();
 
     private registry: Registry;
@@ -20,7 +19,6 @@ export class NodeStore extends AbstractViewStore<NodeView> {
     constructor(registry: Registry) {
         super();
         this.registry = registry;
-        this.graph = new NodeGraph();
 
         for (let item in BuiltinNodeType) {
             if (isNaN(Number(item))) {
@@ -31,22 +29,21 @@ export class NodeStore extends AbstractViewStore<NodeView> {
 
     addNode(nodeView: NodeView) {
         nodeView.id = nodeView.id === undefined ? this.generateId(ViewType.NodeView) : nodeView.id;
+        nodeView.obj.id = nodeView.id;
         super.addItem(nodeView);
 
-        this.graph.addNode(nodeView.obj);
         this.views.push(nodeView);
 
         if (!this.nodesByType.has(nodeView.obj.type)) {
             this.nodesByType.set(nodeView.obj.type, []);
         }
         this.nodesByType.get(nodeView.obj.type).push(nodeView.obj);
-        nodeView.obj.updateNode(this.graph);
     }
 
     addConnection(connection: NodeConnectionView) {
         connection.id = connection.id === undefined ? this.generateId(ViewType.NodeConnectionView) : connection.id;
         super.addItem(connection);
-        this.graph.addConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
+        this.registry.services.node.graph.addConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
         this.views.push(connection);
     }
 
@@ -60,10 +57,10 @@ export class NodeStore extends AbstractViewStore<NodeView> {
         switch(item.viewType) {
             case ViewType.NodeConnectionView:
                 const connection = <NodeConnectionView> item;
-                this.graph.deleteConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
+                this.registry.services.node.graph.deleteConnection(connection.joinPoint1.parent.obj, connection.joinPoint2.parent.obj);
                 break;
             case ViewType.NodeView:
-                this.graph.deleteNode((<NodeView> item).obj);
+                this.registry.services.node.graph.deleteNode((<NodeView> item).obj);
                 break;
         }
 
@@ -84,7 +81,7 @@ export class NodeStore extends AbstractViewStore<NodeView> {
     clear(): void {
         super.clear();
         this.views = [];
-        this.graph = new NodeGraph();
+        this.registry.services.node.graph = new NodeGraph();
         this.nodesByType = new Map();
     }
 

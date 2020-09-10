@@ -72,7 +72,6 @@ export abstract class NodeObj implements IGameObj {
     nodeView: NodeView;
     type: BuiltinNodeType | string;
     category: string;
-    controller: AbstractController;
 
     private cachedParams: Map<string, NodeParam> = new Map();
     params: NodeParam[];
@@ -84,10 +83,16 @@ export abstract class NodeObj implements IGameObj {
     inputs: JoinPointSlot[] = [];
     outputs: JoinPointSlot[] = [];
 
-    static controller: AbstractController;
+    controller: AbstractController;
+    graph: NodeGraph;
 
-    constructor() {
+    constructor(nodeGraph: NodeGraph) {
         this.size = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height);
+        this.graph = nodeGraph;
+
+        if (this.graph) {
+            this.graph.addNode(this);
+        }
     }
 
     getParam(name: string): NodeParam {
@@ -111,16 +116,8 @@ export abstract class NodeObj implements IGameObj {
         this.getParam(name).val = value;
     }
 
-    updateNode(graph: NodeGraph): void {}
-
     findSlotByName(name: string) {
         return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
-    }
-
-    getAllAdjacentNodes(): NodeObj[] {
-        return this.nodeView.joinPointViews
-            .filter(joinPointView => joinPointView.getOtherNode() !== undefined)
-            .map(joinPointView => joinPointView.getOtherNode().obj);
     }
 
     toJson(): NodeModelJson {
@@ -152,6 +149,6 @@ export abstract class NodeObj implements IGameObj {
 
     execute(registry: Registry) {}
 
-    abstract newInstance(): NodeObj;
+    abstract newInstance(graph: NodeGraph): NodeObj;
     abstract newControllerInstance(registry: Registry): AbstractController;
 }

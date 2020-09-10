@@ -168,10 +168,10 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     private renderConnectionsInto(canvas: UI_SvgCanvas) {
         this.registry.stores.nodeStore.getConnections().forEach(connection => {
             const line = canvas.line();
-            line.x1 = connection.joinPoint1.getAbsolutePosition().x;
-            line.y1 = connection.joinPoint1.getAbsolutePosition().y;
-            line.x2 = connection.joinPoint2.getAbsolutePosition().x;
-            line.y2 = connection.joinPoint2.getAbsolutePosition().y;
+            line.x1 = connection.point1.x;
+            line.y1 = connection.point1.y;
+            line.x2 = connection.point2.x;
+            line.y2 = connection.point2.y;
             line.css = {
                 pointerEvents: 'none',
                 stroke: colors.grey4,
@@ -184,10 +184,10 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
                 stroke: connection.tags.has(ViewTag.Hovered) || connection.tags.has(ViewTag.Selected) ? colors.views.highlight : 'transparent',
                 strokeWidth: "6"
             }
-            line2.x1 = connection.joinPoint1.getAbsolutePosition().x;
-            line2.y1 = connection.joinPoint1.getAbsolutePosition().y;
-            line2.x2 = connection.joinPoint2.getAbsolutePosition().x;
-            line2.y2 = connection.joinPoint2.getAbsolutePosition().y;
+            line2.x1 = connection.point1.x;
+            line2.y1 = connection.point1.y;
+            line2.x2 = connection.point2.x;
+            line2.y2 = connection.point2.y;
         });
     }
 

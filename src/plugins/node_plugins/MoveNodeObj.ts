@@ -4,6 +4,7 @@ import { UI_InputElement } from "../../core/ui_components/elements/UI_InputEleme
 import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class MoveNodeObj extends NodeObj {
     type = BuiltinNodeType.Move;
@@ -39,8 +40,8 @@ export class MoveNodeObj extends NodeObj {
         }
     ];
 
-    newInstance(): NodeObj {
-        return new MoveNodeObj();
+    newInstance(graph: NodeGraph): NodeObj {
+        return new MoveNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

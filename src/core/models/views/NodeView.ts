@@ -30,9 +30,8 @@ export class NodeView extends View {
 
     joinPointViews: JoinPointView[] = [];
 
-    constructor(nodeGraph: NodeGraph, config?: {nodeType: string, dimensions?: Rectangle, node: NodeObj}) {
+    constructor(config?: {nodeType: string, dimensions?: Rectangle, node: NodeObj}) {
         super();
-        this.nodeGraph = nodeGraph;
         
         if (config) {
             this.obj = config.node;

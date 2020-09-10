@@ -18,10 +18,10 @@ export abstract class AbstractNodeHandler<T extends NodeObj = NodeObj> {
     abstract handle(): void;
 
     protected chain(slotName: SlotName) {
-        const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
-        const handler = this.getNodeService().getHandler(joinedView.obj);
-        handler.instance = joinedView.obj;
-        handler.handle();
+        // const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
+        // const handler = this.getNodeService().getHandler(joinedView.obj);
+        // handler.instance = joinedView.obj;
+        // handler.handle();
     }
 
     wake(node: T) {
@@ -45,21 +45,22 @@ export abstract class AbstractNodeHandler<T extends NodeObj = NodeObj> {
     }
 
     protected findNodeAtInputSlot<T extends NodeObj>(slotName: SlotName, nodeType: BuiltinNodeType): T {
-        const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
+        // const joinedView = this.instance.nodeView.findJoinPointView(slotName).getOtherNode();
         
-        if (!joinedView) { return undefined; } 
+        // if (!joinedView) { return undefined; } 
 
-        let node: T = undefined;
+        // let node: T = undefined;
 
-        if (joinedView.obj.type === nodeType) {
-            node = <T> joinedView.obj;
-        } else {
-            const handler = this.getNodeService().getHandler(joinedView.obj);
-            handler.instance = joinedView.obj;
-            node = handler.searchFromRight<T>(nodeType);
-        }
+        // if (joinedView.obj.type === nodeType) {
+        //     node = <T> joinedView.obj;
+        // } else {
+        //     const handler = this.getNodeService().getHandler(joinedView.obj);
+        //     handler.instance = joinedView.obj;
+        //     node = handler.searchFromRight<T>(nodeType);
+        // }
 
-        return node;
+        // return node;
+        return null;
     }
 
     protected rightToLeft() {

@@ -1,6 +1,7 @@
 import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
 import { Registry } from "../../core/Registry";
 import { AbstractController } from "../../core/plugins/controllers/AbstractController";
+import { NodeGraph } from "../../core/services/node/NodeGraph";
 
 export class SplitNodeObj extends NodeObj {
     type = BuiltinNodeType.Split;
@@ -35,8 +36,8 @@ export class SplitNodeObj extends NodeObj {
         }
     ];
 
-    newInstance(): NodeObj {
-        return new SplitNodeObj();
+    newInstance(graph: NodeGraph): NodeObj {
+        return new SplitNodeObj(graph);
     }
 
     newControllerInstance(registry: Registry): AbstractController {

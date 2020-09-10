@@ -19,20 +19,21 @@ export class MoveNodeHandler extends AbstractNodeHandler {
     }
 
     private getInputMesh(): NodeObj {
-        const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
+        // const joinedView = this.instance.nodeView.findJoinPointView('mesh').getOtherNode();
         
-        if (!joinedView) { return undefined; } 
+        // if (!joinedView) { return undefined; } 
 
-        let meshNode: NodeObj = undefined;
+        // let meshNode: NodeObj = undefined;
 
-        if (joinedView.obj.type === BuiltinNodeType.Mesh) {
-            meshNode = joinedView.obj;
-        } else {
-            const handler = this.getNodeService().getHandler(joinedView.obj);
-            handler.instance = joinedView.obj;
-            meshNode = handler.searchFromRight(BuiltinNodeType.Mesh);
-        }
+        // if (joinedView.obj.type === BuiltinNodeType.Mesh) {
+        //     meshNode = joinedView.obj;
+        // } else {
+        //     const handler = this.getNodeService().getHandler(joinedView.obj);
+        //     handler.instance = joinedView.obj;
+        //     meshNode = handler.searchFromRight(BuiltinNodeType.Mesh);
+        // }
 
-        return meshNode;
+        // return meshNode;
+        return null;
     }
 }
