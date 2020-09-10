@@ -1,27 +1,32 @@
 import { NodeObj, BuiltinNodeType, NodeCategory, NodeParam } from "../../core/models/game_objects/NodeObj";
-import { AndNodePlugin } from "./AndNodePlugin";
+import { Registry } from "../../core/Registry";
+import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 
 
 export class AndNodeObj extends NodeObj {
-    type: BuiltinNodeType.And;
-    category: NodeCategory.Default;
+    type = BuiltinNodeType.And;
+    category = NodeCategory.Default;
 
-    connections = [
+    inputs = [
         {
-            direction: 'input',
             name: 'input1'
         },
         {
-            direction: 'input',
             name: 'input2'
-        },
+        }
+    ];
+
+    outputs = [
         {
-            direction: 'output',
             name: 'output'
         }
     ];
 
-    static instantiate(): NodeObj {
+    newInstance(): NodeObj {
         return new AndNodeObj();
+    }
+
+    newControllerInstance(registry: Registry): AbstractController {
+        return undefined;
     }
 }

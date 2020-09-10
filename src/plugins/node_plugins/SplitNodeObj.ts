@@ -1,8 +1,10 @@
 import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
+import { Registry } from "../../core/Registry";
+import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 
 export class SplitNodeObj extends NodeObj {
-    type: BuiltinNodeType.Split;
-    category: NodeCategory.Default;
+    type = BuiltinNodeType.Split;
+    category = NodeCategory.Default;
     params: NodeParam[] = [
         {
             name: 'route',
@@ -12,30 +14,33 @@ export class SplitNodeObj extends NodeObj {
         }
     ];
 
-    connections = [
+    inputs = [
         {
-            direction: 'input',
             name: 'input'
         },
         {
-            direction: 'output',
             name: 'output1'
         },
+    ];
+
+    outputs = [
         {
-            direction: 'output',
             name: 'output2'
         },
         {
-            direction: 'output',
             name: 'output3'
         },
         {
-            direction: 'output',
             name: 'output4'
         }
     ];
 
-    static instantiate(): NodeObj {
+    newInstance(): NodeObj {
         return new SplitNodeObj();
+    }
+
+    newControllerInstance(registry: Registry): AbstractController {
+        const controller = new AbstractController(null, registry);
+        return controller;
     }
 }

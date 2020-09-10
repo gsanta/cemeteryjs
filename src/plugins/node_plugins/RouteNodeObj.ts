@@ -1,8 +1,10 @@
 import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
+import { Registry } from "../../core/Registry";
+import { AbstractController } from "../../core/plugins/controllers/AbstractController";
 
 export class RouteNodeObj extends NodeObj {
-    type: BuiltinNodeType.Route;
-    category: NodeCategory.Default;
+    type = BuiltinNodeType.Route;
+    category = NodeCategory.Default;
     
     params: NodeParam[] = [
         {
@@ -13,34 +15,36 @@ export class RouteNodeObj extends NodeObj {
         }
     ];
 
-    connections = [
+    inputs = [
         {
-            direction: 'input',
             name: 'mesh'
         },
         {
-            direction: 'input',
             name: 'path'
-        },
+        }
+    ];
+
+    outputs = [
         {
-            direction: 'output',
             name: 'onStart'
         },
         {
-            direction: 'output',
             name: 'onTurnStart'
         },
         {
-            direction: 'output',
             name: 'onTurnEnd'
         },
         {
-            direction: 'output',
             name: 'onFinish'
         }
     ];
 
-    static instantiate(): NodeObj {
+    newInstance(): NodeObj {
         return new RouteNodeObj();
+    }
+
+    newControllerInstance(registry: Registry): AbstractController {
+        const controller = new AbstractController(null, registry);
+        return controller;    
     }
 }

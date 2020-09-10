@@ -4,10 +4,11 @@ import { PropControl, AbstractController } from "../../core/plugins/controllers/
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
+import { getAllKeys } from "../../core/services/input/KeyboardService";
 
 export class KeyboardNodeObj extends NodeObj {
-    type: BuiltinNodeType.Keyboard;
-    category: NodeCategory.Default;
+    type = BuiltinNodeType.Keyboard;
+    category = NodeCategory.Default;
 
     params: NodeParam[] = [
         {
@@ -18,9 +19,8 @@ export class KeyboardNodeObj extends NodeObj {
         }
     ];
 
-    connections = [
+    outputs = [
         {
-            direction: 'output',
             name: 'output'
         }
     ];
@@ -43,6 +43,10 @@ export class KeyboardNodeObj extends NodeObj {
 }
 
 const KeyControl: PropControl<string> = {
+    values() {
+        return getAllKeys();
+    },
+
     defaultVal(context, element: UI_InputElement) {
         return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('key');
     },

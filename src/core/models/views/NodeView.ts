@@ -43,10 +43,10 @@ export class NodeView extends View {
     }
 
     private setup() {
-        this.obj.inputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
-        this.obj.outputSlots.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
+        this.obj.inputs.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: true})));
+        this.obj.outputs.forEach(slot => this.joinPointViews.push(new JoinPointView(this, {slotName: slot.name, isInput: false})));
 
-        const SLOTS_HEIGHT = this.obj.inputSlots.length > this.obj.outputSlots.length ? this.obj.inputSlots.length * SLOT_HEIGHT : this.obj.outputSlots.length * SLOT_HEIGHT;
+        const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
         const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.params.length ? this.obj.params.length : 1) + NODE_PADDING * 2;
         this.dimensions.setHeight(height);
     }
@@ -75,9 +75,9 @@ export class NodeView extends View {
 
     fromJson(json: NodeViewJson, viewMap: Map<string, View>) {
         super.fromJson(json, viewMap);
-        const obj = new NodeObj();
-        obj.fromJson(json.node);
-        this.obj = obj;
+        // const obj = new NodeObj();
+        // obj.fromJson(json.node);
+        // this.obj = obj;
         this.setup();
     }
 

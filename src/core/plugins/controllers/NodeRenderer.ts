@@ -90,8 +90,8 @@ export class NodeRenderer extends AbstractController {
     }
     
     private renderJoinPoints(svgGroup: UI_SvgGroup, nodeView: NodeView) {
-        const inputSlots = nodeView.obj.inputSlots;
-        const outputSlots = nodeView.obj.outputSlots;
+        const inputSlots = nodeView.obj.inputs;
+        const outputSlots = nodeView.obj.outputs;
     
         inputSlots.forEach(inputSlot => {
             inputSlot

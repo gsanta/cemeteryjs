@@ -1,17 +1,7 @@
 import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
-import { AndNodePlugin } from '../../plugins/node_plugins/AndNodePlugin';
-import { AnimationNodePlugin } from '../../plugins/node_plugins/AnimationNodePlugin';
-import { KeyboardNodePlugin } from '../../plugins/node_plugins/KeyboardNodePlugin';
-import { MeshNodePlugin } from '../../plugins/node_plugins/MeshNodePlugin';
-import { MoveNodePlugin } from '../../plugins/node_plugins/MoveNodePlugin';
-import { PathNodePlugin } from '../../plugins/node_plugins/PathNodePlugin';
-import { RouteNodePlugin } from '../../plugins/node_plugins/RouteNodePlugin';
-import { SplitNodePlugin } from '../../plugins/node_plugins/SplitNodePlugin';
-import { TurnNodePlugin } from '../../plugins/node_plugins/TurnNodePlugin';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
-import { NodePLugin } from '../plugins/NodePlugin';
 import { Registry } from '../Registry';
 import { NodeObj } from '../models/game_objects/NodeObj';
 import { defaultNodeViewConfig, NodeView, NodeViewJson } from '../models/views/NodeView';
@@ -25,14 +15,13 @@ import { PathNodeObj } from '../../plugins/node_plugins/PathNodeObj';
 import { RouteNodeObj } from '../../plugins/node_plugins/RouteNodeObj';
 import { SplitNodeObj } from '../../plugins/node_plugins/SplitNodeObj';
 import { TurnNodeObj } from '../../plugins/node_plugins/TurnNodeObj';
-import { AbstractController } from '../plugins/controllers/AbstractController';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeObj> = new Map();
     nodeTypes: string[] = [];
 
     private defaultNodeRenderer: NodeRenderer;
-    private nodeObjFactories: Map<string, () => NodeObj> = new Map();
+    // private nodeObjFactories: Map<string, () => NodeObj> = new Map();
 
     private registry: Registry;
 
@@ -44,27 +33,28 @@ export class NodeService {
             const plugin = registry.plugins.getById(NodeEditorPluginId);
             this.defaultNodeRenderer = new NodeRenderer(plugin, this.registry);
 
-            this.registerNode(KeyboardNodeObj.instantiate);
-            this.registerNode(AndNodeObj.instantiate);
-            this.registerNode(AnimationNodeObj.instantiate);
-            this.registerNode(MeshNodeObj.instantiate);
-            this.registerNode(MoveNodeObj.instantiate);
-            this.registerNode(PathNodeObj.instantiate);
-            this.registerNode(RouteNodeObj.instantiate);
-            this.registerNode(SplitNodeObj.instantiate);
-            this.registerNode(TurnNodeObj.instantiate);
+            this.registerNode(new KeyboardNodeObj());
+            this.registerNode(new AndNodeObj());
+            this.registerNode(new AnimationNodeObj());
+            this.registerNode(new MeshNodeObj());
+            this.registerNode(new MoveNodeObj());
+            this.registerNode(new PathNodeObj());
+            this.registerNode(new RouteNodeObj());
+            this.registerNode(new SplitNodeObj());
+            this.registerNode(new TurnNodeObj());
         });
     }
 
-    registerNode(nodeFactory: () => NodeObj, controller: AbstractController) {
-        const nodeTemplate = nodeFactory();
+    registerNode(nodeTemplate: NodeObj) {
+        // const nodeTemplate = nodeFactory();
+        nodeTemplate.controller = nodeTemplate.newControllerInstance(this.registry);
         this.nodeTemplates.set(nodeTemplate.type, nodeTemplate);
         this.nodeTypes.push(nodeTemplate.type);
-        this.nodeObjFactories.set(nodeTemplate.type, nodeFactory);
+        // this.nodeObjFactories.set(nodeTemplate.type, nodeFactory);
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
-        if (!this.nodeObjFactories.has(nodeView.obj.type)) {
+        if (!this.nodeTemplates.has(nodeView.obj.type)) {
             throw new Error(`Node renderer registered for node type ${nodeView.obj.type}`);
         }
 
@@ -72,11 +62,12 @@ export class NodeService {
     }
 
     createNodeViewAtPoint(nodeType: string, position: Point): NodeView {
-        if (!this.nodeObjFactories.has(nodeType)) {
+        if (!this.nodeTemplates.has(nodeType)) {
             throw new Error(`Node creator registered for node type ${nodeType}`);
         }
 
-        const nodeObject = this.nodeObjFactories.get(nodeType)();
+        const nodeObject = this.nodeTemplates.get(nodeType).newInstance();
+        nodeObject.controller = this.nodeTemplates.get(nodeType).controller;
         
         const topLeft = position;
         const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));

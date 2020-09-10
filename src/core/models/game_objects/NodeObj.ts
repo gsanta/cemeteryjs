@@ -44,8 +44,8 @@ export interface JoinPointSlot {
 export interface NodeModelJson extends ObjJson {
     type: string;
     params: NodeParam[];
-    inputSlots: JoinPointSlot[];
-    outputSlots: JoinPointSlot[];
+    inputs: JoinPointSlot[];
+    outputs: JoinPointSlot[];
     label: string;
     color: string;
     sizeX: number;
@@ -67,43 +67,44 @@ export interface NodeParam {
     valueType: 'string' | 'number';
 }
 
-export class NodeObj implements IGameObj {
+export abstract class NodeObj implements IGameObj {
     id: string;
     nodeView: NodeView;
     type: BuiltinNodeType | string;
     category: string;
+    controller: AbstractController;
 
     private cachedParams: Map<string, NodeParam> = new Map();
-    params: NodeParam[] = [];
+    params: NodeParam[];
 
     isDirty = false;
     label: string;
     color: string;
     size: Point;
-    inputSlots: JoinPointSlot[];
-    outputSlots: JoinPointSlot[];
+    inputs: JoinPointSlot[] = [];
+    outputs: JoinPointSlot[] = [];
 
     static controller: AbstractController;
 
-    constructor(config?: NodeConfig) {
+    constructor() {
         this.size = new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height);
-
-        if (config) {
-            this.setup(config);
-        }
-    }
-
-    private setup(config: NodeConfig) {
-        this.type = config.type;
-        this.inputSlots = config.connections.filter(conn => conn.direction === 'input').map(conn => ({ name: conn.name }));
-        this.outputSlots = config.connections.filter(conn => conn.direction === 'output').map(conn => ({ name: conn.name }));
-        this.category = config.category;
-        this.params = config.params;
-        this.params.forEach(param => this.cachedParams.set(param.name, param));
     }
 
     getParam(name: string): NodeParam {
+        this.checkParam(name);
         return this.cachedParams.get(name);
+    }
+
+    private checkParam(name: string) {
+        if (this.cachedParams.get(name) === undefined) {
+            const param = this.params.find(param => param.name === name);
+
+            if (!param) {
+                throw new Error(`Param name ${name} does not exist in node obj type ${this.type}`);
+            }
+
+            this.cachedParams.set(param.name, param);
+        }
     }
 
     setParam(name: string, value: any) {
@@ -113,7 +114,7 @@ export class NodeObj implements IGameObj {
     updateNode(graph: NodeGraph): void {}
 
     findSlotByName(name: string) {
-        return this.inputSlots.find(slot => slot.name === name) || this.outputSlots.find(slot => slot.name === name);
+        return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
     }
 
     getAllAdjacentNodes(): NodeObj[] {
@@ -127,8 +128,8 @@ export class NodeObj implements IGameObj {
             id: this.id,
             type: this.type,
             params: this.params,
-            inputSlots: this.inputSlots,
-            outputSlots: this.outputSlots,
+            inputs: this.inputs,
+            outputs: this.outputs,
             label: this.label,
             color: this.color,
             sizeX: this.size.x,
@@ -140,8 +141,8 @@ export class NodeObj implements IGameObj {
     fromJson(json: NodeModelJson) {
         this.type = <BuiltinNodeType> json.type;
         this.params = json.params;
-        this.inputSlots = json.inputSlots;
-        this.outputSlots = json.outputSlots;
+        this.inputs = json.inputs;
+        this.outputs = json.outputs;
         this.label = json.label;
         this.color = json.color;
         this.size = new Point(json.sizeX, json.sizeY);
@@ -150,4 +151,7 @@ export class NodeObj implements IGameObj {
     }
 
     execute(registry: Registry) {}
+
+    abstract newInstance(): NodeObj;
+    abstract newControllerInstance(registry: Registry): AbstractController;
 }

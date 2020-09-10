@@ -6,8 +6,8 @@ import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 
 export class AnimationNodeObj extends NodeObj {
-    type: BuiltinNodeType.Animation;
-    category: NodeCategory.Default;
+    type = BuiltinNodeType.Animation;
+    category = NodeCategory.Default;
     params: NodeParam[] = [
         {
             name: 'mesh',
@@ -23,9 +23,8 @@ export class AnimationNodeObj extends NodeObj {
         }
     ];
 
-    connections = [
+    inputs = [
         {
-            direction: 'input',
             name: 'action'
         }
     ];

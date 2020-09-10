@@ -1,18 +1,13 @@
 import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
-import { PropControl } from "../../core/plugins/controllers/AbstractController";
+import { PropControl, AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
+import { Registry } from "../../core/Registry";
 
 export class MoveNodeObj extends NodeObj {
-    type: BuiltinNodeType.Move;
-    category: NodeCategory.Default;
-    
-    constructor() {
-        super();
-        this.controller.registerPropControl('move', MoveControl);
-        this.controller.registerPropControl('speed', SpeedControl);
-    }
+    type = BuiltinNodeType.Move;
+    category = NodeCategory.Default;
 
     params: NodeParam[] = [
         {
@@ -29,23 +24,30 @@ export class MoveNodeObj extends NodeObj {
         }
     ];
 
-    connections = [
+    inputs = [
         {
-            direction: 'input',
             name: 'input'
         },
         {
-            direction: 'input',
             name: 'mesh'
-        },
+        }
+    ];
+
+    outputs = [
         {
-            direction: 'output',
             name: 'animation'
         }
     ];
 
-    static instantiate(): NodeObj {
+    newInstance(): NodeObj {
         return new MoveNodeObj();
+    }
+
+    newControllerInstance(registry: Registry): AbstractController {
+        const controller = new AbstractController(null, registry);
+        controller.registerPropControl('move', MoveControl);
+        controller.registerPropControl('speed', SpeedControl);
+        return controller;
     }
 }
 

@@ -1,16 +1,12 @@
 import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
-import { PropControl } from "../../core/plugins/controllers/AbstractController";
+import { PropControl, AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { NodeView } from "../../core/models/views/NodeView";
+import { Registry } from "../../core/Registry";
 
 export class TurnNodeObj extends NodeObj {
-    type: BuiltinNodeType.Turn;
-    category: NodeCategory.Default;
-    
-    constructor() {
-        super();
-        this.controller.registerPropControl('turn', TurnControl);
-    }
+    type = BuiltinNodeType.Turn;
+    category = NodeCategory.Default;
 
     params: NodeParam[] = [
         {
@@ -21,23 +17,29 @@ export class TurnNodeObj extends NodeObj {
         }
     ];
 
-    connections = [
+    inputs = [
         {
-            direction: 'input',
             name: 'input'
         },
         {
-            direction: 'input',
             name: 'mesh'
         },
+    ]
+
+    outputs = [
         {
-            direction: 'output',
             name: 'animation'
         }
     ];
 
-    static instantiate(): NodeObj {
+    newInstance(): NodeObj {
         return new TurnNodeObj();
+    }
+
+    newControllerInstance(registry: Registry): AbstractController {
+        const controller = new AbstractController(null, registry);
+        controller.registerPropControl('turn', TurnControl);
+        return controller;
     }
 }
 
