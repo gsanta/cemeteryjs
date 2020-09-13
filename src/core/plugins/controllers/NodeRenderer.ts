@@ -31,20 +31,18 @@ export class NodeRenderer extends AbstractController {
 
             switch(param.inputType) {
                 case 'textField':
-                    const textField = row.textField(param.name);
+                    const textField = row.textField({prop: param.name, target: nodeView.id});
                     textField.layout = 'horizontal';
                     textField.type = 'number';
                     textField.label = param.name;
                     textField.isBold = true;
-                    textField.target = nodeView.id;
                 break;
                 case 'list':
-                    const select = row.select(param.name);
+                    const select = row.select({prop: param.name, target: nodeView.id});
                     select.layout = 'horizontal';
                     select.label = param.name;
                     select.placeholder = param.name;
                     select.isBold = true;
-                    select.target = nodeView.id;
                 break;
             }
         });

@@ -8,56 +8,77 @@ import { SpriteSheetObj } from '../../../core/models/game_objects/SpriteSheetObj
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
 
 export enum SpritesheetManagerDialogProps {
-    UploadSpritesheetImg = 'UploadSpritesheetImg',
-    UploadSpritesheetJson = 'UploadSpritesheetJson',
+    SpriteSheetImg = 'UploadSpritesheetImg',
+    SpriteSheetJson = 'UploadSpritesheetJson',
     AddSpriteSheet = 'AddSpriteSheet'
 }
 
 export class SpritesheetManagerDialogController extends AbstractController<{}> {
     id = SpritesheetManagerDialogControllerId;
 
-    tmpImgAsset: AssetObj;
-    tmpJsonAsset: AssetObj;
+    imgPath: string;
+    jsonData: string;
+    jsonPath: string;
 
     constructor(plugin: SpriteSheetManagerDialogPlugin, registry: Registry) {
         super(plugin, registry);
 
-        this.createPropHandler<{data: string, path: string}>(SpritesheetManagerDialogProps.UploadSpritesheetImg)
-        .onChange((val) => {
-            const asset = new AssetObj({data: val.data, path: val.path, assetType: AssetType.SpriteSheet});
-            this.tmpImgAsset = asset;
-            this.registry.services.render.reRender(UI_Region.Dialog);
-        });
-
-        this.createPropHandler<{data: string, path: string}>(SpritesheetManagerDialogProps.UploadSpritesheetJson)
-        .onChange((val, context) => {
-            const asset = new AssetObj({data: val.data, path: val.path, assetType: AssetType.SpriteSheetJson});
-            this.tmpJsonAsset = asset;
-            this.registry.services.render.reRender(UI_Region.Dialog);
-        });
-
+        this.registerPropControl(SpritesheetManagerDialogProps.SpriteSheetImg, SpriteSheetImgPathControl);
+        this.registerPropControl(SpritesheetManagerDialogProps.SpriteSheetJson, SpriteSheetJsonPathControl);
         this.registerPropControl(SpritesheetManagerDialogProps.AddSpriteSheet, AddSpriteSheet);
     }
 }
 
-const AddSpriteSheet: PropControl<string> = {
+const SpriteSheetJsonPathControl: PropControl<{data: string, path: string}> = {
+    change(val: {data: string, path: string}, context, element, controller: SpritesheetManagerDialogController) {
+        const json = atob(val.data.split(',')[1]);
+        controller.jsonData = json;
+        controller.jsonPath = val.path;
+        context.registry.services.render.reRender(UI_Region.Dialog);
+    },
+}
 
+const SpriteSheetImgPathControl: PropControl<string> = {
+    defaultVal(context, element, controller: SpritesheetManagerDialogController) {
+        return controller.imgPath;
+    },
+
+    change(val: string, context) {
+        context.updateTempVal(val);
+        
+        context.registry.services.render.reRender(UI_Region.Dialog);
+    },
+
+    blur(context, element, controller: SpritesheetManagerDialogController) {
+        controller.imgPath = context.getTempVal();
+        context.clearTempVal();
+
+        context.registry.services.render.reRender(UI_Region.Dialog);
+    }
+}
+
+const AddSpriteSheet: PropControl<string> = {
     click(context, element, controller: SpritesheetManagerDialogController) {
         const spriteSheetObj = new SpriteSheetObj();
-        context.registry.stores.assetStore.addObj(controller.tmpImgAsset);
-        context.registry.stores.assetStore.addObj(controller.tmpJsonAsset);
 
-        context.registry.services.localStore.saveAsset(controller.tmpImgAsset);
-        context.registry.services.localStore.saveAsset(controller.tmpJsonAsset);
+        const imgAsset = new AssetObj({path: controller.imgPath, assetType: AssetType.SpriteSheet});
+        const jsonAsset = new AssetObj({data: controller.jsonData, assetType: AssetType.SpriteSheetJson});
 
-        spriteSheetObj.jsonAssetId = controller.tmpJsonAsset.id;
-        spriteSheetObj.spriteAssetId = controller.tmpImgAsset.id;
+        context.registry.stores.assetStore.addObj(imgAsset);
+        context.registry.stores.assetStore.addObj(jsonAsset);
+
+        context.registry.services.localStore.saveAsset(imgAsset);
+        context.registry.services.localStore.saveAsset(jsonAsset);
+
+        spriteSheetObj.jsonAssetId = jsonAsset.id;
+        spriteSheetObj.spriteAssetId = imgAsset.id;
         context.registry.stores.spriteSheetObjStore.addObj(spriteSheetObj);
 
         // this.registry.services.localStore.saveAsset(asset);
 
-        controller.tmpImgAsset = undefined;
-        controller.tmpJsonAsset = undefined;
+        controller.imgPath = undefined;
+        controller.jsonData = undefined;
+        controller.jsonPath = undefined;
         // const asset = new AssetObj({data: val.data, path: val.path, assetType: AssetType.SpriteSheetJson});
         // this.tmpJsonAsset = asset;
         // this.registry.stores.assetStore.addObj(asset);

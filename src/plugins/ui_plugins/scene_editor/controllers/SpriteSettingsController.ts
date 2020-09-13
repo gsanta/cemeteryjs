@@ -31,7 +31,7 @@ export class SpriteSettingsController extends AbstractController<SpriteSettingsP
 
 const FrameName: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.selectionStore.getView()).obj.frameName;
+        return (<SpriteView> context.registry.stores.selectionStore.getView()).obj.frameName || '';
     },
 
     change(val, context) {

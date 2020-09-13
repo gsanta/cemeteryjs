@@ -23,10 +23,12 @@ export abstract class UI_Element {
     key: string;
     isBold: boolean;
     data: any;
+    readonly target: string;
+
 
     css?: UI_Element_Css = {};
 
-    constructor(plugin: UI_Plugin) {
+    constructor(plugin: UI_Plugin, target?: string) {
         this.plugin = plugin;
     }
 

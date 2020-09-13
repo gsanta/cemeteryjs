@@ -70,7 +70,8 @@ module.exports = env => {
         output: {
             filename: 'cemeteryjs-bundle.js',
             libraryTarget: 'var',
-            library: 'cemetery'
+            library: 'cemetery',
+            publicPath: ''
         },
         externals: {
             "babylonjs": "BABYLON"

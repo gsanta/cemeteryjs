@@ -9,7 +9,6 @@ import { PathSettingsController, PathSettingsProps, PathSettingsControllerId } f
 import { EngineService } from '../../../../core/services/EngineService';
 import { SpriteSettingsController, SpriteSettingsProps } from './SpriteSettingsController';
 import { SpriteViewType, SpriteView } from '../../../../core/models/views/SpriteView';
-import { ThumbnailMakerControllerProps } from '../ThumbnailMakerController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
@@ -20,6 +19,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
     private pathObjectSettingsController: PathSettingsController;
     private spriteSettingsController: SpriteSettingsController;
+    private meshSettingsController: MeshSettingsController;
 
     private engine: EngineService;
 
@@ -31,6 +31,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         // this.engine = new EngineService(this.registry)
         this.pathObjectSettingsController = new PathSettingsController(this, registry);
         this.spriteSettingsController = new SpriteSettingsController(this, registry);
+        this.meshSettingsController = new MeshSettingsController(this, registry);
     }
 
     renderInto(layout: UI_Layout): void {
@@ -56,16 +57,16 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         layout.controllerId = PathSettingsControllerId;
         let row = layout.row({ key: PathSettingsProps.PathId });
 
-        const textField = row.textField(PathSettingsProps.PathId);
+        const textField = row.textField({prop: PathSettingsProps.PathId});
         textField.label = 'Id';
     }
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
-        (this.getControllerById(MeshSettingsControllerId) as MeshSettingsController).meshView = meshView;
-        layout.controllerId = MeshSettingsControllerId;
+        this.meshSettingsController.meshView = meshView;
+        layout.controller = this.meshSettingsController;
         let row = layout.row({ key: MeshSettingsProps.MeshId });
 
-        const textField = row.textField(MeshSettingsProps.MeshId);
+        const textField = row.textField({prop: MeshSettingsProps.MeshId});
         textField.layout = 'horizontal';
         textField.label = 'Id';
 
@@ -74,34 +75,34 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         grid.label = 'Layer';
 
         row = layout.row({ key: MeshSettingsProps.Rotation });
-        const rotationTextField = row.textField(MeshSettingsProps.Rotation);
+        const rotationTextField = row.textField({prop: MeshSettingsProps.Rotation});
         rotationTextField.layout = 'horizontal';
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.Scale });
-        const scaleTextField = row.textField(MeshSettingsProps.Scale);
+        const scaleTextField = row.textField({prop: MeshSettingsProps.Scale});
         scaleTextField.layout = 'horizontal';
         scaleTextField.label = 'Scale';
         scaleTextField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.YPos });
-        const yPosTextField = row.textField(MeshSettingsProps.YPos);
+        const yPosTextField = row.textField({prop: MeshSettingsProps.YPos});
         yPosTextField.layout = 'horizontal';
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.Model });
-        const importModelButton = row.fileUpload(MeshSettingsProps.Model);
-        importModelButton.label = 'Import Model';
-        importModelButton.icon = 'import-icon';
-        importModelButton.width = '200px';
+        const modelTextField = row.textField({prop: MeshSettingsProps.Model});
+        modelTextField.layout = 'horizontal';
+        modelTextField.label = 'Model path';
+        modelTextField.type = 'text';
 
         row = layout.row({ key: MeshSettingsProps.Texture });
-        const importTextureButton = row.fileUpload(MeshSettingsProps.Texture);
-        importTextureButton.label = 'Import Texture';
-        importTextureButton.icon = 'import-icon';
-        importTextureButton.width = '200px';
+        const textureTextField = row.textField({prop: MeshSettingsProps.Texture});
+        textureTextField.layout = 'horizontal';
+        textureTextField.label = 'Texture path';
+        textureTextField.type = 'text';
 
         row = layout.row({ key: MeshSettingsProps.Thumbnail });
         const changeThumbnailButton = row.button(MeshSettingsProps.Thumbnail);
@@ -113,26 +114,26 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         layout.controller = this.spriteSettingsController;
         let row = layout.row({ key: SpriteSettingsProps.FrameName });
 
-        let textField = row.textField(SpriteSettingsProps.FrameName);
+        let textField = row.textField({prop: SpriteSettingsProps.FrameName});
         textField.layout = 'horizontal';
         textField.label = 'FrameName';
 
         row = layout.row({ key: SpriteSettingsProps.SelectSpriteSheet });
 
-        const layoutSelect = row.select(SpriteSettingsProps.SelectSpriteSheet);
+        const layoutSelect = row.select({prop: SpriteSettingsProps.SelectSpriteSheet});
         layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'SpriteSheet';
         layoutSelect.placeholder = 'Select SpriteSheet';
 
         row = layout.row({ key: SpriteSettingsProps.ScaleX });
 
-        textField = row.textField(SpriteSettingsProps.ScaleX);
+        textField = row.textField({prop: SpriteSettingsProps.ScaleX});
         textField.layout = 'horizontal';
         textField.label = 'Scale X';
 
         row = layout.row({ key: SpriteSettingsProps.ScaleY });
 
-        textField = row.textField(SpriteSettingsProps.ScaleY);
+        textField = row.textField({prop: SpriteSettingsProps.ScaleY});
         textField.layout = 'horizontal';
         textField.label = 'Scale Y';
 

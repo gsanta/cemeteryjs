@@ -14,8 +14,21 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     height: string;
 
     mouseOver(e: MouseEvent) {
-        super.mouseOver(e);
+        // super.mouseOver(e);
         (this.plugin as AbstractCanvasPlugin).over()
+    }
+
+    mouseOut(e: MouseEvent) {
+        // super.mouseOut(e);
+        // (this.plugin as AbstractCanvasPlugin).out()
+    }
+
+    mouseEnter(e: MouseEvent) {
+        (this.plugin as AbstractCanvasPlugin).over()
+    }
+
+    mouseLeave(e: MouseEvent) {
+        (this.plugin as AbstractCanvasPlugin).out()
     }
 
     toolbar(): UI_Toolbar {

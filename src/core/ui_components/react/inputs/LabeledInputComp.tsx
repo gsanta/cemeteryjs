@@ -17,10 +17,15 @@ const LabeledComponentStyled = styled.div`
 
     .label {
         font-size: 12px;
-        width: 30%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    &.horizontal {
+        .label {
+            width: 30%;
+        }
     }
 
     .input {

@@ -137,9 +137,26 @@ const YPosControl: PropControl<string> = {
     }
 }
 
-const TextureControl: PropControl<{data: string}> = {
-    change(val, context, element, controller: MeshSettingsController) {
-        const asset = new AssetObj({data: val.data, assetType: AssetType.Texture});
+const TextureControl: PropControl<string> = {
+    defaultVal(context, element, controller: MeshSettingsController) {
+        if (controller.meshView.obj.textureId) {
+            const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.obj.textureId);
+            return assetObj.path
+        }
+
+        return '';
+    },
+
+    change(val, context) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    },
+
+    async blur(context, element, controller: MeshSettingsController) {
+        const val = context.getTempVal();
+        context.clearTempVal();
+
+        const asset = new AssetObj({path: val, assetType: AssetType.Texture});
         controller.meshView.obj.textureId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
 
@@ -154,9 +171,26 @@ const ThumbnailControl: PropControl<any> = {
     }
 }
 
-const ModelControl: PropControl<{data: string}> = {
-    async change(val, context, element, controller: MeshSettingsController) {
-        const asset = new AssetObj({data: val.data, assetType: AssetType.Model});
+const ModelControl: PropControl<string> = {
+    defaultVal(context, element, controller: MeshSettingsController) {
+        if (controller.meshView.obj.modelId) {
+            const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.obj.modelId);
+            return assetObj.path
+        }
+
+        return '';
+    },
+
+    change(val, context) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    },
+
+    async blur(context, element, controller: MeshSettingsController) {
+        const val = context.getTempVal();
+        context.clearTempVal();
+
+        const asset = new AssetObj({path: val, assetType: AssetType.Model});
         controller.meshView.obj.modelId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
         context.registry.engine.meshes.deleteInstance(controller.meshView.obj);

@@ -59,6 +59,12 @@ export class Plugins {
         this.hoveredView = view;
     }
 
+    removeHoveredView(view: AbstractCanvasPlugin) {
+        if (this.hoveredView === view) {
+            this.hoveredView = undefined;
+        }
+    }
+
     getHoveredView(): AbstractCanvasPlugin {
         return this.hoveredView;
     }

@@ -41,16 +41,16 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.button(this, {prop});
     }
 
-    select(valProp: string) {
-        return UI_Factory.select(this, {valProp});
+    select(config: {prop: string, target?: string}) {
+        return UI_Factory.select(this, config);
     }
 
     fileUpload(prop: string) {
         return UI_Factory.fileUpload(this, {prop});
     }
 
-    textField(prop?: string) {
-        return UI_Factory.textField(this, {prop});
+    textField(config: {prop: string, target?: string}) {
+        return UI_Factory.textField(this, config);
     }
 
     grid(config: {prop: string, filledIndexProp?: string}) {

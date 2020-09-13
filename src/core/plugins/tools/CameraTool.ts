@@ -93,7 +93,7 @@ export class CameraTool extends AbstractTool {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
             this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
-            this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+            this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredView().region);
         }
     }
 

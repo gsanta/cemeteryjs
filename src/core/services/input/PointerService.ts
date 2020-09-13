@@ -1,12 +1,7 @@
-import { DroppableItem } from "../../plugins/tools/DragAndDropTool";
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { View, ViewTag } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { MousePointer } from "./MouseService";
-import { RenderTask } from "../RenderServices";
-import { View, ViewTag } from "../../models/views/View";
-import { ToolType } from "../../plugins/tools/Tool";
-import { UI_Region } from "../../plugins/UI_Plugin";
-import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -35,7 +30,7 @@ export class PointerService {
     hoveredItem: View;
     dropType: string;
 
-    hoveredPlugin: AbstractCanvasPlugin;
+    // hoveredPlugin: AbstractCanvasPlugin;
 
     pointer: MousePointer = new MousePointer();
 
@@ -46,24 +41,27 @@ export class PointerService {
     }
 
     pointerDown(e: IPointerEvent): void {
+        if (!this.registry.plugins.getHoveredView()) { return; }
         if (e.button !== 'left') { return }
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.hoveredPlugin.toolHandler.getActiveTool().down(e);
+        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().down(e);
         this.registry.services.render.reRenderScheduled();
     }
 
     pointerMove(e: IPointerEvent): void {
+        if (!this.registry.plugins.getHoveredView()) { return; }
+
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.hoveredPlugin.toolHandler.getActiveTool().drag(e);
+            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().drag(e);
         } else {
-            this.hoveredPlugin.toolHandler.getActiveTool().move();
+            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().move();
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.render.reRenderScheduled();
@@ -77,12 +75,12 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
         if (this.isDrag) {
-            this.hoveredPlugin.toolHandler.getActiveTool().draggedUp();
+            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().draggedUp();
         } else {
-            this.hoveredPlugin.toolHandler.getActiveTool().click();
+            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().click();
         }
         
-        this.hoveredPlugin.toolHandler.getActiveTool().up(e);
+        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().up(e);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -90,20 +88,18 @@ export class PointerService {
     }
 
     pointerLeave(e: IPointerEvent, data: any): void {
-        
-        if (data instanceof AbstractCanvasPlugin) {
-            const leavingPlugin = this.hoveredPlugin;
-            this.hoveredPlugin = undefined;
-            this.isDown = false;
-            this.isDrag = false;
+        if (!this.registry.plugins.getHoveredView()) { return; }
+        // if (data instanceof AbstractCanvasPlugin) {
+        //     const leavingPlugin = this.hoveredPlugin;
+        //     this.hoveredPlugin = undefined;
+        //     this.isDown = false;
+        //     this.isDrag = false;
 
-            this.registry.services.render.reRender(leavingPlugin.region);
-        } else {
-            this.hoveredItem = undefined;
-            this.hoveredPlugin.toolHandler.getActiveTool().out(data);
+        //     this.registry.services.render.reRender(data.region);
+        // } else {
+            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(data);
             (data as View).tags.delete(ViewTag.Hovered);
-        }
-
+        // }
     }
 
     pointerOver() {
@@ -111,9 +107,10 @@ export class PointerService {
 
     // TODO data should be type of View
     pointerEnter(e: IPointerEvent, data: any) {
-        if (data instanceof AbstractCanvasPlugin) {
-            this.hoveredPlugin = data;
-        } else {
+        if (!this.registry.plugins.getHoveredView()) { return; }
+        // if (data instanceof AbstractCanvasPlugin) {
+        //     this.hoveredPlugin = data;
+        // } else {
             this.hoveredItem = data;
             (data as View).tags.add(ViewTag.Hovered);
 
@@ -121,14 +118,13 @@ export class PointerService {
                 isHover: true
             });
 
-            this.hoveredPlugin.toolHandler.getActiveTool().over(data);
-        }
+            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().over(data);
+        // }
 
-        this.registry.services.render.reRender(this.hoveredPlugin.region);
+        this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region);
     }
 
     pointerWheel(e: IPointerEvent): void {
-        console.log(this.hoveredPlugin.id);
         this.prevWheelState = this.wheelState;
         this.wheelState += e.deltaY;
         this.wheelDiff = this.wheelState - this.prevWheelState;
@@ -142,13 +138,13 @@ export class PointerService {
         }
 
         this.registry.services.hotkey.executeHotkey(e);
-        this.hoveredPlugin.toolHandler.getActiveTool().wheel();
+        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.hoveredPlugin.toolHandler.getActiveTool().wheelEnd();
+        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().wheelEnd();
     }
 
     hover(item: View): void {
@@ -156,7 +152,7 @@ export class PointerService {
         this.registry.services.hotkey.executeHotkey({
             isHover: true
         });
-        this.hoveredPlugin.toolHandler.getActiveTool().over(item);
+        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().over(item);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -168,17 +164,17 @@ export class PointerService {
         if (this.hoveredItem === item) {
             this.hoveredItem = undefined;
         }
-        this.hoveredPlugin.toolHandler.getActiveTool().out(item);
+        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(item);
         this.registry.services.render.reRenderScheduled();
     }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.hoveredPlugin.getOffset();
+        const offset = this.registry.plugins.getHoveredView().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.hoveredPlugin.getOffset();
-        return this.hoveredPlugin.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.registry.plugins.getHoveredView().getOffset();
+        return this.registry.plugins.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

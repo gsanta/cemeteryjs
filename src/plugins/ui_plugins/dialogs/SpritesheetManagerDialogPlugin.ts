@@ -90,13 +90,15 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
 
         row.hAlign = 'space-around';
 
-        let fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetImg);
-        fileUploadButton.label = this.controller.tmpImgAsset ? this.controller.tmpImgAsset.path : 'Upload spritesheet';
-        fileUploadButton.width = '170px';
+        let textField = row.textField({prop: SpritesheetManagerDialogProps.SpriteSheetImg});
+        textField.label = 'Sprite sheet img';
+        // fileUploadButton.width = '170px';
 
-        fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.UploadSpritesheetJson);
-        fileUploadButton.label = this.controller.tmpJsonAsset ? this.controller.tmpJsonAsset.path : 'Upload json';
+        
+        let fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.SpriteSheetJson);
+        fileUploadButton.label = this.controller.jsonPath ? this.controller.jsonPath : 'Upload json';
         fileUploadButton.width = '170px';
+        // textField.width = '170px';
 
         const addButton = row.button(SpritesheetManagerDialogProps.AddSpriteSheet);
         addButton.label = 'Add';

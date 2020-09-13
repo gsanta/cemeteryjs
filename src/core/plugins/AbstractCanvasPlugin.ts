@@ -55,7 +55,9 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     destroy(): void {}
     resize() {};
     over(): void { this.registry.plugins.setHoveredView(this) }
-    out(): void {}
+    out(): void {
+        this.registry.plugins.removeHoveredView(this)   
+    }
 
     setRenderer(renderFunc: () => void) {
         this.renderFunc = renderFunc;

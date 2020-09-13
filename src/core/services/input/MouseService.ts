@@ -57,7 +57,7 @@ export class MouseService {
     }
 
     dndStart() {
-        this.registry.services.pointer.hoveredPlugin = this.plugin;
+        this.registry.plugins.setHoveredView(this.plugin);
     }
 
     dndDrop(point: Point) {

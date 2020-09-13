@@ -17,7 +17,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
-        this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredView().region);
     }
 
     click() {
@@ -53,7 +53,7 @@ export class DeleteTool extends AbstractTool {
 
     leave() {
         this.rectangleSelection = undefined;
-        this.registry.services.render.scheduleRendering(this.registry.services.pointer.hoveredPlugin.region);
+        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredView().region);
     }
 
     over(item: View) {

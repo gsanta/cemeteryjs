@@ -190,9 +190,9 @@ export class UI_Factory {
         return button;
     }
 
-    static select(parent: UI_Container, config: { controllerId?: string, valProp: string}) {
+    static select(parent: UI_Container, config: { controllerId?: string, prop: string, target?: string}) {
         const select = new UI_Select(parent.plugin);
-        select.prop = config.valProp;
+        select.prop = config.prop;
 
         select.generateId(parent);
         this.setController(parent, select, config);
@@ -215,8 +215,8 @@ export class UI_Factory {
     }
 
 
-    static textField(parent: UI_Container, config: { controllerId?: string, prop: string}): UI_TextField {
-        const textField = new UI_TextField(parent.plugin);
+    static textField(parent: UI_Container, config: { controllerId?: string, prop: string, target?: string}): UI_TextField {
+        const textField = new UI_TextField(parent.plugin, config.target);
         textField.prop = config.prop;
         textField.type = 'text';
 
@@ -346,7 +346,7 @@ export class UI_Factory {
     ///////////////////////////////////////////// Toolbar /////////////////////////////////////////////
 
     static toolbar(parent: UI_SvgCanvas | UI_HtmlCanvas): UI_Toolbar {
-        const toolbar = new UI_Toolbar(parent.plugin);
+        const toolbar = new UI_Toolbar(parent.plugin, parent.plugin.id);
 
         toolbar.generateId(parent);
 

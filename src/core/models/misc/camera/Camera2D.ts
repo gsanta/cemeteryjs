@@ -118,7 +118,7 @@ export class Camera2D implements ICamera {
         if (nextZoomLevel) {
             this.zoomToPosition(canvasPos, nextZoomLevel);
 
-            this.registry.services.render.reRender(this.registry.services.pointer.hoveredPlugin.region);
+            this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region);
         }
     }
 

@@ -116,10 +116,10 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         text.text = asset.id;
 
         column = tableRow.tableColumn(null);
-        let textField = column.textField(AssetManagerDialogProps.AssetName);
+        let textField = column.textField({prop: AssetManagerDialogProps.AssetName});
 
         column = tableRow.tableColumn(null);
-        textField = column.textField(AssetManagerDialogProps.AssetPath);
+        textField = column.textField({prop: AssetManagerDialogProps.AssetPath});
 
         column = tableRow.tableColumn(null);
         column.width = 100;

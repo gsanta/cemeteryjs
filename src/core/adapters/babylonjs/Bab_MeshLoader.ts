@@ -80,22 +80,19 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     createMaterial(meshModel: MeshObj) {
         const textureObj = this.registry.stores.assetStore.getAssetById(meshModel.meshView.obj.textureId);
 
-        if (!meshModel.meshView.obj.mesh) {
+        if (!meshModel.meshView.obj.mesh || !textureObj) {
             return;
         }
-
-        this.registry.services.localStore.loadAsset(textureObj)
-            .then(() => {
-                (<StandardMaterial> meshModel.meshView.obj.mesh.material).diffuseTexture  = new Texture(textureObj.data,  this.engineFacade.scene);
-                (<StandardMaterial> meshModel.meshView.obj.mesh.material).specularTexture  = new Texture(textureObj.data,  this.engineFacade.scene);
-            });
+        
+        (<StandardMaterial> meshModel.meshView.obj.mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+        (<StandardMaterial> meshModel.meshView.obj.mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
     }
 
     private loadMesh(asset: AssetObj): Promise<Mesh> {
         return new Promise(resolve => {
             SceneLoader.ImportMesh(
                 '',
-                asset.data,
+                asset.path,
                 undefined,
                 this.engineFacade.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], animGroups) => resolve(this.createModelData(asset, meshes, skeletons)),

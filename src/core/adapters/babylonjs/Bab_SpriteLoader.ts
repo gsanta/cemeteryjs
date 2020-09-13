@@ -18,8 +18,7 @@ export class Bab_SpriteLoader implements ISpriteLoaderAdapter {
 
         if (!this.managers.has(spriteSheetObj.id)) {
             const scene = (<Bab_EngineFacade> this.registry.engine).scene;
-            const json = atob(jsonAsset.data.split(',')[1]);
-            this.managers.set(spriteSheetObj.id, new SpritePackedManager(imgAsset.data, imgAsset.data, 10, scene, json));
+            this.managers.set(spriteSheetObj.id, new SpritePackedManager(imgAsset.id, imgAsset.path, 10, scene, jsonAsset.data));
         }
     }
 }

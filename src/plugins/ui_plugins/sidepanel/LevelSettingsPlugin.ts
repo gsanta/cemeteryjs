@@ -24,7 +24,7 @@ export class LevelSettingsPlugin extends UI_Plugin {
         grid.label = 'Level'
 
         row = layout.row({ key: LevelSettingsProps.LevelName });
-        const textField = row.textField(LevelSettingsProps.LevelName);
+        const textField = row.textField({prop: LevelSettingsProps.LevelName});
         textField.label = 'Name';
 
         row = layout.row({ key: LevelSettingsProps.ClearLevel });
