@@ -48,7 +48,7 @@ const KeyControl: PropControl<string> = {
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('key');
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('key').val;
     },
 
     change(val, context, element: UI_InputElement) {

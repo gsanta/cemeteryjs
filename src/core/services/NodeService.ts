@@ -74,8 +74,6 @@ export class NodeService {
         
         const nodeView = new NodeView({nodeType: nodeObject.type, node: nodeObject});
         
-        this.registry.stores.nodeStore.addNode(nodeView);
-
         return nodeView;
     }
 
