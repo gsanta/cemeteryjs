@@ -57,6 +57,7 @@ export class PathView extends View implements IGameModel {
         this.childMap.set(editPoint, []);
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
+        this.setActiveChild(editPoint);
     }
 
     private calcBoundingBox() {

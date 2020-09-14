@@ -14,7 +14,7 @@ export class SelectTool extends PointerTool {
     }
 
     down() {
-        if (this.registry.stores.selectionStore.contains(this.registry.services.pointer.hoveredItem)) {
+        if (this.registry.services.pointer.hoveredItem && this.registry.services.pointer.hoveredItem.isSelected()) {
             super.down();
         }
     }

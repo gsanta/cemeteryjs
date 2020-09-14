@@ -2,6 +2,7 @@ import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { IGameObj } from "../game_objects/IGameObj";
 import { Registry } from "../../Registry";
+import { ChildView } from "./child_views/ChildView";
 
 export enum ViewType {
     MeshView = 'MeshView',
@@ -27,7 +28,9 @@ export abstract class View {
     id: string;
     viewType: string;
     tags: Set<ViewTag> = new Set();
+
     parent: View;
+    children: View[] = [];
 
     obj: IGameObj;
 
@@ -35,7 +38,7 @@ export abstract class View {
     move(delta: Point): void {}
     delete(): View[] { return [this] }
 
-    isActive: boolean;
+    private activeChild: View;
 
     isHovered() {
         return this.tags.has(ViewTag.Hovered);
@@ -47,6 +50,14 @@ export abstract class View {
 
     isChildView(): boolean {
         return !!this.parent;
+    }
+
+    setActiveChild(child: ChildView) {
+        this.activeChild = child;
+    }
+
+    getActiveChild() {
+        return this.activeChild;
     }
 
     toJson(): ViewJson {

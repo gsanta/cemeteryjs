@@ -100,6 +100,7 @@ export class PointerService {
             this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(data);
             (data as View).tags.delete(ViewTag.Hovered);
             this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region);
+            this.hoveredItem = undefined;
         // }
     }
 

@@ -25,7 +25,7 @@ export class SceneStore extends AbstractViewStore<MeshView | SpriteView | PathVi
     static id = 'scene-store'; 
     id = SceneStore.id;
     views: View[] = [];
-    controls: ChildView<any>[] = [];
+    controls: ChildView[] = [];
 
     private registry: Registry;
 

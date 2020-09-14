@@ -1,18 +1,18 @@
-import { ChildView } from '../../models/views/child_views/ChildView';
-import { View, ViewType } from '../../models/views/View';
+import { NodeEditorPluginId } from '../../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
+import { SceneEditorPluginId } from '../../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
+import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
+import { View } from '../../models/views/View';
 import { Registry } from '../../Registry';
-import { RenderTask } from "../../services/RenderServices";
-import { isView, isFeedback } from '../../stores/SceneStore';
-import { NodeEditorPlugin, NodeEditorPluginId } from '../../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
-import { SceneEditorPlugin, SceneEditorPluginId } from '../../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
-import { AbstractTool } from "./AbstractTool";
-import { ToolType } from "./Tool";
 import { IPointerEvent } from '../../services/input/PointerService';
+import { isFeedback, isView } from '../../stores/SceneStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
-import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
+import { AbstractTool } from "./AbstractTool";
+import { ToolType } from "./Tool";
 
 export class PointerTool extends AbstractTool {
+    acceptedViews: string[] = [];
+
     protected movingItem: View = undefined;
     private isDragStart = true;
 
@@ -28,8 +28,8 @@ export class PointerTool extends AbstractTool {
             if (!hoveredItem.parent.isSelected()) {
                 this.registry.stores.selectionStore.clear();
                 this.registry.stores.selectionStore.addItem(hoveredItem.parent);
-                hoveredItem.isActive = true;
             }
+            hoveredItem.parent.setActiveChild(hoveredItem);
             // this.registry.stores.selectionStore.addItem(hoveredItem);
 
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
@@ -105,7 +105,7 @@ export class PointerTool extends AbstractTool {
         const views = this.registry.stores.selectionStore.getAllViews();
 
         if (isFeedback(this.movingItem.viewType)) {
-            (<ChildView<any>> this.movingItem).move(this.registry.services.pointer.pointer.getDiff())
+            this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else if (isView(this.movingItem.viewType)) {
             views.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
@@ -129,7 +129,7 @@ export class PointerTool extends AbstractTool {
         let views: View[];
 
         if (isFeedback(this.movingItem.viewType)) {
-            views = [(<ChildView<any>> this.movingItem).parent];
+            views = [this.movingItem.parent];
         } else {
             views = this.registry.stores.selectionStore.getAllViews();
         }

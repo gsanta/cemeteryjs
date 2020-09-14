@@ -19,7 +19,7 @@ export interface JoinPointViewJson extends ViewJson {
 }
 
 export const JoinPointViewType = 'JoinPointViewType';
-export class JoinPointView extends ChildView<NodeView> {
+export class JoinPointView extends ChildView {
     viewType = JoinPointViewType;
     id: string;
     point: Point;

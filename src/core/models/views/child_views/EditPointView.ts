@@ -1,25 +1,26 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { ChildView, FeedbackType } from "./ChildView";
+import { Registry } from "../../../Registry";
 import { PathView } from "../PathView";
 import { View, ViewJson } from "../View";
-import { Registry } from "../../../Registry";
+import { ChildView } from "./ChildView";
 
 export interface EditPointViewJson extends ViewJson {
     point: string;
     parentId: string; 
 }
 
-export class EditPointView extends ChildView<PathView> {
+export const PathPointViewType = 'PathPointViewType';
+export class EditPointView extends ChildView {
     id: string;
-    viewType = FeedbackType.EditPointFeedback;
+    viewType = PathPointViewType;
     point: Point;
     readonly parent: PathView;
-    isActive: boolean = false;
 
     constructor(parent: PathView, point?: Point) {
         super();
         this.point = point;
         this.parent = parent;
+        parent.children.push(this);
     }
 
     delete(): View[] {

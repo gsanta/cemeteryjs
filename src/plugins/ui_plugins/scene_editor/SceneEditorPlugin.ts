@@ -199,7 +199,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
                     circle.data = editPoint;
 
                     circle.css = {
-                        fill: editPoint.isActive ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
+                        fill: pathView.getActiveChild() === editPoint ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
                     }
                 })
             });

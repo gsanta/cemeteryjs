@@ -1,18 +1,17 @@
 import { AbstractCanvasPlugin } from "../AbstractCanvasPlugin";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { FeedbackType } from "../../models/views/child_views/ChildView";
-import { EditPointView } from "../../models/views/child_views/EditPointView";
+import { EditPointView, PathPointViewType } from "../../models/views/child_views/EditPointView";
 import { PathView } from "../../models/views/PathView";
 import { ViewType, View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { IHotkeyEvent } from "../../services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../services/input/KeyboardService";
-import { RenderTask } from "../../services/RenderServices";
 import { PointerTool } from "./PointerTool";
 import { ToolType } from "./Tool";
 import { UI_Region } from "../UI_Plugin";
 
 export class PathTool extends PointerTool {
+    acceptedViews = [ViewType.PathView, PathPointViewType]
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Path, plugin, registry);
@@ -20,10 +19,10 @@ export class PathTool extends PointerTool {
 
     click() {
         const hoveredItem = this.registry.services.pointer.hoveredItem;
-        if (hoveredItem && (hoveredItem.viewType === ViewType.PathView || hoveredItem.viewType === FeedbackType.EditPointFeedback)) {
+        if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
             super.click();
         } else {
-            this.createPath();
+            this.drawPath();
         }
     }
 
@@ -42,8 +41,8 @@ export class PathTool extends PointerTool {
             hover = true;
         }
 
-        if (item.viewType === FeedbackType.EditPointFeedback) {
-            if ((<EditPointView> item).parent.viewType === ViewType.PathView) {
+        if (item.viewType === PathPointViewType) {
+            if (item.parent.viewType === ViewType.PathView) {
                 hover = true;
             }
         }
@@ -59,22 +58,15 @@ export class PathTool extends PointerTool {
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    private createPath() {
+    private drawPath() {
         const pathes = this.registry.stores.selectionStore.getPathViews();
 
         if (pathes.length > 1) { return }
 
         const path = pathes.length > 0 ? pathes[0] : undefined;
-        const editPoint = this.registry.stores.selectionStore.getEditPoint();
-
-        if (path && editPoint) {
-            const pointer = this.registry.services.pointer.pointer;
-            const selectedEditPoint = this.registry.stores.selectionStore.getEditPoint();
-            const newEditPoint = new EditPointView(path, new Point(pointer.down.x, pointer.down.y));
-            newEditPoint.id = this.getStore().generateId(FeedbackType.EditPointFeedback); 
-            path.addEditPoint(newEditPoint, selectedEditPoint);
-            this.registry.stores.selectionStore.removeItem(selectedEditPoint);
-            this.registry.stores.selectionStore.addItem(newEditPoint);
+        
+        if (path && path.getActiveChild()) {
+            this.continuePath(path);
         } else {
             this.startNewPath();
         }
@@ -83,14 +75,22 @@ export class PathTool extends PointerTool {
         this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
     }
 
+    private continuePath(path: PathView) {
+        const activePathPoint = path.getActiveChild() as EditPointView;
+        const pointer = this.registry.services.pointer.pointer;
+        const newEditPoint = new EditPointView(path, new Point(pointer.down.x, pointer.down.y));
+        newEditPoint.id = this.getStore().generateId(PathPointViewType); 
+        path.addEditPoint(newEditPoint, activePathPoint);
+    }
+
     private startNewPath() {
         const pointer = this.registry.services.pointer.pointer;
         this.registry.stores.selectionStore.clear();
 
         const path = new PathView();
         const editPoint = new EditPointView(path, pointer.down.clone());
-        editPoint.id = this.registry.stores.canvasStore.generateId(FeedbackType.EditPointFeedback); 
-        path.addEditPoint(editPoint)
+        editPoint.id = this.registry.stores.canvasStore.generateId(PathPointViewType); 
+        path.addEditPoint(editPoint);
         path.id = this.registry.stores.canvasStore.generateId(ViewType.PathView);
         this.registry.stores.canvasStore.addView(path);
         this.registry.stores.selectionStore.addItem(path);

@@ -51,7 +51,7 @@ export class SelectionStore {
     }
 
     getEditPoint(): EditPointView {
-        return <EditPointView> this.items.find(item => item.viewType === FeedbackType.EditPointFeedback);
+        return <EditPointView> this.items.find(item => item.viewType === PathPointViewType);
     }
 
     hasEditPoint() {
