@@ -25,7 +25,6 @@ export class SelectTool extends PointerTool {
         } else if (this.registry.stores.selectionStore.getAll().length > 0) {
             this.registry.stores.selectionStore.clear();
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
-
         }
     }
 

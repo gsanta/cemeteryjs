@@ -13,12 +13,13 @@ export class EditPointView extends ChildView<PathView> {
     id: string;
     viewType = FeedbackType.EditPointFeedback;
     point: Point;
-    parent: PathView;
+    readonly parent: PathView;
+    isActive: boolean = false;
 
-    constructor(config?: {point: Point, parent: PathView}) {
+    constructor(parent: PathView, point?: Point) {
         super();
-        this.point = config && config.point;
-        this.parent = config && config.parent;
+        this.point = point;
+        this.parent = parent;
     }
 
     delete(): View[] {
@@ -45,6 +46,5 @@ export class EditPointView extends ChildView<PathView> {
     fromJson(json: EditPointViewJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
-        this.parent = registry.stores.canvasStore.getById(json.parentId) as PathView;
     }
 }

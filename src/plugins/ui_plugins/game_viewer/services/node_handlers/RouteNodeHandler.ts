@@ -23,7 +23,7 @@ export class RouteNodeHandler extends AbstractNodeHandler {
         node.getParam('route').val = route.id;
 
         route.meshModel = this.registry.stores.canvasStore.getMeshViewById(meshNode.getParam('mesh').val).obj;
-        route.pathModel = this.registry.stores.canvasStore.getPathViewById(pathNode.getParam('path').val).model;
+        route.pathModel = this.registry.stores.canvasStore.getPathViewById(pathNode.getParam('path').val).obj;
         route.reset();
         route.play();
     }
@@ -40,7 +40,7 @@ export class RouteNodeHandler extends AbstractNodeHandler {
             const route = <RouteModel> this.registry.stores.gameStore.byId(node.getParam('route').val);
 
             route.meshModel = this.registry.stores.canvasStore.getMeshViewById(meshNode.getParam('mesh').val).obj;
-            route.pathModel = this.registry.stores.canvasStore.getPathViewById(pathNode.getParam('path').val).model;
+            route.pathModel = this.registry.stores.canvasStore.getPathViewById(pathNode.getParam('path').val).obj;
 
             route.update();
         }

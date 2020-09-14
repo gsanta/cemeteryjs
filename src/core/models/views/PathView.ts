@@ -3,7 +3,7 @@ import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { EditPointView, EditPointViewJson } from './child_views/EditPointView';
 import { IGameModel } from "../game_objects/IGameModel";
-import { PathModel } from "../game_objects/PathModel";
+import { PathObj } from "../game_objects/PathObj";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
 import { Registry } from "../../Registry";
 
@@ -24,7 +24,7 @@ export interface PathViewJson extends ViewJson {
 export class PathView extends View implements IGameModel {
     viewType = ViewType.PathView;
 
-    model: PathModel;
+    obj: PathObj;
 
     editPoints: EditPointView[] = [];
     childMap: Map<EditPointView, EditPointView[]> = new Map();
@@ -38,7 +38,7 @@ export class PathView extends View implements IGameModel {
     constructor() {
         super();
         this.dimensions = this.calcBoundingBox();
-        this.model = new PathModel(this);
+        this.obj = new PathObj(this);
     }
 
     getParentPoint(editPoint: EditPointView): EditPointView {
@@ -150,7 +150,7 @@ export class PathView extends View implements IGameModel {
     fromJson(json: PathViewJson, registry: Registry) {
         super.fromJson(json, registry);
         json.editPoints.forEach((ep, index) => {
-            const epView = new EditPointView();
+            const epView = new EditPointView(this);
             epView.fromJson(ep, registry);
             this.addEditPoint(epView, index > 0 ? this.editPoints[index - 1] : undefined);
         });

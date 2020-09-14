@@ -15,8 +15,6 @@ export const SvgLineComp = (props: UI_ComponentProps<UI_SvgLine>) => {
             x2: props.element.x2,
             y1: props.element.y1,
             y2: props.element.y2,
-            // stroke: props.element.stroke,
-            // strokeWidth: props.element.width ? props.element.width : 1,
             onMouseEnter: e => props.element.mouseEnter(e.nativeEvent, props.element.data),
             onMouseLeave: e =>props.element.mouseLeave(e.nativeEvent, props.element.data)
         }

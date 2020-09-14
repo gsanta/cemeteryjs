@@ -15,6 +15,7 @@ import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { MeshTool } from './tools/MeshTool';
 import { SpriteTool } from './tools/SpriteTool';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
+import { PathView } from '../../../core/models/views/PathView';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -160,7 +161,48 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     private renderPathViews(canvas: UI_SvgCanvas) {
+        this.registry.stores.canvasStore
+            .getViewsByType(ViewType.PathView)
+            .forEach((pathView: PathView) => {
+                const group = canvas.group(pathView.id);
+                group.isInteractive = false;
 
+                if (pathView.editPoints.length > 1) {
+                    const highlightPath = group.path();
+                    highlightPath.d = pathView.serializePath();
+                    highlightPath.data = pathView;
+
+                    highlightPath.css = {
+                        fill: 'none',
+                        stroke: 'blue',
+                        strokeOpacity: pathView.isHovered() || pathView.isSelected() ? 0.5 : 0,
+                        strokeWidth: "4"
+                    }
+
+                    const path = group.path();
+                    path.d = pathView.serializePath();
+
+                    path.css = {
+                        fill: 'none',
+                        stroke: 'black',
+                        strokeWidth: "2",
+                        pointerEvents: 'none'
+                    }
+                }
+
+                pathView.editPoints.forEach(editPoint => {
+                    const circle = group.circle();
+
+                    circle.cx = editPoint.point.x;
+                    circle.cy = editPoint.point.y;
+                    circle.r = pathView.radius;
+                    circle.data = editPoint;
+
+                    circle.css = {
+                        fill: editPoint.isActive ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
+                    }
+                })
+            });
     }
 }
 

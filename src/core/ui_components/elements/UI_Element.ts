@@ -7,8 +7,10 @@ import { Point } from '../../../utils/geometry/shapes/Point';
 export const activeToolId = '__activeTool__'
 
 export interface UI_Element_Css {
+    fill?: string;
     stroke?: string;
     strokeWidth?: string;
+    strokeOpacity?: number;
     strokeDasharray?: string;
     pointerEvents?: 'none' | 'all';
 }
@@ -23,6 +25,7 @@ export abstract class UI_Element {
     key: string;
     isBold: boolean;
     data: any;
+    isInteractive: boolean = true;
     readonly target: string;
 
 
@@ -69,13 +72,13 @@ export abstract class UI_Element {
 
     mouseLeave(e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseLeave(e, data ? data : this.plugin as AbstractCanvasPlugin);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseLeave(e, data);
         }
     }
 
     mouseEnter(e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseEnter(e, data ? data : this.plugin as AbstractCanvasPlugin);
+            (this.plugin as AbstractCanvasPlugin).mouse.mouseEnter(e, data);
         }
     }
 

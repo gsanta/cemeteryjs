@@ -24,11 +24,14 @@ export class PointerTool extends AbstractTool {
         const hoveredItem = this.registry.services.pointer.hoveredItem;
         if (!hoveredItem) { return; }
 
-        if (isFeedback(hoveredItem.viewType)) {
-            const view = (<ChildView<any>> hoveredItem).parent;
-            this.registry.stores.selectionStore.clear();
-            this.registry.stores.selectionStore.addItem(view);
-            this.registry.stores.selectionStore.addItem(hoveredItem);
+        if (hoveredItem.isChildView()) {
+            if (!hoveredItem.parent.isSelected()) {
+                this.registry.stores.selectionStore.clear();
+                this.registry.stores.selectionStore.addItem(hoveredItem.parent);
+                hoveredItem.isActive = true;
+            }
+            // this.registry.stores.selectionStore.addItem(hoveredItem);
+
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         } else if (isView(hoveredItem.viewType)) {
             this.registry.stores.selectionStore.clear();
@@ -38,7 +41,6 @@ export class PointerTool extends AbstractTool {
     }
 
     down() {
-
         this.initMove() &&  this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
@@ -91,9 +93,12 @@ export class PointerTool extends AbstractTool {
 
     private initMove(): boolean {
         const hovered = this.registry.services.pointer.hoveredItem;
-        this.movingItem = hovered;
-        this.moveItems();
-        return true;
+        if (hovered) {
+            this.movingItem = hovered;
+            this.moveItems();
+            return true;
+        }
+        return false;
     }
 
     private moveItems() {

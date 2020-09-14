@@ -53,12 +53,12 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     }
 
     private renderPathObjectSettings(layout: UI_Layout, pathView: PathView) {
-        this.pathObjectSettingsController.pathView = pathView;
-        layout.controllerId = PathSettingsControllerId;
-        let row = layout.row({ key: PathSettingsProps.PathId });
+        // this.pathObjectSettingsController.pathView = pathView;
+        // layout.controllerId = PathSettingsControllerId;
+        // let row = layout.row({ key: PathSettingsProps.PathId });
 
-        const textField = row.textField({prop: PathSettingsProps.PathId});
-        textField.label = 'Id';
+        // const textField = row.textField({prop: PathSettingsProps.PathId});
+        // textField.label = 'Id';
     }
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {

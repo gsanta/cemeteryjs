@@ -99,6 +99,7 @@ export class PointerService {
         // } else {
             this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(data);
             (data as View).tags.delete(ViewTag.Hovered);
+            this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region);
         // }
     }
 
@@ -106,13 +107,15 @@ export class PointerService {
     }
 
     // TODO data should be type of View
-    pointerEnter(e: IPointerEvent, data: any) {
+    pointerEnter(e: IPointerEvent, data: View) {
         if (!this.registry.plugins.getHoveredView()) { return; }
         // if (data instanceof AbstractCanvasPlugin) {
         //     this.hoveredPlugin = data;
         // } else {
+            // TODO: parent is not necessarily the root view if the hierarchy is deeper, hoveredItem should be set by pointertool anyway
             this.hoveredItem = data;
-            (data as View).tags.add(ViewTag.Hovered);
+            data.tags.add(ViewTag.Hovered);
+            data.parent?.tags.add(ViewTag.Hovered);
 
             this.registry.services.hotkey.executeHotkey({
                 isHover: true

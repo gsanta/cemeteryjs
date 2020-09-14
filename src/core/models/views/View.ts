@@ -27,12 +27,27 @@ export abstract class View {
     id: string;
     viewType: string;
     tags: Set<ViewTag> = new Set();
+    parent: View;
 
     obj: IGameObj;
 
     dimensions: Rectangle;
     move(delta: Point): void {}
     delete(): View[] { return [this] }
+
+    isActive: boolean;
+
+    isHovered() {
+        return this.tags.has(ViewTag.Hovered);
+    }
+
+    isSelected() {
+        return this.tags.has(ViewTag.Selected);
+    }
+
+    isChildView(): boolean {
+        return !!this.parent;
+    }
 
     toJson(): ViewJson {
         return {

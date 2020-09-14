@@ -2,7 +2,7 @@ import { IGameModel } from "./IGameModel";
 import { PathCorner } from "./PathCorner";
 import { ViewType } from "../views/View";
 import { MeshObj } from "./MeshObj";
-import { PathModel } from "./PathModel";
+import { PathObj } from "./PathObj";
 import { RouteWalker } from "./RouteWalker";
 
 export enum RouteEvent {
@@ -37,7 +37,7 @@ export class RouteModel implements IGameModel {
     walker: RouteWalker;
     state: TimelineState = TimelineState.Stopped;
     meshModel: MeshObj;
-    pathModel: PathModel;
+    pathModel: PathObj;
 
     constructor() {
         this.walker = new RouteWalker(this);
