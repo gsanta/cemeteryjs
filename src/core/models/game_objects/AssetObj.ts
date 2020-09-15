@@ -38,7 +38,7 @@ export class AssetObj {
             id: this.id,
             assetType: this.assetType,
             path: this.path,
-            data: undefined, // do not serialize, too expensive
+            data: this.data,
             name: this.name
         };
     }

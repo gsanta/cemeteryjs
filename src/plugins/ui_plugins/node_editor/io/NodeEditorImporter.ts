@@ -1,36 +1,36 @@
 import { NodeConnectionView, NodeConnectionViewJson } from '../../../../core/models/views/NodeConnectionView';
-import { NodeView, NodeViewJson } from '../../../../core/models/views/NodeView';
-import { ViewType, View } from "../../../../core/models/views/View";
+import { NodeViewJson } from '../../../../core/models/views/NodeView';
+import { ViewJson, ViewType } from "../../../../core/models/views/View";
 import { AppJson } from '../../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
-import { IPluginJson } from '../../../../core/plugins/IPluginExporter';
 
 export class NodeEditorImporter extends AbstractPluginImporter {
     async import(appJson: AppJson): Promise<void> {
-        const pluginJson = this.getPluginJson(appJson);
-        const nodeJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ViewType.NodeView);
+        const views = appJson[this.plugin.id].views;
 
-        nodeJsons.views.forEach((viewJson: NodeViewJson) => {
-            // const nodeView: NodeView = new NodeView();
-            // nodeView.fromJson(viewJson, viewMap);
-
-            const nodeView = this.registry.services.node.createNodeView(viewJson.nodeObj.type);
-            nodeView.fromJson(viewJson, this.registry);
-
-            this.registry.stores.nodeStore.addNode(nodeView);
+        views.forEach((viewJson: ViewJson) => {
+            switch(viewJson.type) {
+                case ViewType.NodeView:
+                    this.importNodeView(<NodeViewJson> viewJson);
+                    break;
+                case ViewType.NodeConnectionView:
+                    this.importConnection(<NodeConnectionViewJson> viewJson);
+                    break;
+            }
         });
-
-        this.importConnections(pluginJson);
     }
 
-    private importConnections(pluginJson: IPluginJson) {
-        const connectionJsons = pluginJson.viewGroups.find(viewGroup => viewGroup.viewType === ViewType.NodeConnectionView);
+    private importNodeView(viewJson: NodeViewJson) {
+        const nodeView = this.registry.services.node.createNodeView(viewJson.nodeObj.type);
+        nodeView.fromJson(viewJson, this.registry);
 
-        connectionJsons.views.forEach((viewJson: NodeConnectionViewJson) => {
-            const connectionView: NodeConnectionView = new NodeConnectionView();
-            connectionView.fromJson(viewJson, this.registry);
+        this.registry.stores.nodeStore.addNode(nodeView);
+    }
 
-            this.registry.stores.nodeStore.addConnection(connectionView);
-        });
+    private importConnection(viewJson: NodeConnectionViewJson) {
+        const connectionView: NodeConnectionView = new NodeConnectionView();
+        connectionView.fromJson(viewJson, this.registry);
+
+        this.registry.stores.nodeStore.addConnection(connectionView);
     }
 }

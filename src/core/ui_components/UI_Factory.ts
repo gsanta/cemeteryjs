@@ -191,7 +191,7 @@ export class UI_Factory {
     }
 
     static select(parent: UI_Container, config: { controllerId?: string, prop: string, target?: string}) {
-        const select = new UI_Select(parent.plugin);
+        const select = new UI_Select(parent.plugin, config.target);
         select.prop = config.prop;
 
         select.generateId(parent);

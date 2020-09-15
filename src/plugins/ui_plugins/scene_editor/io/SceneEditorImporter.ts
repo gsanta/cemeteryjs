@@ -1,82 +1,35 @@
-import { AssetObj, AssetType } from "../../../../core/models/game_objects/AssetObj";
-import { MeshView } from "../../../../core/models/views/MeshView";
-import { PathView } from "../../../../core/models/views/PathView";
-import { SpriteView, SpriteViewType } from "../../../../core/models/views/SpriteView";
-import { View, ViewJson, ViewType } from "../../../../core/models/views/View";
-import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
-import { ViewGroupJson } from "../../../../core/plugins/IPluginExporter";
+import { MeshView, MeshViewJson } from "../../../../core/models/views/MeshView";
+import { PathView, PathViewJson } from "../../../../core/models/views/PathView";
+import { SpriteView, SpriteViewJson, SpriteViewType } from "../../../../core/models/views/SpriteView";
+import { ViewJson, ViewType } from "../../../../core/models/views/View";
 import { AppJson } from "../../../../core/services/export/ExportService";
+import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
 
 export class SceneEditorImporter extends AbstractPluginImporter {
     async import(json: AppJson): Promise<void> {
-        const pluginJson = this.getPluginJson(json);
+        const views = json[this.plugin.id].views;
 
-        // await this.importAssets(json);
-
-        pluginJson.viewGroups.forEach(viewGroup => this.importViewGroup(viewGroup));
-    }
-
-    async importAssets(json: AppJson): Promise<void> {
-        const promises: Promise<void>[] = [];
-
-        json.assets.forEach(assetJson => {
-            const asset = new AssetObj({assetType: AssetType.Model});
-            asset.id = assetJson.id;
-            asset.name = assetJson.name;
-            this.registry.stores.assetStore.addObj(asset);
-
-            promises.push(this.registry.services.localStore.loadAsset(asset));
-        });
-
-        await Promise.all(promises);
-    }
-
-    private importViewGroup(viewGroup: ViewGroupJson) {
-        viewGroup.views.map((viewJson: ViewJson) => {
-            const view = this.createView(viewJson);
-            // TODO why do we have to cast to any?
-            view.fromJson(viewJson as any, this.registry);
-
-            this.registry.stores.canvasStore.addView(view);
-            
+        views.forEach((viewJson: ViewJson) => {
             switch(viewJson.type) {
+                case ViewType.MeshView:
+                    const meshView = new MeshView();
+                    meshView.obj.meshAdapter = this.registry.engine.meshes;
+                    meshView.fromJson(viewJson as MeshViewJson, this.registry);
+                    this.registry.stores.canvasStore.addView(meshView);
+                    break;
+                case ViewType.PathView:
+                    const pathView = new PathView();
+                    pathView.fromJson(viewJson as PathViewJson, this.registry);
+                    this.registry.stores.canvasStore.addView(pathView);
+                    break;
                 case SpriteViewType:
-                    this.registry.engine.sprites.createInstance((view as SpriteView).obj);
-                break;
+                    const spriteView = new SpriteView();
+                    spriteView.obj.spriteAdapter = this.registry.engine.sprites;
+                    spriteView.fromJson(viewJson as SpriteViewJson, this.registry);
+                    this.registry.stores.canvasStore.addView(spriteView);
+                    this.registry.engine.sprites.createInstance(spriteView.obj);
+                    break;
             }
-
-
-            return view;
         });
     }
-
-    private createView(viewJson: ViewJson) {
-        switch(viewJson.type) {
-            case ViewType.MeshView:
-                const meshView = new MeshView();
-                meshView.obj.meshAdapter = this.registry.engine.meshes;
-                return meshView;
-            case ViewType.PathView:
-                return new PathView();
-            case SpriteViewType:
-                const spriteView = new SpriteView();
-                spriteView.obj.spriteAdapter = this.registry.engine.sprites;
-                return spriteView;
-        }
-    }
-
-    // private initAssets(meshView: MeshView) {
-    //     if (meshView.obj.modelId) {
-    //         const asset = new AssetObj({assetType: AssetType.Model});
-    //         asset.id = meshView.obj.modelId;
-    //         this.registry.stores.assetStore.addObj(asset);
-    //     }
-        
-    //     if (meshView.obj.textureId) {
-    //         const asset = new AssetObj({assetType: AssetType.Texture});
-    //         asset.id = meshView.obj.textureId;
-    //         this.registry.stores.assetStore.addObj(asset);
-    //         this.registry.services.localStore.loadAsset(asset);
-    //     }
-    // }
 }

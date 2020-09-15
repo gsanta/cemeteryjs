@@ -10,7 +10,7 @@ export interface EditPointViewJson extends ViewJson {
 }
 
 export const PathPointViewType = 'PathPointViewType';
-export class EditPointView extends ChildView {
+export class PathPointView extends ChildView {
     id: string;
     viewType = PathPointViewType;
     point: Point;

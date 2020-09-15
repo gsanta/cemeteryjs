@@ -1,6 +1,6 @@
 import { PathView } from "../models/views/PathView";
 import { FeedbackType } from "../models/views/child_views/ChildView";
-import { EditPointView, PathPointViewType } from "../models/views/child_views/EditPointView";
+import { PathPointView, PathPointViewType } from "../models/views/child_views/PathPointView";
 import { View, ViewType, ViewTag } from '../models/views/View';
 import { isView } from "./SceneStore";
 import { without } from "../../utils/geometry/Functions";
@@ -50,8 +50,8 @@ export class SelectionStore {
         return this.items.length > 0 && this.items[0];
     }
 
-    getEditPoint(): EditPointView {
-        return <EditPointView> this.items.find(item => item.viewType === PathPointViewType);
+    getEditPoint(): PathPointView {
+        return <PathPointView> this.items.find(item => item.viewType === PathPointViewType);
     }
 
     hasEditPoint() {

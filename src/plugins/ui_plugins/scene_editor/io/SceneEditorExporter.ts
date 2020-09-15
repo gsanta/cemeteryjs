@@ -1,9 +1,11 @@
 import { IPluginExporter, IPluginJson, ViewGroupJson } from "../../../../core/plugins/IPluginExporter";
 import { Registry } from "../../../../core/Registry";
+import { AppJson } from "../../../../core/services/export/ExportService";
+import { IDataExporter } from "../../../../core/services/export/IDataExporter";
 import { SceneEditorPlugin } from "../SceneEditorPlugin";
 
 
-export class SceneEditorExporter implements IPluginExporter {
+export class SceneEditorExporter implements IDataExporter {
     private plugin: SceneEditorPlugin;
     private registry: Registry;
 
@@ -12,17 +14,9 @@ export class SceneEditorExporter implements IPluginExporter {
         this.registry = registry;
     }
 
-    export(): IPluginJson {
-        const viewGroups: ViewGroupJson[] = this.plugin.viewTypes.map(viewType => {
-            return {
-                viewType,
-                views: this.registry.stores.canvasStore.getViewsByType(viewType).map(view => view.toJson())
-            }
-        });
-
-        return {
-            pluginId: this.plugin.id,
-            viewGroups: viewGroups
+    export(json: Partial<AppJson>): void {
+        json[this.plugin.id] = {
+            views: this.registry.stores.canvasStore.getAllViews().map(view => view.toJson())
         }
     }
 }

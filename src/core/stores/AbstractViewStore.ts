@@ -30,6 +30,10 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
         return this.views.filter(view => view.viewType === type);
     }
 
+    getAllViews(): View[]  {
+        return this.views;
+    }
+
     removeItem(item: View) {
         const pattern = this.createPattern(item.viewType);
         const num = parseInt(item.id.match(pattern)[1], 10);

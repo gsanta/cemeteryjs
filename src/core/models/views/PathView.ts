@@ -1,7 +1,7 @@
 import { View, ViewType, ViewJson } from "./View";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { EditPointView, EditPointViewJson } from './child_views/EditPointView';
+import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
 import { IGameModel } from "../game_objects/IGameModel";
 import { PathObj } from "../game_objects/PathObj";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
@@ -25,7 +25,7 @@ export class PathView extends View implements IGameModel {
     viewType = ViewType.PathView;
 
     obj: PathObj;
-    children: EditPointView[];
+    children: PathPointView[];
     dimensions: Rectangle;
     id: string;
     radius = 5;
@@ -37,7 +37,7 @@ export class PathView extends View implements IGameModel {
         this.obj = new PathObj(this);
     } 
 
-    addEditPoint(editPoint: EditPointView) {
+    addEditPoint(editPoint: PathPointView) {
         this.children.push(editPoint);
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
@@ -47,15 +47,15 @@ export class PathView extends View implements IGameModel {
     private calcBoundingBox() {
         if (this.children.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.x - b.point.x).point.x;
-        const maxX = maxBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.x - b.point.x).point.x;
-        const minY = minBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.y - b.point.y).point.y;
-        const maxY = maxBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.y - b.point.y).point.y;
+        const minX = minBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
+        const maxX = maxBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
+        const minY = minBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
+        const maxY = maxBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 
-    deleteChild(editPoint: EditPointView): void {
+    deleteChild(editPoint: PathPointView): void {
         super.deleteChild(editPoint);
         this.str = undefined;
     }
@@ -65,11 +65,11 @@ export class PathView extends View implements IGameModel {
 
         this.str = '';
         
-        let pathPoint = <EditPointView> this.children[0];
+        let pathPoint = <PathPointView> this.children[0];
         this.str += `M ${pathPoint.point.x} ${pathPoint.point.y}`;
 
         for (let i = 1; i < this.children.length; i++) {
-            pathPoint = <EditPointView> this.children[i];
+            pathPoint = <PathPointView> this.children[i];
             this.str += `L ${pathPoint.point.x} ${pathPoint.point.y}`;
         }
 
@@ -77,7 +77,7 @@ export class PathView extends View implements IGameModel {
     }
 
     move(point: Point) {
-        this.children.forEach((p: EditPointView) => p.point.add(point));
+        this.children.forEach((p: PathPointView) => p.point.add(point));
 
         this.str = undefined;
     }
@@ -94,7 +94,7 @@ export class PathView extends View implements IGameModel {
     fromJson(json: PathViewJson, registry: Registry) {
         super.fromJson(json, registry);
         json.editPoints.forEach((ep) => {
-            const epView = new EditPointView(this);
+            const epView = new PathPointView(this);
             epView.fromJson(ep, registry);
             this.addEditPoint(epView);
         });

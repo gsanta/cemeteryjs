@@ -1,14 +1,14 @@
 import { Registry } from '../../Registry';
-import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, IHotkeyEvent, HotkeyTrigger } from '../../services/input/HotkeyService';
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
-import { isView, isFeedback } from '../../stores/SceneStore';
-import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
-import { Cursor, ToolType } from './Tool';
-import { View } from '../../models/views/View';
+import { isView } from '../../stores/SceneStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
+import { createRectFromMousePointer } from './AbstractTool';
+import { PointerTool } from './PointerTool';
+import { Cursor, ToolType } from './Tool';
 
-export class DeleteTool extends AbstractTool {
+export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
@@ -21,7 +21,6 @@ export class DeleteTool extends AbstractTool {
     }
 
     click() {
-        this.plugin.toolHandler.getById(ToolType.Pointer).click();
         const hoveredItem = this.registry.services.pointer.hoveredItem;
 
         if (!hoveredItem) { return; }
@@ -54,14 +53,6 @@ export class DeleteTool extends AbstractTool {
     leave() {
         this.rectangleSelection = undefined;
         this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
-    }
-
-    over(item: View) {
-        this.plugin.toolHandler.getById(ToolType.Pointer).over(item);
-    }
-
-    out(item: View) {
-        this.plugin.toolHandler.getById(ToolType.Pointer).over(item);
     }
 
     eraseAll() {

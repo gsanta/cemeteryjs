@@ -1,9 +1,9 @@
-import { ViewType } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
-import { IPluginExporter, IPluginJson } from '../../../../core/plugins/IPluginExporter';
+import { AppJson } from "../../../../core/services/export/ExportService";
+import { IDataExporter } from "../../../../core/services/export/IDataExporter";
 import { NodeEditorPlugin } from "../NodeEditorPlugin";
 
-export class NodeEditorExporter implements IPluginExporter {
+export class NodeEditorExporter implements IDataExporter {
     private plugin: NodeEditorPlugin;
     private registry: Registry;
 
@@ -12,22 +12,9 @@ export class NodeEditorExporter implements IPluginExporter {
         this.registry = registry;
     }
 
-    export(): IPluginJson {
-        const nodeViews = this.registry.stores.nodeStore.getNodes();
-        const connections = this.registry.stores.nodeStore.getConnections();
-
-        return {
-            pluginId: this.plugin.id,
-            viewGroups: [
-                {
-                    viewType: ViewType.NodeView,
-                    views: nodeViews.map(meshView => meshView.toJson())
-                },
-                {
-                    viewType: ViewType.NodeConnectionView,
-                    views: connections.map(pathView => pathView.toJson())
-                }
-            ]
+    export(json: Partial<AppJson>): void {
+        json[this.plugin.id] = {
+            views: this.registry.stores.nodeStore.getAllViews().map(view => view.toJson())
         }
     }
 }

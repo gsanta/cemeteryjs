@@ -1,6 +1,6 @@
 import { AbstractCanvasPlugin } from "../AbstractCanvasPlugin";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { EditPointView, PathPointViewType } from "../../models/views/child_views/EditPointView";
+import { PathPointView, PathPointViewType } from "../../models/views/child_views/PathPointView";
 import { PathView } from "../../models/views/PathView";
 import { ViewType, View } from "../../models/views/View";
 import { Registry } from "../../Registry";
@@ -77,7 +77,7 @@ export class PathTool extends PointerTool {
 
     private continuePath(path: PathView) {
         const pointer = this.registry.services.pointer.pointer;
-        const newEditPoint = new EditPointView(path, new Point(pointer.down.x, pointer.down.y));
+        const newEditPoint = new PathPointView(path, new Point(pointer.down.x, pointer.down.y));
         newEditPoint.id = this.getStore().generateId(PathPointViewType); 
         path.addEditPoint(newEditPoint);
     }
@@ -87,7 +87,7 @@ export class PathTool extends PointerTool {
         this.registry.stores.selectionStore.clear();
 
         const path = new PathView();
-        const editPoint = new EditPointView(path, pointer.down.clone());
+        const editPoint = new PathPointView(path, pointer.down.clone());
         editPoint.id = this.registry.stores.canvasStore.generateId(PathPointViewType); 
         path.addEditPoint(editPoint);
         path.id = this.registry.stores.canvasStore.generateId(ViewType.PathView);

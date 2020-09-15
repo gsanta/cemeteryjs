@@ -33,6 +33,7 @@ export abstract class UI_Element {
 
     constructor(plugin: UI_Plugin, target?: string) {
         this.plugin = plugin;
+        this.target = target;
     }
 
     generateId(parent: UI_Element): void {

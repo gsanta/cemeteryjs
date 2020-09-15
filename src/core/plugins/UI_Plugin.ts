@@ -6,6 +6,7 @@ import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { IPluginExporter } from './IPluginExporter';
 import { UI_Factory } from '../ui_components/UI_Factory';
+import { IDataExporter } from '../services/export/IDataExporter';
 
 export enum UI_Region {
     Sidepanel = 'Sidepanel',
@@ -49,7 +50,7 @@ export abstract class UI_Plugin implements IControlledObject {
     region: UI_Region;
 
     importer: AbstractPluginImporter;
-    exporter: IPluginExporter;
+    exporter: IDataExporter;
 
     protected controllers: Map<string, AbstractController> = new Map();
 

@@ -18,6 +18,8 @@ export interface AppJson {
         objType: string;
         objs: ObjJson[];
     }[];
+
+    [id: string] : any;
 }
 
 export class ExportService {
@@ -37,9 +39,7 @@ export class ExportService {
 
         this.exporters.forEach(exporter => exporter.export(appJson));
 
-        const pluginJsons = this.registry.plugins.getAll().filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export());
-        // const assetJsons = this.registry.stores.assetStore.getAssets().map(asset => asset.toJson());
-        appJson.plugins = pluginJsons;
+        this.registry.plugins.getAll().filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export(appJson));
         return JSON.stringify(appJson);
     }
 }

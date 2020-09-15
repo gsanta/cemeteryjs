@@ -44,10 +44,10 @@ export enum CanvasTag {
     Hovered = 'hovered'
 }
 
-export const NodeEditorPluginId = 'action-editor-plugin'; 
+export const NodeEditorPluginId = 'node-editor-plugin'; 
 
 export class NodeEditorPlugin extends AbstractCanvasPlugin {
-    id = 'action-editor-plugin';
+    id = NodeEditorPluginId;
     region = UI_Region.Canvas1;
 
     nodeObjects: NodeObj;
