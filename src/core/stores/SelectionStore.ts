@@ -1,6 +1,6 @@
 import { PathView } from "../models/views/PathView";
 import { FeedbackType } from "../models/views/child_views/ChildView";
-import { EditPointView } from "../models/views/child_views/EditPointView";
+import { EditPointView, PathPointViewType } from "../models/views/child_views/EditPointView";
 import { View, ViewType, ViewTag } from '../models/views/View';
 import { isView } from "./SceneStore";
 import { without } from "../../utils/geometry/Functions";

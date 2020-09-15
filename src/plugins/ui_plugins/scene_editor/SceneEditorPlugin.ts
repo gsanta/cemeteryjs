@@ -27,7 +27,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         this.toolHandler.registerTool(new MeshTool(this, this.registry));
         this.toolHandler.registerTool(new SpriteTool(this, this.registry));
         
-        [ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Pointer, ToolType.Camera]
+        [ToolType.Path, ToolType.Select, ToolType.Delete, ToolType.Camera]
             .map(toolType => {
                 this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });
@@ -167,7 +167,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
                 const group = canvas.group(pathView.id);
                 group.isInteractive = false;
 
-                if (pathView.editPoints.length > 1) {
+                if (pathView.children.length > 1) {
                     const highlightPath = group.path();
                     highlightPath.d = pathView.serializePath();
                     highlightPath.data = pathView;
@@ -190,7 +190,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
                     }
                 }
 
-                pathView.editPoints.forEach(editPoint => {
+                pathView.children.forEach(editPoint => {
                     const circle = group.circle();
 
                     circle.cx = editPoint.point.x;

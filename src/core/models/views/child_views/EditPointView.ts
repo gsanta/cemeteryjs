@@ -20,16 +20,16 @@ export class EditPointView extends ChildView {
         super();
         this.point = point;
         this.parent = parent;
-        parent.children.push(this);
     }
 
     delete(): View[] {
-        this.parent.deleteEditPoint(this);
+        this.parent.deleteChild(this);
         return [this];
     }
 
     move(delta: Point) {
-        this.parent.moveEditPoint(this, delta);
+        this.point.add(delta);
+        this.parent.str = undefined;
     }
 
     toString() {

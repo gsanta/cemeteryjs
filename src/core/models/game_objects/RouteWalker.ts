@@ -127,7 +127,7 @@ export class RouteWalker {
 
     private createPathCorners(pathObject: PathView): PathCorner[] {
         const pathCorners: PathCorner[] = [];
-        const points = pathObject.editPoints.map(p => p.point).map(p => p.negateY()).map(point => point.div(10));
+        const points = pathObject.children.map(p => p.point).map(p => p.negateY()).map(point => point.div(10));
 
         const startCorner = new PathCorner(pathCorners);
         startCorner.point2 = points[0];

@@ -35,7 +35,7 @@ export class JoinTool extends AbstractTool {
     }
 
     draggedUp() {
-        this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
+        this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
 
         if (isJoinPointView(this.registry.services.pointer.hoveredItem)) {
             const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
@@ -62,7 +62,7 @@ export class JoinTool extends AbstractTool {
 
     out() {
         if (!this.registry.services.pointer.isDown) {
-            this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
+            this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
         }
     }
 

@@ -50,6 +50,6 @@ export class GameViewerSettings extends AbstractSettings<GameViewerSettingsProps
                 throw new Error(`${prop} is not a writeable property.`)
         }
 
-        this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region, UI_Region.Sidepanel);
+        this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region, UI_Region.Sidepanel);
     }
 }

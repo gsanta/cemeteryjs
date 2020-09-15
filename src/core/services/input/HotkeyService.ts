@@ -51,9 +51,9 @@ export class HotkeyService {
     executeHotkey(hotkeyEvent: IHotkeyEvent): boolean {
         const executedHotkeys = this.hotkeys.filter(h => h.hotkey(hotkeyEvent));
 
-        if (this.registry.plugins.getHoveredView()) {
+        if (this.registry.plugins.getHoveredPlugin()) {
             // TODO it should also return with the executed hotkeys
-            this.registry.plugins.getHoveredView().toolHandler.getAll().filter(tool => tool.hotkey(hotkeyEvent));
+            this.registry.plugins.getHoveredPlugin().toolHandler.getAll().filter(tool => tool.hotkey(hotkeyEvent));
         }
 
         if (executedHotkeys.length > 0) {

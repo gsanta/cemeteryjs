@@ -60,6 +60,10 @@ export abstract class View {
         return this.activeChild;
     }
 
+    deleteChild(child: View) {
+        this.children.splice(this.children.indexOf(child), 1);    
+    }
+
     toJson(): ViewJson {
         return {
             id: this.id,

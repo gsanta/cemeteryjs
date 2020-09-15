@@ -11,6 +11,6 @@ export class AbstractDropTool extends AbstractTool {
     }
 
     up() {
-        this.registry.plugins.getHoveredView()
+        this.registry.plugins.getHoveredPlugin()
     }
 }

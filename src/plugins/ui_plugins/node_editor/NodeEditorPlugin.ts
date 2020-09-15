@@ -70,7 +70,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Pointer, ToolType.Join, ToolType.DragAndDrop]
+        [ToolType.Select, ToolType.Delete, ToolType.Camera, ToolType.Join, ToolType.DragAndDrop]
             .map(toolType => {
                 this.toolHandler.registerTool(toolFactory(toolType, this, registry));
             });

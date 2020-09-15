@@ -25,7 +25,7 @@ export class CameraTool extends AbstractTool {
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
+        this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
@@ -85,15 +85,15 @@ export class CameraTool extends AbstractTool {
             setAsPriorityTool = true;
         }
 
-        setAsPriorityTool && this.registry.plugins.getHoveredView().toolHandler.setPriorityTool(this.id);
+        setAsPriorityTool && this.registry.plugins.getHoveredPlugin().toolHandler.setPriorityTool(this.id);
         return setAsPriorityTool;
     }
 
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.registry.plugins.getHoveredView().toolHandler.removePriorityTool(this.id);
-            this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredView().region);
+            this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
+            this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
         }
     }
 

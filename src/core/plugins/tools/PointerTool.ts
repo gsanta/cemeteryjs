@@ -1,16 +1,13 @@
-import { NodeEditorPluginId } from '../../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
-import { SceneEditorPluginId } from '../../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
 import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
-import { View } from '../../models/views/View';
+import { View, ViewTag } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { isFeedback, isView } from '../../stores/SceneStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
 
-export class PointerTool extends AbstractTool {
+export abstract class PointerTool extends AbstractTool {
     acceptedViews: string[] = [];
 
     protected movingItem: View = undefined;
@@ -30,10 +27,8 @@ export class PointerTool extends AbstractTool {
                 this.registry.stores.selectionStore.addItem(hoveredItem.parent);
             }
             hoveredItem.parent.setActiveChild(hoveredItem);
-            // this.registry.stores.selectionStore.addItem(hoveredItem);
-
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
-        } else if (isView(hoveredItem.viewType)) {
+        } else {
             this.registry.stores.selectionStore.clear();
             this.registry.stores.selectionStore.addItem(hoveredItem);
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
@@ -65,7 +60,6 @@ export class PointerTool extends AbstractTool {
 
         this.isDragStart = true;
         
-        this.updateDraggedView();
         this.movingItem = undefined;
         this.registry.services.level.updateCurrentLevel();
     }
@@ -75,20 +69,24 @@ export class PointerTool extends AbstractTool {
         this.movingItem = undefined;
     }
 
-    over(item: View) {
-        if (item.viewType === JoinPointViewType) {
+    over(view: View) {
+        if (view.viewType === JoinPointViewType) {
             this.plugin.toolHandler.setPriorityTool(ToolType.Join);
-        } else {
-            this.registry.services.render.scheduleRendering(this.plugin.region);
         }
+        
+        view.tags.add(ViewTag.Hovered);
+        view.parent?.tags.add(ViewTag.Hovered);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    out(item: View) {
-        if (item.viewType === JoinPointViewType) {
+    out(view: View) {
+        if (view.viewType === JoinPointViewType) {
             this.plugin.toolHandler.removePriorityTool(ToolType.Join);
-        } else {
-            this.registry.services.render.scheduleRendering(this.plugin.region);
-        }
+        } 
+        
+        view.tags.delete(ViewTag.Hovered);
+        view.parent?.tags.delete(ViewTag.Hovered);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     private initMove(): boolean {
@@ -102,40 +100,12 @@ export class PointerTool extends AbstractTool {
     }
 
     private moveItems() {
-        const views = this.registry.stores.selectionStore.getAllViews();
-
-        if (isFeedback(this.movingItem.viewType)) {
+        if (this.movingItem.isChildView()) {
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
-        } else if (isView(this.movingItem.viewType)) {
-            views.forEach((item, index) => item.move(this.registry.services.pointer.pointer.getDiff()));
+        } else {
+            const views = this.registry.stores.selectionStore.getAllViews();
+            views.forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
         this.registry.services.render.scheduleRendering(this.plugin.region);
-    }
-
-    private updateDraggedView() {
-        const view = this.registry.plugins.getHoveredView();
-
-        switch(view.id) {
-            case SceneEditorPluginId:
-                this.updateSceneViews();
-                break;
-            case NodeEditorPluginId:
-                this.updateNodeEditorViews();
-                break;
-        }
-    }
-
-    private updateSceneViews() {
-        let views: View[];
-
-        if (isFeedback(this.movingItem.viewType)) {
-            views = [this.movingItem.parent];
-        } else {
-            views = this.registry.stores.selectionStore.getAllViews();
-        }
-    }
-
-    private updateNodeEditorViews() {
-
     }
 }

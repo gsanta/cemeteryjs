@@ -17,7 +17,7 @@ export class DeleteTool extends AbstractTool {
 
     drag() {
         this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
-        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredView().region);
+        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
     }
 
     click() {
@@ -26,8 +26,8 @@ export class DeleteTool extends AbstractTool {
 
         if (!hoveredItem) { return; }
 
-        if (isFeedback(hoveredItem.viewType)) {
-            hoveredItem.delete();
+        if (hoveredItem.isChildView()) {
+            hoveredItem.parent.deleteChild(hoveredItem);
         } else if (isView(hoveredItem.viewType)) {
             this.getStore().removeItem(hoveredItem);
         }
@@ -53,7 +53,7 @@ export class DeleteTool extends AbstractTool {
 
     leave() {
         this.rectangleSelection = undefined;
-        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredView().region);
+        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
     }
 
     over(item: View) {

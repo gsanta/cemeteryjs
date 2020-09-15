@@ -65,7 +65,7 @@ export class Plugins {
         }
     }
 
-    getHoveredView(): AbstractCanvasPlugin {
+    getHoveredPlugin(): AbstractCanvasPlugin {
         return this.hoveredView;
     }
 

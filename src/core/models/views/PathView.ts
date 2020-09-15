@@ -25,135 +25,78 @@ export class PathView extends View implements IGameModel {
     viewType = ViewType.PathView;
 
     obj: PathObj;
-
-    editPoints: EditPointView[] = [];
-    childMap: Map<EditPointView, EditPointView[]> = new Map();
-    parentMap: Map<EditPointView, EditPointView> = new Map();
-    rootPoint: EditPointView;
+    children: EditPointView[];
     dimensions: Rectangle;
     id: string;
     radius = 5;
-    private str: string;
+    str: string;
 
     constructor() {
         super();
         this.dimensions = this.calcBoundingBox();
         this.obj = new PathObj(this);
-    }
-
-    getParentPoint(editPoint: EditPointView): EditPointView {
-        return this.parentMap.get(editPoint);
     } 
 
-    addEditPoint(editPoint: EditPointView, parentEditPoint?: EditPointView) {
-        if (!parentEditPoint) {
-            this.rootPoint = editPoint;
-        } else {
-            this.childMap.get(parentEditPoint).push(editPoint);
-            this.parentMap.set(editPoint, parentEditPoint);
-        }
-
-        this.editPoints.push(editPoint);
-        this.childMap.set(editPoint, []);
+    addEditPoint(editPoint: EditPointView) {
+        this.children.push(editPoint);
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
         this.setActiveChild(editPoint);
     }
 
     private calcBoundingBox() {
-        if (this.editPoints.length === 0) { return NULL_BOUNDING_BOX; }
+        if (this.children.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<EditPointView>(this.editPoints, (a, b) => a.point.x - b.point.x).point.x;
-        const maxX = maxBy<EditPointView>(this.editPoints, (a, b) => a.point.x - b.point.x).point.x;
-        const minY = minBy<EditPointView>(this.editPoints, (a, b) => a.point.y - b.point.y).point.y;
-        const maxY = maxBy<EditPointView>(this.editPoints, (a, b) => a.point.y - b.point.y).point.y;
+        const minX = minBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.x - b.point.x).point.x;
+        const maxX = maxBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.x - b.point.x).point.x;
+        const minY = minBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.y - b.point.y).point.y;
+        const maxY = maxBy<EditPointView>(this.children as EditPointView[], (a, b) => a.point.y - b.point.y).point.y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 
-    deleteEditPoint(editPoint: EditPointView): void {
-        if (editPoint !== this.rootPoint) {
-            this.editPoints = this.editPoints.filter(p => p !== editPoint);
-            const newParent = this.parentMap.get(editPoint);
-            const children = this.childMap.get(editPoint) || [];
-
-            children.forEach(child => {
-                this.parentMap.set(child, newParent);
-                this.childMap.get(newParent).push(child);
-            });
-
-            const newChildren = this.childMap.get(newParent).filter(item => item !== editPoint);
-            this.childMap.set(newParent, newChildren);
-            this.parentMap.delete(editPoint);
-            this.childMap.delete(editPoint);
-
-            this.str = undefined;
-        }
+    deleteChild(editPoint: EditPointView): void {
+        super.deleteChild(editPoint);
+        this.str = undefined;
     }
 
     serializePath() {
         if (this.str) { return this.str; }
 
         this.str = '';
-        let prev: EditPointView = undefined;
-        this.iterateOverPoints((current: EditPointView, parent: EditPointView) => {
-            if (parent === undefined) {
-                this.str += `M ${current.point.x} ${current.point.y}`;
-            } else if (prev !== parent) {
-                this.str += `M ${parent.point.x} ${parent.point.y}`;
-                this.str += `L ${current.point.x} ${current.point.y}`;
-            } else {
-                this.str += `L ${current.point.x} ${current.point.y}`;
-            }
-            prev = current;
-        });
+        
+        let pathPoint = <EditPointView> this.children[0];
+        this.str += `M ${pathPoint.point.x} ${pathPoint.point.y}`;
+
+        for (let i = 1; i < this.children.length; i++) {
+            pathPoint = <EditPointView> this.children[i];
+            this.str += `L ${pathPoint.point.x} ${pathPoint.point.y}`;
+        }
 
         return this.str;
     }
 
-    serializeParentRelations() {
-        return this.editPoints.map(p => `${this.editPoints.indexOf(p)}:${this.editPoints.indexOf(this.parentMap.get(p))}`).join(' ');
-    }
-
-
-    moveEditPoint(editPoint: EditPointView, delta: Point) {
-        editPoint.point.add(delta);
-        this.str = undefined;
-    }
-
     move(point: Point) {
-        this.editPoints.forEach(p => p.point.add(point));
+        this.children.forEach((p: EditPointView) => p.point.add(point));
 
         this.str = undefined;
-    }
-
-
-
-    iterateOverPoints(action: (parent: EditPointView, current: EditPointView) => void) {
-        this.iterateOverPointsRecursively(this.rootPoint, undefined, action);
     }
 
     dispose() {}
 
-    private iterateOverPointsRecursively(point: EditPointView, parent: EditPointView, action: (current: EditPointView, parent: EditPointView) => void) {
-        action(point, parent);
-
-        this.childMap.get(point).forEach(child => this.iterateOverPointsRecursively(child, point, action));
-    }
-
     toJson(): PathViewJson {
         return {
             ...super.toJson(),
-            editPoints: this.editPoints.map(ep => ep.toJson()),
+            editPoints: this.children.map(ep => ep.toJson()),
         }
     }
 
     fromJson(json: PathViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        json.editPoints.forEach((ep, index) => {
+        json.editPoints.forEach((ep) => {
             const epView = new EditPointView(this);
             epView.fromJson(ep, registry);
-            this.addEditPoint(epView, index > 0 ? this.editPoints[index - 1] : undefined);
+            this.addEditPoint(epView);
         });
 
         this.str = undefined;

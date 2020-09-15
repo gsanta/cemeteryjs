@@ -5,8 +5,6 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
-import { View } from '../../models/views/View';
-import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
 
 export class SelectTool extends PointerTool {
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
@@ -50,18 +48,6 @@ export class SelectTool extends PointerTool {
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
-        }
-    }
-    
-    over(item: View) {
-        if (item.viewType === JoinPointViewType) {
-            this.plugin.toolHandler.setPriorityTool(ToolType.Join);
-        }
-    }
-
-    out(item: View) {
-        if (item.viewType === JoinPointViewType) {
-            this.plugin.toolHandler.removePriorityTool(ToolType.Join);
         }
     }
 

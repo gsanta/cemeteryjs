@@ -41,17 +41,17 @@ export class PointerService {
     }
 
     pointerDown(e: IPointerEvent): void {
-        if (!this.registry.plugins.getHoveredView()) { return; }
+        if (!this.registry.plugins.getHoveredPlugin()) { return; }
         if (e.button !== 'left') { return }
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().down(e);
+        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().down(e);
         this.registry.services.render.reRenderScheduled();
     }
 
     pointerMove(e: IPointerEvent): void {
-        if (!this.registry.plugins.getHoveredView()) { return; }
+        if (!this.registry.plugins.getHoveredPlugin()) { return; }
 
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
@@ -59,9 +59,9 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().drag(e);
+            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().drag(e);
         } else {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().move();
+            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().move();
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.render.reRenderScheduled();
@@ -75,20 +75,20 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
         if (this.isDrag) {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().draggedUp();
+            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().draggedUp();
         } else {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().click();
+            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().click();
         }
         
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().up(e);
+        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().up(e);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(e: IPointerEvent, data: any): void {
-        if (!this.registry.plugins.getHoveredView()) { return; }
+    pointerLeave(e: IPointerEvent, data: View): void {
+        if (!this.registry.plugins.getHoveredPlugin()) { return; }
         // if (data instanceof AbstractCanvasPlugin) {
         //     const leavingPlugin = this.hoveredPlugin;
         //     this.hoveredPlugin = undefined;
@@ -97,9 +97,9 @@ export class PointerService {
 
         //     this.registry.services.render.reRender(data.region);
         // } else {
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(data);
-            (data as View).tags.delete(ViewTag.Hovered);
-            this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region);
+            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().out(data);
+
+            this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
             this.hoveredItem = undefined;
         // }
     }
@@ -107,25 +107,22 @@ export class PointerService {
     pointerOver() {
     }
 
-    // TODO data should be type of View
     pointerEnter(e: IPointerEvent, data: View) {
-        if (!this.registry.plugins.getHoveredView()) { return; }
+        if (!this.registry.plugins.getHoveredPlugin()) { return; }
         // if (data instanceof AbstractCanvasPlugin) {
         //     this.hoveredPlugin = data;
         // } else {
             // TODO: parent is not necessarily the root view if the hierarchy is deeper, hoveredItem should be set by pointertool anyway
             this.hoveredItem = data;
-            data.tags.add(ViewTag.Hovered);
-            data.parent?.tags.add(ViewTag.Hovered);
 
             this.registry.services.hotkey.executeHotkey({
                 isHover: true
             });
 
-            this.registry.plugins.getHoveredView().toolHandler.getActiveTool().over(data);
+            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().over(data);
         // }
 
-        this.registry.services.render.reRender(this.registry.plugins.getHoveredView().region);
+        this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
     }
 
     pointerWheel(e: IPointerEvent): void {
@@ -142,13 +139,13 @@ export class PointerService {
         }
 
         this.registry.services.hotkey.executeHotkey(e);
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().wheel();
+        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().wheelEnd();
+        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().wheelEnd();
     }
 
     hover(item: View): void {
@@ -156,7 +153,7 @@ export class PointerService {
         this.registry.services.hotkey.executeHotkey({
             isHover: true
         });
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().over(item);
+        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().over(item);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -168,17 +165,17 @@ export class PointerService {
         if (this.hoveredItem === item) {
             this.hoveredItem = undefined;
         }
-        this.registry.plugins.getHoveredView().toolHandler.getActiveTool().out(item);
+        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().out(item);
         this.registry.services.render.reRenderScheduled();
     }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.registry.plugins.getHoveredView().getOffset();
+        const offset = this.registry.plugins.getHoveredPlugin().getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.registry.plugins.getHoveredView().getOffset();
-        return this.registry.plugins.getHoveredView().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.registry.plugins.getHoveredPlugin().getOffset();
+        return this.registry.plugins.getHoveredPlugin().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }
