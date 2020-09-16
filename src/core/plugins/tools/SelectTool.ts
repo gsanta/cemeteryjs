@@ -20,8 +20,8 @@ export class SelectTool extends PointerTool {
     click() {
         if (this.registry.services.pointer.hoveredItem) {
             super.click();
-        } else if (this.registry.stores.selectionStore.getSelectedViews().length > 0) {
-            this.registry.stores.selectionStore.clearSelection();
+        } else if (this.plugin.getStore().getSelectedViews().length > 0) {
+            this.plugin.getStore().clearSelection();
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         }
     }
@@ -43,8 +43,8 @@ export class SelectTool extends PointerTool {
     
             const canvasItems = this.registry.stores.canvasStore.getIntersectingItemsInRect(this.rectangleSelection);
             
-            this.registry.stores.selectionStore.clearSelection();
-            this.registry.stores.selectionStore.addSelectedView(...canvasItems)
+            this.plugin.getStore().clearSelection();
+            this.plugin.getStore().addSelectedView(...canvasItems)
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);

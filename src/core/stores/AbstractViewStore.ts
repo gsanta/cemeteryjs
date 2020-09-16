@@ -14,6 +14,11 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     private addViewListeners: ((view: View) => void)[] = [];
     private removeViewListeners: ((view: View) => void)[] = [];
 
+    constructor(id: string) {
+        super();
+        this.id = id;
+    }
+
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
             throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
@@ -45,8 +50,8 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
 
         this.idMap.delete(view.id);
         this.views.splice(this.views.indexOf(view), 1);
+        this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
         view.dispose();
-
     }
 
     onRemoveView(listener: (view: View) => void) {

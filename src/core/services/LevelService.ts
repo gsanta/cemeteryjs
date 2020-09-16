@@ -39,7 +39,6 @@ export class LevelService {
     }
 
     private clearStores() {
-        this.registry.stores.canvasStore.clear();
-        this.registry.stores.selectionStore.clearSelection();
+        this.registry.stores.stores.forEach(store => store.clear());
     }
 }

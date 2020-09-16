@@ -1,14 +1,14 @@
-import { UI_Plugin, UI_Region } from '../../../../core/plugins/UI_Plugin';
-import { Registry } from '../../../../core/Registry';
-import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
-import { MeshSettingsController, MeshSettingsProps, MeshSettingsControllerId } from './MeshSettingsController';
-import { ViewType } from '../../../../core/models/views/View';
 import { MeshView } from '../../../../core/models/views/MeshView';
 import { PathView } from '../../../../core/models/views/PathView';
-import { PathSettingsController, PathSettingsProps, PathSettingsControllerId } from './PathSettingsController';
+import { SpriteView, SpriteViewType } from '../../../../core/models/views/SpriteView';
+import { ViewType } from '../../../../core/models/views/View';
+import { UI_Plugin, UI_Region } from '../../../../core/plugins/UI_Plugin';
+import { Registry } from '../../../../core/Registry';
 import { EngineService } from '../../../../core/services/EngineService';
+import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
+import { MeshSettingsController, MeshSettingsControllerId, MeshSettingsProps } from './MeshSettingsController';
+import { PathSettingsController } from './PathSettingsController';
 import { SpriteSettingsController, SpriteSettingsProps } from './SpriteSettingsController';
-import { SpriteViewType, SpriteView } from '../../../../core/models/views/SpriteView';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
@@ -35,7 +35,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     }
 
     renderInto(layout: UI_Layout): void {
-        const selectedViews = this.registry.stores.selectionStore.getSelectedViews();
+        const selectedViews = this.registry.stores.canvasStore.getSelectedViews();
 
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {

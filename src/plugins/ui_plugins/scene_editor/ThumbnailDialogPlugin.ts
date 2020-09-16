@@ -36,7 +36,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     }
 
     renderInto(layout: UI_Layout): UI_Layout {
-        const meshView = this.registry.stores.selectionStore.getOneSelectedView() as MeshView;
+        const meshView = this.registry.stores.canvasStore.getOneSelectedView() as MeshView;
         const dialog: UI_Dialog = <UI_Dialog> layout;
         dialog.width = '560px';
         layout.controllerId = ThumbnailMakerControllerId;
@@ -92,7 +92,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
-        const meshView = this.registry.stores.selectionStore.getOneSelectedView() as MeshView;
+        const meshView = this.registry.stores.canvasStore.getOneSelectedView() as MeshView;
 
         this.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
 

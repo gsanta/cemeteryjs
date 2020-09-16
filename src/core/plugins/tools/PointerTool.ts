@@ -23,14 +23,14 @@ export abstract class PointerTool extends AbstractTool {
 
         if (hoveredItem.isChildView()) {
             if (!hoveredItem.parent.isSelected()) {
-                this.registry.stores.selectionStore.clearSelection();
-                this.registry.stores.selectionStore.addSelectedView(hoveredItem.parent);
+                this.plugin.getStore().clearSelection();
+                this.plugin.getStore().addSelectedView(hoveredItem.parent);
             }
             hoveredItem.parent.setActiveChild(hoveredItem);
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         } else {
-            this.registry.stores.selectionStore.clearSelection();
-            this.registry.stores.selectionStore.addSelectedView(hoveredItem);
+            this.plugin.getStore().clearSelection();
+            this.plugin.getStore().addSelectedView(hoveredItem);
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         }
     }
@@ -103,7 +103,7 @@ export abstract class PointerTool extends AbstractTool {
         if (this.movingItem.isChildView()) {
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else {
-            const views = this.registry.stores.selectionStore.getSelectedViews();
+            const views = this.plugin.getStore().getSelectedViews();
             views.forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
         this.registry.services.render.scheduleRendering(this.plugin.region);

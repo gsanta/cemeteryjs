@@ -112,6 +112,13 @@ export class AssetStore extends AbstractStore<AssetObj> {
         return this.objs.length;
     }
 
+    clear() {
+        this.objs = [];
+        this.assetsById = new Map();
+        this.assetsByPath = new Map();
+        this.idGenerator.clear();
+    }
+
     // private generateId(assetPrefix: string) {
     //     if (this.maxIdForPrefix.get(assetPrefix) === undefined) {
     //         this.maxIdForPrefix.set(assetPrefix, 0);

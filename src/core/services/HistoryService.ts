@@ -17,9 +17,7 @@ export class HistoryService {
     undo() {
         if (this.hasUndoHistory()) {
             this.index = this.index - 1;
-            this.registry.stores.getViewStore(this.registry.plugins.getHoveredPlugin().id)
-            this.registry.stores.canvasStore.clear();
-            this.registry.stores.selectionStore.clearSelection();
+            this.registry.stores.stores.forEach(store => store.clear());
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
             this.registry.services.render.reRenderAll();
@@ -29,8 +27,7 @@ export class HistoryService {
     redo() {
         if (this.hasRedoHistory()) {
             this.index = this.index + 1;
-            this.registry.stores.canvasStore.clear();
-            this.registry.stores.selectionStore.clearSelection();
+            this.registry.stores.stores.forEach(store => store.clear());
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
             this.registry.services.render.reRenderAll();

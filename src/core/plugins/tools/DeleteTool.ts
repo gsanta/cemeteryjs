@@ -1,7 +1,6 @@
 import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
-import { isView } from '../../stores/SceneStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
@@ -27,7 +26,7 @@ export class DeleteTool extends PointerTool {
 
         if (hoveredItem.isChildView()) {
             hoveredItem.parent.deleteChild(hoveredItem);
-        } else if (isView(hoveredItem.viewType)) {
+        } else {
             this.getStore().removeView(hoveredItem);
         }
         
@@ -56,11 +55,8 @@ export class DeleteTool extends PointerTool {
     }
 
     eraseAll() {
-        const concepts = this.registry.stores.canvasStore.getAllViews();
         this.registry.services.localStore.clearAll();
-        // TODO: erase all differently
-        // this.registry.plugins.plugins.forEach(plugin => plugin.getStore()?.clear());
-        this.registry.stores.canvasStore.clear();
+        this.plugin.getStore().clear();
         this.registry.services.render.reRenderAll();
     }
 

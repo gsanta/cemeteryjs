@@ -21,10 +21,10 @@ export class PathSettingsController extends AbstractController<PathSettingsProps
                 this.registry.services.render.reRender(UI_Region.Sidepanel);
             })
             .onBlur((context) => {
-                context.releaseTempVal((val) => (<PathView> this.registry.stores.selectionStore.getOneSelectedView()).id = val);
+                context.releaseTempVal((val) => (<PathView> this.registry.stores.canvasStore.getOneSelectedView()).id = val);
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
             })
-            .onGet((context) => (<PathView> this.registry.stores.selectionStore.getOneSelectedView()).id);
+            .onGet((context) => (<PathView> this.registry.stores.canvasStore.getOneSelectedView()).id);
     }
 }

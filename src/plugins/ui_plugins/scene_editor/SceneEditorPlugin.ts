@@ -42,7 +42,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     destroy() { 
-        this.registry.stores.selectionStore.clearSelection();
+        this.registry.stores.canvasStore.clearSelection();
     }
 
     protected renderInto(layout: UI_Layout): void {

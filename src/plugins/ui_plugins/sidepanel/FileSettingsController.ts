@@ -1,9 +1,7 @@
-import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
-import { Registry } from '../../../core/Registry';
 import { saveAs } from 'file-saver';
-import { ToolType } from '../../../core/plugins/tools/Tool';
-import { DeleteTool } from '../../../core/plugins/tools/DeleteTool';
+import { AbstractController } from '../../../core/plugins/controllers/AbstractController';
 import { UI_Plugin } from '../../../core/plugins/UI_Plugin';
+import { Registry } from '../../../core/Registry';
 
 
 export enum FileSettingsProps {
@@ -28,8 +26,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler<{data: string}>(FileSettingsProps.Import)
             .onChange((val) => {
-                this.registry.stores.canvasStore.clear();
-                this.registry.stores.selectionStore.clearSelection();
+                this.registry.stores.stores.forEach(store => store.clear());
                 this.registry.services.import.import(val.data);
     
                 this.registry.services.render.reRenderAll();
@@ -37,9 +34,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler(FileSettingsProps.NewProject)
             .onClick(() => {
-                this.registry.stores.selectionStore.clearSelection();
-                this.registry.stores.canvasStore.clear();
-                this.registry.stores.nodeStore.clear();
+                this.registry.stores.stores.forEach(store => store.clear());
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRenderAll();
             });

@@ -14,6 +14,8 @@ export abstract class AbstractStore<T> implements IControlledObject {
     protected views: View[] = [];
     abstract setIdGenerator(idGenerator: IdGenerator);
 
+    clear() {}
+
     // clear() {
     //     this.prefixIndexCounter = new Map();
     // }

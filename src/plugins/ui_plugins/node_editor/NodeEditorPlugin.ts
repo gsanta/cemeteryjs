@@ -10,7 +10,7 @@ import { ToolType } from '../../../core/plugins/tools/Tool';
 import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { NodeStore } from '../../../core/stores/NodeStore';
+import { AbstractViewStore } from '../../../core/stores/AbstractViewStore';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
@@ -86,7 +86,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
     }
 
-    getStore(): NodeStore {
+    getStore(): AbstractViewStore<NodeView | NodeConnectionView> {
         return this.registry.stores.nodeStore;
     }
 
