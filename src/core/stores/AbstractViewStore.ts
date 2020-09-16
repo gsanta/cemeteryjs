@@ -1,13 +1,18 @@
 import { AbstractStore } from "./AbstractStore";
-import { View } from "../models/views/View";
+import { View, ViewTag } from "../models/views/View";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
+import { without } from "../../utils/geometry/Functions";
 
 export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     protected views: View[] = [];
+    private selectedViews: View[] = [];
     protected idMap: Map<string, View> = new Map();
     protected idGenerator: IdGenerator;
+
+    private addViewListeners: ((view: View) => void)[] = [];
+    private removeViewListeners: ((view: View) => void)[] = [];
 
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
@@ -16,16 +21,36 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
         this.idGenerator = idGenerator;
     }
 
-    addItem(view: View) {
+    addView(view: View) {
         if (view.id) {
             this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
         } else {
             view.id = this.idGenerator.generateId(view.viewType);
-            view.obj.id = view.id;
         }
-        
+        view.obj.id = view.id;
+
         this.views.push(view);
         this.idMap.set(view.id, view);
+        this.addViewListeners.forEach(listener => listener(view));
+    }
+
+    onAddView(listener: (view: View) => void) {
+        this.addViewListeners.push(listener);
+    }
+
+    removeView(view: View) {
+        this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
+
+        this.removeViewListeners.forEach(listener => listener(view));
+
+        this.idMap.delete(view.id);
+        this.views.splice(this.views.indexOf(view), 1);
+        view.dispose();
+
+    }
+
+    onRemoveView(listener: (view: View) => void) {
+        this.removeViewListeners.push(listener);
     }
 
     getById(id: string): View {
@@ -40,13 +65,31 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
         return this.views;
     }
 
-    removeItem(view: View) {
-        this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
+    addSelectedView(...items: View[]) {
+        items.forEach(item => item.tags.add(ViewTag.Selected));
+        this.selectedViews.push(...items);
+    }
 
-        this.idMap.delete(view.id);
+    removeSelectedView(item: View) {
+        item.tags.delete(ViewTag.Selected)
+        this.selectedViews = without(this.selectedViews, item);
+    }
 
-        this.views.splice(this.views.indexOf(view), 1);
-        view.dispose();
+    getSelectedViews(): View[] {
+        return this.selectedViews;
+    }
+
+    getSelectedViewsByType(type: string): View[] {
+        return this.selectedViews.filter(view => view.viewType === type);
+    }
+
+    getOneSelectedView(): View {
+        return this.selectedViews.length > 0 && this.selectedViews[0];
+    }
+
+    clearSelection() {
+        this.selectedViews.forEach(item => item.tags.delete(ViewTag.Selected));
+        this.selectedViews = [];
     }
     
     getIntersectingItemsInRect(rectangle: Rectangle): View[] {
@@ -61,9 +104,9 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     }
 
     clear() {
-        this.views.forEach(view => view.dispose());
-        this.views = [];
+        this.views.forEach(view => this.removeView(view));
         this.idMap = new Map();
         this.idGenerator.clear();
+        this.clearSelection();
     }
 }

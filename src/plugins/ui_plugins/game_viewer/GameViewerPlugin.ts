@@ -56,7 +56,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         });
         
         const nodeService = this.pluginServices.byName<NodeService>(NodeService.serviceName);
-        nodeService.getNodesByType(BuiltinNodeType.Route).forEach(node => nodeService.getHandler(node).wake(node));
         
         this.gizmos.awake();
         this.renderFunc && this.renderFunc();

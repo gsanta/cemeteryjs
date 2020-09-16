@@ -31,7 +31,7 @@ export class SpriteSettingsController extends AbstractController<SpriteSettingsP
 
 const FrameName: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.selectionStore.getView()).obj.frameName || '';
+        return (<SpriteView> context.registry.stores.selectionStore.getOneSelectedView()).obj.frameName || '';
     },
 
     change(val, context) {
@@ -40,7 +40,7 @@ const FrameName: PropControl<string> = {
     },
 
     blur(context) {
-        const spriteView = (<SpriteView> context.registry.stores.selectionStore.getView());
+        const spriteView = (<SpriteView> context.registry.stores.selectionStore.getOneSelectedView());
         context.releaseTempVal((val) => spriteView.obj.frameName = val);
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.createInstance(spriteView.obj);
@@ -50,11 +50,11 @@ const FrameName: PropControl<string> = {
 
 const SelectSpriteSheet: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.selectionStore.getView()).obj.spriteSheetId;
+        return (<SpriteView> context.registry.stores.selectionStore.getOneSelectedView()).obj.spriteSheetId;
     },
 
     change(val, context) {
-        (<SpriteView> context.registry.stores.selectionStore.getView()).obj.spriteSheetId = val;
+        (<SpriteView> context.registry.stores.selectionStore.getOneSelectedView()).obj.spriteSheetId = val;
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },

@@ -20,12 +20,13 @@ export class MeshTool extends RectangleTool {
         meshView.setScale(1);
         meshView.color = 'grey';
     
-        this.registry.stores.canvasStore.addItem(meshView);
+        this.registry.stores.canvasStore.addView(meshView);
+        this.registry.engine.meshes.createInstance(meshView.obj);
     
         return meshView;
     }
     
     protected removeTmpView() {
-        this.registry.stores.canvasStore.removeItem(this.tmpView);
+        this.registry.stores.canvasStore.removeView(this.tmpView);
     }
 }

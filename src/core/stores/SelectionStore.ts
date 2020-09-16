@@ -1,64 +1,32 @@
-import { PathView } from "../models/views/PathView";
-import { FeedbackType } from "../models/views/child_views/ChildView";
-import { PathPointView, PathPointViewType } from "../models/views/child_views/PathPointView";
-import { View, ViewType, ViewTag } from '../models/views/View';
-import { isView } from "./SceneStore";
 import { without } from "../../utils/geometry/Functions";
+import { View, ViewTag } from '../models/views/View';
 
 export class SelectionStore {
     items: View[] = [];
 
-    addItem(...items: View[]) {
+    addSelectedView(...items: View[]) {
         items.forEach(item => item.tags.add(ViewTag.Selected));
         this.items.push(...items);
     }
 
-    removeItem(item: View) {
+    removeSelectedView(item: View) {
         item.tags.delete(ViewTag.Selected)
         this.items = without(this.items, item);
     }
 
-    contains(item: View): boolean {
-        return this.items.includes(item);
-    }
-
-    getAll(): View[] {
+    getSelectedViews(): View[] {
         return this.items;
     }
 
-    getAllViews(): View[] {
-        return <View[]> this.items.filter(item => isView(item.viewType));
+    getSelectedViewsByType(type: string): View[] {
+        return this.items.filter(view => view.viewType === type);
     }
 
-    getPathViews(): PathView[] {
-        return <PathView[]> this.items.filter(view => view.viewType === ViewType.PathView);
-    }
-
-    hasOne(): boolean {
-        return this.items.length === 1;
-    }
-
-    hasAny(): boolean {
-        return this.items.length > 0;
-    }
-
-    getOneByType(viewType: ViewType): View {
-        return this.items.find(item => item.viewType === viewType);
-    }
-
-    getView(): View {
+    getOneSelectedView(): View {
         return this.items.length > 0 && this.items[0];
     }
 
-    getEditPoint(): PathPointView {
-        return <PathPointView> this.items.find(item => item.viewType === PathPointViewType);
-    }
-
-    hasEditPoint() {
-        return this.getEditPoint() !== undefined;
-    }
-
-    clear() {
+    clearSelection() {
         this.items.forEach(item => item.tags.delete(ViewTag.Selected));
         this.items = [];
     }

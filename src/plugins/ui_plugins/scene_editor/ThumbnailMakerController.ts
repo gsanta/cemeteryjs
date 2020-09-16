@@ -22,7 +22,7 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
 
         this.createPropHandler(ThumbnailMakerControllerProps.ThumbnailFromModel)
             .onClick(async () => {
-                const meshView = this.registry.stores.selectionStore.getView() as MeshView;
+                const meshView = this.registry.stores.selectionStore.getOneSelectedView() as MeshView;
 
                 const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((plugin.engine as Bab_EngineFacade).engine, plugin.engine.getCamera().camera, 1000)
                 meshView.thumbnailData = thumbnail;
@@ -32,7 +32,7 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
 
         this.createPropHandler<{data: string, path: string}>(ThumbnailMakerControllerProps.ThumbnailFromFile)
             .onChange((val) => {
-                const meshView = this.registry.stores.selectionStore.getView() as MeshView;
+                const meshView = this.registry.stores.selectionStore.getOneSelectedView() as MeshView;
                 
                 meshView.thumbnailData = val.data;
                 this.registry.services.history.createSnapshot();
@@ -42,7 +42,7 @@ export class ThumbnailMakerController extends AbstractController<ThumbnailMakerC
         
         this.createPropHandler(ThumbnailMakerControllerProps.ClearThumbnail)
             .onClick(() => {                
-                const meshView = this.registry.stores.selectionStore.getView() as MeshView;
+                const meshView = this.registry.stores.selectionStore.getOneSelectedView() as MeshView;
  
                 meshView.thumbnailData = undefined;
                 this.registry.services.render.reRender(UI_Region.Dialog);

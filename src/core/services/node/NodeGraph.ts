@@ -2,6 +2,7 @@ import { NodeObj } from '../../models/game_objects/NodeObj';
 import { NodeConnectionObj } from '../../models/game_objects/NodeConnectionObj';
 import { Registry } from '../../Registry';
 import { NodeView } from '../../models/views/NodeView';
+import { ViewType } from '../../models/views/View';
 
 export class NodeGraph {
     nodeGroups: Set<NodeObj>[] = [];
@@ -15,7 +16,7 @@ export class NodeGraph {
         this.nodeGroups.push(new Set([node]));
     }
 
-    deleteNode(node: NodeObj) {
+    removeNode(node: NodeObj) {
         const group = this.findGroup(node);
         group.delete(node);
         const nodes = Array.from(group);
@@ -26,7 +27,7 @@ export class NodeGraph {
     }
 
     getNodesByType(nodeType: string) {
-        return this.registry.stores.nodeStore.getNodes().filter(node => node.obj.type === nodeType);
+        return (<NodeView[]> this.registry.stores.nodeStore.getViewsByType(ViewType.NodeView)).filter(node => node.obj.type === nodeType);
     }
 
     findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {
@@ -54,7 +55,7 @@ export class NodeGraph {
         }
     }
 
-    deleteConnection(nodeConnectionObj: NodeConnectionObj) {
+    removeConnection(nodeConnectionObj: NodeConnectionObj) {
         nodeConnectionObj.node1.connections.delete(nodeConnectionObj.joinPoint1);
         nodeConnectionObj.node2.connections.delete(nodeConnectionObj.joinPoint2);
 

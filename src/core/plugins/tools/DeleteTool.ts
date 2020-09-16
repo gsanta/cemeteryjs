@@ -28,7 +28,7 @@ export class DeleteTool extends PointerTool {
         if (hoveredItem.isChildView()) {
             hoveredItem.parent.deleteChild(hoveredItem);
         } else if (isView(hoveredItem.viewType)) {
-            this.getStore().removeItem(hoveredItem);
+            this.getStore().removeView(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -41,7 +41,7 @@ export class DeleteTool extends PointerTool {
     
     draggedUp() {
         const views = this.getStore().getIntersectingItemsInRect(this.rectangleSelection);
-        views.forEach(view =>  this.getStore().removeItem(view));
+        views.forEach(view =>  this.getStore().removeView(view));
 
         this.rectangleSelection = undefined;
 

@@ -8,6 +8,7 @@ export class IdGenerator {
 
         const maxId = this.prefixIndexCounter.get(prefix) || 0;
         const name = `${prefix}${maxId + 1}`.toLocaleLowerCase();
+        this.prefixIndexCounter.set(prefix, maxId + 1);
         return name;
     }
 

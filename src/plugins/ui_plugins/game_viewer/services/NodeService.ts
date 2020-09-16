@@ -39,8 +39,4 @@ export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
     getHandler(node: NodeObj): AbstractNodeHandler<NodeObj> {
         return this.handlersByType.get(node.type);
     }
-
-    getNodesByType<T extends NodeObj>(nodeType: string): T[] {
-        return <T[]> this.registry.stores.nodeStore.nodesByType.get(nodeType) || [];
-    }
 }

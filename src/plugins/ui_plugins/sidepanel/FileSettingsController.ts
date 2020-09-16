@@ -29,7 +29,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
         this.createPropHandler<{data: string}>(FileSettingsProps.Import)
             .onChange((val) => {
                 this.registry.stores.canvasStore.clear();
-                this.registry.stores.selectionStore.clear();
+                this.registry.stores.selectionStore.clearSelection();
                 this.registry.services.import.import(val.data);
     
                 this.registry.services.render.reRenderAll();
@@ -37,7 +37,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler(FileSettingsProps.NewProject)
             .onClick(() => {
-                this.registry.stores.selectionStore.clear();
+                this.registry.stores.selectionStore.clearSelection();
                 this.registry.stores.canvasStore.clear();
                 this.registry.stores.nodeStore.clear();
                 this.registry.services.history.createSnapshot();

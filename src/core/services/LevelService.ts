@@ -40,6 +40,6 @@ export class LevelService {
 
     private clearStores() {
         this.registry.stores.canvasStore.clear();
-        this.registry.stores.selectionStore.clear();
+        this.registry.stores.selectionStore.clearSelection();
     }
 }

@@ -51,7 +51,7 @@ export class JoinTool extends AbstractTool {
             connection.setPoint2(endItem.getAbsolutePosition());
             this.startItem.connection = connection;
             endItem.connection = connection;
-            this.registry.stores.nodeStore.addConnection(connection);
+            this.registry.stores.nodeStore.addView(connection);
             this.start = undefined;
             this.end = undefined;
 

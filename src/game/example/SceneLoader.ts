@@ -25,7 +25,7 @@ export class SceneLoader {
     }
 
     private addSprite(spriteJson: { x: number; y: number; frameName: string; spriteSheetPath: string; }) {
-        let asset = this.registry.stores.assetStore.lookupByProp('path', spriteJson.spriteSheetPath) || this.addSpriteSheet(spriteJson);
+        this.registry.stores.assetStore.lookupByProp('path', spriteJson.spriteSheetPath) || this.addSpriteSheet(spriteJson);
 
         const spriteView = new SpriteView();
         spriteView.obj = new SpriteObj();
@@ -34,7 +34,7 @@ export class SceneLoader {
         spriteView.obj.frameName = spriteJson.frameName;
         spriteView.obj.startPos = new Point(spriteJson.x, spriteJson.y);
 
-        this.registry.stores.spriteStore.addItem(spriteView);
+        this.registry.stores.spriteStore.addView(spriteView);
         this.registry.engine.sprites.createInstance(spriteView.obj);
         this.registry.engine.sprites.setPosition(spriteView.obj, new Point(spriteJson.x, spriteJson.y));
     }

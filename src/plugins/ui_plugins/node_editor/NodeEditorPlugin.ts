@@ -1,6 +1,8 @@
 import { BuiltinNodeType, NodeObj } from '../../../core/models/game_objects/NodeObj';
 import { Camera2D } from '../../../core/models/misc/camera/Camera2D';
-import { ViewTag } from '../../../core/models/views/View';
+import { NodeConnectionView } from '../../../core/models/views/NodeConnectionView';
+import { NodeView } from '../../../core/models/views/NodeView';
+import { ViewTag, ViewType } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../../core/plugins/AbstractCanvasPlugin';
 import { CanvasControllerProps } from '../../../core/plugins/controllers/CanvasController';
 import { JoinTool } from '../../../core/plugins/tools/JoinTool';
@@ -162,11 +164,11 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        this.registry.stores.nodeStore.getNodes().forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
+        (<NodeView[]> this.registry.stores.nodeStore.getViewsByType(ViewType.NodeView)).forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
     }
 
     private renderConnectionsInto(canvas: UI_SvgCanvas) {
-        this.registry.stores.nodeStore.getConnections().forEach(connection => {
+        this.registry.stores.nodeStore.getViewsByType(ViewType.NodeConnectionView).forEach((connection: NodeConnectionView) => {
             const line = canvas.line();
             line.x1 = connection.point1.x;
             line.y1 = connection.point1.y;

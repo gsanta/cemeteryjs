@@ -9,10 +9,4 @@ export class SpriteStore extends AbstractViewStore<SpriteView> {
         super();
         this.registry = registry;
     }
-
-    addItem(spriteView: SpriteView) {
-        super.addItem(spriteView);
-
-        this.views.push(spriteView);
-    }
 }

@@ -19,7 +19,7 @@ export class HistoryService {
             this.index = this.index - 1;
             this.registry.stores.getViewStore(this.registry.plugins.getHoveredPlugin().id)
             this.registry.stores.canvasStore.clear();
-            this.registry.stores.selectionStore.clear();
+            this.registry.stores.selectionStore.clearSelection();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
             this.registry.services.render.reRenderAll();
@@ -30,7 +30,7 @@ export class HistoryService {
         if (this.hasRedoHistory()) {
             this.index = this.index + 1;
             this.registry.stores.canvasStore.clear();
-            this.registry.stores.selectionStore.clear();
+            this.registry.stores.selectionStore.clearSelection();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
             this.registry.services.render.reRenderAll();

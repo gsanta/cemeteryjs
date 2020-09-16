@@ -1,10 +1,7 @@
-import { Registry } from '../Registry';
-import { NodeGraph } from '../services/node/NodeGraph';
-import { AbstractViewStore } from './AbstractViewStore';
 import { BuiltinNodeType, NodeObj } from '../models/game_objects/NodeObj';
-import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeView } from '../models/views/NodeView';
-import { View, ViewType } from '../models/views/View';
+import { Registry } from '../Registry';
+import { AbstractViewStore } from './AbstractViewStore';
 
 export class NodeStore extends AbstractViewStore<NodeView> {
     static id = 'node-store'; 
@@ -12,7 +9,6 @@ export class NodeStore extends AbstractViewStore<NodeView> {
 
     templates: NodeObj[] = [];
     actionTypes: string[] = [];
-    nodesByType: Map<string, NodeObj[]> = new Map();
 
     private registry: Registry;
 
@@ -25,59 +21,5 @@ export class NodeStore extends AbstractViewStore<NodeView> {
                 this.actionTypes.push(item);
             }
         }
-    }
-
-    addNode(nodeView: NodeView) {
-        super.addItem(nodeView);
-
-        this.views.push(nodeView);
-
-        if (!this.nodesByType.has(nodeView.obj.type)) {
-            this.nodesByType.set(nodeView.obj.type, []);
-        }
-        this.nodesByType.get(nodeView.obj.type).push(nodeView.obj);
-    }
-
-    addConnection(connection: NodeConnectionView) {
-        super.addItem(connection);
-        this.registry.services.node.graph.addConnection(connection.obj);
-        this.views.push(connection);
-    }
-
-    removeItem(item: View) {
-        // const item = this.views.find(view => view.id === id);
-        if (!item) { return }
-        super.removeItem(item);
-        
-        const deleteViews = item.dispose();
-
-        switch(item.viewType) {
-            case ViewType.NodeConnectionView:
-                const connection = <NodeConnectionView> item;
-                this.registry.services.node.graph.deleteConnection(connection.obj);
-                break;
-            case ViewType.NodeView:
-                this.registry.services.node.graph.deleteNode((<NodeView> item).obj);
-                break;
-        }
-    }
-
-    getNodes(): NodeView[] {
-        return <NodeView[]> this.views.filter(v => v.viewType === ViewType.NodeView);
-    }
-
-    getConnections(): NodeConnectionView[] {
-        return <NodeConnectionView[]> this.views.filter(v => v.viewType === ViewType.NodeConnectionView);
-    }
-
-    clear(): void {
-        super.clear();
-        this.views = [];
-        this.registry.services.node.graph = new NodeGraph(this.registry);
-        this.nodesByType = new Map();
-    }
-
-    protected getMaxIndexForType() {
-        return this.views;
     }
 }

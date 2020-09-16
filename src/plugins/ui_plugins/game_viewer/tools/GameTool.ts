@@ -13,7 +13,7 @@ export class GameTool extends AbstractTool {
     }
 
     keydown(e: IKeyboardEvent) {
-        const nodes = this.registry.services.node.graph.getNodesByType(BuiltinNodeType.Keyboard)
+        this.registry.services.node.graph.getNodesByType(BuiltinNodeType.Keyboard)
             .filter(node => node.obj.getParam('key').val === String.fromCharCode(e.keyCode).toLocaleLowerCase())
             .forEach(node => node.obj.execute(this.registry));
     }

@@ -35,7 +35,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     }
 
     renderInto(layout: UI_Layout): void {
-        const selectedViews = this.registry.stores.selectionStore.getAll();
+        const selectedViews = this.registry.stores.selectionStore.getSelectedViews();
 
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {

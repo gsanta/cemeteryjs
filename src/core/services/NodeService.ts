@@ -8,10 +8,10 @@ import { RouteNodeObj } from '../../plugins/node_plugins/RouteNodeObj';
 import { SplitNodeObj } from '../../plugins/node_plugins/SplitNodeObj';
 import { TurnNodeObj } from '../../plugins/node_plugins/TurnNodeObj';
 import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
-import { Point } from '../../utils/geometry/shapes/Point';
-import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { NodeObj } from '../models/game_objects/NodeObj';
-import { defaultNodeViewConfig, NodeView } from '../models/views/NodeView';
+import { NodeConnectionView } from '../models/views/NodeConnectionView';
+import { NodeView } from '../models/views/NodeView';
+import { ViewType } from '../models/views/View';
 import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
 import { Registry } from '../Registry';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
@@ -44,6 +44,30 @@ export class NodeService {
             this.registerNode(new RouteNodeObj(undefined));
             this.registerNode(new SplitNodeObj(undefined));
             this.registerNode(new TurnNodeObj(undefined));
+
+            // TODO: unregister somewhere
+            this.registry.stores.nodeStore.onAddView((view) => {
+                switch(view.viewType) {
+                    case ViewType.NodeConnectionView:
+                        this.graph.addConnection((<NodeConnectionView> view).obj);
+                    break;
+                    case ViewType.NodeView:
+                        this.graph.addNode((<NodeView> view).obj);
+                    break;
+                }
+            });
+
+            // TODO: unregister somewhere
+            this.registry.stores.nodeStore.onRemoveView((view) => {
+                switch(view.viewType) {
+                    case ViewType.NodeConnectionView:
+                        this.graph.removeConnection((<NodeConnectionView> view).obj);
+                    break;
+                    case ViewType.NodeView:
+                        this.graph.removeNode((<NodeView> view).obj);
+                    break;
+                }
+            });
         });
     }
 
@@ -75,9 +99,5 @@ export class NodeService {
         const nodeView = new NodeView({nodeType: nodeObject.type, node: nodeObject});
         
         return nodeView;
-    }
-
-    executeNodes() {
-        this.registry.stores.nodeStore.getNodes().filter(node => node.obj.inputs.length === 0).forEach(node => node.obj.execute(this.registry));
     }
 }

@@ -43,7 +43,7 @@ export class MeshSettingsController extends AbstractController<MeshSettingsProps
 
 const IdControl: PropControl<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
-        return (<MeshView> context.registry.stores.selectionStore.getView()).id;
+        return (<MeshView> context.registry.stores.selectionStore.getOneSelectedView()).id;
     },
     
     change(val, context) {
@@ -52,7 +52,7 @@ const IdControl: PropControl<string> = {
     },
 
     blur(context, element, controller: MeshSettingsController) {
-        context.releaseTempVal((val) => (<MeshView> context.registry.stores.selectionStore.getView()).id = val);
+        context.releaseTempVal((val) => (<MeshView> context.registry.stores.selectionStore.getOneSelectedView()).id = val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }    
@@ -194,7 +194,7 @@ const ModelControl: PropControl<string> = {
         controller.meshView.obj.modelId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
         context.registry.engine.meshes.deleteInstance(controller.meshView.obj);
-        await context.registry.engine.meshes.createInstance(controller.meshView.obj);
+        await context.registry.engine.meshes.createInstance(controller.meshView.obj)
         const realDimensions = context.registry.engine.meshes.getDimensions(controller.meshView.obj)
         controller.meshView.dimensions.setWidth(realDimensions.x);
         controller.meshView.dimensions.setHeight(realDimensions.y);
