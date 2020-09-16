@@ -5,6 +5,7 @@ import { UI_InputElement } from "../../core/ui_components/elements/UI_InputEleme
 import { NodeView } from "../../core/models/views/NodeView";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
+import { ViewType } from "../../core/models/views/View";
 
 export class MeshNodeObj extends NodeObj {
     type = BuiltinNodeType.Mesh;
@@ -38,7 +39,7 @@ export class MeshNodeObj extends NodeObj {
 
 export const MeshControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.canvasStore.getMeshViews().map(meshConcept => meshConcept.id)
+        return context.registry.stores.canvasStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id)
     },
 
     defaultVal(context, element: UI_InputElement) {
@@ -48,6 +49,7 @@ export const MeshControl: PropControl<string> = {
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
         nodeView.obj.setParam('mesh', val);
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

@@ -56,10 +56,8 @@ export class NodeView extends View {
         this.joinPointViews.forEach(joinPointView => joinPointView.move(point));
     }
 
-    delete(): View[] {
-        const deletingViews: View[] = [this];
-        this.joinPointViews.forEach(view => deletingViews.push(...view.delete()));
-        return Array.from(new Set(deletingViews));
+    dispose(): void {
+        this.obj.dispose();
     }
 
     findJoinPointView(name: string) {

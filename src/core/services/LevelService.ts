@@ -39,7 +39,6 @@ export class LevelService {
     }
 
     private clearStores() {
-        this.registry.stores.gameStore.clear();
         this.registry.stores.canvasStore.clear();
         this.registry.stores.selectionStore.clear();
     }

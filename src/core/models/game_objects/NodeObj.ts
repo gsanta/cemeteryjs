@@ -106,6 +106,8 @@ export abstract class NodeObj implements IGameObj {
         return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
     }
 
+    dispose() {}
+
     toJson(): NodeObjJson {
         return {
             id: this.id,

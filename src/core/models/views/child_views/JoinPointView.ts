@@ -60,15 +60,7 @@ export class JoinPointView extends ChildView {
         }
     }
 
-    delete() {
-        if (this.connection) {
-            const ret = [this, this.connection];
-            this.connection.delete();
-            return ret;
-        }
-
-        return [this];
-    }
+    dispose() {}
 
     toString() {
         return `${this.viewType}: ${this.parent.id} ${this.point.toString()}`;

@@ -47,6 +47,10 @@ export class MeshObj implements IGameObj {
         }
     }
 
+    dispose() {
+        this.meshAdapter && this.meshAdapter.deleteInstance(this);
+    }
+
     toJson(): ObjJson {
         throw new Error("Method not implemented.");
     }

@@ -16,6 +16,7 @@ import { MeshTool } from './tools/MeshTool';
 import { SpriteTool } from './tools/SpriteTool';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
 import { PathView } from '../../../core/models/views/PathView';
+import { MeshView } from '../../../core/models/views/MeshView';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -207,6 +208,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 }
 
 function getSortedMeshViews(registry: Registry) {
-    let items = [...registry.stores.canvasStore.getMeshViews()];
+    let items = <MeshView[]> [...registry.stores.canvasStore.getViewsByType(ViewType.MeshView)];
     return sort(items, (a, b) => a.layer - b.layer);
 }

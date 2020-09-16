@@ -12,6 +12,8 @@ export class SpriteSheetObj implements IGameObj {
     spriteAssetId: string;
     jsonAssetId: string;
 
+    dispose() {}
+
     toJson(): SpriteSheetObjJson {
         return {
             id: this.id,

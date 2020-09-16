@@ -20,7 +20,7 @@ export class MeshTool extends RectangleTool {
         meshView.setScale(1);
         meshView.color = 'grey';
     
-        this.registry.stores.canvasStore.addView(meshView);
+        this.registry.stores.canvasStore.addItem(meshView);
     
         return meshView;
     }

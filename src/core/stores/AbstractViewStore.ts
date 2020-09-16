@@ -2,24 +2,30 @@ import { AbstractStore } from "./AbstractStore";
 import { View } from "../models/views/View";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
+import { IdGenerator } from "./IdGenerator";
 
 export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     protected views: View[] = [];
     protected idMap: Map<string, View> = new Map();
+    protected idGenerator: IdGenerator;
 
-    addItem(item: View) {
-        const pattern = this.createPattern(item.viewType);
-        const num = parseInt(item.id.match(pattern)[1], 10);
-
-        if (!this.prefixIndexCounter.has(item.viewType)) {
-            this.prefixIndexCounter.set(item.viewType, num);
+    setIdGenerator(idGenerator: IdGenerator) {
+        if (this.idGenerator) {
+            throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
         }
+        this.idGenerator = idGenerator;
+    }
 
-        if (this.prefixIndexCounter.get(item.viewType) < num) {
-            this.prefixIndexCounter.set(item.viewType, num);
+    addItem(view: View) {
+        if (view.id) {
+            this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
+        } else {
+            view.id = this.idGenerator.generateId(view.viewType);
+            view.obj.id = view.id;
         }
-
-        this.idMap.set(item.id, item);
+        
+        this.views.push(view);
+        this.idMap.set(view.id, view);
     }
 
     getById(id: string): View {
@@ -34,20 +40,13 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
         return this.views;
     }
 
-    removeItem(item: View) {
-        const pattern = this.createPattern(item.viewType);
-        const num = parseInt(item.id.match(pattern)[1], 10);
+    removeItem(view: View) {
+        this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
 
-        const maxId = this.prefixIndexCounter.get(item.viewType);
-        if (maxId > 0 && maxId === num) {
-            this.prefixIndexCounter.set(item.viewType, maxId - 1);
-        }
+        this.idMap.delete(view.id);
 
-        this.idMap.delete(item.id);
-    }
-
-    private createPattern(type: string) {
-        return new RegExp(`${type}(\\d+)`, 'i');
+        this.views.splice(this.views.indexOf(view), 1);
+        view.dispose();
     }
     
     getIntersectingItemsInRect(rectangle: Rectangle): View[] {
@@ -62,7 +61,9 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     }
 
     clear() {
-        super.clear();
+        this.views.forEach(view => view.dispose());
+        this.views = [];
         this.idMap = new Map();
+        this.idGenerator.clear();
     }
 }

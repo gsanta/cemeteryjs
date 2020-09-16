@@ -48,12 +48,7 @@ export class NodeConnectionView extends View {
         this.updateDimensions();
     }
 
-    delete() {
-        // this.joinPoint1.connection = undefined;
-        // this.joinPoint2.connection = undefined;
-
-        return [this];
-    }
+    dispose() {}
 
     toJson(): NodeConnectionViewJson {
         return {

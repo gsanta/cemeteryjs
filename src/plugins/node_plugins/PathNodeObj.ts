@@ -5,6 +5,7 @@ import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
+import { ViewType } from "../../core/models/views/View";
 
 export class PathNodeObj extends NodeObj {
     type = BuiltinNodeType.Path;
@@ -38,7 +39,7 @@ export class PathNodeObj extends NodeObj {
 
 const PathControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.canvasStore.getPathViews().map(pathView => pathView.id);
+        return context.registry.stores.canvasStore.getViewsByType(ViewType.PathView).map(pathView => pathView.id);
     },
 
     defaultVal(context, element: UI_InputElement) {

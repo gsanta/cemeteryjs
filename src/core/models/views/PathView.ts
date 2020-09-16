@@ -37,11 +37,12 @@ export class PathView extends View implements IGameModel {
         this.obj = new PathObj(this);
     } 
 
-    addEditPoint(editPoint: PathPointView) {
-        this.children.push(editPoint);
+    addPathPoint(pathPoint: PathPointView) {
+        pathPoint.id = `${this.id}-path-point-this.children.length`;
+        this.children.push(pathPoint);
         this.dimensions = this.calcBoundingBox();
         this.str = undefined;
-        this.setActiveChild(editPoint);
+        this.setActiveChild(pathPoint);
     }
 
     private calcBoundingBox() {
@@ -96,7 +97,7 @@ export class PathView extends View implements IGameModel {
         json.editPoints.forEach((ep) => {
             const epView = new PathPointView(this);
             epView.fromJson(ep, registry);
-            this.addEditPoint(epView);
+            this.addPathPoint(epView);
         });
 
         this.str = undefined;

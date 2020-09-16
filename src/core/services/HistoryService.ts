@@ -17,6 +17,7 @@ export class HistoryService {
     undo() {
         if (this.hasUndoHistory()) {
             this.index = this.index - 1;
+            this.registry.stores.getViewStore(this.registry.plugins.getHoveredPlugin().id)
             this.registry.stores.canvasStore.clear();
             this.registry.stores.selectionStore.clear();
             this.registry.services.import.import(this.history[this.index]);

@@ -1,6 +1,5 @@
 import { Registry } from '../../../../core/Registry';
 import { AbstractSettings } from '../../AbstractSettings';
-import { RenderTask } from '../../../../core/services/RenderServices';
 import { TimelineState } from '../../../../core/models/game_objects/RouteModel';
 import { UI_Region } from '../../../../core/plugins/UI_Plugin';
 
@@ -31,19 +30,7 @@ export class GameViewerSettings extends AbstractSettings<GameViewerSettingsProps
         switch (prop) {
             case GameViewerSettingsProps.TimelineState:
                 this.timeLineState = val;
-                this.registry.stores.gameStore.getRoutes().forEach(model => {
-                    switch(this.timeLineState) {
-                        case TimelineState.Stopped:
-                            model.reset();
-                            break;
-                        case TimelineState.Paused:
-                            model.pause();
-                            break;
-                        case TimelineState.Playing:
-                            model.play();
-                            break;
-                    }
-                });
+
 
                 break;
             default:

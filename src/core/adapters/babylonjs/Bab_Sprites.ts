@@ -42,6 +42,8 @@ export class Bab_Sprites implements ISpriteAdapter {
     createInstance(spriteObj: SpriteObj) {
         const spriteSheetObj = this.registry.stores.spriteSheetObjStore.getById(spriteObj.spriteSheetId);
 
+        if (!spriteSheetObj) { return; }
+
         const sprite = new Sprite("sprite", this.engineFacade.spriteLoader.managers.get(spriteSheetObj.id));
         sprite.width = spriteObj.getScale().x;
         sprite.height = spriteObj.getScale().y;

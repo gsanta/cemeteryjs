@@ -1,16 +1,14 @@
-import { NodeObj, BuiltinNodeType } from '../../../../core/models/game_objects/NodeObj';
+import { BuiltinNodeType, NodeObj } from '../../../../core/models/game_objects/NodeObj';
+import { AbstractCanvasPlugin } from '../../../../core/plugins/AbstractCanvasPlugin';
+import { AbstractPluginService } from '../../../../core/plugins/AbstractPluginService';
 import { Registry } from '../../../../core/Registry';
 import { AbstractNodeHandler } from './node_handlers/AbstractNodeHandler';
 import { KeyboardNodeHandler } from './node_handlers/KeyboardNodeHandler';
 import { MoveNodeHandler } from './node_handlers/MoveNodeHandler';
 import { SplitNodeHandler } from './node_handlers/SplitNodeHandler';
 import { TurnNodeHandler } from './node_handlers/TurnNodeHandler';
-import { RouteNodeHandler } from './node_handlers/RouteNodeHandler';
-import { AbstractPluginService } from '../../../../core/plugins/AbstractPluginService';
-import { GameViewerPlugin } from '../GameViewerPlugin';
-import { AbstractCanvasPlugin } from '../../../../core/plugins/AbstractCanvasPlugin';
-import { EngineService } from '../../../../core/services/EngineService';
 
+// TODO remove
 export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
     static serviceName = 'node-service';
     serviceName = NodeService.serviceName;
@@ -22,7 +20,6 @@ export class NodeService extends AbstractPluginService<AbstractCanvasPlugin> {
         this.handlersByType.set(BuiltinNodeType.Move, new MoveNodeHandler(plugin, registry));
         this.handlersByType.set(BuiltinNodeType.Turn, new TurnNodeHandler(plugin, registry));
         this.handlersByType.set(BuiltinNodeType.Split, new SplitNodeHandler(plugin, registry));
-        this.handlersByType.set(BuiltinNodeType.Route, new RouteNodeHandler(plugin, registry));
     }
     
     awake() {

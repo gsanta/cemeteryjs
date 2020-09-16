@@ -21,6 +21,8 @@ export class NodeConnectionObj implements IGameObj {
         return node === this.node1 ? this.node2 : this.node1;
     }
 
+    dispose() {}
+
     toJson(): NodeConnectionObjJson {
         return {
             id: this.id,

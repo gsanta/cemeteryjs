@@ -10,6 +10,8 @@ export class PathObj implements IGameObj {
         this.pathView = pathView;
     }
 
+    dispose() {}
+
     toJson() {
         return undefined;
     }

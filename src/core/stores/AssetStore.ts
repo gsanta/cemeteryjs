@@ -1,6 +1,7 @@
 import { AssetObj, AssetType } from "../models/game_objects/AssetObj";
 import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
+import { IdGenerator } from "./IdGenerator";
 
 export class AssetStore extends AbstractStore<AssetObj> {
     static id = 'asset-store'; 
@@ -11,16 +12,19 @@ export class AssetStore extends AbstractStore<AssetObj> {
     private assetsById: Map<string, AssetObj> = new Map();
     private assetsByPath: Map<string, AssetObj> = new Map();
     private registry: Registry;
+    private idGenerator: IdGenerator;
 
     constructor(registry: Registry) {
         super();
 
         this.registry = registry;
-        this.prefixIndexCounter = new Map([
-            ['model', 0],
-            ['texture', 0],
-            ['thumbnail', 0],
-        ]);
+    }
+
+    setIdGenerator(idGenerator: IdGenerator) {
+        if (this.idGenerator) {
+            throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
+        }
+        this.idGenerator = idGenerator;
     }
 
     deleteAsset(asset: AssetObj) {
@@ -40,7 +44,7 @@ export class AssetStore extends AbstractStore<AssetObj> {
                 break;
             default:
                 if (!asset.id) {
-                    asset.id = this.generateId(asset.assetType);
+                    asset.id = this.idGenerator.generateId(asset.assetType);
                 }
         
                 this.assetsById.set(asset.id, asset);
@@ -55,7 +59,7 @@ export class AssetStore extends AbstractStore<AssetObj> {
 
     private addModel(asset: AssetObj): string {
         if (!asset.id) {
-            asset.id = this.generateId('model');
+            asset.id = this.idGenerator.generateId('model');
         }
 
         this.assetsById.set(asset.id, asset);
@@ -64,7 +68,7 @@ export class AssetStore extends AbstractStore<AssetObj> {
 
     private addThumbnail(asset: AssetObj): string {
         if (!asset.id) {
-            asset.id = this.generateId('thumbnail');
+            asset.id = this.idGenerator.generateId('thumbnail');
         }
 
         this.assetsById.set(asset.id, asset);
@@ -73,7 +77,7 @@ export class AssetStore extends AbstractStore<AssetObj> {
 
     private addTexture(asset: AssetObj): string {
         if (!asset.id) {
-            asset.id = this.generateId('texture');
+            asset.id = this.idGenerator.generateId('texture');
         }
 
         this.assetsById.set(asset.id, asset);

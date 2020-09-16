@@ -78,8 +78,7 @@ export class PathTool extends PointerTool {
     private continuePath(path: PathView) {
         const pointer = this.registry.services.pointer.pointer;
         const newEditPoint = new PathPointView(path, new Point(pointer.down.x, pointer.down.y));
-        newEditPoint.id = this.getStore().generateId(PathPointViewType); 
-        path.addEditPoint(newEditPoint);
+        path.addPathPoint(newEditPoint);
     }
 
     private startNewPath() {
@@ -88,10 +87,8 @@ export class PathTool extends PointerTool {
 
         const path = new PathView();
         const editPoint = new PathPointView(path, pointer.down.clone());
-        editPoint.id = this.registry.stores.canvasStore.generateId(PathPointViewType); 
-        path.addEditPoint(editPoint);
-        path.id = this.registry.stores.canvasStore.generateId(ViewType.PathView);
-        this.registry.stores.canvasStore.addView(path);
+        path.addPathPoint(editPoint);
+        this.registry.stores.canvasStore.addItem(path);
         this.registry.stores.selectionStore.addItem(path);
     }
 

@@ -22,15 +22,12 @@ export class PathPointView extends ChildView {
         this.parent = parent;
     }
 
-    delete(): View[] {
-        this.parent.deleteChild(this);
-        return [this];
-    }
-
     move(delta: Point) {
         this.point.add(delta);
         this.parent.str = undefined;
     }
+
+    dispose() {}
 
     toString() {
         return `EditPoint: ${this.parent.id} ${this.point.toString()}`

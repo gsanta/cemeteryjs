@@ -15,11 +15,6 @@ export class GameService {
         this.registry = registry;
     }
 
-    resetPath(meshObjectName: string) {
-        const route = this.registry.stores.gameStore.byId<RouteModel>(meshObjectName);
-        route.reset();
-    }
-
     // updateConcepts(concepts: View[]) {
     //     this.deleteConcepts(concepts);
 

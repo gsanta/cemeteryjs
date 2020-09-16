@@ -7,6 +7,8 @@ export interface ObjJson {
 export interface IGameObj {
     id: string;
 
+    dispose(): void;
+
     toJson(): ObjJson;
     fromJson(json: ObjJson, registry: Registry);
 }

@@ -24,10 +24,6 @@ export interface SpriteObjJson {
     spriteSheetId: string;
     frameName: string;
 
-    delete() {
-        this.spriteAdapter && this.spriteAdapter.deleteInstance(this);
-    }
-
     move(point: Point) {
         this.startPos.add(point);
 
@@ -51,6 +47,10 @@ export interface SpriteObjJson {
 
     getScale(): Point {
         return this.startScale;
+    }
+
+    dispose() {
+        this.spriteAdapter && this.spriteAdapter.deleteInstance(this);
     }
 
     toJson(): SpriteObjJson {

@@ -36,7 +36,6 @@ export abstract class View {
 
     dimensions: Rectangle;
     move(delta: Point): void {}
-    delete(): View[] { return [this] }
 
     private activeChild: View;
 
@@ -63,6 +62,8 @@ export abstract class View {
     deleteChild(child: View) {
         this.children.splice(this.children.indexOf(child), 1);    
     }
+
+    abstract dispose(): void;
 
     toJson(): ViewJson {
         return {

@@ -5,6 +5,7 @@ import { NodeView } from "../../core/models/views/NodeView";
 import { UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
+import { ViewTag, ViewType } from "../../core/models/views/View";
 
 export class AnimationNodeObj extends NodeObj {
     type = BuiltinNodeType.Animation;
@@ -44,7 +45,7 @@ export class AnimationNodeObj extends NodeObj {
 
 const MeshControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.canvasStore.getMeshViews().map(meshView => meshView.id);
+        return context.registry.stores.canvasStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id);
     },
     
     defaultVal(context, element: UI_InputElement) {
