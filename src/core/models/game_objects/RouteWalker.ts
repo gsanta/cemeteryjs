@@ -36,14 +36,14 @@ export class RouteWalker {
         const meshObj = this.route.meshModel.meshView;
         const pathObj = this.route.pathModel.pathView;
 
-        if (!meshObj.obj.mesh) { return; }
+        // if (!meshObj.obj.mesh) { return; }
 
         this.route.path = this.createPathCorners(pathObj);
 
         this.route.currentGoal = this.route.path[1];
         const rotation =  this.route.path[1].point1.subtract(this.route.path[0].point2).normalize().vectorAngle();
 
-        meshObj.setPosition(this.route.path[0].point2);
+        meshObj.obj.setPosition(this.route.path[0].point2);
         meshObj.setRotation(-rotation);
         this.isStarted = true;
     }
@@ -61,7 +61,7 @@ export class RouteWalker {
 
     private getPointWithinRange(route: RouteModel): Point {
         const meshObj = route.meshModel.meshView;
-        const meshPos = meshObj.getPosition();
+        const meshPos = meshObj.obj.getPosition();
 
         console.log(meshPos + '  ' + route.currentGoal.point1)
 
@@ -83,7 +83,7 @@ export class RouteWalker {
         this.resetIfFianlPointReached(this.route);
         this.turnRoute();
         
-        meshObj.moveForward(-speed);
+        // meshObj.moveForward(-speed);
     }
 
     private turnRoute() {
@@ -91,7 +91,7 @@ export class RouteWalker {
         const pathObj = this.route.pathModel.pathView;
 
         if (this.route.isTurning) {
-            const rotation = this.bezierRotator.getRotation(this.route.currentGoal, meshObj.getPosition());
+            const rotation = this.bezierRotator.getRotation(this.route.currentGoal, meshObj.obj.getPosition());
             const nextGoal = this.route.path[this.route.path.indexOf(this.route.currentGoal) + 1];
             const finalRotation = nextGoal.point1.subtract(this.route.currentGoal.point2).normalize().vectorAngle();
 

@@ -63,6 +63,8 @@ export abstract class View {
         this.children.splice(this.children.indexOf(child), 1);    
     }
 
+    getScale() { return 1; }
+
     abstract dispose(): void;
 
     toJson(): ViewJson {

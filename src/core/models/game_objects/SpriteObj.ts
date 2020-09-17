@@ -19,7 +19,7 @@ export interface SpriteObjJson {
 
     sprite: Sprite;
     startPos: Point;
-    private startScale: Point = new Point(1, 1);
+    startScale: Point = new Point(1, 1);
 
     spriteSheetId: string;
     frameName: string;
@@ -35,8 +35,17 @@ export interface SpriteObjJson {
     setPosition(pos: Point) {
         this.startPos = pos;
 
-        this.spriteAdapter && this.spriteAdapter.setScale(this, pos);
+        this.spriteAdapter && this.spriteAdapter.setPosition(this, pos);
+    }
 
+    getPosition(): Point {
+        let pos = this.spriteAdapter && this.spriteAdapter.getPosition(this);
+
+        if (!pos) {
+            pos = this.startPos;
+        }
+
+        return pos;
     }
 
     setScale(scale: Point) {
@@ -46,7 +55,9 @@ export interface SpriteObjJson {
     }
 
     getScale(): Point {
-        return this.startScale;
+        let scale = this.spriteAdapter && this.spriteAdapter.getScale(this);
+        
+        return scale || this.startScale;
     }
 
     dispose() {

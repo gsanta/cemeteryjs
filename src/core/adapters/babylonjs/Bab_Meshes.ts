@@ -5,7 +5,7 @@ import { Registry } from "../../Registry";
 import { RectangleFactory } from "../../stores/RectangleFactory";
 import { IMeshAdapter } from "../IMeshAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
-import { Axis, Space, Quaternion, Vector3 } from "babylonjs";
+import { Axis, Space, Quaternion, Vector3, StandardMaterial, Texture } from "babylonjs";
 
 export  class Bab_Meshes implements IMeshAdapter {
     
@@ -13,12 +13,41 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     private registry: Registry;
     private engineFacade: Bab_EngineFacade;
-    private rectangleFactory: RectangleFactory = new RectangleFactory(0.1);
+    private rectangleFactory: RectangleFactory = new RectangleFactory(0.1, 'black');
 
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
     }
+
+    setPosition(meshObj: MeshObj, pos: Point): void {
+        const mesh = this.meshes.get(meshObj.id);
+        if (!mesh) { return; }
+
+        mesh.position = new Vector3(pos.x, 0, pos.y);
+    }
+
+    getPosition(meshObj: MeshObj): Point {
+        const mesh = this.meshes.get(meshObj.id);
+
+        if (mesh) {
+            return new Point(mesh.position.x, mesh.position.z);
+        }
+    }
+
+    setScale(meshObj: MeshObj, point: Point) {
+        const mesh = this.meshes.get(meshObj.id);
+        if (mesh) {
+            mesh.scaling = new Vector3(point.x, mesh.scaling.y, point.y);
+        }
+    } 
+
+    getScale(meshObj: MeshObj): Point {
+        const mesh = this.meshes.get(meshObj.id);
+        if (mesh) {
+            return new Point(mesh.scaling.x, mesh.scaling.y);
+        }
+    } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
         const mesh = this.meshes.get(meshObj.id);
@@ -50,9 +79,8 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     async createInstance(meshObj: MeshObj): Promise<void> {
         if (!meshObj.meshView.obj.modelId) {
-            const mesh = this.rectangleFactory.createMesh(meshObj.meshView, this.engineFacade.scene);
+            const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
             this.meshes.set(meshObj.id, mesh);
-            meshObj.meshView.obj.mesh = mesh;
             return;
         }
 
@@ -68,5 +96,20 @@ export  class Bab_Meshes implements IMeshAdapter {
         }
 
         this.meshes.delete(meshObj.id);
+    }
+
+    createMaterial(meshObj: MeshObj) {
+        const mesh = this.meshes.get(meshObj.id);
+
+        if (!mesh) { return; }
+
+        const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.textureId);
+
+        if (!textureObj) {
+            return;
+        }
+        
+        (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+        (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
     }
 }

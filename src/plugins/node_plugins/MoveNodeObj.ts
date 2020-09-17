@@ -7,6 +7,7 @@ import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
 import { MeshControl } from "./MeshNodeObj";
 import { MeshView } from "../../core/models/views/MeshView";
+import { Point } from "../../utils/geometry/shapes/Point";
 
 export class MoveNodeObj extends NodeObj {
     type = BuiltinNodeType.Move;
@@ -49,7 +50,7 @@ export class MoveNodeObj extends NodeObj {
         const meshId = this.getParam('mesh').val;
 
         const meshView = registry.stores.canvasStore.getById(meshId) as MeshView;
-        meshView.obj.move('z', 2);
+        meshView.obj.move(new Point(0, 2));
     }
 
     newInstance(graph: NodeGraph): NodeObj {

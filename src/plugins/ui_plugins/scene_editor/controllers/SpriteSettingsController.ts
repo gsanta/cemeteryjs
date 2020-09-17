@@ -43,7 +43,7 @@ const FrameName: PropControl<string> = {
         const spriteView = (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView());
         context.releaseTempVal((val) => spriteView.obj.frameName = val);
         context.registry.services.history.createSnapshot();
-        context.registry.engine.sprites.createInstance(spriteView.obj);
+        context.registry.engine.sprites.updateInstance(spriteView.obj);
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
@@ -54,8 +54,10 @@ const SelectSpriteSheet: PropControl<string> = {
     },
 
     change(val, context) {
-        (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).obj.spriteSheetId = val;
+        const spriteView = (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView());
+        spriteView.obj.spriteSheetId = val;
         context.registry.services.history.createSnapshot();
+        context.registry.engine.sprites.updateInstance(spriteView.obj);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 

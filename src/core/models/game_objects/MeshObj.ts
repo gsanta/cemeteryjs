@@ -1,4 +1,5 @@
 import { Mesh, Vector3 } from 'babylonjs';
+import { Point } from '../../../utils/geometry/shapes/Point';
 import { IMeshAdapter } from '../../adapters/IMeshAdapter';
 import { MeshView } from '../views/MeshView';
 import { IGameObj, ObjJson } from './IGameObj';
@@ -10,7 +11,8 @@ export class MeshObj implements IGameObj {
         this.meshView = meshView;
     }
 
-    mesh: Mesh;
+    private startPos: Point;
+    private scale: number = 1;
     id: string;
 
     modelId: string;
@@ -27,12 +29,28 @@ export class MeshObj implements IGameObj {
         return this.meshView.animations;
     }
 
-    move(axis: 'x' | 'y' | 'z', amount: number, space?: 'local' | 'global') {
-        // this.add(point);
+    move(point: Point) {
+        this.startPos.add(point);
 
         if (this.meshAdapter) {
-            this.meshAdapter.translate(this, axis,  amount, space);
+            this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
         }
+    }
+
+    setPosition(pos: Point) {
+        this.startPos = pos;
+
+        this.meshAdapter && this.meshAdapter.setPosition(this, pos);
+    }
+
+    getPosition(): Point {
+        let pos = this.meshAdapter && this.meshAdapter.getPosition(this);
+
+        if (!pos) {
+            pos = this.startPos;
+        }
+
+        return pos;
     }
 
     rotate(angle: number) {
@@ -42,9 +60,15 @@ export class MeshObj implements IGameObj {
     }
 
     setScale(scale: number) {
-        if (this.meshView.obj.mesh) {
-            this.meshView.obj.mesh.scaling = new Vector3(scale, scale, scale);
+        this.scale = scale;
+        if (this.meshAdapter) {
+            return this.meshAdapter.setScale(this, new Point(scale, scale));
         }
+    }
+
+    getScale(): Point {
+        const scale = this.meshAdapter && this.meshAdapter.getScale(this);
+        return scale || new Point(this.scale, this.scale);
     }
 
     dispose() {

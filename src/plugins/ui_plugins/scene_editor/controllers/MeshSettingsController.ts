@@ -160,7 +160,7 @@ const TextureControl: PropControl<string> = {
         controller.meshView.obj.textureId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
 
-        context.registry.engine.meshLoader.createMaterial(controller.meshView.obj);
+        context.registry.engine.meshes.createMaterial(controller.meshView.obj);
         context.registry.services.history.createSnapshot();
     }
 }

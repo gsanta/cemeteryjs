@@ -73,19 +73,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
         clone.rotation.y = meshObj.meshView.getRotation();
 
-        meshObj.meshView.obj.mesh = clone;
-        this.createMaterial(meshObj);
-    }
-
-    createMaterial(meshModel: MeshObj) {
-        const textureObj = this.registry.stores.assetStore.getAssetById(meshModel.meshView.obj.textureId);
-
-        if (!meshModel.meshView.obj.mesh || !textureObj) {
-            return;
-        }
-        
-        (<StandardMaterial> meshModel.meshView.obj.mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
-        (<StandardMaterial> meshModel.meshView.obj.mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+        this.engineFacade.meshes.createMaterial(meshObj);
     }
 
     private loadMesh(asset: AssetObj): Promise<Mesh> {

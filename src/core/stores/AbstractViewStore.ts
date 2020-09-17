@@ -109,7 +109,9 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     }
 
     clear() {
-        this.views.forEach(view => this.removeView(view));
+        while(this.views.length > 0) {
+            this.removeView(this.views[0]);
+        }
         this.idMap = new Map();
         this.idGenerator.clear();
         this.clearSelection();

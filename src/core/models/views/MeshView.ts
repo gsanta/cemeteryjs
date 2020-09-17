@@ -1,12 +1,9 @@
-import { Mesh, Vector3, Axis, Space, Quaternion } from 'babylonjs';
-import { IGameModel } from '../game_objects/IGameModel';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { toVector3 } from '../../../utils/geometry/GeomUtils';
-import { toDegree } from '../../../utils/geometry/Measurements';
-import { ViewType, View, ViewJson } from './View';
-import { MeshObj } from '../game_objects/MeshObj';
 import { Registry } from '../../Registry';
+import { IGameModel } from '../game_objects/IGameModel';
+import { MeshObj } from '../game_objects/MeshObj';
+import { View, ViewJson, ViewType } from './View';
 
 export enum WorldItemShape {
     RECTANGLE = 'rect',
@@ -63,61 +60,18 @@ export class MeshView extends View implements IGameModel {
         super();
         this.dimensions = config && config.dimensions;
         this.obj = new MeshObj(this);
-    }
-
-    getDirection(): Point {
-        return new Point(Math.sin(this.getRotation()), Math.cos(this.getRotation()));
-    }
-
-    setDirection(newDir: Point): void {
-        const currentDir = this.getDirection();
-        const angle1 = Math.atan2(newDir.y, newDir.x) - Math.atan2(currentDir.y, currentDir.x);
-        console.log(toDegree(angle1));
-        const angle2 = Math.atan2(currentDir.y, currentDir.x) - Math.atan2(newDir.y, newDir.x);
-        const angle = Math.min(angle1, angle2);
-        this.rotation += angle;
-    }
-
-    getPosition(): Point {
-        return this.obj.mesh ? to2DPoint(this.obj.mesh.getAbsolutePosition()) : this.dimensions.getBoundingCenter();
-    }
-
-    setPosition(point: Point) {
-        this.obj.mesh && this.obj.mesh.setAbsolutePosition(toVector3(point, this.yPos));
-    }
-
-    moveForward(amount: number): void {
-        // this.dimensions.translate(vector);
-
-        this.obj.mesh && this.obj.mesh.translate(Axis.Z, amount, Space.LOCAL);
-    }
-
-    moveBackward(amount: number): void {
-        // this.dimensions.translate(vector);
-
-        this.obj.mesh && this.obj.mesh.translate(Axis.Z, amount, Space.LOCAL);
+        if (config && config.dimensions) {
+            this.obj.setPosition(this.dimensions.getBoundingCenter().div(10));
+        }
     }
 
     getRotation(): number {
         return this.rotation;
     }
 
-    rotateBy(rad: number) {
-        if (this.obj.mesh) {
-            this.obj.mesh.rotation.y += rad;
-        } else {
-            this.rotation += rad;
-        }
-    }
-
     setRotation(angle: number) {
         this.rotation = angle;
         this.obj.rotate(angle);
-    }
-
-    rotate(angle: number) {
-        this.obj.mesh.rotation.y = 0;
-        this.obj.mesh.rotate(Axis.Y, angle, Space.LOCAL);
     }
 
     setScale(scale: number) {
@@ -133,10 +87,8 @@ export class MeshView extends View implements IGameModel {
 
     move(point: Point) {
         this.dimensions = this.dimensions.translate(point);
-        if (this.obj.mesh) {
-            const rect = <Rectangle> this.dimensions.div(10);
-            this.obj.mesh.setAbsolutePosition(new Vector3(rect.topLeft.x + rect.getWidth() / 2, 0, -rect.topLeft.y - rect.getHeight() / 2));
-        }
+
+        this.obj.move(point.div(10).negateY());
     }
 
     dispose() {
@@ -158,6 +110,7 @@ export class MeshView extends View implements IGameModel {
 
     fromJson(json: MeshViewJson, registry: Registry) {
         super.fromJson(json, registry);
+        this.obj.setPosition(this.dimensions.getBoundingCenter().div(10));
         this.rotation = json.rotation;
         this.obj.modelId = json.modelId;
         this.scale = json.scale;
@@ -165,9 +118,5 @@ export class MeshView extends View implements IGameModel {
         this.obj.textureId = json.textureId;
         this.thumbnailData = json.thumbnailData;
     }
-}
-
-function to2DPoint(vector3: Vector3): Point {
-    return new Point(vector3.x, vector3.z);
 }
 
