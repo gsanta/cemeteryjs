@@ -2,18 +2,18 @@ import { MeshObj } from "../../../core/models/game_objects/MeshObj";
 import { PathObj } from "../../../core/models/game_objects/PathObj";
 import { Point } from "../../../utils/geometry/shapes/Point";
 
-const defaultSpeed = 1000 / 4;
+const speedConstant = 250;
 
 export class RouteWalker {
     private meshObj: MeshObj;
     private pathObj: PathObj;
     private prevTime: number;
-    private isFinished = false;
     private currentPointIndex: number = -1;
     private distance: number;
-    private relativeDistance: number;
     private progress: number = 0;
     private points: Point[];
+
+    private speed = 1;
     private vector: Point;
 
     constructor(meshObj: MeshObj, pathObj: PathObj) {
@@ -23,12 +23,16 @@ export class RouteWalker {
     }
 
     step() {
-        const delta = this.computeDelta() / defaultSpeed;
+        const delta = this.computeDelta() * this.speed / speedConstant;
         this.progress += delta;
         
         this.updateControlPoint();
         console.log('delta: ' + this.progress + ' len: ' + this.vector.len());
         this.meshObj.setPosition(this.calcPosition());
+    }
+
+    setSpeed(speed: number) {
+        this.speed = speed;
     }
 
     private updateControlPoint() {

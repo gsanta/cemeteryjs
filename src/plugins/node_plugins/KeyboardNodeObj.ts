@@ -16,7 +16,8 @@ export class KeyboardNodeObj extends NodeObj {
             name: 'key',
             val: '',
             inputType: 'list',
-            valueType: 'string'
+            valueType: 'string',
+            isLink: 'output'
         }
     ];
 

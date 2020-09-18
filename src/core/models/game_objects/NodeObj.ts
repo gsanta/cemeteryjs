@@ -51,6 +51,7 @@ export interface NodeParam {
     val: any;
     inputType: 'textField' | 'list';
     valueType: 'string' | 'number';
+    isLink?: 'input' | 'output' | 'both' | 'none';
 }
 
 export abstract class NodeObj implements IGameObj {
@@ -84,6 +85,10 @@ export abstract class NodeObj implements IGameObj {
     getParam(name: string): NodeParam {
         this.checkParam(name);
         return this.cachedParams.get(name);
+    }
+
+    hasParam(name: string): boolean {
+        return this.cachedParams.get(name) !== undefined;
     }
 
     private checkParam(name: string) {

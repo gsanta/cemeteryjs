@@ -24,7 +24,7 @@ export class RouteNodeObj extends NodeObj {
     params: NodeParam[] = [
         {
             name: 'speed',
-            val: '',
+            val: 1,
             inputType: 'textField',
             valueType: 'number'
         }
@@ -54,6 +54,11 @@ export class RouteNodeObj extends NodeObj {
         }
     ];
 
+    setParam(name: string, value: any) {
+        super.setParam(name, value);
+        this.routeNodeExecutor && this.routeNodeExecutor.routWalker.setSpeed(value);
+    }
+
     execute(registry: Registry) {
         if (this.connections.get('mesh') && this.connections.get('path')) {
             this.routeNodeExecutor.execute(registry);
@@ -66,6 +71,7 @@ export class RouteNodeObj extends NodeObj {
 
     newControllerInstance(registry: Registry): AbstractController {
         const controller = new AbstractController(null, registry);
+        controller.registerPropControl('speed', SpeedControl);
         return controller;    
     }
 }
@@ -73,7 +79,7 @@ export class RouteNodeObj extends NodeObj {
 const SpeedControl: PropControl<string> = {
     defaultVal(context, element) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        return nodeView.obj.getParam('speed');
+        return nodeView.obj.getParam('speed').val;
     },
     
     change(val, context) {
@@ -86,9 +92,11 @@ const SpeedControl: PropControl<string> = {
         context.clearTempVal();
 
         try {
-            const speedNum = parseFloat(speed);
-            const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-            nodeView.obj.setParam('speed', speedNum);
+            if (speed) {
+                const speedNum = parseFloat(speed);
+                const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+                nodeView.obj.setParam('speed', speedNum);
+            }
         } catch (e) {
             console.log(e);
         }
@@ -100,7 +108,7 @@ class RouteNodeExecutor {
 
     private node: RouteNodeObj;
     private registry: Registry;
-    private routWalker: RouteWalker;
+    routWalker: RouteWalker;
 
     constructor(node: RouteNodeObj) {
         this.node = node;

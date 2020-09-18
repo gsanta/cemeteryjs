@@ -65,7 +65,7 @@ export class NodeRenderer extends AbstractController {
         foreignObject.controller = this.controller;
     
         this.renderTitle(foreignObject, nodeView);
-        this.renderJoinPoints(group, nodeView);
+        this.renderLinks(group, nodeView);
     
         let column = foreignObject.column({ key: 'data-row' });
         column.margin = `${this.joinPointsHeight}px 0 0 0`;
@@ -87,28 +87,23 @@ export class NodeRenderer extends AbstractController {
         title.color = colors.textColor;
     }
     
-    private renderJoinPoints(svgGroup: UI_SvgGroup, nodeView: NodeView) {
-        const inputSlots = nodeView.obj.inputs;
-        const outputSlots = nodeView.obj.outputs;
-    
-        inputSlots.forEach(inputSlot => {
-            inputSlot
-        });
-    
-        const rows = inputSlots.length > outputSlots.length ? inputSlots.length : outputSlots.length;
+    private renderLinks(svgGroup: UI_SvgGroup, nodeView: NodeView) {
         let inputs: number = 0;
         let outputs: number = 0;
     
         let rowHeight = 20;
-        nodeView.joinPointViews.forEach(joinPointView => {
-            joinPointView.isInput ? (inputs++) : (outputs++);
-            this.renderLabeledJoinPointInto(svgGroup, nodeView, joinPointView);
+        nodeView.joinPointViews
+        .forEach(joinPointView => {
+            if (!nodeView.obj.hasParam(joinPointView.slotName)) {
+                joinPointView.isInput ? (inputs++) : (outputs++);
+            }
+            this.renderJoinPointInto(svgGroup, nodeView, joinPointView);
         });
     
         this.joinPointsHeight = inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
     }
     
-    private renderLabeledJoinPointInto(svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView) {
+    private renderJoinPointInto(svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView) {
         const circle = svgGroup.circle();
         svgGroup.data = nodeView;
     
@@ -118,14 +113,17 @@ export class NodeRenderer extends AbstractController {
         circle.fillColor = colors.grey4
         circle.data = joinPointView;
         circle.strokeColor = colors.panelBackground;
-    
-        const text = svgGroup.svgText({key: joinPointView.slotName});
-        text.text = joinPointView.slotName;
-        const textOffsetX = joinPointView.isInput ? 10 : -10;
-        text.x = joinPointView.point.x + textOffsetX;
-        text.y = joinPointView.point.y + 5;
-        text.fontSize = '12px';
-        text.isBold = true;
-        joinPointView.isInput === false && (text.anchor = 'end');
+
+        if (!nodeView.obj.hasParam(joinPointView.slotName)) {
+            const text = svgGroup.svgText({key: joinPointView.slotName});
+            text.text = joinPointView.slotName;
+            const textOffsetX = joinPointView.isInput ? 10 : -10;
+            text.x = joinPointView.point.x + textOffsetX;
+            text.y = joinPointView.point.y + 5;
+            text.fontSize = '12px';
+            text.isBold = true;
+            joinPointView.isInput === false && (text.anchor = 'end');
+        }
+
     }
 }
