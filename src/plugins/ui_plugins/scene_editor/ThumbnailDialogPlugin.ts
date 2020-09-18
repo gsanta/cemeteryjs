@@ -5,7 +5,6 @@ import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { ToolType } from '../../../core/plugins/tools/Tool';
-import { PluginServices } from '../../../core/plugins/PluginServices';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
@@ -27,12 +26,6 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         });
 
         this.controllers.set(ThumbnailMakerControllerId, new ThumbnailMakerController(this, registry));
-
-
-        this.pluginServices = new PluginServices(
-            [
-            ]
-        );
     }
 
     renderInto(layout: UI_Layout): UI_Layout {

@@ -1,7 +1,6 @@
 import { AbstractTool } from "../../../../core/plugins/tools/AbstractTool";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
 import { BuiltinNodeType } from "../../../../core/models/game_objects/NodeObj";
-import { ToolType } from "../../../../core/plugins/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { AbstractCanvasPlugin } from "../../../../core/plugins/AbstractCanvasPlugin";
 

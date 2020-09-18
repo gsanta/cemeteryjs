@@ -4,7 +4,6 @@ import { Point } from '../../../utils/geometry/shapes/Point';
 import { Registry } from '../../../core/Registry';
 import { Camera3D } from '../../../core/models/misc/camera/Camera3D';
 import { AbstractCanvasPlugin } from '../../../core/plugins/AbstractCanvasPlugin';
-import { EngineService } from '../../../core/services/EngineService';
 import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 
 export class AxisGizmo {

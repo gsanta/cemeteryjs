@@ -66,8 +66,4 @@ export abstract class AbstractNodeHandler<T extends NodeObj = NodeObj> {
     protected rightToLeft() {
         
     }
-
-    protected getNodeService() {
-        return this.plugin.pluginServices.byName<NodeService>(NodeService.serviceName);
-    }
 }

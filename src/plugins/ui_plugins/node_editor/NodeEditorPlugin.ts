@@ -65,7 +65,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         BuiltinNodeType.Move,
         BuiltinNodeType.Split,
         BuiltinNodeType.Turn,
-        BuiltinNodeType.Route,
         BuiltinNodeType.Path
     ];
 

@@ -1,5 +1,4 @@
 import { ICamera } from '../models/misc/camera/ICamera';
-import { PluginServices } from './PluginServices';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { ToolController, ToolControllerId } from './controllers/ToolController';
@@ -29,8 +28,6 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     htmlElement: HTMLElement;
 
     isFullScreen: boolean = false;
-
-    pluginServices: PluginServices<this> = new PluginServices([]);
 
     dropItem: UI_ListItem;
 
@@ -74,7 +71,6 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     mounted(htmlElement: HTMLElement) {
         this.htmlElement = htmlElement;
-        this.pluginServices.services.forEach(service => service.awake());
     }
 
     protected renderInto(layout: UI_Layout) { }

@@ -4,7 +4,7 @@ import { KeyboardNodeObj } from '../../plugins/node_plugins/KeyboardNodeObj';
 import { MeshNodeObj } from '../../plugins/node_plugins/MeshNodeObj';
 import { MoveNodeObj } from '../../plugins/node_plugins/MoveNodeObj';
 import { PathNodeObj } from '../../plugins/node_plugins/PathNodeObj';
-import { RouteNodeObj } from '../../plugins/node_plugins/RouteNodeObj';
+import { RouteNodeObj } from '../../plugins/node_plugins/route_node/RouteNodeObj';
 import { SplitNodeObj } from '../../plugins/node_plugins/SplitNodeObj';
 import { TurnNodeObj } from '../../plugins/node_plugins/TurnNodeObj';
 import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';

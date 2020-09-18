@@ -4,7 +4,6 @@ import { SpriteView, SpriteViewType } from '../../../../core/models/views/Sprite
 import { ViewType } from '../../../../core/models/views/View';
 import { UI_Plugin, UI_Region } from '../../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
-import { EngineService } from '../../../../core/services/EngineService';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
 import { MeshSettingsController, MeshSettingsControllerId, MeshSettingsProps } from './MeshSettingsController';
 import { PathSettingsController } from './PathSettingsController';
@@ -20,8 +19,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     private pathObjectSettingsController: PathSettingsController;
     private spriteSettingsController: SpriteSettingsController;
     private meshSettingsController: MeshSettingsController;
-
-    private engine: EngineService;
 
     constructor(registry: Registry) {
         super(registry);
