@@ -19,14 +19,17 @@ export const SplitNodeFacotry: NodeFactory = {
 export class SplitNodeObj extends NodeObj {
     type = BuiltinNodeType.Split;
     category = NodeCategory.Default;
-    params: NodeParam[] = [
-        {
+
+    constructor(nodeGraph: NodeGraph) {
+        super(nodeGraph);
+
+        this.addParam({
             name: 'route',
             val: '',
             inputType: 'textField',
             valueType: 'string'
-        }
-    ];
+        });
+    }
 
     inputs = [
         {

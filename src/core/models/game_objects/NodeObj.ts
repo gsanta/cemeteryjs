@@ -61,7 +61,7 @@ export abstract class NodeObj implements IGameObj {
     category: string;
 
     private cachedParams: Map<string, NodeParam> = new Map();
-    params: NodeParam[];
+    private params: NodeParam[] = [];
 
     isDirty = false;
     label: string;
@@ -86,6 +86,10 @@ export abstract class NodeObj implements IGameObj {
         return this.cachedParams.get(name);
     }
 
+    getParams(): NodeParam[] {
+        return this.params;
+    }
+
     hasParam(name: string): boolean {
         return this.cachedParams.get(name) !== undefined;
     }
@@ -108,6 +112,7 @@ export abstract class NodeObj implements IGameObj {
 
     addParam(param: NodeParam) {
         this.params.push(param);
+        this.cachedParams.set(param.name, param);
     }
 
     findSlotByName(name: string) {

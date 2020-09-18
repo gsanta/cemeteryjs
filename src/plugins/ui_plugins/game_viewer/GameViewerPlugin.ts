@@ -7,7 +7,6 @@ import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { GameViewerController, GameViewerProps } from './GameViewerController';
 import { Gizmos } from './Gizmos';
-import { NodeService } from './services/NodeService';
 import { GameViewerSettings } from './settings/GameViewerSettings';
 import { GameTool, GameToolType } from './tools/GameTool';
 (<any> window).earcut = require('earcut');

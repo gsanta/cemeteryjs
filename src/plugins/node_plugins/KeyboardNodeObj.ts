@@ -26,15 +26,17 @@ export class KeyboardNodeObj extends NodeObj {
     type = BuiltinNodeType.Keyboard;
     category = NodeCategory.Default;
 
-    params: NodeParam[] = [
-        {
+    constructor(nodeGraph: NodeGraph) {
+        super(nodeGraph);
+
+        this.addParam({
             name: 'key1',
             val: '',
             inputType: 'list',
             valueType: 'string',
             isLink: 'output'
-        }
-    ];
+        });
+    }
     
     execute(registry: Registry) {
         const keyParams = this.getKeyParams();
@@ -77,7 +79,7 @@ const KeyControl: PropControl<string> = {
         nodeView.obj.setParam(element.prop, val);
         context.registry.services.history.createSnapshot();
 
-        nodeView.obj.params.push(        {
+        nodeView.obj.addParam(        {
             name: 'key2',
             val: '',
             inputType: 'list',

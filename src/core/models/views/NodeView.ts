@@ -20,7 +20,7 @@ export interface NodeViewJson extends ViewJson {
 
 const HEADER_HIGHT = 30;
 const SLOT_HEIGHT = 20;
-const INPUT_HEIGHT = 30;
+const INPUT_HEIGHT = 35;
 const NODE_PADDING = 10;
 
 export class NodeView extends View {
@@ -53,7 +53,9 @@ export class NodeView extends View {
             ...this.obj.outputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: false}))
         ];
         
-        const paramRelatedJoinPointViews = this.obj.params.map(param => new JoinPointView(this, {slotName: param.name, isInput: false}));
+        const paramRelatedJoinPointViews = this.obj.getParams()
+            .filter(param => param.isLink && param.isLink !== 'none')
+            .map(param => new JoinPointView(this, {slotName: param.name, isInput: false}));
         
         this.joinPointViews.push(...[...standaloneJoinPointViews, ...paramRelatedJoinPointViews]);
         this.updateDimensions();
@@ -62,7 +64,7 @@ export class NodeView extends View {
     updateDimensions() {
         const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
         this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING; 
-        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.params.length ? this.obj.params.length : 1) + NODE_PADDING * 2;
+        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.getParams().length ? this.obj.getParams().length : 1) + NODE_PADDING * 2;
         this.dimensions.setHeight(height);
 
         this.initStandaloneJoinPointPositions();
@@ -82,7 +84,7 @@ export class NodeView extends View {
     private initParamRelatedJoinPointPositions() {
         this.joinPointViews.filter(joinPointView => this.obj.hasParam(joinPointView.slotName)).forEach((joinPointView) => {
             const x = joinPointView.isInput ? 0 : this.dimensions.getWidth();
-            const paramIndex = this.obj.params.findIndex(param => param.name === joinPointView.slotName);
+            const paramIndex = this.obj.getParams().findIndex(param => param.name === joinPointView.slotName);
             const y = paramIndex * INPUT_HEIGHT + this.paramsYPosStart + INPUT_HEIGHT / 2;
             joinPointView.point = new Point(x, y);
             joinPointView.dimensions = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));

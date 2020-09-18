@@ -23,15 +23,17 @@ export const PathNodeFacotry: NodeFactory = {
 export class PathNodeObj extends NodeObj {
     type = BuiltinNodeType.Path;
     category = NodeCategory.Default;
+    
+    constructor(nodeGraph: NodeGraph) {
+        super(nodeGraph);
 
-    params: NodeParam[] = [
-        {
+        this.addParam({
             name: 'path',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        }
-    ];
+        });
+    }
 
     outputs = [
         {

@@ -4,7 +4,7 @@ import { UI_Plugin } from "../UI_Plugin";
 import { AbstractController } from "./AbstractController";
 
 
-export class NodeController extends AbstractController<any> {
+export abstract class NodeController extends AbstractController<any> {
     nodeView: NodeView;
 
     constructor(plugin: UI_Plugin, registry: Registry) {

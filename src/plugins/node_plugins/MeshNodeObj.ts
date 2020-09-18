@@ -24,14 +24,16 @@ export class MeshNodeObj extends NodeObj {
     type = BuiltinNodeType.Mesh;
     category = NodeCategory.Default;
 
-    params: NodeParam[] = [
-        {
+    constructor(nodeGraph: NodeGraph) {
+        super(nodeGraph);
+
+        this.addParam({
             name: 'mesh',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        }
-    ];
+        });
+    }
 
     outputs = [
         {

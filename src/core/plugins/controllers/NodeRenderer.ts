@@ -25,7 +25,7 @@ export class NodeRenderer extends AbstractController {
     }
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
-        nodeView.obj.params.map(param => {
+        nodeView.obj.getParams().map(param => {
             let row = column.row({key: param.name});
             row.height = '35px';
 

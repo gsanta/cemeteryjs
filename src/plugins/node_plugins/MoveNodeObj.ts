@@ -28,26 +28,30 @@ export class MoveNodeObj extends NodeObj {
     type = BuiltinNodeType.Move;
     category = NodeCategory.Default;
 
-    params: NodeParam[] = [
-        {
+    constructor(nodeGraph: NodeGraph) {
+        super(nodeGraph);
+
+        this.addParam({
             name: 'mesh',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        },
-        {
+        });
+
+        this.addParam({
             name: 'move',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        },
-        {
+        });
+
+        this.addParam({
             name: 'speed',
             val: 0.5,
             inputType: 'textField',
             valueType: 'number'
-        }
-    ];
+        });
+    }
 
     inputs = [
         {

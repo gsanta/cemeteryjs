@@ -32,16 +32,14 @@ export class RouteNodeObj extends NodeObj {
         super(nodeGraph);
 
         this.routeNodeExecutor = new RouteNodeExecutor(this);
-    }
-    
-    params: NodeParam[] = [
-        {
+
+        this.addParam({
             name: 'speed',
             val: 1,
             inputType: 'textField',
             valueType: 'number'
-        }
-    ];
+        })
+    }
 
     inputs = [
         {

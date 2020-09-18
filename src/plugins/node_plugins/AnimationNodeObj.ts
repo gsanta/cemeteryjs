@@ -24,20 +24,24 @@ export const AnimationNodeFacotry: NodeFactory = {
 export class AnimationNodeObj extends NodeObj {
     type = BuiltinNodeType.Animation;
     category = NodeCategory.Default;
-    params: NodeParam[] = [
-        {
+
+    constructor(nodeGraph: NodeGraph) {
+        super(nodeGraph);
+
+        this.addParam({
             name: 'mesh',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        },
-        {
+        });
+        
+        this.addParam({
             name: 'animation',
             val: '',
             inputType: 'list',
             valueType: 'string'
-        }
-    ];
+        })
+    }
 
     inputs = [
         {
