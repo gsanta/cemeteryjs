@@ -6,14 +6,16 @@ import { AbstractCanvasPlugin } from "../../../../core/plugins/AbstractCanvasPlu
 
 export const GameToolType = 'game-tool';
 export class GameTool extends AbstractTool {
+    // TODO: not a good place for it
+    lastExecutedKey: string;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(GameToolType, plugin, registry);
     }
 
     keydown(e: IKeyboardEvent) {
+        this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
         this.registry.services.node.graph.getNodesByType(BuiltinNodeType.Keyboard)
-            .filter(node => node.obj.getParam('key').val === String.fromCharCode(e.keyCode).toLocaleLowerCase())
             .forEach(node => node.obj.execute(this.registry));
     }
 }

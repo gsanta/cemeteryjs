@@ -7,6 +7,7 @@ import { JoinPointView } from "./child_views/JoinPointView";
 import { ViewType, View, ViewJson } from "./View";
 import { Registry } from "../../Registry";
 import { sizes } from "../../ui_components/react/styles";
+import { AbstractController } from "../../plugins/controllers/AbstractController";
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -31,6 +32,8 @@ export class NodeView extends View {
     settings: ViewSettings<any, NodeView>;
     joinPointViews: JoinPointView[] = [];
 
+    controller: AbstractController<any>;
+
     private paramsYPosStart: number;
 
     constructor(config?: {nodeType: string, dimensions?: Rectangle, node: NodeObj}) {
@@ -45,13 +48,6 @@ export class NodeView extends View {
     }
 
     private setup() {
-
-        
-        const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
-        this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING; 
-        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.params.length ? this.obj.params.length : 1) + NODE_PADDING * 2;
-        this.dimensions.setHeight(height);
-        
         const standaloneJoinPointViews = [
             ...this.obj.inputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: true})),
             ...this.obj.outputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: false}))
@@ -60,13 +56,21 @@ export class NodeView extends View {
         const paramRelatedJoinPointViews = this.obj.params.map(param => new JoinPointView(this, {slotName: param.name, isInput: false}));
         
         this.joinPointViews.push(...[...standaloneJoinPointViews, ...paramRelatedJoinPointViews]);
-
-        this.initStandaloneJoinPointPositions(standaloneJoinPointViews);
-        this.initParamRelatedJoinPointPositions(paramRelatedJoinPointViews);
+        this.updateDimensions();
     }
 
-    private initStandaloneJoinPointPositions(joinPointViews: JoinPointView[]) {
-        joinPointViews.forEach((joinPointView) => {
+    updateDimensions() {
+        const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
+        this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING; 
+        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.params.length ? this.obj.params.length : 1) + NODE_PADDING * 2;
+        this.dimensions.setHeight(height);
+
+        this.initStandaloneJoinPointPositions();
+        this.initParamRelatedJoinPointPositions();
+    }
+
+    private initStandaloneJoinPointPositions() {
+        this.joinPointViews.filter(joinPointView => !this.obj.hasParam(joinPointView.slotName)).forEach((joinPointView) => {
             const x = joinPointView.isInput ? 0 : this.dimensions.getWidth();
             const slotIndex = joinPointView.isInput ? this.obj.inputs.findIndex(slot => slot.name === joinPointView.slotName) : this.obj.outputs.findIndex(slot => slot.name === joinPointView.slotName);
             const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + sizes.nodes.headerHeight;
@@ -75,8 +79,8 @@ export class NodeView extends View {
         });
     }
 
-    private initParamRelatedJoinPointPositions(joinPointViews: JoinPointView[]) {
-        joinPointViews.forEach(joinPointView => {
+    private initParamRelatedJoinPointPositions() {
+        this.joinPointViews.filter(joinPointView => this.obj.hasParam(joinPointView.slotName)).forEach((joinPointView) => {
             const x = joinPointView.isInput ? 0 : this.dimensions.getWidth();
             const paramIndex = this.obj.params.findIndex(param => param.name === joinPointView.slotName);
             const y = paramIndex * INPUT_HEIGHT + this.paramsYPosStart + INPUT_HEIGHT / 2;

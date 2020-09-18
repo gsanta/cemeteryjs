@@ -6,6 +6,21 @@ import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
 import { MeshControl } from "./MeshNodeObj";
 import { MeshView } from "../../core/models/views/MeshView";
+import { UI_Plugin } from "../../core/plugins/UI_Plugin";
+import { NodeFactory } from "../../core/services/NodeService";
+
+export const TurnNodeFacotry: NodeFactory = {
+    newNodeInstance(graph: NodeGraph): NodeObj {
+        return new TurnNodeObj(graph);
+    },
+
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+        const controller = new AbstractController(plugin, registry);
+        controller.registerPropControl('mesh', MeshControl);
+        controller.registerPropControl('turn', TurnControl);
+        return controller;
+    }
+}
 
 export class TurnNodeObj extends NodeObj {
     type = BuiltinNodeType.Turn;
@@ -49,17 +64,6 @@ export class TurnNodeObj extends NodeObj {
                 meshView.obj.rotate(0.02);
             }
         }
-    }
-
-    newInstance(graph: NodeGraph): NodeObj {
-        return new TurnNodeObj(graph);
-    }
-
-    newControllerInstance(registry: Registry): AbstractController {
-        const controller = new AbstractController(null, registry);
-        controller.registerPropControl('mesh', MeshControl);
-        controller.registerPropControl('turn', TurnControl);
-        return controller;
     }
 }
 

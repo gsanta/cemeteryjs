@@ -19,7 +19,7 @@ export class NodeRenderer extends AbstractController {
 
         this.renderRect(group, nodeView);
         const column = this.renderContent(group, nodeView);
-        column.controller = nodeView.obj.controller;
+        column.controller = nodeView.controller;
         column.data = nodeView;
         this.renderInputsInto(column, nodeView);
     }

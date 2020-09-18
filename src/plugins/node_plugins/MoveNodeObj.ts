@@ -2,12 +2,27 @@ import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/mo
 import { PropControl, AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { NodeView } from "../../core/models/views/NodeView";
-import { UI_Region } from "../../core/plugins/UI_Plugin";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
 import { MeshControl } from "./MeshNodeObj";
 import { MeshView } from "../../core/models/views/MeshView";
 import { Point } from "../../utils/geometry/shapes/Point";
+import { NodeFactory } from "../../core/services/NodeService";
+
+export const MoveNodeFacotry: NodeFactory = {
+    newNodeInstance(graph: NodeGraph): NodeObj {
+        return new MoveNodeObj(graph);
+    },
+
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+        const controller = new AbstractController(plugin, registry);
+        controller.registerPropControl('mesh', MeshControl);
+        controller.registerPropControl('move', MoveControl);
+        controller.registerPropControl('speed', SpeedControl);
+        return controller;
+    }
+}
 
 export class MoveNodeObj extends NodeObj {
     type = BuiltinNodeType.Move;
@@ -51,18 +66,6 @@ export class MoveNodeObj extends NodeObj {
 
         const meshView = registry.stores.canvasStore.getById(meshId) as MeshView;
         meshView.obj.move(new Point(0, 2));
-    }
-
-    newInstance(graph: NodeGraph): NodeObj {
-        return new MoveNodeObj(graph);
-    }
-
-    newControllerInstance(registry: Registry): AbstractController {
-        const controller = new AbstractController(null, registry);
-        controller.registerPropControl('mesh', MeshControl);
-        controller.registerPropControl('move', MoveControl);
-        controller.registerPropControl('speed', SpeedControl);
-        return controller;
     }
 }
 

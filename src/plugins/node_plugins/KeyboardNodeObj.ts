@@ -1,11 +1,26 @@
 import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
 import { NodeView } from "../../core/models/views/NodeView";
 import { PropControl, AbstractController } from "../../core/plugins/controllers/AbstractController";
-import { UI_Region } from "../../core/plugins/UI_Plugin";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { getAllKeys } from "../../core/services/input/KeyboardService";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
+import { NodeFactory } from "../../core/services/NodeService";
+import { GameViewerPlugin, GameViewerPluginId } from "../ui_plugins/game_viewer/GameViewerPlugin";
+import { GameTool, GameToolType } from "../ui_plugins/game_viewer/tools/GameTool";
+
+export const KeyboardNodeFacotry: NodeFactory = {
+    newNodeInstance(graph: NodeGraph): NodeObj {
+        return new KeyboardNodeObj(graph);
+    },
+
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+        const controller = new AbstractController(plugin, registry);
+        controller.registerPropControl('key1', KeyControl);
+        return controller;
+    }
+}
 
 export class KeyboardNodeObj extends NodeObj {
     type = BuiltinNodeType.Keyboard;
@@ -13,34 +28,38 @@ export class KeyboardNodeObj extends NodeObj {
 
     params: NodeParam[] = [
         {
-            name: 'key',
+            name: 'key1',
             val: '',
             inputType: 'list',
             valueType: 'string',
             isLink: 'output'
         }
     ];
-
-    outputs = [
-        {
-            name: 'output'
-        }
-    ];
     
     execute(registry: Registry) {
-        const connection = this.connections.get('output');
-        connection && connection.getOtherNode(this).execute(registry);
+        const keyParams = this.getKeyParams();
+
+        const gameViewerPlugin = <GameViewerPlugin> registry.plugins.getById(GameViewerPluginId);
+        const gameTool = <GameTool> gameViewerPlugin.toolHandler.getById(GameToolType);
+        
+        const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
+
+        if (param) {
+            const connection = this.connections.get(param.name);
+            connection && connection.getOtherNode(this).execute(registry);
+        }
     }
 
-    newInstance(graph: NodeGraph): KeyboardNodeObj {
-        return new KeyboardNodeObj(graph);
-    }
+    private getKeyParams(): NodeParam[] {
+        const keyParams: NodeParam[] = [];
+        let i = 1;
+        while(this.hasParam(`key${i}`)) {
+            keyParams.push(this.getParam(`key${i}`));
+            break;
+        }
 
-    newControllerInstance(registry: Registry): AbstractController {
-        const controller = new AbstractController(null, registry);
-        controller.registerPropControl('key', KeyControl);
-        return controller;
-    } 
+        return keyParams;
+    }
 }
 
 const KeyControl: PropControl<string> = {
@@ -49,14 +68,25 @@ const KeyControl: PropControl<string> = {
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('key').val;
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam(element.prop).val;
     },
 
     change(val, context, element: UI_InputElement) {
         context.updateTempVal(val);
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        nodeView.obj.setParam('key', val);
+        nodeView.obj.setParam(element.prop, val);
         context.registry.services.history.createSnapshot();
+
+        nodeView.obj.params.push(        {
+            name: 'key2',
+            val: '',
+            inputType: 'list',
+            valueType: 'string',
+            isLink: 'output'
+        });
+        context.clearTempVal();
+        nodeView.updateDimensions();
+        nodeView.controller.registerPropControl('key2', KeyControl);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

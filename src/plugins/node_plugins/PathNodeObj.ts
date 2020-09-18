@@ -2,10 +2,23 @@ import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/mo
 import { PropControl, AbstractController } from "../../core/plugins/controllers/AbstractController";
 import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
 import { NodeView } from "../../core/models/views/NodeView";
-import { UI_Region } from "../../core/plugins/UI_Plugin";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
 import { ViewType } from "../../core/models/views/View";
+import { NodeFactory } from "../../core/services/NodeService";
+
+export const PathNodeFacotry: NodeFactory = {
+    newNodeInstance(graph: NodeGraph): NodeObj {
+        return new PathNodeObj(graph);
+    },
+
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+        const controller = new AbstractController(plugin, registry);
+        controller.registerPropControl('path', PathControl);
+        return controller;
+    }
+}
 
 export class PathNodeObj extends NodeObj {
     type = BuiltinNodeType.Path;
@@ -25,16 +38,6 @@ export class PathNodeObj extends NodeObj {
             name: 'action'
         }
     ];
-
-    newInstance(graph: NodeGraph): NodeObj {
-        return new PathNodeObj(graph);
-    }
-
-    newControllerInstance(registry: Registry): AbstractController {
-        const controller = new AbstractController(null, registry);
-        controller.registerPropControl('path', PathControl);
-        return controller;
-    }
 }
 
 const PathControl: PropControl<string> = {

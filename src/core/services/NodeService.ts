@@ -1,18 +1,20 @@
-import { AndNodeObj } from '../../plugins/node_plugins/AndNodeObj';
-import { AnimationNodeObj } from '../../plugins/node_plugins/AnimationNodeObj';
-import { KeyboardNodeObj } from '../../plugins/node_plugins/KeyboardNodeObj';
-import { MeshNodeObj } from '../../plugins/node_plugins/MeshNodeObj';
-import { MoveNodeObj } from '../../plugins/node_plugins/MoveNodeObj';
-import { PathNodeObj } from '../../plugins/node_plugins/PathNodeObj';
-import { RouteNodeObj } from '../../plugins/node_plugins/route_node/RouteNodeObj';
-import { SplitNodeObj } from '../../plugins/node_plugins/SplitNodeObj';
-import { TurnNodeObj } from '../../plugins/node_plugins/TurnNodeObj';
+import { AndNodeFacotry } from '../../plugins/node_plugins/AndNodeObj';
+import { AnimationNodeFacotry } from '../../plugins/node_plugins/AnimationNodeObj';
+import { KeyboardNodeFacotry } from '../../plugins/node_plugins/KeyboardNodeObj';
+import { MeshNodeFacotry } from '../../plugins/node_plugins/MeshNodeObj';
+import { MoveNodeFacotry } from '../../plugins/node_plugins/MoveNodeObj';
+import { PathNodeFacotry } from '../../plugins/node_plugins/PathNodeObj';
+import { RouteNodeFacotry } from '../../plugins/node_plugins/route_node/RouteNodeObj';
+import { SplitNodeFacotry } from '../../plugins/node_plugins/SplitNodeObj';
+import { TurnNodeFacotry } from '../../plugins/node_plugins/TurnNodeObj';
 import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
 import { NodeObj } from '../models/game_objects/NodeObj';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeView } from '../models/views/NodeView';
 import { ViewType } from '../models/views/View';
+import { AbstractController } from '../plugins/controllers/AbstractController';
 import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
+import { UI_Plugin } from '../plugins/UI_Plugin';
 import { Registry } from '../Registry';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { NodeGraph } from './node/NodeGraph';
@@ -21,6 +23,8 @@ export class NodeService {
     nodeTemplates: Map<string, NodeObj> = new Map();
     nodeTypes: string[] = [];
     graph: NodeGraph;
+
+    private nodeFactories: Map<string, NodeFactory> = new Map();
 
     private defaultNodeRenderer: NodeRenderer;
 
@@ -35,15 +39,15 @@ export class NodeService {
             const plugin = registry.plugins.getById(NodeEditorPluginId);
             this.defaultNodeRenderer = new NodeRenderer(plugin, this.registry);
 
-            this.registerNode(new KeyboardNodeObj(undefined));
-            this.registerNode(new AndNodeObj(undefined));
-            this.registerNode(new AnimationNodeObj(undefined));
-            this.registerNode(new MeshNodeObj(undefined));
-            this.registerNode(new MoveNodeObj(undefined));
-            this.registerNode(new PathNodeObj(undefined));
-            this.registerNode(new RouteNodeObj(undefined));
-            this.registerNode(new SplitNodeObj(undefined));
-            this.registerNode(new TurnNodeObj(undefined));
+            this.registerNode(KeyboardNodeFacotry);
+            this.registerNode(AndNodeFacotry);
+            this.registerNode(AnimationNodeFacotry);
+            this.registerNode(MeshNodeFacotry);
+            this.registerNode(MoveNodeFacotry);
+            this.registerNode(PathNodeFacotry);
+            this.registerNode(RouteNodeFacotry);
+            this.registerNode(SplitNodeFacotry);
+            this.registerNode(TurnNodeFacotry);
 
             // TODO: unregister somewhere
             this.registry.stores.nodeStore.onAddView((view) => {
@@ -71,10 +75,12 @@ export class NodeService {
         });
     }
 
-    registerNode(nodeTemplate: NodeObj) {
-        nodeTemplate.controller = nodeTemplate.newControllerInstance(this.registry);
+    registerNode(nodeFactory: NodeFactory) {
+        // TODO create dummygraph instead of passing undefined
+        const nodeTemplate = nodeFactory.newNodeInstance(undefined);
         this.nodeTemplates.set(nodeTemplate.type, nodeTemplate);
         this.nodeTypes.push(nodeTemplate.type);
+        this.nodeFactories.set(nodeTemplate.type, nodeFactory);
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
@@ -90,14 +96,19 @@ export class NodeService {
             throw new Error(`Node creator registered for node type ${nodeType}`);
         }
 
-        const nodeObject = this.nodeTemplates.get(nodeType).newInstance(this.graph);
-        nodeObject.controller = this.nodeTemplates.get(nodeType).controller;
+        const nodeObject = this.nodeFactories.get(nodeType).newNodeInstance(this.graph);
         
         // const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
         // new Rectangle(topLeft, bottomRight)
         
         const nodeView = new NodeView({nodeType: nodeObject.type, node: nodeObject});
+        nodeView.controller = this.nodeFactories.get(nodeType).newControllerInstance(this.registry.plugins.getById(NodeEditorPluginId), this.registry);
         
         return nodeView;
     }
+}
+
+export interface NodeFactory {
+    newNodeInstance(graph: NodeGraph): NodeObj;
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any>;
 }

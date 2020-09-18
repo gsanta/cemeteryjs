@@ -1,11 +1,25 @@
-import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../core/models/game_objects/NodeObj";
-import { PropControl, AbstractController } from "../../core/plugins/controllers/AbstractController";
-import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
+import { BuiltinNodeType, NodeCategory, NodeObj, NodeParam } from "../../core/models/game_objects/NodeObj";
 import { NodeView } from "../../core/models/views/NodeView";
-import { UI_Region } from "../../core/plugins/UI_Plugin";
+import { ViewType } from "../../core/models/views/View";
+import { AbstractController, PropControl } from "../../core/plugins/controllers/AbstractController";
+import { UI_Plugin, UI_Region } from "../../core/plugins/UI_Plugin";
 import { Registry } from "../../core/Registry";
 import { NodeGraph } from "../../core/services/node/NodeGraph";
-import { ViewTag, ViewType } from "../../core/models/views/View";
+import { NodeFactory } from "../../core/services/NodeService";
+import { UI_InputElement } from "../../core/ui_components/elements/UI_InputElement";
+
+export const AnimationNodeFacotry: NodeFactory = {
+    newNodeInstance(graph: NodeGraph): NodeObj {
+        return new AnimationNodeObj(graph);
+    },
+
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+        const controller = new AbstractController(plugin, registry);
+        controller.registerPropControl('mesh', MeshControl);
+        controller.registerPropControl('animation', AnimationControl);
+        return controller;
+    }
+}
 
 export class AnimationNodeObj extends NodeObj {
     type = BuiltinNodeType.Animation;
@@ -30,17 +44,6 @@ export class AnimationNodeObj extends NodeObj {
             name: 'action'
         }
     ];
-
-    newInstance(graph: NodeGraph): AnimationNodeObj {
-        return new AnimationNodeObj(graph);
-    }
-
-    newControllerInstance(registry: Registry): AbstractController {
-        const controller = new AbstractController(null, registry);
-        controller.registerPropControl('mesh', MeshControl);
-        controller.registerPropControl('animation', AnimationControl);
-        return controller;
-    } 
 }
 
 const MeshControl: PropControl<string> = {

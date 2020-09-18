@@ -1,12 +1,25 @@
-import { NodeObj, NodeParam, BuiltinNodeType, NodeCategory } from "../../../core/models/game_objects/NodeObj";
-import { Registry } from "../../../core/Registry";
-import { AbstractController, PropControl } from "../../../core/plugins/controllers/AbstractController";
-import { NodeGraph } from "../../../core/services/node/NodeGraph";
 import { MeshObj } from "../../../core/models/game_objects/MeshObj";
+import { NodeCategory, NodeObj, NodeParam } from "../../../core/models/game_objects/NodeObj";
 import { PathObj } from "../../../core/models/game_objects/PathObj";
-import { RouteWalker } from "./RouteWalker";
 import { NodeView } from "../../../core/models/views/NodeView";
-import { UI_Region } from "../../../core/plugins/UI_Plugin";
+import { AbstractController, PropControl } from "../../../core/plugins/controllers/AbstractController";
+import { UI_Plugin, UI_Region } from "../../../core/plugins/UI_Plugin";
+import { Registry } from "../../../core/Registry";
+import { NodeGraph } from "../../../core/services/node/NodeGraph";
+import { NodeFactory } from "../../../core/services/NodeService";
+import { RouteWalker } from "./RouteWalker";
+
+export const RouteNodeFacotry: NodeFactory = {
+    newNodeInstance(graph: NodeGraph): NodeObj {
+        return new RouteNodeObj(graph);
+    },
+
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+        const controller = new AbstractController(plugin, registry);
+        controller.registerPropControl('speed', SpeedControl);
+        return controller;
+    }
+}
 
 export const RouteNodeObjType = 'route-node-obj';
 export class RouteNodeObj extends NodeObj {
@@ -63,16 +76,6 @@ export class RouteNodeObj extends NodeObj {
         if (this.connections.get('mesh') && this.connections.get('path')) {
             this.routeNodeExecutor.execute(registry);
         }
-    }
-
-    newInstance(graph: NodeGraph): NodeObj {
-        return new RouteNodeObj(graph);
-    }
-
-    newControllerInstance(registry: Registry): AbstractController {
-        const controller = new AbstractController(null, registry);
-        controller.registerPropControl('speed', SpeedControl);
-        return controller;    
     }
 }
 

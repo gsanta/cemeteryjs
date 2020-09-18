@@ -71,7 +71,6 @@ export abstract class NodeObj implements IGameObj {
 
     connections: Map<string, NodeConnectionObj> = new Map();
 
-    controller: AbstractController;
     graph: NodeGraph;
 
     constructor(nodeGraph: NodeGraph) {
@@ -107,6 +106,10 @@ export abstract class NodeObj implements IGameObj {
         this.getParam(name).val = value;
     }
 
+    addParam(param: NodeParam) {
+        this.params.push(param);
+    }
+
     findSlotByName(name: string) {
         return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
     }
@@ -128,7 +131,4 @@ export abstract class NodeObj implements IGameObj {
     }
 
     execute(registry: Registry) {}
-
-    abstract newInstance(graph: NodeGraph): NodeObj;
-    abstract newControllerInstance(registry: Registry): AbstractController;
 }
