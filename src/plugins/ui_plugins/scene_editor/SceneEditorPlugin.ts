@@ -115,13 +115,17 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     private renderMeshViews(canvas: UI_SvgCanvas) {
-        const views = getSortedMeshViews(this.registry).map(meshView => {
+        getSortedMeshViews(this.registry).map(meshView => {
             const group = canvas.group(meshView.id);
             group.data = meshView;
             group.transform = `translate(${meshView.dimensions.topLeft.x} ${meshView.dimensions.topLeft.y}) rotate(${toDegree(meshView.getRotation())} ${meshView.dimensions.getWidth() / 2} ${meshView.dimensions.getHeight() / 2})`;
             const rect = group.rect();
             rect.width = meshView.dimensions.getWidth();
             rect.height = meshView.dimensions.getHeight();
+
+            rect.css = {
+                strokeWidth: meshView.isSelected() ? '2' : '1'
+            }    
 
             rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 

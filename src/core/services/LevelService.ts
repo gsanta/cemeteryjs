@@ -39,6 +39,6 @@ export class LevelService {
     }
 
     private clearStores() {
-        this.registry.stores.stores.forEach(store => store.clear());
+        this.registry.stores.clear();
     }
 }

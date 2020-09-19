@@ -1,21 +1,31 @@
-import { AbstractStore } from "./AbstractStore";
 import { View, ViewTag } from "../models/views/View";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
+import { AbstractViewStoreHook } from "./AbstractViewStoreHook";
 
-export class AbstractViewStore<T extends View> extends AbstractStore<T> {
+export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
+    const x = rectangle.topLeft.x;
+    const y = rectangle.topLeft.y;
+    const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
+    const height = Math.floor(rectangle.bottomRight.y - rectangle.topLeft.y);
+
+    const polygon = Polygon.createRectangle(x, y, width, height);
+
+    return store.getAllViews().filter(item => polygon.contains(item.dimensions));
+}
+
+export class ViewStore {
     protected views: View[] = [];
     private selectedViews: View[] = [];
     protected idMap: Map<string, View> = new Map();
     protected idGenerator: IdGenerator;
+    private hooks: AbstractViewStoreHook[] = [];
 
-    private addViewListeners: ((view: View) => void)[] = [];
-    private removeViewListeners: ((view: View) => void)[] = [];
+    id: string;
 
     constructor(id: string) {
-        super();
         this.id = id;
     }
 
@@ -24,6 +34,14 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
             throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
         }
         this.idGenerator = idGenerator;
+    }
+
+    addHook(hook: AbstractViewStoreHook) {
+        this.hooks.push(hook);
+    }
+
+    removeHook(hook: AbstractViewStoreHook) {
+        this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
     addView(view: View) {
@@ -36,26 +54,18 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
 
         this.views.push(view);
         this.idMap.set(view.id, view);
-        this.addViewListeners.forEach(listener => listener(view));
-    }
-
-    onAddView(listener: (view: View) => void) {
-        this.addViewListeners.push(listener);
+        this.hooks.forEach(hook => hook.addViewHook(view));
     }
 
     removeView(view: View) {
         this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
 
-        this.removeViewListeners.forEach(listener => listener(view));
+        this.hooks.forEach(hook => hook.removeViewHook(view));
 
         this.idMap.delete(view.id);
         this.views.splice(this.views.indexOf(view), 1);
         this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
         view.dispose();
-    }
-
-    onRemoveView(listener: (view: View) => void) {
-        this.removeViewListeners.push(listener);
     }
 
     getById(id: string): View {
@@ -95,17 +105,6 @@ export class AbstractViewStore<T extends View> extends AbstractStore<T> {
     clearSelection() {
         this.selectedViews.forEach(item => item.tags.delete(ViewTag.Selected));
         this.selectedViews = [];
-    }
-    
-    getIntersectingItemsInRect(rectangle: Rectangle): View[] {
-        const x = rectangle.topLeft.x;
-        const y = rectangle.topLeft.y;
-        const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
-        const height = Math.floor(rectangle.bottomRight.y - rectangle.topLeft.y);
-
-        const polygon = Polygon.createRectangle(x, y, width, height);
-
-        return this.views.filter(item => polygon.contains(item.dimensions));
     }
 
     clear() {

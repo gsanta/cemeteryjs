@@ -1,26 +1,26 @@
-import { AbstractCanvasPlugin } from "../AbstractCanvasPlugin";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { isJoinPointView, JoinPointView } from "../../models/views/child_views/JoinPointView";
+import { JoinPointView, JoinPointViewType } from "../../models/views/child_views/JoinPointView";
 import { NodeConnectionView } from "../../models/views/NodeConnectionView";
-import { ViewType } from "../../models/views/View";
+import { View } from "../../models/views/View";
 import { Registry } from "../../Registry";
-import { IHotkeyEvent } from "../../services/input/HotkeyService";
+import { AbstractCanvasPlugin } from "../AbstractCanvasPlugin";
 import { AbstractTool } from "./AbstractTool";
+import { PointerTool } from "./PointerTool";
 import { Cursor, ToolType } from './Tool';
 
-export class JoinTool extends AbstractTool {
-    start: Point;
-    end: Point;
-    startItem: JoinPointView;
+export class JoinTool extends PointerTool {
+    startPoint: Point;
+    endPoint: Point;
+    joinPoint1: JoinPointView;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Join, plugin, registry);
     }
 
     down() {
-        this.start = this.registry.services.pointer.pointer.curr;
-        this.startItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
-        this.end = this.registry.services.pointer.pointer.curr;
+        this.startPoint = this.registry.services.pointer.pointer.curr;
+        this.joinPoint1 = <JoinPointView> this.registry.services.pointer.hoveredItem;
+        this.endPoint = this.registry.services.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
@@ -28,41 +28,64 @@ export class JoinTool extends AbstractTool {
 
     }
 
+    move() {}
+
     drag() {
-        this.end = this.registry.services.pointer.pointer.curr;
-        console.log(this.end)
+        this.endPoint = this.registry.services.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     draggedUp() {
         this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
 
-        if (isJoinPointView(this.registry.services.pointer.hoveredItem)) {
-            const endItem = <JoinPointView> this.registry.services.pointer.hoveredItem;
-            const connection = new NodeConnectionView();
-            this.startItem.connection = connection;
-            endItem.connection = connection;
-            connection.obj.joinPoint1 = this.startItem.slotName;
-            connection.obj.node1 = this.startItem.parent.obj;
-            connection.obj.joinPoint2 = endItem.slotName;
-            connection.obj.node2 = endItem.parent.obj;
+        if (this.checkConnectionValidity()) {
+            let joinPoint1 = this.joinPoint1;
+            let joinPoint2 = <JoinPointView> this.registry.services.pointer.hoveredItem;
+            if (joinPoint2.isInput) {
+                [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
+            }
 
-            connection.setPoint1(this.startItem.getAbsolutePosition());
-            connection.setPoint2(endItem.getAbsolutePosition());
-            this.startItem.connection = connection;
-            endItem.connection = connection;
+            const connection = new NodeConnectionView();
+            joinPoint1.connection = connection;
+            joinPoint2.connection = connection;
+            connection.obj.joinPoint1 = this.joinPoint1.slotName;
+            connection.obj.node1 = this.joinPoint1.parent.obj;
+            connection.obj.joinPoint2 = joinPoint2.slotName;
+            connection.obj.node2 = joinPoint2.parent.obj;
+
+            connection.setPoint1(joinPoint1.getAbsolutePosition());
+            connection.setPoint2(joinPoint2.getAbsolutePosition());
+            this.joinPoint1.connection = connection;
+            joinPoint2.connection = connection;
             this.registry.stores.nodeStore.addView(connection);
-            this.start = undefined;
-            this.end = undefined;
+            this.startPoint = undefined;
+            this.endPoint = undefined;
 
             this.registry.services.history.createSnapshot();
         }
+
+        this.startPoint = undefined;
+        this.endPoint = undefined;
+        this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    out() {
+    private checkConnectionValidity() {
+        const start = this.joinPoint1;
+        const end = <JoinPointView> this.registry.services.pointer.hoveredItem;
+
+        if (!end || !start) { return false; }
+        if (start.viewType !== JoinPointViewType || end.viewType !== JoinPointViewType) { return false; }
+        if (start.isInput === end.isInput) { return false }
+
+        return true;
+    }
+
+    out(view: View) {
+        super.out(view);
         if (!this.registry.services.pointer.isDown) {
             this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
         }
+
     }
 
     getCursor() {

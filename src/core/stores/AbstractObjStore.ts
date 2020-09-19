@@ -1,11 +1,11 @@
-import { AbstractStore } from "./AbstractStore";
 import { IGameObj } from "../models/game_objects/IGameObj";
 import { IdGenerator } from "./IdGenerator";
 
-export abstract class AbstractObjStore<T extends IGameObj> extends AbstractStore<T> {
+export abstract class AbstractObjStore<T extends IGameObj> {
     protected objs: T[] = [];
     protected objMap: Map<string, T> = new Map();
     private idGenerator: IdGenerator;
+    id: string;
 
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
@@ -31,6 +31,11 @@ export abstract class AbstractObjStore<T extends IGameObj> extends AbstractStore
 
     size() {
         return this.objs.length;
+    }
+
+    clear() {
+        this.objs = [];
+        this.objMap = new Map();
     }
 
     protected abstract createPrefix(obj: IGameObj): string;

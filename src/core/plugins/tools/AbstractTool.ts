@@ -5,7 +5,7 @@ import { IKeyboardEvent } from '../../services/input/KeyboardService';
 import { Cursor, Tool, ToolType } from './Tool';
 import { View } from '../../models/views/View';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { AbstractViewStore } from '../../stores/AbstractViewStore';
+import { ViewStore } from '../../stores/ViewStore';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { MousePointer } from '../../services/input/MouseService';
 import { Point } from '../../../utils/geometry/shapes/Point';
@@ -68,7 +68,7 @@ export class AbstractTool implements Tool {
     teardown(): void {};
     hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
 
-    protected getStore(): AbstractViewStore<any> {
+    protected getStore(): ViewStore {
         return this.registry.plugins.getHoveredPlugin().getStore();
     }
 

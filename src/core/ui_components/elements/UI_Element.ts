@@ -13,6 +13,7 @@ export interface UI_Element_Css {
     strokeOpacity?: number;
     strokeDasharray?: string;
     pointerEvents?: 'none' | 'all';
+    userSelect?: 'auto' | 'text' | 'none' | 'all';
 }
 
 export abstract class UI_Element {

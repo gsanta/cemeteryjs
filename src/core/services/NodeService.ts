@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { AndNodeFacotry } from '../../plugins/node_plugins/AndNodeObj';
 import { AnimationNodeFacotry } from '../../plugins/node_plugins/AnimationNodeObj';
 import { KeyboardNodeFacotry } from '../../plugins/node_plugins/KeyboardNodeObj';
@@ -11,11 +12,12 @@ import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEdi
 import { NodeObj } from '../models/game_objects/NodeObj';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeView } from '../models/views/NodeView';
-import { ViewType } from '../models/views/View';
+import { View, ViewType } from '../models/views/View';
 import { AbstractController } from '../plugins/controllers/AbstractController';
 import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
 import { UI_Plugin } from '../plugins/UI_Plugin';
 import { Registry } from '../Registry';
+import { AbstractViewStoreHook } from '../stores/AbstractViewStoreHook';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { NodeGraph } from './node/NodeGraph';
 
@@ -50,28 +52,8 @@ export class NodeService {
             this.registerNode(TurnNodeFacotry);
 
             // TODO: unregister somewhere
-            this.registry.stores.nodeStore.onAddView((view) => {
-                switch(view.viewType) {
-                    case ViewType.NodeConnectionView:
-                        this.graph.addConnection((<NodeConnectionView> view).obj);
-                    break;
-                    case ViewType.NodeView:
-                        this.graph.addNode((<NodeView> view).obj);
-                    break;
-                }
-            });
-
-            // TODO: unregister somewhere
-            this.registry.stores.nodeStore.onRemoveView((view) => {
-                switch(view.viewType) {
-                    case ViewType.NodeConnectionView:
-                        this.graph.removeConnection((<NodeConnectionView> view).obj);
-                    break;
-                    case ViewType.NodeView:
-                        this.graph.removeNode((<NodeView> view).obj);
-                    break;
-                }
-            });
+            this.registry.stores.nodeStore.addHook(new RemoveRelatedConnectionHook(this.registry));
+            this.registry.stores.nodeStore.addHook(new NodeGraphHook(this.registry));
         });
     }
 
@@ -111,4 +93,63 @@ export class NodeService {
 export interface NodeFactory {
     newNodeInstance(graph: NodeGraph): NodeObj;
     newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any>;
+}
+
+class RemoveRelatedConnectionHook extends AbstractViewStoreHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    removeViewHook(view: View) {
+        switch(view.viewType) {
+            case ViewType.NodeView:
+                this.removeRelatedConnections(<NodeView> view)
+            break;
+        }
+    }
+
+    private removeRelatedConnections(nodeView: NodeView) {
+        nodeView.joinPointViews.forEach(joinPointView => {
+            if (joinPointView.connection) {
+                this.registry.stores.nodeStore.removeView(joinPointView.connection);
+            }
+        });
+    }
+}
+
+class NodeGraphHook extends AbstractViewStoreHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    addViewHook(view: View) {
+        const graph = this.registry.services.node.graph;
+        switch(view.viewType) {
+            case ViewType.NodeConnectionView:
+                graph.addConnection((<NodeConnectionView> view).obj);
+            break;
+            case ViewType.NodeView:
+                graph.addNode((<NodeView> view).obj);
+            break;
+        }
+    }
+
+    removeViewHook(view: View) {
+        const graph = this.registry.services.node.graph;
+
+        switch(view.viewType) {
+            case ViewType.NodeConnectionView:
+                graph.removeConnection((<NodeConnectionView> view).obj);
+            break;
+            case ViewType.NodeView:
+                graph.removeNode((<NodeView> view).obj);
+            break;
+        }
+    }
 }

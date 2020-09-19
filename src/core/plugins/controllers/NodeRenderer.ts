@@ -56,6 +56,9 @@ export class NodeRenderer extends AbstractController {
         rect.height = nodeView.dimensions.getHeight();
         rect.strokeColor = nodeView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
         rect.fillColor = nodeView.obj.color || 'white';
+        rect.css = {
+            strokeWidth: nodeView.tags.has(ViewTag.Selected) ? '3' : '1'
+        }
     }
 
     private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
@@ -63,6 +66,9 @@ export class NodeRenderer extends AbstractController {
         foreignObject.width = nodeView.dimensions.getWidth();
         foreignObject.height = nodeView.dimensions.getHeight();
         foreignObject.controller = this.controller;
+        foreignObject.css = {
+            userSelect: 'none'
+        }
     
         this.renderTitle(foreignObject, nodeView);
         this.renderLinks(group, nodeView);
@@ -109,10 +115,13 @@ export class NodeRenderer extends AbstractController {
     
         circle.cx = joinPointView.point.x;
         circle.cy = joinPointView.point.y;
-        circle.r = 5;
+        circle.r =  joinPointView.isHovered() ? 7 : 5;
         circle.fillColor = colors.grey4
         circle.data = joinPointView;
-        circle.strokeColor = colors.panelBackground;
+        circle.strokeColor = joinPointView.isHovered() ? 'blue' : colors.panelBackground;
+        circle.css = {
+            strokeWidth: joinPointView.isHovered() ? '2' : '1'
+        }
 
         if (!nodeView.obj.hasParam(joinPointView.slotName)) {
             const text = svgGroup.svgText({key: joinPointView.slotName});

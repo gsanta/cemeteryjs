@@ -10,6 +10,7 @@ export const ForeignObjectComp = (props: UI_ContainerProps<UI_SvgForeignObject>)
             y={props.element.y}
             width={`${props.element.width}px`}
             height={`${props.element.height}px`}
+            style={props.element.css}
         >
             {props.children}
         </foreignObject>

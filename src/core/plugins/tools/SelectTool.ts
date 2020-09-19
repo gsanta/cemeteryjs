@@ -5,6 +5,10 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
+import { Polygon } from '../../../utils/geometry/shapes/Polygon';
+import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
+import { View } from '../../models/views/View';
+import { getIntersectingViews } from '../../stores/ViewStore';
 
 export class SelectTool extends PointerTool {
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
@@ -41,10 +45,10 @@ export class SelectTool extends PointerTool {
         } else {
             if (!this.rectangleSelection) { return }
     
-            const canvasItems = this.registry.stores.canvasStore.getIntersectingItemsInRect(this.rectangleSelection);
+            const intersectingViews = getIntersectingViews(this.plugin.getStore(), this.rectangleSelection);
             
             this.plugin.getStore().clearSelection();
-            this.plugin.getStore().addSelectedView(...canvasItems)
+            this.plugin.getStore().addSelectedView(...intersectingViews)
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);

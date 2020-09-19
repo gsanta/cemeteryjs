@@ -26,7 +26,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler<{data: string}>(FileSettingsProps.Import)
             .onChange((val) => {
-                this.registry.stores.stores.forEach(store => store.clear());
+                this.registry.stores.clear();
                 this.registry.services.import.import(val.data);
     
                 this.registry.services.render.reRenderAll();
@@ -34,7 +34,7 @@ export class FileSettingsController extends AbstractController<FileSettingsProps
 
         this.createPropHandler(FileSettingsProps.NewProject)
             .onClick(() => {
-                this.registry.stores.stores.forEach(store => store.clear());
+                this.registry.stores.clear();
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRenderAll();
             });

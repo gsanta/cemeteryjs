@@ -6,7 +6,7 @@ import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { MouseService } from '../services/input/MouseService';
 import { ToolHandler } from '../services/input/ToolHandler';
-import { AbstractViewStore } from '../stores/AbstractViewStore';
+import { ViewStore } from '../stores/ViewStore';
 import { UI_Plugin } from './UI_Plugin';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 
@@ -47,13 +47,14 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         this.controllers.set(ToolControllerId, new ToolController(this, this.registry));
     }
 
-    abstract getStore(): AbstractViewStore<any>;
+    abstract getStore(): ViewStore;
         
     destroy(): void {}
     resize() {};
     over(): void { this.registry.plugins.setHoveredView(this) }
     out(): void {
-        this.registry.plugins.removeHoveredView(this)   
+        this.registry.plugins.removeHoveredView(this);
+        this.registry.services.pointer.hoveredItem = undefined;
     }
 
     setRenderer(renderFunc: () => void) {

@@ -1,6 +1,7 @@
 import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
+import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
@@ -39,8 +40,8 @@ export class DeleteTool extends PointerTool {
 
     
     draggedUp() {
-        const views = this.getStore().getIntersectingItemsInRect(this.rectangleSelection);
-        views.forEach(view =>  this.getStore().removeView(view));
+        const intersectingViews = getIntersectingViews(this.plugin.getStore(), this.rectangleSelection);
+        intersectingViews.forEach(view =>  this.getStore().removeView(view));
 
         this.rectangleSelection = undefined;
 

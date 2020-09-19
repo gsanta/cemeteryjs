@@ -1,9 +1,8 @@
 import { AssetObj, AssetType } from "../models/game_objects/AssetObj";
-import { AbstractStore } from "./AbstractStore";
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 
-export class AssetStore extends AbstractStore<AssetObj> {
+export class AssetStore {
     static id = 'asset-store'; 
     id = AssetStore.id;
 
@@ -15,8 +14,6 @@ export class AssetStore extends AbstractStore<AssetObj> {
     private idGenerator: IdGenerator;
 
     constructor(registry: Registry) {
-        super();
-
         this.registry = registry;
     }
 

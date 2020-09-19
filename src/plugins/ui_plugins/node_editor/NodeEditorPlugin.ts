@@ -10,7 +10,7 @@ import { ToolType } from '../../../core/plugins/tools/Tool';
 import { toolFactory } from '../../../core/plugins/tools/toolFactory';
 import { UI_Region } from '../../../core/plugins/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { AbstractViewStore } from '../../../core/stores/AbstractViewStore';
+import { ViewStore } from '../../../core/stores/ViewStore';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
@@ -85,7 +85,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
     }
 
-    getStore(): AbstractViewStore<NodeView | NodeConnectionView> {
+    getStore(): ViewStore {
         return this.registry.stores.nodeStore;
     }
 
@@ -144,7 +144,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
         const joinTool = <JoinTool> this.toolHandler.getById(ToolType.Join);
 
-        if (joinTool.start && joinTool.end) {
+        if (joinTool.startPoint && joinTool.endPoint) {
             const line = canvas.line()
             line.css = {
                 pointerEvents: 'none',
@@ -152,10 +152,10 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
                 strokeWidth: "3",
                 strokeDasharray: "12 3"
             }
-            line.x1 = joinTool.start.x;
-            line.y1 = joinTool.start.y;
-            line.x2 = joinTool.end.x;
-            line.y2 = joinTool.end.y;
+            line.x1 = joinTool.startPoint.x;
+            line.y1 = joinTool.startPoint.y;
+            line.x2 = joinTool.endPoint.x;
+            line.y2 = joinTool.endPoint.y;
         }
 
         this.renderNodesInto(canvas);

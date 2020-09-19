@@ -12,6 +12,7 @@ export const SvgRectComp = (props: UI_ComponentProps<UI_SvgRect>) => {
             height={`${props.element.height}px`}
             stroke={props.element.strokeColor}
             fill={props.element.fillColor}
+            style={props.element.css}
         />
     );
 }

@@ -1,10 +1,9 @@
 import { Registry } from "../Registry";
-import { AbstractStore } from "./AbstractStore";
 import { AssetStore } from "./AssetStore";
 import { LevelStore } from "./LevelStore";
 import { SpriteSheetObjStore } from "./SpriteSheetObjStore";
 import { IdGenerator } from "./IdGenerator";
-import { AbstractViewStore } from "./AbstractViewStore";
+import { ViewStore } from "./ViewStore";
 import { MeshView } from "../models/views/MeshView";
 import { PathView } from "../models/views/PathView";
 import { SpriteView } from "../models/views/SpriteView";
@@ -17,39 +16,41 @@ export const NodeStoreId = 'node-store';
 
 export class Stores {
     private registry: Registry
-    stores: AbstractStore<any>[] = [];
-
     // view:
 
-    getViewStore(id: string) {
+    private viewStores: ViewStore[] = [];
 
-    }
-
-    canvasStore: AbstractViewStore<MeshView | SpriteView | PathView>;
+    canvasStore: ViewStore;
     levelStore: LevelStore;
-    spriteStore: AbstractViewStore<SpriteView>;
-    nodeStore: AbstractViewStore<NodeView | NodeConnectionView>;;
+    spriteStore: ViewStore;
+    nodeStore: ViewStore;
     assetStore: AssetStore;
 
     spriteSheetObjStore: SpriteSheetObjStore;
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.canvasStore = new AbstractViewStore(SceneStoreId);
+        this.canvasStore = new ViewStore(SceneStoreId);
         this.levelStore = new LevelStore();
-        this.spriteStore = new AbstractViewStore(SpriteStoreId);
-        this.nodeStore = new AbstractViewStore(NodeStoreId);
+        this.spriteStore = new ViewStore(SpriteStoreId);
+        this.nodeStore = new ViewStore(NodeStoreId);
         this.assetStore = new AssetStore(this.registry);
         this.spriteSheetObjStore = new SpriteSheetObjStore();
 
-        this.stores.push(
+        this.viewStores.push(
             this.canvasStore,
             this.nodeStore,
-            this.assetStore,
             this.spriteStore,
-            this.spriteSheetObjStore
         );
 
-        this.stores.forEach(store => store.setIdGenerator(new IdGenerator()));
+        this.viewStores.forEach(store => store.setIdGenerator(new IdGenerator()));
+        this.assetStore.setIdGenerator(new IdGenerator());
+        this.spriteSheetObjStore.setIdGenerator(new IdGenerator());
+    }
+
+    clear() {
+        this.viewStores.forEach(viewStore => viewStore.clear());
+        this.assetStore.clear();
+        this
     }
 }
