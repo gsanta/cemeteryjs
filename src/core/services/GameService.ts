@@ -1,3 +1,4 @@
+import { AnimationNodeType } from "../../plugins/node_plugins/AnimationNodeObj";
 import { RouteNodeObjType } from "../../plugins/node_plugins/route_node/RouteNodeObj";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
@@ -22,6 +23,8 @@ export class GameService {
 
     private renderLoop() {
         this.registry.services.node.graph.getNodesByType(RouteNodeObjType).forEach(node => node.obj.execute(this.registry));
+
+        this.registry.services.node.graph.getNodesByType(AnimationNodeType).forEach(node => node.obj.execute(this.registry));
     }
 
     // updateConcepts(concepts: View[]) {

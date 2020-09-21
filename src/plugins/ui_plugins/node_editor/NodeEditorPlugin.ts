@@ -59,7 +59,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
     nodeTypes: string[] = [
         BuiltinNodeType.And,
-        BuiltinNodeType.Animation,
         BuiltinNodeType.Keyboard,
         BuiltinNodeType.Mesh,
         BuiltinNodeType.Move,

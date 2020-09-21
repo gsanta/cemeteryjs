@@ -41,7 +41,6 @@ export class MeshView extends View implements IGameModel {
 
     obj: MeshObj;
 
-    meshName: string;
     id: string;
     dimensions: Rectangle;
     private rotation: number;

@@ -7,13 +7,14 @@ import { MeshObj } from "../../models/game_objects/MeshObj";
 import { Registry } from "../../Registry";
 import { IMeshLoaderAdapter } from "../IMeshLoaderAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
+import { MeshData } from "./Bab_Meshes";
 
 export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     
     private loadedIds: Set<String> = new Set();
 
     templates: Set<Mesh> = new Set();
-    templatesById: Map<string, Mesh> = new Map();
+    templatesById: Map<string, MeshData> = new Map();
 
     private registry: Registry;
     private engineFacade: Bab_EngineFacade;
@@ -42,7 +43,8 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
     private setupInstance(meshObj: MeshObj) {
         const model = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.modelId);
-        const templateMesh = this.templatesById.get(model.id);
+        const meshData = this.templatesById.get(model.id);
+        const templateMesh = meshData.mainMesh;
 
         let clone: Mesh;
 
@@ -52,14 +54,12 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
             clone = <Mesh> templateMesh.instantiateHierarchy();
             clone.name = meshObj.meshView.id;
         }
-        this.engineFacade.meshes.meshes.set(meshObj.id, clone);
+        this.engineFacade.meshes.meshes.set(meshObj.id, {mainMesh: clone, skeletons: meshData.skeletons});
+        
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
-        
-        meshObj.meshView.meshName = clone.name;
-
-
         clone.isVisible = true;
+
         const scale = meshObj.meshView.getScale();
         clone.scaling = new Vector3(scale, scale, scale);
         clone.position.y = meshObj.meshView.yPos;
@@ -72,7 +72,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         clone.setAbsolutePosition(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2));
 
         clone.rotation.y = meshObj.meshView.getRotation();
-
+        
         this.engineFacade.meshes.createMaterial(meshObj);
     }
 
@@ -100,13 +100,17 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     private createModelData(asset: AssetObj, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
+        const mainMesh = meshes.find(mesh => mesh.parent) || meshes[0];
+
         meshes[0].material = new StandardMaterial(asset.id, this.engineFacade.scene);
    
         meshes[0].name = asset.id;
         this.configMesh(meshes[0]);
 
-        this.templates.add(meshes[0]);
-        this.templatesById.set(asset.id, meshes[0]);
+        const meshData = {mainMesh, skeletons};
+
+        this.templates.add(mainMesh);
+        this.templatesById.set(asset.id, meshData);
 
         return meshes[0];
     }

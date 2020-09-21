@@ -16,13 +16,15 @@ export const AnimationNodeFacotry: NodeFactory = {
     newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('mesh', MeshControl);
-        controller.registerPropControl('animation', AnimationControl);
+        controller.registerPropControl('startFrame', StartFrameControl);
+        controller.registerPropControl('endFrame', EndFrameControl);
         return controller;
     }
 }
 
+export const AnimationNodeType = 'animation-node-type';
 export class AnimationNodeObj extends NodeObj {
-    type = BuiltinNodeType.Animation;
+    type = AnimationNodeType;
     category = NodeCategory.Default;
 
     constructor(nodeGraph: NodeGraph) {
@@ -36,11 +38,18 @@ export class AnimationNodeObj extends NodeObj {
         });
         
         this.addParam({
-            name: 'animation',
-            val: '',
-            inputType: 'list',
-            valueType: 'string'
-        })
+            name: 'startFrame',
+            val: 0,
+            inputType: 'textField',
+            valueType: 'number'
+        });
+
+        this.addParam({
+            name: 'endFrame',
+            val: 0,
+            inputType: 'textField',
+            valueType: 'number'
+        });
     }
 
     inputs = [
@@ -48,6 +57,13 @@ export class AnimationNodeObj extends NodeObj {
             name: 'action'
         }
     ];
+
+    execute(registry: Registry) {
+        if (this.getParam('startFrame').val !== 0 && this.getParam('endFrame').val !== 0) {
+            const meshView = registry.stores.canvasStore.getById(this.getParam('mesh').val);
+            1;
+        }
+    }
 }
 
 const MeshControl: PropControl<string> = {
@@ -68,14 +84,10 @@ const MeshControl: PropControl<string> = {
     }
 }
 
-const AnimationControl: PropControl<string> = {
-    values() {
-        return ['animation1', 'animation2'];
-    },
-
+const StartFrameControl: PropControl<string> = {
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        return nodeView.obj.getParam('animation');
+        return nodeView.obj.getParam('startFrame').val;
     },
 
     change(val, context) {
@@ -84,7 +96,38 @@ const AnimationControl: PropControl<string> = {
     },
 
     blur(context, element) {
-        element.data.obj.setParam('animation', context.clearTempVal());
+        try {
+            const val = parseFloat(context.getTempVal());
+            element.data.obj.setParam('startFrame', val);
+        } catch (e) {
+            console.log(e);
+        }
+        context.clearTempVal();
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRenderAll();
+    }
+}
+
+const EndFrameControl: PropControl<string> = {
+    defaultVal(context, element: UI_InputElement) {
+        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        return nodeView.obj.getParam('endFrame').val;
+    },
+
+    change(val, context) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Canvas1);        
+    },
+
+    blur(context, element) {
+        try {
+            const val = parseFloat(context.getTempVal());
+            element.data.obj.setParam('endFrame', val);
+        } catch (e) {
+            console.log(e);
+        }
+        context.clearTempVal();
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRenderAll();
     }
 }
