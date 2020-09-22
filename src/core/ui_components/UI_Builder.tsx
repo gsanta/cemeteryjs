@@ -2,7 +2,6 @@ import { UI_Element } from './elements/UI_Element';
 import { RowComp } from './react/layout/RowComp';
 import * as React from 'react';
 import { Registry } from '../Registry';
-import { UI_Region, UI_Plugin } from '../plugins/UI_Plugin';
 import { ButtonComp } from './react/inputs/ButtonComp';
 import { SelectComp } from './react/inputs/SelectComp';
 import { TextFieldComp } from './react/inputs/TextFieldComp';
@@ -70,6 +69,7 @@ import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { SvgLineComp } from './react/svg/SvgLineComp';
 import { ListItemComp } from './react/data_display/ListItemComp';
 import { DialogComp } from './react/dialogs/DialogComp';
+import { UI_Plugin } from '../plugin/UI_Plugin';
 
 
 export class UI_Builder {

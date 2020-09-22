@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AbstractCanvasPlugin } from '../../../../plugins/AbstractCanvasPlugin';
 import { UI_ElementType } from '../../../elements/UI_ElementType';
 import { UI_SvgCanvas } from '../../../elements/UI_SvgCanvas';
 import { PathMarkersComponent } from '../../../../services/export/PathMarkersComponent';
@@ -11,6 +10,7 @@ import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { View } from '../../../../models/views/View';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
+import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
 
 const EditorComponentStyled = styled.div`
     position: relative;

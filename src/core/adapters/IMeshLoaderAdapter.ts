@@ -1,4 +1,4 @@
-import { MeshObj } from "../models/game_objects/MeshObj";
+import { MeshObj } from "../models/objs/MeshObj";
 
 export interface IMeshLoaderAdapter {
     load(meshObj: MeshObj): Promise<void>;

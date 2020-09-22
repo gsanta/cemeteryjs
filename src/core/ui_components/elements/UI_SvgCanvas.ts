@@ -2,7 +2,7 @@ import { UI_ElementType } from './UI_ElementType';
 import { UI_SvgGroup } from './svg/UI_SvgGroup';
 import { UI_Toolbar } from './toolbar/UI_Toolbar';
 import { UI_Factory } from '../UI_Factory';
-import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 
 export class UI_SvgCanvas extends UI_SvgGroup {

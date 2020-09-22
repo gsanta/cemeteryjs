@@ -1,8 +1,8 @@
 import { IDataExporter } from "./IDataExporter";
 import { Registry } from "../../Registry";
 import { AppJson } from "./ExportService";
-import { ObjJson } from "../../models/game_objects/IGameObj";
-import { SpriteSheetObjType } from "../../models/game_objects/SpriteSheetObj";
+import { ObjJson } from "../../models/objs/IGameObj";
+import { SpriteSheetObjType } from "../../models/objs/SpriteSheetObj";
 
 export class SpriteSheetExporter implements IDataExporter {
     private registry: Registry;

@@ -12,10 +12,10 @@ import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidePanelComponent } from './SidePanelComponent';
 import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService';
-import { UI_Region } from '../../plugins/UI_Plugin';
 import styled from 'styled-components';
-import { GameViewerPluginId } from '../../../plugins/ui_plugins/game_viewer/GameViewerPlugin';
+import { GameViewerPluginId } from '../../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
+import { UI_Region } from '../../plugin/UI_Plugin';
 
 export interface AppState {
     isDialogOpen: boolean;

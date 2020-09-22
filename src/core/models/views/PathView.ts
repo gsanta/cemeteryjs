@@ -2,8 +2,8 @@ import { View, ViewType, ViewJson } from "./View";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
-import { IGameModel } from "../game_objects/IGameModel";
-import { PathObj } from "../game_objects/PathObj";
+import { IGameModel } from "../objs/IGameModel";
+import { PathObj } from "../objs/PathObj";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
 import { Registry } from "../../Registry";
 

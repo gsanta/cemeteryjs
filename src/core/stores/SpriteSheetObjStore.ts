@@ -1,6 +1,6 @@
 import { AbstractObjStore } from "./AbstractObjStore";
-import { IGameObj } from "../models/game_objects/IGameObj";
-import { SpriteSheetObj } from "../models/game_objects/SpriteSheetObj";
+import { IGameObj } from "../models/objs/IGameObj";
+import { SpriteSheetObj } from "../models/objs/SpriteSheetObj";
 
 
 export class SpriteSheetObjStore extends AbstractObjStore<SpriteSheetObj> {

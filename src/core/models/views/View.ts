@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { IGameObj } from "../game_objects/IGameObj";
+import { IGameObj } from "../objs/IGameObj";
 import { Registry } from "../../Registry";
 import { ChildView } from "./child_views/ChildView";
 

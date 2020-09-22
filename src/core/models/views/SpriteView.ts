@@ -1,5 +1,5 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { SpriteObj, SpriteObjJson } from "../game_objects/SpriteObj";
+import { SpriteObj, SpriteObjJson } from "../objs/SpriteObj";
 import { View, ViewJson } from "./View";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Registry } from "../../Registry";

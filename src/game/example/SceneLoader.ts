@@ -1,6 +1,6 @@
-import { AssetObj, AssetType } from "../../core/models/game_objects/AssetObj";
+import { AssetObj, AssetType } from "../../core/models/objs/AssetObj";
 import { Registry } from "../../core/Registry";
-import { SpriteObj } from "../../core/models/game_objects/SpriteObj";
+import { SpriteObj } from "../../core/models/objs/SpriteObj";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { SpriteView } from "../../core/models/views/SpriteView";
 

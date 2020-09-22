@@ -1,5 +1,5 @@
 import { Registry } from "../Registry";
-import { AssetObj } from "../models/game_objects/AssetObj";
+import { AssetObj } from "../models/objs/AssetObj";
 
 export class LocalStoreService {
     serviceName = 'local-store'

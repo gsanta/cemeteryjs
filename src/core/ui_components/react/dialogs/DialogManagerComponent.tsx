@@ -1,9 +1,9 @@
 
 
 import * as React from 'react';
-import { UI_Region } from '../../../plugins/UI_Plugin';
 import { AppContext, AppContextType } from '../Context';
 import { UI_Builder } from '../../UI_Builder';
+import { UI_Region } from '../../../plugin/UI_Plugin';
 
 export class DialogManagerComponent extends React.Component {
     static contextType = AppContext;

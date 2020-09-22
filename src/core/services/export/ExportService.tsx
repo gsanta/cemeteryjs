@@ -1,7 +1,7 @@
-import { IPluginJson } from '../../plugins/IPluginExporter';
+import { IPluginJson } from '../../plugin/IPluginExporter';
 import { Registry } from '../../Registry';
-import { AssetObjJson } from '../../models/game_objects/AssetObj';
-import { ObjJson } from '../../models/game_objects/IGameObj';
+import { AssetObjJson } from '../../models/objs/AssetObj';
+import { ObjJson } from '../../models/objs/IGameObj';
 import { IDataExporter } from './IDataExporter';
 import { SpriteSheetExporter } from './SpriteSheetExporter';
 import { AssetObjExporter } from './AssetObjExporter';

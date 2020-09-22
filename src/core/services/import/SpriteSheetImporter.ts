@@ -1,7 +1,7 @@
 import { AbstractPluginImporter } from "./AbstractPluginImporter";
 import { IDataImporter } from "./IDataImporter";
 import { AppJson } from "../export/ExportService";
-import { SpriteSheetObjType, SpriteSheetObj, SpriteSheetObjJson } from "../../models/game_objects/SpriteSheetObj";
+import { SpriteSheetObjType, SpriteSheetObj, SpriteSheetObjJson } from "../../models/objs/SpriteSheetObj";
 import { Registry } from "../../Registry";
 
 export class SpriteSheetImporter implements IDataImporter {

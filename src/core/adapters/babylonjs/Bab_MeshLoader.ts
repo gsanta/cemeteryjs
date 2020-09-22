@@ -2,8 +2,8 @@ import { ParticleSystem, SceneLoader, Skeleton, StandardMaterial, Texture, Vecto
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { Scene } from "babylonjs/scene";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { AssetObj } from "../../models/game_objects/AssetObj";
-import { MeshObj } from "../../models/game_objects/MeshObj";
+import { AssetObj } from "../../models/objs/AssetObj";
+import { MeshObj } from "../../models/objs/MeshObj";
 import { Registry } from "../../Registry";
 import { IMeshLoaderAdapter } from "../IMeshLoaderAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";

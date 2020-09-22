@@ -1,5 +1,5 @@
-import { NodeObj } from '../../models/game_objects/NodeObj';
-import { NodeConnectionObj } from '../../models/game_objects/NodeConnectionObj';
+import { NodeObj } from '../../models/objs/NodeObj';
+import { NodeConnectionObj } from '../../models/objs/NodeConnectionObj';
 import { Registry } from '../../Registry';
 import { NodeView } from '../../models/views/NodeView';
 import { ViewType } from '../../models/views/View';

@@ -1,5 +1,5 @@
-import { AssetObjType } from "../../models/game_objects/AssetObj";
-import { ObjJson } from "../../models/game_objects/IGameObj";
+import { AssetObjType } from "../../models/objs/AssetObj";
+import { ObjJson } from "../../models/objs/IGameObj";
 import { Registry } from "../../Registry";
 import { AppJson } from "./ExportService";
 import { IDataExporter } from "./IDataExporter";

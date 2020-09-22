@@ -1,21 +1,17 @@
-import { join } from 'path';
-import { AndNodeFacotry } from '../../plugins/node_plugins/AndNodeObj';
-import { AnimationNodeFacotry } from '../../plugins/node_plugins/AnimationNodeObj';
-import { KeyboardNodeFacotry } from '../../plugins/node_plugins/KeyboardNodeObj';
-import { MeshNodeFacotry } from '../../plugins/node_plugins/MeshNodeObj';
-import { MoveNodeFacotry } from '../../plugins/node_plugins/MoveNodeObj';
-import { PathNodeFacotry } from '../../plugins/node_plugins/PathNodeObj';
-import { RouteNodeFacotry } from '../../plugins/node_plugins/route_node/RouteNodeObj';
-import { SplitNodeFacotry } from '../../plugins/node_plugins/SplitNodeObj';
-import { TurnNodeFacotry } from '../../plugins/node_plugins/TurnNodeObj';
-import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
-import { NodeObj } from '../models/game_objects/NodeObj';
+import { AnimationNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
+import { KeyboardNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
+import { MeshNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/MeshNodeObj';
+import { MoveNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/MoveNodeObj';
+import { PathNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
+import { RouteNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
+import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
+import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
 import { NodeView } from '../models/views/NodeView';
 import { View, ViewType } from '../models/views/View';
-import { AbstractController } from '../plugins/controllers/AbstractController';
-import { NodeRenderer } from '../plugins/controllers/NodeRenderer';
-import { UI_Plugin } from '../plugins/UI_Plugin';
+import { AbstractController } from '../plugin/controller/AbstractController';
+import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
+import { UI_Plugin } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
 import { AbstractViewStoreHook } from '../stores/AbstractViewStoreHook';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
@@ -42,14 +38,11 @@ export class NodeService {
             this.defaultNodeRenderer = new NodeRenderer(plugin, this.registry);
 
             this.registerNode(KeyboardNodeFacotry);
-            this.registerNode(AndNodeFacotry);
             this.registerNode(AnimationNodeFacotry);
             this.registerNode(MeshNodeFacotry);
             this.registerNode(MoveNodeFacotry);
             this.registerNode(PathNodeFacotry);
             this.registerNode(RouteNodeFacotry);
-            this.registerNode(SplitNodeFacotry);
-            this.registerNode(TurnNodeFacotry);
 
             // TODO: unregister somewhere
             this.registry.stores.nodeStore.addHook(new RemoveRelatedConnectionHook(this.registry));

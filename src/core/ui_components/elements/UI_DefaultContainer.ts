@@ -9,8 +9,8 @@ import { UI_Column } from './UI_Column';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
-import { AbstractController } from '../../plugins/controllers/AbstractController';
-import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
+import { AbstractController } from '../../plugin/controller/AbstractController';
+import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {controller?: AbstractController, prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {

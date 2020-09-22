@@ -1,6 +1,6 @@
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { MeshObj } from "../../models/game_objects/MeshObj";
+import { MeshObj } from "../../models/objs/MeshObj";
 import { Registry } from "../../Registry";
 import { RectangleFactory } from "../../stores/RectangleFactory";
 import { IMeshAdapter } from "../IMeshAdapter";

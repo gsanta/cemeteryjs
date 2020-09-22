@@ -1,5 +1,5 @@
 import { Point } from "../../utils/geometry/shapes/Point";
-import { SpriteObj } from "../models/game_objects/SpriteObj";
+import { SpriteObj } from "../models/objs/SpriteObj";
 
 export interface ISpriteAdapter {
     setPosition(spriteObj: SpriteObj, pos: Point): void;

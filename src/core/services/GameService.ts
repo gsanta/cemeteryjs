@@ -1,5 +1,5 @@
-import { AnimationNodeType } from "../../plugins/node_plugins/AnimationNodeObj";
-import { RouteNodeObjType } from "../../plugins/node_plugins/route_node/RouteNodeObj";
+import { AnimationNodeType } from "../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj";
+import { RouteNodeObjType } from "../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
 

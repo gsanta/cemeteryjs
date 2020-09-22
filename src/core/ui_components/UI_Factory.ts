@@ -27,15 +27,15 @@ import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
 import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 import { UI_Dialog } from './elements/surfaces/UI_Dialog';
-import { UI_Plugin } from '../plugins/UI_Plugin';
+import { UI_Plugin } from '../plugin/UI_Plugin';
 import { UI_Layout } from './elements/UI_Layout';
 import { UI_Image } from './elements/UI_Image';
 import { UI_Column } from './elements/UI_Column';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Icon } from './elements/UI_Icon';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
-import { AbstractController } from '../plugins/controllers/AbstractController';
-import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
+import { AbstractController } from '../plugin/controller/AbstractController';
+import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 
 export class UI_Factory {

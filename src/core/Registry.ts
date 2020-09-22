@@ -1,6 +1,6 @@
 import { Services } from "./services/ServiceLocator";
 import { Stores } from "./stores/Stores";
-import { Plugins } from "./plugins/Plugins";
+import { Plugins } from "./plugin/Plugins";
 import { IControlledObject, ObjectCapability } from './IControlledObject';
 import { IListener } from './IListener';
 import { Preferences, defaultPreferences } from './preferences/Preferences';

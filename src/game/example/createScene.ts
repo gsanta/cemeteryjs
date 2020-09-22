@@ -1,4 +1,4 @@
-import { SpriteObj } from '../../core/models/game_objects/SpriteObj';
+import { SpriteObj } from '../../core/models/objs/SpriteObj';
 import { Registry } from '../../core/Registry';
 import { Bab_EngineFacade } from '../../core/adapters/babylonjs/Bab_EngineFacade';
 import { SceneLoader } from './SceneLoader';

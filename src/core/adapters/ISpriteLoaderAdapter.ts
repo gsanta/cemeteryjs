@@ -1,5 +1,5 @@
-import { SpriteObj } from "../models/game_objects/SpriteObj";
-import { SpriteSheetObj } from "../models/game_objects/SpriteSheetObj";
+import { SpriteObj } from "../models/objs/SpriteObj";
+import { SpriteSheetObj } from "../models/objs/SpriteSheetObj";
 
 export interface ISpriteLoaderAdapter {
 

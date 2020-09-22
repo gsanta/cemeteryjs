@@ -1,6 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { NodeConnectionObj, NodeConnectionObjJson } from "../game_objects/NodeConnectionObj";
+import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
 import { NodeView } from "./NodeView";
 import { View, ViewJson, ViewType } from "./View";
 import { Registry } from "../../Registry";

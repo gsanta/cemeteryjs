@@ -1,4 +1,4 @@
-import { MeshObj } from "../models/game_objects/MeshObj";
+import { MeshObj } from "../models/objs/MeshObj";
 import { Point } from "../../utils/geometry/shapes/Point";
 
 export interface IMeshAdapter {

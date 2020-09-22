@@ -1,4 +1,4 @@
-import { AssetObj, AssetType } from "../models/game_objects/AssetObj";
+import { AssetObj, AssetType } from "../models/objs/AssetObj";
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 

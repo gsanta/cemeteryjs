@@ -1,31 +1,9 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
-import { IGameModel } from '../game_objects/IGameModel';
-import { MeshObj } from '../game_objects/MeshObj';
+import { IGameModel } from '../objs/IGameModel';
+import { MeshObj } from '../objs/MeshObj';
 import { View, ViewJson, ViewType } from './View';
-
-export enum WorldItemShape {
-    RECTANGLE = 'rect',
-    MODEL = 'model'
-}
-
-export interface Animation {
-    name: string;
-    range: [number, number];
-}
-
-export enum AnimationName {
-    None = 'none',
-    Walk = 'walk',
-    Turn = 'turn'
-}
-
-export enum AnimationState {
-    Playing = 'playing',
-    Paused = 'paused',
-    Stopped = 'stopped'
-}
 
 export interface MeshViewJson extends ViewJson {
     rotation: number;
@@ -51,8 +29,6 @@ export class MeshView extends View implements IGameModel {
     color: string = 'grey';
     yPos: number = 0;
     speed = 0.5;
-    animations: string[] = ['animation1'];
-    animationState = AnimationState.Playing;
     layer: number = 10;
 
     constructor(config?: {dimensions?: Rectangle}) {

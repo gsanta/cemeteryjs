@@ -3,7 +3,7 @@ import { UI_ElementType } from "./UI_ElementType";
 import { UI_Factory } from '../UI_Factory';
 import { UI_Element } from './UI_Element';
 import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
-import { AbstractCanvasPlugin } from "../../plugins/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
 
 
 export class UI_HtmlCanvas extends UI_Element {

@@ -1,6 +1,6 @@
 import { Mesh, Sprite, SpriteManager, Vector3 } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { SpriteObj } from "../../models/game_objects/SpriteObj";
+import { SpriteObj } from "../../models/objs/SpriteObj";
 import { Registry } from "../../Registry";
 import { RectangleFactory } from "../../stores/RectangleFactory";
 import { ISpriteAdapter } from "../ISpriteAdapter";

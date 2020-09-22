@@ -1,13 +1,12 @@
-import { ViewSettings } from "../../../plugins/ui_plugins/AbstractSettings";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeObj, SlotName, NodeObjJson } from '../game_objects/NodeObj';
-import { JoinPointView } from "./child_views/JoinPointView";
-import { ViewType, View, ViewJson } from "./View";
+import { AbstractController } from "../../plugin/controller/AbstractController";
 import { Registry } from "../../Registry";
+import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
-import { AbstractController } from "../../plugins/controllers/AbstractController";
+import { NodeObj, NodeObjJson } from '../objs/NodeObj';
+import { JoinPointView } from "./child_views/JoinPointView";
+import { View, ViewJson, ViewType } from "./View";
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -29,7 +28,6 @@ export class NodeView extends View {
     obj: NodeObj;
     dimensions: Rectangle;
     nodeGraph: NodeGraph;
-    settings: ViewSettings<any, NodeView>;
     joinPointViews: JoinPointView[] = [];
 
     controller: AbstractController<any>;

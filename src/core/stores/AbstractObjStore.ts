@@ -1,4 +1,4 @@
-import { IGameObj } from "../models/game_objects/IGameObj";
+import { IGameObj } from "../models/objs/IGameObj";
 import { IdGenerator } from "./IdGenerator";
 
 export abstract class AbstractObjStore<T extends IGameObj> {

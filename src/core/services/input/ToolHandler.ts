@@ -1,8 +1,8 @@
-import { Tool } from '../../plugins/tools/Tool';
+import { Tool } from '../../plugin/tools/Tool';
 import { Registry } from '../../Registry';
 import { RenderTask } from '../RenderServices';
-import { UI_Region } from '../../plugins/UI_Plugin';
-import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
+import { UI_Region } from '../../plugin/UI_Plugin';
+import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 
 export class ToolHandler {
     private toolMap: Map<string, Tool> = new Map();

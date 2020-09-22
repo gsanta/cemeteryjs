@@ -1,6 +1,6 @@
 import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3, Texture } from 'babylonjs';
-import { MeshObj } from '../models/game_objects/MeshObj';
-import { SpriteObj } from '../models/game_objects/SpriteObj';
+import { MeshObj } from '../models/objs/MeshObj';
+import { SpriteObj } from '../models/objs/SpriteObj';
 
 export class MaterialBuilder {
     static CreateMaterial(name: string, scene: Scene): StandardMaterial {

@@ -1,8 +1,8 @@
 import { UI_Element } from './UI_Element';
 import { UI_ElementType } from './UI_ElementType';
-import { UI_Plugin } from '../../plugins/UI_Plugin';
-import { AbstractCanvasPlugin } from '../../plugins/AbstractCanvasPlugin';
-import { AbstractController } from '../../plugins/controllers/AbstractController';
+import { UI_Plugin } from '../../plugin/UI_Plugin';
+import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { AbstractController } from '../../plugin/controller/AbstractController';
 import { Point } from '../../../utils/geometry/shapes/Point';
 
 export class UI_ListItem extends UI_Element {

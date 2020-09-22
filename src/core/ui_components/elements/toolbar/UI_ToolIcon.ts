@@ -1,4 +1,4 @@
-import { UI_Plugin } from '../../../plugins/UI_Plugin';
+import { UI_Plugin } from '../../../plugin/UI_Plugin';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_Element } from '../UI_Element';
 import { UI_ElementType } from '../UI_ElementType';

@@ -1,14 +1,14 @@
-import { SceneEditorPluginId } from '../../plugins/ui_plugins/scene_editor/SceneEditorPlugin';
-import { GameViewerPluginId } from '../../plugins/ui_plugins/game_viewer/GameViewerPlugin';
-import { ObjectSettingsPluginId } from '../../plugins/ui_plugins/scene_editor/controllers/ObjectSettingsPlugin';
-import { NodeEditorPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorPlugin';
-import { NodeEditorSettingsPluginId } from '../../plugins/ui_plugins/node_editor/NodeEditorSettingsPlugin';
-import { CodeEditorPluginId } from '../../plugins/ui_plugins/code_editor/CodeEditorPlugin';
+import { SceneEditorPluginId } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPlugin';
+import { GameViewerPluginId } from '../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
+import { ObjectSettingsPluginId } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
+import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
+import { NodeEditorSettingsPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPlugin';
+import { CodeEditorPluginId } from '../../plugins/canvas_plugins/code_editor/CodeEditorPlugin';
 import { Registry } from '../Registry';
 import Split from 'split.js';
-import { UI_Region } from '../plugins/UI_Plugin';
-import { AbstractCanvasPlugin } from '../plugins/AbstractCanvasPlugin';
-import { LevelSettingsPluginId } from '../../plugins/ui_plugins/sidepanel/LevelSettingsPlugin';
+import { UI_Region } from '../plugin/UI_Plugin';
+import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
+import { LevelSettingsPluginId } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
 
 
 export class LayoutHandler {

@@ -1,5 +1,5 @@
 import { SpritePackedManager } from "babylonjs";
-import { SpriteSheetObj } from "../../models/game_objects/SpriteSheetObj";
+import { SpriteSheetObj } from "../../models/objs/SpriteSheetObj";
 import { Registry } from "../../Registry";
 import { ISpriteLoaderAdapter } from "../ISpriteLoaderAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
