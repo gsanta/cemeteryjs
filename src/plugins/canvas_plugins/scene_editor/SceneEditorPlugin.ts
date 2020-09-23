@@ -120,7 +120,11 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         getSortedMeshViews(this.registry).map(meshView => {
             const group = canvas.group(meshView.id);
             group.data = meshView;
-            group.transform = `translate(${meshView.dimensions.topLeft.x} ${meshView.dimensions.topLeft.y}) rotate(${toDegree(meshView.getRotation())} ${meshView.dimensions.getWidth() / 2} ${meshView.dimensions.getHeight() / 2})`;
+
+            const translation = `${meshView.dimensions.topLeft.x} ${meshView.dimensions.topLeft.y}`;
+            const rotation = `${toDegree(meshView.getRotation())} ${meshView.dimensions.getWidth() / 2} ${meshView.dimensions.getHeight() / 2}`;
+            const scale = `${meshView.getScale(), meshView.getScale()}`;
+            group.transform = `translate(${translation}) rotate(${rotation}) scale(${scale})`;
             const rect = group.rect();
             rect.width = meshView.dimensions.getWidth();
             rect.height = meshView.dimensions.getHeight();

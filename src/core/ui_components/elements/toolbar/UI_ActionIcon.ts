@@ -9,6 +9,7 @@ export class UI_ActionIcon extends UI_InputElement {
     elementType = UI_ElementType.ActionIcon;
 
     icon: string;
+    isActivated: boolean = false;
     _tooltip: UI_Tooltip;
 
     placement: 'left' | 'middle' | 'right';

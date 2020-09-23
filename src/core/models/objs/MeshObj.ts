@@ -1,8 +1,12 @@
-import { Mesh, Vector3 } from 'babylonjs';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { IMeshAdapter } from '../../adapters/IMeshAdapter';
 import { MeshView } from '../views/MeshView';
 import { IGameObj, ObjJson } from './IGameObj';
+
+export interface MeshObjJson extends ObjJson {
+    scaleX: number;
+    scaleY: number;
+}
 
 export class MeshObj implements IGameObj {
     meshView: MeshView;
@@ -12,7 +16,7 @@ export class MeshObj implements IGameObj {
     }
 
     private startPos: Point;
-    private scale: number = 1;
+    private scale: Point;
     id: string;
 
     modelId: string;
@@ -55,28 +59,32 @@ export class MeshObj implements IGameObj {
         }
     }
 
-    setScale(scale: number) {
+    setScale(scale: Point) {
         this.scale = scale;
         if (this.meshAdapter) {
-            return this.meshAdapter.setScale(this, new Point(scale, scale));
+            return this.meshAdapter.setScale(this, scale);
         }
     }
 
     getScale(): Point {
         const scale = this.meshAdapter && this.meshAdapter.getScale(this);
-        return scale || new Point(this.scale, this.scale);
+        return scale || this.scale;
     }
 
     dispose() {
         this.meshAdapter && this.meshAdapter.deleteInstance(this);
     }
 
-    toJson(): ObjJson {
-        throw new Error("Method not implemented.");
+    toJson(): MeshObjJson {
+        return {
+            id: this.id,
+            scaleX: this.getScale().x,
+            scaleY: this.getScale().y
+        }
     }
     
-    fromJson(json: ObjJson) {
-        throw new Error("Method not implemented.");
+    fromJson(json: MeshObjJson) {
+        this.scale = new Point(json.scaleX, json.scaleY);
     }
 
 }

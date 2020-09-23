@@ -15,6 +15,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     id = GameViewerPluginId;
     region = UI_Region.Canvas2;
 
+    isPlaying = false;
+
     private gizmos: Gizmos;
 
     private controller: GameViewerController;
@@ -65,11 +67,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        tool = toolbar.tool({controllerId: GameToolType, key: GameToolType});
-        tool.icon = 'games';
-        tooltip = tool.tooltip();
-        tooltip.label = 'Game tool';
-
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
@@ -78,15 +75,31 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
+        actionIcon = toolbar.actionIcon({prop: GameViewerProps.ZoomOut});
+        actionIcon.icon = 'zoom-out';
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Zoom out';
+
+        tool = toolbar.tool({controllerId: GameToolType, key: GameToolType});
+        tool.icon = 'games';
+        tool.placement = 'middle';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Game tool';
+
+        separator = toolbar.iconSeparator();
+        separator.placement = 'middle';
+
         actionIcon = toolbar.actionIcon({prop: GameViewerProps.Play});
         actionIcon.icon = 'play';
         actionIcon.placement = 'middle';
+        actionIcon.isActivated = this.isPlaying;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Play';
 
         actionIcon = toolbar.actionIcon({prop: GameViewerProps.Stop});
         actionIcon.icon = 'stop';
         actionIcon.placement = 'middle';
+        actionIcon.isActivated = !this.isPlaying;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Stop';
 

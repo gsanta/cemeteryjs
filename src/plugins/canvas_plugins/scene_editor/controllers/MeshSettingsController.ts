@@ -94,7 +94,7 @@ const RotationControl: PropControl<string> = {
 
 const ScaleControl: PropControl<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
-        return Math.round(controller.meshView.getScale()).toString();
+        return controller.meshView.getScale();
     },
 
     change(val, context) {

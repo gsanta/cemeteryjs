@@ -104,6 +104,7 @@ export class PropContext<T> {
     private tempVal: T;
     element: UI_Element;
     registry: Registry;
+    plugin: UI_Plugin;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -251,6 +252,7 @@ export class AbstractController<P = any> {
     registerPropControl(prop: P, propControl: PropControl<any>) {
         const context = new PropContext();
         context.registry = this.registry;
+        context.plugin = this.plugin;
         this.propContexts.set(prop, context);
         this.propControls.set(prop, {...defaultPropControl, ...propControl});
     }

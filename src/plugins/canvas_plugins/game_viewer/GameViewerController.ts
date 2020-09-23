@@ -40,12 +40,14 @@ const ZoomOutControl: PropControl<any> = {
 
 const PlayControl: PropControl<any> = {
     click(context, element, controller: GameViewerController) {
-        
+        (<GameViewerPlugin> context.plugin).isPlaying = true;
+        context.registry.services.render.reRender(context.plugin.region);
     }
 }
 
 const StopControl: PropControl<any> = {
     click(context, element, controller: GameViewerController) {
-        
+        (<GameViewerPlugin> context.plugin).isPlaying = false;
+        context.registry.services.render.reRender(context.plugin.region);
     }
 }

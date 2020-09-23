@@ -27,7 +27,7 @@ export class ActionIconComp extends React.Component<ActionIconCompProps> {
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,
-            selectedTool && (selectedTool.id === this.props.element.controllerId) ? 'ce-tool-active' : undefined
+            this.props.element.isActivated ? 'ce-tool-active' : undefined
         );
         
         return (

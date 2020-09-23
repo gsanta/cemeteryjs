@@ -54,9 +54,12 @@ export class Rectangle extends Polygon {
     }
 
     scale(amount: Point): Rectangle {
-        const topLeft = this.topLeft.scaleX(amount.x).scaleY(amount.y);
-        const bottomRight = this.bottomRight.scaleX(amount.x).scaleY(amount.y);
-        return new Rectangle(topLeft, bottomRight);
+        const center = this.getBoundingCenter();
+        this.setWidth(this.getWidth() * amount.x);
+        this.setHeight(this.getHeight() * amount.y);
+        this.moveCenterTo(center);
+
+        return this;
     }
 
     clone(): Rectangle {

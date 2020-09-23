@@ -50,11 +50,8 @@ export class MeshView extends View implements IGameModel {
     }
 
     setScale(scale: number) {
-        this.scale = scale;
-        const center = this.dimensions.getBoundingCenter();
-        this.dimensions.scale(new Point(scale, scale));
-        this.dimensions.moveCenterTo(center);
-        this.obj.setScale(scale);
+        this.scale = scale;        
+        this.obj.setScale(new Point(scale, scale));
     }
 
     getScale(): number {
