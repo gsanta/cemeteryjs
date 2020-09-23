@@ -14,4 +14,6 @@ export interface IMeshAdapter {
     deleteInstance(meshObj: MeshObj): void;
 
     createMaterial(meshObj: MeshObj);
+
+    playAnimation(meshObj: MeshObj, startFrame: number, endFrame: number, repeat: boolean);
 }

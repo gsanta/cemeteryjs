@@ -70,6 +70,14 @@ export class Rectangle extends Polygon {
         return new Rectangle(topLeft, bottomRight);
     }
 
+    moveCenterTo(pos: Point) {
+        const center = this.getBoundingCenter();
+        const diff = pos.subtract(center);
+        const topLeft = this.topLeft.add(diff);
+        const bottomRight = this.bottomRight.add(diff);
+        return new Rectangle(topLeft, bottomRight);
+    }
+
     div(num: number): Rectangle {
         return new Rectangle(this.topLeft.div(num), this.bottomRight.div(num));
     }

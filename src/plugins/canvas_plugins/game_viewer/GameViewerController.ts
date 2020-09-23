@@ -7,7 +7,9 @@ import { ToolType } from "../../../core/plugin/tools/Tool";
 
 export enum GameViewerProps {
     ZoomIn = 'zoomIn',
-    ZoomOut = 'ZoomOut'
+    ZoomOut = 'ZoomOut',
+    Play = 'Play',
+    Stop = 'Stop'
 }
 
 export class GameViewerController extends AbstractController {
@@ -19,6 +21,8 @@ export class GameViewerController extends AbstractController {
 
         this.registerPropControl(GameViewerProps.ZoomIn, ZoomInControl);
         this.registerPropControl(GameViewerProps.ZoomOut, ZoomOutControl);
+        this.registerPropControl(GameViewerProps.Play, PlayControl);
+        this.registerPropControl(GameViewerProps.Stop, StopControl);
     }
 }
 
@@ -31,5 +35,17 @@ const ZoomInControl: PropControl<any> = {
 const ZoomOutControl: PropControl<any> = {
     click(context, element, controller: GameViewerController) {
         (controller.plugin.toolHandler.getById(ToolType.Camera) as CameraTool).zoomOut();
+    }
+}
+
+const PlayControl: PropControl<any> = {
+    click(context, element, controller: GameViewerController) {
+        
+    }
+}
+
+const StopControl: PropControl<any> = {
+    click(context, element, controller: GameViewerController) {
+        
     }
 }

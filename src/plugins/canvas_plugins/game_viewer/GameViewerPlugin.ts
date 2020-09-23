@@ -78,10 +78,17 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({prop: GameViewerProps.ZoomOut});
-        actionIcon.icon = 'zoom-out';
+        actionIcon = toolbar.actionIcon({prop: GameViewerProps.Play});
+        actionIcon.icon = 'play';
+        actionIcon.placement = 'middle';
         tooltip = actionIcon.tooltip();
-        tooltip.label = 'Zoom out';
+        tooltip.label = 'Play';
+
+        actionIcon = toolbar.actionIcon({prop: GameViewerProps.Stop});
+        actionIcon.icon = 'stop';
+        actionIcon.placement = 'middle';
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Stop';
 
     }
 }

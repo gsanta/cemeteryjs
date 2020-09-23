@@ -100,7 +100,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     private createModelData(asset: AssetObj, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
-        const mainMesh = meshes.find(mesh => mesh.parent) || meshes[0];
+        const mainMesh = meshes.find(mesh => !mesh.parent) || meshes[0];
 
         meshes[0].material = new StandardMaterial(asset.id, this.engineFacade.scene);
    

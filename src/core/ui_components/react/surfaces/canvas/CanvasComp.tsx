@@ -12,11 +12,6 @@ import { View } from '../../../../models/views/View';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
 
-const EditorComponentStyled = styled.div`
-    position: relative;
-`;
-
-
 const SelectionComponentStyled = styled.rect`
     stroke: red;
     stroke-width: 1px;
@@ -52,26 +47,24 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         const plugin = this.props.element.plugin as AbstractCanvasPlugin;
         
         return (
-            <EditorComponentStyled 
+            <div 
                 ref={this.ref} id={plugin.id}
                 style={{
                     cursor: plugin.toolHandler.getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
-                    height: this.props.element.height ? this.props.element.height :'100%'
+                    height: this.props.element.height ? this.props.element.height :'100%',
+                    position: 'relative'
                 }}
             >
                 {this.props.toolbar}
                 {this.props.dropLayer ? this.props.dropLayer : null}
                 {this.props.element.elementType === UI_ElementType.SvgCanvas ? this.renderSvgCanvas() : this.renderHtmlCanvas()}
 
-            </EditorComponentStyled>
+            </div>
         );
     }
 
     private renderSvgCanvas() {
-        const hover = (item: View) => this.context.registry.services.mouse.hover(item);
-        const unhover = (canvasItem: View) => this.context.registry.services.mouse.unhover(canvasItem);
-
         return (
             <svg
                 style={{
@@ -97,8 +90,6 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     <PathMarkersComponent/>
                 </defs>
                 {this.props.children}
-                {/* <MeshViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/> */}
-                {/* <PathViewContainerComponent hover={hover} unhover={unhover} registry={this.context.registry} renderWithSettings={false}/> */}
                 {this.renderFeedbacks()}
             </svg>
         );
@@ -118,10 +109,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     }}
                     tabIndex={0}
                     onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => {
-                        console.log('mouse move')
-                        this.props.element.mouseMove(e.nativeEvent)
-                    }}
+                    onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
                     onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
                     onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
                     onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
@@ -135,7 +123,6 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     style={{
                         width: this.props.element.width ? this.props.element.width :'100%',
                         height: this.props.element.height ? this.props.element.height :'100%',
-    
                     }}
                 />
             </React.Fragment>

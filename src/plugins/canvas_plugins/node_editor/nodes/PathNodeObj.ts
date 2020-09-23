@@ -24,6 +24,7 @@ export const PathNodeType = 'path-node-obj';
 export class PathNodeObj extends NodeObj {
     type = PathNodeType;
     category = NodeCategory.Default;
+    displayName = 'Path';
     
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);

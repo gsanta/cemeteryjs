@@ -20,6 +20,8 @@ const insertPhotoIcon = require('../../../../../../assets/images/icons/insert_ph
 const videogameAssetIcon = require('../../../../../../assets/images/icons/videogame_asset.svg');
 const meshIcon = require('../../../../../../assets/images/icons/mesh.svg');
 const spriteIcon = require('../../../../../../assets/images/icons/sprite.svg');
+const playIcon = require('../../../../../../assets/images/icons/play.svg');
+const stopIcon = require('../../../../../../assets/images/icons/stop.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -127,6 +129,14 @@ const ToolbarStyled = styled.div`
         &.games-icon {
             background-image: url(${gamesIcon});
         }
+
+        &.play-icon {
+            background-image: url(${playIcon});
+        }
+
+        &.stop-icon {
+            background-image: url(${stopIcon});
+        }
     }
 `;
 
@@ -147,8 +157,10 @@ export class ToolbarComp extends React.Component<ToolbarCompProps> {
                     {this.props.toolsLeft}                    
                 </div>
                 <div className="ce-tool-section" key="middle-section">
+                    {this.props.toolsMiddle}
                 </div>
                 <div className="ce-tool-section" key="right-section">
+                    {this.props.toolsRight}
                 </div>
             </ToolbarStyled>
         )

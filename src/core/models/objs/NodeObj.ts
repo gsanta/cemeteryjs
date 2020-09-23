@@ -32,22 +32,18 @@ export interface NodeParam {
 
 export abstract class NodeObj implements IGameObj {
     id: string;
-    nodeView: NodeView;
     type: string;
+    displayName: string;
     category: string;
-
-    private cachedParams: Map<string, NodeParam> = new Map();
-    private params: NodeParam[] = [];
-
-    isDirty = false;
-    label: string;
     color: string;
+
     inputs: NodeLink[] = [];
     outputs: NodeLink[] = [];
-
     connections: Map<string, NodeConnectionObj> = new Map();
-
     graph: NodeGraph;
+    
+    private cachedParams: Map<string, NodeParam> = new Map();
+    private params: NodeParam[] = [];
 
     constructor(nodeGraph: NodeGraph) {
         this.graph = nodeGraph;

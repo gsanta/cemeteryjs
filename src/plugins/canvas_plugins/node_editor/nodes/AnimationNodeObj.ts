@@ -1,4 +1,5 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
+import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { ViewType } from "../../../../core/models/views/View";
 import { AbstractController, PropControl } from "../../../../core/plugin/controller/AbstractController";
@@ -26,6 +27,9 @@ export const AnimationNodeType = 'animation-node-obj';
 export class AnimationNodeObj extends NodeObj {
     type = AnimationNodeType;
     category = NodeCategory.Default;
+    displayName = 'Animation';
+
+    private isAnimationPlaying = false;
 
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);
@@ -60,8 +64,14 @@ export class AnimationNodeObj extends NodeObj {
 
     execute(registry: Registry) {
         if (this.getParam('startFrame').val !== 0 && this.getParam('endFrame').val !== 0) {
-            const meshView = registry.stores.canvasStore.getById(this.getParam('mesh').val);
-            1;
+            const meshView = <MeshView> registry.stores.canvasStore.getById(this.getParam('mesh').val);
+            
+            if (!this.isAnimationPlaying) {
+                const canPlay = registry.engine.meshes.playAnimation(meshView.obj, this.getParam('startFrame').val, this.getParam('endFrame').val, true);
+                if (canPlay) {
+                    this.isAnimationPlaying = true;
+                }
+            }
         }
     }
 }

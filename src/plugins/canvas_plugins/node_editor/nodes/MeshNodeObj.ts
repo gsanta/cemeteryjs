@@ -24,6 +24,7 @@ export const MeshNodeType = 'mesh-node-obj';
 export class MeshNodeObj extends NodeObj {
     type = MeshNodeType;
     category = NodeCategory.Default;
+    displayName = 'Mesh';
 
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);

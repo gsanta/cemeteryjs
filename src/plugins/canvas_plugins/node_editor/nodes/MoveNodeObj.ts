@@ -28,6 +28,7 @@ export const MoveNodeType = 'move-node-obj';
 export class MoveNodeObj extends NodeObj {
     type = MoveNodeType;
     category = NodeCategory.Default;
+    displayName = 'Move';
 
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);

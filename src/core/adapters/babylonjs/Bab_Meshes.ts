@@ -114,15 +114,30 @@ export  class Bab_Meshes implements IMeshAdapter {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
 
-        const mesh = meshData.mainMesh;
+        let mesh = meshData.mainMesh;
 
         const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.textureId);
 
         if (!textureObj) {
             return;
         }
+
+        // TODO detect mesh with material in a safer way
+        mesh = <Mesh> (mesh.getChildMeshes().length > 0 ? mesh.getChildMeshes()[0] : mesh);
         
         (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
         (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+    }
+
+    playAnimation(meshObj: MeshObj, startFrame: number, endFrame: number, repeat: boolean): boolean {
+        const meshData = this.meshes.get(meshObj.id);
+        if (!meshData) { return false; }
+
+        const skeletalMesh = meshData.mainMesh.skeleton ? meshData.mainMesh : meshData.mainMesh.getChildMeshes().find(childMesh => childMesh.skeleton);
+        
+        if (!skeletalMesh) { return false; }
+
+        this.engineFacade.scene.beginAnimation(skeletalMesh.skeleton, startFrame, endFrame, repeat);
+        return true;
     }
 }

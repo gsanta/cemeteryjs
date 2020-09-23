@@ -26,6 +26,7 @@ export const KeyboardNodeType = 'keyboard-node-obj';
 export class KeyboardNodeObj extends NodeObj {
     type = KeyboardNodeType;
     category = NodeCategory.Default;
+    displayName = 'Keyboard';
 
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);

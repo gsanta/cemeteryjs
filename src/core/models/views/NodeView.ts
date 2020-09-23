@@ -39,7 +39,6 @@ export class NodeView extends View {
         
         if (config) {
             this.obj = config.node;
-            this.obj.nodeView = this;
             this.dimensions = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
             this.setup();
         }

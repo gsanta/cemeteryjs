@@ -25,6 +25,7 @@ export const RouteNodeObjType = 'route-node-obj';
 export class RouteNodeObj extends NodeObj {
     type = RouteNodeObjType;
     category = NodeCategory.Default;
+    displayName = 'Route';
 
     private routeNodeExecutor: RouteNodeExecutor;
 

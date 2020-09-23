@@ -88,7 +88,7 @@ export class NodeRenderer extends AbstractController {
         header.backgroundColor = colors.panelBackground;
         
         const title = header.text();
-        title.text = nodeView.obj.type;
+        title.text = nodeView.obj.displayName;
         title.isBold = true;
         title.color = colors.textColor;
     }

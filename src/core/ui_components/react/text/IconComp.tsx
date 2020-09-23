@@ -21,6 +21,8 @@ const fullScreenExitIcon = require('../../../../../assets/images/icons/fullscree
 const insertPhotoIcon = require('../../../../../assets/images/icons/insert_photo.svg');
 const removeIcon = require('../../../../../assets/images/icons/remove.svg');
 const doneIcon = require('../../../../../assets/images/icons/done.svg');
+const playIcon = require('../../../../../assets/images/icons/play.svg');
+const stopIcon = require('../../../../../assets/images/icons/stop.svg');
 
 const IconStyled = styled.div`
     &.ce-icon {
@@ -99,6 +101,14 @@ const IconStyled = styled.div`
 
         &.games-icon {
             background-image: url(${gamesIcon});
+        }
+
+        &.play-icon {
+            background-image: url(${playIcon});
+        }
+
+        &.stop-icon {
+            background-image: url(${stopIcon});
         }
     }
 `;
