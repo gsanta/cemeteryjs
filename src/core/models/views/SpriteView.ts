@@ -47,7 +47,6 @@ export class SpriteView extends View {
     }
 
     dispose() {
-        this.obj.dispose();
     }
 
     toJson(): SpriteViewJson {

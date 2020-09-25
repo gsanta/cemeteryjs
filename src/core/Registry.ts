@@ -1,4 +1,4 @@
-import { Services } from "./services/ServiceLocator";
+import { Services } from "./services/Services";
 import { Stores } from "./stores/Stores";
 import { Plugins } from "./plugin/Plugins";
 import { IControlledObject, ObjectCapability } from './IControlledObject';

@@ -13,9 +13,9 @@ import { AbstractController } from '../plugin/controller/AbstractController';
 import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
 import { UI_Plugin } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
-import { AbstractViewStoreHook } from '../stores/AbstractViewStoreHook';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { NodeGraph } from './node/NodeGraph';
+import { ViewStoreHook } from '../stores/ViewStore';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeObj> = new Map();
@@ -88,13 +88,14 @@ export interface NodeFactory {
     newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any>;
 }
 
-class RemoveRelatedConnectionHook extends AbstractViewStoreHook {
+class RemoveRelatedConnectionHook implements ViewStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
         this.registry = registry;
     }
+
+    addViewHook() {}
 
     removeViewHook(view: View) {
         switch(view.viewType) {
@@ -113,11 +114,10 @@ class RemoveRelatedConnectionHook extends AbstractViewStoreHook {
     }
 }
 
-class NodeGraphHook extends AbstractViewStoreHook {
+class NodeGraphHook implements ViewStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
         this.registry = registry;
     }
 

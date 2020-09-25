@@ -1,4 +1,7 @@
 import { IObj } from "../models/objs/IObj";
+import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
+import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
+import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 
 export interface ObjStoreHook {
@@ -34,6 +37,7 @@ export class AbstractObjStore<T extends IObj> {
 
         this.objs.splice(this.objs.indexOf(obj), 1);
         this.objMap.delete(obj.id);
+        obj.dispose();
     }
 
     getById(id: string) {
@@ -59,5 +63,35 @@ export class AbstractObjStore<T extends IObj> {
 
     removeHook(hook: ObjStoreHook) {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
+    }
+}
+
+export class ObjLifeCycleHook implements ObjStoreHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    addObjHook(obj: IObj) {
+        switch(obj.objType) {
+            case MeshObjType:
+                this.registry.engine.meshes.createInstance(<MeshObj> obj);
+                break;
+            case SpriteObjType:
+                this.registry.engine.sprites.createInstance(<SpriteObj> obj);
+                break;
+        }
+    }
+
+    removeObjHook(obj: IObj) {
+        switch(obj.objType) {
+            case MeshObjType:
+                this.registry.engine.meshes.deleteInstance(<MeshObj> obj);
+                break;
+            case SpriteObjType:
+                this.registry.engine.sprites.deleteInstance(<SpriteObj> obj);
+                break;
+        }
     }
 }

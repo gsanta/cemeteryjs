@@ -82,7 +82,6 @@ export class MeshView extends View {
 
     dispose() {
         // TODO: later when ObjStores are correctly introduced, dispose obj only when removing from obj store.
-        this.obj.dispose();
     }
 
     toJson(): MeshViewJson {

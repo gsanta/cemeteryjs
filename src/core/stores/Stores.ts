@@ -12,7 +12,7 @@ export const NodeStoreId = 'node-store';
 export class Stores {
     private registry: Registry
 
-    private viewStores: ViewStore[] = [];
+    viewStores: ViewStore[] = [];
 
     canvasStore: ViewStore;
     levelStore: LevelStore;

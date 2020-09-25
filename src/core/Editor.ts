@@ -1,4 +1,6 @@
 import { Registry } from './Registry';
+import { ObjLifeCycleHook } from './stores/AbstractObjStore';
+import { ViewLifeCycleHook } from './stores/ViewStore';
 
 export class Editor {
     registry: Registry;
@@ -10,7 +12,10 @@ export class Editor {
     constructor() {
         this.svgCanvasId = 'svg-editor';
         this.registry = new Registry();
-        this.registry.stores
+        this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
+        this.registry.stores.viewStores.forEach(viewStore => {
+            viewStore.addHook(new ViewLifeCycleHook(this.registry));
+        });
     }
 
     setup(canvas: HTMLCanvasElement) {        

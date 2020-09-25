@@ -3,7 +3,7 @@ import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
-import { AbstractViewStoreHook } from "./AbstractViewStoreHook";
+import { Registry } from "../Registry";
 
 export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
     const x = rectangle.topLeft.x;
@@ -16,13 +16,18 @@ export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): Vi
     return store.getAllViews().filter(item => polygon.contains(item.getBounds()));
 }
 
+export interface ViewStoreHook {
+    addViewHook(view: View);
+    removeViewHook(view: View);
+}
+
 export class ViewStore {
     protected views: View[] = [];
     private selectedViews: View[] = [];
     protected idMap: Map<string, View> = new Map();
     private viewsByType: Map<string, View[]> = new Map();
     protected idGenerator: IdGenerator;
-    private hooks: AbstractViewStoreHook[] = [];
+    private hooks: ViewStoreHook[] = [];
 
     id: string;
 
@@ -37,11 +42,11 @@ export class ViewStore {
         this.idGenerator = idGenerator;
     }
 
-    addHook(hook: AbstractViewStoreHook) {
+    addHook(hook: ViewStoreHook) {
         this.hooks.push(hook);
     }
 
-    removeHook(hook: AbstractViewStoreHook) {
+    removeHook(hook: ViewStoreHook) {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
@@ -135,5 +140,19 @@ export class ViewStore {
         this.viewsByType = new Map();
         this.idGenerator.clear();
         this.clearSelection();
+    }
+}
+
+export class ViewLifeCycleHook implements ViewStoreHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    addViewHook(view: View) {}
+
+    removeViewHook(view: View) {
+        this.registry.stores.objStore.removeObj(view.getObj());
     }
 }
