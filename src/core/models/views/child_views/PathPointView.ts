@@ -1,5 +1,7 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
+import { PathObj } from "../../objs/PathObj";
 import { PathView } from "../PathView";
 import { View, ViewJson } from "../View";
 import { ChildView } from "./ChildView";
@@ -22,10 +24,26 @@ export class PathPointView extends ChildView {
         this.parent = parent;
     }
 
+    getObj(): PathObj {
+        return this.parent.getObj();
+    }
+
+    setObj(obj: PathObj) {
+        this.parent.setObj(obj);
+    }
+
     move(delta: Point) {
         this.point.add(delta);
         this.parent.str = undefined;
         this.parent.update();
+    }
+
+    getBounds(): Rectangle {
+        return this.bounds;
+    }
+
+    setBounds(rectangle: Rectangle) {
+        this.bounds = rectangle;
     }
 
     dispose() {}

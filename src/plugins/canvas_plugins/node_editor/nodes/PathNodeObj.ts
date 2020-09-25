@@ -51,12 +51,12 @@ const PathControl: PropControl<string> = {
 
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        return nodeView.obj.getParam('path').val;
+        return nodeView.getObj().getParam('path').val;
     },
 
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        nodeView.obj.setParam('path', val);
+        nodeView.getObj().setParam('path', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

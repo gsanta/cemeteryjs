@@ -28,15 +28,15 @@ export class SceneLoader {
         this.registry.stores.assetStore.lookupByProp('path', spriteJson.spriteSheetPath) || this.addSpriteSheet(spriteJson);
 
         const spriteView = new SpriteView();
-        spriteView.obj = new SpriteObj();
-        spriteView.obj.spriteAdapter = this.registry.engine.sprites;
+        spriteView.setObj(new SpriteObj());
+        spriteView.getObj().spriteAdapter = this.registry.engine.sprites;
 
-        spriteView.obj.frameName = spriteJson.frameName;
-        spriteView.obj.startPos = new Point(spriteJson.x, spriteJson.y);
+        spriteView.getObj().frameName = spriteJson.frameName;
+        spriteView.getObj().startPos = new Point(spriteJson.x, spriteJson.y);
 
         this.registry.stores.spriteStore.addView(spriteView);
-        this.registry.engine.sprites.createInstance(spriteView.obj);
-        this.registry.engine.sprites.setPosition(spriteView.obj, new Point(spriteJson.x, spriteJson.y));
+        this.registry.engine.sprites.createInstance(spriteView.getObj());
+        this.registry.engine.sprites.setPosition(spriteView.getObj(), new Point(spriteJson.x, spriteJson.y));
     }
 
     private addSpriteSheet(spriteJson: { x: number; y: number; frameName: string; spriteSheetPath: string; }): AssetObj {

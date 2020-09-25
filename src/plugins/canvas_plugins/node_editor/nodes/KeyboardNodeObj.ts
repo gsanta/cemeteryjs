@@ -72,16 +72,16 @@ const KeyControl: PropControl<string> = {
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam(element.prop).val;
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).getObj().getParam(element.prop).val;
     },
 
     change(val, context, element: UI_InputElement) {
         context.updateTempVal(val);
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        nodeView.obj.setParam(element.prop, val);
+        nodeView.getObj().setParam(element.prop, val);
         context.registry.services.history.createSnapshot();
 
-        nodeView.obj.addParam(        {
+        nodeView.getObj().addParam(        {
             name: 'key2',
             val: '',
             inputType: 'list',

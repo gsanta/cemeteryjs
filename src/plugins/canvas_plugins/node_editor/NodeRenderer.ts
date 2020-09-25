@@ -15,7 +15,7 @@ export class NodeRenderer extends AbstractController {
 
     render(svgCanvas: UI_SvgCanvas, nodeView: NodeView) {
         const group = svgCanvas.group(nodeView.id);
-        group.transform = `translate(${nodeView.dimensions.topLeft.x} ${nodeView.dimensions.topLeft.y})`;
+        group.transform = `translate(${nodeView.getBounds().topLeft.x} ${nodeView.getBounds().topLeft.y})`;
 
         this.renderRect(group, nodeView);
         const column = this.renderContent(group, nodeView);
@@ -25,7 +25,7 @@ export class NodeRenderer extends AbstractController {
     }
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
-        nodeView.obj.getParams().map(param => {
+        nodeView.getObj().getParams().map(param => {
             let row = column.row({key: param.name});
             row.height = '35px';
 
@@ -52,10 +52,10 @@ export class NodeRenderer extends AbstractController {
         const rect = group.rect();
         rect.x = 0;
         rect.y = 0;
-        rect.width = nodeView.dimensions.getWidth();
-        rect.height = nodeView.dimensions.getHeight();
+        rect.width = nodeView.getBounds().getWidth();
+        rect.height = nodeView.getBounds().getHeight();
         rect.strokeColor = nodeView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
-        rect.fillColor = nodeView.obj.color || 'white';
+        rect.fillColor = nodeView.getObj().color || 'white';
         rect.css = {
             strokeWidth: nodeView.tags.has(ViewTag.Selected) ? '3' : '1'
         }
@@ -63,8 +63,8 @@ export class NodeRenderer extends AbstractController {
 
     private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
         const foreignObject = group.foreignObject({key: nodeView.id});
-        foreignObject.width = nodeView.dimensions.getWidth();
-        foreignObject.height = nodeView.dimensions.getHeight();
+        foreignObject.width = nodeView.getBounds().getWidth();
+        foreignObject.height = nodeView.getBounds().getHeight();
         foreignObject.controller = this.controller;
         foreignObject.css = {
             userSelect: 'none'
@@ -88,7 +88,7 @@ export class NodeRenderer extends AbstractController {
         header.backgroundColor = colors.panelBackground;
         
         const title = header.text();
-        title.text = nodeView.obj.displayName;
+        title.text = nodeView.getObj().displayName;
         title.isBold = true;
         title.color = colors.textColor;
     }
@@ -100,7 +100,7 @@ export class NodeRenderer extends AbstractController {
         let rowHeight = 20;
         nodeView.joinPointViews
         .forEach(joinPointView => {
-            if (!nodeView.obj.hasParam(joinPointView.slotName)) {
+            if (!nodeView.getObj().hasParam(joinPointView.slotName)) {
                 joinPointView.isInput ? (inputs++) : (outputs++);
             }
             this.renderJoinPointInto(svgGroup, nodeView, joinPointView);
@@ -123,7 +123,7 @@ export class NodeRenderer extends AbstractController {
             strokeWidth: joinPointView.isHovered() ? '2' : '1'
         }
 
-        if (!nodeView.obj.hasParam(joinPointView.slotName)) {
+        if (!nodeView.getObj().hasParam(joinPointView.slotName)) {
             const text = svgGroup.svgText({key: joinPointView.slotName});
             text.text = joinPointView.slotName;
             const textOffsetX = joinPointView.isInput ? 10 : -10;

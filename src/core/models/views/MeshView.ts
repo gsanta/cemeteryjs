@@ -1,8 +1,9 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
+import { IObj } from '../objs/IObj';
 import { MeshObj } from '../objs/MeshObj';
-import { View, ViewJson, ViewType } from './View';
+import { View, ViewFactory, ViewJson, ViewType } from './View';
 
 export interface MeshViewJson extends ViewJson {
     rotation: number;
@@ -13,13 +14,17 @@ export interface MeshViewJson extends ViewJson {
     yPos: number 
 }
 
+export class MeshViewFactory implements ViewFactory {
+    viewType = ViewType.MeshView;
+    newInstance() { return new MeshView(); }
+}
+
 export class MeshView extends View {
     viewType = ViewType.MeshView;
 
-    obj: MeshObj;
+    protected obj: MeshObj;
 
     id: string;
-    dimensions: Rectangle;
     private rotation: number;
     private scale: number;
     
@@ -30,13 +35,14 @@ export class MeshView extends View {
     speed = 0.5;
     layer: number = 10;
 
-    constructor(obj: MeshObj, dimensions?: Rectangle) {
-        super();
-        this.dimensions = dimensions;
+    getObj(): MeshObj {
+        return this.obj;
+    }
+
+    setObj(obj: MeshObj) {
         this.obj = obj;
-        if (this.dimensions) {
-            this.obj.setPosition(this.dimensions.getBoundingCenter().div(10));
-        }
+
+        this.bounds && this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
     }
 
     getRotation(): number {
@@ -60,9 +66,18 @@ export class MeshView extends View {
     selectHoveredSubview() {}
 
     move(point: Point) {
-        this.dimensions = this.dimensions.translate(point);
+        this.bounds = this.bounds.translate(point);
 
         this.obj.move(point.div(10).negateY());
+    }
+
+    getBounds(): Rectangle {
+        return this.bounds;
+    }
+
+    setBounds(rectangle: Rectangle) {
+        this.bounds = rectangle;
+        this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
     }
 
     dispose() {
@@ -84,7 +99,7 @@ export class MeshView extends View {
 
     fromJson(json: MeshViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        this.obj.setPosition(this.dimensions.getBoundingCenter().div(10));
+        this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
         this.rotation = json.rotation;
         this.obj.modelId = json.modelId;
         this.scale = json.scale;

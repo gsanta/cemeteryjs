@@ -2,7 +2,6 @@ import { AbstractController, PropContext } from '../../../core/plugin/controller
 import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorControllerId } from "./NodeEditorController";
-import { NodeEditorPlugin, NodeEditorPluginId } from './NodeEditorPlugin';
 import { UI_ListItem } from '../../../core/ui_components/elements/UI_ListItem';
 
 export enum NodeEditorSettingsProps {
@@ -27,7 +26,7 @@ export class NodeEditorSettingsController extends AbstractController<string> {
             .onDndEnd((context: PropContext<string>, element) => {
                 const nodeView = this.registry.services.node.createNodeView((element as UI_ListItem).listItemId);
                 this.registry.stores.nodeStore.addView(nodeView);
-                nodeView.dimensions.moveTo(this.registry.services.pointer.pointer.curr);
+                nodeView.getBounds().moveTo(this.registry.services.pointer.pointer.curr);
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Canvas1);
             })

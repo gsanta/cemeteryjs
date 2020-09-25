@@ -6,6 +6,7 @@ import { sizes } from "../../../ui_components/react/styles";
 import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
+import { NodeObj } from "../../objs/NodeObj";
 
 export function isJoinPointView(view: View) {
     return view && view.viewType === JoinPointViewType;
@@ -27,7 +28,7 @@ export class JoinPointView extends ChildView {
     connection: NodeConnectionView;
     slotName: string;
     isInput: boolean;
-    dimensions: Rectangle;
+    bounds: Rectangle;
 
     constructor(parent: NodeView, config?: {slotName: string, isInput: boolean}) {
         super();
@@ -39,14 +40,30 @@ export class JoinPointView extends ChildView {
         }
     }
 
+    getObj(): NodeObj {
+        return this.parent.getObj();
+    }
+
+    setObj(obj: NodeObj) {
+        this.parent.setObj(obj);
+    }
+
     getAbsolutePosition() {
-        return new Point(this.parent.dimensions.topLeft.x + this.point.x, this.parent.dimensions.topLeft.y + this.point.y); 
+        return new Point(this.parent.getBounds().topLeft.x + this.point.x, this.parent.getBounds().topLeft.y + this.point.y); 
     }
 
     move(delta: Point) {
         if (this.connection) {
             this.isInput ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
         }
+    }
+
+    getBounds(): Rectangle {
+        return this.bounds;
+    }
+
+    setBounds(rectangle: Rectangle) {
+        this.bounds = rectangle;
     }
 
     dispose() {}

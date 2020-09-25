@@ -1,10 +1,16 @@
 import { IObj } from "../models/objs/IObj";
 import { IdGenerator } from "./IdGenerator";
 
+export interface ObjStoreHook {
+    addObjHook(obj: IObj);
+    removeObjHook(obj: IObj);
+}
+
 export class AbstractObjStore<T extends IObj> {
     protected objs: T[] = [];
     protected objMap: Map<string, T> = new Map();
     private idGenerator: IdGenerator;
+    private hooks: ObjStoreHook[] = [];
     id: string;
 
     setIdGenerator(idGenerator: IdGenerator) {
@@ -19,6 +25,15 @@ export class AbstractObjStore<T extends IObj> {
         obj.id = id;
         this.objs.push(obj);
         this.objMap.set(id, obj);
+
+        this.hooks.forEach(hook => hook.addObjHook(obj));
+    }
+
+    removeObj(obj: T) {
+        this.hooks.forEach(hook => hook.removeObjHook(obj));
+
+        this.objs.splice(this.objs.indexOf(obj), 1);
+        this.objMap.delete(obj.id);
     }
 
     getById(id: string) {
@@ -36,5 +51,13 @@ export class AbstractObjStore<T extends IObj> {
     clear() {
         this.objs = [];
         this.objMap = new Map();
+    }
+
+    addHook(hook: ObjStoreHook) {
+        this.hooks.push(hook);
+    }
+
+    removeHook(hook: ObjStoreHook) {
+        this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 }

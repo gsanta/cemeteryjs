@@ -1,4 +1,4 @@
-import { View, ViewType, ViewJson } from "./View";
+import { View, ViewType, ViewJson, ViewFactory } from "./View";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
@@ -20,26 +20,32 @@ export interface PathViewJson extends ViewJson {
     editPoints: EditPointViewJson[];
 }
 
+export class PathViewFactory implements ViewFactory {
+    viewType = ViewType.PathView;
+    newInstance() { return new PathView(); }
+}
+
 export class PathView extends View {
     viewType = ViewType.PathView;
 
-    obj: PathObj;
+    protected obj: PathObj;
     children: PathPointView[];
-    dimensions: Rectangle;
     id: string;
     radius = 5;
     str: string;
 
-    constructor() {
-        super();
-        this.dimensions = this.calcBoundingBox();
-        this.obj = new PathObj();
-    } 
+    getObj(): PathObj {
+        return this.obj;
+    }
+
+    setObj(obj: PathObj) {
+        this.obj = obj;
+    }
 
     addPathPoint(pathPoint: PathPointView) {
         pathPoint.id = `${this.id}-path-point-this.children.length`;
         this.children.push(pathPoint);
-        this.dimensions = this.calcBoundingBox();
+        this.bounds = this.calcBoundingBox();
         this.setActiveChild(pathPoint);
         this.update();
     }
@@ -85,6 +91,14 @@ export class PathView extends View {
         this.children.forEach((p: PathPointView) => p.point.add(point));
 
         this.str = undefined;
+    }
+
+    getBounds(): Rectangle {
+        return this.bounds;
+    }
+
+    setBounds(rectangle: Rectangle) {
+        this.bounds = rectangle;
     }
 
     dispose() {}

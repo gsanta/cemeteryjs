@@ -50,12 +50,12 @@ export const MeshControl: PropControl<string> = {
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('mesh').val;
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).getObj().getParam('mesh').val;
     },
 
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        nodeView.obj.setParam('mesh', val);
+        nodeView.getObj().setParam('mesh', val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

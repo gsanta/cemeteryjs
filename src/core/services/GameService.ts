@@ -22,9 +22,9 @@ export class GameService {
     }
 
     private renderLoop() {
-        this.registry.services.node.graph.getNodesByType(RouteNodeObjType).forEach(node => node.obj.execute(this.registry));
+        this.registry.services.node.graph.getNodesByType(RouteNodeObjType).forEach(node => node.getObj().execute(this.registry));
 
-        this.registry.services.node.graph.getNodesByType(AnimationNodeType).forEach(node => node.obj.execute(this.registry));
+        this.registry.services.node.graph.getNodesByType(AnimationNodeType).forEach(node => node.getObj().execute(this.registry));
     }
 
     // updateConcepts(concepts: View[]) {

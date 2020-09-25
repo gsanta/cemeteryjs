@@ -13,7 +13,7 @@ export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): Vi
 
     const polygon = Polygon.createRectangle(x, y, width, height);
 
-    return store.getAllViews().filter(item => polygon.contains(item.dimensions));
+    return store.getAllViews().filter(item => polygon.contains(item.getBounds()));
 }
 
 export class ViewStore {
@@ -51,7 +51,7 @@ export class ViewStore {
         } else {
             view.id = this.idGenerator.generateId(view.viewType);
         }
-        view.obj.id = view.id;
+        view.getObj().id = view.id;
 
         this.views.push(view);
         this.idMap.set(view.id, view);

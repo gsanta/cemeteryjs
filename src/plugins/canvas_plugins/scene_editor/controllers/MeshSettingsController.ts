@@ -139,8 +139,8 @@ const YPosControl: PropControl<string> = {
 
 const TextureControl: PropControl<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
-        if (controller.meshView.obj.textureId) {
-            const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.obj.textureId);
+        if (controller.meshView.getObj().textureId) {
+            const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.getObj().textureId);
             return assetObj.path
         }
 
@@ -157,10 +157,10 @@ const TextureControl: PropControl<string> = {
         context.clearTempVal();
 
         const asset = new AssetObj({path: val, assetType: AssetType.Texture});
-        controller.meshView.obj.textureId = context.registry.stores.assetStore.addObj(asset);
+        controller.meshView.getObj().textureId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
 
-        context.registry.engine.meshes.createMaterial(controller.meshView.obj);
+        context.registry.engine.meshes.createMaterial(controller.meshView.getObj());
         context.registry.services.history.createSnapshot();
     }
 }
@@ -173,8 +173,8 @@ const ThumbnailControl: PropControl<any> = {
 
 const ModelControl: PropControl<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
-        if (controller.meshView.obj.modelId) {
-            const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.obj.modelId);
+        if (controller.meshView.getObj().modelId) {
+            const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.getObj().modelId);
             return assetObj.path
         }
 
@@ -191,13 +191,13 @@ const ModelControl: PropControl<string> = {
         context.clearTempVal();
 
         const asset = new AssetObj({path: val, assetType: AssetType.Model});
-        controller.meshView.obj.modelId = context.registry.stores.assetStore.addObj(asset);
+        controller.meshView.getObj().modelId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
-        context.registry.engine.meshes.deleteInstance(controller.meshView.obj);
-        await context.registry.engine.meshes.createInstance(controller.meshView.obj)
-        const realDimensions = context.registry.engine.meshes.getDimensions(controller.meshView.obj)
-        controller.meshView.dimensions.setWidth(realDimensions.x);
-        controller.meshView.dimensions.setHeight(realDimensions.y);
+        context.registry.engine.meshes.deleteInstance(controller.meshView.getObj());
+        await context.registry.engine.meshes.createInstance(controller.meshView.getObj())
+        const realDimensions = context.registry.engine.meshes.getDimensions(controller.meshView.getObj())
+        controller.meshView.getBounds().setWidth(realDimensions.x);
+        controller.meshView.getBounds().setHeight(realDimensions.y);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRenderAll();
     }

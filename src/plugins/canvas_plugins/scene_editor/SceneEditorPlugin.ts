@@ -121,13 +121,13 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             const group = canvas.group(meshView.id);
             group.data = meshView;
 
-            const translation = `${meshView.dimensions.topLeft.x} ${meshView.dimensions.topLeft.y}`;
-            const rotation = `${toDegree(meshView.getRotation())} ${meshView.dimensions.getWidth() / 2} ${meshView.dimensions.getHeight() / 2}`;
+            const translation = `${meshView.getBounds().topLeft.x} ${meshView.getBounds().topLeft.y}`;
+            const rotation = `${toDegree(meshView.getRotation())} ${meshView.getBounds().getWidth() / 2} ${meshView.getBounds().getHeight() / 2}`;
             const scale = `${meshView.getScale(), meshView.getScale()}`;
             group.transform = `translate(${translation}) rotate(${rotation}) scale(${scale})`;
             const rect = group.rect();
-            rect.width = meshView.dimensions.getWidth();
-            rect.height = meshView.dimensions.getHeight();
+            rect.width = meshView.getBounds().getWidth();
+            rect.height = meshView.getBounds().getHeight();
 
             rect.css = {
                 strokeWidth: meshView.isSelected() ? '2' : '1'
@@ -140,8 +140,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             if (meshView.thumbnailData) {
                 const image = group.image();
                 image.href = meshView.thumbnailData;
-                image.width = meshView.dimensions.getWidth();
-                image.height = meshView.dimensions.getHeight();
+                image.width = meshView.getBounds().getWidth();
+                image.height = meshView.getBounds().getHeight();
             }
     
             return thumbnail;
@@ -154,10 +154,10 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             .forEach(spriteView => {
                 const group = canvas.group(spriteView.id);
                 group.data = spriteView;
-                group.transform = `translate(${spriteView.dimensions.topLeft.x} ${spriteView.dimensions.topLeft.y})`;
+                group.transform = `translate(${spriteView.getBounds().topLeft.x} ${spriteView.getBounds().topLeft.y})`;
                 const rect = group.rect();
-                rect.width = spriteView.dimensions.getWidth();
-                rect.height = spriteView.dimensions.getHeight();
+                rect.width = spriteView.getBounds().getWidth();
+                rect.height = spriteView.getBounds().getHeight();
                 rect.fillColor = 'green';
 
                 rect.strokeColor = spriteView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';

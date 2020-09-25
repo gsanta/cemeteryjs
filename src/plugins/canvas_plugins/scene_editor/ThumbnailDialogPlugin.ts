@@ -87,7 +87,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         this.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
 
         setTimeout(() => {
-            this.engine.meshes.createInstance(meshView.obj);
+            this.engine.meshes.createInstance(meshView.getObj());
         }, 500);
     }
 

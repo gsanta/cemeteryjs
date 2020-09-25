@@ -16,6 +16,7 @@ import { ObjService } from "./ObjService";
 import { RenderService } from "./RenderServices";
 import { UI_PerspectiveService } from './UI_PerspectiveService';
 import { UI_Service } from "./UI_Service";
+import { ViewService } from "./ViewService";
 
 export class Services {
     hotkey: HotkeyService;
@@ -33,6 +34,7 @@ export class Services {
     event: EventService;
     uiPerspective: UI_PerspectiveService;
     objService: ObjService;
+    viewService: ViewService;
 
     node: NodeService;
 
@@ -61,6 +63,7 @@ export class Services {
         this.event = new EventService(this.registry);
         this.uiPerspective = new UI_PerspectiveService(this.registry);
         this.objService = new ObjService();
+        this.viewService = new ViewService();
 
         this.node = new NodeService(this.registry);
 

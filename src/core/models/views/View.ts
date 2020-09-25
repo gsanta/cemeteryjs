@@ -24,6 +24,11 @@ export enum ViewTag {
     Hovered = 'Hovered'
 }
 
+export interface ViewFactory {
+    viewType: string;
+    newInstance(): View;
+}
+
 export abstract class View {
     id: string;
     viewType: string;
@@ -32,12 +37,15 @@ export abstract class View {
     parent: View;
     children: View[] = [];
 
-    obj: IObj;
+    protected obj: IObj;
 
-    dimensions: Rectangle;
+    protected bounds: Rectangle;
     move(delta: Point): void {}
 
     private activeChild: View;
+
+    abstract getObj(): IObj;
+    abstract setObj(obj: IObj);
 
     isHovered() {
         return this.tags.has(ViewTag.Hovered);
@@ -65,19 +73,22 @@ export abstract class View {
 
     getScale() { return 1; }
 
+    abstract getBounds(): Rectangle;
+    abstract setBounds(rectangle: Rectangle): void;
+
     abstract dispose(): void;
 
     toJson(): ViewJson {
         return {
             id: this.id,
             type: this.viewType,
-            dimensions: this.dimensions ? this.dimensions.toString() : undefined
+            dimensions: this.bounds ? this.bounds.toString() : undefined
         };
     }
 
     fromJson(json: ViewJson, registry: Registry) {
         this.id = json.id;
         this.viewType = json.type;
-        this.dimensions = json.dimensions && Rectangle.fromString(json.dimensions);
+        this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
     }
 }

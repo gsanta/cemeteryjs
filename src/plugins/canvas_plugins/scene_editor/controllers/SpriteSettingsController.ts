@@ -31,7 +31,7 @@ export class SpriteSettingsController extends AbstractController<SpriteSettingsP
 
 const FrameName: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).obj.frameName || '';
+        return (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).getObj().frameName || '';
     },
 
     change(val, context) {
@@ -41,23 +41,23 @@ const FrameName: PropControl<string> = {
 
     blur(context) {
         const spriteView = (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView());
-        context.releaseTempVal((val) => spriteView.obj.frameName = val);
+        context.releaseTempVal((val) => spriteView.getObj().frameName = val);
         context.registry.services.history.createSnapshot();
-        context.registry.engine.sprites.updateInstance(spriteView.obj);
+        context.registry.engine.sprites.updateInstance(spriteView.getObj());
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 const SelectSpriteSheet: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).obj.spriteSheetId;
+        return (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).getObj().spriteSheetId;
     },
 
     change(val, context) {
         const spriteView = (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView());
-        spriteView.obj.spriteSheetId = val;
+        spriteView.getObj().spriteSheetId = val;
         context.registry.services.history.createSnapshot();
-        context.registry.engine.sprites.updateInstance(spriteView.obj);
+        context.registry.engine.sprites.updateInstance(spriteView.getObj());
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     },
 
@@ -75,7 +75,7 @@ const ManageSpriteSheets: PropControl<string> = {
 
 const ScaleX: PropControl<string> = {
     defaultVal(context, element, controller: SpriteSettingsController) {
-        return controller.spriteView.obj.getScale().x;
+        return controller.spriteView.getObj().getScale().x;
     },
 
     change(val, context) {
@@ -84,15 +84,15 @@ const ScaleX: PropControl<string> = {
     },
 
     blur(context, element, controller: SpriteSettingsController) {
-        const currScale = controller.spriteView.obj.getScale();
+        const currScale = controller.spriteView.getObj().getScale();
         let scaleX = currScale.x;
         try {
             context.releaseTempVal(val => scaleX = parseFloat(val));
         } catch (e) {
             console.log(e);
         }
-        controller.spriteView.obj.setScale(new Point(scaleX, currScale.y));
-        context.registry.engine.sprites.updateInstance(controller.spriteView.obj);
+        controller.spriteView.getObj().setScale(new Point(scaleX, currScale.y));
+        context.registry.engine.sprites.updateInstance(controller.spriteView.getObj());
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
@@ -101,7 +101,7 @@ const ScaleX: PropControl<string> = {
 
 const ScaleY: PropControl<string> = {
     defaultVal(context, element, controller: SpriteSettingsController) {
-        return controller.spriteView.obj.getScale().y;
+        return controller.spriteView.getObj().getScale().y;
     },
 
     change(val, context) {
@@ -110,15 +110,15 @@ const ScaleY: PropControl<string> = {
     },
 
     blur(context, element, controller: SpriteSettingsController) {
-        const currScale = controller.spriteView.obj.getScale();
+        const currScale = controller.spriteView.getObj().getScale();
         let scaleY = currScale.y;
         try {
             context.releaseTempVal(val => scaleY = parseFloat(val));
         } catch (e) {
             console.log(e);
         }
-        controller.spriteView.obj.setScale(new Point(currScale.x, scaleY));
-        context.registry.engine.sprites.updateInstance(controller.spriteView.obj);
+        controller.spriteView.getObj().setScale(new Point(currScale.x, scaleY));
+        context.registry.engine.sprites.updateInstance(controller.spriteView.getObj());
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }

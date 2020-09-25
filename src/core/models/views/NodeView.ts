@@ -25,8 +25,7 @@ const NODE_PADDING = 10;
 export class NodeView extends View {
     readonly  viewType = ViewType.NodeView;
     id: string;
-    obj: NodeObj;
-    dimensions: Rectangle;
+    protected obj: NodeObj;
     nodeGraph: NodeGraph;
     joinPointViews: JoinPointView[] = [];
 
@@ -39,7 +38,7 @@ export class NodeView extends View {
         
         if (config) {
             this.obj = config.node;
-            this.dimensions = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
+            this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
             this.setup();
         }
     }
@@ -62,7 +61,7 @@ export class NodeView extends View {
         const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
         this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING; 
         const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.getParams().length ? this.obj.getParams().length : 1) + NODE_PADDING * 2;
-        this.dimensions.setHeight(height);
+        this.bounds.setHeight(height);
 
         this.initStandaloneJoinPointPositions();
         this.initParamRelatedJoinPointPositions();
@@ -70,27 +69,43 @@ export class NodeView extends View {
 
     private initStandaloneJoinPointPositions() {
         this.joinPointViews.filter(joinPointView => !this.obj.hasParam(joinPointView.slotName)).forEach((joinPointView) => {
-            const x = joinPointView.isInput ? 0 : this.dimensions.getWidth();
+            const x = joinPointView.isInput ? 0 : this.bounds.getWidth();
             const slotIndex = joinPointView.isInput ? this.obj.inputs.findIndex(slot => slot.name === joinPointView.slotName) : this.obj.outputs.findIndex(slot => slot.name === joinPointView.slotName);
             const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + sizes.nodes.headerHeight;
             joinPointView.point = new Point(x, y);
-            joinPointView.dimensions = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
+            joinPointView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
         });
     }
 
     private initParamRelatedJoinPointPositions() {
         this.joinPointViews.filter(joinPointView => this.obj.hasParam(joinPointView.slotName)).forEach((joinPointView) => {
-            const x = joinPointView.isInput ? 0 : this.dimensions.getWidth();
+            const x = joinPointView.isInput ? 0 : this.bounds.getWidth();
             const paramIndex = this.obj.getParams().findIndex(param => param.name === joinPointView.slotName);
             const y = paramIndex * INPUT_HEIGHT + this.paramsYPosStart + INPUT_HEIGHT / 2;
             joinPointView.point = new Point(x, y);
-            joinPointView.dimensions = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
+            joinPointView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
         });
     }
 
+    getObj(): NodeObj {
+        return this.obj;
+    }
+
+    setObj(obj: NodeObj) {
+        this.obj = obj;
+    }
+
     move(point: Point) {
-        this.dimensions = this.dimensions.translate(point);
+        this.bounds = this.bounds.translate(point);
         this.joinPointViews.forEach(joinPointView => joinPointView.move(point));
+    }
+
+    getBounds(): Rectangle {
+        return this.bounds;
+    }
+
+    setBounds(rectangle: Rectangle) {
+        this.bounds = rectangle;
     }
 
     dispose(): void {

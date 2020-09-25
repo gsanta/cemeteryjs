@@ -1,5 +1,4 @@
-import { IObj, ObjJson } from "../../../../core/models/objs/IObj";
-import { MeshObjType } from "../../../../core/models/objs/MeshObj";
+import { IObj } from "../../../../core/models/objs/IObj";
 import { MeshView, MeshViewJson } from "../../../../core/models/views/MeshView";
 import { PathView, PathViewJson } from "../../../../core/models/views/PathView";
 import { SpriteView, SpriteViewJson, SpriteViewType } from "../../../../core/models/views/SpriteView";
@@ -18,10 +17,10 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             switch(viewJson.type) {
                 case ViewType.MeshView:
                     const meshView = new MeshView();
-                    meshView.obj.meshAdapter = this.registry.engine.meshes;
+                    meshView.getObj().meshAdapter = this.registry.engine.meshes;
                     meshView.fromJson(viewJson as MeshViewJson, this.registry);
                     this.registry.stores.canvasStore.addView(meshView);
-                    this.registry.engine.meshes.createInstance((<MeshView> meshView).obj)
+                    this.registry.engine.meshes.createInstance((<MeshView> meshView).getObj())
                     break;
                 case ViewType.PathView:
                     const pathView = new PathView();
@@ -30,10 +29,10 @@ export class SceneEditorImporter extends AbstractPluginImporter {
                     break;
                 case SpriteViewType:
                     const spriteView = new SpriteView();
-                    spriteView.obj.spriteAdapter = this.registry.engine.sprites;
+                    spriteView.getObj().spriteAdapter = this.registry.engine.sprites;
                     spriteView.fromJson(viewJson as SpriteViewJson, this.registry);
                     this.registry.stores.canvasStore.addView(spriteView);
-                    this.registry.engine.sprites.createInstance(spriteView.obj);
+                    this.registry.engine.sprites.createInstance(spriteView.getObj());
                     break;
             }
         });

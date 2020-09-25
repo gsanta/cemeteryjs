@@ -4,8 +4,9 @@ import { Registry } from "../../../../core/Registry";
 import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { View } from "../../../../core/models/views/View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { SpriteView } from "../../../../core/models/views/SpriteView";
+import { SpriteView, SpriteViewType } from "../../../../core/models/views/SpriteView";
 import { Point } from "../../../../utils/geometry/shapes/Point";
+import { SpriteObj, SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 
 export class SpriteTool extends RectangleTool {
 
@@ -14,13 +15,16 @@ export class SpriteTool extends RectangleTool {
     }
 
     protected createView(rect: Rectangle): View {
-        const spriteView: SpriteView = new SpriteView({dimensions: rect});
-        spriteView.obj.spriteAdapter = this.registry.engine.sprites;
-        spriteView.obj.setScale(new Point(3, 3));
-        spriteView.obj.startPos = new Point(spriteView.dimensions.div(10).getBoundingCenter().x, -spriteView.dimensions.div(10).getBoundingCenter().y); 
+        const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
+        const spriteView: SpriteView = <SpriteView> this.registry.services.viewService.createView(SpriteViewType);
+        spriteView.setObj(spriteObj);
+        spriteView.setBounds(rect);
+        spriteObj.spriteAdapter = this.registry.engine.sprites;
+        spriteObj.setScale(new Point(3, 3));
+        spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y); 
 
         this.registry.stores.canvasStore.addView(spriteView);
-        this.registry.engine.sprites.createInstance(spriteView.obj);
+        this.registry.engine.sprites.createInstance(spriteView.getObj());
     
         return spriteView;
     }

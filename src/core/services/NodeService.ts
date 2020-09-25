@@ -59,8 +59,8 @@ export class NodeService {
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
-        if (!this.nodeTemplates.has(nodeView.obj.type)) {
-            throw new Error(`Node renderer registered for node type ${nodeView.obj.type}`);
+        if (!this.nodeTemplates.has(nodeView.getObj().type)) {
+            throw new Error(`Node renderer registered for node type ${nodeView.getObj().type}`);
         }
 
         this.defaultNodeRenderer.render(ui_svgCanvas, nodeView);
@@ -125,10 +125,10 @@ class NodeGraphHook extends AbstractViewStoreHook {
         const graph = this.registry.services.node.graph;
         switch(view.viewType) {
             case ViewType.NodeConnectionView:
-                graph.addConnection((<NodeConnectionView> view).obj);
+                graph.addConnection((<NodeConnectionView> view).getObj());
             break;
             case ViewType.NodeView:
-                graph.addNode((<NodeView> view).obj);
+                graph.addNode((<NodeView> view).getObj());
             break;
         }
     }
@@ -138,10 +138,10 @@ class NodeGraphHook extends AbstractViewStoreHook {
 
         switch(view.viewType) {
             case ViewType.NodeConnectionView:
-                graph.removeConnection((<NodeConnectionView> view).obj);
+                graph.removeConnection((<NodeConnectionView> view).getObj());
             break;
             case ViewType.NodeView:
-                graph.removeNode((<NodeView> view).obj);
+                graph.removeNode((<NodeView> view).getObj());
             break;
         }
     }

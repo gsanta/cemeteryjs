@@ -16,12 +16,9 @@ export interface NodeConnectionViewJson extends ViewJson {
 export class NodeConnectionView extends View {
     readonly  viewType = ViewType.NodeConnectionView;
 
-    // joinPoint1: JoinPointView;
-    // joinPoint2: JoinPointView;
-    dimensions = undefined;
     point1: Point;
     point2: Point;
-    obj: NodeConnectionObj;
+    protected obj: NodeConnectionObj;
 
     constructor() {
         super();
@@ -30,8 +27,16 @@ export class NodeConnectionView extends View {
 
     private updateDimensions() {
         if (this.point1 && this.point2) {
-            this.dimensions = Rectangle.fromTwoPoints(this.point1, this.point2);
+            this.bounds = Rectangle.fromTwoPoints(this.point1, this.point2);
         }
+    }
+
+    getObj(): NodeConnectionObj {
+        return this.obj;
+    }
+
+    setObj(obj: NodeConnectionObj) {
+        this.obj = obj;
     }
 
     move() {
@@ -46,6 +51,14 @@ export class NodeConnectionView extends View {
     setPoint2(point: Point) {
         this.point2 = point;
         this.updateDimensions();
+    }
+
+    getBounds(): Rectangle {
+        return this.bounds;
+    }
+
+    setBounds(rectangle: Rectangle) {
+        this.bounds = rectangle;
     }
 
     dispose() {}

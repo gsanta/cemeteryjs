@@ -16,6 +16,6 @@ export class GameTool extends AbstractTool {
     keydown(e: IKeyboardEvent) {
         this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
         this.registry.services.node.graph.getNodesByType(KeyboardNodeType)
-            .forEach(node => node.obj.execute(this.registry));
+            .forEach(node => node.getObj().execute(this.registry));
     }
 }

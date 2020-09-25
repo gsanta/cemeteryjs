@@ -71,7 +71,7 @@ export class MoveNodeObj extends NodeObj {
         const meshId = this.getParam('mesh').val;
 
         const meshView = registry.stores.canvasStore.getById(meshId) as MeshView;
-        meshView.obj.move(new Point(0, 2));
+        meshView.getObj().move(new Point(0, 2));
     }
 }
 
@@ -81,7 +81,7 @@ const MoveControl: PropControl<string> = {
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('move');
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).getObj().getParam('move');
     },
 
     change(val, context) {
@@ -92,7 +92,7 @@ const MoveControl: PropControl<string> = {
 
 const SpeedControl: PropControl<string> = {
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj.getParam('speed');
+        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).getObj().getParam('speed');
     },
 
     change(val, context) {
@@ -101,7 +101,7 @@ const SpeedControl: PropControl<string> = {
     },
 
     blur(context, element: UI_InputElement) {
-        const nodeObj = (context.registry.stores.nodeStore.getById(element.target) as NodeView).obj;
+        const nodeObj = (context.registry.stores.nodeStore.getById(element.target) as NodeView).getObj();
         nodeObj.setParam('speed', context.clearTempVal());
         context.registry.services.render.reRenderAll();
     }

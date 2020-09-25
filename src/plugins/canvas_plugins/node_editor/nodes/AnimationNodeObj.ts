@@ -67,7 +67,7 @@ export class AnimationNodeObj extends NodeObj {
             const meshView = <MeshView> registry.stores.canvasStore.getById(this.getParam('mesh').val);
             
             if (!this.isAnimationPlaying) {
-                const canPlay = registry.engine.meshes.playAnimation(meshView.obj, this.getParam('startFrame').val, this.getParam('endFrame').val, true);
+                const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), this.getParam('startFrame').val, this.getParam('endFrame').val, true);
                 if (canPlay) {
                     this.isAnimationPlaying = true;
                 }
@@ -83,13 +83,13 @@ const MeshControl: PropControl<string> = {
     
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        const meshParam = nodeView.obj.getParam('mesh').val;
+        const meshParam = nodeView.getObj().getParam('mesh').val;
         return context.registry.stores.canvasStore.getById(meshParam)?.id;
     },
 
     change(val: string, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        nodeView.obj.setParam('mesh', val);
+        nodeView.getObj().setParam('mesh', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
@@ -97,7 +97,7 @@ const MeshControl: PropControl<string> = {
 const StartFrameControl: PropControl<string> = {
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        return nodeView.obj.getParam('startFrame').val;
+        return nodeView.getObj().getParam('startFrame').val;
     },
 
     change(val, context) {
@@ -108,7 +108,7 @@ const StartFrameControl: PropControl<string> = {
     blur(context, element) {
         try {
             const val = parseFloat(context.getTempVal());
-            element.data.obj.setParam('startFrame', val);
+            element.data.getObj().setParam('startFrame', val);
         } catch (e) {
             console.log(e);
         }
@@ -121,7 +121,7 @@ const StartFrameControl: PropControl<string> = {
 const EndFrameControl: PropControl<string> = {
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
-        return nodeView.obj.getParam('endFrame').val;
+        return nodeView.getObj().getParam('endFrame').val;
     },
 
     change(val, context) {
@@ -132,7 +132,7 @@ const EndFrameControl: PropControl<string> = {
     blur(context, element) {
         try {
             const val = parseFloat(context.getTempVal());
-            element.data.obj.setParam('endFrame', val);
+            element.data.getObj().setParam('endFrame', val);
         } catch (e) {
             console.log(e);
         }

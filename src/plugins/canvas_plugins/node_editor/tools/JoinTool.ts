@@ -48,10 +48,10 @@ export class JoinTool extends PointerTool {
             const connection = new NodeConnectionView();
             joinPoint1.connection = connection;
             joinPoint2.connection = connection;
-            connection.obj.joinPoint1 = this.joinPoint1.slotName;
-            connection.obj.node1 = this.joinPoint1.parent.obj;
-            connection.obj.joinPoint2 = joinPoint2.slotName;
-            connection.obj.node2 = joinPoint2.parent.obj;
+            connection.getObj().joinPoint1 = this.joinPoint1.slotName;
+            connection.getObj().node1 = this.joinPoint1.parent.getObj();
+            connection.getObj().joinPoint2 = joinPoint2.slotName;
+            connection.getObj().node2 = joinPoint2.parent.getObj();
 
             connection.setPoint1(joinPoint1.getAbsolutePosition());
             connection.setPoint2(joinPoint2.getAbsolutePosition());

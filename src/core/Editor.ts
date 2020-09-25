@@ -10,6 +10,7 @@ export class Editor {
     constructor() {
         this.svgCanvasId = 'svg-editor';
         this.registry = new Registry();
+        this.registry.stores
     }
 
     setup(canvas: HTMLCanvasElement) {        
