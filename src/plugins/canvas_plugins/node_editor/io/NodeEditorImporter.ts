@@ -24,13 +24,13 @@ export class NodeEditorImporter extends AbstractPluginImporter {
         const nodeView = this.registry.services.node.createNodeView(viewJson.nodeObj.type);
         nodeView.fromJson(viewJson, this.registry);
 
-        this.registry.stores.nodeStore.addView(nodeView);
+        this.registry.stores.viewStore.addView(nodeView);
     }
 
     private importConnection(viewJson: NodeConnectionViewJson) {
         const connectionView: NodeConnectionView = new NodeConnectionView();
         connectionView.fromJson(viewJson, this.registry);
 
-        this.registry.stores.nodeStore.addView(connectionView);
+        this.registry.stores.viewStore.addView(connectionView);
     }
 }

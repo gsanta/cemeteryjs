@@ -19,19 +19,19 @@ export class SceneEditorImporter extends AbstractPluginImporter {
                     const meshView = new MeshView();
                     meshView.getObj().meshAdapter = this.registry.engine.meshes;
                     meshView.fromJson(viewJson as MeshViewJson, this.registry);
-                    this.registry.stores.canvasStore.addView(meshView);
+                    this.registry.stores.viewStore.addView(meshView);
                     this.registry.engine.meshes.createInstance((<MeshView> meshView).getObj())
                     break;
                 case ViewType.PathView:
                     const pathView = new PathView();
                     pathView.fromJson(viewJson as PathViewJson, this.registry);
-                    this.registry.stores.canvasStore.addView(pathView);
+                    this.registry.stores.viewStore.addView(pathView);
                     break;
                 case SpriteViewType:
                     const spriteView = new SpriteView();
                     spriteView.getObj().spriteAdapter = this.registry.engine.sprites;
                     spriteView.fromJson(viewJson as SpriteViewJson, this.registry);
-                    this.registry.stores.canvasStore.addView(spriteView);
+                    this.registry.stores.viewStore.addView(spriteView);
                     this.registry.engine.sprites.createInstance(spriteView.getObj());
                     break;
             }

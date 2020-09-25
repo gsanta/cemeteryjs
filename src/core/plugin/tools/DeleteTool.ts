@@ -28,7 +28,7 @@ export class DeleteTool extends PointerTool {
         if (hoveredItem.isChildView()) {
             hoveredItem.parent.deleteChild(hoveredItem);
         } else {
-            this.getStore().removeView(hoveredItem);
+            this.registry.stores.viewStore.removeView(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -40,8 +40,8 @@ export class DeleteTool extends PointerTool {
 
     
     draggedUp() {
-        const intersectingViews = getIntersectingViews(this.plugin.getStore(), this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.getStore().removeView(view));
+        const intersectingViews = getIntersectingViews(this.registry.stores.viewStore, this.rectangleSelection);
+        intersectingViews.forEach(view =>  this.registry.stores.viewStore.removeView(view));
 
         this.rectangleSelection = undefined;
 
@@ -57,7 +57,7 @@ export class DeleteTool extends PointerTool {
 
     eraseAll() {
         this.registry.services.localStore.clearAll();
-        this.plugin.getStore().clear();
+        this.registry.stores.viewStore.clear();
         this.registry.services.render.reRenderAll();
     }
 
@@ -67,7 +67,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.getPlugin().toolHandler.setSelectedTool(this.id);
+            this.plugin.toolHandler.setSelectedTool(this.id);
             return true;
         }
 

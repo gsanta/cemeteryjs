@@ -40,11 +40,11 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     getStore() {
-        return this.registry.stores.canvasStore;
+        return this.registry.stores.viewStore;
     }
 
     destroy() { 
-        this.registry.stores.canvasStore.clearSelection();
+        this.registry.stores.viewStore.clearSelection();
     }
 
     protected renderInto(layout: UI_Layout): void {
@@ -149,7 +149,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     private renderSpriteViews(canvas: UI_SvgCanvas) {
-        this.registry.stores.canvasStore
+        this.registry.stores.viewStore
             .getViewsByType(SpriteViewType)
             .forEach(spriteView => {
                 const group = canvas.group(spriteView.id);
@@ -172,7 +172,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     private renderPathViews(canvas: UI_SvgCanvas) {
-        this.registry.stores.canvasStore
+        this.registry.stores.viewStore
             .getViewsByType(ViewType.PathView)
             .forEach((pathView: PathView) => {
                 const group = canvas.group(pathView.id);
@@ -218,6 +218,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 }
 
 function getSortedMeshViews(registry: Registry) {
-    let items = <MeshView[]> [...registry.stores.canvasStore.getViewsByType(ViewType.MeshView)];
+    let items = <MeshView[]> [...registry.stores.viewStore.getViewsByType(ViewType.MeshView)];
     return sort(items, (a, b) => a.layer - b.layer);
 }

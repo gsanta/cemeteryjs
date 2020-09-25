@@ -3,8 +3,8 @@ import { Registry } from "../../../core/Registry";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
 import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
 import { SpritesheetManagerDialogController, SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogController";
-import { AssetType } from "../../../core/models/objs/AssetObj";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
+import { SpriteSheetObj, SpriteSheetObjType } from "../../../core/models/objs/SpriteSheetObj";
 
 export const SpriteSheetManagerDialogPluginId = 'sprite-sheet-manager-dialog-plugin'; 
 export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
@@ -59,7 +59,7 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
     }
 
     private renderTableRows(table: UI_Table) {
-        this.registry.stores.objStore.getAll().forEach(spriteSheet => {
+        this.registry.stores.objStore.getObjsByType(SpriteSheetObjType).forEach((spriteSheet: SpriteSheetObj) => {
             const jsonAsset = this.registry.stores.assetStore.getAssetById(spriteSheet.jsonAssetId);
             const spriteSheetAsset = this.registry.stores.assetStore.getAssetById(spriteSheet.spriteAssetId);
 

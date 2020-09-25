@@ -87,6 +87,6 @@ export class JoinPointView extends ChildView {
         this.point = Point.fromString(json.point);
         this.slotName = json.slotName;
         this.isInput = json.isInput;
-        this.connection = registry.stores.nodeStore.getById(json.connectionId) as NodeConnectionView;
+        this.connection = registry.stores.viewStore.getById(json.connectionId) as NodeConnectionView;
     }
 }

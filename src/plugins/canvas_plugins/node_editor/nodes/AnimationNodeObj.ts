@@ -64,7 +64,7 @@ export class AnimationNodeObj extends NodeObj {
 
     execute(registry: Registry) {
         if (this.getParam('startFrame').val !== 0 && this.getParam('endFrame').val !== 0) {
-            const meshView = <MeshView> registry.stores.canvasStore.getById(this.getParam('mesh').val);
+            const meshView = <MeshView> registry.stores.viewStore.getById(this.getParam('mesh').val);
             
             if (!this.isAnimationPlaying) {
                 const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), this.getParam('startFrame').val, this.getParam('endFrame').val, true);
@@ -78,17 +78,17 @@ export class AnimationNodeObj extends NodeObj {
 
 const MeshControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.canvasStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id);
+        return context.registry.stores.viewStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id);
     },
     
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         const meshParam = nodeView.getObj().getParam('mesh').val;
-        return context.registry.stores.canvasStore.getById(meshParam)?.id;
+        return context.registry.stores.viewStore.getById(meshParam)?.id;
     },
 
     change(val: string, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         nodeView.getObj().setParam('mesh', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
@@ -96,7 +96,7 @@ const MeshControl: PropControl<string> = {
 
 const StartFrameControl: PropControl<string> = {
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('startFrame').val;
     },
 
@@ -120,7 +120,7 @@ const StartFrameControl: PropControl<string> = {
 
 const EndFrameControl: PropControl<string> = {
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('endFrame').val;
     },
 

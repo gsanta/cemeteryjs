@@ -27,7 +27,7 @@ export class NodeGraph {
     }
 
     getNodesByType(nodeType: string) {
-        return (<NodeView[]> this.registry.stores.nodeStore.getViewsByType(ViewType.NodeView)).filter(node => node.getObj().type === nodeType);
+        return (<NodeView[]> this.registry.stores.viewStore.getViewsByType(ViewType.NodeView)).filter(node => node.getObj().type === nodeType);
     }
 
     findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {

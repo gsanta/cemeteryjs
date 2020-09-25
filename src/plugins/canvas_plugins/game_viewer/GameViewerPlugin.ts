@@ -32,7 +32,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     }
 
     getStore() {
-        return this.registry.stores.canvasStore;
+        return this.registry.stores.viewStore;
     }
 
     mounted(htmlElement: HTMLElement) {

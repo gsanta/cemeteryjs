@@ -45,8 +45,8 @@ export class NodeService {
             this.registerNode(RouteNodeFacotry);
 
             // TODO: unregister somewhere
-            this.registry.stores.nodeStore.addHook(new RemoveRelatedConnectionHook(this.registry));
-            this.registry.stores.nodeStore.addHook(new NodeGraphHook(this.registry));
+            this.registry.stores.viewStore.addHook(new RemoveRelatedConnectionHook(this.registry));
+            this.registry.stores.viewStore.addHook(new NodeGraphHook(this.registry));
         });
     }
 
@@ -108,7 +108,7 @@ class RemoveRelatedConnectionHook implements ViewStoreHook {
     private removeRelatedConnections(nodeView: NodeView) {
         nodeView.joinPointViews.forEach(joinPointView => {
             if (joinPointView.connection) {
-                this.registry.stores.nodeStore.removeView(joinPointView.connection);
+                this.registry.stores.viewStore.removeView(joinPointView.connection);
             }
         });
     }

@@ -46,16 +46,16 @@ export class PathNodeObj extends NodeObj {
 
 const PathControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.canvasStore.getViewsByType(ViewType.PathView).map(pathView => pathView.id);
+        return context.registry.stores.viewStore.getViewsByType(ViewType.PathView).map(pathView => pathView.id);
     },
 
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('path').val;
     },
 
     change(val, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         nodeView.getObj().setParam('path', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

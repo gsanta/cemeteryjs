@@ -80,7 +80,7 @@ export class RouteNodeObj extends NodeObj {
 
 const SpeedControl: PropControl<string> = {
     defaultVal(context, element) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('speed').val;
     },
     
@@ -96,7 +96,7 @@ const SpeedControl: PropControl<string> = {
         try {
             if (speed) {
                 const speedNum = parseFloat(speed);
-                const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+                const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
                 nodeView.getObj().setParam('speed', speedNum);
             }
         } catch (e) {
@@ -133,7 +133,7 @@ class RouteNodeExecutor {
         let meshParam = this.node.connections.get('mesh') && this.node.connections.get('mesh').getOtherNode(this.node).getParam('mesh');
 
         if (meshParam) {
-            return <MeshObj> registry.stores.canvasStore.getById(meshParam.val)?.getObj();
+            return <MeshObj> registry.stores.viewStore.getById(meshParam.val)?.getObj();
         }
     }
 
@@ -141,7 +141,7 @@ class RouteNodeExecutor {
         let pathParam = this.node.connections.get('path') && this.node.connections.get('path').getOtherNode(this.node).getParam('path');
 
         if (pathParam) {
-            return <PathObj> registry.stores.canvasStore.getById(pathParam.val)?.getObj();
+            return <PathObj> registry.stores.viewStore.getById(pathParam.val)?.getObj();
         }
     }
 }

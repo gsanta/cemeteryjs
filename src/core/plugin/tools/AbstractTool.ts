@@ -67,12 +67,4 @@ export class AbstractTool implements Tool {
 
     teardown(): void {};
     hotkey(hotkeyEvent: IHotkeyEvent): boolean { return false; }
-
-    protected getStore(): ViewStore {
-        return this.registry.plugins.getHoveredPlugin().getStore();
-    }
-
-    protected getPlugin(): AbstractCanvasPlugin {
-        return this.registry.plugins.getHoveredPlugin();
-    }
 }

@@ -14,7 +14,7 @@ export class NodeEditorExporter implements IDataExporter {
 
     export(json: Partial<AppJson>): void {
         json[this.plugin.id] = {
-            views: this.registry.stores.nodeStore.getAllViews().map(view => view.toJson())
+            views: this.registry.stores.viewStore.getAllViews().map(view => view.toJson())
         }
     }
 }

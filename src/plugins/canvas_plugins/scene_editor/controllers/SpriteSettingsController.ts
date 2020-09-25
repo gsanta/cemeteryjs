@@ -31,7 +31,7 @@ export class SpriteSettingsController extends AbstractController<SpriteSettingsP
 
 const FrameName: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).getObj().frameName || '';
+        return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().frameName || '';
     },
 
     change(val, context) {
@@ -40,7 +40,7 @@ const FrameName: PropControl<string> = {
     },
 
     blur(context) {
-        const spriteView = (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView());
+        const spriteView = (<SpriteView> context.registry.stores.viewStore.getOneSelectedView());
         context.releaseTempVal((val) => spriteView.getObj().frameName = val);
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());
@@ -50,11 +50,11 @@ const FrameName: PropControl<string> = {
 
 const SelectSpriteSheet: PropControl<string> = {
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView()).getObj().spriteSheetId;
+        return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().spriteSheetId;
     },
 
     change(val, context) {
-        const spriteView = (<SpriteView> context.registry.stores.canvasStore.getOneSelectedView());
+        const spriteView = (<SpriteView> context.registry.stores.viewStore.getOneSelectedView());
         spriteView.getObj().spriteSheetId = val;
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());

@@ -20,14 +20,14 @@ export class SceneEditorExporter implements IDataExporter {
 
     private exportViews(json: Partial<AppJson>): void {
         json[this.plugin.id] = {
-            views: this.registry.stores.canvasStore.getAllViews().map(view => view.toJson())
+            views: this.registry.stores.viewStore.getAllViews().map(view => view.toJson())
         }
     }
 
     private exportObjs(json: Partial<AppJson>): void {
-        if (this.registry.stores.canvasStore.getAllTypes().length === 0) { return; }
+        if (this.registry.stores.viewStore.getAllTypes().length === 0) { return; }
 
-        this.registry.stores.canvasStore.getAllTypes().forEach(type => {
+        this.registry.stores.viewStore.getAllTypes().forEach(type => {
             if (!json.objs) {
                 json.objs = [];
             }
@@ -39,7 +39,7 @@ export class SceneEditorExporter implements IDataExporter {
     
             json.objs.push(objs);
     
-            this.registry.stores.canvasStore.getViewsByType(type).forEach(spriteSheetObj => objs.objs.push(spriteSheetObj.toJson()));
+            this.registry.stores.viewStore.getViewsByType(type).forEach(spriteSheetObj => objs.objs.push(spriteSheetObj.toJson()));
         });
 
     }

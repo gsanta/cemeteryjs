@@ -29,15 +29,9 @@ export class ViewStore {
     protected idGenerator: IdGenerator;
     private hooks: ViewStoreHook[] = [];
 
-    id: string;
-
-    constructor(id: string) {
-        this.id = id;
-    }
-
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
-            throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
+            throw new Error(`Store already has an id generator, for consistency with the store's content, id generator should be set only once.`);
         }
         this.idGenerator = idGenerator;
     }

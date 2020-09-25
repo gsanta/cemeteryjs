@@ -46,15 +46,15 @@ export class MeshNodeObj extends NodeObj {
 
 export const MeshControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.canvasStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id)
+        return context.registry.stores.viewStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id)
     },
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.nodeStore.getById(element.target) as NodeView).getObj().getParam('mesh').val;
+        return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('mesh').val;
     },
 
     change(val, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.nodeStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         nodeView.getObj().setParam('mesh', val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);

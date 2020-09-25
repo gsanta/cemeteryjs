@@ -22,8 +22,8 @@ export abstract class RectangleTool extends AbstractTool {
 
         const view = this.createView(rect);
 
-        this.plugin.getStore().clearSelection()
-        this.plugin.getStore().addSelectedView(view);
+        this.registry.stores.viewStore.clearSelection()
+        this.registry.stores.viewStore.addSelectedView(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();

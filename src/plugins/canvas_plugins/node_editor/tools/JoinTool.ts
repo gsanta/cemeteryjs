@@ -57,7 +57,7 @@ export class JoinTool extends PointerTool {
             connection.setPoint2(joinPoint2.getAbsolutePosition());
             this.joinPoint1.connection = connection;
             joinPoint2.connection = connection;
-            this.registry.stores.nodeStore.addView(connection);
+            this.registry.stores.viewStore.addView(connection);
             this.startPoint = undefined;
             this.endPoint = undefined;
 

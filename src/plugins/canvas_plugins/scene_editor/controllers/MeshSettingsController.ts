@@ -43,7 +43,7 @@ export class MeshSettingsController extends AbstractController<MeshSettingsProps
 
 const IdControl: PropControl<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
-        return (<MeshView> context.registry.stores.canvasStore.getOneSelectedView()).id;
+        return (<MeshView> context.registry.stores.viewStore.getOneSelectedView()).id;
     },
     
     change(val, context) {
@@ -52,7 +52,7 @@ const IdControl: PropControl<string> = {
     },
 
     blur(context, element, controller: MeshSettingsController) {
-        context.releaseTempVal((val) => (<MeshView> context.registry.stores.canvasStore.getOneSelectedView()).id = val);
+        context.releaseTempVal((val) => (<MeshView> context.registry.stores.viewStore.getOneSelectedView()).id = val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }    

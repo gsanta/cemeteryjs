@@ -77,7 +77,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     getStore(): ViewStore {
-        return this.registry.stores.nodeStore;
+        return this.registry.stores.viewStore;
     }
 
     resize(): void {
@@ -154,11 +154,11 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        (<NodeView[]> this.registry.stores.nodeStore.getViewsByType(ViewType.NodeView)).forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
+        (<NodeView[]> this.registry.stores.viewStore.getViewsByType(ViewType.NodeView)).forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
     }
 
     private renderConnectionsInto(canvas: UI_SvgCanvas) {
-        this.registry.stores.nodeStore.getViewsByType(ViewType.NodeConnectionView).forEach((connection: NodeConnectionView) => {
+        this.registry.stores.viewStore.getViewsByType(ViewType.NodeConnectionView).forEach((connection: NodeConnectionView) => {
             const line = canvas.line();
             line.x1 = connection.point1.x;
             line.y1 = connection.point1.y;

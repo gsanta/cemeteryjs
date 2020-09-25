@@ -25,7 +25,7 @@ export class NodeEditorSettingsController extends AbstractController<string> {
             })
             .onDndEnd((context: PropContext<string>, element) => {
                 const nodeView = this.registry.services.node.createNodeView((element as UI_ListItem).listItemId);
-                this.registry.stores.nodeStore.addView(nodeView);
+                this.registry.stores.viewStore.addView(nodeView);
                 nodeView.getBounds().moveTo(this.registry.services.pointer.pointer.curr);
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Canvas1);

@@ -44,8 +44,6 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         this.toolHandler = new ToolHandler(this, this.registry);        
     }
 
-    abstract getStore(): ViewStore;
-        
     destroy(): void {}
     resize() {};
     over(): void { this.registry.plugins.setHoveredView(this) }

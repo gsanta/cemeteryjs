@@ -32,7 +32,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     }
 
     renderInto(layout: UI_Layout): void {
-        const selectedViews = this.registry.stores.canvasStore.getSelectedViews();
+        const selectedViews = this.registry.stores.viewStore.getSelectedViews();
 
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {

@@ -23,13 +23,13 @@ export class SpriteTool extends RectangleTool {
         spriteObj.setScale(new Point(3, 3));
         spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y); 
 
-        this.registry.stores.canvasStore.addView(spriteView);
+        this.registry.stores.viewStore.addView(spriteView);
         this.registry.engine.sprites.createInstance(spriteView.getObj());
     
         return spriteView;
     }
     
     protected removeTmpView() {
-        this.registry.stores.canvasStore.removeView(this.tmpView);
+        this.registry.stores.viewStore.removeView(this.tmpView);
     }
 }

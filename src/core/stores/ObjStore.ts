@@ -9,9 +9,10 @@ export interface ObjStoreHook {
     removeObjHook(obj: IObj);
 }
 
-export class AbstractObjStore<T extends IObj> {
-    protected objs: T[] = [];
-    protected objMap: Map<string, T> = new Map();
+export class ObjStore {
+    protected objs: IObj[] = [];
+    protected objById: Map<string, IObj> = new Map();
+    private objsByType: Map<string, IObj[]> = new Map();
     private idGenerator: IdGenerator;
     private hooks: ObjStoreHook[] = [];
     id: string;
@@ -23,28 +24,45 @@ export class AbstractObjStore<T extends IObj> {
         this.idGenerator = idGenerator;
     }
 
-    addObj(obj: T) {
+    addObj(obj: IObj) {
         const id = this.idGenerator.generateId(obj.objType);
         obj.id = id;
         this.objs.push(obj);
-        this.objMap.set(id, obj);
+        this.objById.set(id, obj);
+
+        if (!this.objsByType.get(obj.objType)) {
+            this.objsByType.set(obj.objType, []);
+        }
+
+        this.objsByType.get(obj.objType).push(obj);
 
         this.hooks.forEach(hook => hook.addObjHook(obj));
     }
 
-    removeObj(obj: T) {
+    removeObj(obj: IObj) {
         this.hooks.forEach(hook => hook.removeObjHook(obj));
 
         this.objs.splice(this.objs.indexOf(obj), 1);
-        this.objMap.delete(obj.id);
+        this.objById.delete(obj.id);
+
+        const thisObjTypes = this.objsByType.get(obj.objType);
+        thisObjTypes.splice(thisObjTypes.indexOf(obj), 1);
+        if (this.objsByType.get(obj.objType).length === 0) {
+            this.objsByType.delete(obj.objType);
+        }
+
         obj.dispose();
     }
 
     getById(id: string) {
-        return this.objMap.get(id);
+        return this.objById.get(id);
     }
 
-    getAll(): T[] {
+    getObjsByType(type: string): IObj[] {
+        return this.objsByType.get(type) || [];
+    }
+
+    getAll(): IObj[] {
         return this.objs;
     }
 
@@ -54,7 +72,7 @@ export class AbstractObjStore<T extends IObj> {
 
     clear() {
         this.objs = [];
-        this.objMap = new Map();
+        this.objById = new Map();
     }
 
     addHook(hook: ObjStoreHook) {

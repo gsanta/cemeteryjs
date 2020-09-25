@@ -77,8 +77,8 @@ export class NodeConnectionView extends View {
     fromJson(json: NodeConnectionViewJson, registry: Registry) {
         super.fromJson(json, registry);
         this.obj.fromJson(json.obj, registry);
-        (registry.stores.nodeStore.getById(this.obj.node1.id) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
-        (registry.stores.nodeStore.getById(this.obj.node2.id) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
+        (registry.stores.viewStore.getById(this.obj.node1.id) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
+        (registry.stores.viewStore.getById(this.obj.node2.id) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 

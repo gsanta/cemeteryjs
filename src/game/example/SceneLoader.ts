@@ -34,7 +34,7 @@ export class SceneLoader {
         spriteView.getObj().frameName = spriteJson.frameName;
         spriteView.getObj().startPos = new Point(spriteJson.x, spriteJson.y);
 
-        this.registry.stores.spriteStore.addView(spriteView);
+        this.registry.stores.viewStore.addView(spriteView);
         this.registry.engine.sprites.createInstance(spriteView.getObj());
         this.registry.engine.sprites.setPosition(spriteView.getObj(), new Point(spriteJson.x, spriteJson.y));
     }
