@@ -19,7 +19,7 @@ export class RouteWalker {
     constructor(meshObj: MeshObj, pathObj: PathObj) {
         this.meshObj = meshObj;
         this.pathObj = pathObj;
-        this.points = this.pathObj.getPoints();
+        this.points = this.pathObj.points;
     }
 
     step() {

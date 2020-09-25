@@ -25,6 +25,7 @@ export class PathPointView extends ChildView {
     move(delta: Point) {
         this.point.add(delta);
         this.parent.str = undefined;
+        this.parent.update();
     }
 
     dispose() {}

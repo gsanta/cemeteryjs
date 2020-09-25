@@ -1,19 +1,20 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { PathView } from "../views/PathView";
-import { IGameObj } from "./IGameObj";
+import { IObj, ObjFactory } from "./IObj";
 
-export class PathObj implements IGameObj {
-    pathView: PathView;
+export const PathObjType = 'path-obj';
+
+export class PathObjFactory implements ObjFactory {
+    objType = PathObjType;
+    newInstance() {
+        return new PathObj();
+    }
+}
+
+export class PathObj implements IObj {
+    objType = 'path-obj';
 
     id: string;
-
-    constructor(pathView: PathView) {
-        this.pathView = pathView;
-    }
-
-    getPoints() {
-        return this.pathView.children.map(point => point.point.clone().div(10).negateY());
-    }
+    points: Point[] = [];
 
     dispose() {}
 

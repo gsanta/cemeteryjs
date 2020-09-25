@@ -1,7 +1,7 @@
 import { IDataExporter } from "./IDataExporter";
 import { Registry } from "../../Registry";
 import { AppJson } from "./ExportService";
-import { ObjJson } from "../../models/objs/IGameObj";
+import { ObjJson } from "../../models/objs/IObj";
 import { SpriteSheetObjType } from "../../models/objs/SpriteSheetObj";
 
 export class SpriteSheetExporter implements IDataExporter {
@@ -12,7 +12,7 @@ export class SpriteSheetExporter implements IDataExporter {
     }
 
     export(json: Partial<AppJson>): void {
-        if (this.registry.stores.spriteSheetObjStore.size() === 0) { return; }
+        if (this.registry.stores.objStore.size() === 0) { return; }
 
         if (!json.objs) {
             json.objs = [];
@@ -25,7 +25,7 @@ export class SpriteSheetExporter implements IDataExporter {
 
         json.objs.push(objs);
 
-        this.registry.stores.spriteSheetObjStore.getAll().forEach(spriteSheetObj => {
+        this.registry.stores.objStore.getAll().forEach(spriteSheetObj => {
             objs.objs.push(spriteSheetObj.toJson());
         });
     }

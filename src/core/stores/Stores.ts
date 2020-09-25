@@ -1,14 +1,9 @@
 import { Registry } from "../Registry";
 import { AssetStore } from "./AssetStore";
 import { LevelStore } from "./LevelStore";
-import { SpriteSheetObjStore } from "./SpriteSheetObjStore";
 import { IdGenerator } from "./IdGenerator";
 import { ViewStore } from "./ViewStore";
-import { MeshView } from "../models/views/MeshView";
-import { PathView } from "../models/views/PathView";
-import { SpriteView } from "../models/views/SpriteView";
-import { NodeView } from "../models/views/NodeView";
-import { NodeConnectionView } from "../models/views/NodeConnectionView";
+import { AbstractObjStore } from "./AbstractObjStore";
 
 export const SceneStoreId = 'scene-store';
 export const SpriteStoreId = 'sprite-store';
@@ -16,7 +11,6 @@ export const NodeStoreId = 'node-store';
 
 export class Stores {
     private registry: Registry
-    // view:
 
     private viewStores: ViewStore[] = [];
 
@@ -25,8 +19,7 @@ export class Stores {
     spriteStore: ViewStore;
     nodeStore: ViewStore;
     assetStore: AssetStore;
-
-    spriteSheetObjStore: SpriteSheetObjStore;
+    objStore: AbstractObjStore<any>;
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -35,7 +28,7 @@ export class Stores {
         this.spriteStore = new ViewStore(SpriteStoreId);
         this.nodeStore = new ViewStore(NodeStoreId);
         this.assetStore = new AssetStore(this.registry);
-        this.spriteSheetObjStore = new SpriteSheetObjStore();
+        this.objStore = new AbstractObjStore();
 
         this.viewStores.push(
             this.canvasStore,
@@ -45,7 +38,7 @@ export class Stores {
 
         this.viewStores.forEach(store => store.setIdGenerator(new IdGenerator()));
         this.assetStore.setIdGenerator(new IdGenerator());
-        this.spriteSheetObjStore.setIdGenerator(new IdGenerator());
+        this.objStore.setIdGenerator(new IdGenerator());
     }
 
     clear() {

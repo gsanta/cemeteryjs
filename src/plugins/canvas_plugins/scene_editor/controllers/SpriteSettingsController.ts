@@ -62,7 +62,7 @@ const SelectSpriteSheet: PropControl<string> = {
     },
 
     values(context) {
-        return context.registry.stores.spriteSheetObjStore.getAll().map(asset => asset.id);
+        return context.registry.stores.objStore.getAll().map(asset => asset.id);
     }
 }
 

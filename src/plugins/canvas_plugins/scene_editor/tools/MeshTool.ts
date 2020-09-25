@@ -1,3 +1,4 @@
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
@@ -14,7 +15,8 @@ export class MeshTool extends RectangleTool {
     }
 
     protected createView(rect: Rectangle): View {
-        const meshView: MeshView = new MeshView({dimensions: rect});
+        const meshObj = new MeshObj()
+        const meshView: MeshView = new MeshView(meshObj, rect);
         meshView.obj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
         meshView.setScale(1);

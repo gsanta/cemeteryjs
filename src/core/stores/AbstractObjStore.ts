@@ -1,7 +1,7 @@
-import { IGameObj } from "../models/objs/IGameObj";
+import { IObj } from "../models/objs/IObj";
 import { IdGenerator } from "./IdGenerator";
 
-export abstract class AbstractObjStore<T extends IGameObj> {
+export class AbstractObjStore<T extends IObj> {
     protected objs: T[] = [];
     protected objMap: Map<string, T> = new Map();
     private idGenerator: IdGenerator;
@@ -15,7 +15,7 @@ export abstract class AbstractObjStore<T extends IGameObj> {
     }
 
     addObj(obj: T) {
-        const id = this.idGenerator.generateId(this.createPrefix(obj));
+        const id = this.idGenerator.generateId(obj.objType);
         obj.id = id;
         this.objs.push(obj);
         this.objMap.set(id, obj);
@@ -37,6 +37,4 @@ export abstract class AbstractObjStore<T extends IGameObj> {
         this.objs = [];
         this.objMap = new Map();
     }
-
-    protected abstract createPrefix(obj: IGameObj): string;
 }

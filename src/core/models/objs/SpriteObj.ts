@@ -1,7 +1,9 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { ISpriteAdapter } from "../../adapters/ISpriteAdapter";
-import { IGameObj } from "./IGameObj";
+import { IObj, ObjFactory } from "./IObj";
+
+export const SpriteObjType = 'sprite-obj';
 
 export interface SpriteObjJson {
     frameName: string;
@@ -12,8 +14,16 @@ export interface SpriteObjJson {
     id: string;
 }
 
- export class SpriteObj implements IGameObj {
+export class SpriteObjFactory implements ObjFactory {
+    objType = SpriteObjType;
+    newInstance() {
+        return new SpriteObj();
+    }
+}
+
+export class SpriteObj implements IObj {
     id: string;
+    objType = SpriteObjType;
 
     spriteAdapter: ISpriteAdapter;
 

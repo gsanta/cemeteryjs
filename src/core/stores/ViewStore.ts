@@ -20,6 +20,7 @@ export class ViewStore {
     protected views: View[] = [];
     private selectedViews: View[] = [];
     protected idMap: Map<string, View> = new Map();
+    private viewsByType: Map<string, View[]> = new Map();
     protected idGenerator: IdGenerator;
     private hooks: AbstractViewStoreHook[] = [];
 
@@ -54,6 +55,13 @@ export class ViewStore {
 
         this.views.push(view);
         this.idMap.set(view.id, view);
+
+        if (!this.viewsByType.get(view.viewType)) {
+            this.viewsByType.set(view.viewType, []);
+        }
+
+        this.viewsByType.get(view.viewType).push(view);
+        
         this.hooks.forEach(hook => hook.addViewHook(view));
     }
 
@@ -63,6 +71,14 @@ export class ViewStore {
         this.hooks.forEach(hook => hook.removeViewHook(view));
 
         this.idMap.delete(view.id);
+
+        const thisViewTypes = this.viewsByType.get(view.viewType);
+        thisViewTypes.splice(thisViewTypes.indexOf(view), 1);
+        if (this.viewsByType.get(view.viewType).length === 0) {
+            this.viewsByType.delete(view.viewType);
+        }
+
+
         this.views.splice(this.views.indexOf(view), 1);
         this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
         view.dispose();
@@ -72,8 +88,12 @@ export class ViewStore {
         return this.idMap.get(id);
     }
 
-    getViewsByType(type: string) {
-        return this.views.filter(view => view.viewType === type);
+    getViewsByType(type: string): View[] {
+        return this.viewsByType.get(type) || [];
+    }
+
+    getAllTypes(): string[] {
+        return Array.from(this.viewsByType.keys());
     }
 
     getAllViews(): View[]  {
@@ -112,6 +132,7 @@ export class ViewStore {
             this.removeView(this.views[0]);
         }
         this.idMap = new Map();
+        this.viewsByType = new Map();
         this.idGenerator.clear();
         this.clearSelection();
     }

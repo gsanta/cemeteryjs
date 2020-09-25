@@ -1,6 +1,6 @@
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { MeshObj } from "../../models/objs/MeshObj";
+import { MeshObj, MeshObjJson } from "../../models/objs/MeshObj";
 import { Registry } from "../../Registry";
 import { RectangleFactory } from "../../stores/RectangleFactory";
 import { IMeshAdapter } from "../IMeshAdapter";
@@ -67,6 +67,13 @@ export  class Bab_Meshes implements IMeshAdapter {
         meshData.mainMesh.rotation.y += angle;
     }
 
+    getRotation(meshObj: MeshObj): number {
+        const meshData = this.meshes.get(meshObj.id);
+        if (!meshData) { return; }
+
+        return meshData.mainMesh.rotation.y;
+    }
+
     getDimensions(meshObj: MeshObj): Point {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
@@ -86,7 +93,7 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     async createInstance(meshObj: MeshObj): Promise<void> {
-        if (!meshObj.meshView.obj.modelId) {
+        if (!meshObj.modelId) {
             const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
             this.meshes.set(meshObj.id, {mainMesh: mesh, skeletons: []});
             return;
@@ -116,7 +123,7 @@ export  class Bab_Meshes implements IMeshAdapter {
 
         let mesh = meshData.mainMesh;
 
-        const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.textureId);
+        const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.textureId);
 
         if (!textureObj) {
             return;

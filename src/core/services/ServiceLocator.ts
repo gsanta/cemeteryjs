@@ -12,6 +12,7 @@ import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { NodeService } from './NodeService';
+import { ObjService } from "./ObjService";
 import { RenderService } from "./RenderServices";
 import { UI_PerspectiveService } from './UI_PerspectiveService';
 import { UI_Service } from "./UI_Service";
@@ -31,6 +32,7 @@ export class Services {
     gamepad: GamepadService;
     event: EventService;
     uiPerspective: UI_PerspectiveService;
+    objService: ObjService;
 
     node: NodeService;
 
@@ -58,6 +60,7 @@ export class Services {
         this.ui = new UI_Service();
         this.event = new EventService(this.registry);
         this.uiPerspective = new UI_PerspectiveService(this.registry);
+        this.objService = new ObjService();
 
         this.node = new NodeService(this.registry);
 

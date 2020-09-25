@@ -1,17 +1,15 @@
-import { AbstractController } from '../../plugin/controller/AbstractController';
 import { Registry } from '../../Registry';
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { NodeView } from '../views/NodeView';
-import { IGameObj, ObjJson } from './IGameObj';
+import { IObj, ObjJson } from './IObj';
 import { NodeConnectionObj } from './NodeConnectionObj';
+
+export const NodeObjType = 'node-obj';
 
 export enum NodeCategory {
     Input = 'Input',
     Boolean = 'Boolean',
     Default = 'Default'
 }
-
-export type SlotName = 'input' | 'output' | 'mesh' | 'animation' | 'action' | 'input1' | 'input2' | 'output1' | 'output2' | 'output3' | 'output4' | 'path'
 
 export interface NodeLink {
     name: string;
@@ -30,8 +28,9 @@ export interface NodeParam {
     isLink?: 'input' | 'output' | 'both' | 'none';
 }
 
-export abstract class NodeObj implements IGameObj {
+export abstract class NodeObj implements IObj {
     id: string;
+    objType = NodeObjType;
     type: string;
     displayName: string;
     category: string;

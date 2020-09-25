@@ -56,7 +56,7 @@ export class Bab_Sprites implements ISpriteAdapter {
     }
 
     createInstance(spriteObj: SpriteObj) {
-        const spriteSheetObj = this.registry.stores.spriteSheetObjStore.getById(spriteObj.spriteSheetId);
+        const spriteSheetObj = this.registry.stores.objStore.getById(spriteObj.spriteSheetId);
 
         //  TODO: better place for it!
         if (!this.placeholderSpriteManager) {

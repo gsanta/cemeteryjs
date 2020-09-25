@@ -1,4 +1,6 @@
+import { IObj, ObjFactory } from "./IObj";
 
+export const AssetObjType = 'asset-obj';
 
 export interface AssetObjJson {
     id: string;
@@ -16,8 +18,15 @@ export enum AssetType {
     SpriteSheetJson = 'SpriteSheetJson'
 }
 
-export const AssetObjType = 'asset-obj';
-export class AssetObj {
+export class AssetObjFactory implements ObjFactory {
+    objType = AssetObjType;
+    newInstance() {
+        return new AssetObj();
+    }
+}
+
+export class AssetObj implements IObj {
+    objType = AssetObjType;
     id: string;
     assetType: AssetType;
     data: string;
@@ -32,6 +41,8 @@ export class AssetObj {
             this.name = config.name;
         }
     }
+
+    dispose() {}
 
     toJson(): AssetObjJson {
         return {

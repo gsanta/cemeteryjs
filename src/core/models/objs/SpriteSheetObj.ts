@@ -1,13 +1,22 @@
-import { IGameObj, ObjJson } from "./IGameObj";
+import { IObj, ObjFactory, ObjJson } from "./IObj";
+
+export const SpriteSheetObjType = 'sprite-sheet-obj';
 
 export interface SpriteSheetObjJson extends ObjJson {
     spriteAssetId: string;
     jsonAssetId: string;
 }
 
-export const SpriteSheetObjType = 'sprite-sheet-obj';
-export class SpriteSheetObj implements IGameObj {
+export class SpriteSheetObjFactory implements ObjFactory {
+    objType = SpriteSheetObjType;
+    newInstance() {
+        return new SpriteSheetObj();
+    }
+}
+
+export class SpriteSheetObj implements IObj {
     id: string;
+    objType = SpriteSheetObjType;
 
     spriteAssetId: string;
     jsonAssetId: string;

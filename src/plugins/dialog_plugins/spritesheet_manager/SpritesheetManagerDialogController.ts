@@ -72,7 +72,7 @@ const AddSpriteSheet: PropControl<string> = {
 
         spriteSheetObj.jsonAssetId = jsonAsset.id;
         spriteSheetObj.spriteAssetId = imgAsset.id;
-        context.registry.stores.spriteSheetObjStore.addObj(spriteSheetObj);
+        context.registry.stores.objStore.addObj(spriteSheetObj);
 
         // this.registry.services.localStore.saveAsset(asset);
 

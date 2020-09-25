@@ -1,33 +1,36 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { IMeshAdapter } from '../../adapters/IMeshAdapter';
-import { MeshView } from '../views/MeshView';
-import { IGameObj, ObjJson } from './IGameObj';
+import { IObj, ObjFactory, ObjJson } from './IObj';
+
+export const MeshObjType = 'mesh-obj';
 
 export interface MeshObjJson extends ObjJson {
     scaleX: number;
     scaleY: number;
 }
 
-export class MeshObj implements IGameObj {
-    meshView: MeshView;
-
-    constructor(meshView: MeshView) {
-        this.meshView = meshView;
+export class MeshObjFactory implements ObjFactory {
+    objType = MeshObjType;
+    newInstance() {
+        return new MeshObj();
     }
+}
+
+export class MeshObj implements IObj {
+    objType = MeshObjType;
 
     private startPos: Point;
     private scale: Point;
+    private tempRotation: number;
     id: string;
 
     modelId: string;
     textureId: string;
     routeId: string;
+    // TODO: when switching the app to 3D coordinates it should be removed
+    yPos: number = 0;
 
     meshAdapter: IMeshAdapter;
-
-    getId() {
-        return this.meshView.id;
-    }
 
     move(point: Point) {
         this.startPos.add(point);
@@ -56,7 +59,14 @@ export class MeshObj implements IGameObj {
     rotate(angle: number) {
         if (this.meshAdapter) {
             this.meshAdapter.rotate(this, angle)
+        } else {
+            this.tempRotation += angle;
         }
+    }
+
+    getRotation(): number {
+        const rotation = this.meshAdapter && this.meshAdapter.getRotation(this);
+        return rotation || this.tempRotation;
     }
 
     setScale(scale: Point) {
@@ -86,5 +96,4 @@ export class MeshObj implements IGameObj {
     fromJson(json: MeshObjJson) {
         this.scale = new Point(json.scaleX, json.scaleY);
     }
-
 }

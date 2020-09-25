@@ -20,6 +20,8 @@ export class ImportService {
     async import(file: string): Promise<void> {
         const json = <AppJson> JSON.parse(file);
 
+        this.importObjs(json);
+
         try {
             for (let i = 0; i < this.importers.length; i++) {
                 await this.importers[i].import(json);
@@ -42,4 +44,17 @@ export class ImportService {
 
         this.registry.services.render.reRenderAll();
     }
+
+    private importObjs(json: AppJson) {
+        json.objs.forEach(objType => {
+            if (this.registry.services.objService.isRegistered(objType.objType)) {
+                objType.objs.forEach(obj => {
+                    const objInstance = this.registry.services.objService.createObj(objType.objType);
+                    objInstance.fromJson(obj, this.registry);
+                    this.registry.stores.objStore.addObj(objInstance);
+                });
+            }
+        });
+    }
+
 }

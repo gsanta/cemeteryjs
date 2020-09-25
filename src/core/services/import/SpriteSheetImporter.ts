@@ -18,7 +18,7 @@ export class SpriteSheetImporter implements IDataImporter {
             const spriteSheetObj: SpriteSheetObj = new SpriteSheetObj();
             spriteSheetObj.fromJson(<SpriteSheetObjJson> spriteSheetJson);
     
-            this.registry.stores.spriteSheetObjStore.addObj(spriteSheetObj);
+            this.registry.stores.objStore.addObj(spriteSheetObj);
             this.registry.engine.spriteLoader.loadSpriteSheet(spriteSheetObj);
         });
     }

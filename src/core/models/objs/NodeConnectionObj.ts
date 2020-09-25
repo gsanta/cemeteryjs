@@ -1,6 +1,8 @@
-import { IGameObj, ObjJson } from "./IGameObj";
+import { IObj, ObjJson } from "./IObj";
 import { NodeObj } from "./NodeObj";
 import { Registry } from "../../Registry";
+
+export const NodeConnectionObjType = 'node-connection-obj';
 
 export interface NodeConnectionObjJson extends ObjJson {
     id: string;
@@ -10,8 +12,9 @@ export interface NodeConnectionObjJson extends ObjJson {
     node2Id: string
 }
 
-export class NodeConnectionObj implements IGameObj {
+export class NodeConnectionObj implements IObj {
     id: string;
+    objType = NodeConnectionObjType;
     joinPoint1: string;
     node1: NodeObj;
     joinPoint2: string;

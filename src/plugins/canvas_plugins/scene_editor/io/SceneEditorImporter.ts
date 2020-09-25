@@ -1,3 +1,5 @@
+import { IObj, ObjJson } from "../../../../core/models/objs/IObj";
+import { MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { MeshView, MeshViewJson } from "../../../../core/models/views/MeshView";
 import { PathView, PathViewJson } from "../../../../core/models/views/PathView";
 import { SpriteView, SpriteViewJson, SpriteViewType } from "../../../../core/models/views/SpriteView";
@@ -6,7 +8,10 @@ import { AppJson } from "../../../../core/services/export/ExportService";
 import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
 
 export class SceneEditorImporter extends AbstractPluginImporter {
+    private importedObjs: Map<string, IObj> = new Map();
+
     async import(json: AppJson): Promise<void> {
+
         const views = json[this.plugin.id].views;
 
         views.forEach((viewJson: ViewJson) => {
@@ -33,4 +38,19 @@ export class SceneEditorImporter extends AbstractPluginImporter {
             }
         });
     }
+
+    // private importObjs(json: AppJson):  Map<string, IObj> {
+    //     const importedObjs: Map<string, IObj> = new Map();
+
+    //     const objs: {objType: string, objs: ObjJson[] }[] = json[this.plugin.id].objs;
+
+    //     objs.forEach(obj => {
+    //         switch(obj.objType) {
+    //             case MeshObjType:
+    //                 importedObjs.set(obj.)
+    //         }
+    //     });
+    // }
+
+    // private importObjType()
 }

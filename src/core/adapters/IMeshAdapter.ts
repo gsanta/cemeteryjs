@@ -4,6 +4,7 @@ import { Point } from "../../utils/geometry/shapes/Point";
 export interface IMeshAdapter {
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space?: 'local' | 'global'): void;
     rotate(meshObj: MeshObj, angle: number): void;
+    getRotation(meshObj: MeshObj): number;
     setPosition(meshObj: MeshObj, pos: Point): void;
     getPosition(meshObj: MeshObj): Point;
     setScale(meshObj: MeshObj, point: Point); 

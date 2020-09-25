@@ -1,7 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
-import { IGameModel } from '../objs/IGameModel';
 import { MeshObj } from '../objs/MeshObj';
 import { View, ViewJson, ViewType } from './View';
 
@@ -14,7 +13,7 @@ export interface MeshViewJson extends ViewJson {
     yPos: number 
 }
 
-export class MeshView extends View implements IGameModel {
+export class MeshView extends View {
     viewType = ViewType.MeshView;
 
     obj: MeshObj;
@@ -31,11 +30,11 @@ export class MeshView extends View implements IGameModel {
     speed = 0.5;
     layer: number = 10;
 
-    constructor(config?: {dimensions?: Rectangle}) {
+    constructor(obj: MeshObj, dimensions?: Rectangle) {
         super();
-        this.dimensions = config && config.dimensions;
-        this.obj = new MeshObj(this);
-        if (config && config.dimensions) {
+        this.dimensions = dimensions;
+        this.obj = obj;
+        if (this.dimensions) {
             this.obj.setPosition(this.dimensions.getBoundingCenter().div(10));
         }
     }

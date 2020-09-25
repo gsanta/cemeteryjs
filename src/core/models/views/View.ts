@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { IGameObj } from "../objs/IGameObj";
+import { IObj } from "../objs/IObj";
 import { Registry } from "../../Registry";
 import { ChildView } from "./child_views/ChildView";
 
@@ -32,7 +32,7 @@ export abstract class View {
     parent: View;
     children: View[] = [];
 
-    obj: IGameObj;
+    obj: IObj;
 
     dimensions: Rectangle;
     move(delta: Point): void {}

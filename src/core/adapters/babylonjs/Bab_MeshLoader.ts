@@ -42,7 +42,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     }
 
     private setupInstance(meshObj: MeshObj) {
-        const model = this.registry.stores.assetStore.getAssetById(meshObj.meshView.obj.modelId);
+        const model = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
         const meshData = this.templatesById.get(model.id);
         const templateMesh = meshData.mainMesh;
 
@@ -52,7 +52,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
-            clone.name = meshObj.meshView.id;
+            clone.name = meshObj.id;
         }
         this.engineFacade.meshes.meshes.set(meshObj.id, {mainMesh: clone, skeletons: meshData.skeletons});
         
@@ -60,18 +60,14 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         clone.rotation = new Vector3(0, 0, 0);
         clone.isVisible = true;
 
-        const scale = meshObj.meshView.getScale();
-        clone.scaling = new Vector3(scale, scale, scale);
-        clone.position.y = meshObj.meshView.yPos;
+        const scale = meshObj.getScale();
+        clone.scaling = new Vector3(scale.x, scale.x, scale.x);
+        clone.position.y = meshObj.yPos;
         clone.rotationQuaternion = undefined;
 
-        const rect = <Rectangle> meshObj.meshView.dimensions.div(10);
-        const width = rect.getWidth();
-        const depth = rect.getHeight();
+        clone.setAbsolutePosition(new Vector3(meshObj.getPosition().x, 0, meshObj.getPosition().y));
 
-        clone.setAbsolutePosition(new Vector3(rect.topLeft.x + width / 2, 0, -rect.topLeft.y - depth / 2));
-
-        clone.rotation.y = meshObj.meshView.getRotation();
+        clone.rotation.y = meshObj.getRotation();
         
         this.engineFacade.meshes.createMaterial(meshObj);
     }

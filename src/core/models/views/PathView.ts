@@ -2,7 +2,6 @@ import { View, ViewType, ViewJson } from "./View";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
-import { IGameModel } from "../objs/IGameModel";
 import { PathObj } from "../objs/PathObj";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
 import { Registry } from "../../Registry";
@@ -21,7 +20,7 @@ export interface PathViewJson extends ViewJson {
     editPoints: EditPointViewJson[];
 }
 
-export class PathView extends View implements IGameModel {
+export class PathView extends View {
     viewType = ViewType.PathView;
 
     obj: PathObj;
@@ -34,15 +33,20 @@ export class PathView extends View implements IGameModel {
     constructor() {
         super();
         this.dimensions = this.calcBoundingBox();
-        this.obj = new PathObj(this);
+        this.obj = new PathObj();
     } 
 
     addPathPoint(pathPoint: PathPointView) {
         pathPoint.id = `${this.id}-path-point-this.children.length`;
         this.children.push(pathPoint);
         this.dimensions = this.calcBoundingBox();
-        this.str = undefined;
         this.setActiveChild(pathPoint);
+        this.update();
+    }
+
+    update() {
+        this.obj.points = this.children.map(point => point.point.clone().div(10).negateY());
+        this.str = undefined;
     }
 
     private calcBoundingBox() {
