@@ -4,8 +4,7 @@ import { Registry } from "../../../core/Registry";
 import { NodeEditorControllerId } from "./NodeEditorController";
 import { UI_ListItem } from '../../../core/ui_components/elements/UI_ListItem';
 import { NodeObj, NodeObjType } from '../../../core/models/objs/NodeObj';
-import { ViewType } from '../../../core/models/views/View';
-import { NodeView } from '../../../core/models/views/NodeView';
+import { NodeView, NodeViewType } from '../../../core/models/views/NodeView';
 
 export enum NodeEditorSettingsProps {
     DragNode = 'DragNode'
@@ -30,7 +29,7 @@ export class NodeEditorSettingsController extends AbstractController<string> {
                 // TODO can be removed when there will be only a single NodeObject
                 this.registry.services.node.currentNodeType = (element as UI_ListItem).listItemId;
                 const nodeObj = <NodeObj> this.registry.services.objService.createObj(NodeObjType);
-                const nodeView: NodeView = <NodeView> this.registry.services.viewService.createView(ViewType.NodeView);
+                const nodeView: NodeView = <NodeView> this.registry.services.viewService.createView(NodeViewType);
                 nodeView.setObj(nodeObj);
         
                 this.registry.stores.objStore.addObj(nodeObj);
@@ -39,7 +38,6 @@ export class NodeEditorSettingsController extends AbstractController<string> {
                 nodeView.getBounds().moveTo(this.registry.services.pointer.pointer.curr);
                 this.registry.services.history.createSnapshot();
                 this.registry.services.render.reRender(UI_Region.Canvas1);
-            })/. kjyuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuukkkkkkk
-            ghffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffflkhgh8cv u7ul
+            });
     }
 }

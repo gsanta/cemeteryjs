@@ -1,8 +1,8 @@
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { PathPointView, PathPointViewType } from "../../../../core/models/views/child_views/PathPointView";
-import { PathView } from "../../../../core/models/views/PathView";
-import { ViewType, View } from "../../../../core/models/views/View";
+import { PathView, PathViewType } from "../../../../core/models/views/PathView";
+import { View } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
 import { IHotkeyEvent } from "../../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../../core/services/input/KeyboardService";
@@ -12,7 +12,7 @@ import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { PathObj, PathObjType } from "../../../../core/models/objs/PathObj";
 
 export class PathTool extends PointerTool {
-    acceptedViews = [ViewType.PathView, PathPointViewType]
+    acceptedViews = [PathViewType, PathPointViewType]
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Path, plugin, registry);
@@ -38,12 +38,12 @@ export class PathTool extends PointerTool {
 
     over(item: View) {
         let hover = false;
-        if (item.viewType === ViewType.PathView) {
+        if (item.viewType === PathViewType) {
             hover = true;
         }
 
         if (item.viewType === PathPointViewType) {
-            if (item.parent.viewType === ViewType.PathView) {
+            if (item.parent.viewType === PathViewType) {
                 hover = true;
             }
         }
@@ -60,7 +60,7 @@ export class PathTool extends PointerTool {
     }
 
     private drawPath() {
-        const pathes = <PathView[]> this.registry.stores.viewStore.getSelectedViewsByType(ViewType.PathView);
+        const pathes = <PathView[]> this.registry.stores.viewStore.getSelectedViewsByType(PathViewType);
 
         if (pathes.length > 1) { return }
 
@@ -87,7 +87,7 @@ export class PathTool extends PointerTool {
         this.registry.stores.viewStore.clearSelection();
 
         const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
-        const pathView: PathView = <PathView> this.registry.services.viewService.createView(ViewType.PathView);
+        const pathView: PathView = <PathView> this.registry.services.viewService.createView(PathViewType);
         pathView.setObj(pathObj);
 
         const editPoint = new PathPointView(pathView, pointer.down.clone());

@@ -1,8 +1,8 @@
 import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { Camera2D } from '../../../core/models/misc/camera/Camera2D';
-import { NodeConnectionView } from '../../../core/models/views/NodeConnectionView';
-import { NodeView } from '../../../core/models/views/NodeView';
-import { ViewTag, ViewType } from '../../../core/models/views/View';
+import { NodeConnectionView, NodeConnectionViewType } from '../../../core/models/views/NodeConnectionView';
+import { NodeView, NodeViewType } from '../../../core/models/views/NodeView';
+import { ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../../core/plugin/AbstractCanvasPlugin';
 import { CanvasControllerProps } from '../../../core/plugin/controller/CanvasController';
 import { JoinTool } from './tools/JoinTool';
@@ -19,8 +19,6 @@ import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from '.
 import { SelectTool } from '../../../core/plugin/tools/SelectTool';
 import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
-import { NodeEditorExporter } from './io/NodeEditorExporter';
-import { NodeEditorImporter } from './io/NodeEditorImporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -149,11 +147,11 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        (<NodeView[]> this.registry.stores.viewStore.getViewsByType(ViewType.NodeView)).forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
+        (<NodeView[]> this.registry.stores.viewStore.getViewsByType(NodeViewType)).forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
     }
 
     private renderConnectionsInto(canvas: UI_SvgCanvas) {
-        this.registry.stores.viewStore.getViewsByType(ViewType.NodeConnectionView).forEach((connection: NodeConnectionView) => {
+        this.registry.stores.viewStore.getViewsByType(NodeConnectionViewType).forEach((connection: NodeConnectionView) => {
             const line = canvas.line();
             line.x1 = connection.point1.x;
             line.y1 = connection.point1.y;

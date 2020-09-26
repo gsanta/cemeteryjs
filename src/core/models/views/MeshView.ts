@@ -1,9 +1,10 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
-import { IObj } from '../objs/IObj';
 import { MeshObj } from '../objs/MeshObj';
-import { View, ViewFactory, ViewJson, ViewType } from './View';
+import { View, ViewFactory, ViewJson } from './View';
+
+export const MeshViewType = 'mesh-view';
 
 export interface MeshViewJson extends ViewJson {
     rotation: number;
@@ -13,12 +14,12 @@ export interface MeshViewJson extends ViewJson {
 }
 
 export class MeshViewFactory implements ViewFactory {
-    viewType = ViewType.MeshView;
+    viewType = MeshViewType;
     newInstance() { return new MeshView(); }
 }
 
 export class MeshView extends View {
-    viewType = ViewType.MeshView;
+    viewType = MeshViewType;
 
     protected obj: MeshObj;
 

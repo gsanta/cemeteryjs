@@ -1,4 +1,4 @@
-import { View, ViewType, ViewJson, ViewFactory } from "./View";
+import { View, ViewJson, ViewFactory } from "./View";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
@@ -7,6 +7,8 @@ import { minBy, maxBy } from "../../../utils/geometry/Functions";
 import { Registry } from "../../Registry";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
+
+export const PathViewType = 'path-view';
 
 export interface PathProps {
     editPoints: {
@@ -21,12 +23,12 @@ export interface PathViewJson extends ViewJson {
 }
 
 export class PathViewFactory implements ViewFactory {
-    viewType = ViewType.PathView;
+    viewType = PathViewType;
     newInstance() { return new PathView(); }
 }
 
 export class PathView extends View {
-    viewType = ViewType.PathView;
+    viewType = PathViewType;
 
     protected obj: PathObj;
     children: PathPointView[];

@@ -1,7 +1,6 @@
-import { MeshView } from '../../../../core/models/views/MeshView';
-import { PathView } from '../../../../core/models/views/PathView';
+import { MeshView, MeshViewType } from '../../../../core/models/views/MeshView';
+import { PathView, PathViewType } from '../../../../core/models/views/PathView';
 import { SpriteView, SpriteViewType } from '../../../../core/models/views/SpriteView';
-import { ViewType } from '../../../../core/models/views/View';
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
@@ -36,10 +35,10 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {
-                case ViewType.MeshView:
+                case MeshViewType:
                     this.renderMeshObjectSettings(layout, <MeshView> selectedViews[0]);
                 break;
-                case ViewType.PathView:
+                case PathViewType:
                     this.renderPathObjectSettings(layout, <PathView> selectedViews[0]);
                 break;
                 case SpriteViewType:

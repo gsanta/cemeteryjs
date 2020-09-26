@@ -1,21 +1,21 @@
+import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
+import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
 import { AnimationNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
 import { KeyboardNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
 import { MeshNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/MeshNodeObj';
 import { MoveNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/MoveNodeObj';
 import { PathNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
 import { RouteNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
-import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
-import { NodeObj, NodeObjType } from '../models/objs/NodeObj';
-import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeView, NodeViewFactory } from '../models/views/NodeView';
-import { View, ViewTag, ViewType } from '../models/views/View';
+import { NodeObj } from '../models/objs/NodeObj';
+import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
+import { NodeView, NodeViewType } from '../models/views/NodeView';
+import { View } from '../models/views/View';
 import { AbstractController } from '../plugin/controller/AbstractController';
-import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
 import { UI_Plugin } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
+import { ViewStoreHook } from '../stores/ViewStore';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { NodeGraph } from './node/NodeGraph';
-import { ViewStoreHook } from '../stores/ViewStore';
 
 export class NodeService {
     nodeTemplates: Map<string, NodeObj> = new Map();
@@ -108,7 +108,7 @@ class RemoveRelatedConnectionHook implements ViewStoreHook {
 
     removeViewHook(view: View) {
         switch(view.viewType) {
-            case ViewType.NodeView:
+            case NodeViewType:
                 this.removeRelatedConnections(<NodeView> view)
             break;
         }
@@ -133,10 +133,10 @@ class NodeGraphHook implements ViewStoreHook {
     addViewHook(view: View) {
         const graph = this.registry.services.node.graph;
         switch(view.viewType) {
-            case ViewType.NodeConnectionView:
+            case NodeConnectionViewType:
                 graph.addConnection((<NodeConnectionView> view).getObj());
             break;
-            case ViewType.NodeView:
+            case NodeViewType:
                 graph.addNode((<NodeView> view).getObj());
             break;
         }
@@ -146,10 +146,10 @@ class NodeGraphHook implements ViewStoreHook {
         const graph = this.registry.services.node.graph;
 
         switch(view.viewType) {
-            case ViewType.NodeConnectionView:
+            case NodeConnectionViewType:
                 graph.removeConnection((<NodeConnectionView> view).getObj());
             break;
-            case ViewType.NodeView:
+            case NodeViewType:
                 graph.removeNode((<NodeView> view).getObj());
             break;
         }

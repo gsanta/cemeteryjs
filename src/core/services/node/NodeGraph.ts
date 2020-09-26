@@ -1,8 +1,7 @@
 import { NodeObj } from '../../models/objs/NodeObj';
 import { NodeConnectionObj } from '../../models/objs/NodeConnectionObj';
 import { Registry } from '../../Registry';
-import { NodeView } from '../../models/views/NodeView';
-import { ViewType } from '../../models/views/View';
+import { NodeView, NodeViewType } from '../../models/views/NodeView';
 
 export class NodeGraph {
     nodeGroups: Set<NodeObj>[] = [];
@@ -27,7 +26,7 @@ export class NodeGraph {
     }
 
     getNodesByType(nodeType: string) {
-        return (<NodeView[]> this.registry.stores.viewStore.getViewsByType(ViewType.NodeView)).filter(node => node.getObj().type === nodeType);
+        return (<NodeView[]> this.registry.stores.viewStore.getViewsByType(NodeViewType)).filter(node => node.getObj().type === nodeType);
     }
 
     findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {

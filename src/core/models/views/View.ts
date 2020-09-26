@@ -4,15 +4,6 @@ import { IObj } from "../objs/IObj";
 import { Registry } from "../../Registry";
 import { ChildView } from "./child_views/ChildView";
 
-export enum ViewType {
-    MeshView = 'MeshView',
-    PathView = 'PathView',
-    //TODO: remove it, Route is not a view
-    RouteView = 'RouteView',
-    NodeView = 'NodeView',
-    NodeConnectionView = 'NodeConnectionView' 
-}
-
 export interface ViewJson {
     id: string;
     type: string;
@@ -92,6 +83,6 @@ export abstract class View {
         this.id = json.id;
         this.viewType = json.type;
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
-        this.obj = registry.stores.objStore.getById(json.objId);
+        this.setObj(registry.stores.objStore.getById(json.objId));
     }
 }

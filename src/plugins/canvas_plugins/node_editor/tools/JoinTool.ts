@@ -1,12 +1,12 @@
-import { Point } from "../../../../utils/geometry/shapes/Point";
+import { NodeConnectionObj, NodeConnectionObjType } from "../../../../core/models/objs/NodeConnectionObj";
 import { JoinPointView, JoinPointViewType } from "../../../../core/models/views/child_views/JoinPointView";
-import { NodeConnectionView } from "../../../../core/models/views/NodeConnectionView";
+import { NodeConnectionView, NodeConnectionViewType } from "../../../../core/models/views/NodeConnectionView";
 import { View } from "../../../../core/models/views/View";
-import { Registry } from "../../../../core/Registry";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
-import { AbstractTool } from "../../../../core/plugin/tools/AbstractTool";
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../core/plugin/tools/Tool';
+import { Registry } from "../../../../core/Registry";
+import { Point } from "../../../../utils/geometry/shapes/Point";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
@@ -45,19 +45,21 @@ export class JoinTool extends PointerTool {
                 [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
             }
 
-            const connection = new NodeConnectionView();
-            joinPoint1.connection = connection;
-            joinPoint2.connection = connection;
-            connection.getObj().joinPoint1 = this.joinPoint1.slotName;
-            connection.getObj().node1 = this.joinPoint1.parent.getObj();
-            connection.getObj().joinPoint2 = joinPoint2.slotName;
-            connection.getObj().node2 = joinPoint2.parent.getObj();
+            const connectionObj = <NodeConnectionObj> this.registry.services.objService.createObj(NodeConnectionObjType);
+            const connectionView = <NodeConnectionView> this.registry.services.viewService.createView(NodeConnectionViewType);
+            connectionView.setObj(connectionObj);
+            joinPoint1.connection = connectionView;
+            joinPoint2.connection = connectionView;
+            connectionView.getObj().joinPoint1 = this.joinPoint1.slotName;
+            connectionView.getObj().node1 = this.joinPoint1.parent.getObj();
+            connectionView.getObj().joinPoint2 = joinPoint2.slotName;
+            connectionView.getObj().node2 = joinPoint2.parent.getObj();
 
-            connection.setPoint1(joinPoint1.getAbsolutePosition());
-            connection.setPoint2(joinPoint2.getAbsolutePosition());
-            this.joinPoint1.connection = connection;
-            joinPoint2.connection = connection;
-            this.registry.stores.viewStore.addView(connection);
+            connectionView.setPoint1(joinPoint1.getAbsolutePosition());
+            connectionView.setPoint2(joinPoint2.getAbsolutePosition());
+            this.joinPoint1.connection = connectionView;
+            joinPoint2.connection = connectionView;
+            this.registry.stores.viewStore.addView(connectionView);
             this.startPoint = undefined;
             this.endPoint = undefined;
 

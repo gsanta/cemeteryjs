@@ -5,7 +5,7 @@ import { AssetObjImporter } from './AssetObjImporter';
 import { AssetObjType } from '../../models/objs/AssetObj';
 import { SpriteSheetObjType } from '../../models/objs/SpriteSheetObj';
 import { NodeObj, NodeObjJson, NodeObjType } from '../../models/objs/NodeObj';
-import { ViewJson, ViewType } from '../../models/views/View';
+import { NodeViewType } from '../../models/views/NodeView';
 
 export class ImportService {
     serviceName = 'import-service';
@@ -70,7 +70,7 @@ export class ImportService {
         json.viewsByType.forEach(viewType => {
             viewType.views.forEach(view => {
                 // TODO can be removed when there will be only a single NodeObject
-                if (view.type === ViewType.NodeView) {
+                if (view.type === NodeViewType) {
                     const nodeType = (<NodeObj> this.registry.stores.objStore.getById(view.objId)).type;
                     this.registry.services.node.currentNodeType = nodeType;
                 }

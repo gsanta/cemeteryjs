@@ -1,6 +1,8 @@
 import { AssetObjFactory } from "../models/objs/AssetObj";
 import { IObj, ObjFactory } from "../models/objs/IObj";
 import { MeshObjFactory } from "../models/objs/MeshObj";
+import { NodeConnectionObjFactory } from "../models/objs/NodeConnectionObj";
+import { NodeObjFactory } from "../models/objs/NodeObj";
 import { PathObjFactory } from "../models/objs/PathObj";
 import { SpriteObjFactory } from "../models/objs/SpriteObj";
 import { SpriteSheetObjFactory } from "../models/objs/SpriteSheetObj";
@@ -17,6 +19,8 @@ export class ObjService {
         this.registerObj(new SpriteObjFactory(this.registry));
         this.registerObj(new SpriteSheetObjFactory());
         this.registerObj(new AssetObjFactory());
+        this.registerObj(new NodeObjFactory(this.registry));
+        this.registerObj(new NodeConnectionObjFactory());
     }
 
     getRegisteredTypes(): string[] {

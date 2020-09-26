@@ -1,12 +1,11 @@
 import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
-import { MeshView, MeshViewFactory } from "../../../../core/models/views/MeshView";
-import { View, ViewType } from "../../../../core/models/views/View";
+import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
+import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
 import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-
 
 export class MeshTool extends RectangleTool {
 
@@ -16,7 +15,7 @@ export class MeshTool extends RectangleTool {
 
     protected createView(rect: Rectangle): View {
         const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
-        const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(ViewType.MeshView);
+        const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(MeshViewType);
         meshView.setObj(meshObj);
         meshView.setBounds(rect);
         meshObj.meshAdapter = this.registry.engine.meshes;

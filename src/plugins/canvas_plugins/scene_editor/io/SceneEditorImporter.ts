@@ -1,8 +1,8 @@
 import { IObj } from "../../../../core/models/objs/IObj";
-import { MeshView, MeshViewJson } from "../../../../core/models/views/MeshView";
-import { PathView, PathViewJson } from "../../../../core/models/views/PathView";
+import { MeshView, MeshViewJson, MeshViewType } from "../../../../core/models/views/MeshView";
+import { PathView, PathViewJson, PathViewType } from "../../../../core/models/views/PathView";
 import { SpriteView, SpriteViewJson, SpriteViewType } from "../../../../core/models/views/SpriteView";
-import { ViewJson, ViewType } from "../../../../core/models/views/View";
+import { ViewJson } from "../../../../core/models/views/View";
 import { AppJson } from "../../../../core/services/export/ExportService";
 import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
 
@@ -15,13 +15,13 @@ export class SceneEditorImporter extends AbstractPluginImporter {
 
         views.forEach((viewJson: ViewJson) => {
             switch(viewJson.type) {
-                case ViewType.MeshView:
+                case MeshViewType:
                     const meshView = new MeshView();
                     meshView.getObj().meshAdapter = this.registry.engine.meshes;
                     meshView.fromJson(viewJson as MeshViewJson, this.registry);
                     this.registry.stores.viewStore.addView(meshView);
                     break;
-                case ViewType.PathView:
+                case PathViewType:
                     const pathView = new PathView();
                     pathView.fromJson(viewJson as PathViewJson, this.registry);
                     this.registry.stores.viewStore.addView(pathView);

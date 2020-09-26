@@ -6,7 +6,9 @@ import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
 import { NodeObj } from '../objs/NodeObj';
 import { JoinPointView } from "./child_views/JoinPointView";
-import { View, ViewFactory, ViewJson, ViewType } from "./View";
+import { View, ViewFactory, ViewJson } from "./View";
+
+export const NodeViewType = 'node-view';
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -17,7 +19,7 @@ export interface NodeViewJson extends ViewJson {
 }
 
 export class NodeViewFactory implements ViewFactory {
-    viewType = ViewType.NodeView;
+    viewType = NodeViewType;
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -33,7 +35,7 @@ const INPUT_HEIGHT = 35;
 const NODE_PADDING = 10;
 
 export class NodeView extends View {
-    readonly  viewType = ViewType.NodeView;
+    readonly  viewType = NodeViewType;
     id: string;
     protected obj: NodeObj;
     nodeGraph: NodeGraph;
@@ -43,14 +45,10 @@ export class NodeView extends View {
 
     private paramsYPosStart: number;
 
-    constructor(config?: {nodeType: string, dimensions?: Rectangle, node: NodeObj}) {
+    constructor() {
         super();
         
-        if (config) {
-            this.obj = config.node;
-            this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
-            this.setup();
-        }
+        this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
     }
 
     private setup() {
@@ -103,6 +101,7 @@ export class NodeView extends View {
 
     setObj(obj: NodeObj) {
         this.obj = obj;
+        this.setup();
     }
 
     move(point: Point) {

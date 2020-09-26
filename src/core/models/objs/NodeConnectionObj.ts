@@ -1,4 +1,4 @@
-import { IObj, ObjJson } from "./IObj";
+import { IObj, ObjFactory, ObjJson } from "./IObj";
 import { NodeObj } from "./NodeObj";
 import { Registry } from "../../Registry";
 
@@ -10,6 +10,13 @@ export interface NodeConnectionObjJson extends ObjJson {
     node1Id: string;
     joinPoint2: string;
     node2Id: string
+}
+
+export class NodeConnectionObjFactory implements ObjFactory {
+    objType = NodeConnectionObjType;
+    newInstance() {
+        return new NodeConnectionObj();
+    }
 }
 
 export class NodeConnectionObj implements IObj {

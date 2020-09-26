@@ -1,6 +1,6 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
+import { MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { ViewType } from "../../../../core/models/views/View";
 import { AbstractController, PropControl } from "../../../../core/plugin/controller/AbstractController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
@@ -46,7 +46,7 @@ export class MeshNodeObj extends NodeObj {
 
 export const MeshControl: PropControl<string> = {
     values(context) {
-        return context.registry.stores.viewStore.getViewsByType(ViewType.MeshView).map(meshView => meshView.id)
+        return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id)
     },
 
     defaultVal(context, element: UI_InputElement) {

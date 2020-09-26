@@ -4,18 +4,16 @@ import { colors } from '../../../core/ui_components/react/styles';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { ViewTag, ViewType } from '../../../core/models/views/View';
+import { ViewTag } from '../../../core/models/views/View';
 import { Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
 import { Registry } from '../../../core/Registry';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { sort } from '../../../utils/geometry/Functions';
-import { SceneEditorExporter } from './io/SceneEditorExporter';
-import { SceneEditorImporter } from './io/SceneEditorImporter';
 import { MeshTool } from './tools/MeshTool';
 import { SpriteTool } from './tools/SpriteTool';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
-import { PathView } from '../../../core/models/views/PathView';
-import { MeshView } from '../../../core/models/views/MeshView';
+import { PathView, PathViewType } from '../../../core/models/views/PathView';
+import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
 import { PathTool } from './tools/PathTool';
 import { SelectTool } from '../../../core/plugin/tools/SelectTool';
 import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
@@ -23,7 +21,7 @@ import { CameraTool } from '../../../core/plugin/tools/CameraTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
-    viewTypes: string[] = [ViewType.MeshView, ViewType.PathView, SpriteViewType];
+    viewTypes: string[] = [MeshViewType, PathViewType, SpriteViewType];
 
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
@@ -173,7 +171,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
     private renderPathViews(canvas: UI_SvgCanvas) {
         this.registry.stores.viewStore
-            .getViewsByType(ViewType.PathView)
+            .getViewsByType(PathViewType)
             .forEach((pathView: PathView) => {
                 const group = canvas.group(pathView.id);
                 group.isInteractive = false;
@@ -218,6 +216,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 }
 
 function getSortedMeshViews(registry: Registry) {
-    let items = <MeshView[]> [...registry.stores.viewStore.getViewsByType(ViewType.MeshView)];
+    let items = <MeshView[]> [...registry.stores.viewStore.getViewsByType(MeshViewType)];
     return sort(items, (a, b) => a.layer - b.layer);
 }

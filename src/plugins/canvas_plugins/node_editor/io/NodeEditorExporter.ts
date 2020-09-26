@@ -1,4 +1,5 @@
-import { ViewTag, ViewType } from "../../../../core/models/views/View";
+import { NodeConnectionViewType } from "../../../../core/models/views/NodeConnectionView";
+import { NodeViewType } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { AppJson } from "../../../../core/services/export/ExportService";
 import { IDataExporter } from "../../../../core/services/export/IDataExporter";
@@ -15,8 +16,8 @@ export class NodeEditorExporter implements IDataExporter {
 
     export(json: Partial<AppJson>): void {
         const nodeViews = [
-            this.registry.stores.viewStore.getViewsByType(ViewType.NodeView).map(view => view.toJson()),
-            this.registry.stores.viewStore.getViewsByType(ViewType.NodeConnectionView).map(view => view.toJson()),
+            this.registry.stores.viewStore.getViewsByType(NodeViewType).map(view => view.toJson()),
+            this.registry.stores.viewStore.getViewsByType(NodeConnectionViewType).map(view => view.toJson()),
         ];
         
         json[this.plugin.id] = {

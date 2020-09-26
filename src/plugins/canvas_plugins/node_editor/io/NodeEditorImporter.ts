@@ -1,6 +1,6 @@
-import { NodeConnectionView, NodeConnectionViewJson } from '../../../../core/models/views/NodeConnectionView';
-import { NodeViewJson } from '../../../../core/models/views/NodeView';
-import { ViewJson, ViewType } from "../../../../core/models/views/View";
+import { NodeConnectionView, NodeConnectionViewJson, NodeConnectionViewType } from '../../../../core/models/views/NodeConnectionView';
+import { NodeViewJson, NodeViewType } from '../../../../core/models/views/NodeView';
+import { ViewJson } from "../../../../core/models/views/View";
 import { AppJson } from '../../../../core/services/export/ExportService';
 import { AbstractPluginImporter } from "../../../../core/services/import/AbstractPluginImporter";
 
@@ -10,10 +10,10 @@ export class NodeEditorImporter extends AbstractPluginImporter {
 
         views.forEach((viewJson: ViewJson) => {
             switch(viewJson.type) {
-                case ViewType.NodeView:
+                case NodeViewType:
                     this.importNodeView(<NodeViewJson> viewJson);
                     break;
-                case ViewType.NodeConnectionView:
+                case NodeConnectionViewType:
                     this.importConnection(<NodeConnectionViewJson> viewJson);
                     break;
             }
@@ -21,10 +21,10 @@ export class NodeEditorImporter extends AbstractPluginImporter {
     }
 
     private importNodeView(viewJson: NodeViewJson) {
-        const nodeView = this.registry.services.node.createNodeView(viewJson.nodeObj.type);
-        nodeView.fromJson(viewJson, this.registry);
+        // const nodeView = this.registry.services.node.createNodeView(viewJson.nodeObj.type);
+        // nodeView.fromJson(viewJson, this.registry);
 
-        this.registry.stores.viewStore.addView(nodeView);
+        // this.registry.stores.viewStore.addView(nodeView);
     }
 
     private importConnection(viewJson: NodeConnectionViewJson) {
