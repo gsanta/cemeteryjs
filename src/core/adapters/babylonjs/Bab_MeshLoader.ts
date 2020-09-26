@@ -42,6 +42,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     }
 
     private setupInstance(meshObj: MeshObj) {
+        const position = meshObj.getPosition();
         const model = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
         const meshData = this.templatesById.get(model.id);
         const templateMesh = meshData.mainMesh;
@@ -55,6 +56,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
             clone.name = meshObj.id;
         }
         this.engineFacade.meshes.meshes.set(meshObj.id, {mainMesh: clone, skeletons: meshData.skeletons});
+
         
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
         clone.rotation = new Vector3(0, 0, 0);
@@ -65,7 +67,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         clone.position.y = meshObj.yPos;
         clone.rotationQuaternion = undefined;
 
-        clone.setAbsolutePosition(new Vector3(meshObj.getPosition().x, 0, meshObj.getPosition().y));
+        clone.setAbsolutePosition(new Vector3(position.x, 0, position.y));
 
         clone.rotation.y = meshObj.getRotation();
         

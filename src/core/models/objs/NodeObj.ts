@@ -1,9 +1,28 @@
 import { Registry } from '../../Registry';
 import { NodeGraph } from '../../services/node/NodeGraph';
-import { IObj, ObjJson } from './IObj';
+import { IObj, ObjFactory, ObjJson } from './IObj';
 import { NodeConnectionObj } from './NodeConnectionObj';
 
 export const NodeObjType = 'node-obj';
+
+export interface NodeObjJson extends ObjJson {
+    type: string;
+    params: NodeParam[];
+}
+
+export class NodeObjFactory implements ObjFactory {
+    private registry: Registry;
+
+    objType = NodeObjType;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    newInstance() {
+        return this.registry.services.node.createNodeObj();
+    }
+}
 
 export enum NodeCategory {
     Input = 'Input',
@@ -15,10 +34,6 @@ export interface NodeLink {
     name: string;
 }
 
-export interface NodeObjJson extends ObjJson {
-    type: string;
-    params: NodeParam[];
-}
 
 export interface NodeParam {
     name: string;
@@ -101,6 +116,7 @@ export abstract class NodeObj implements IObj {
     }
 
     fromJson(json: NodeObjJson, registry: Registry) {
+        this.id = json.id;
         this.type = json.type;
         this.params = json.params;
         this.params.forEach(param => this.cachedParams.set(param.name, param));

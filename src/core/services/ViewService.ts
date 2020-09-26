@@ -1,4 +1,6 @@
 import { MeshViewFactory } from "../models/views/MeshView";
+import { NodeConnectionFactory } from "../models/views/NodeConnectionView";
+import { NodeViewFactory } from "../models/views/NodeView";
 import { PathViewFactory } from "../models/views/PathView";
 import { SpriteViewFactory } from "../models/views/SpriteView";
 import { View, ViewFactory } from "../models/views/View";
@@ -10,6 +12,8 @@ export class ViewService {
         this.registerView(new MeshViewFactory());
         this.registerView(new SpriteViewFactory());
         this.registerView(new PathViewFactory());
+        this.registerView(new NodeViewFactory());
+        this.registerView(new NodeConnectionFactory());
     }
 
     getRegisteredTypes(): string[] {

@@ -7,8 +7,6 @@ import { View, ViewFactory, ViewJson, ViewType } from './View';
 
 export interface MeshViewJson extends ViewJson {
     rotation: number;
-    modelId: string;
-    textureId: string;
     thumbnailData: string;
     scale: number;
     yPos: number 
@@ -88,8 +86,6 @@ export class MeshView extends View {
         return {
             ...super.toJson(),
             rotation: this.rotation,
-            modelId: this.obj.modelId,
-            textureId: this.obj.textureId,
             thumbnailData: this.thumbnailData,
             scale: this.scale,
             yPos: this.yPos,
@@ -98,12 +94,10 @@ export class MeshView extends View {
 
     fromJson(json: MeshViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
+        this.obj.setPosition(this.bounds.getBoundingCenter().div(10).negateY());
         this.rotation = json.rotation;
-        this.obj.modelId = json.modelId;
         this.scale = json.scale;
         this.yPos = json.yPos;
-        this.obj.textureId = json.textureId;
         this.thumbnailData = json.thumbnailData;
     }
 }

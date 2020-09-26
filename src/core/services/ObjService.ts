@@ -4,14 +4,17 @@ import { MeshObjFactory } from "../models/objs/MeshObj";
 import { PathObjFactory } from "../models/objs/PathObj";
 import { SpriteObjFactory } from "../models/objs/SpriteObj";
 import { SpriteSheetObjFactory } from "../models/objs/SpriteSheetObj";
+import { Registry } from "../Registry";
 
 export class ObjService {
     private factoriesByType: Map<string, ObjFactory> = new Map();
+    private registry: Registry;
 
-    constructor() {
-        this.registerObj(new MeshObjFactory());
+    constructor(registry: Registry) {
+        this.registry = registry;
+        this.registerObj(new MeshObjFactory(this.registry));
         this.registerObj(new PathObjFactory());
-        this.registerObj(new SpriteObjFactory());
+        this.registerObj(new SpriteObjFactory(this.registry));
         this.registerObj(new SpriteSheetObjFactory());
         this.registerObj(new AssetObjFactory());
     }

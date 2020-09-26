@@ -4,6 +4,7 @@ import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
 import { Point } from '../../../../utils/geometry/shapes/Point';
+import { SpriteSheetObj, SpriteSheetObjType } from '../../../../core/models/objs/SpriteSheetObj';
 
 export enum SpriteSettingsProps {
     FrameName = 'FrameName',
@@ -62,7 +63,7 @@ const SelectSpriteSheet: PropControl<string> = {
     },
 
     values(context) {
-        return context.registry.stores.objStore.getAll().map(asset => asset.id);
+        return context.registry.stores.objStore.getObjsByType(SpriteSheetObjType).map(asset => asset.id);
     }
 }
 

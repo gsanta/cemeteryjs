@@ -1,9 +1,11 @@
-import { View } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { AppJson } from '../export/ExportService';
 import { IDataImporter } from './IDataImporter';
-import { SpriteSheetImporter } from './SpriteSheetImporter';
 import { AssetObjImporter } from './AssetObjImporter';
+import { AssetObjType } from '../../models/objs/AssetObj';
+import { SpriteSheetObjType } from '../../models/objs/SpriteSheetObj';
+import { NodeObj, NodeObjJson, NodeObjType } from '../../models/objs/NodeObj';
+import { ViewJson, ViewType } from '../../models/views/View';
 
 export class ImportService {
     serviceName = 'import-service';
@@ -14,13 +16,10 @@ export class ImportService {
         this.registry = registry;
 
         this.importers.push(new AssetObjImporter(registry));
-        this.importers.push(new SpriteSheetImporter(registry));
     }
 
     async import(file: string): Promise<void> {
         const json = <AppJson> JSON.parse(file);
-
-        this.importObjs(json);
 
         try {
             for (let i = 0; i < this.importers.length; i++) {
@@ -29,6 +28,9 @@ export class ImportService {
         } catch (e) {
             console.error(e);
         }
+
+        this.importObjs(json);
+        this.importViews(json);
 
         const promises: Promise<void>[] = [];
 
@@ -46,18 +48,36 @@ export class ImportService {
     }
 
     private importObjs(json: AppJson) {
+        // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
+        json.objs.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
         json.objs.forEach(objType => {
-            if (this.registry.services.objService.isRegistered(objType.objType)) {
-                objType.objs.forEach(obj => {
-                    const objInstance = this.registry.services.objService.createObj(objType.objType);
-                    objInstance.fromJson(obj, this.registry);
-                    this.registry.stores.objStore.addObj(objInstance);
-                });
+            if (objType.objType === AssetObjType) {
+                return;
             }
+            objType.objs.forEach(obj => {
+                // TODO can be removed when there will be only a single NodeObject
+                if (objType.objType === NodeObjType) {
+                    this.registry.services.node.currentNodeType = (<NodeObjJson> obj).type;
+                }
+                const objInstance = this.registry.services.objService.createObj(objType.objType);
+                objInstance.fromJson(obj, this.registry);
+                this.registry.stores.objStore.addObj(objInstance);
+            });
         });
     }
 
-    private importViews() {
-        
+    private importViews(json: AppJson) {
+        json.viewsByType.forEach(viewType => {
+            viewType.views.forEach(view => {
+                // TODO can be removed when there will be only a single NodeObject
+                if (view.type === ViewType.NodeView) {
+                    const nodeType = (<NodeObj> this.registry.stores.objStore.getById(view.objId)).type;
+                    this.registry.services.node.currentNodeType = nodeType;
+                }
+                const viewInstance = this.registry.services.viewService.createView(viewType.viewType);
+                viewInstance.fromJson(view, this.registry);
+                this.registry.stores.viewStore.addView(viewInstance);
+            });
+        });    
     }
 }

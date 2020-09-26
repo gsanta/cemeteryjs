@@ -1,6 +1,7 @@
 import { IObj } from "../models/objs/IObj";
 import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
 import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
+import { SpriteSheetObj, SpriteSheetObjType } from "../models/objs/SpriteSheetObj";
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 
@@ -25,10 +26,13 @@ export class ObjStore {
     }
 
     addObj(obj: IObj) {
-        const id = this.idGenerator.generateId(obj.objType);
-        obj.id = id;
+        if (obj.id) {
+            this.idGenerator.registerExistingIdForPrefix(obj.objType, obj.id);
+        } else {
+            obj.id = this.idGenerator.generateId(obj.objType);
+        }
         this.objs.push(obj);
-        this.objById.set(id, obj);
+        this.objById.set(obj.id, obj);
 
         if (!this.objsByType.get(obj.objType)) {
             this.objsByType.set(obj.objType, []);
@@ -62,6 +66,10 @@ export class ObjStore {
         return this.objsByType.get(type) || [];
     }
 
+    getAllTypes(): string[] {
+        return Array.from(this.objsByType.keys());
+    }
+
     getAll(): IObj[] {
         return this.objs;
     }
@@ -71,8 +79,11 @@ export class ObjStore {
     }
 
     clear() {
+        this.objs.forEach(obj => this.removeObj(obj));
         this.objs = [];
         this.objById = new Map();
+        this.objsByType = new Map();
+        this.idGenerator.clear();
     }
 
     addHook(hook: ObjStoreHook) {
@@ -98,6 +109,9 @@ export class ObjLifeCycleHook implements ObjStoreHook {
                 break;
             case SpriteObjType:
                 this.registry.engine.sprites.createInstance(<SpriteObj> obj);
+                break;
+            case SpriteSheetObjType:
+                this.registry.engine.spriteLoader.loadSpriteSheet(<SpriteSheetObj> obj);
                 break;
         }
     }

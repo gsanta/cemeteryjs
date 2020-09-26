@@ -35,8 +35,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         this.toolHandler.registerTool(new DeleteTool(this, this.registry));
         this.toolHandler.registerTool(new CameraTool(this, this.registry));
         
-        this.exporter = new SceneEditorExporter(this, this.registry);
-        this.importer = new SceneEditorImporter(this, this.registry);
+        // this.exporter = new SceneEditorExporter(this, this.registry);
+        // this.importer = new SceneEditorImporter(this, this.registry);
     }
 
     getStore() {

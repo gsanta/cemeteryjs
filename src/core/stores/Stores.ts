@@ -32,6 +32,7 @@ export class Stores {
 
     clear() {
         this.viewStore.clear();
+        this.objStore.clear();
         this.assetStore.clear();
         this
     }

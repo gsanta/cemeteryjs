@@ -17,6 +17,7 @@ export interface ViewJson {
     id: string;
     type: string;
     dimensions: string;
+    objId: string;
 }
 
 export enum ViewTag {
@@ -82,7 +83,8 @@ export abstract class View {
         return {
             id: this.id,
             type: this.viewType,
-            dimensions: this.bounds ? this.bounds.toString() : undefined
+            dimensions: this.bounds ? this.bounds.toString() : undefined,
+            objId: this.obj ? this.obj.id : (this.parent && this.parent.obj) ? this.parent.obj.id : undefined
         };
     }
 
@@ -90,5 +92,6 @@ export abstract class View {
         this.id = json.id;
         this.viewType = json.type;
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
+        this.obj = registry.stores.objStore.getById(json.objId);
     }
 }

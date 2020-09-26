@@ -26,7 +26,6 @@ export class MeshTool extends RectangleTool {
     
         this.registry.stores.objStore.addObj(meshObj);
         this.registry.stores.viewStore.addView(meshView);
-        this.registry.engine.meshes.createInstance(meshView.getObj());
     
         return meshView;
     }

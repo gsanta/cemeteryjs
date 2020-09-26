@@ -50,7 +50,6 @@ export class ViewStore {
         } else {
             view.id = this.idGenerator.generateId(view.viewType);
         }
-        view.getObj().id = view.id;
 
         this.views.push(view);
         this.idMap.set(view.id, view);
@@ -144,7 +143,9 @@ export class ViewLifeCycleHook implements ViewStoreHook {
         this.registry = registry;
     }
 
-    addViewHook(view: View) {}
+    addViewHook(view: View) {
+
+    }
 
     removeViewHook(view: View) {
         this.registry.stores.objStore.removeObj(view.getObj());

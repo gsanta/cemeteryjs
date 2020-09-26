@@ -9,6 +9,7 @@ import { IKeyboardEvent, Keyboard } from "../../../../core/services/input/Keyboa
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { PathObj, PathObjType } from "../../../../core/models/objs/PathObj";
 
 export class PathTool extends PointerTool {
     acceptedViews = [ViewType.PathView, PathPointViewType]
@@ -85,11 +86,15 @@ export class PathTool extends PointerTool {
         const pointer = this.registry.services.pointer.pointer;
         this.registry.stores.viewStore.clearSelection();
 
-        const path = new PathView();
-        const editPoint = new PathPointView(path, pointer.down.clone());
-        path.addPathPoint(editPoint);
-        this.registry.stores.viewStore.addView(path);
-        this.registry.stores.viewStore.addSelectedView(path);
+        const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
+        const pathView: PathView = <PathView> this.registry.services.viewService.createView(ViewType.PathView);
+        pathView.setObj(pathObj);
+
+        const editPoint = new PathPointView(pathView, pointer.down.clone());
+        pathView.addPathPoint(editPoint);
+        this.registry.stores.viewStore.addView(pathView);
+        this.registry.stores.objStore.addObj(pathObj);
+        this.registry.stores.viewStore.addSelectedView(pathView);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

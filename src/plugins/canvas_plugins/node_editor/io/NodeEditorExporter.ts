@@ -1,3 +1,4 @@
+import { ViewTag, ViewType } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
 import { AppJson } from "../../../../core/services/export/ExportService";
 import { IDataExporter } from "../../../../core/services/export/IDataExporter";
@@ -13,8 +14,13 @@ export class NodeEditorExporter implements IDataExporter {
     }
 
     export(json: Partial<AppJson>): void {
+        const nodeViews = [
+            this.registry.stores.viewStore.getViewsByType(ViewType.NodeView).map(view => view.toJson()),
+            this.registry.stores.viewStore.getViewsByType(ViewType.NodeConnectionView).map(view => view.toJson()),
+        ];
+        
         json[this.plugin.id] = {
-            views: this.registry.stores.viewStore.getAllViews().map(view => view.toJson())
+            views: nodeViews
         }
     }
 }

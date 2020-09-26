@@ -69,11 +69,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
         this.nodeEditorController = new NodeEditorController(this, this.registry);
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
-
-
-        this.exporter = new NodeEditorExporter(this, this.registry);
-        this.importer = new NodeEditorImporter(this, this.registry);
-
     }
 
     getStore(): ViewStore {

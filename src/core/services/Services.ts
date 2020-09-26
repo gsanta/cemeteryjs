@@ -62,7 +62,7 @@ export class Services {
         this.ui = new UI_Service();
         this.event = new EventService(this.registry);
         this.uiPerspective = new UI_PerspectiveService(this.registry);
-        this.objService = new ObjService();
+        this.objService = new ObjService(this.registry);
         this.viewService = new ViewService();
 
         this.node = new NodeService(this.registry);

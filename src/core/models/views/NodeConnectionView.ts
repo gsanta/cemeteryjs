@@ -2,7 +2,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
 import { NodeView } from "./NodeView";
-import { View, ViewJson, ViewType } from "./View";
+import { View, ViewFactory, ViewJson, ViewType } from "./View";
 import { Registry } from "../../Registry";
 
 export interface NodeConnectionViewJson extends ViewJson {
@@ -11,6 +11,11 @@ export interface NodeConnectionViewJson extends ViewJson {
     point2X: number;
     point2Y: number;
     obj: NodeConnectionObjJson;
+}
+
+export class NodeConnectionFactory implements ViewFactory {
+    viewType = ViewType.NodeConnectionView;
+    newInstance() { return new NodeConnectionView(); }
 }
 
 export class NodeConnectionView extends View {

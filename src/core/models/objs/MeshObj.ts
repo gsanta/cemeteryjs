@@ -1,5 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { IMeshAdapter } from '../../adapters/IMeshAdapter';
+import { Registry } from '../../Registry';
 import { IObj, ObjFactory, ObjJson } from './IObj';
 
 export const MeshObjType = 'mesh-obj';
@@ -7,12 +8,28 @@ export const MeshObjType = 'mesh-obj';
 export interface MeshObjJson extends ObjJson {
     scaleX: number;
     scaleY: number;
+    posX: number;
+    posY: number;
+    rotation: number;
+    modelId: string;
+    textureId: string;
+    routeId: string;
+    y: number;
 }
 
 export class MeshObjFactory implements ObjFactory {
+    private registry: Registry;
+
     objType = MeshObjType;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     newInstance() {
-        return new MeshObj();
+        const obj = new MeshObj();
+        obj.meshAdapter = this.registry.engine.meshes;
+        return obj;
     }
 }
 
@@ -21,7 +38,7 @@ export class MeshObj implements IObj {
 
     private startPos: Point;
     private scale: Point;
-    private tempRotation: number;
+    private tempRotation: number = 0;
     id: string;
 
     modelId: string;
@@ -89,11 +106,25 @@ export class MeshObj implements IObj {
         return {
             id: this.id,
             scaleX: this.getScale().x,
-            scaleY: this.getScale().y
+            scaleY: this.getScale().y,
+            posX: this.getPosition().x,
+            posY: this.getPosition().y,
+            y: this.yPos,
+            rotation: this.getRotation(),
+            modelId: this.modelId,
+            textureId: this.textureId,
+            routeId: this.routeId
         }
     }
     
     fromJson(json: MeshObjJson) {
-        this.scale = new Point(json.scaleX, json.scaleY);
+        this.id = json.id;
+        this.setScale(new Point(json.scaleX, json.scaleY));
+        this.setPosition(new Point(json.posX, json.posY));
+        this.rotate(json.rotation);
+        this.yPos = json.y;
+        this.modelId = json.modelId;
+        this.textureId = json.textureId;
+        this.routeId = json.routeId;
     }
 }

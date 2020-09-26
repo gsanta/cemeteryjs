@@ -24,8 +24,8 @@ export class SpriteTool extends RectangleTool {
         spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y); 
 
         this.registry.stores.viewStore.addView(spriteView);
-        this.registry.engine.sprites.createInstance(spriteView.getObj());
-    
+        this.registry.stores.objStore.addObj(spriteObj);
+
         return spriteView;
     }
     

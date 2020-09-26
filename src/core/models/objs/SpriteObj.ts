@@ -1,6 +1,7 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { ISpriteAdapter } from "../../adapters/ISpriteAdapter";
+import { Registry } from "../../Registry";
 import { IObj, ObjFactory } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
@@ -12,12 +13,22 @@ export interface SpriteObjJson {
     scaleX: number;
     scaleY: number;
     id: string;
+    spriteSheetId: string;
 }
 
 export class SpriteObjFactory implements ObjFactory {
+    private registry: Registry;
+
     objType = SpriteObjType;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     newInstance() {
-        return new SpriteObj();
+        const obj = new SpriteObj();
+        obj.spriteAdapter = this.registry.engine.sprites;
+        return obj;
     }
 }
 
@@ -81,7 +92,8 @@ export class SpriteObj implements IObj {
             x: this.startPos && this.startPos.x,
             y: this.startPos && this.startPos.y,
             scaleX: this.getScale().x,
-            scaleY: this.getScale().y
+            scaleY: this.getScale().y,
+            spriteSheetId: this.spriteSheetId
         }
     }
 
@@ -91,5 +103,6 @@ export class SpriteObj implements IObj {
             this.setPosition(new Point(json.x, json.y));
         }
         this.setScale(new Point(json.scaleX, json.scaleY));
+        this.spriteSheetId = json.spriteSheetId;
     }
 }

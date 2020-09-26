@@ -5,10 +5,10 @@ import { MoveNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/
 import { PathNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
 import { RouteNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
 import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
-import { NodeObj } from '../models/objs/NodeObj';
+import { NodeObj, NodeObjType } from '../models/objs/NodeObj';
 import { NodeConnectionView } from '../models/views/NodeConnectionView';
-import { NodeView } from '../models/views/NodeView';
-import { View, ViewType } from '../models/views/View';
+import { NodeView, NodeViewFactory } from '../models/views/NodeView';
+import { View, ViewTag, ViewType } from '../models/views/View';
 import { AbstractController } from '../plugin/controller/AbstractController';
 import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
 import { UI_Plugin } from '../plugin/UI_Plugin';
@@ -27,6 +27,9 @@ export class NodeService {
     private defaultNodeRenderer: NodeRenderer;
 
     private registry: Registry;
+
+    // TODO can be removed when there will be only a single NodeObject
+    currentNodeType: string;
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -66,20 +69,26 @@ export class NodeService {
         this.defaultNodeRenderer.render(ui_svgCanvas, nodeView);
     }
 
-    createNodeView(nodeType: string): NodeView {
-        if (!this.nodeTemplates.has(nodeType)) {
-            throw new Error(`Node creator registered for node type ${nodeType}`);
-        }
+    createNodeObj() {
+        return this.nodeFactories.get(this.currentNodeType).newNodeInstance(this.graph);
+    }
 
-        const nodeObject = this.nodeFactories.get(nodeType).newNodeInstance(this.graph);
-        
-        // const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
-        // new Rectangle(topLeft, bottomRight)
-        
-        const nodeView = new NodeView({nodeType: nodeObject.type, node: nodeObject});
-        nodeView.controller = this.nodeFactories.get(nodeType).newControllerInstance(this.registry.plugins.getById(NodeEditorPluginId), this.registry);
-        
+    createNodeView(): NodeView {
+        const nodeView = new NodeView();
+        nodeView.controller = this.nodeFactories.get(this.currentNodeType).newControllerInstance(this.registry.plugins.getById(NodeEditorPluginId), this.registry);
         return nodeView;
+        // if (!this.nodeTemplates.has(nodeType)) {
+        //     throw new Error(`Node creator registered for node type ${nodeType}`);
+        // }
+
+        // const nodeObject = this.nodeFactories.get(nodeType).newNodeInstance(this.graph);
+        
+        // // const bottomRight = topLeft.clone().add(new Point(defaultNodeViewConfig.width, defaultNodeViewConfig.height));
+        // // new Rectangle(topLeft, bottomRight)
+        
+
+        
+        // return nodeView;
     }
 }
 

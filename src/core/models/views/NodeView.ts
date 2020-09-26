@@ -4,9 +4,9 @@ import { AbstractController } from "../../plugin/controller/AbstractController";
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
-import { NodeObj, NodeObjJson } from '../objs/NodeObj';
+import { NodeObj } from '../objs/NodeObj';
 import { JoinPointView } from "./child_views/JoinPointView";
-import { View, ViewJson, ViewType } from "./View";
+import { View, ViewFactory, ViewJson, ViewType } from "./View";
 
 export const defaultNodeViewConfig = {
     width: 200,
@@ -14,7 +14,17 @@ export const defaultNodeViewConfig = {
 }
 
 export interface NodeViewJson extends ViewJson {
-    nodeObj: NodeObjJson;
+}
+
+export class NodeViewFactory implements ViewFactory {
+    viewType = ViewType.NodeView;
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    newInstance() { return this.registry.services.node.createNodeView() }
 }
 
 const HEADER_HIGHT = 30;
@@ -119,14 +129,10 @@ export class NodeView extends View {
     toJson(): NodeViewJson  {
         return {
             ...super.toJson(),
-            nodeObj: this.obj.toJson()
         }
     }
 
     fromJson(json: NodeViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        this.obj.fromJson(json.nodeObj, registry);
     }
-
-    editPoints = [];
 }
