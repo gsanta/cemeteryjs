@@ -70,6 +70,8 @@ import { SvgLineComp } from './react/svg/SvgLineComp';
 import { ListItemComp } from './react/data_display/ListItemComp';
 import { DialogComp } from './react/dialogs/DialogComp';
 import { UI_Plugin } from '../plugin/UI_Plugin';
+import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
+import { SvgPolygonComp } from './react/svg/SvgPolygonComp';
 
 
 export class UI_Builder {
@@ -231,7 +233,10 @@ export class UI_Builder {
                 return <SvgImageComp element={svgImage}/>; 
             case UI_ElementType.SvgPath:
                 const path = element as UI_SvgPath
-                return <SvgPathComp element={path}/>; 
+                return <SvgPathComp element={path}/>;
+            case UI_ElementType.SvgPolygon:
+                const polygon = element as UI_SvgPolygon;
+                return <SvgPolygonComp element={polygon}/>; 
             case UI_ElementType.SvgText:
                 const svgText = element as UI_SvgText;
                 return <SvgTextComp element={svgText}/>;

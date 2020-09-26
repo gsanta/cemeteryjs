@@ -141,9 +141,29 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
                 image.width = meshView.getBounds().getWidth();
                 image.height = meshView.getBounds().getHeight();
             }
+
+            this.renderYPosControl(canvas, meshView);
     
             return thumbnail;
         });
+    }
+
+    private renderYPosControl(canvas: UI_SvgCanvas, meshView: MeshView) {
+        const line = canvas.line();
+        line.css = {
+            pointerEvents: 'none',
+            stroke: 'blue',
+            strokeWidth: "3"
+        }
+        const center = meshView.getBounds().getBoundingCenter();
+        line.x1 = center.x;
+        line.y1 = center.y;
+        line.x2 = center.x;
+        line.y2 = center.y - 50;
+
+
+        const polygon = canvas.polygon();
+        polygon.points = `${center.x - 8},${center.y - 50} ${center.x + 8},${center.y - 50} ${center.x},${center.y - 66}`;
     }
 
     private renderSpriteViews(canvas: UI_SvgCanvas) {

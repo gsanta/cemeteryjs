@@ -24,9 +24,7 @@ export class JoinTool extends PointerTool {
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    click() {
-
-    }
+    click() {}
 
     move() {}
 
@@ -50,18 +48,17 @@ export class JoinTool extends PointerTool {
             connectionView.setObj(connectionObj);
             joinPoint1.connection = connectionView;
             joinPoint2.connection = connectionView;
-            connectionView.getObj().joinPoint1 = this.joinPoint1.slotName;
-            connectionView.getObj().node1 = this.joinPoint1.parent.getObj();
-            connectionView.getObj().joinPoint2 = joinPoint2.slotName;
-            connectionView.getObj().node2 = joinPoint2.parent.getObj();
+            connectionView.joinPoint1 = joinPoint1;
+            connectionView.joinPoint2 = joinPoint2;
+            connectionObj.joinPoint1 = joinPoint1.slotName;
+            connectionObj.node1 = joinPoint1.parent.getObj();
+            connectionObj.joinPoint2 = joinPoint2.slotName;
+            connectionObj.node2 = joinPoint2.parent.getObj();
 
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
             connectionView.setPoint2(joinPoint2.getAbsolutePosition());
-            this.joinPoint1.connection = connectionView;
-            joinPoint2.connection = connectionView;
+            this.registry.stores.objStore.addObj(connectionObj);
             this.registry.stores.viewStore.addView(connectionView);
-            this.startPoint = undefined;
-            this.endPoint = undefined;
 
             this.registry.services.history.createSnapshot();
         }

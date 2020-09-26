@@ -22,6 +22,7 @@ export enum UI_ElementType {
     SvgLine = 'SvgLine',
     SvgForeignObject = 'ForeignObject',
     SvgText = 'SvgText',
+    SvgPolygon = 'SvgPolygon',
 
     HtmlCanvas = 'HtmlCanvas',
 

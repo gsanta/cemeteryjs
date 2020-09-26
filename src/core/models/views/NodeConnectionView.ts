@@ -2,6 +2,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../Registry";
 import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
+import { JoinPointView } from "./child_views/JoinPointView";
 import { NodeView } from "./NodeView";
 import { View, ViewFactory, ViewJson } from "./View";
 
@@ -13,6 +14,14 @@ export interface NodeConnectionViewJson extends ViewJson {
     point2X: number;
     point2Y: number;
     obj: NodeConnectionObjJson;
+    joinPoint1: {
+        nodeId: string;
+        joinPointName: string;
+    };
+    joinPoint2: {
+        nodeId: string;
+        joinPointName: string;
+    }
 }
 
 export class NodeConnectionViewFactory implements ViewFactory {
@@ -26,6 +35,8 @@ export class NodeConnectionView extends View {
     point1: Point;
     point2: Point;
     protected obj: NodeConnectionObj;
+    joinPoint1: JoinPointView;
+    joinPoint2: JoinPointView;
 
     private updateDimensions() {
         if (this.point1 && this.point2) {
@@ -41,9 +52,7 @@ export class NodeConnectionView extends View {
         this.obj = obj;
     }
 
-    move() {
-        // action nodes will move their join points, so this object is automatically moved
-    }
+    move() {}
 
     setPoint1(point: Point) {
         this.point1 = point;
@@ -72,15 +81,24 @@ export class NodeConnectionView extends View {
             point1Y: this.point1.y,
             point2X: this.point2.x,
             point2Y: this.point2.y,
-            obj: this.obj.toJson()
+            obj: this.obj.toJson(),
+            joinPoint1: {
+                nodeId: this.joinPoint1.parent.id,
+                joinPointName: this.joinPoint1.slotName
+            },
+            joinPoint2: {
+                nodeId: this.joinPoint2.parent.id,
+                joinPointName: this.joinPoint2.slotName
+            }
         };
     }
 
     fromJson(json: NodeConnectionViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        this.obj.fromJson(json.obj, registry);
-        (registry.stores.viewStore.getById(this.obj.node1.id) as NodeView).findJoinPointView(this.obj.joinPoint1).connection = this;
-        (registry.stores.viewStore.getById(this.obj.node2.id) as NodeView).findJoinPointView(this.obj.joinPoint2).connection = this;
+        this.joinPoint1 = (<NodeView> registry.stores.viewStore.getById(json.joinPoint1.nodeId)).findJoinPointView(json.joinPoint1.joinPointName);
+        this.joinPoint2 = (<NodeView> registry.stores.viewStore.getById(json.joinPoint2.nodeId)).findJoinPointView(json.joinPoint2.joinPointName);
+        this.joinPoint1.connection = this;
+        this.joinPoint2.connection = this;
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 

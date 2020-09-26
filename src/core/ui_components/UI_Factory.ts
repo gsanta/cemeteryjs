@@ -37,6 +37,7 @@ import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { AbstractController } from '../plugin/controller/AbstractController';
 import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
+import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
 
 export class UI_Factory {
     static layout(plugin: UI_Plugin): UI_Layout {
@@ -305,6 +306,18 @@ export class UI_Factory {
         parent.children.push(path);
     
         return path;
+    }
+
+    static svgPolygon(parent: UI_Container, config: { controllerId?: string, prop?: string}): UI_SvgPolygon {
+        const polygon = new UI_SvgPolygon(parent.plugin);
+        polygon.prop = config.prop;
+
+        polygon.generateId(parent);
+        this.setController(parent, polygon, config);
+    
+        parent.children.push(polygon);
+    
+        return polygon;
     }
 
     static svgImage(parent: UI_Container, config: { controllerId?: string, prop?: string}): UI_SvgImage {

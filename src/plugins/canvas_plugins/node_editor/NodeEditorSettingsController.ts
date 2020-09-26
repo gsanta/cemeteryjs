@@ -21,8 +21,6 @@ export class NodeEditorSettingsController extends AbstractController<string> {
 
         this.createPropHandler<string>(NodeEditorSettingsProps.DragNode)
             .onDndStart((dropType) => {
-                1
-                // (<NodeEditorPlugin> this.registry.plugins.getById(NodeEditorPluginId)).droppableId = dropType;
                 this.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
             })
             .onDndEnd((context: PropContext<string>, element) => {

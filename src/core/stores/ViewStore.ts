@@ -82,6 +82,10 @@ export class ViewStore {
         view.dispose();
     }
 
+    hasView(id: string): boolean {
+        return this.idMap.has(id);
+    }
+
     getById(id: string): View {
         return this.idMap.get(id);
     }

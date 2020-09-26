@@ -23,6 +23,10 @@ export class UI_SvgGroup extends UI_Container {
         return UI_Factory.svgPath(this, {prop});
     }
 
+    polygon(prop?: string) {
+        return UI_Factory.svgPolygon(this, {prop});
+    }
+
     image(prop?: string) {
         return UI_Factory.svgImage(this, {prop});
     }

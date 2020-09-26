@@ -111,6 +111,9 @@ class RemoveRelatedConnectionHook implements ViewStoreHook {
             case NodeViewType:
                 this.removeRelatedConnections(<NodeView> view)
             break;
+            case NodeConnectionViewType:
+                this.removeConnectionFromNode(<NodeConnectionView> view);
+            break;
         }
     }
 
@@ -120,6 +123,18 @@ class RemoveRelatedConnectionHook implements ViewStoreHook {
                 this.registry.stores.viewStore.removeView(joinPointView.connection);
             }
         });
+    }
+
+    private removeConnectionFromNode(nodeConnectionView: NodeConnectionView) {
+        const joinPointView1 = nodeConnectionView.joinPoint1;
+        if (joinPointView1 && this.registry.stores.viewStore.hasView(joinPointView1.parent.id)) {
+            joinPointView1.connection = undefined;
+        }
+
+        const joinPointView2 = nodeConnectionView.joinPoint2;
+        if (joinPointView2 && this.registry.stores.viewStore.hasView(joinPointView2.parent.id)) {
+            joinPointView2.connection = undefined;
+        }
     }
 }
 
