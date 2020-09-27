@@ -15,7 +15,7 @@ export enum SpriteSettingsProps {
 }
 
 export const SpriteSettingsControllerId = 'sprite-settings-controller';
-export class SpriteSettingsController extends AbstractController<SpriteSettingsProps> {
+export class SpriteSettingsController extends AbstractController {
     id = SpriteSettingsControllerId;
     spriteView: SpriteView;
 

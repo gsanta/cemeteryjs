@@ -45,13 +45,13 @@ export abstract class UI_Element {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).over()
         } else {
-            this.plugin.getControllerById(this.controllerId).mouseOver(this.prop, this);
+            this.plugin.getControllerById(this.controllerId).mouseOver(this);
         }
     }
 
     mouseOut(e: MouseEvent) {
         if (this.controllerId !== activeToolId)
-            this.plugin.getControllerById(this.controllerId).mouseOut(this.prop, this);
+            this.plugin.getControllerById(this.controllerId).mouseOut(this);
     }
 
     mouseDown(e: MouseEvent) {

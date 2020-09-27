@@ -1,11 +1,12 @@
 import { MeshView, MeshViewType } from '../../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../../core/models/views/PathView';
 import { SpriteView, SpriteViewType } from '../../../../core/models/views/SpriteView';
+import { AbstractController } from '../../../../core/plugin/controller/AbstractController';
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
 import { MeshSettingsController, MeshSettingsControllerId, MeshSettingsProps } from './MeshSettingsController';
-import { PathSettingsController } from './PathSettingsController';
+import { PathIdControl, PathSettingsProps } from './PathObjectSettings';
 import { SpriteSettingsController, SpriteSettingsProps } from './SpriteSettingsController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
@@ -15,7 +16,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     displayName = 'Object Settings';
     region = UI_Region.Sidepanel;
 
-    private pathObjectSettingsController: PathSettingsController;
+    private pathObjectSettingsController: AbstractController;
     private spriteSettingsController: SpriteSettingsController;
     private meshSettingsController: MeshSettingsController;
 
@@ -24,8 +25,8 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         this.controllers.set(MeshSettingsControllerId, new MeshSettingsController(this, this.registry));
 
-        // this.engine = new EngineService(this.registry)
-        this.pathObjectSettingsController = new PathSettingsController(this, registry);
+        this.pathObjectSettingsController = new AbstractController(this, this.registry);
+        this.pathObjectSettingsController.registerPropControl(PathSettingsProps.PathId, PathIdControl);
         this.spriteSettingsController = new SpriteSettingsController(this, registry);
         this.meshSettingsController = new MeshSettingsController(this, registry);
     }

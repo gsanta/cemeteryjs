@@ -13,7 +13,7 @@ export const AnimationNodeFacotry: NodeFactory = {
         return new AnimationNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('mesh', MeshControl);
         controller.registerPropControl('startFrame', StartFrameControl);

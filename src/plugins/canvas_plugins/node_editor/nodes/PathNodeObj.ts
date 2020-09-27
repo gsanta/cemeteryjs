@@ -13,7 +13,7 @@ export const PathNodeFacotry: NodeFactory = {
         return new PathNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('path', PathControl);
         return controller;

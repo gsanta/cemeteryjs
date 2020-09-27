@@ -232,7 +232,6 @@ export class UI_Factory {
     static grid(parent: UI_Container, config: { controllerId?: string, prop: string, filledIndexProp?: string}): UI_GridSelect {
         const gridSelect = new UI_GridSelect(parent.plugin);
         gridSelect.prop = config.prop;
-        gridSelect.filledIndexProp = config.filledIndexProp;
 
         gridSelect.generateId(parent);
         this.setController(parent, gridSelect, config);

@@ -5,10 +5,19 @@ import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { MeshView } from '../../../core/models/views/MeshView';
-import { ThumbnailMakerController, ThumbnailMakerControllerId, ThumbnailMakerControllerProps } from './ThumbnailMakerController';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
+import { Tools } from 'babylonjs';
+import { AbstractController, PropControl } from '../../../core/plugin/controller/AbstractController';
+
+export enum ThumbnailMakerControllerProps {
+    ThumbnailCreate = 'ThumbnailFromModel',
+    ThumbnailUpload = 'ThumbnailFromFile',
+    ClearThumbnail = 'ClearThumbnail'
+}
+
+export const ThumbnailMakerControllerId = 'thumbnail_maker_controller_id';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin'; 
 export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
@@ -22,7 +31,12 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         
         this.toolHandler.registerTool(new CameraTool(this, registry));
 
-        this.controllers.set(ThumbnailMakerControllerId, new ThumbnailMakerController(this, registry));
+        const controller = new AbstractController(this, this.registry);
+        controller.registerPropControl(ThumbnailMakerControllerProps.ThumbnailCreate, ThumbnailCreateControl);
+        controller.registerPropControl(ThumbnailMakerControllerProps.ThumbnailUpload, ThumbnailUploadControl);
+        controller.registerPropControl(ThumbnailMakerControllerProps.ClearThumbnail, ClearThumbnailControl);
+
+        this.controllers.set(ThumbnailMakerControllerId, controller);
     }
 
     renderInto(layout: UI_Layout): UI_Layout {
@@ -56,7 +70,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
         const toolbar = canvas.toolbar();
         
-        let actionIcon = toolbar.actionIcon({controllerId: ThumbnailMakerControllerId, prop: ThumbnailMakerControllerProps.ThumbnailFromModel});
+        let actionIcon = toolbar.actionIcon({controllerId: ThumbnailMakerControllerId, prop: ThumbnailMakerControllerProps.ThumbnailCreate});
         actionIcon.icon = 'insert-photo';
         let tooltip = actionIcon.tooltip();
         tooltip.label = 'Create thumbnail';
@@ -67,7 +81,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
         row = dialog.row({key: '4'});
 
-        const importModelButton = row.fileUpload(ThumbnailMakerControllerProps.ThumbnailFromFile);
+        const importModelButton = row.fileUpload(ThumbnailMakerControllerProps.ThumbnailUpload);
         importModelButton.label = 'Import Thumbnail';
         importModelButton.icon = 'import-icon';
 
@@ -97,5 +111,37 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
     getStore() {
         return null;
+    }
+}
+
+const ThumbnailCreateControl: PropControl<any> = {
+    async click(context) {
+        const engine = (<ThumbnailDialogPlugin> context.plugin).engine;
+        const meshView = this.registry.stores.viewStore.getOneSelectedView() as MeshView;
+
+        // TODO: should not cast to Bab_EngineFacade
+        const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((engine as Bab_EngineFacade).engine, engine.getCamera().camera, 1000)
+        meshView.thumbnailData = thumbnail;
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Dialog);
+    }
+}
+
+const ThumbnailUploadControl: PropControl<any> = {
+    change(val, context) {
+        const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
+                
+        meshView.thumbnailData = val.data;
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Dialog);
+    }
+}
+
+const ClearThumbnailControl: PropControl<any> = {
+    change(val, context) {
+        const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
+ 
+        meshView.thumbnailData = undefined;
+        context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }

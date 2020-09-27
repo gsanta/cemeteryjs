@@ -15,7 +15,7 @@ export const MoveNodeFacotry: NodeFactory = {
         return new MoveNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('mesh', MeshControl);
         controller.registerPropControl('move', MoveControl);

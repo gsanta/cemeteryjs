@@ -94,7 +94,7 @@ export class NodeService {
 
 export interface NodeFactory {
     newNodeInstance(graph: NodeGraph): NodeObj;
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any>;
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController;
 }
 
 class RemoveRelatedConnectionHook implements ViewStoreHook {

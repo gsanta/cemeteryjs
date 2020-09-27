@@ -11,7 +11,7 @@ export enum FileSettingsProps {
 }
 
 export const FileSettingsControllerId = 'file-settings-controller';
-export class FileSettingsController extends AbstractController<FileSettingsProps> {
+export class FileSettingsController extends AbstractController {
     id = FileSettingsControllerId;
 
     constructor(plugin: UI_Plugin, registry: Registry) {

@@ -41,7 +41,7 @@ export class NodeView extends View {
     nodeGraph: NodeGraph;
     joinPointViews: JoinPointView[] = [];
 
-    controller: AbstractController<any>;
+    controller: AbstractController;
 
     private paramsYPosStart: number;
 

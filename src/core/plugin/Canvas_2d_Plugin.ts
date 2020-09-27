@@ -3,7 +3,9 @@ import { Camera2D } from "../models/misc/camera/Camera2D";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
 import { UI_Region } from "./UI_Plugin";
-import { CanvasControllerId, CanvasController } from './controller/CanvasController';
+import { AbstractController, PropControl } from "./controller/AbstractController";
+import { ToolType } from "./tools/Tool";
+import { CameraTool } from "./tools/CameraTool";
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -28,6 +30,15 @@ function cameraInitializer(canvasId: string, registry: Registry) {
     }
 }
 
+export enum CanvasControllerProps {
+    ZoomIn = 'zoomIn',
+    ZoomOut = 'ZoomOut',
+    Undo = 'undo',
+    Redo = 'redo'
+}
+
+export const CanvasControllerId = 'canvas_controller_id';
+
 export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
     region = UI_Region.Canvas1;
     private camera: Camera2D;
@@ -37,7 +48,13 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
         this.id = id;
 
-        this.controllers.set(CanvasControllerId, new CanvasController(this, this.registry));
+        const controller = new AbstractController(this, this.registry);
+        controller.registerPropControl(CanvasControllerProps.ZoomIn, ZoomInControl);
+        controller.registerPropControl(CanvasControllerProps.ZoomOut, ZoomOutControl);
+        controller.registerPropControl(CanvasControllerProps.Undo, UndoControl);
+        controller.registerPropControl(CanvasControllerProps.Redo, RedoControl);
+
+        this.controllers.set(CanvasControllerId, controller);
         this.camera = cameraInitializer(this.id, registry);
     }
 
@@ -57,5 +74,29 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
     getCamera() {
         return this.camera;
+    }
+}
+
+const ZoomInControl: PropControl<any> = {
+    click(context) {
+        ((<AbstractCanvasPlugin> context.plugin).toolHandler.getById(ToolType.Camera) as CameraTool).zoomIn();
+    }
+}
+
+const ZoomOutControl: PropControl<any> = {
+    click(context) {
+        ((<AbstractCanvasPlugin> context.plugin).toolHandler.getById(ToolType.Camera) as CameraTool).zoomOut();
+    }
+}
+
+const UndoControl: PropControl<any> = {
+    click(context) {
+        context.registry.services.history.undo()
+    }
+}
+
+const RedoControl: PropControl<any> = {
+    click(context) {
+        context.registry.services.history.redo()
     }
 }

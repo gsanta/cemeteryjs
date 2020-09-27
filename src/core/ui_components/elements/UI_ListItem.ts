@@ -18,7 +18,7 @@ export class UI_ListItem extends UI_Element {
         // TODO find a better design, this is not ideal at all
         (<AbstractCanvasPlugin> this.dropTargetPlugin).mouse.dndStart();
 
-        this.controller && this.controller.dndStart(this.prop, this, this.listItemId);
+        this.controller && this.controller.dndStart(this, this.listItemId);
     }
 
     dndEnd() {

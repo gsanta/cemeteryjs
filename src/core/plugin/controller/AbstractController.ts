@@ -126,11 +126,11 @@ export class PropContext<T> {
     }
 }
 
-export class AbstractController<P = any> {
+export class AbstractController {
     id: string;
-    private handlers: Map<P | GlobalControllerProps, PropHandler<any>> = new Map();
-    private propControls: Map<P, PropControl<any>> = new Map();
-    private propContexts: Map<P, PropContext<any>> = new Map();
+    private handlers: Map<string, PropHandler<any>> = new Map();
+    private propControls: Map<string, PropControl<any>> = new Map();
+    private propContexts: Map<string, PropContext<any>> = new Map();
 
     protected registry: Registry;
     plugin: UI_Plugin;
@@ -148,72 +148,71 @@ export class AbstractController<P = any> {
             });
     }
 
-    change(prop: P, val: any, element: UI_Element): void {
-        const handler = this.handlers.get(prop);
+    change(val: any, element: UI_Element): void {
+        const handler = this.handlers.get(element.prop);
 
         if (handler) {
             handler.changeHandler(val, handler.context, element, this);
         } else {
-            const context = this.propContexts.get(prop);
-            this.propControls.get(prop)?.change(val, context, element, this);
+            const context = this.propContexts.get(element.prop);
+            this.propControls.get(element.prop)?.change(val, context, element, this);
         }
     }
 
-    click(prop: P, element: UI_Element): void {
-        const handler = this.handlers.get(prop);
+    click(element: UI_Element): void {
+        const handler = this.handlers.get(element.prop);
 
         if (handler) {
             handler.clickHandler(handler.context, element, this);
         } else {
-            const context = this.propContexts.get(prop);
-            this.propControls.get(prop)?.click(context, element, this);
+            const context = this.propContexts.get(element.prop);
+            this.propControls.get(element.prop)?.click(context, element, this);
         }
     }
 
-    focus(prop: P, element: UI_Element): void {
-        const handler = this.handlers.get(prop);
+    focus(element: UI_Element): void {
+        const handler = this.handlers.get(element.prop);
 
         if (handler) {
             handler.focusHandler(handler.context, element, this);
         } else {
-            const context = this.propContexts.get(prop);
-            this.propControls.get(prop)?.focus(context, element, this);
+            const context = this.propContexts.get(element.prop);
+            this.propControls.get(element.prop)?.focus(context, element, this);
         }
     }
-
-    blur(prop: P, element: UI_Element): void {
-        const handler = this.handlers.get(prop);
+    blur(element: UI_Element): void {
+        const handler = this.handlers.get(element.prop);
 
         if (handler) {
             handler.blurHandler(handler.context, element, this);
         } else {
-            const context = this.propContexts.get(prop);
-            this.propControls.get(prop)?.blur(context, element, this);
+            const context = this.propContexts.get(element.prop);
+            this.propControls.get(element.prop)?.blur(context, element, this);
         }
     }
 
-    mouseOver(prop: P, element: UI_Element): void {
-        const handler = this.handlers.get(prop);
+    mouseOver(element: UI_Element): void {
+        const handler = this.handlers.get(element.prop);
         handler.blurHandler(handler.context, element, this);
     }
 
-    mouseOut(prop: P, element: UI_Element): void {
-        const handler = this.handlers.get(prop);
+    mouseOut(element: UI_Element): void {
+        const handler = this.handlers.get(element.prop);
         handler.blurHandler(handler.context, element, this);
     }
 
-    dndStart(prop: P, element: UI_Element, listItem: string): void {
-        const handler = this.handlers.get(prop);
+    dndStart(element: UI_Element, listItem: string): void {
+        const handler = this.handlers.get(element.prop);
         handler.dndStartHandler(listItem, handler.context, element, this);
     }
 
-    dndEnd(prop: P, uiListItem: UI_ListItem): void {
-        const handler = this.handlers.get(prop);
+    dndEnd(uiListItem: UI_ListItem): void {
+        const handler = this.handlers.get(uiListItem.prop);
         handler.dndEndHandler(handler.context, uiListItem, this);
     }
 
-    val(prop: P, element: UI_Element): any {
-        const handler = this.handlers.get(prop);
+    val(element: UI_Element): any {
+        const handler = this.handlers.get(element.prop);
 
         if (handler) {
             if (handler.context.getTempVal() !== undefined) {
@@ -222,34 +221,34 @@ export class AbstractController<P = any> {
                 return handler.getHandler(handler.context, element, this);
             }
         } else {
-            const tmpVal = this.propContexts.get(prop)?.getTempVal();
-            const context = this.propContexts.get(prop);
+            const tmpVal = this.propContexts.get(element.prop)?.getTempVal();
+            const context = this.propContexts.get(element.prop);
 
-            return tmpVal !== undefined ? tmpVal :  this.propControls.get(prop)?.defaultVal(context, element, this);
+            return tmpVal !== undefined ? tmpVal :  this.propControls.get(element.prop)?.defaultVal(context, element, this);
         }
     }
 
-    values(prop: P, element: UI_Element): any[] {
-        const handler = this.handlers.get(prop);
+    values(element: UI_Element): any[] {
+        const handler = this.handlers.get(element.prop);
 
         if (handler) {
             return handler.getValuesHandler(handler.context, element, this);
-        } else if (this.propControls.get(prop)) {
-            const context = this.propContexts.get(prop);
-            return this.propControls.get(prop)?.values(context, element, this);
+        } else if (this.propControls.get(element.prop)) {
+            const context = this.propContexts.get(element.prop);
+            return this.propControls.get(element.prop)?.values(context, element, this);
         }
 
         return [];
     }
 
 
-    createPropHandler<T>(prop: P | GlobalControllerProps) {
+    createPropHandler<T>(prop: string) {
         const propHandler = new PropHandler<T>();
         this.handlers.set(prop, propHandler);
         return propHandler;
     }
 
-    registerPropControl(prop: P, propControl: PropControl<any>) {
+    registerPropControl(prop: string, propControl: PropControl<any>) {
         const context = new PropContext();
         context.registry = this.registry;
         context.plugin = this.plugin;
@@ -257,7 +256,7 @@ export class AbstractController<P = any> {
         this.propControls.set(prop, {...defaultPropControl, ...propControl});
     }
 
-    getPropHandler<T>(prop: P | GlobalControllerProps): PropHandler<T> {
+    getPropHandler<T>(prop: string): PropHandler<T> {
         return this.handlers.get(prop);
     }
 }

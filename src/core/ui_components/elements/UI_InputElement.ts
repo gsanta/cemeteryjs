@@ -8,33 +8,33 @@ export abstract class UI_InputElement extends UI_Element {
 
     change(newVal: any): void {
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.change(this.prop, newVal, this);
+        controller.change(newVal, this);
     }
 
     focus(): void {
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.focus(this.prop, this);
+        controller.focus(this);
     }
 
     blur(): void {
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.blur(this.prop, this);
+        controller.blur(this);
     }
 
     click(): void {
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.click(this.prop, this)
+        controller.click(this)
     }
 
     val(): any {
         // TODO controllerId is deprecated
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        return controller.val(this.prop, this);
+        return controller.val(this);
     }
 
     values(): any[] {
         // TODO controllerId is deprecated
         const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        return controller.values(this.prop, this);
+        return controller.values(this);
     }
 }

@@ -13,7 +13,7 @@ export const MeshNodeFacotry: NodeFactory = {
         return new MeshNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('mesh', MeshControl);
         return controller;

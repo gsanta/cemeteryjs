@@ -14,7 +14,7 @@ export const RouteNodeFacotry: NodeFactory = {
         return new RouteNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('speed', SpeedControl);
         return controller;

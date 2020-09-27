@@ -20,10 +20,8 @@ export enum MeshSettingsProps {
 
 export const MeshSettingsControllerId = 'mesh-settings-controller';
 
-export class MeshSettingsController extends AbstractController<MeshSettingsProps> {
+export class MeshSettingsController extends AbstractController {
     id = MeshSettingsControllerId;
-    // TODO user context instead of tempval
-    tempVal: any;
     meshView: MeshView;
 
     constructor(plugin: ObjectSettingsPlugin,registry: Registry) {

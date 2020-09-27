@@ -18,7 +18,7 @@ export class UI_Dialog extends UI_Layout {
 
     close(): void {
         const controller = this.controller || this.plugin.getControllerById(this.controllerId); 
-        controller.click(GlobalControllerProps.CloseDialog, this);
+        controller.click(this);
         this.plugin.unmounted();
     }
 }

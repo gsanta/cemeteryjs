@@ -15,7 +15,7 @@ export const KeyboardNodeFacotry: NodeFactory = {
         return new KeyboardNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController<any> {
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
         const controller = new AbstractController(plugin, registry);
         controller.registerPropControl('key1', KeyControl);
         return controller;

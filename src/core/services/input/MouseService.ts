@@ -64,7 +64,7 @@ export class MouseService {
         this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
 
         if (this.plugin.dropItem) {
-            this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem.prop, this.plugin.dropItem);
+            this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem);
             this.plugin.dropItem = undefined;
         }
 
@@ -99,22 +99,6 @@ export class MouseService {
     mouseWheelEnd(): void {
         this.registry.services.pointer.pointerWheelEnd();
     }
-
-    hover(item: View) {
-        this.registry.services.pointer.hover(item);
-    }
-
-    unhover(item: View) {
-        this.registry.services.pointer.unhover(item);
-    }
-
-    // dragStart(item: DroppableItem) {
-    //     this.registry.services.pointer.pointerDragStart(item);
-    // }
-
-    // drop() {
-    //     this.registry.services.pointer.pointerDrop();
-    // }
 
     private convertEvent(e: MouseEvent, isPointerDown: boolean, droppedItemId?: string): IPointerEvent {
         return {

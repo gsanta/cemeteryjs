@@ -8,7 +8,7 @@ export enum AssetManagerSidepanelControllerProps {
 }
 
 export const AssetManagerSidepanelControllerId = 'asset_manager_sidepanel_controller'
-export class AssetManagerSidepanelController extends AbstractController<AssetManagerSidepanelControllerProps> {
+export class AssetManagerSidepanelController extends AbstractController {
     id = AssetManagerSidepanelControllerId;
     
     constructor(plugin: UI_Plugin, registry: Registry) {

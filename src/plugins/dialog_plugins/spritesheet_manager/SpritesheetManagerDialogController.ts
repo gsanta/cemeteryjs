@@ -13,7 +13,7 @@ export enum SpritesheetManagerDialogProps {
     AddSpriteSheet = 'AddSpriteSheet'
 }
 
-export class SpritesheetManagerDialogController extends AbstractController<{}> {
+export class SpritesheetManagerDialogController extends AbstractController {
     id = SpritesheetManagerDialogControllerId;
 
     imgPath: string;

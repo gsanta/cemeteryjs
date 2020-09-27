@@ -12,7 +12,7 @@ export enum NodeEditorProps {
 }
 
 export const NodeEditorControllerId = 'node_editor_controller_id';
-export class NodeEditorController extends AbstractController<string> {
+export class NodeEditorController extends AbstractController {
     id = NodeEditorControllerId;
 
     droppableId: string; 

@@ -4,7 +4,6 @@ import { NodeConnectionView, NodeConnectionViewType } from '../../../core/models
 import { NodeView, NodeViewType } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../../core/plugin/AbstractCanvasPlugin';
-import { CanvasControllerProps } from '../../../core/plugin/controller/CanvasController';
 import { JoinTool } from './tools/JoinTool';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
@@ -19,6 +18,7 @@ import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from '.
 import { SelectTool } from '../../../core/plugin/tools/SelectTool';
 import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
+import { CanvasControllerProps } from '../../../core/plugin/Canvas_2d_Plugin';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

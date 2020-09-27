@@ -1,4 +1,4 @@
-import { AbstractController, PropContext } from '../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropContext, PropControl } from '../../../core/plugin/controller/AbstractController';
 import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorControllerId } from "./NodeEditorController";
@@ -11,7 +11,7 @@ export enum NodeEditorSettingsProps {
 }
 
 export const NodeEditorSettingsControllerId = 'node_editor_settings_controller_id';
-export class NodeEditorSettingsController extends AbstractController<string> {
+export class NodeEditorSettingsController extends AbstractController {
     id = NodeEditorControllerId;
 
     droppableId: string; 

@@ -8,7 +8,7 @@ export enum LevelSettingsProps {
     ClearLevel = 'ClearLevel'
 }
 export const LevelSettingsControllerId = 'level-settings-controller';
-export class LevelSettingsController extends AbstractController<LevelSettingsProps> {
+export class LevelSettingsController extends AbstractController {
     
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);
