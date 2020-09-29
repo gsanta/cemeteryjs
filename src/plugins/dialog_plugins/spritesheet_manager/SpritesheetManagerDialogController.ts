@@ -1,4 +1,4 @@
-import { AbstractController, PropControl } from '../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropController } from '../../../core/plugin/controller/AbstractController';
 import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
@@ -29,7 +29,7 @@ export class SpritesheetManagerDialogController extends AbstractController {
     }
 }
 
-const SpriteSheetJsonPathControl: PropControl<{data: string, path: string}> = {
+const SpriteSheetJsonPathControl: PropController<{data: string, path: string}> = {
     change(val: {data: string, path: string}, context, element, controller: SpritesheetManagerDialogController) {
         const json = atob(val.data.split(',')[1]);
         controller.jsonData = json;
@@ -38,7 +38,7 @@ const SpriteSheetJsonPathControl: PropControl<{data: string, path: string}> = {
     },
 }
 
-const SpriteSheetImgPathControl: PropControl<string> = {
+const SpriteSheetImgPathControl: PropController<string> = {
     defaultVal(context, element, controller: SpritesheetManagerDialogController) {
         return controller.imgPath;
     },
@@ -57,7 +57,7 @@ const SpriteSheetImgPathControl: PropControl<string> = {
     }
 }
 
-const AddSpriteSheet: PropControl<string> = {
+const AddSpriteSheet: PropController<string> = {
     click(context, element, controller: SpritesheetManagerDialogController) {
         const spriteSheetObj = new SpriteSheetObj();
 

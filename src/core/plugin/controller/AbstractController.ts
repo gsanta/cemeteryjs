@@ -83,16 +83,23 @@ export class PropHandler<T> {
     }
 }
 
-export interface PropControl<T> {
-    change?(val: T, context: PropContext<any>, element: UI_Element, controller: AbstractController);
-    click?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
-    focus?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
-    blur?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
-    defaultVal?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
-    values?(context: PropContext<T>, element: UI_Element, controller: AbstractController);
+export abstract class PropController<T = any> {
+    prop?: string;
+
+    // TODO: when all uses of PropControl as an interface is eliminated, make prop mandatory
+    constructor(prop?: string) {
+        this.prop = prop;
+    }
+
+    change?(val: T, context: PropContext<any>, element: UI_Element, controller: AbstractController) {}
+    click?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
+    focus?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
+    blur?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
+    defaultVal?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
+    values?(context: PropContext<T>, element: UI_Element, controller: AbstractController): T[] { return []; }
 }
 
-const defaultPropControl: PropControl<any> = {
+const defaultPropControl: PropController<any> = {
     change(val: any, context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
     click(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
     focus(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
@@ -105,6 +112,7 @@ export class PropContext<T> {
     element: UI_Element;
     registry: Registry;
     plugin: UI_Plugin;
+    controller: AbstractController;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -127,17 +135,18 @@ export class PropContext<T> {
 }
 
 export class AbstractController {
-    id: string;
+    readonly id: string;
     private handlers: Map<string, PropHandler<any>> = new Map();
-    private propControls: Map<string, PropControl<any>> = new Map();
+    private propControls: Map<string, PropController<any>> = new Map();
     private propContexts: Map<string, PropContext<any>> = new Map();
 
     protected registry: Registry;
     plugin: UI_Plugin;
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry, id?: string, propControls?: PropController<any>[]) {
         this.plugin = plugin;
         this.registry = registry;
+        this.id = id;
 
         this.createPropHandler(GlobalControllerProps.CloseDialog)
             .onClick(() => {
@@ -146,6 +155,12 @@ export class AbstractController {
 
                 Array.from(this.handlers).forEach((val => val[1].context.clearTempVal()));
             });
+
+        if (propControls) {
+            propControls.forEach(propControl => {
+                this.registerPropControlNew(propControl);
+            });
+        }
     }
 
     change(val: any, element: UI_Element): void {
@@ -248,12 +263,27 @@ export class AbstractController {
         return propHandler;
     }
 
-    registerPropControl(prop: string, propControl: PropControl<any>) {
+    registerPropControl(prop: string, propControl: PropController<any>) {
         const context = new PropContext();
+        context.controller = this;
         context.registry = this.registry;
         context.plugin = this.plugin;
         this.propContexts.set(prop, context);
         this.propControls.set(prop, {...defaultPropControl, ...propControl});
+    }
+
+    // TODO: it should replace registerPropControl when all off the PropControls will contain the `prop`
+    registerPropControlNew(propControl: PropController<any>) {
+        const context = new PropContext();
+        context.controller = this;
+        context.registry = this.registry;
+        context.plugin = this.plugin;
+        this.propContexts.set(propControl.prop, context);
+        this.propControls.set(propControl.prop, propControl);
+    }
+
+    getPropContext<T>(prop: string): PropContext<T> {
+        return this.propContexts.get(prop);
     }
 
     getPropHandler<T>(prop: string): PropHandler<T> {

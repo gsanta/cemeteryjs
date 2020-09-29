@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
-import { AbstractController, PropControl } from "../../../../core/plugin/controller/AbstractController";
+import { AbstractController, PropController } from "../../../../core/plugin/controller/AbstractController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
@@ -44,7 +44,7 @@ export class PathNodeObj extends NodeObj {
     ];
 }
 
-const PathControl: PropControl<string> = {
+const PathControl: PropController<string> = {
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(PathViewType).map(pathView => pathView.id);
     },

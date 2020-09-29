@@ -1,4 +1,4 @@
-import { AbstractController, PropControl } from "../../../core/plugin/controller/AbstractController";
+import { AbstractController, PropController } from "../../../core/plugin/controller/AbstractController";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { GameViewerController } from "../game_viewer/GameViewerController";
@@ -25,13 +25,13 @@ export class NodeEditorController extends AbstractController {
     }
 }
 
-const ZoomInControl: PropControl<any> = {
+const ZoomInControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
         (controller.plugin.toolHandler.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
-const ZoomOutControl: PropControl<any> = {
+const ZoomOutControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
         (controller.plugin.toolHandler.getById(ToolType.Camera) as CameraTool).zoomOut();
     }

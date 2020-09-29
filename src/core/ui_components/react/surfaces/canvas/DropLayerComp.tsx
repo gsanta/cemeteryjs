@@ -24,7 +24,7 @@ export const DropLayerComp = (props: UI_ComponentProps<UI_DropLayer>) => {
 
         },
         drop: (item, monitor) => {
-            props.element.dndEnd(new Point(monitor.getClientOffset().x, monitor.getClientOffset().y));
+            props.element.dndEnd(props.registry, new Point(monitor.getClientOffset().x, monitor.getClientOffset().y));
         }, 
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),

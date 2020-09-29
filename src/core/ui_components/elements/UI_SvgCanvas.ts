@@ -4,6 +4,7 @@ import { UI_Toolbar } from './toolbar/UI_Toolbar';
 import { UI_Factory } from '../UI_Factory';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
+import { Registry } from '../../Registry';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
@@ -13,21 +14,21 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     width: string;
     height: string;
 
-    mouseOver(e: MouseEvent) {
+    mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
         (this.plugin as AbstractCanvasPlugin).over()
     }
 
-    mouseOut(e: MouseEvent) {
+    mouseOut(registry: Registry, e: MouseEvent) {
         // super.mouseOut(e);
         // (this.plugin as AbstractCanvasPlugin).out()
     }
 
-    mouseEnter(e: MouseEvent) {
+    mouseEnter(registry: Registry, e: MouseEvent) {
         (this.plugin as AbstractCanvasPlugin).over()
     }
 
-    mouseLeave(e: MouseEvent) {
+    mouseLeave(registry: Registry, e: MouseEvent) {
         (this.plugin as AbstractCanvasPlugin).out()
     }
 

@@ -3,6 +3,7 @@ import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { AbstractController } from '../../plugin/controller/AbstractController';
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { Registry } from '../../Registry';
 
 export const activeToolId = '__activeTool__'
 
@@ -41,7 +42,7 @@ export abstract class UI_Element {
         this.id = `${parent.id}_${this.elementType}-${this.prop ? this.prop : this.key}`;
     }
 
-    mouseOver(e: MouseEvent) {
+    mouseOver(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).over()
         } else {
@@ -49,42 +50,42 @@ export abstract class UI_Element {
         }
     }
 
-    mouseOut(e: MouseEvent) {
+    mouseOut(registry: Registry, e: MouseEvent) {
         if (this.controllerId !== activeToolId)
             this.plugin.getControllerById(this.controllerId).mouseOut(this);
     }
 
-    mouseDown(e: MouseEvent) {
+    mouseDown(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).mouse.mouseDown(e);
         }
     }
 
-    mouseMove(e: MouseEvent) {
+    mouseMove(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).mouse.mouseMove(e);
         }
     }
 
-    mouseUp(e: MouseEvent) {
+    mouseUp(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).mouse.mouseUp(e);
         }
     }
 
-    mouseLeave(e: MouseEvent, data?: any) {
+    mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).mouse.mouseLeave(e, data);
         }
     }
 
-    mouseEnter(e: MouseEvent, data?: any) {
+    mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).mouse.mouseEnter(e, data);
         }
     }
 
-    mouseWheel(e: WheelEvent) {
+    mouseWheel(registry: Registry, e: WheelEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).mouse.mouseWheel(e);
         }
@@ -96,19 +97,19 @@ export abstract class UI_Element {
         }
     }
 
-    keyDown(e: KeyboardEvent) {
+    keyDown(registry: Registry, e: KeyboardEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).keyboard.onKeyDown(e);
         }
     }
 
-    keyUp(e: KeyboardEvent) {
+    keyUp(registry: Registry, e: KeyboardEvent) {
         if (this.controllerId === activeToolId) {
             (this.plugin as AbstractCanvasPlugin).keyboard.onKeyUp(e);
         }
     }
 
-    dndEnd(point: Point) {
+    dndEnd(registry: Registry, point: Point) {
         (this.plugin as AbstractCanvasPlugin).mouse.dndDrop(point);
         // this.plugin.getControllerById(this.controllerId).d/ndEnd(this.prop);
     }

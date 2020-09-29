@@ -4,6 +4,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { colors } from '../styles';
 import { UI_Button } from '../../elements/UI_Button';
+import { UI_ComponentProps } from '../UI_ComponentProps';
 
 /* cursor: ${(props: Button_UI_Props) => props.disabled ? 'default' : 'pointer'};
 opacity: ${(props: Button_UI_Props) => props.disabled ? '0.4' : '1'}; */
@@ -22,16 +23,12 @@ export const ButtonStyled = styled.a`
     cursor: pointer;
 `;
 
-export interface Button_UI_Props {
-    element: UI_Button;
-}
-
-export const ButtonComp = (props: Button_UI_Props) => {
+export const ButtonComp = (props: UI_ComponentProps<UI_Button>) => {
     const style: React.CSSProperties = {}
     props.element.width && (style.width = props.element.width);
     
     return (
-        <ButtonStyled className="ce-button" style={style} {...props} onClick={() => props.element.click()}>
+        <ButtonStyled className="ce-button" style={style} {...props} onClick={() => props.element.click(props.registry)}>
             {props.element.label}
             
             {/* <div className="button-label" style={{width: props.element.width ? props.element.width : 'auto'}}>

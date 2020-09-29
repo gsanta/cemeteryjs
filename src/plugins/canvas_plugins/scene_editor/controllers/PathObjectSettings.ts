@@ -1,5 +1,5 @@
 import { PathView } from '../../../../core/models/views/PathView';
-import { PropControl } from '../../../../core/plugin/controller/AbstractController';
+import { PropController } from '../../../../core/plugin/controller/AbstractController';
 import { UI_Region } from '../../../../core/plugin/UI_Plugin';
 
 export enum PathSettingsProps {
@@ -8,7 +8,7 @@ export enum PathSettingsProps {
 
 export const PathSettingsControllerId = 'path-settings-controller';
 
-export const PathIdControl: PropControl<any> = {
+export const PathIdControl: PropController<any> = {
     change(val, context) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);

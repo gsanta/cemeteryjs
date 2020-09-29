@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { AbstractController, PropControl } from "../../../../core/plugin/controller/AbstractController";
+import { AbstractController, PropController } from "../../../../core/plugin/controller/AbstractController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
@@ -75,7 +75,7 @@ export class AnimationNodeObj extends NodeObj {
     }
 }
 
-const MeshControl: PropControl<string> = {
+const MeshControl: PropController<string> = {
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id);
     },
@@ -93,7 +93,7 @@ const MeshControl: PropControl<string> = {
     }
 }
 
-const StartFrameControl: PropControl<string> = {
+const StartFrameControl: PropController<string> = {
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('startFrame').val;
@@ -117,7 +117,7 @@ const StartFrameControl: PropControl<string> = {
     }
 }
 
-const EndFrameControl: PropControl<string> = {
+const EndFrameControl: PropController<string> = {
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('endFrame').val;

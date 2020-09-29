@@ -1,5 +1,5 @@
 import { Registry } from '../../../core/Registry';
-import { AbstractController, PropControl } from '../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropController } from '../../../core/plugin/controller/AbstractController';
 import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
 
 export enum LayoutSettingsProps {
@@ -16,7 +16,7 @@ export class LayoutSettingsController extends AbstractController {
     }
 }
 
-const LayoutControl: PropControl<string> = {
+const LayoutControl: PropController<string> = {
     defaultVal(context) {
         return context.registry.services.uiPerspective.activePerspective ? context.registry.services.uiPerspective.activePerspective.name : '';
     },

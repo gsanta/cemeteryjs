@@ -8,9 +8,9 @@ export const SvgCircleComp = (props: UI_ComponentProps<UI_SvgCircle>) => {
 
     if (props.element.isInteractive) {
         eventHandlers = {
-            onMouseEnter: e => props.element.mouseEnter(e.nativeEvent, props.element.data),
+            onMouseEnter: e => props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data),
             onMouseLeave: e => {
-                props.element.mouseLeave(e.nativeEvent, props.element.data)
+                props.element.mouseLeave(props.registry, e.nativeEvent, props.element.data)
             },
         }
     }

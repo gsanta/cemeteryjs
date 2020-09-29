@@ -1,5 +1,5 @@
 import { SpriteView } from '../../../../core/models/views/SpriteView';
-import { AbstractController, PropControl } from '../../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropController } from '../../../../core/plugin/controller/AbstractController';
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
@@ -30,7 +30,7 @@ export class SpriteSettingsController extends AbstractController {
     }
 }
 
-const FrameName: PropControl<string> = {
+const FrameName: PropController<string> = {
     defaultVal(context) {
         return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().frameName || '';
     },
@@ -49,7 +49,7 @@ const FrameName: PropControl<string> = {
     }
 }
 
-const SelectSpriteSheet: PropControl<string> = {
+const SelectSpriteSheet: PropController<string> = {
     defaultVal(context) {
         return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().spriteSheetId;
     },
@@ -67,14 +67,14 @@ const SelectSpriteSheet: PropControl<string> = {
     }
 }
 
-const ManageSpriteSheets: PropControl<string> = {
+const ManageSpriteSheets: PropController<string> = {
     click(context) {
-        context.registry.plugins.activatePlugin(SpriteSheetManagerDialogPluginId);
+        context.registry.plugins.showPlugin(SpriteSheetManagerDialogPluginId);
         context.registry.services.render.reRenderAll();
     }
 }
 
-const ScaleX: PropControl<string> = {
+const ScaleX: PropController<string> = {
     defaultVal(context, element, controller: SpriteSettingsController) {
         return controller.spriteView.getObj().getScale().x;
     },
@@ -100,7 +100,7 @@ const ScaleX: PropControl<string> = {
 }
 
 
-const ScaleY: PropControl<string> = {
+const ScaleY: PropController<string> = {
     defaultVal(context, element, controller: SpriteSettingsController) {
         return controller.spriteView.getObj().getScale().y;
     },

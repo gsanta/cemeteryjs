@@ -1,4 +1,4 @@
-import { PropControl, AbstractController } from "../../../core/plugin/controller/AbstractController";
+import { PropController, AbstractController } from "../../../core/plugin/controller/AbstractController";
 import { GameViewerPlugin } from "./GameViewerPlugin";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
@@ -26,26 +26,26 @@ export class GameViewerController extends AbstractController {
     }
 }
 
-const ZoomInControl: PropControl<any> = {
+const ZoomInControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
         (controller.plugin.toolHandler.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
-const ZoomOutControl: PropControl<any> = {
+const ZoomOutControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
         (controller.plugin.toolHandler.getById(ToolType.Camera) as CameraTool).zoomOut();
     }
 }
 
-const PlayControl: PropControl<any> = {
+const PlayControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
         (<GameViewerPlugin> context.plugin).isPlaying = true;
         context.registry.services.render.reRender(context.plugin.region);
     }
 }
 
-const StopControl: PropControl<any> = {
+const StopControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
         (<GameViewerPlugin> context.plugin).isPlaying = false;
         context.registry.services.render.reRender(context.plugin.region);

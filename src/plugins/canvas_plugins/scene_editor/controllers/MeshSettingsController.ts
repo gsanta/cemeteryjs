@@ -1,7 +1,7 @@
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { MeshView } from '../../../../core/models/views/MeshView';
 import { Registry } from '../../../../core/Registry';
-import { AbstractController, PropControl } from '../../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropController } from '../../../../core/plugin/controller/AbstractController';
 import { ThumbnailDialogPluginId } from '../ThumbnailDialogPlugin';
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
@@ -39,7 +39,7 @@ export class MeshSettingsController extends AbstractController {
     }
 }
 
-const IdControl: PropControl<string> = {
+const IdControl: PropController<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         return (<MeshView> context.registry.stores.viewStore.getOneSelectedView()).id;
     },
@@ -56,7 +56,7 @@ const IdControl: PropControl<string> = {
     }    
 }
 
-const LayerControl: PropControl<number> = {
+const LayerControl: PropController<number> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         return controller.meshView.layer;
     },
@@ -67,7 +67,7 @@ const LayerControl: PropControl<number> = {
     }
 }
 
-const RotationControl: PropControl<string> = {
+const RotationControl: PropController<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         return Math.round(toDegree(controller.meshView.getRotation())).toString();
     },
@@ -90,7 +90,7 @@ const RotationControl: PropControl<string> = {
 }
 
 
-const ScaleControl: PropControl<string> = {
+const ScaleControl: PropController<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         return controller.meshView.getScale();
     },
@@ -112,7 +112,7 @@ const ScaleControl: PropControl<string> = {
     }
 }
 
-const YPosControl: PropControl<string> = {
+const YPosControl: PropController<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         return controller.meshView.yPos.toString();
     },
@@ -135,7 +135,7 @@ const YPosControl: PropControl<string> = {
     }
 }
 
-const TextureControl: PropControl<string> = {
+const TextureControl: PropController<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         if (controller.meshView.getObj().textureId) {
             const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.getObj().textureId);
@@ -163,13 +163,13 @@ const TextureControl: PropControl<string> = {
     }
 }
 
-const ThumbnailControl: PropControl<any> = {
+const ThumbnailControl: PropController<any> = {
     click(context) {
-        context.registry.plugins.activatePlugin(ThumbnailDialogPluginId);
+        context.registry.plugins.showPlugin(ThumbnailDialogPluginId);
     }
 }
 
-const ModelControl: PropControl<string> = {
+const ModelControl: PropController<string> = {
     defaultVal(context, element, controller: MeshSettingsController) {
         if (controller.meshView.getObj().modelId) {
             const assetObj = context.registry.stores.assetStore.getAssetById(controller.meshView.getObj().modelId);

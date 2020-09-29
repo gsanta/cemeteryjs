@@ -2,7 +2,7 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeCategory, NodeObj, NodeParam } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { AbstractController, PropControl } from "../../../../../core/plugin/controller/AbstractController";
+import { AbstractController, PropController } from "../../../../../core/plugin/controller/AbstractController";
 import { UI_Plugin, UI_Region } from "../../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../../core/Registry";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
@@ -78,7 +78,7 @@ export class RouteNodeObj extends NodeObj {
     }
 }
 
-const SpeedControl: PropControl<string> = {
+const SpeedControl: PropController<string> = {
     defaultVal(context, element) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('speed').val;

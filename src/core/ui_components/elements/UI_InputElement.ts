@@ -1,3 +1,5 @@
+import { AbstractController } from "../../plugin/controller/AbstractController";
+import { Registry } from "../../Registry";
 import { UI_Element } from "./UI_Element";
 
 export abstract class UI_InputElement extends UI_Element {
@@ -21,9 +23,14 @@ export abstract class UI_InputElement extends UI_Element {
         controller.blur(this);
     }
 
-    click(): void {
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.click(this)
+    click(registry: Registry): void {
+        let controller: AbstractController = registry.plugins.getController(this.plugin.id, this.controllerId);
+        if (controller) {
+            controller.click(this);
+        } else {
+            controller = this.controller || this.plugin.getControllerById(this.controllerId);
+            controller.click(this)
+        }
     }
 
     val(): any {

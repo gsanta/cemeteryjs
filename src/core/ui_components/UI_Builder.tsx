@@ -63,7 +63,6 @@ import { UI_Icon } from './elements/UI_Icon';
 import { IconComp } from './react/text/IconComp';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
-import { drop } from 'lodash';
 import { SvgTextComp } from './react/svg/SvgTextComp';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { SvgLineComp } from './react/svg/SvgLineComp';
@@ -97,10 +96,10 @@ export class UI_Builder {
                 return <RowComp key={row.id} element={row}>{this.buildChildren(element, plugin)}</RowComp>;
             case UI_ElementType.Column:
                 const column = element as UI_Column;
-                return <ColumnComp key={column.id} element={column}>{this.buildChildren(element, plugin)}</ColumnComp>;
+                return <ColumnComp registry={this.registry} key={column.id} element={column}>{this.buildChildren(element, plugin)}</ColumnComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
-                return <AccordionTabComp key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
+                return <AccordionTabComp registry={this.registry} key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
             case UI_ElementType.Table:
                 const table = element as UI_Table;
                 return <TableComp element={table}>{this.buildChildren(element, plugin)}</TableComp>;
@@ -112,18 +111,18 @@ export class UI_Builder {
                 return <TableColumnComp element={tableColumn}>{this.buildChildren(element, plugin)}</TableColumnComp>;
             case UI_ElementType.SvgGroup:
                 const group = element as UI_SvgGroup;
-                return <SvgGroupComp element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
+                return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
             case UI_ElementType.SvgCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, plugin);
             case UI_ElementType.Box:
                 const box = element as UI_Box;
-                return <BoxComp element={box}>{this.buildChildren(element, plugin)}</BoxComp>;
+                return <BoxComp registry={this.registry} element={box}>{this.buildChildren(element, plugin)}</BoxComp>;
             case UI_ElementType.Dialog:
                 const dialog = element as UI_Dialog;
-                return <DialogComp element={dialog}>{this.buildChildren(element, plugin)}</DialogComp>;
+                return <DialogComp registry={this.registry} element={dialog}>{this.buildChildren(element, plugin)}</DialogComp>;
             case UI_ElementType.SvgForeignObject:
                 const foreignObject = element as UI_SvgForeignObject;
-                return <ForeignObjectComp element={foreignObject}>{this.buildChildren(element, plugin)}</ForeignObjectComp>;
+                return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element, plugin)}</ForeignObjectComp>;
         }
     }
 
@@ -155,7 +154,7 @@ export class UI_Builder {
             children = this.buildChildren(canvas as UI_SvgCanvas, plugin);
         }
 
-        return <CanvasComp toolbar={toolbar} dropLayer={dropLayer} element={canvas}>{children}</CanvasComp>;
+        return <CanvasComp registry={this.registry} toolbar={toolbar} dropLayer={dropLayer} element={canvas}>{children}</CanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {
@@ -178,68 +177,68 @@ export class UI_Builder {
             }
         });
 
-        return <ToolbarComp toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
+        return <ToolbarComp registry={this.registry} toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
     }
 
     private buildTool(uiTool: UI_Tool) {
         const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip) : null;
 
-        return <ToolComp key={uiTool.id} tooltip={tooltip} element={uiTool}/>; 
+        return <ToolComp registry={this.registry} key={uiTool.id} tooltip={tooltip} element={uiTool}/>; 
     }
 
     private buildActionIcon(uiActionIcon: UI_ActionIcon) {
         const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip) : null;
 
-        return <ActionIconComp key={uiActionIcon.id} tooltip={tooltip} element={uiActionIcon}/>; 
+        return <ActionIconComp registry={this.registry} key={uiActionIcon.id} tooltip={tooltip} element={uiActionIcon}/>; 
     }
 
     private buildIcon(uiIcon: UI_Icon) {
         const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip) : null;
 
-        return <IconComp key={uiIcon.id} tooltip={tooltip} element={uiIcon}/>; 
+        return <IconComp registry={this.registry} key={uiIcon.id} tooltip={tooltip} element={uiIcon}/>; 
     }
 
     private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
                 const text = element as UI_Text;
-                return <TextComp element={text}/>;
+                return <TextComp registry={this.registry} element={text}/>;
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
-                return <TextFieldComp element={textField}/>;
+                return <TextFieldComp registry={this.registry} element={textField}/>;
             case UI_ElementType.Button:
                 const button = element as UI_Button;
-                return <ButtonComp element={button}/>;
+                return <ButtonComp registry={this.registry} element={button}/>;
             case UI_ElementType.Select:
                 const select = element as UI_Select;
-                return <SelectComp element={select}/>;
+                return <SelectComp registry={this.registry} element={select}/>;
             case UI_ElementType.FileUpload:
                 const fileUpload = element as UI_FileUpload;
-                return <FileUploadComp element={fileUpload}/>;
+                return <FileUploadComp registry={this.registry} element={fileUpload}/>;
             case UI_ElementType.GridSelect:
                 const gridSelect = element as UI_GridSelect;
-                return <GridSelectComp element={gridSelect}/>
+                return <GridSelectComp registry={this.registry} element={gridSelect}/>
             case UI_ElementType.SvgRect:
                 const rect = element as UI_SvgRect;
-                return <SvgRectComp element={rect}/>;
+                return <SvgRectComp registry={this.registry} element={rect}/>;
             case UI_ElementType.SvgCircle:
                 const circle = element as UI_SvgCircle;
-                return <SvgCircleComp element={circle}/>;
+                return <SvgCircleComp registry={this.registry} element={circle}/>;
             case UI_ElementType.SvgLine:
                 const line = element as UI_SvgLine;
-                return <SvgLineComp element={line}/>;
+                return <SvgLineComp registry={this.registry} element={line}/>;
             case UI_ElementType.SvgImage:
                 const svgImage = element as UI_SvgImage;
-                return <SvgImageComp element={svgImage}/>; 
+                return <SvgImageComp registry={this.registry} element={svgImage}/>; 
             case UI_ElementType.SvgPath:
                 const path = element as UI_SvgPath
-                return <SvgPathComp element={path}/>;
+                return <SvgPathComp registry={this.registry} element={path}/>;
             case UI_ElementType.SvgPolygon:
                 const polygon = element as UI_SvgPolygon;
-                return <SvgPolygonComp element={polygon}/>; 
+                return <SvgPolygonComp registry={this.registry} element={polygon}/>; 
             case UI_ElementType.SvgText:
                 const svgText = element as UI_SvgText;
-                return <SvgTextComp element={svgText}/>;
+                return <SvgTextComp registry={this.registry} element={svgText}/>;
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);
@@ -251,28 +250,27 @@ export class UI_Builder {
                 return this.buildActionIcon(actionIcon);
             case UI_ElementType.IconSeparator:
                 const iconSeparator = element as UI_ActionIcon;
-                return <IconSeparatorComp element={iconSeparator}/>;
+                return <IconSeparatorComp registry={this.registry} element={iconSeparator}/>;
             case UI_ElementType.Tooltip:
                 const tooltip = element as UI_Tooltip;
-                return <TooltipComp element={tooltip}/>;
+                return <TooltipComp registry={this.registry} element={tooltip}/>;
             case UI_ElementType.ListItem:
                 const listItem = element as UI_ListItem;
-                return <ListItemComp element={listItem}/>;
+                return <ListItemComp registry={this.registry} element={listItem}/>;
             case UI_ElementType.HtmlCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, element.plugin);
             case UI_ElementType.Image:
                 const image = element as UI_Image;
-                return <ImageComp element={image}/>;
+                return <ImageComp registry={this.registry} element={image}/>;
             case UI_ElementType.Icon:
                 const icon = element as UI_Icon;
                 return this.buildIcon(icon);
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
-                return <TableRowGroupComp element={tableRowGroup}></TableRowGroupComp>;
+                return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;
             case UI_ElementType.DropLayer:
                 const dropLayer = element as UI_DropLayer;
-                return <DropLayerComp element={dropLayer}></DropLayerComp>;
-            
+                return <DropLayerComp registry={this.registry} element={dropLayer}></DropLayerComp>;
         }
     }
 }   

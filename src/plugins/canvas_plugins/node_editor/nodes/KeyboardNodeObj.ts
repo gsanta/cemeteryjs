@@ -1,6 +1,6 @@
 import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { AbstractController, PropControl } from "../../../../core/plugin/controller/AbstractController";
+import { AbstractController, PropController } from "../../../../core/plugin/controller/AbstractController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
@@ -66,7 +66,7 @@ export class KeyboardNodeObj extends NodeObj {
     }
 }
 
-const KeyControl: PropControl<string> = {
+const KeyControl: PropController<string> = {
     values() {
         return getAllKeys();
     },
@@ -81,7 +81,7 @@ const KeyControl: PropControl<string> = {
         nodeView.getObj().setParam(element.prop, val);
         context.registry.services.history.createSnapshot();
 
-        nodeView.getObj().addParam(        {
+        nodeView.getObj().addParam({
             name: 'key2',
             val: '',
             inputType: 'list',

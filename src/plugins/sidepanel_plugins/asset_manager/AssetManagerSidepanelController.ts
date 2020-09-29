@@ -16,7 +16,7 @@ export class AssetManagerSidepanelController extends AbstractController {
 
         this.createPropHandler<number>(AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen)
             .onClick((val) => {
-                this.registry.plugins.activatePlugin(AssetManagerDialogPluginId);
+                this.registry.plugins.showPlugin(AssetManagerDialogPluginId);
             });
     }
 }

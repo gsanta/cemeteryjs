@@ -4,6 +4,7 @@ import { UI_Factory } from '../UI_Factory';
 import { UI_Element } from './UI_Element';
 import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
 import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
+import { Registry } from "../../Registry";
 
 
 export class UI_HtmlCanvas extends UI_Element {
@@ -14,21 +15,21 @@ export class UI_HtmlCanvas extends UI_Element {
     width: string;
     height: string;
 
-    mouseOver(e: MouseEvent) {
+    mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
         (this.plugin as AbstractCanvasPlugin).over()
     }
 
-    mouseOut(e: MouseEvent) {
+    mouseOut(registry: Registry, e: MouseEvent) {
         // super.mouseOut(e);
         // (this.plugin as AbstractCanvasPlugin).out()
     }
 
-    mouseEnter(e: MouseEvent) {
+    mouseEnter(registry: Registry, e: MouseEvent) {
         (this.plugin as AbstractCanvasPlugin).over()
     }
 
-    mouseLeave() {
+    mouseLeave(registry: Registry) {
         (this.plugin as AbstractCanvasPlugin).out()
     }
 

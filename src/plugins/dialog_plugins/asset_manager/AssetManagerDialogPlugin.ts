@@ -1,10 +1,10 @@
+import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { UI_Plugin, UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_Table } from '../../../core/ui_components/elements/UI_Table';
-import { AssetType, AssetObj } from '../../../core/models/objs/AssetObj';
-import { Registry } from '../../../core/Registry';
-import { AssetManagerDialogControllerId, AssetManagerDialogController, AssetManagerDialogProps } from './AssetManagerDialogController';
-import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
+import { AssetManagerControllerId } from './AssetManagerPluginFactory';
+import { AssetManagerDialogProps } from './AssetManagerProps';
 
 export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
 export class AssetManagerDialogPlugin extends UI_Plugin {
@@ -14,16 +14,8 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
 
     editedAsset: AssetObj;
 
-    constructor(registry: Registry) {
-        super(registry);
-
-        
-        this.controllers.set(AssetManagerDialogControllerId, new AssetManagerDialogController(this, registry));
-    }
-
-
     renderInto(layout: UI_Dialog): UI_Layout {
-        layout.controllerId = AssetManagerDialogControllerId;
+        layout.controllerId = AssetManagerControllerId;
         layout.width = '530px';
         // layout.controllerId = AssetManagere;
 

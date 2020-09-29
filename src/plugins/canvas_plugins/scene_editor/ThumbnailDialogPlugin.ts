@@ -9,7 +9,7 @@ import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dial
 import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
 import { Tools } from 'babylonjs';
-import { AbstractController, PropControl } from '../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropController } from '../../../core/plugin/controller/AbstractController';
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailCreate = 'ThumbnailFromModel',
@@ -114,7 +114,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     }
 }
 
-const ThumbnailCreateControl: PropControl<any> = {
+const ThumbnailCreateControl: PropController<any> = {
     async click(context) {
         const engine = (<ThumbnailDialogPlugin> context.plugin).engine;
         const meshView = this.registry.stores.viewStore.getOneSelectedView() as MeshView;
@@ -127,7 +127,7 @@ const ThumbnailCreateControl: PropControl<any> = {
     }
 }
 
-const ThumbnailUploadControl: PropControl<any> = {
+const ThumbnailUploadControl: PropController<any> = {
     change(val, context) {
         const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
                 
@@ -137,7 +137,7 @@ const ThumbnailUploadControl: PropControl<any> = {
     }
 }
 
-const ClearThumbnailControl: PropControl<any> = {
+const ClearThumbnailControl: PropController<any> = {
     change(val, context) {
         const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
  

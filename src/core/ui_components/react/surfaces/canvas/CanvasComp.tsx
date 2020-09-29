@@ -33,7 +33,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     componentDidMount() {
         this.wheelListener = new WheelListener(
             this.context.registry,
-            (e: WheelEvent) => this.props.element.mouseWheel(e),
+            (e: WheelEvent) => this.props.element.mouseWheel(this.props.registry, e),
             () => this.props.element.mouseWheelEnd()
         );
 
@@ -75,15 +75,15 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 tabIndex={0}
                 viewBox={((this.props.element.plugin as AbstractCanvasPlugin).getCamera() as Camera2D).getViewBoxAsString()}
                 id={this.context.controllers.svgCanvasId}
-                onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
-                onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}                
-                onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
-                onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
-                onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
-                onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}
-                onKeyUp={e => this.props.element.keyUp(e.nativeEvent)}
-                onMouseOver={(e) => this.props.element.mouseOver(e.nativeEvent)}
-                onMouseOut={(e) => this.props.element.mouseOut(e.nativeEvent)}
+                onMouseDown={(e) => this.props.element.mouseDown(this.props.registry, e.nativeEvent)}
+                onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}                
+                onMouseUp={(e) => this.props.element.mouseUp(this.props.registry, e.nativeEvent)}
+                onMouseLeave={(e) => this.props.element.mouseLeave(this.props.registry, e.nativeEvent)}
+                onMouseEnter={(e) => this.props.element.mouseEnter(this.props.registry, e.nativeEvent)}
+                onKeyDown={e => this.props.element.keyDown(this.props.registry, e.nativeEvent)}
+                onKeyUp={e => this.props.element.keyUp(this.props.registry, e.nativeEvent)}
+                onMouseOver={(e) => this.props.element.mouseOver(this.props.registry, e.nativeEvent)}
+                onMouseOut={(e) => this.props.element.mouseOut(this.props.registry, e.nativeEvent)}
                 onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
             >
                 <defs>
@@ -108,16 +108,16 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                         backgroundColor: 'transparent'
                     }}
                     tabIndex={0}
-                    onMouseDown={(e) => this.props.element.mouseDown(e.nativeEvent)}
-                    onMouseMove={(e) => this.props.element.mouseMove(e.nativeEvent)}
-                    onMouseUp={(e) => this.props.element.mouseUp(e.nativeEvent)}
-                    onMouseLeave={(e) => this.props.element.mouseLeave(e.nativeEvent)}
-                    onMouseEnter={(e) => this.props.element.mouseEnter(e.nativeEvent)}
+                    onMouseDown={(e) => this.props.element.mouseDown(this.props.registry, e.nativeEvent)}
+                    onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}
+                    onMouseUp={(e) => this.props.element.mouseUp(this.props.registry, e.nativeEvent)}
+                    onMouseLeave={(e) => this.props.element.mouseLeave(this.props.registry, e.nativeEvent)}
+                    onMouseEnter={(e) => this.props.element.mouseEnter(this.props.registry, e.nativeEvent)}
                     onWheel={(e) => this.wheelListener.onWheel(e.nativeEvent)}
-                    onKeyDown={e => this.props.element.keyDown(e.nativeEvent)}
-                    onKeyUp={e => this.props.element.keyUp(e.nativeEvent)}
-                    onMouseOver={(e) => this.props.element.mouseOver(e.nativeEvent)}
-                    onMouseOut={(e) => this.props.element.mouseOut(e.nativeEvent)}
+                    onKeyDown={e => this.props.element.keyDown(this.props.registry, e.nativeEvent)}
+                    onKeyUp={e => this.props.element.keyUp(this.props.registry, e.nativeEvent)}
+                    onMouseOver={(e) => this.props.element.mouseOver(this.props.registry, e.nativeEvent)}
+                    onMouseOut={(e) => this.props.element.mouseOut(this.props.registry, e.nativeEvent)}
                 />
                 <canvas
                     style={{

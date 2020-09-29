@@ -1,4 +1,4 @@
-import { AbstractController, PropContext, PropControl } from '../../../core/plugin/controller/AbstractController';
+import { AbstractController, PropContext, PropController } from '../../../core/plugin/controller/AbstractController';
 import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorControllerId } from "./NodeEditorController";

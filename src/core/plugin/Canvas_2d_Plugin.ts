@@ -3,7 +3,7 @@ import { Camera2D } from "../models/misc/camera/Camera2D";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
 import { UI_Region } from "./UI_Plugin";
-import { AbstractController, PropControl } from "./controller/AbstractController";
+import { AbstractController, PropController } from "./controller/AbstractController";
 import { ToolType } from "./tools/Tool";
 import { CameraTool } from "./tools/CameraTool";
 
@@ -77,25 +77,25 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
     }
 }
 
-const ZoomInControl: PropControl<any> = {
+const ZoomInControl: PropController<any> = {
     click(context) {
         ((<AbstractCanvasPlugin> context.plugin).toolHandler.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
-const ZoomOutControl: PropControl<any> = {
+const ZoomOutControl: PropController<any> = {
     click(context) {
         ((<AbstractCanvasPlugin> context.plugin).toolHandler.getById(ToolType.Camera) as CameraTool).zoomOut();
     }
 }
 
-const UndoControl: PropControl<any> = {
+const UndoControl: PropController<any> = {
     click(context) {
         context.registry.services.history.undo()
     }
 }
 
-const RedoControl: PropControl<any> = {
+const RedoControl: PropController<any> = {
     click(context) {
         context.registry.services.history.redo()
     }

@@ -3,6 +3,7 @@ import { UI_TextField } from '../../elements/UI_TextField';
 import styled from 'styled-components';
 import { Form } from 'react-bootstrap';
 import { colors } from '../styles';
+import { UI_ComponentProps } from '../UI_ComponentProps';
 
 const FormControlStyled = styled(Form.Control)`
     background-color: ${colors.active};
@@ -16,7 +17,7 @@ const FormControlStyled = styled(Form.Control)`
     }
 `;
 
-export function TextFieldComp(props: {element: UI_TextField}) {
+export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
     const inputStyle: React.CSSProperties = {
         minWidth: '100px',
         height: '25px',

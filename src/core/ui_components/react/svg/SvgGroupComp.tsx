@@ -8,8 +8,8 @@ export const SvgGroupComp = (props: UI_ContainerProps<UI_SvgGroup>) => {
 
     if (props.element.isInteractive) {
         eventHandlers = {
-            onMouseEnter: e => props.element.mouseEnter(e.nativeEvent, props.element.data),
-            onMouseLeave: e =>props.element.mouseLeave(e.nativeEvent, props.element.data),
+            onMouseEnter: e => props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data),
+            onMouseLeave: e =>props.element.mouseLeave(props.registry, e.nativeEvent, props.element.data),
         }
     }
 

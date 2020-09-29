@@ -179,12 +179,12 @@ export class UI_PerspectiveService {
     }
 
     private _activatePerspective(perspective: UI_Perspective) {
-        this.registry.plugins.activatePlugin(perspective.canvas1Plugin);
+        this.registry.plugins.showPlugin(perspective.canvas1Plugin);
         
         if (perspective.canvas2Plugin) {
-            this.registry.plugins.activatePlugin(perspective.canvas2Plugin);
+            this.registry.plugins.showPlugin(perspective.canvas2Plugin);
         }
 
-        (perspective.sidepanelPlugins || []).forEach(plugin => this.registry.plugins.activatePlugin(plugin))
+        (perspective.sidepanelPlugins || []).forEach(plugin => this.registry.plugins.showPlugin(plugin))
     }
 }

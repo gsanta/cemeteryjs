@@ -15,6 +15,9 @@ import { FileSettingsPlugin } from '../../plugins/sidepanel_plugins/file_setting
 import { LayoutSettingsPlugin } from '../../plugins/sidepanel_plugins/layout_settings/LayoutSettingsPlugin';
 import { LevelSettingsPlugin } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
 import { SpriteSheetManagerDialogPlugin } from '../../plugins/dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
+import { PluginFactory } from './PluginFactory';
+import { AssetManagerPluginFactory } from '../../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
+import { AbstractController } from './controller/AbstractController';
 
 export class Plugins {
     sceneEditor: SceneEditorPlugin;
@@ -22,9 +25,13 @@ export class Plugins {
     nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
 
-    private plugins: UI_Plugin[] = [];
+    private legacyPlugins: UI_Plugin[] = [];
     private activePlugins: UI_Plugin[] = [];
-    
+
+    private pluginFactories: Map<string, PluginFactory> = new Map();
+    private plugins: Map<string, UI_Plugin> = new Map();
+    private controllers: Map<UI_Plugin, Map<string, AbstractController>> = new Map();
+
     visibilityDirty = true;
 
     private registry: Registry;
@@ -51,6 +58,8 @@ export class Plugins {
         this.registerPlugin(new ThumbnailDialogPlugin(this.registry));
         this.registerPlugin(new SpriteSheetManagerDialogPlugin(this.registry));
         this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
+
+        this.registerPluginNew(new AssetManagerPluginFactory());
     }
 
     private hoveredView: AbstractCanvasPlugin;
@@ -70,7 +79,7 @@ export class Plugins {
     }
 
     getViewById<T extends AbstractCanvasPlugin = AbstractCanvasPlugin>(id: string): T {
-        return <T> this.plugins.find(view => view.id === id);
+        return <T> this.legacyPlugins.find(view => view.id === id);
     }
     
     getActivePlugins(region?: UI_Region): UI_Plugin[] {
@@ -85,35 +94,67 @@ export class Plugins {
     }
 
     getById(pluginId: string): UI_Plugin {
-        return this.plugins.find(plugin => plugin.id === pluginId);
+        return this.legacyPlugins.find(plugin => plugin.id === pluginId);
     } 
 
     getAll(): UI_Plugin[] {
-        return this.plugins;
+        return this.legacyPlugins;
     }
 
     registerPlugin(plugin: UI_Plugin) {
-        this.plugins.push(plugin);
+        this.legacyPlugins.push(plugin);
 
         if (plugin.region === UI_Region.Sidepanel) {
-            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.activatePlugin(plugin.id);
+            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.showPlugin(plugin.id);
         }
     }
 
-    activatePlugin(pluginId: string) {
-        const plugin = this.getById(pluginId);
-        if (UI_Region.isSinglePluginRegion(plugin.region)) {
-            this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
-        }
-        
-        this.activePlugins.push(plugin);
-        plugin.activated();
-        // this.registry.services.ui.runUpdate(UI_Region.Dialog);
+    // TODO replace this with `registerPlugin` if that method is not used anymore
+    registerPluginNew(pluginFactory: PluginFactory) {
+        this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
+    }
 
-        switch(plugin.region) {
-            case UI_Region.Dialog:
-                this.registry.services.render.reRender(UI_Region.Dialog);
-            break;
+    getController(pluginId: string, controllerId: string): AbstractController {
+        return this.controllers.get(this.plugins.get(pluginId))?.get(controllerId);
+    }
+
+    showPlugin(pluginId: string) {
+        
+        //TODO: this is the relevant code, when all of the plugins will use PluginFactory
+        if (this.pluginFactories.has(pluginId)) {
+            if (!this.plugins.has(pluginId)) {
+                const plugin = this.pluginFactories.get(pluginId).createPlugin(this.registry);
+                this.plugins.set(pluginId, plugin);
+                this.controllers.set(plugin, new Map());
+
+                const pluginControllers = this.pluginFactories.get(pluginId).createControllers(plugin, this.registry);
+                pluginControllers.forEach(controller => this.controllers.get(plugin).set(controller.id, controller)); 
+
+                this.activePlugins.push(plugin);
+                plugin.activated();
+
+                switch(plugin.region) {
+                    case UI_Region.Dialog:
+                        this.registry.services.render.reRender(UI_Region.Dialog);
+                    break;
+                }    
+            }
+        // TODO_END
+        } else {
+
+            const plugin = this.getById(pluginId);
+            if (UI_Region.isSinglePluginRegion(plugin.region)) {
+                this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
+            }
+            
+            this.activePlugins.push(plugin);
+            plugin.activated();
+            // this.registry.services.ui.runUpdate(UI_Region.Dialog);
+            switch(plugin.region) {
+                case UI_Region.Dialog:
+                    this.registry.services.render.reRender(UI_Region.Dialog);
+                break;
+            }
         }
     }
 

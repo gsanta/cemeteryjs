@@ -38,8 +38,12 @@ import { AbstractController } from '../plugin/controller/AbstractController';
 import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
+import { Registry } from '../Registry';
 
 export class UI_Factory {
+
+    static registry: Registry;
+
     static layout(plugin: UI_Plugin): UI_Layout {
         const layout = new UI_Layout(plugin, plugin.region);
 

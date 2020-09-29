@@ -74,7 +74,7 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
 
     return (
         <FileUploadStyled style={style} className='file-upload' {...getRootProps()}>
-            <div className='file-upload' onClick={() => props.element.click()}>
+            <div className='file-upload' onClick={() => props.element.click(props.registry)}>
                 <input {...getInputProps()} />
                 
                 <div className="button-label" style={{width: props.element.width ? props.element.width : 'auto'}}>
