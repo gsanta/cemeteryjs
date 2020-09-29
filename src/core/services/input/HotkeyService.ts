@@ -6,7 +6,6 @@ import { PointerService, Wheel } from './PointerService';
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 
 export class HotkeyService {
-    serviceName = 'hotkey-service'
     private inputs: HTMLElement[] = [];
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];

@@ -1,7 +1,7 @@
 import { MeshView, MeshViewType } from '../../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../../core/models/views/PathView';
 import { SpriteView, SpriteViewType } from '../../../../core/models/views/SpriteView';
-import { AbstractController } from '../../../../core/plugin/controller/AbstractController';
+import { FormController } from '../../../../core/plugin/controller/FormController';
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
@@ -16,7 +16,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     displayName = 'Object Settings';
     region = UI_Region.Sidepanel;
 
-    private pathObjectSettingsController: AbstractController;
+    private pathObjectSettingsController: FormController;
     private spriteSettingsController: SpriteSettingsController;
     private meshSettingsController: MeshSettingsController;
 
@@ -25,7 +25,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
 
         this.controllers.set(MeshSettingsControllerId, new MeshSettingsController(this, this.registry));
 
-        this.pathObjectSettingsController = new AbstractController(this, this.registry);
+        this.pathObjectSettingsController = new FormController(this, this.registry);
         this.pathObjectSettingsController.registerPropControl(PathSettingsProps.PathId, PathIdControl);
         this.spriteSettingsController = new SpriteSettingsController(this, registry);
         this.meshSettingsController = new MeshSettingsController(this, registry);

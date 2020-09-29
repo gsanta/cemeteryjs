@@ -10,7 +10,6 @@ export enum RenderTask {
 }
 
 export class RenderService {
-    serviceName = 'render-service';
     updateTasks: RenderTask[] = [];
 
     private renderers: Map<UI_Region, Function> = new Map();

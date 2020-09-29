@@ -1,8 +1,9 @@
 import { Registry } from "../../Registry";
 import { Point } from '../../../utils/geometry/shapes/Point';
-import { IPointerEvent } from "./PointerService";
-import { View } from "../../models/views/View";
-import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { IPointerEvent } from "../../services/input/PointerService";
+import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { UI_Controller } from "./UI_Controller";
+import { UI_Element } from "../../ui_components/elements/UI_Element";
 
 export class MousePointer {
     down: Point;
@@ -27,8 +28,7 @@ export class MousePointer {
     }
 }
 
-export class MouseService {
-    serviceName = 'mouse-service';
+export class ToolService implements UI_Controller {
     private registry: Registry;
     private plugin: AbstractCanvasPlugin;
 
@@ -36,6 +36,12 @@ export class MouseService {
         this.registry = registry;
         this.plugin = plugin;
     }
+
+    change(val: any, element: UI_Element) {}
+    click(element: UI_Element): void {}
+    blur(element: UI_Element): void {}
+    mouseOver(element: UI_Element): void {}
+    mouseOut(element: UI_Element): void {}
 
     mouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
@@ -47,16 +53,12 @@ export class MouseService {
         this.registry.services.pointer.pointerMove(this.convertEvent(e, this.registry.services.pointer.isDown));
     }    
 
-    mouseUp(e: MouseEvent, droppedItemType?: string): void {
+    mouseUp(e: MouseEvent): void {
         if (this.isLeftButton(e)) {
-            this.registry.services.pointer.pointerUp(this.convertEvent(e, false, droppedItemType));
+            this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
         }
 
         this.registry.services.hotkey.focus();
-    }
-
-    dndStart() {
-        this.registry.plugins.setHoveredView(this.plugin);
     }
 
     dndDrop(point: Point) {
@@ -70,17 +72,6 @@ export class MouseService {
 
         this.registry.services.render.reRenderAll();
     }
-
-    // dndDrop is not always called only if the item was dropped to the 'droppable area', but this method
-    // runs even if the drop happens at an illegal position, so it can be used for some cleanup work
-    // not nice but react dnd is not easy to work with
-    dndEnd() {
-        if (this.plugin.dropItem) {
-            this.plugin.dropItem = undefined;
-            this.registry.services.render.reRenderAll();
-        }
-    }
-
 
     mouseLeave(e: MouseEvent, data: any): void {
         this.registry.services.pointer.pointerLeave(this.convertEvent(e, false), data);
@@ -100,6 +91,18 @@ export class MouseService {
         this.registry.services.pointer.pointerWheelEnd();
     }
 
+    dndStart(element: UI_Element, listItem: string): void {}
+
+    // dndDrop is not always called only if the item was dropped to the 'droppable area', but this method
+    // runs even if the drop happens at an illegal position, so it can be used for some cleanup work
+    // not nice but react dnd is not easy to work with
+    dndEnd() {
+        if (this.plugin.dropItem) {
+            this.plugin.dropItem = undefined;
+            this.registry.services.render.reRenderAll();
+        }
+    }
+
     private convertEvent(e: MouseEvent, isPointerDown: boolean, droppedItemId?: string): IPointerEvent {
         return {
             pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
@@ -109,7 +112,6 @@ export class MouseService {
             isShiftDown: !!e.shiftKey,
             isCtrlDown: !!e.ctrlKey,
             isMetaDown: !!e.metaKey,
-            droppedItemId: droppedItemId
         };
     }
 

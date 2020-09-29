@@ -1,6 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { AbstractController } from "../../plugin/controller/AbstractController";
+import { FormController } from "../../plugin/controller/FormController";
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
@@ -41,7 +41,7 @@ export class NodeView extends View {
     nodeGraph: NodeGraph;
     joinPointViews: JoinPointView[] = [];
 
-    controller: AbstractController;
+    controller: FormController;
 
     private paramsYPosStart: number;
 

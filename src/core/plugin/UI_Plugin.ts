@@ -1,6 +1,6 @@
 import { IControlledObject } from '../IControlledObject';
 import { Registry } from '../Registry';
-import { AbstractController } from './controller/AbstractController';
+import { FormController } from './controller/FormController';
 import { UI_Container } from '../ui_components/elements/UI_Container';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
@@ -52,7 +52,7 @@ export abstract class UI_Plugin implements IControlledObject {
     importer: AbstractPluginImporter;
     exporter: IDataExporter;
 
-    protected controllers: Map<string, AbstractController> = new Map();
+    protected controllers: Map<string, FormController> = new Map();
 
     protected abstract renderInto(layout: UI_Container): void;
 

@@ -7,7 +7,7 @@ import { View } from '../../models/views/View';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { ViewStore } from '../../stores/ViewStore';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { MousePointer } from '../../services/input/MouseService';
+import { MousePointer } from '../controller/ToolController';
 import { Point } from '../../../utils/geometry/shapes/Point';
 
 export function createRectFromMousePointer(pointer: MousePointer): Rectangle {

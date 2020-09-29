@@ -3,7 +3,7 @@ import { Camera2D } from "../models/misc/camera/Camera2D";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
 import { UI_Region } from "./UI_Plugin";
-import { AbstractController, PropController } from "./controller/AbstractController";
+import { FormController, PropController } from "./controller/FormController";
 import { ToolType } from "./tools/Tool";
 import { CameraTool } from "./tools/CameraTool";
 
@@ -48,7 +48,7 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
         this.id = id;
 
-        const controller = new AbstractController(this, this.registry);
+        const controller = new FormController(this, this.registry);
         controller.registerPropControl(CanvasControllerProps.ZoomIn, ZoomInControl);
         controller.registerPropControl(CanvasControllerProps.ZoomOut, ZoomOutControl);
         controller.registerPropControl(CanvasControllerProps.Undo, UndoControl);

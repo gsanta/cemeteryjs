@@ -1,4 +1,4 @@
-import { AbstractController, PropContext, PropController } from "../../../core/plugin/controller/AbstractController";
+import { FormController, PropContext, PropController } from "../../../core/plugin/controller/FormController";
 import { PluginFactory } from "../../../core/plugin/PluginFactory";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
@@ -14,7 +14,7 @@ export class AssetManagerPluginFactory implements PluginFactory {
         return new AssetManagerDialogPlugin(registry);
     }
 
-    createControllers(plugin: UI_Plugin, registry: Registry): AbstractController[] {
+    createControllers(plugin: UI_Plugin, registry: Registry): FormController[] {
         const props: PropController[] = [
             new DeleteAssetControl(),
             new EnterEditModeControl(),
@@ -24,7 +24,7 @@ export class AssetManagerPluginFactory implements PluginFactory {
             new CancelEditControl()
         ]
 
-        const controller = new AbstractController(plugin, registry, AssetManagerControllerId, props);
+        const controller = new FormController(plugin, registry, AssetManagerControllerId, props);
         return [controller];
     }
 }

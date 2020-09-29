@@ -1,4 +1,4 @@
-import { AbstractController } from "../../../core/plugin/controller/AbstractController";
+import { FormController } from "../../../core/plugin/controller/FormController";
 import { Registry } from "../../../core/Registry";
 import { AssetManagerDialogPluginId } from "../../dialog_plugins/asset_manager/AssetManagerDialogPlugin";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
@@ -8,7 +8,7 @@ export enum AssetManagerSidepanelControllerProps {
 }
 
 export const AssetManagerSidepanelControllerId = 'asset_manager_sidepanel_controller'
-export class AssetManagerSidepanelController extends AbstractController {
+export class AssetManagerSidepanelController extends FormController {
     id = AssetManagerSidepanelControllerId;
     
     constructor(plugin: UI_Plugin, registry: Registry) {

@@ -17,7 +17,7 @@ import { LevelSettingsPlugin } from '../../plugins/sidepanel_plugins/level_setti
 import { SpriteSheetManagerDialogPlugin } from '../../plugins/dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
 import { PluginFactory } from './PluginFactory';
 import { AssetManagerPluginFactory } from '../../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
-import { AbstractController } from './controller/AbstractController';
+import { FormController } from './controller/FormController';
 
 export class Plugins {
     sceneEditor: SceneEditorPlugin;
@@ -30,7 +30,7 @@ export class Plugins {
 
     private pluginFactories: Map<string, PluginFactory> = new Map();
     private plugins: Map<string, UI_Plugin> = new Map();
-    private controllers: Map<UI_Plugin, Map<string, AbstractController>> = new Map();
+    private controllers: Map<UI_Plugin, Map<string, FormController>> = new Map();
 
     visibilityDirty = true;
 
@@ -114,7 +114,7 @@ export class Plugins {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
     }
 
-    getController(pluginId: string, controllerId: string): AbstractController {
+    getController(pluginId: string, controllerId: string): FormController {
         return this.controllers.get(this.plugins.get(pluginId))?.get(controllerId);
     }
 

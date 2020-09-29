@@ -1,5 +1,5 @@
 import { PathView } from '../../../../core/models/views/PathView';
-import { PropController } from '../../../../core/plugin/controller/AbstractController';
+import { PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Plugin';
 
 export enum PathSettingsProps {

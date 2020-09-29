@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { MousePointer } from "../../../services/input/MouseService";
+import { MousePointer } from "../../../plugin/controller/ToolController";
 import { RenderTask } from "../../../services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
@@ -8,7 +8,6 @@ import { Registry } from "../../../Registry";
 export class Camera2D implements ICamera {
     private screenSize: Point;
     private viewBox: Rectangle;
-    serviceName = 'camera-service';
     static readonly ZOOM_MIN = 0.1;
     static readonly ZOOM_MAX = 5;
 

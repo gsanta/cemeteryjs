@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { AbstractController, PropController } from "../../../../core/plugin/controller/AbstractController";
+import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
@@ -13,8 +13,8 @@ export const AnimationNodeFacotry: NodeFactory = {
         return new AnimationNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
-        const controller = new AbstractController(plugin, registry);
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+        const controller = new FormController(plugin, registry);
         controller.registerPropControl('mesh', MeshControl);
         controller.registerPropControl('startFrame', StartFrameControl);
         controller.registerPropControl('endFrame', EndFrameControl);

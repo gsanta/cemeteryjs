@@ -1,4 +1,4 @@
-import { AbstractController } from "../../../core/plugin/controller/AbstractController";
+import { FormController } from "../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 
@@ -8,7 +8,7 @@ export enum LevelSettingsProps {
     ClearLevel = 'ClearLevel'
 }
 export const LevelSettingsControllerId = 'level-settings-controller';
-export class LevelSettingsController extends AbstractController {
+export class LevelSettingsController extends FormController {
     
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);

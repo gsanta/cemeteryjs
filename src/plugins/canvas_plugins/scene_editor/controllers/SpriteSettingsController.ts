@@ -1,5 +1,5 @@
 import { SpriteView } from '../../../../core/models/views/SpriteView';
-import { AbstractController, PropController } from '../../../../core/plugin/controller/AbstractController';
+import { FormController, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
@@ -15,7 +15,7 @@ export enum SpriteSettingsProps {
 }
 
 export const SpriteSettingsControllerId = 'sprite-settings-controller';
-export class SpriteSettingsController extends AbstractController {
+export class SpriteSettingsController extends FormController {
     id = SpriteSettingsControllerId;
     spriteView: SpriteView;
 

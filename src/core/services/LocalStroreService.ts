@@ -2,7 +2,6 @@ import { Registry } from "../Registry";
 import { AssetObj } from "../models/objs/AssetObj";
 
 export class LocalStoreService {
-    serviceName = 'local-store'
     private version = 2;
     private name = 'editor';
     private db: IDBDatabase;

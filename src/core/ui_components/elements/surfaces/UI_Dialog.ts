@@ -3,7 +3,7 @@
 import { UI_ElementType } from "../UI_ElementType";
 import { UI_Layout } from '../UI_Layout';
 import { UI_Region, UI_Plugin } from "../../../plugin/UI_Plugin";
-import { GlobalControllerProps } from '../../../plugin/controller/AbstractController';
+import { GlobalControllerProps } from '../../../plugin/controller/FormController';
 
 export class UI_Dialog extends UI_Layout {
     elementType = UI_ElementType.Dialog;

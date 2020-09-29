@@ -2,82 +2,84 @@ import { Registry } from '../../Registry';
 import { UI_Plugin } from '../UI_Plugin';
 import { UI_Element } from '../../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../../ui_components/elements/UI_ListItem';
+import { UI_Controller } from './UI_Controller';
+import { Point } from '../../../utils/geometry/shapes/Point';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
 }
 
 export interface PropHandlers {
-    onChange?(val: any, context: PropContext<any>,  controller: AbstractController): void;
-    onClick?(context: PropContext<any>, controller: AbstractController): void;
-    onFocus?(context: PropContext<any>, controller: AbstractController): void;
-    onBlur?(context: PropContext<any>, controller: AbstractController): void;
-    onGet?(context: PropContext<any>, controller: AbstractController): void;
-    onGetValues?(context: PropContext<any>, controller: AbstractController): void;
+    onChange?(val: any, context: PropContext<any>,  controller: FormController): void;
+    onClick?(context: PropContext<any>, controller: FormController): void;
+    onFocus?(context: PropContext<any>, controller: FormController): void;
+    onBlur?(context: PropContext<any>, controller: FormController): void;
+    onGet?(context: PropContext<any>, controller: FormController): void;
+    onGetValues?(context: PropContext<any>, controller: FormController): void;
 }
 
 export class PropHandler<T> {
     context: PropContext<T> = new PropContext<T>();
-    changeHandler: (val:  T, context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    clickHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    focusHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    blurHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    getHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    getValuesHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => any[];
+    changeHandler: (val:  T, context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    clickHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    focusHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    blurHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    getHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    getValuesHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => any[];
 
-    mouseOverHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    mouseOutHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    mouseOverHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    mouseOutHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
 
-    dndStartHandler: (val: T, context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
-    dndEndHandler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void;
+    dndStartHandler: (val: T, context: PropContext<T>, element: UI_Element, controller: FormController) => void;
+    dndEndHandler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void;
 
-    onChange(handler: (val: T, context: PropContext<any>, element: UI_Element, controller: AbstractController) => void) {
+    onChange(handler: (val: T, context: PropContext<any>, element: UI_Element, controller: FormController) => void) {
         this.changeHandler = handler;
         return this;
     }
 
-    onClick(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onClick(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.clickHandler = handler;
         return this;
     }
 
-    onFocus(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onFocus(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.focusHandler = handler;
         return this;
     }
 
-    onBlur(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onBlur(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.blurHandler = handler;
         return this;
     }
 
-    onGet(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onGet(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.getHandler = handler;
         return this;
     }
 
-    onGetValues(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => any[]) {
+    onGetValues(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => any[]) {
         this.getValuesHandler = handler;
         return this;
     }
 
-    onMouseOver(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onMouseOver(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.mouseOverHandler = handler;
         return this;
     }
 
-    onMouseOut(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onMouseOut(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.mouseOutHandler = handler;
         return this;
     }
 
 
-    onDndStart(handler: (val: T, context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onDndStart(handler: (val: T, context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.dndStartHandler = handler;
         return this;
     }
 
-    onDndEnd(handler: (context: PropContext<T>, element: UI_Element, controller: AbstractController) => void) {
+    onDndEnd(handler: (context: PropContext<T>, element: UI_Element, controller: FormController) => void) {
         this.dndEndHandler = handler;
         return this;
     }
@@ -91,20 +93,20 @@ export abstract class PropController<T = any> {
         this.prop = prop;
     }
 
-    change?(val: T, context: PropContext<any>, element: UI_Element, controller: AbstractController) {}
-    click?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
-    focus?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
-    blur?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
-    defaultVal?(context: PropContext<T>, element: UI_Element, controller: AbstractController) {}
-    values?(context: PropContext<T>, element: UI_Element, controller: AbstractController): T[] { return []; }
+    change?(val: T, context: PropContext<any>, element: UI_Element, controller: FormController) {}
+    click?(context: PropContext<T>, element: UI_Element, controller: FormController) {}
+    focus?(context: PropContext<T>, element: UI_Element, controller: FormController) {}
+    blur?(context: PropContext<T>, element: UI_Element, controller: FormController) {}
+    defaultVal?(context: PropContext<T>, element: UI_Element, controller: FormController) {}
+    values?(context: PropContext<T>, element: UI_Element, controller: FormController): T[] { return []; }
 }
 
 const defaultPropControl: PropController<any> = {
-    change(val: any, context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
-    click(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
-    focus(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
-    blur(context: PropContext<any>, element: UI_Element, controller: AbstractController) {},
-    defaultVal(context: PropContext<any>, element: UI_Element, controller: AbstractController) {}
+    change(val: any, context: PropContext<any>, element: UI_Element, controller: FormController) {},
+    click(context: PropContext<any>, element: UI_Element, controller: FormController) {},
+    focus(context: PropContext<any>, element: UI_Element, controller: FormController) {},
+    blur(context: PropContext<any>, element: UI_Element, controller: FormController) {},
+    defaultVal(context: PropContext<any>, element: UI_Element, controller: FormController) {}
 }
 
 export class PropContext<T> {
@@ -112,7 +114,7 @@ export class PropContext<T> {
     element: UI_Element;
     registry: Registry;
     plugin: UI_Plugin;
-    controller: AbstractController;
+    controller: FormController;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -134,7 +136,7 @@ export class PropContext<T> {
     }
 }
 
-export class AbstractController {
+export class FormController implements UI_Controller {
     readonly id: string;
     private handlers: Map<string, PropHandler<any>> = new Map();
     private propControls: Map<string, PropController<any>> = new Map();
@@ -161,6 +163,22 @@ export class AbstractController {
                 this.registerPropControlNew(propControl);
             });
         }
+    }
+    
+    mouseDown(e: MouseEvent, element: UI_Element): void {
+        throw new Error('Method not implemented.');
+    }
+    mouseMove(e: MouseEvent, element: UI_Element): void {
+        throw new Error('Method not implemented.');
+    }
+    mouseUp(e: MouseEvent, element: UI_Element): void {
+        throw new Error('Method not implemented.');
+    }
+    mouseWheel(e: WheelEvent): void {
+        throw new Error('Method not implemented.');
+    }
+    dndDrop(point: Point) {
+        throw new Error('Method not implemented.');
     }
 
     change(val: any, element: UI_Element): void {

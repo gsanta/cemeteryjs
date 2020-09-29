@@ -25,7 +25,7 @@ export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
         [isDragging, drag] = useDrag({
             item: { type: props.element.listItemId },
             begin: () => {
-                props.element.dndStart();
+                props.element.dndStart(props.registry);
             },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),

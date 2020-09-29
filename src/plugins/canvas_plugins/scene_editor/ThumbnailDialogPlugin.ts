@@ -9,7 +9,7 @@ import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dial
 import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
 import { Tools } from 'babylonjs';
-import { AbstractController, PropController } from '../../../core/plugin/controller/AbstractController';
+import { FormController, PropController } from '../../../core/plugin/controller/FormController';
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailCreate = 'ThumbnailFromModel',
@@ -31,7 +31,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         
         this.toolHandler.registerTool(new CameraTool(this, registry));
 
-        const controller = new AbstractController(this, this.registry);
+        const controller = new FormController(this, this.registry);
         controller.registerPropControl(ThumbnailMakerControllerProps.ThumbnailCreate, ThumbnailCreateControl);
         controller.registerPropControl(ThumbnailMakerControllerProps.ThumbnailUpload, ThumbnailUploadControl);
         controller.registerPropControl(ThumbnailMakerControllerProps.ClearThumbnail, ClearThumbnailControl);

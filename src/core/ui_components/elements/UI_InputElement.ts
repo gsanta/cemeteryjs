@@ -1,4 +1,4 @@
-import { AbstractController } from "../../plugin/controller/AbstractController";
+import { FormController } from "../../plugin/controller/FormController";
 import { Registry } from "../../Registry";
 import { UI_Element } from "./UI_Element";
 
@@ -24,7 +24,7 @@ export abstract class UI_InputElement extends UI_Element {
     }
 
     click(registry: Registry): void {
-        let controller: AbstractController = registry.plugins.getController(this.plugin.id, this.controllerId);
+        let controller: FormController = registry.plugins.getController(this.plugin.id, this.controllerId);
         if (controller) {
             controller.click(this);
         } else {

@@ -1,4 +1,4 @@
-import { PropController, AbstractController } from "../../../core/plugin/controller/AbstractController";
+import { PropController, FormController } from "../../../core/plugin/controller/FormController";
 import { GameViewerPlugin } from "./GameViewerPlugin";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
@@ -12,7 +12,7 @@ export enum GameViewerProps {
     Stop = 'Stop'
 }
 
-export class GameViewerController extends AbstractController {
+export class GameViewerController extends FormController {
     id = 'game-viewer-controller';
     plugin: GameViewerPlugin;
 

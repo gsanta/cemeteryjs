@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
-import { AbstractController, PropController } from "../../../../core/plugin/controller/AbstractController";
+import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
@@ -13,8 +13,8 @@ export const PathNodeFacotry: NodeFactory = {
         return new PathNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController {
-        const controller = new AbstractController(plugin, registry);
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+        const controller = new FormController(plugin, registry);
         controller.registerPropControl('path', PathControl);
         return controller;
     }

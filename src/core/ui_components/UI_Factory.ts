@@ -34,7 +34,7 @@ import { UI_Column } from './elements/UI_Column';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Icon } from './elements/UI_Icon';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
-import { AbstractController } from '../plugin/controller/AbstractController';
+import { FormController } from '../plugin/controller/FormController';
 import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
@@ -166,7 +166,7 @@ export class UI_Factory {
         return icon;
     }
 
-    static listItem(parent: UI_Container, config: { controller?: AbstractController, prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
+    static listItem(parent: UI_Container, config: { controller?: FormController, prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
         const listItem = new UI_ListItem(parent.plugin);
 
         if (config) {
@@ -475,7 +475,7 @@ export class UI_Factory {
         }
     }
 
-    private static setController2(parent: UI_Element, current: UI_Element, config?: {controller?: AbstractController}) {
+    private static setController2(parent: UI_Element, current: UI_Element, config?: {controller?: FormController}) {
         if (config && config.controller) {
             current.controller = config.controller;
         } else if (parent.controller) {

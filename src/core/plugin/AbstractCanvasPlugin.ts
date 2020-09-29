@@ -3,7 +3,7 @@ import { Point } from '../../utils/geometry/shapes/Point';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
-import { MouseService } from '../services/input/MouseService';
+import { ToolService } from './controller/ToolController';
 import { ToolHandler } from '../services/input/ToolHandler';
 import { ViewStore } from '../stores/ViewStore';
 import { UI_Plugin } from './UI_Plugin';
@@ -30,7 +30,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     dropItem: UI_ListItem;
 
-    readonly mouse: MouseService;
+    readonly mouse: ToolService;
     readonly keyboard: KeyboardService;
     readonly toolHandler: ToolHandler;
 
@@ -39,7 +39,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.mouse = new MouseService(this, registry);
+        this.mouse = new ToolService(this, registry);
         this.keyboard = new KeyboardService(registry);
         this.toolHandler = new ToolHandler(this, this.registry);        
     }

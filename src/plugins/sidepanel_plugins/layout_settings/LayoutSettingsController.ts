@@ -1,5 +1,5 @@
 import { Registry } from '../../../core/Registry';
-import { AbstractController, PropController } from '../../../core/plugin/controller/AbstractController';
+import { FormController, PropController } from '../../../core/plugin/controller/FormController';
 import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
 
 export enum LayoutSettingsProps {
@@ -7,7 +7,7 @@ export enum LayoutSettingsProps {
 }
 
 export const LayoutSettingsControllerId = 'layout-settings-controller';
-export class LayoutSettingsController extends AbstractController {
+export class LayoutSettingsController extends FormController {
     id = LayoutSettingsControllerId;
     constructor(plugin: UI_Plugin, registry: Registry) {
         super(plugin, registry);

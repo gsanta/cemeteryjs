@@ -4,8 +4,6 @@ import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
 
 export class GameService {
-    serviceName = 'game-service';
-    
     private afterRenders: (() => void)[] = [];
 
     viewImporter: ImportService;

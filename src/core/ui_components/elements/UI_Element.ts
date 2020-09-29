@@ -1,7 +1,7 @@
 import { UI_Plugin } from '../../plugin/UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
-import { AbstractController } from '../../plugin/controller/AbstractController';
+import { FormController } from '../../plugin/controller/FormController';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Registry } from '../../Registry';
 
@@ -21,7 +21,7 @@ export abstract class UI_Element {
     elementType: UI_ElementType;
     id: string;
     readonly plugin: UI_Plugin;
-    controller: AbstractController;
+    controller: FormController;
     controllerId: string;
     prop: string;
     key: string;

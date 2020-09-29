@@ -29,7 +29,6 @@ export interface AppJson {
 }
 
 export class ExportService {
-    serviceName = 'export-service';
     private registry: Registry;
     private exporters: IDataExporter[] = []
 

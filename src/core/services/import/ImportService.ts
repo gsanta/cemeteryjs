@@ -8,7 +8,6 @@ import { NodeObj, NodeObjJson, NodeObjType } from '../../models/objs/NodeObj';
 import { NodeViewType } from '../../models/views/NodeView';
 
 export class ImportService {
-    serviceName = 'import-service';
     private registry: Registry;
     private importers: IDataImporter[] = [];
 

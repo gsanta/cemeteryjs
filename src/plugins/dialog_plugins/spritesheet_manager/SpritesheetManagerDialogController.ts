@@ -1,4 +1,4 @@
-import { AbstractController, PropController } from '../../../core/plugin/controller/AbstractController';
+import { FormController, PropController } from '../../../core/plugin/controller/FormController';
 import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
@@ -13,7 +13,7 @@ export enum SpritesheetManagerDialogProps {
     AddSpriteSheet = 'AddSpriteSheet'
 }
 
-export class SpritesheetManagerDialogController extends AbstractController {
+export class SpritesheetManagerDialogController extends FormController {
     id = SpritesheetManagerDialogControllerId;
 
     imgPath: string;

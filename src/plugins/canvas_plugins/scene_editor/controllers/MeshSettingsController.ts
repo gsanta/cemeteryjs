@@ -1,7 +1,7 @@
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { MeshView } from '../../../../core/models/views/MeshView';
 import { Registry } from '../../../../core/Registry';
-import { AbstractController, PropController } from '../../../../core/plugin/controller/AbstractController';
+import { FormController, PropController } from '../../../../core/plugin/controller/FormController';
 import { ThumbnailDialogPluginId } from '../ThumbnailDialogPlugin';
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { ObjectSettingsPlugin } from './ObjectSettingsPlugin';
@@ -20,7 +20,7 @@ export enum MeshSettingsProps {
 
 export const MeshSettingsControllerId = 'mesh-settings-controller';
 
-export class MeshSettingsController extends AbstractController {
+export class MeshSettingsController extends FormController {
     id = MeshSettingsControllerId;
     meshView: MeshView;
 

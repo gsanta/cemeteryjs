@@ -10,7 +10,7 @@ import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';
 import { View } from '../models/views/View';
-import { AbstractController } from '../plugin/controller/AbstractController';
+import { FormController } from '../plugin/controller/FormController';
 import { UI_Plugin } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
 import { ViewStoreHook } from '../stores/ViewStore';
@@ -94,7 +94,7 @@ export class NodeService {
 
 export interface NodeFactory {
     newNodeInstance(graph: NodeGraph): NodeObj;
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): AbstractController;
+    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController;
 }
 
 class RemoveRelatedConnectionHook implements ViewStoreHook {

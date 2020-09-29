@@ -1,4 +1,4 @@
-import { AbstractController } from '../../../core/plugin/controller/AbstractController';
+import { FormController } from '../../../core/plugin/controller/FormController';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
@@ -8,8 +8,8 @@ import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
 
-export class NodeRenderer extends AbstractController {
-    controller: AbstractController;
+export class NodeRenderer extends FormController {
+    controller: FormController;
 
     private joinPointsHeight: number;
 

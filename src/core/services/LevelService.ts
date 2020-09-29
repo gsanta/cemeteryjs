@@ -2,7 +2,6 @@ import { Registry } from "../Registry";
 import { RenderTask } from "./RenderServices";
 
 export class LevelService {
-    serviceName = 'level-service';
     private registry: Registry;
 
     constructor(registry: Registry) {

@@ -100,9 +100,6 @@ export class AxisGizmo {
             this.awake();    
         }
 
-        // const gameEngine =  this.plugin.pluginServices.byName<EngineService>(EngineService.serviceName);
-        // const scene = gameEngine.getScene();
-        // const engine = gameEngine.getEngine();
         const engine = this.registry.engine as Bab_EngineFacade;
         const camera = (<Camera3D> this.registry.plugins.gameView.getCamera()).camera;
 

@@ -1,4 +1,4 @@
-import { AbstractController, PropController } from "../../../core/plugin/controller/AbstractController";
+import { FormController, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { GameViewerController } from "../game_viewer/GameViewerController";
@@ -12,7 +12,7 @@ export enum NodeEditorProps {
 }
 
 export const NodeEditorControllerId = 'node_editor_controller_id';
-export class NodeEditorController extends AbstractController {
+export class NodeEditorController extends FormController {
     id = NodeEditorControllerId;
 
     droppableId: string; 

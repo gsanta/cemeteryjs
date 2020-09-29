@@ -62,8 +62,6 @@ export interface IKeyboardEvent {
 }
 
 export class KeyboardService {
-    serviceName = 'keyboard-service'
-
     private registry: Registry;
 
     constructor(registry: Registry) {

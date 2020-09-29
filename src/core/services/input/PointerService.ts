@@ -1,7 +1,7 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { View, ViewTag } from "../../models/views/View";
+import { View } from "../../models/views/View";
 import { Registry } from "../../Registry";
-import { MousePointer } from "./MouseService";
+import { MousePointer } from "../../plugin/controller/ToolController";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -20,7 +20,6 @@ export interface IPointerEvent {
 }
 
 export class PointerService {
-    serviceName = 'pointer-service';
     isDown = false;
     isDrag = false;
     wheel: Wheel = Wheel.IDLE;
@@ -158,7 +157,6 @@ export class PointerService {
     }
 
     unhover(item: View): void {
-        console.log('unhover: ' + item.viewType)
         this.registry.services.hotkey.executeHotkey({
             isUnhover: true
         });
