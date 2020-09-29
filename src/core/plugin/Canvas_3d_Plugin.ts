@@ -22,7 +22,7 @@ export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
 
         this.id = id;
 
-        this.toolHandler.registerTool(new CameraTool(this, registry));
+        this.toolController.registerTool(new CameraTool(this, registry));
     }
 
     getStore() {
@@ -39,8 +39,8 @@ export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
 
 
     activated() {
-        if (!this.toolHandler.getSelectedTool()) {
-            this.toolHandler.setSelectedTool(ToolType.Camera);
+        if (!this.toolController.getSelectedTool()) {
+            this.toolController.setSelectedTool(ToolType.Camera);
         }
     }
 

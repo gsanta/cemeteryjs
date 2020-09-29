@@ -23,7 +23,7 @@ export class ActionIconComp extends React.Component<ActionIconCompProps> {
     }
     
     render() {
-        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.getSelectedTool();
+        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolController.getSelectedTool();
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,

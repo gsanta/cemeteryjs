@@ -29,7 +29,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
         this.engine = new Bab_EngineFacade(this.registry);
         
-        this.toolHandler.registerTool(new CameraTool(this, registry));
+        this.toolController.registerTool(new CameraTool(this, registry));
 
         const controller = new FormController(this, this.registry);
         controller.registerPropControl(ThumbnailMakerControllerProps.ThumbnailCreate, ThumbnailCreateControl);
@@ -89,8 +89,8 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
     }
 
     activated() {
-        if (!this.toolHandler.getSelectedTool()) {
-            this.toolHandler.setSelectedTool(ToolType.Camera);
+        if (!this.toolController.getSelectedTool()) {
+            this.toolController.setSelectedTool(ToolType.Camera);
         }
     }
 

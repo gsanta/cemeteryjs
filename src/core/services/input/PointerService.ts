@@ -45,7 +45,7 @@ export class PointerService {
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().down(e);
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().down(e);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -58,9 +58,9 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().drag(e);
+            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().drag(e);
         } else {
-            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().move();
+            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().move();
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.render.reRenderScheduled();
@@ -74,12 +74,12 @@ export class PointerService {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
         if (this.isDrag) {
-            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().draggedUp();
+            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().draggedUp();
         } else {
-            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().click();
+            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().click();
         }
         
-        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().up(e);
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().up(e);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
@@ -96,7 +96,7 @@ export class PointerService {
 
         //     this.registry.services.render.reRender(data.region);
         // } else {
-            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().out(data);
+            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().out(data);
 
             this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
             this.hoveredItem = undefined;
@@ -118,7 +118,7 @@ export class PointerService {
                 isHover: true
             });
 
-            this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().over(data);
+            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().over(data);
         // }
 
         this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
@@ -138,13 +138,13 @@ export class PointerService {
         }
 
         this.registry.services.hotkey.executeHotkey(e);
-        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().wheel();
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().wheel();
     }
 
     pointerWheelEnd() {
         this.wheel = Wheel.IDLE;
 
-        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().wheelEnd();
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().wheelEnd();
     }
 
     hover(item: View): void {
@@ -152,7 +152,7 @@ export class PointerService {
         this.registry.services.hotkey.executeHotkey({
             isHover: true
         });
-        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().over(item);
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().over(item);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -163,7 +163,7 @@ export class PointerService {
         if (this.hoveredItem === item) {
             this.hoveredItem = undefined;
         }
-        this.registry.plugins.getHoveredPlugin().toolHandler.getActiveTool().out(item);
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().out(item);
         this.registry.services.render.reRenderScheduled();
     }
     

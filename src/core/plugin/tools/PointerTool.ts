@@ -71,7 +71,7 @@ export abstract class PointerTool extends AbstractTool {
 
     over(view: View) {
         if (view.viewType === JoinPointViewType) {
-            this.plugin.toolHandler.setPriorityTool(ToolType.Join);
+            this.plugin.toolController.setPriorityTool(ToolType.Join);
         }
         
         view.tags.add(ViewTag.Hovered);
@@ -82,7 +82,7 @@ export abstract class PointerTool extends AbstractTool {
     out(view: View) {
         console.log('out')
         if (!this.registry.services.pointer.isDown && view.viewType === JoinPointViewType) {
-            this.plugin.toolHandler.removePriorityTool(ToolType.Join);
+            this.plugin.toolController.removePriorityTool(ToolType.Join);
         } 
         
         view.tags.delete(ViewTag.Hovered);

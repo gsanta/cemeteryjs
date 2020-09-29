@@ -26,7 +26,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         this.gizmos = new Gizmos(this, registry);
         
-        this.toolHandler.registerTool(new GameTool(this, this.registry));
+        this.toolController.registerTool(new GameTool(this, this.registry));
 
         this.controller = new GameViewerController(this, this.registry);
     }

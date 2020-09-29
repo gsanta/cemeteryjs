@@ -25,12 +25,12 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
 
-        this.toolHandler.registerTool(new MeshTool(this, this.registry));
-        this.toolHandler.registerTool(new SpriteTool(this, this.registry));
-        this.toolHandler.registerTool(new PathTool(this, this.registry));
-        this.toolHandler.registerTool(new SelectTool(this, this.registry));
-        this.toolHandler.registerTool(new DeleteTool(this, this.registry));
-        this.toolHandler.registerTool(new CameraTool(this, this.registry));
+        this.toolController.registerTool(new MeshTool(this, this.registry));
+        this.toolController.registerTool(new SpriteTool(this, this.registry));
+        this.toolController.registerTool(new PathTool(this, this.registry));
+        this.toolController.registerTool(new SelectTool(this, this.registry));
+        this.toolController.registerTool(new DeleteTool(this, this.registry));
+        this.toolController.registerTool(new CameraTool(this, this.registry));
         
         // this.exporter = new SceneEditorExporter(this, this.registry);
         // this.importer = new SceneEditorImporter(this, this.registry);
@@ -183,8 +183,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     activated() {
-        if (!this.toolHandler.getSelectedTool()) {
-            this.toolHandler.setSelectedTool(ToolType.Rectangle);
+        if (!this.toolController.getSelectedTool()) {
+            this.toolController.setSelectedTool(ToolType.Rectangle);
         }
     }
 

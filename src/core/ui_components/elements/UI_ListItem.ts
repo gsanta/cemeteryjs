@@ -24,6 +24,6 @@ export class UI_ListItem extends UI_Element {
     }
 
     dndEnd() {
-        (<AbstractCanvasPlugin> this.dropTargetPlugin).mouse.dndEnd();
+        (<AbstractCanvasPlugin> this.dropTargetPlugin).toolController.dndEnd();
     }
 }

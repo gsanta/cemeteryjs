@@ -67,7 +67,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.plugin.toolHandler.setSelectedTool(this.id);
+            this.plugin.toolController.setSelectedTool(this.id);
             return true;
         }
 

@@ -60,10 +60,10 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.toolHandler.registerTool(new SelectTool(this, this.registry));
-        this.toolHandler.registerTool(new DeleteTool(this, this.registry));
-        this.toolHandler.registerTool(new CameraTool(this, this.registry));
-        this.toolHandler.registerTool(new JoinTool(this, this.registry));
+        this.toolController.registerTool(new SelectTool(this, this.registry));
+        this.toolController.registerTool(new DeleteTool(this, this.registry));
+        this.toolController.registerTool(new CameraTool(this, this.registry));
+        this.toolController.registerTool(new JoinTool(this, this.registry));
 
         this.nodeEditorController = new NodeEditorController(this, this.registry);
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
@@ -126,7 +126,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        const joinTool = <JoinTool> this.toolHandler.getById(ToolType.Join);
+        const joinTool = <JoinTool> this.toolController.getById(ToolType.Join);
 
         if (joinTool.startPoint && joinTool.endPoint) {
             const line = canvas.line()
@@ -177,8 +177,8 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     activated() {
-        if (!this.toolHandler.getSelectedTool()) {
-            this.toolHandler.setSelectedTool(ToolType.Select);
+        if (!this.toolController.getSelectedTool()) {
+            this.toolController.setSelectedTool(ToolType.Select);
         }
     }
 }

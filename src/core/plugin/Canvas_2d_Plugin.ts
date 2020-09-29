@@ -79,13 +79,13 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
 const ZoomInControl: PropController<any> = {
     click(context) {
-        ((<AbstractCanvasPlugin> context.plugin).toolHandler.getById(ToolType.Camera) as CameraTool).zoomIn();
+        ((<AbstractCanvasPlugin> context.plugin).toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
 const ZoomOutControl: PropController<any> = {
     click(context) {
-        ((<AbstractCanvasPlugin> context.plugin).toolHandler.getById(ToolType.Camera) as CameraTool).zoomOut();
+        ((<AbstractCanvasPlugin> context.plugin).toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
     }
 }
 

@@ -44,7 +44,7 @@ export class KeyboardNodeObj extends NodeObj {
         const keyParams = this.getKeyParams();
 
         const gameViewerPlugin = <GameViewerPlugin> registry.plugins.getById(GameViewerPluginId);
-        const gameTool = <GameTool> gameViewerPlugin.toolHandler.getById(GameToolType);
+        const gameTool = <GameTool> gameViewerPlugin.toolController.getById(GameToolType);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 

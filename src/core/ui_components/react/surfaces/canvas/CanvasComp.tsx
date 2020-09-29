@@ -50,7 +50,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
             <div 
                 ref={this.ref} id={plugin.id}
                 style={{
-                    cursor: plugin.toolHandler.getActiveTool().getCursor(),
+                    cursor: plugin.toolController.getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
                     height: this.props.element.height ? this.props.element.height :'100%',
                     position: 'relative'
@@ -130,7 +130,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.getActiveTool();
+        const activeTool = (this.props.element.plugin as AbstractCanvasPlugin).toolController.getActiveTool();
         if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 

@@ -4,6 +4,7 @@ import { IPointerEvent } from "../../services/input/PointerService";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Controller } from "./UI_Controller";
 import { UI_Element } from "../../ui_components/elements/UI_Element";
+import { Tool } from "../tools/Tool";
 
 export class MousePointer {
     down: Point;
@@ -28,13 +29,21 @@ export class MousePointer {
     }
 }
 
-export class ToolService implements UI_Controller {
+export class ToolController implements UI_Controller {
     private registry: Registry;
     private plugin: AbstractCanvasPlugin;
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    private toolMap: Map<string, Tool> = new Map();
+    private tools: Tool[] = [];
+
+    protected priorityTool: Tool;
+    protected selectedTool: Tool;
+
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry, tools: Tool[] = []) {
         this.registry = registry;
         this.plugin = plugin;
+
+        tools.forEach(tool => this.registerTool(tool));
     }
 
     change(val: any, element: UI_Element) {}
@@ -100,6 +109,54 @@ export class ToolService implements UI_Controller {
         if (this.plugin.dropItem) {
             this.plugin.dropItem = undefined;
             this.registry.services.render.reRenderAll();
+        }
+    }
+
+    registerTool(tool: Tool) {
+        if (this.tools.indexOf(tool) === -1) {
+            this.tools.push(tool);
+        }
+
+        this.toolMap.set(tool.id, tool);
+    }
+
+    setSelectedTool(toolId: string) {
+        this.selectedTool && this.selectedTool.deselect();
+        this.selectedTool = this.getById(toolId);
+        this.selectedTool.select();
+        this.registry.services.render.reRender(this.plugin.region);
+    }
+
+    getSelectedTool(): Tool {
+        return this.selectedTool;
+    }
+
+    getActiveTool(): Tool {
+        return this.priorityTool ? this.priorityTool : this.selectedTool;
+    }
+
+    getById(toolId: string): Tool {
+        return this.toolMap.get(toolId);
+    }
+
+    getAll(): Tool[] {
+        return this.tools;
+    }
+
+    setPriorityTool(toolId: string) {
+        if (!this.priorityTool || this.priorityTool.id !== toolId) {
+            this.getActiveTool().leave();
+            this.priorityTool = this.toolMap.get(toolId);
+            this.priorityTool.select();
+            this.registry.services.render.reRender(this.plugin.region);
+        }
+    }
+
+    removePriorityTool(toolId: string) {
+        if (this.priorityTool && this.priorityTool.id === toolId) {
+            this.priorityTool.deselect();
+            this.priorityTool = null;
+            this.registry.services.render.reRender(this.plugin.region);
         }
     }
 

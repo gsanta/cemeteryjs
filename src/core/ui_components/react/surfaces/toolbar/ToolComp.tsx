@@ -12,7 +12,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
     private ref: React.RefObject<HTMLDivElement> = React.createRef();
     
     render() {
-        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.getSelectedTool();
+        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolController.getSelectedTool();
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,
@@ -25,7 +25,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
                 id={this.props.element.id}
                 ref={this.ref}
                 className={classes}
-                onClick={() => (this.props.element.plugin as AbstractCanvasPlugin).toolHandler.setSelectedTool(this.props.element.controllerId)}
+                onClick={() => (this.props.element.plugin as AbstractCanvasPlugin).toolController.setSelectedTool(this.props.element.controllerId)}
             >
                 {this.props.tooltip}
             </div>

@@ -57,43 +57,43 @@ export abstract class UI_Element {
 
     mouseDown(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseDown(e);
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseDown(e);
         }
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseMove(e);
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseMove(e);
         }
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseUp(e);
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseUp(e);
         }
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseLeave(e, data);
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseLeave(e, data);
         }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseEnter(e, data);
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseEnter(e, data);
         }
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseWheel(e);
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseWheel(e);
         }
     }
 
     mouseWheelEnd() {
         if (this.controllerId === activeToolId) {
-            (this.plugin as AbstractCanvasPlugin).mouse.mouseWheelEnd();
+            (this.plugin as AbstractCanvasPlugin).toolController.mouseWheelEnd();
         }
     }
 
@@ -110,7 +110,7 @@ export abstract class UI_Element {
     }
 
     dndEnd(registry: Registry, point: Point) {
-        (this.plugin as AbstractCanvasPlugin).mouse.dndDrop(point);
+        (this.plugin as AbstractCanvasPlugin).toolController.dndDrop(point);
         // this.plugin.getControllerById(this.controllerId).d/ndEnd(this.prop);
     }
 }

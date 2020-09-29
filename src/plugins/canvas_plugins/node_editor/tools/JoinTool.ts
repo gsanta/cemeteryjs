@@ -34,7 +34,7 @@ export class JoinTool extends PointerTool {
     }
 
     draggedUp() {
-        this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
+        this.registry.plugins.getHoveredPlugin().toolController.removePriorityTool(this.id);
 
         if (this.checkConnectionValidity()) {
             let joinPoint1 = this.joinPoint1;
@@ -82,7 +82,7 @@ export class JoinTool extends PointerTool {
     out(view: View) {
         super.out(view);
         if (!this.registry.services.pointer.isDown) {
-            this.registry.plugins.getHoveredPlugin().toolHandler.removePriorityTool(this.id);
+            this.registry.plugins.getHoveredPlugin().toolController.removePriorityTool(this.id);
         }
 
     }

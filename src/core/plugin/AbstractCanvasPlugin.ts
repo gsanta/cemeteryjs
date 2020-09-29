@@ -3,9 +3,7 @@ import { Point } from '../../utils/geometry/shapes/Point';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
-import { ToolService } from './controller/ToolController';
-import { ToolHandler } from '../services/input/ToolHandler';
-import { ViewStore } from '../stores/ViewStore';
+import { ToolController } from './controller/ToolController';
 import { UI_Plugin } from './UI_Plugin';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 
@@ -30,18 +28,16 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     dropItem: UI_ListItem;
 
-    readonly mouse: ToolService;
+    readonly toolController: ToolController;
     readonly keyboard: KeyboardService;
-    readonly toolHandler: ToolHandler;
 
     protected renderFunc: () => void;
 
     constructor(registry: Registry) {
         super(registry);
 
-        this.mouse = new ToolService(this, registry);
+        this.toolController = new ToolController(this, registry);
         this.keyboard = new KeyboardService(registry);
-        this.toolHandler = new ToolHandler(this, this.registry);        
     }
 
     destroy(): void {}

@@ -7,7 +7,7 @@ import { HistoryService } from "./HistoryService";
 import { ImportService } from './import/ImportService';
 import { HotkeyService } from "./input/HotkeyService";
 import { KeyboardService } from './input/KeyboardService';
-import { ToolService } from '../plugin/controller/ToolController';
+import { ToolController } from '../plugin/controller/ToolController';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
@@ -27,7 +27,6 @@ export class Services {
     export: ExportService;
     history: HistoryService;
     pointer: PointerService;
-    mouse: ToolService;
     keyboard: KeyboardService;
     game: GameService;
     gamepad: GamepadService;
@@ -55,7 +54,6 @@ export class Services {
         this.export = new ExportService(this.registry);
         this.history = new HistoryService(this.registry);
         this.pointer = new PointerService(this.registry);
-        this.mouse = new ToolService(null, this.registry);
         this.keyboard = new KeyboardService(this.registry);
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);
