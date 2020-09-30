@@ -3,6 +3,7 @@ import { View, ViewTag } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { ToolController } from '../controller/ToolController';
 import { UI_Region } from '../UI_Plugin';
 import { AbstractTool } from "./AbstractTool";
 import { ToolType } from "./Tool";
@@ -11,10 +12,13 @@ export abstract class PointerTool extends AbstractTool {
     acceptedViews: string[] = [];
 
     protected movingItem: View = undefined;
+    protected toolController: ToolController;
     private isDragStart = true;
 
-    constructor(toolType: ToolType, plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(toolType: ToolType, plugin: AbstractCanvasPlugin, toolController: ToolController, registry: Registry) {
         super(toolType, plugin, registry);
+
+        this.toolController = toolController;
     }
 
     click(): void {
@@ -71,7 +75,7 @@ export abstract class PointerTool extends AbstractTool {
 
     over(view: View) {
         if (view.viewType === JoinPointViewType) {
-            this.plugin.toolController.setPriorityTool(ToolType.Join);
+            this.toolController.setPriorityTool(ToolType.Join);
         }
         
         view.tags.add(ViewTag.Hovered);
@@ -82,7 +86,7 @@ export abstract class PointerTool extends AbstractTool {
     out(view: View) {
         console.log('out')
         if (!this.registry.services.pointer.isDown && view.viewType === JoinPointViewType) {
-            this.plugin.toolController.removePriorityTool(ToolType.Join);
+            this.toolController.removePriorityTool(ToolType.Join);
         } 
         
         view.tags.delete(ViewTag.Hovered);

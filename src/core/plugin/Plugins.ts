@@ -1,28 +1,25 @@
-import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
-import { AbstractSidepanelPlugin } from './AbstractSidepanelPlugin';
-import { UI_Plugin, UI_Region } from './UI_Plugin';
-import { Registry } from '../Registry';
 import { CodeEditorPlugin } from '../../plugins/canvas_plugins/code_editor/CodeEditorPlugin';
-import { AssetManagerDialogPlugin } from '../../plugins/dialog_plugins/asset_manager/AssetManagerDialogPlugin';
-import { GameViewerPlugin } from '../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
-import { NodeEditorPlugin } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
+import { GameViewerPluginFactory } from '../../plugins/canvas_plugins/game_viewer/GameViewerPluginFactory';
+import { NodeEditorPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorPluginFactory';
 import { NodeEditorSettingsPlugin } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPlugin';
 import { ObjectSettingsPlugin } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
-import { SceneEditorPlugin } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPlugin';
-import { ThumbnailDialogPlugin } from '../../plugins/canvas_plugins/scene_editor/ThumbnailDialogPlugin';
+import { SceneEditorPluginFactory } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPluginFactory';
+import { ThumbnailDialogPluginFactory } from '../../plugins/canvas_plugins/scene_editor/ThumbnailDialogPluginFactory';
+import { AssetManagerDialogPlugin } from '../../plugins/dialog_plugins/asset_manager/AssetManagerDialogPlugin';
+import { AssetManagerPluginFactory } from '../../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
+import { SpriteSheetManagerDialogPlugin } from '../../plugins/dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
 import { AssetManagerSidepanelPlugin } from '../../plugins/sidepanel_plugins/asset_manager/AssetManagerSidepanelPlugin';
 import { FileSettingsPlugin } from '../../plugins/sidepanel_plugins/file_settings/FileSettingsPlugin';
 import { LayoutSettingsPlugin } from '../../plugins/sidepanel_plugins/layout_settings/LayoutSettingsPlugin';
 import { LevelSettingsPlugin } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
-import { SpriteSheetManagerDialogPlugin } from '../../plugins/dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
+import { Registry } from '../Registry';
+import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
+import { AbstractSidepanelPlugin } from './AbstractSidepanelPlugin';
+import { UI_Controller } from './controller/UI_Controller';
 import { PluginFactory } from './PluginFactory';
-import { AssetManagerPluginFactory } from '../../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
-import { FormController } from './controller/FormController';
+import { UI_Plugin, UI_Region } from './UI_Plugin';
 
 export class Plugins {
-    sceneEditor: SceneEditorPlugin;
-    gameView: GameViewerPlugin;
-    nodeEditor: NodeEditorPlugin;
     codeEditor: CodeEditorPlugin;
 
     private legacyPlugins: UI_Plugin[] = [];
@@ -30,7 +27,7 @@ export class Plugins {
 
     private pluginFactories: Map<string, PluginFactory> = new Map();
     private plugins: Map<string, UI_Plugin> = new Map();
-    private controllers: Map<UI_Plugin, Map<string, FormController>> = new Map();
+    private controllers: Map<UI_Plugin, Map<string, UI_Controller>> = new Map();
 
     visibilityDirty = true;
 
@@ -38,14 +35,8 @@ export class Plugins {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.sceneEditor = new SceneEditorPlugin(registry);
-        this.gameView = new GameViewerPlugin(registry);
-        this.nodeEditor = new NodeEditorPlugin(registry);
         this.codeEditor = new CodeEditorPlugin(registry);
 
-        this.registerPlugin(this.sceneEditor);
-        this.registerPlugin(this.gameView);
-        this.registerPlugin(this.nodeEditor);
         this.registerPlugin(this.codeEditor);
 
         this.registerPlugin(new FileSettingsPlugin(this.registry));
@@ -55,11 +46,14 @@ export class Plugins {
         this.registerPlugin(new ObjectSettingsPlugin(this.registry));
         this.registerPlugin(new LevelSettingsPlugin(this.registry));
         this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
-        this.registerPlugin(new ThumbnailDialogPlugin(this.registry));
         this.registerPlugin(new SpriteSheetManagerDialogPlugin(this.registry));
         this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
 
+        this.registerPluginNew(new SceneEditorPluginFactory());
         this.registerPluginNew(new AssetManagerPluginFactory());
+        this.registerPluginNew(new GameViewerPluginFactory());
+        this.registerPluginNew(new NodeEditorPluginFactory());
+        this.registerPluginNew(new ThumbnailDialogPluginFactory());
     }
 
     private hoveredView: AbstractCanvasPlugin;
@@ -114,8 +108,8 @@ export class Plugins {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
     }
 
-    getController(pluginId: string, controllerId: string): FormController {
-        return this.controllers.get(this.plugins.get(pluginId))?.get(controllerId);
+    getControllers(pluginId: string): Map<string, UI_Controller> {
+        return this.controllers.get(this.plugins.get(pluginId));
     }
 
     showPlugin(pluginId: string) {

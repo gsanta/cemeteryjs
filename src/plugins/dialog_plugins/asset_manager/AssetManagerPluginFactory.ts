@@ -22,7 +22,7 @@ export class AssetManagerPluginFactory implements PluginFactory {
             new AssetPathControl(),
             new SaveEditControl(),
             new CancelEditControl()
-        ]
+        ];
 
         const controller = new FormController(plugin, registry, AssetManagerControllerId, props);
         return [controller];

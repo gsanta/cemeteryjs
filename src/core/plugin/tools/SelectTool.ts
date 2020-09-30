@@ -1,18 +1,16 @@
 import { Registry } from '../../Registry';
-import { PointerTool } from './PointerTool';
-import { ToolType, Cursor } from "./Tool";
 import { IPointerEvent } from '../../services/input/PointerService';
+import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { ToolController } from '../controller/ToolController';
 import { UI_Region } from '../UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
-import { Polygon } from '../../../utils/geometry/shapes/Polygon';
-import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { View } from '../../models/views/View';
-import { getIntersectingViews } from '../../stores/ViewStore';
+import { PointerTool } from './PointerTool';
+import { Cursor, ToolType } from "./Tool";
 
 export class SelectTool extends PointerTool {
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Select, plugin, registry);
+    constructor(plugin: AbstractCanvasPlugin, toolController: ToolController, registry: Registry) {
+        super(ToolType.Select, plugin, toolController, registry);
     }
 
     down() {

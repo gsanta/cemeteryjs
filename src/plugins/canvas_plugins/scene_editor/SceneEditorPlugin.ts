@@ -17,6 +17,7 @@ import { PathTool } from './tools/PathTool';
 import { SelectTool } from '../../../core/plugin/tools/SelectTool';
 import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
+import { ToolController } from '../../../core/plugin/controller/ToolController';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -24,16 +25,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
-
-        this.toolController.registerTool(new MeshTool(this, this.registry));
-        this.toolController.registerTool(new SpriteTool(this, this.registry));
-        this.toolController.registerTool(new PathTool(this, this.registry));
-        this.toolController.registerTool(new SelectTool(this, this.registry));
-        this.toolController.registerTool(new DeleteTool(this, this.registry));
-        this.toolController.registerTool(new CameraTool(this, this.registry));
-        
-        // this.exporter = new SceneEditorExporter(this, this.registry);
-        // this.importer = new SceneEditorImporter(this, this.registry);
     }
 
     getStore() {
@@ -180,12 +171,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
                 rect.strokeColor = spriteView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
     
             });
-    }
-
-    activated() {
-        if (!this.toolController.getSelectedTool()) {
-            this.toolController.setSelectedTool(ToolType.Rectangle);
-        }
     }
 
     private renderPathViews(canvas: UI_SvgCanvas) {

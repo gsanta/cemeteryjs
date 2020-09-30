@@ -19,6 +19,7 @@ import { SelectTool } from '../../../core/plugin/tools/SelectTool';
 import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
 import { CanvasControllerProps } from '../../../core/plugin/Canvas_2d_Plugin';
+import { ToolController } from '../../../core/plugin/controller/ToolController';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -47,6 +48,7 @@ export enum CanvasTag {
 }
 
 export const NodeEditorPluginId = 'node-editor-plugin'; 
+export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
 export class NodeEditorPlugin extends AbstractCanvasPlugin {
     id = NodeEditorPluginId;
@@ -60,12 +62,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.toolController.registerTool(new SelectTool(this, this.registry));
-        this.toolController.registerTool(new DeleteTool(this, this.registry));
-        this.toolController.registerTool(new CameraTool(this, this.registry));
-        this.toolController.registerTool(new JoinTool(this, this.registry));
-
-        this.nodeEditorController = new NodeEditorController(this, this.registry);
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
     }
 
@@ -96,7 +92,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         dropLayer.isDragging = !!this.dropItem;
 
         const toolbar = canvas.toolbar();
-        toolbar.controller = this.nodeEditorController;
+        toolbar.controllerId = NodeEditorControllerId;
 
         let tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
         tool.icon = 'select';

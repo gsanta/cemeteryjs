@@ -4,6 +4,8 @@ import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../core/Registry";
 import { ToolType } from "../../../core/plugin/tools/Tool";
+import { GameViewerToolControllerId } from "./GameViewerPluginFactory";
+import { ToolController } from "../../../core/plugin/controller/ToolController";
 
 export enum GameViewerProps {
     ZoomIn = 'zoomIn',
@@ -12,8 +14,10 @@ export enum GameViewerProps {
     Stop = 'Stop'
 }
 
+export const GameViewerControllerId = 'game-viewer-controller';
+
 export class GameViewerController extends FormController {
-    id = 'game-viewer-controller';
+    id = GameViewerControllerId;
     plugin: GameViewerPlugin;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
@@ -28,13 +32,15 @@ export class GameViewerController extends FormController {
 
 const ZoomInControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
-        (controller.plugin.toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
+        const toolController = <ToolController> context.registry.plugins.getControllers(context.plugin.id).get(GameViewerToolControllerId);
+        (toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
 const ZoomOutControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
-        (controller.plugin.toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
+        const toolController = <ToolController> context.registry.plugins.getControllers(context.plugin.id).get(GameViewerToolControllerId);
+        (toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
     }
 }
 

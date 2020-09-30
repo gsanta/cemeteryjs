@@ -4,6 +4,7 @@ import { Registry } from "../../../core/Registry";
 import { GameViewerController } from "../game_viewer/GameViewerController";
 import { ToolType } from "../../../core/plugin/tools/Tool";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
+import { ToolController } from "../../../core/plugin/controller/ToolController";
 
 export enum NodeEditorProps {
     DropNode = 'DropNode',
@@ -27,7 +28,8 @@ export class NodeEditorController extends FormController {
 
 const ZoomInControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
-        (controller.plugin.toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
+        const toolController = <ToolController> context.registry.plugins.getControllers(context.plugin.id).get(NodeEditorControllerId);
+        (toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 

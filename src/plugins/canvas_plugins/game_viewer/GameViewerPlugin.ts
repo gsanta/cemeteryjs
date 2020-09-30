@@ -5,12 +5,13 @@ import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { GameViewerController, GameViewerProps } from './GameViewerController';
+import { GameViewerControllerId, GameViewerProps } from './GameViewerController';
 import { Gizmos } from './Gizmos';
-import { GameTool, GameToolType } from './tools/GameTool';
+import { GameToolType } from './tools/GameTool';
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPluginId = 'game-viewer-plugin'; 
+export const GameViewerPluginControllerId = 'game-viewer-plugin-controller'; 
 export class GameViewerPlugin extends Canvas_3d_Plugin {
     id = GameViewerPluginId;
     region = UI_Region.Canvas2;
@@ -19,16 +20,10 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
     private gizmos: Gizmos;
 
-    private controller: GameViewerController;
-
     constructor(registry: Registry) {
         super(GameViewerPluginId, registry);
 
         this.gizmos = new Gizmos(this, registry);
-        
-        this.toolController.registerTool(new GameTool(this, this.registry));
-
-        this.controller = new GameViewerController(this, this.registry);
     }
 
     getStore() {
@@ -57,7 +52,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         const toolbar = canvas.toolbar();
 
-        toolbar.controller = this.controller;
+        toolbar.controllerId = GameViewerControllerId;
 
         let tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Camera});
         tool.icon = 'pan';

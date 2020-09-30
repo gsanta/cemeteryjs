@@ -21,8 +21,6 @@ export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
         super(registry);
 
         this.id = id;
-
-        this.toolController.registerTool(new CameraTool(this, registry));
     }
 
     getStore() {

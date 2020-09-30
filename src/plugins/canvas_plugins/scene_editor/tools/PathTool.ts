@@ -10,12 +10,13 @@ import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { PathObj, PathObjType } from "../../../../core/models/objs/PathObj";
+import { ToolController } from "../../../../core/plugin/controller/ToolController";
 
 export class PathTool extends PointerTool {
     acceptedViews = [PathViewType, PathPointViewType]
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Path, plugin, registry);
+    constructor(plugin: AbstractCanvasPlugin, toolController: ToolController, registry: Registry) {
+        super(ToolType.Path, plugin, toolController, registry);
     }
 
     click() {

@@ -88,19 +88,10 @@ export class PointerService {
 
     pointerLeave(e: IPointerEvent, data: View): void {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
-        // if (data instanceof AbstractCanvasPlugin) {
-        //     const leavingPlugin = this.hoveredPlugin;
-        //     this.hoveredPlugin = undefined;
-        //     this.isDown = false;
-        //     this.isDrag = false;
-
-        //     this.registry.services.render.reRender(data.region);
-        // } else {
             this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().out(data);
 
             this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
             this.hoveredItem = undefined;
-        // }
     }
 
     pointerOver() {
@@ -108,18 +99,13 @@ export class PointerService {
 
     pointerEnter(e: IPointerEvent, data: View) {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
-        // if (data instanceof AbstractCanvasPlugin) {
-        //     this.hoveredPlugin = data;
-        // } else {
-            // TODO: parent is not necessarily the root view if the hierarchy is deeper, hoveredItem should be set by pointertool anyway
-            this.hoveredItem = data;
+        this.hoveredItem = data;
 
-            this.registry.services.hotkey.executeHotkey({
-                isHover: true
-            });
+        this.registry.services.hotkey.executeHotkey({
+            isHover: true
+        });
 
-            this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().over(data);
-        // }
+        this.registry.plugins.getHoveredPlugin().toolController.getActiveTool().over(data);
 
         this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
     }

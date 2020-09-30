@@ -101,7 +101,7 @@ export class AxisGizmo {
         }
 
         const engine = this.registry.engine as Bab_EngineFacade;
-        const camera = (<Camera3D> this.registry.plugins.gameView.getCamera()).camera;
+        const camera = (<Camera3D> this.plugin.getCamera()).camera;
 
         this.updateOriginVector(engine.scene, engine.engine, camera);
         this.updateXVector(engine.scene, engine.engine, camera);

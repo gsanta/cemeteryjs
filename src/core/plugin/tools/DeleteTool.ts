@@ -3,6 +3,7 @@ import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkey
 import { Keyboard } from '../../services/input/KeyboardService';
 import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { ToolController } from '../controller/ToolController';
 import { UI_Region } from '../UI_Plugin';
 import { createRectFromMousePointer } from './AbstractTool';
 import { PointerTool } from './PointerTool';
@@ -11,8 +12,8 @@ import { Cursor, ToolType } from './Tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Delete, plugin, registry);
+    constructor(plugin: AbstractCanvasPlugin, toolController: ToolController,  registry: Registry) {
+        super(ToolType.Delete, plugin, toolController, registry);
     }
 
     drag() {
@@ -67,7 +68,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.plugin.toolController.setSelectedTool(this.id);
+            this.toolController.setSelectedTool(this.id);
             return true;
         }
 

@@ -28,7 +28,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     dropItem: UI_ListItem;
 
-    readonly toolController: ToolController;
+    toolController: ToolController;
     readonly keyboard: KeyboardService;
 
     protected renderFunc: () => void;
@@ -36,7 +36,6 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     constructor(registry: Registry) {
         super(registry);
 
-        this.toolController = new ToolController(this, registry);
         this.keyboard = new KeyboardService(registry);
     }
 

@@ -11,6 +11,7 @@ import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { View } from '../../../../models/views/View';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
+import { ToolController } from '../../../../plugin/controller/ToolController';
 
 const SelectionComponentStyled = styled.rect`
     stroke: red;
@@ -45,12 +46,14 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
 
     render(): JSX.Element {
         const plugin = this.props.element.plugin as AbstractCanvasPlugin;
+
+        const controller = this.props.registry.plugins.getControllers(plugin.id).get(this.props.element.controllerId);
         
         return (
             <div 
                 ref={this.ref} id={plugin.id}
                 style={{
-                    cursor: plugin.toolController.getActiveTool().getCursor(),
+                    cursor: (controller as ToolController).getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
                     height: this.props.element.height ? this.props.element.height :'100%',
                     position: 'relative'

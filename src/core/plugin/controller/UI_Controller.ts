@@ -3,6 +3,7 @@ import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { UI_ListItem } from "../../ui_components/elements/UI_ListItem";
 
 export interface UI_Controller {
+    id: string;
     change(val: any, element: UI_Element);
     click(element: UI_Element): void;
     blur(element: UI_Element): void;
