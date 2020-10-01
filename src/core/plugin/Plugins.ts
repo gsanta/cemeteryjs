@@ -15,6 +15,8 @@ import { LevelSettingsPlugin } from '../../plugins/sidepanel_plugins/level_setti
 import { Registry } from '../Registry';
 import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
 import { AbstractSidepanelPlugin } from './AbstractSidepanelPlugin';
+import { FormController } from './controller/FormController';
+import { ToolController } from './controller/ToolController';
 import { UI_Controller } from './controller/UI_Controller';
 import { PluginFactory } from './PluginFactory';
 import { UI_Plugin, UI_Region } from './UI_Plugin';
@@ -27,7 +29,8 @@ export class Plugins {
 
     private pluginFactories: Map<string, PluginFactory> = new Map();
     private plugins: Map<string, UI_Plugin> = new Map();
-    private controllers: Map<UI_Plugin, Map<string, UI_Controller>> = new Map();
+    private controllers: Map<UI_Plugin, FormController> = new Map();
+    private toolControllers: Map<UI_Plugin, ToolController> = new Map();
 
     visibilityDirty = true;
 
@@ -108,8 +111,12 @@ export class Plugins {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
     }
 
-    getControllers(pluginId: string): Map<string, UI_Controller> {
+    getPropController(pluginId: string): FormController {
         return this.controllers.get(this.plugins.get(pluginId));
+    }
+
+    getToolController(pluginId: string): ToolController {
+        return this.toolControllers.get(this.plugins.get(pluginId));
     }
 
     showPlugin(pluginId: string) {
@@ -121,7 +128,7 @@ export class Plugins {
                 this.plugins.set(pluginId, plugin);
                 this.controllers.set(plugin, new Map());
 
-                const pluginControllers = this.pluginFactories.get(pluginId).createControllers(plugin, this.registry);
+                const pluginControllers = this.pluginFactories.get(pluginId).createPropControllers(plugin, this.registry);
                 pluginControllers.forEach(controller => this.controllers.get(plugin).set(controller.id, controller)); 
 
                 this.activePlugins.push(plugin);

@@ -1,11 +1,13 @@
-import { ICamera } from '../models/misc/camera/ICamera';
 import { Point } from '../../utils/geometry/shapes/Point';
-import { UI_Layout } from '../ui_components/elements/UI_Layout';
+import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
-import { ToolController } from './controller/ToolController';
-import { UI_Plugin } from './UI_Plugin';
+import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
+import { PropContext, PropController } from './controller/FormController';
+import { CameraTool } from './tools/CameraTool';
+import { ToolType } from './tools/Tool';
+import { UI_Plugin } from './UI_Plugin';
 
 export interface CanvasViewSettings {
     initialSizePercent: number;
@@ -28,7 +30,6 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     dropItem: UI_ListItem;
 
-    toolController: ToolController;
     readonly keyboard: KeyboardService;
 
     protected renderFunc: () => void;
@@ -65,4 +66,28 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     }
 
     protected renderInto(layout: UI_Layout) { }
+}
+
+export const ZoomInProp = 'zoom-in';
+export class ZoomInControl extends PropController {
+    constructor() {
+        super(ZoomInProp);
+    }
+
+    click(context: PropContext) {
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getById(ToolType.Camera);
+        cameraTool.zoomIn();
+    }
+}
+
+export const ZoomOutProp = 'zoom-out';
+export class ZoomOutControl extends PropController {
+    constructor() {
+        super(ZoomOutProp);
+    }
+
+    click(context: PropContext) {
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getById(ToolType.Camera);
+        cameraTool.zoomOut();
+    }
 }

@@ -23,7 +23,7 @@ export class UI_ListItem extends UI_Element {
         this.controller && this.controller.dndStart(this, this.listItemId);
     }
 
-    dndEnd() {
-        (<AbstractCanvasPlugin> this.dropTargetPlugin).toolController.dndEnd();
+    dndEnd(registry: Registry) {
+        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).dndEnd(this);
     }
 }

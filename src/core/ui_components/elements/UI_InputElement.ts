@@ -24,7 +24,7 @@ export abstract class UI_InputElement extends UI_Element {
     }
 
     click(registry: Registry): void {
-        let controller: UI_Controller = registry.plugins.getControllers(this.plugin.id).get(this.controllerId);
+        let controller: UI_Controller = registry.plugins.getPropController(this.plugin.id).get(this.controllerId);
         if (controller) {
             controller.click(this);
         } else {

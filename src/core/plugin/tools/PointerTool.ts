@@ -12,14 +12,7 @@ export abstract class PointerTool extends AbstractTool {
     acceptedViews: string[] = [];
 
     protected movingItem: View = undefined;
-    protected toolController: ToolController;
     private isDragStart = true;
-
-    constructor(toolType: ToolType, plugin: AbstractCanvasPlugin, toolController: ToolController, registry: Registry) {
-        super(toolType, plugin, registry);
-
-        this.toolController = toolController;
-    }
 
     click(): void {
         const hoveredItem = this.registry.services.pointer.hoveredItem;
@@ -75,7 +68,7 @@ export abstract class PointerTool extends AbstractTool {
 
     over(view: View) {
         if (view.viewType === JoinPointViewType) {
-            this.toolController.setPriorityTool(ToolType.Join);
+            this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(ToolType.Join);
         }
         
         view.tags.add(ViewTag.Hovered);
@@ -84,9 +77,9 @@ export abstract class PointerTool extends AbstractTool {
     }
 
     out(view: View) {
-        console.log('out')
         if (!this.registry.services.pointer.isDown && view.viewType === JoinPointViewType) {
-            this.toolController.removePriorityTool(ToolType.Join);
+            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(ToolType.Join);
+
         } 
         
         view.tags.delete(ViewTag.Hovered);

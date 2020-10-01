@@ -6,6 +6,7 @@ import { UI_Region } from "./UI_Plugin";
 import { FormController, PropController } from "./controller/FormController";
 import { ToolType } from "./tools/Tool";
 import { CameraTool } from "./tools/CameraTool";
+import { ToolController } from "./controller/ToolController";
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -79,13 +80,17 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
 const ZoomInControl: PropController<any> = {
     click(context) {
-        ((<AbstractCanvasPlugin> context.plugin).toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
+        const toolController = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController);
+
+        (toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
 const ZoomOutControl: PropController<any> = {
     click(context) {
-        ((<AbstractCanvasPlugin> context.plugin).toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
+        const toolController = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController);
+
+        (toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
     }
 }
 

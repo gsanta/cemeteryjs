@@ -18,7 +18,7 @@ export class GameViewerPluginFactory implements PluginFactory {
         return new GameViewerPlugin(registry);
     }
 
-    createControllers(plugin: UI_Plugin, registry: Registry): UI_Controller[] {
+    createPropControllers(plugin: UI_Plugin, registry: Registry): UI_Controller[] {
         const controller = new ToolController(GameViewerToolControllerId, plugin as AbstractCanvasPlugin, registry);
 
         controller.registerTool(new GameTool(plugin as AbstractCanvasPlugin, registry));

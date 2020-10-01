@@ -1,10 +1,10 @@
 import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
-import { ToolController } from "../../../core/plugin/controller/ToolController";
-import { UI_Controller } from "../../../core/plugin/controller/UI_Controller";
+import { PropController } from "../../../core/plugin/controller/FormController";
 import { PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
+import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { SceneEditorPlugin, SceneEditorPluginId } from "./SceneEditorPlugin";
@@ -21,16 +21,18 @@ export class SceneEditorPluginFactory implements PluginFactory {
         return new SceneEditorPlugin(registry);
     }
 
-    createControllers(plugin: UI_Plugin, registry: Registry): UI_Controller[] {
-        const controller = new ToolController(SceneEditorToolControllerId, plugin as AbstractCanvasPlugin, registry);
+    createPropControllers(plugin: UI_Plugin, registry: Registry): PropController[] {
+        return []
+    }
 
-        controller.registerTool(new MeshTool(plugin as AbstractCanvasPlugin, registry));
-        controller.registerTool(new SpriteTool(plugin as AbstractCanvasPlugin, controller, registry));
-        controller.registerTool(new PathTool(plugin as AbstractCanvasPlugin, controller, registry));
-        controller.registerTool(new SelectTool(plugin as AbstractCanvasPlugin, controller, registry));
-        controller.registerTool(new DeleteTool(plugin as AbstractCanvasPlugin, controller, registry));
-        controller.registerTool(new CameraTool(plugin as AbstractCanvasPlugin, controller, registry));
-        
-        return [controller];
+    createTools(plugin: UI_Plugin, registry: Registry): Tool[] {
+        return [
+            new MeshTool(plugin as AbstractCanvasPlugin, registry),
+            new SpriteTool(plugin as AbstractCanvasPlugin, registry),
+            new PathTool(plugin as AbstractCanvasPlugin, registry),
+            new SelectTool(plugin as AbstractCanvasPlugin, registry),
+            new DeleteTool(plugin as AbstractCanvasPlugin, registry),
+            new CameraTool(plugin as AbstractCanvasPlugin, registry)
+        ];
     }
 }

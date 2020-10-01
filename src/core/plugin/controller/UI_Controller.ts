@@ -13,6 +13,9 @@ export interface UI_Controller {
     mouseMove(e: MouseEvent, element: UI_Element): void;
     mouseUp(e: MouseEvent, element: UI_Element): void;
     mouseWheel(e: WheelEvent): void;
+    mouseLeave(e: MouseEvent, data: any): void;
+    mouseEnter(e: MouseEvent, data: any): void;
+    mouseWheelEnd(): void;
     dndDrop(point: Point);
     dndStart(element: UI_Element, listItem: string): void;
     dndEnd(uiListItem: UI_ListItem): void;

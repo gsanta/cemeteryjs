@@ -5,7 +5,6 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractTool } from './AbstractTool';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
-import { ToolController } from '../controller/ToolController';
 
 export class CameraTool extends AbstractTool {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
@@ -16,12 +15,8 @@ export class CameraTool extends AbstractTool {
     private activeCameraAction: 'zoom' | 'pan' | 'rotate' = this.defaultCameraAction;
     private isSpaceDown: boolean;
 
-    private toolController: ToolController;
-
-    constructor(plugin: AbstractCanvasPlugin, toolController: ToolController, registry: Registry) {
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ToolType.Camera, plugin, registry);
-
-        this.toolController = toolController;
     }
 
     wheel() {
@@ -30,7 +25,7 @@ export class CameraTool extends AbstractTool {
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.toolController.removePriorityTool(this.id);
+        this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id)
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
@@ -90,14 +85,14 @@ export class CameraTool extends AbstractTool {
             setAsPriorityTool = true;
         }
 
-        setAsPriorityTool && this.toolController.setPriorityTool(this.id);
+        setAsPriorityTool && this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
         return setAsPriorityTool;
     }
 
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.toolController.removePriorityTool(this.id);
+            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
         }
     }

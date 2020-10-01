@@ -9,7 +9,3 @@ export interface IPluginJson {
     pluginId: string;
     viewGroups: ViewGroupJson[];
 }
-
-export interface IPluginExporter {
-    export(): IPluginJson;
-} 

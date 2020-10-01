@@ -19,19 +19,17 @@ export class ThumbnailDialogPluginFactory implements PluginFactory {
         return new ThumbnailDialogPlugin(registry);
     }
 
-    createControllers(plugin: UI_Plugin, registry: Registry): UI_Controller[] {
-        const toolController = new ToolController(ThumbnailToolControllerId, plugin as AbstractCanvasPlugin, registry);
-
-        toolController.registerTool(new CameraTool(plugin as AbstractCanvasPlugin, toolController, registry));
-
-        const props: PropController[] = [
+    createPropControllers(): PropController[] {
+        return [
             new ThumbnailCreateControl(),
             new ThumbnailUploadControl(),
             new ClearThumbnailControl()
         ];
+    }
 
-        const formController = new FormController(plugin as AbstractCanvasPlugin, registry, ThumbnailFormControllerId, props);
-        
-        return [toolController, formController];
+    createTools(plugin: UI_Plugin, registry: Registry) {
+        return [
+            new CameraTool(plugin as AbstractCanvasPlugin, registry)
+        ];
     }
 }

@@ -36,7 +36,7 @@ export class UI_SvgCanvas extends UI_SvgGroup {
         return UI_Factory.toolbar(this);
     }
 
-    dropLayer(config: { controllerId: string, prop: string}): UI_DropLayer {
+    dropLayer(config?: { controllerId: string, prop: string}): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
     }
 }

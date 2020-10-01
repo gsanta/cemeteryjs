@@ -3,7 +3,6 @@ import { JoinPointView, JoinPointViewType } from "../../../../core/models/views/
 import { NodeConnectionView, NodeConnectionViewType } from "../../../../core/models/views/NodeConnectionView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
-import { ToolController } from "../../../../core/plugin/controller/ToolController";
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../core/Registry";
@@ -14,8 +13,8 @@ export class JoinTool extends PointerTool {
     endPoint: Point;
     joinPoint1: JoinPointView;
 
-    constructor(plugin: AbstractCanvasPlugin, toolController: ToolController, registry: Registry) {
-        super(ToolType.Join, plugin, toolController, registry);
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+        super(ToolType.Join, plugin, registry);
     }
 
     down() {
@@ -35,7 +34,8 @@ export class JoinTool extends PointerTool {
     }
 
     draggedUp() {
-        this.registry.plugins.getHoveredPlugin().toolController.removePriorityTool(this.id);
+        this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+
 
         if (this.checkConnectionValidity()) {
             let joinPoint1 = this.joinPoint1;
@@ -83,9 +83,8 @@ export class JoinTool extends PointerTool {
     out(view: View) {
         super.out(view);
         if (!this.registry.services.pointer.isDown) {
-            this.registry.plugins.getHoveredPlugin().toolController.removePriorityTool(this.id);
+            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
         }
-
     }
 
     getCursor() {

@@ -70,12 +70,6 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         return layout;
     }
 
-    activated() {
-        if (!this.toolController.getSelectedTool()) {
-            this.toolController.setSelectedTool(ToolType.Camera);
-        }
-    }
-
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
         const meshView = this.registry.stores.viewStore.getOneSelectedView() as MeshView;

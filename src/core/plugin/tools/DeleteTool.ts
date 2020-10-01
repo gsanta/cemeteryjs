@@ -12,8 +12,8 @@ import { Cursor, ToolType } from './Tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(plugin: AbstractCanvasPlugin, toolController: ToolController,  registry: Registry) {
-        super(ToolType.Delete, plugin, toolController, registry);
+    constructor(plugin: AbstractCanvasPlugin,  registry: Registry) {
+        super(ToolType.Delete, plugin, registry);
     }
 
     drag() {
@@ -68,7 +68,8 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.toolController.setSelectedTool(this.id);
+            this.registry.plugins.getToolController(this.plugin.id).setSelectedTool(this.id)
+            
             return true;
         }
 

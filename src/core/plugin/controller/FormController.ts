@@ -109,7 +109,7 @@ const defaultPropControl: PropController<any> = {
     defaultVal(context: PropContext<any>, element: UI_Element, controller: FormController) {}
 }
 
-export class PropContext<T> {
+export class PropContext<T = any> {
     private tempVal: T;
     element: UI_Element;
     registry: Registry;
@@ -177,6 +177,19 @@ export class FormController implements UI_Controller {
     mouseWheel(e: WheelEvent): void {
         throw new Error('Method not implemented.');
     }
+
+    mouseWheelEnd(): void {
+        throw new Error('Method not implemented.');
+    }
+
+    mouseLeave(): void {
+        throw new Error('Method not implemented.');
+    }
+
+    mouseEnter(): void {
+        throw new Error('Method not implemented.');
+    }
+
     dndDrop(point: Point) {
         throw new Error('Method not implemented.');
     }

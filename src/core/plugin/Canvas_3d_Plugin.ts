@@ -35,13 +35,6 @@ export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
         return calcOffsetFromDom(this.htmlElement);
     }
 
-
-    activated() {
-        if (!this.toolController.getSelectedTool()) {
-            this.toolController.setSelectedTool(ToolType.Camera);
-        }
-    }
-
     getCamera(): ICamera {
         return (this.engine || this.registry.engine).getCamera();
     }

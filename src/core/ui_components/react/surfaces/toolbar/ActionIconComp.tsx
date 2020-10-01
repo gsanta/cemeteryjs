@@ -2,7 +2,6 @@ import * as React from 'react';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { cssClassBuilder } from '../../layout/BoxComp';
 import { UI_ActionIcon } from '../../../elements/toolbar/UI_ActionIcon';
-import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
 
 export interface ActionIconCompProps extends UI_ComponentProps<UI_ActionIcon> {
     tooltip: JSX.Element;
@@ -23,7 +22,6 @@ export class ActionIconComp extends React.Component<ActionIconCompProps> {
     }
     
     render() {
-        const selectedTool = (this.props.element.plugin as AbstractCanvasPlugin).toolController.getSelectedTool();
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,

@@ -8,7 +8,6 @@ import { AppContext, AppContextType } from '../../Context';
 import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
-import { View } from '../../../../models/views/View';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
 import { ToolController } from '../../../../plugin/controller/ToolController';
@@ -35,7 +34,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         this.wheelListener = new WheelListener(
             this.context.registry,
             (e: WheelEvent) => this.props.element.mouseWheel(this.props.registry, e),
-            () => this.props.element.mouseWheelEnd()
+            () => this.props.element.mouseWheelEnd(this.props.registry)
         );
 
         setTimeout(() => {
@@ -133,7 +132,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = (this.props.element.plugin as AbstractCanvasPlugin).toolController.getActiveTool();
+        const activeTool = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController).getActiveTool();
         if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 

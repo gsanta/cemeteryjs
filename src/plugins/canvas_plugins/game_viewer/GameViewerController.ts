@@ -32,14 +32,14 @@ export class GameViewerController extends FormController {
 
 const ZoomInControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
-        const toolController = <ToolController> context.registry.plugins.getControllers(context.plugin.id).get(GameViewerToolControllerId);
+        const toolController = <ToolController> context.registry.plugins.getPropController(context.plugin.id).get(GameViewerToolControllerId);
         (toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
     }
 }
 
 const ZoomOutControl: PropController<any> = {
     click(context, element, controller: GameViewerController) {
-        const toolController = <ToolController> context.registry.plugins.getControllers(context.plugin.id).get(GameViewerToolControllerId);
+        const toolController = <ToolController> context.registry.plugins.getPropController(context.plugin.id).get(GameViewerToolControllerId);
         (toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
     }
 }

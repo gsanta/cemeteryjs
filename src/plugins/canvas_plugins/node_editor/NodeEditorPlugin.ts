@@ -1,10 +1,9 @@
-import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { Camera2D } from '../../../core/models/misc/camera/Camera2D';
+import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../../../core/models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
-import { AbstractCanvasPlugin, calcOffsetFromDom } from '../../../core/plugin/AbstractCanvasPlugin';
-import { JoinTool } from './tools/JoinTool';
+import { AbstractCanvasPlugin, calcOffsetFromDom, ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
@@ -14,12 +13,7 @@ import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../../core/ui_components/react/styles';
 import { Point } from '../../../utils/geometry/shapes/Point';
-import { NodeEditorController, NodeEditorControllerId, NodeEditorProps } from './NodeEditorController';
-import { SelectTool } from '../../../core/plugin/tools/SelectTool';
-import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
-import { CameraTool } from '../../../core/plugin/tools/CameraTool';
-import { CanvasControllerProps } from '../../../core/plugin/Canvas_2d_Plugin';
-import { ToolController } from '../../../core/plugin/controller/ToolController';
+import { JoinTool } from './tools/JoinTool';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -57,7 +51,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     nodeObjects: NodeObj;
 
     private camera: Camera2D;
-    private nodeEditorController: NodeEditorController;
 
     constructor(registry: Registry) {
         super(registry);
@@ -87,12 +80,11 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     protected renderInto(layout: UI_Layout): void {
         const canvas = layout.svgCanvas({ controllerId: activeToolId });
 
-        const dropLayer = canvas.dropLayer({controllerId: NodeEditorControllerId, prop: NodeEditorProps.DropNode });
+        const dropLayer = canvas.dropLayer();
         dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes
         dropLayer.isDragging = !!this.dropItem;
 
         const toolbar = canvas.toolbar();
-        toolbar.controllerId = NodeEditorControllerId;
 
         let tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
         tool.icon = 'select';
@@ -112,17 +104,17 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
         
-        let actionIcon = toolbar.actionIcon({prop: CanvasControllerProps.ZoomIn});
+        let actionIcon = toolbar.actionIcon({prop: ZoomInProp});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({prop: CanvasControllerProps.ZoomOut});
+        actionIcon = toolbar.actionIcon({prop: ZoomOutProp});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        const joinTool = <JoinTool> this.toolController.getById(ToolType.Join);
+        const joinTool = <JoinTool> this.registry.plugins.getToolController(this.id).getById(ToolType.Join);
 
         if (joinTool.startPoint && joinTool.endPoint) {
             const line = canvas.line()
@@ -170,11 +162,5 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
             line2.x2 = connection.point2.x;
             line2.y2 = connection.point2.y;
         });
-    }
-
-    activated() {
-        if (!this.toolController.getSelectedTool()) {
-            this.toolController.setSelectedTool(ToolType.Select);
-        }
     }
 }

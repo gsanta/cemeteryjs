@@ -14,7 +14,7 @@ export class AssetManagerPluginFactory implements PluginFactory {
         return new AssetManagerDialogPlugin(registry);
     }
 
-    createControllers(plugin: UI_Plugin, registry: Registry): FormController[] {
+    createPropControllers(plugin: UI_Plugin, registry: Registry): FormController[] {
         const props: PropController[] = [
             new DeleteAssetControl(),
             new EnterEditModeControl(),

@@ -57,16 +57,16 @@ export class ToolController implements UI_Controller {
     mouseDown(e: MouseEvent): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.registry.services.pointer.pointerDown(this.convertEvent(e, true));
+        this.registry.services.pointer.pointerDown(this, this.convertEvent(e, true));
     }
     
     mouseMove(e: MouseEvent): void {
-        this.registry.services.pointer.pointerMove(this.convertEvent(e, this.registry.services.pointer.isDown));
+        this.registry.services.pointer.pointerMove(this, this.convertEvent(e, this.registry.services.pointer.isDown));
     }    
 
     mouseUp(e: MouseEvent): void {
         if (this.isLeftButton(e)) {
-            this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
+            this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false));
         }
 
         this.registry.services.hotkey.focus();
@@ -74,7 +74,7 @@ export class ToolController implements UI_Controller {
 
     dndDrop(point: Point) {
         const e = <MouseEvent> {x: point.x, y: point.y};
-        this.registry.services.pointer.pointerUp(this.convertEvent(e, false));
+        this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false));
 
         if (this.plugin.dropItem) {
             this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem);
@@ -85,21 +85,21 @@ export class ToolController implements UI_Controller {
     }
 
     mouseLeave(e: MouseEvent, data: any): void {
-        this.registry.services.pointer.pointerLeave(this.convertEvent(e, false), data);
+        this.registry.services.pointer.pointerLeave(this, this.convertEvent(e, false), data);
     }
 
     mouseEnter(e: MouseEvent, data: any): void {
-        this.registry.services.pointer.pointerEnter(this.convertEvent(e, false), data);
+        this.registry.services.pointer.pointerEnter(this, this.convertEvent(e, false), data);
     }
 
     mouseWheel(e: WheelEvent): void {
         const pointerEvent = this.convertEvent(e, false);
         pointerEvent.deltaY = e.deltaY;
-        this.registry.services.pointer.pointerWheel(pointerEvent);
+        this.registry.services.pointer.pointerWheel(this, pointerEvent);
     }
 
     mouseWheelEnd(): void {
-        this.registry.services.pointer.pointerWheelEnd();
+        this.registry.services.pointer.pointerWheelEnd(this);
     }
 
     dndStart(element: UI_Element, listItem: string): void {}
