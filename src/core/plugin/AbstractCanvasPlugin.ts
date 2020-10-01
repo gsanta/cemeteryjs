@@ -70,7 +70,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
 export const ZoomInProp = 'zoom-in';
 export class ZoomInControl extends PropController {
-    constructor() {
+    ZoomInController() {
         super(ZoomInProp);
     }
 
@@ -82,7 +82,7 @@ export class ZoomInControl extends PropController {
 
 export const ZoomOutProp = 'zoom-out';
 export class ZoomOutControl extends PropController {
-    constructor() {
+    ZoomOutController() {
         super(ZoomOutProp);
     }
 

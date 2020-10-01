@@ -2,7 +2,9 @@ import { CodeEditorPlugin } from '../../plugins/canvas_plugins/code_editor/CodeE
 import { GameViewerPluginFactory } from '../../plugins/canvas_plugins/game_viewer/GameViewerPluginFactory';
 import { NodeEditorPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorPluginFactory';
 import { NodeEditorSettingsPlugin } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPlugin';
+import { NodeEditorSettingsPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPluginFactory';
 import { ObjectSettingsPlugin } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
+import { ObjectSettingsPluginFactory } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPluginFactory';
 import { SceneEditorPluginFactory } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPluginFactory';
 import { ThumbnailDialogPluginFactory } from '../../plugins/canvas_plugins/scene_editor/ThumbnailDialogPluginFactory';
 import { AssetManagerDialogPlugin } from '../../plugins/dialog_plugins/asset_manager/AssetManagerDialogPlugin';
@@ -46,17 +48,17 @@ export class Plugins {
         this.registerPlugin(new LayoutSettingsPlugin(this.registry));
         this.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
 
-        this.registerPlugin(new ObjectSettingsPlugin(this.registry));
         this.registerPlugin(new LevelSettingsPlugin(this.registry));
         this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
         this.registerPlugin(new SpriteSheetManagerDialogPlugin(this.registry));
-        this.registerPlugin(new NodeEditorSettingsPlugin(this.registry));
 
         this.registerPluginNew(new SceneEditorPluginFactory());
         this.registerPluginNew(new AssetManagerPluginFactory());
         this.registerPluginNew(new GameViewerPluginFactory());
         this.registerPluginNew(new NodeEditorPluginFactory());
+        this.registerPluginNew(new NodeEditorSettingsPluginFactory());
         this.registerPluginNew(new ThumbnailDialogPluginFactory());
+        this.registerPluginNew(new ObjectSettingsPluginFactory());
     }
 
     private hoveredView: AbstractCanvasPlugin;

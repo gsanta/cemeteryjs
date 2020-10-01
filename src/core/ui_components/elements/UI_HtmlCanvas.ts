@@ -34,7 +34,7 @@ export class UI_HtmlCanvas extends UI_Element {
     }
 
     toolbar(): UI_Toolbar {
-        return UI_Factory.toolbar(this);
+        return UI_Factory.toolbar(this, {});
     }
 
     dropLayer(config: { controllerId?: string, prop: string}): UI_DropLayer {

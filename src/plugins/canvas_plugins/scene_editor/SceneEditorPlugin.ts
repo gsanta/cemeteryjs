@@ -1,23 +1,16 @@
-import { toDegree } from '../../../utils/geometry/Measurements';
-import { colors } from '../../../core/ui_components/react/styles';
+import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
+import { PathView, PathViewType } from '../../../core/models/views/PathView';
+import { SpriteViewType } from '../../../core/models/views/SpriteView';
+import { ViewTag } from '../../../core/models/views/View';
+import { CanvasControllerId, CanvasControllerProps, Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
+import { ToolType } from '../../../core/plugin/tools/Tool';
+import { Registry } from '../../../core/Registry';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { ViewTag } from '../../../core/models/views/View';
-import { CanvasControllerId, CanvasControllerProps, Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
-import { Registry } from '../../../core/Registry';
-import { ToolType } from '../../../core/plugin/tools/Tool';
+import { colors } from '../../../core/ui_components/react/styles';
 import { sort } from '../../../utils/geometry/Functions';
-import { MeshTool } from './tools/MeshTool';
-import { SpriteTool } from './tools/SpriteTool';
-import { SpriteViewType } from '../../../core/models/views/SpriteView';
-import { PathView, PathViewType } from '../../../core/models/views/PathView';
-import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
-import { PathTool } from './tools/PathTool';
-import { SelectTool } from '../../../core/plugin/tools/SelectTool';
-import { DeleteTool } from '../../../core/plugin/tools/DeleteTool';
-import { CameraTool } from '../../../core/plugin/tools/CameraTool';
-import { ToolController } from '../../../core/plugin/controller/ToolController';
+import { toDegree } from '../../../utils/geometry/Measurements';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -36,7 +29,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     protected renderInto(layout: UI_Layout): void {
-        const canvas = layout.svgCanvas({controllerId: activeToolId});
+        const canvas = layout.svgCanvas();
 
         const toolbar = canvas.toolbar();
         

@@ -34,7 +34,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         row = dialog.row({key: '2'});
         row.vAlign = 'center';
 
-        const canvas = row.htmlCanvas({controllerId: activeToolId});
+        const canvas = row.htmlCanvas();
         canvas.width = '300px';
         canvas.height = '300px';
 

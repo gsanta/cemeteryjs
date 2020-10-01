@@ -25,9 +25,9 @@ export class UI_TableRow extends UI_Container {
 
     _derivedColumnWidths: number[];
 
-    tableColumn(config: { controllerId?: string }) {
+    tableColumn() {
         const index = this.children.length;
-        const column = UI_Factory.tableColumn(this, config);
+        const column = UI_Factory.tableColumn(this, {});
         column._derivedWidth = this._derivedColumnWidths ? this._derivedColumnWidths[index] : undefined;
 
         return column;

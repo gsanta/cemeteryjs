@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { NodeCategory, NodeObj, NodeParam } from "../../../../../core/models/objs/NodeObj";
+import { NodeCategory, NodeObj } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { FormController, PropController } from "../../../../../core/plugin/controller/FormController";
@@ -7,6 +7,7 @@ import { UI_Plugin, UI_Region } from "../../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../../core/Registry";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../../core/services/NodeService";
+import { SaveEditControl } from "../../../../dialog_plugins/asset_manager/AssetManagerProps";
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeFacotry: NodeFactory = {
@@ -16,7 +17,7 @@ export const RouteNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('speed', SpeedControl);
+        controller.registerPropControl('speed', new SaveEditControl());
         return controller;
     }
 }
@@ -78,16 +79,21 @@ export class RouteNodeObj extends NodeObj {
     }
 }
 
-const SpeedControl: PropController<string> = {
+export class SpeedControl extends PropController<string> {
+
+    constructor() {
+        super('speed');
+    }
+
     defaultVal(context, element) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('speed').val;
-    },
+    }
     
     change(val, context) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
-    },
+    }
 
     blur(context, element) {
         const speed = context.getTempVal();

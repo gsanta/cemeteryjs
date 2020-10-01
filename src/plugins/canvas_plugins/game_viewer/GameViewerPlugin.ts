@@ -1,11 +1,11 @@
 import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
+import { ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { GameViewerControllerId, GameViewerProps } from './GameViewerController';
+import { GameViewerProps } from './GameViewerProps';
 import { Gizmos } from './Gizmos';
 import { GameToolType } from './tools/GameTool';
 (<any> window).earcut = require('earcut');
@@ -48,13 +48,11 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     }
 
     protected renderInto(layout: UI_Layout): void {
-        const canvas = layout.htmlCanvas({controllerId: activeToolId});
+        const canvas = layout.htmlCanvas();
 
         const toolbar = canvas.toolbar();
 
-        toolbar.controllerId = GameViewerControllerId;
-
-        let tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Camera});
+        let tool = toolbar.tool({key: ToolType.Camera});
         tool.icon = 'pan';
         let tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
@@ -65,17 +63,17 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        let actionIcon = toolbar.actionIcon({prop: GameViewerProps.ZoomIn});
+        let actionIcon = toolbar.actionIcon({prop: ZoomInProp});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({prop: GameViewerProps.ZoomOut});
+        actionIcon = toolbar.actionIcon({prop: ZoomOutProp});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        tool = toolbar.tool({controllerId: GameToolType, key: GameToolType});
+        tool = toolbar.tool({key: GameToolType});
         tool.icon = 'games';
         tool.placement = 'middle';
         tooltip = tool.tooltip();

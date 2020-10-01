@@ -1,4 +1,3 @@
-import { UI_Controller } from "../../plugin/controller/UI_Controller";
 import { Registry } from "../../Registry";
 import { UI_Element } from "./UI_Element";
 
@@ -8,40 +7,27 @@ export abstract class UI_InputElement extends UI_Element {
     layout: 'horizontal' | 'vertical' = 'vertical';
     inputWidth: string;
 
-    change(newVal: any): void {
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.change(newVal, this);
+    change(newVal: any, registry: Registry): void {
+        registry.plugins.getPropController(this.plugin.id).change(newVal, this);
     }
 
-    focus(): void {
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.focus(this);
+    focus(registry: Registry): void {
+        registry.plugins.getPropController(this.plugin.id).focus(this);
     }
 
-    blur(): void {
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        controller.blur(this);
+    blur(registry: Registry): void {
+        registry.plugins.getPropController(this.plugin.id).blur(this);
     }
 
     click(registry: Registry): void {
-        let controller: UI_Controller = registry.plugins.getPropController(this.plugin.id).get(this.controllerId);
-        if (controller) {
-            controller.click(this);
-        } else {
-            controller = this.controller || this.plugin.getControllerById(this.controllerId);
-            controller.click(this)
-        }
+        registry.plugins.getPropController(this.plugin.id).click(this);
     }
 
-    val(): any {
-        // TODO controllerId is deprecated
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        return controller.val(this);
+    val(registry: Registry): any {
+        return registry.plugins.getPropController(this.plugin.id).val(this);
     }
 
-    values(): any[] {
-        // TODO controllerId is deprecated
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId);
-        return controller.values(this);
+    values(registry: Registry): any[] {
+        return registry.plugins.getPropController(this.plugin.id).values(this);
     }
 }

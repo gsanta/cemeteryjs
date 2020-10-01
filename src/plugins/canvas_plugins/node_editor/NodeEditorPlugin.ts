@@ -78,7 +78,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     protected renderInto(layout: UI_Layout): void {
-        const canvas = layout.svgCanvas({ controllerId: activeToolId });
+        const canvas = layout.svgCanvas();
 
         const dropLayer = canvas.dropLayer();
         dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes

@@ -1,11 +1,10 @@
 import { UI_Plugin, UI_Region } from '../../../core/plugin/UI_Plugin';
-import { Registry } from '../../../core/Registry';
 import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
-import { NodeEditorSettingsController, NodeEditorSettingsControllerId, NodeEditorSettingsProps } from './NodeEditorSettingsController';
 import { NodeEditorPluginId } from './NodeEditorPlugin';
 import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin';
+import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
 export class NodeEditorSettingsPlugin extends UI_Plugin {
@@ -13,15 +12,7 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
     displayName = 'Node Editor';
     region = UI_Region.Sidepanel;
 
-    constructor(registry: Registry) {
-        super(registry);
-
-        this.controllers.set(NodeEditorSettingsControllerId, new NodeEditorSettingsController(this, this.registry));
-    }
-
     renderInto(rootContainer: UI_Accordion): UI_Container {
-        rootContainer.controller = this.getControllerById(NodeEditorSettingsControllerId);
-
         this.renderNodesList(rootContainer);
 
         return rootContainer;
@@ -40,7 +31,7 @@ export class NodeEditorSettingsPlugin extends UI_Plugin {
         const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getById(NodeEditorPluginId);
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeObj[]) => {
-            const accordion = rootContainer.accordion(null);
+            const accordion = rootContainer.accordion();
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {

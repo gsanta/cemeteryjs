@@ -17,6 +17,11 @@ export interface UI_Element_Css {
     userSelect?: 'auto' | 'text' | 'none' | 'all';
 }
 
+export interface UI_ElementConfig {
+    key?: string;
+    prop?: string;
+}
+
 export abstract class UI_Element {
     elementType: UI_ElementType;
     id: string;
@@ -43,39 +48,61 @@ export abstract class UI_Element {
     }
 
     mouseOver(registry: Registry, e: MouseEvent) {
-        this.plugin.getControllerById(this.controllerId).mouseOver(this);
+        if (this.prop) {
+            registry.plugins.getPropController(this.plugin.id).mouseOver(this);
+        } else if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseOver(this);
+        }
     }
 
     mouseOut(registry: Registry, e: MouseEvent) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseOut(this);
+        if (this.prop) {
+            registry.plugins.getPropController(this.plugin.id).mouseOut(this);
+        } else if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseOut(this);
+        }
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseDown(e, this);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseDown(e);
+        }
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseMove(e, this);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseMove(e);
+        }
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseUp(e, this);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseUp(e);
+        }
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseLeave(e, data);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseLeave(e, data);
+        }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseEnter(e, data);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseEnter(e, data);
+        }
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseWheel(e);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseWheel(e);
+        }
     }
 
     mouseWheelEnd(registry: Registry) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).mouseWheelEnd();
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).mouseWheelEnd();
+        }
     }
 
     keyDown(registry: Registry, e: KeyboardEvent) {
@@ -87,8 +114,9 @@ export abstract class UI_Element {
     }
 
     dndEnd(registry: Registry, point: Point) {
-        registry.plugins.getPropController(this.plugin.id).get(this.controllerId).dndDrop(point);
-        // this.plugin.getControllerById(this.controllerId).d/ndEnd(this.prop);
+        if (registry.plugins.getToolController(this.plugin.id)) {
+            registry.plugins.getToolController(this.plugin.id).dndDrop(point);
+        }
     }
 }
 

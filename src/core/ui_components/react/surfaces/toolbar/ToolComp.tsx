@@ -13,7 +13,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
     private ref: React.RefObject<HTMLDivElement> = React.createRef();
     
     render() {
-        const toolController = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController);
+        const toolController = this.props.registry.plugins.getToolController(this.props.element.plugin.id);
 
         const classes = cssClassBuilder(
             'ce-tool',

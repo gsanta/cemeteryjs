@@ -5,9 +5,9 @@ import { FormController } from '../../../../core/plugin/controller/FormControlle
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../../core/Registry';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
-import { MeshSettingsController, MeshSettingsControllerId, MeshSettingsProps } from './MeshSettingsController';
-import { PathIdControl, PathSettingsProps } from './PathObjectSettings';
-import { SpriteSettingsController, SpriteSettingsProps } from './SpriteSettingsController';
+import { MeshSettingsProps } from './MeshSettingsController';
+import { PathIdController, PathSettingsProps } from './PathObjectSettings';
+import { SpriteSettingsProps } from './SpriteSettingsController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
@@ -15,21 +15,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     id = ObjectSettingsPluginId;
     displayName = 'Object Settings';
     region = UI_Region.Sidepanel;
-
-    private pathObjectSettingsController: FormController;
-    private spriteSettingsController: SpriteSettingsController;
-    private meshSettingsController: MeshSettingsController;
-
-    constructor(registry: Registry) {
-        super(registry);
-
-        this.controllers.set(MeshSettingsControllerId, new MeshSettingsController(this, this.registry));
-
-        this.pathObjectSettingsController = new FormController(this, this.registry);
-        this.pathObjectSettingsController.registerPropControl(PathSettingsProps.PathId, PathIdControl);
-        this.spriteSettingsController = new SpriteSettingsController(this, registry);
-        this.meshSettingsController = new MeshSettingsController(this, registry);
-    }
 
     renderInto(layout: UI_Layout): void {
         const selectedViews = this.registry.stores.viewStore.getSelectedViews();
@@ -43,7 +28,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
                     this.renderPathObjectSettings(layout, <PathView> selectedViews[0]);
                 break;
                 case SpriteViewType:
-                    this.spriteSettingsController.spriteView = <SpriteView> selectedViews[0];
                     this.renderSpriteObjectSettings(layout);
             }
         }
@@ -59,8 +43,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     }
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
-        this.meshSettingsController.meshView = meshView;
-        layout.controller = this.meshSettingsController;
         let row = layout.row({ key: MeshSettingsProps.MeshId });
 
         const textField = row.textField({prop: MeshSettingsProps.MeshId});
@@ -108,7 +90,6 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     }
 
     private renderSpriteObjectSettings(layout: UI_Layout) {
-        layout.controller = this.spriteSettingsController;
         let row = layout.row({ key: SpriteSettingsProps.FrameName });
 
         let textField = row.textField({prop: SpriteSettingsProps.FrameName});

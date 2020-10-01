@@ -34,10 +34,10 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
             type={props.element.type}
             onKeyDown={e => e.stopPropagation()}
             onKeyUp={e => e.stopPropagation()}
-            onFocus={() => props.element.focus()}
-            value={props.element.val()}
-            onChange={e => props.element.change(e.target.value)}
-            onBlur={() => props.element.blur()}
+            onFocus={() => props.element.focus(props.registry)}
+            value={props.element.val(props.registry)}
+            onChange={e => props.element.change(e.target.value, props.registry)}
+            onBlur={() => props.element.blur(props.registry)}
         />
     );
 

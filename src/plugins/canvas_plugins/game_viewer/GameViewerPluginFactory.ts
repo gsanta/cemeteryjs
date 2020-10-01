@@ -1,12 +1,12 @@
-import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
-import { ToolController } from "../../../core/plugin/controller/ToolController";
-import { UI_Controller } from "../../../core/plugin/controller/UI_Controller";
+import { AbstractCanvasPlugin, ZoomInControl, ZoomOutControl } from "../../../core/plugin/AbstractCanvasPlugin";
+import { PropController } from "../../../core/plugin/controller/FormController";
 import { PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
+import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
-import { GameViewerController } from "./GameViewerController";
 import { GameViewerPlugin, GameViewerPluginId } from "./GameViewerPlugin";
+import { PlayController, StopController as StopController } from "./GameViewerProps";
 import { GameTool } from "./tools/GameTool";
 
 export const GameViewerToolControllerId = 'game-viewer-tool-controller';
@@ -18,14 +18,19 @@ export class GameViewerPluginFactory implements PluginFactory {
         return new GameViewerPlugin(registry);
     }
 
-    createPropControllers(plugin: UI_Plugin, registry: Registry): UI_Controller[] {
-        const controller = new ToolController(GameViewerToolControllerId, plugin as AbstractCanvasPlugin, registry);
+    createPropControllers(): PropController[] {
+        return [
+            new ZoomInControl(),
+            new ZoomOutControl(),
+            new PlayController(),
+            new StopController()
+        ]
+    }
 
-        controller.registerTool(new GameTool(plugin as AbstractCanvasPlugin, registry));
-        controller.registerTool(new CameraTool(plugin as AbstractCanvasPlugin, controller, registry));
-
-        const gameViewerController = new GameViewerController(plugin as AbstractCanvasPlugin, registry);
-        
-        return [controller, gameViewerController];
+    createTools(plugin: UI_Plugin, registry: Registry): Tool[] {
+        return [
+            new GameTool(plugin as AbstractCanvasPlugin, registry),
+            new CameraTool(plugin as AbstractCanvasPlugin, registry)
+        ];
     }
 }

@@ -1,10 +1,9 @@
+import { SpriteSheetObjType } from '../../../../core/models/objs/SpriteSheetObj';
 import { SpriteView } from '../../../../core/models/views/SpriteView';
-import { FormController, PropController } from '../../../../core/plugin/controller/FormController';
-import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
-import { Registry } from '../../../../core/Registry';
-import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { UI_Region } from '../../../../core/plugin/UI_Plugin';
 import { Point } from '../../../../utils/geometry/shapes/Point';
-import { SpriteSheetObj, SpriteSheetObjType } from '../../../../core/models/objs/SpriteSheetObj';
+import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
 
 export enum SpriteSettingsProps {
     FrameName = 'FrameName',
@@ -14,31 +13,20 @@ export enum SpriteSettingsProps {
     ScaleY = 'ScaleY',
 }
 
-export const SpriteSettingsControllerId = 'sprite-settings-controller';
-export class SpriteSettingsController extends FormController {
-    id = SpriteSettingsControllerId;
-    spriteView: SpriteView;
+export class FrameName extends PropController<string> {
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
-        super(plugin, registry);
-
-        this.registerPropControl(SpriteSettingsProps.FrameName, FrameName);
-        this.registerPropControl(SpriteSettingsProps.SelectSpriteSheet, SelectSpriteSheet);
-        this.registerPropControl(SpriteSettingsProps.ManageSpriteSheets, ManageSpriteSheets);
-        this.registerPropControl(SpriteSettingsProps.ScaleX, ScaleX);
-        this.registerPropControl(SpriteSettingsProps.ScaleY, ScaleY);
+    constructor() {
+        super(SpriteSettingsProps.FrameName);
     }
-}
 
-const FrameName: PropController<string> = {
     defaultVal(context) {
         return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().frameName || '';
-    },
+    }
 
     change(val, context) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
-    },
+    }
 
     blur(context) {
         const spriteView = (<SpriteView> context.registry.stores.viewStore.getOneSelectedView());
@@ -49,10 +37,15 @@ const FrameName: PropController<string> = {
     }
 }
 
-const SelectSpriteSheet: PropController<string> = {
+export class SelectSpriteSheetController extends PropController<string> {
+
+    constructor() {
+        super(SpriteSettingsProps.SelectSpriteSheet);
+    }
+
     defaultVal(context) {
         return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().spriteSheetId;
-    },
+    }
 
     change(val, context) {
         const spriteView = (<SpriteView> context.registry.stores.viewStore.getOneSelectedView());
@@ -60,66 +53,84 @@ const SelectSpriteSheet: PropController<string> = {
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());
         context.registry.services.render.reRender(UI_Region.Sidepanel);
-    },
+    }
 
     values(context) {
         return context.registry.stores.objStore.getObjsByType(SpriteSheetObjType).map(asset => asset.id);
     }
 }
 
-const ManageSpriteSheets: PropController<string> = {
+export class ManageSpriteSheetsController extends PropController<string> {
+
+    constructor() {
+        super(SpriteSettingsProps.ManageSpriteSheets);
+    }
+
     click(context) {
         context.registry.plugins.showPlugin(SpriteSheetManagerDialogPluginId);
         context.registry.services.render.reRenderAll();
     }
 }
 
-const ScaleX: PropController<string> = {
-    defaultVal(context, element, controller: SpriteSettingsController) {
-        return controller.spriteView.getObj().getScale().x;
-    },
+export class ScaleXController extends PropController<string> {
+    
+    constructor() {
+        super(SpriteSettingsProps.ScaleX);
+    }
 
-    change(val, context) {
+    defaultVal(context: PropContext) {
+        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+
+        return spriteView.getObj().getScale().x;
+    }
+
+    change(val, context: PropContext) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
-    },
+    }
 
-    blur(context, element, controller: SpriteSettingsController) {
-        const currScale = controller.spriteView.getObj().getScale();
+    blur(context: PropContext) {
+        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+
+        const currScale = spriteView.getObj().getScale();
         let scaleX = currScale.x;
         try {
             context.releaseTempVal(val => scaleX = parseFloat(val));
         } catch (e) {
             console.log(e);
         }
-        controller.spriteView.getObj().setScale(new Point(scaleX, currScale.y));
-        context.registry.engine.sprites.updateInstance(controller.spriteView.getObj());
+        spriteView.getObj().setScale(new Point(scaleX, currScale.y));
+        context.registry.engine.sprites.updateInstance(spriteView.getObj());
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 
-const ScaleY: PropController<string> = {
-    defaultVal(context, element, controller: SpriteSettingsController) {
-        return controller.spriteView.getObj().getScale().y;
-    },
+export class ScaleYController extends PropController<string> {
+    defaultVal(context: PropContext) {
+        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
 
-    change(val, context) {
+        return spriteView.getObj().getScale().y;
+    }
+
+    change(val, context: PropContext) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
-    },
+    }
 
-    blur(context, element, controller: SpriteSettingsController) {
-        const currScale = controller.spriteView.getObj().getScale();
+    blur(context: PropContext) {
+        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+
+        const currScale = spriteView.getObj().getScale();
         let scaleY = currScale.y;
         try {
             context.releaseTempVal(val => scaleY = parseFloat(val));
         } catch (e) {
             console.log(e);
         }
-        controller.spriteView.getObj().setScale(new Point(currScale.x, scaleY));
-        context.registry.engine.sprites.updateInstance(controller.spriteView.getObj());
+        spriteView.getObj().setScale(new Point(currScale.x, scaleY));
+        context.registry.engine.sprites.updateInstance(spriteView.getObj());
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }

@@ -11,30 +11,31 @@ import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
 import { FormController } from '../../plugin/controller/FormController';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { UI_ElementConfig } from './UI_Element';
 
 export class UI_DefaultContainer extends UI_Container {
-    listItem(config: {controller?: FormController, prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
+    listItem(config: {prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
         return UI_Factory.listItem(this, config);
     }
 
-    row(config: {controllerId?: string, key: string}): UI_Row {
+    row(config: UI_ElementConfig): UI_Row {
         return UI_Factory.row(this, config);
     }
 
-    column(config: {controllerId?: string, key: string}): UI_Column {
+    column(config: UI_ElementConfig): UI_Column {
         return UI_Factory.column(this, config);
     }
 
-    box(config: {controllerId?: string, key: string}): UI_Box {
+    box(config: UI_ElementConfig): UI_Box {
         return UI_Factory.box(this, config);
     }
 
-    table(config: {controllerId?: string}) {
-        return UI_Factory.table(this, config);
+    table() {
+        return UI_Factory.table(this, {});
     }
 
     text(): UI_Text {
-        return UI_Factory.text(this);
+        return UI_Factory.text(this, {});
     }
 
     button(prop: string): UI_Button {
@@ -57,19 +58,19 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.grid(this, config);
     }
 
-    accordion(config: {controllerId?: string}) {
-        return UI_Factory.accordion(this, config);
+    accordion() {
+        return UI_Factory.accordion(this, {});
     }
 
-    htmlCanvas(config: {controllerId?: string}): UI_HtmlCanvas {
-        return UI_Factory.htmlCanvas(this, config);
+    htmlCanvas(): UI_HtmlCanvas {
+        return UI_Factory.htmlCanvas(this, {});
     }
 
-    image(config: {key: string}): UI_Image {
+    image(config: UI_ElementConfig): UI_Image {
         return UI_Factory.image(this, config);
     }
 
-    icon(config: {prop: string}): UI_Icon {
+    icon(config: UI_ElementConfig): UI_Icon {
         return UI_Factory.icon(this, config);
     }
 }

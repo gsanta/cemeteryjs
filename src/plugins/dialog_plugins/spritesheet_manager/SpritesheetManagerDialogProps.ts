@@ -1,4 +1,4 @@
-import { FormController, PropController } from '../../../core/plugin/controller/FormController';
+import { FormController, PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { Registry } from '../../../core/Registry';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
@@ -23,9 +23,9 @@ export class SpritesheetManagerDialogController extends FormController {
     constructor(plugin: SpriteSheetManagerDialogPlugin, registry: Registry) {
         super(plugin, registry);
 
-        this.registerPropControl(SpritesheetManagerDialogProps.SpriteSheetImg, SpriteSheetImgPathControl);
+        this.registerPropControl(SpritesheetManagerDialogProps.SpriteSheetImg, SpriteSheetImgController);
         this.registerPropControl(SpritesheetManagerDialogProps.SpriteSheetJson, SpriteSheetJsonPathControl);
-        this.registerPropControl(SpritesheetManagerDialogProps.AddSpriteSheet, AddSpriteSheet);
+        this.registerPropControl(SpritesheetManagerDialogProps.AddSpriteSheet, AddSpriteSheetController);
     }
 }
 
@@ -38,16 +38,21 @@ const SpriteSheetJsonPathControl: PropController<{data: string, path: string}> =
     },
 }
 
-const SpriteSheetImgPathControl: PropController<string> = {
-    defaultVal(context, element, controller: SpritesheetManagerDialogController) {
+export class SpriteSheetImgController extends PropController<string> {
+    constructor() {
+        super(SpritesheetManagerDialogProps.SpriteSheetImg);
+    }
+
+    defaultVal(context: PropContext, element, controller: SpritesheetManagerDialogController) {
+        context.registry.plugins.getPropController(context.plugin.id).getPropContext()
         return controller.imgPath;
-    },
+    }
 
     change(val: string, context) {
         context.updateTempVal(val);
         
         context.registry.services.render.reRender(UI_Region.Dialog);
-    },
+    }
 
     blur(context, element, controller: SpritesheetManagerDialogController) {
         controller.imgPath = context.getTempVal();
@@ -57,7 +62,11 @@ const SpriteSheetImgPathControl: PropController<string> = {
     }
 }
 
-const AddSpriteSheet: PropController<string> = {
+export class AddSpriteSheetController extends PropController<string> {
+    constructor() {
+        super(SpritesheetManagerDialogProps.AddSpriteSheet);
+    }
+
     click(context, element, controller: SpritesheetManagerDialogController) {
         const spriteSheetObj = new SpriteSheetObj();
 

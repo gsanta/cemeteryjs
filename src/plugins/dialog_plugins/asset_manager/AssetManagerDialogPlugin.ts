@@ -21,7 +21,7 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
 
         const row = layout.row({ key: '1' });
 
-        const table = row.table(null);
+        const table = row.table();
         table.columnWidths = [150, 150, 150, 54];
         table.width = 500;
 
@@ -37,19 +37,19 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
         const tableRow = table.tableRow({isHeader: true});
         tableRow.isHeader = true;
         
-        let header = tableRow.tableColumn(null);
+        let header = tableRow.tableColumn();
         let text = header.text();
         text.text = 'Model id';
 
-        header = tableRow.tableColumn(null);
+        header = tableRow.tableColumn();
         text = header.text();
         text.text = 'Name';
 
-        header = tableRow.tableColumn(null);
+        header = tableRow.tableColumn();
         text = header.text();
         text.text = 'Relative path';
 
-        header = tableRow.tableColumn(null);
+        header = tableRow.tableColumn();
         header.width = 100;
     }
 
@@ -69,19 +69,19 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     private renderReadOnlyModel(table: UI_Table, asset: AssetObj) {
         const tableRow = table.tableRow({ isHeader: false });
 
-        let column = tableRow.tableColumn(null);
+        let column = tableRow.tableColumn();
         let text = column.text();
         text.text = asset.id;
 
-        column = tableRow.tableColumn(null);
+        column = tableRow.tableColumn();
         text = column.text();
         text.text = asset.name ? asset.name : '-';
 
-        column = tableRow.tableColumn(null);
+        column = tableRow.tableColumn();
         text = column.text();
         text.text = asset.path ? asset.path : '-';
 
-        column = tableRow.tableColumn(null);
+        column = tableRow.tableColumn();
         column.width = 100;
 
         const iconRow = column.row({ key: 'icons' });
@@ -103,17 +103,17 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     private renderEditableModel(table: UI_Table, asset: AssetObj) {
         const tableRow = table.tableRow({ isHeader: false });
 
-        let column = tableRow.tableColumn(null);
+        let column = tableRow.tableColumn();
         let text = column.text();
         text.text = asset.id;
 
-        column = tableRow.tableColumn(null);
+        column = tableRow.tableColumn();
         let textField = column.textField({prop: AssetManagerDialogProps.AssetName});
 
-        column = tableRow.tableColumn(null);
+        column = tableRow.tableColumn();
         textField = column.textField({prop: AssetManagerDialogProps.AssetPath});
 
-        column = tableRow.tableColumn(null);
+        column = tableRow.tableColumn();
         column.width = 100;
 
         const iconRow = column.row({ key: 'icons' });

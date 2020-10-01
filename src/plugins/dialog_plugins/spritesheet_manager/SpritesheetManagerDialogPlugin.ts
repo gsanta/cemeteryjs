@@ -2,7 +2,7 @@ import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
 import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
-import { SpritesheetManagerDialogController, SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogController";
+import { SpritesheetManagerDialogController, SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogProps";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { SpriteSheetObj, SpriteSheetObjType } from "../../../core/models/objs/SpriteSheetObj";
 
@@ -26,7 +26,7 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
 
         const row = layout.row({ key: '1' });
         
-        const table = row.table(null);
+        const table = row.table();
         table.columnWidths = [150, 150, 150, 54];
         table.width = 500;
 
@@ -42,19 +42,19 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
         const tableRow = table.tableRow({isHeader: true});
         tableRow.isHeader = true;
         
-        let header = tableRow.tableColumn(null);
+        let header = tableRow.tableColumn();
         let text = header.text();
         text.text = 'Name';
 
-        header = tableRow.tableColumn(null);
+        header = tableRow.tableColumn();
         text = header.text();
         text.text = 'Path';
 
-        header = tableRow.tableColumn(null);
+        header = tableRow.tableColumn();
         text = header.text();
         text.text = 'Json path';
 
-        header = tableRow.tableColumn(null);
+        header = tableRow.tableColumn();
         header.width = 100;
     }
 
@@ -66,19 +66,19 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
             const tableRow = table.tableRow({isHeader: false});
             tableRow.isHeader = false;
             
-            let column = tableRow.tableColumn(null);
+            let column = tableRow.tableColumn();
             let text = column.text();
             text.text = '-';
     
-            column = tableRow.tableColumn(null);
+            column = tableRow.tableColumn();
             text = column.text();
             text.text = spriteSheetAsset.path;
 
-            column = tableRow.tableColumn(null);
+            column = tableRow.tableColumn();
             text = column.text();
             text.text = jsonAsset.path;    
     
-            column = tableRow.tableColumn(null);
+            column = tableRow.tableColumn();
             column.width = 100;
         });
     }

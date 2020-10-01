@@ -57,7 +57,7 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
 
             const b64Text = `data:application/octet-stream;base64,${btoa(binary)}`;
             console.log(b64Text);
-            props.element.change({path: acceptedFiles[0].path, data: b64Text});
+            props.element.change({path: acceptedFiles[0].path, data: b64Text}, props.registry);
         }
         // if (props.readDataAs === 'text') {
             // reader.readAsText(acceptedFiles[0]);

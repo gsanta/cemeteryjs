@@ -46,13 +46,11 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     render(): JSX.Element {
         const plugin = this.props.element.plugin as AbstractCanvasPlugin;
 
-        const controller = this.props.registry.plugins.getControllers(plugin.id).get(this.props.element.controllerId);
-        
         return (
             <div 
                 ref={this.ref} id={plugin.id}
                 style={{
-                    cursor: (controller as ToolController).getActiveTool().getCursor(),
+                    cursor: this.props.registry.plugins.getToolController(plugin.id).getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
                     height: this.props.element.height ? this.props.element.height :'100%',
                     position: 'relative'
@@ -132,7 +130,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController).getActiveTool();
+        const activeTool = this.props.registry.plugins.getToolController(this.props.element.plugin.id).getActiveTool();
         if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 

@@ -17,7 +17,7 @@ export const KeyboardNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('key1', KeyControl);
+        controller.registerPropControl('key1', new KeyControl('key1'));
         return controller;
     }
 }
@@ -43,8 +43,7 @@ export class KeyboardNodeObj extends NodeObj {
     execute(registry: Registry) {
         const keyParams = this.getKeyParams();
 
-        const gameViewerPlugin = <GameViewerPlugin> registry.plugins.getById(GameViewerPluginId);
-        const gameTool = <GameTool> gameViewerPlugin.toolController.getById(GameToolType);
+        const gameTool = <GameTool> registry.plugins.getToolController(GameViewerPluginId).getById(GameToolType);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 
@@ -66,14 +65,14 @@ export class KeyboardNodeObj extends NodeObj {
     }
 }
 
-const KeyControl: PropController<string> = {
+export class KeyControl extends PropController {
     values() {
         return getAllKeys();
-    },
+    }
 
     defaultVal(context, element: UI_InputElement) {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam(element.prop).val;
-    },
+    }
 
     change(val, context, element: UI_InputElement) {
         context.updateTempVal(val);
@@ -90,7 +89,7 @@ const KeyControl: PropController<string> = {
         });
         context.clearTempVal();
         nodeView.updateDimensions();
-        nodeView.controller.registerPropControl('key2', KeyControl);
+        nodeView.controller.registerPropControl('key2', new KeyControl('key2'));
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

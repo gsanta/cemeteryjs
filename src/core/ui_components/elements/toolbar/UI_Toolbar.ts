@@ -22,6 +22,6 @@ export class UI_Toolbar extends UI_Element {
     }
 
     iconSeparator(): UI_IconSeparator {
-        return UI_Factory.iconSeparator(this);
+        return UI_Factory.iconSeparator(this, {});
     }
 }

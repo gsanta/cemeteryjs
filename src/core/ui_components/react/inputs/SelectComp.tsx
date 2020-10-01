@@ -25,7 +25,7 @@ const LabelStyled = styled.div`
 `;
 
 export function SelectComp(props: UI_ComponentProps<UI_Select>) {
-    const values: string[] = props.element.values() || [];
+    const values: string[] = props.element.values(props.registry) || [];
 
     const options = values.map(val => {
         return <option key={val} value={val}>{val}</option>
@@ -45,7 +45,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
             className="dropdown-component"
             style={selectStyle}
             onChange={(e) => {
-                props.element.change(e.target.value);
+                props.element.change(e.target.value, props.registry);
             }}
             onMouseDown={(e) => {
                 e.stopPropagation();
@@ -53,9 +53,9 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
             onMouseUp={(e) => {
                 e.stopPropagation();
             }}
-            value={props.element.val() ? props.element.val() : ''}
+            value={props.element.val(props.registry) ? props.element.val(props.registry) : ''}
         >
-            {props.element.val() ? options : [placeholder, ...options]}
+            {props.element.val(props.registry) ? options : [placeholder, ...options]}
         </select>
     );
 
@@ -78,7 +78,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
                 <div className="label">{props.element.label}</div>
                 <div className="input">
                     {select}
-                    {props.element.clearable && props.element.val() ? <ClearIconComponent onClick={() => props.element.change(undefined)}/> : null}
+                    {props.element.clearable && props.element.val(props.registry) ? <ClearIconComponent onClick={() => props.element.change(undefined, props.registry)}/> : null}
                 </div>
             </div>
         )

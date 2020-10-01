@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin, ZoomInControl, ZoomOutControl } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin, ZoomInControl as ZoomInController, ZoomOutControl as ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
 import { PropController } from "../../../core/plugin/controller/FormController";
 import { PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
@@ -8,6 +8,7 @@ import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorPlugin, NodeEditorPluginId } from "./NodeEditorPlugin";
+import { DragNodeController } from "./NodeEditorSettingsProps";
 import { JoinTool } from "./tools/JoinTool";
 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller';
@@ -21,8 +22,8 @@ export class NodeEditorPluginFactory implements PluginFactory {
 
     createPropControllers(): PropController[] {
         return [
-            new ZoomInControl(),
-            new ZoomOutControl()
+            new ZoomInController(),
+            new ZoomOutController()
         ];
     }
 

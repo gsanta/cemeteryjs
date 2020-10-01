@@ -1,5 +1,6 @@
-import { FormController, PropContext, PropController } from "../../../core/plugin/controller/FormController";
+import { PropController } from "../../../core/plugin/controller/FormController";
 import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { AssetManagerDialogPlugin, AssetManagerDialogPluginId } from "./AssetManagerDialogPlugin";
@@ -14,8 +15,8 @@ export class AssetManagerPluginFactory implements PluginFactory {
         return new AssetManagerDialogPlugin(registry);
     }
 
-    createPropControllers(plugin: UI_Plugin, registry: Registry): FormController[] {
-        const props: PropController[] = [
+    createPropControllers(): PropController[] {
+        return [
             new DeleteAssetControl(),
             new EnterEditModeControl(),
             new AssetNameControl(),
@@ -23,8 +24,7 @@ export class AssetManagerPluginFactory implements PluginFactory {
             new SaveEditControl(),
             new CancelEditControl()
         ];
-
-        const controller = new FormController(plugin, registry, AssetManagerControllerId, props);
-        return [controller];
     }
+
+    createTools(): Tool[] { return []; }
 }

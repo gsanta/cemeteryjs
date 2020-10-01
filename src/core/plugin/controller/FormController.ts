@@ -99,6 +99,9 @@ export abstract class PropController<T = any> {
     blur?(context: PropContext<T>, element: UI_Element, controller: FormController) {}
     defaultVal?(context: PropContext<T>, element: UI_Element, controller: FormController) {}
     values?(context: PropContext<T>, element: UI_Element, controller: FormController): T[] { return []; }
+
+    onDndStart(val: T, context: PropContext<T>, element: UI_Element, controller: FormController) {}
+    onDndEnd(context: PropContext<T>, element: UI_Element, controller: FormController) {}
 }
 
 const defaultPropControl: PropController<any> = {
@@ -106,7 +109,9 @@ const defaultPropControl: PropController<any> = {
     click(context: PropContext<any>, element: UI_Element, controller: FormController) {},
     focus(context: PropContext<any>, element: UI_Element, controller: FormController) {},
     blur(context: PropContext<any>, element: UI_Element, controller: FormController) {},
-    defaultVal(context: PropContext<any>, element: UI_Element, controller: FormController) {}
+    defaultVal(context: PropContext<any>, element: UI_Element, controller: FormController) {},
+    onDndStart(val: any, context: PropContext, element: UI_Element, controller: FormController) {},
+    onDndEnd(context: PropContext<any>, element: UI_Element, controller: FormController) {}
 }
 
 export class PropContext<T = any> {
@@ -136,7 +141,7 @@ export class PropContext<T = any> {
     }
 }
 
-export class FormController implements UI_Controller {
+export class FormController {
     readonly id: string;
     private handlers: Map<string, PropHandler<any>> = new Map();
     private propControls: Map<string, PropController<any>> = new Map();
@@ -163,35 +168,6 @@ export class FormController implements UI_Controller {
                 this.registerPropControlNew(propControl);
             });
         }
-    }
-    
-    mouseDown(e: MouseEvent, element: UI_Element): void {
-        throw new Error('Method not implemented.');
-    }
-    mouseMove(e: MouseEvent, element: UI_Element): void {
-        throw new Error('Method not implemented.');
-    }
-    mouseUp(e: MouseEvent, element: UI_Element): void {
-        throw new Error('Method not implemented.');
-    }
-    mouseWheel(e: WheelEvent): void {
-        throw new Error('Method not implemented.');
-    }
-
-    mouseWheelEnd(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    mouseLeave(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    mouseEnter(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    dndDrop(point: Point) {
-        throw new Error('Method not implemented.');
     }
 
     change(val: any, element: UI_Element): void {
@@ -300,7 +276,7 @@ export class FormController implements UI_Controller {
         context.registry = this.registry;
         context.plugin = this.plugin;
         this.propContexts.set(prop, context);
-        this.propControls.set(prop, {...defaultPropControl, ...propControl});
+        this.propControls.set(prop, propControl);
     }
 
     // TODO: it should replace registerPropControl when all off the PropControls will contain the `prop`
