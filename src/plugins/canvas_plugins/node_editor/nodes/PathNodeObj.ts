@@ -15,7 +15,7 @@ export const PathNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('path', new PathController());
+        controller.registerPropControl(new PathController());
         return controller;
     }
 }

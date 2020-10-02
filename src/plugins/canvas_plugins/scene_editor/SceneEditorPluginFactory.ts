@@ -1,6 +1,6 @@
-import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
@@ -14,15 +14,20 @@ import { SpriteTool } from "./tools/SpriteTool";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
-export class SceneEditorPluginFactory implements PluginFactory {
+export class SceneEditorPluginFactory implements UI_PluginFactory {
     pluginId = SceneEditorPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {
         return new SceneEditorPlugin(registry);
     }
 
-    createPropControllers(plugin: UI_Plugin, registry: Registry): PropController[] {
-        return []
+    createPropControllers(): PropController[] {
+        return [
+            new ZoomInController(),
+            new ZoomOutController(),
+            new UndoController(),
+            new RedoController()
+        ];
     }
 
     createTools(plugin: UI_Plugin, registry: Registry): Tool[] {

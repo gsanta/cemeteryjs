@@ -17,7 +17,7 @@ export class UI_HtmlCanvas extends UI_Element {
 
     mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
-        (this.plugin as AbstractCanvasPlugin).over()
+        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).over()
     }
 
     mouseOut(registry: Registry, e: MouseEvent) {
@@ -26,18 +26,18 @@ export class UI_HtmlCanvas extends UI_Element {
     }
 
     mouseEnter(registry: Registry, e: MouseEvent) {
-        (this.plugin as AbstractCanvasPlugin).over()
+        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).over()
     }
 
     mouseLeave(registry: Registry) {
-        (this.plugin as AbstractCanvasPlugin).out()
+        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).out()
     }
 
     toolbar(): UI_Toolbar {
         return UI_Factory.toolbar(this, {});
     }
 
-    dropLayer(config: { controllerId?: string, prop: string}): UI_DropLayer {
+    dropLayer(config: { prop: string}): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
     }
 }

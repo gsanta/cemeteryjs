@@ -1,12 +1,10 @@
-import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
-import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
-import { Registry } from '../../../core/Registry';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
-import { ToolType } from '../../../core/plugin/tools/Tool';
-import { MeshView } from '../../../core/models/views/MeshView';
-import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
+import { MeshView } from '../../../core/models/views/MeshView';
+import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
+import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { Registry } from '../../../core/Registry';
+import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { ThumbnailMakerControllerProps } from './ThumbnailDialogProps';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin';
@@ -25,7 +23,6 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         const meshView = this.registry.stores.viewStore.getOneSelectedView() as MeshView;
         const dialog: UI_Dialog = <UI_Dialog> layout;
         dialog.width = '560px';
-        layout.controllerId = ThumbnailDialogToolControllerId;
 
         let row = dialog.row({key: '1'});
         let text = row.text();
@@ -52,7 +49,7 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
 
         const toolbar = canvas.toolbar();
         
-        let actionIcon = toolbar.actionIcon({controllerId: ThumbnailDialogToolControllerId, prop: ThumbnailMakerControllerProps.ThumbnailCreate});
+        let actionIcon = toolbar.actionIcon({prop: ThumbnailMakerControllerProps.ThumbnailCreate});
         actionIcon.icon = 'insert-photo';
         let tooltip = actionIcon.tooltip();
         tooltip.label = 'Create thumbnail';

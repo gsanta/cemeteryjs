@@ -2,7 +2,7 @@ import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin"
 import { FormController, PropController } from "../../../core/plugin/controller/FormController";
 import { ToolController } from "../../../core/plugin/controller/ToolController";
 import { UI_Controller } from "../../../core/plugin/controller/UI_Controller";
-import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
@@ -12,7 +12,7 @@ import { ClearThumbnailControl, ThumbnailCreateControl, ThumbnailUploadControl }
 export const ThumbnailToolControllerId = 'thumbnail-tool-controller';
 export const ThumbnailFormControllerId = 'thumbnail-form-controller';
 
-export class ThumbnailDialogPluginFactory implements PluginFactory {
+export class ThumbnailDialogPluginFactory implements UI_PluginFactory {
     pluginId = ThumbnailDialogPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {

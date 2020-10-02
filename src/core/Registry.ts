@@ -1,11 +1,9 @@
+import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
+import { IEngineFacade } from "./adapters/IEngineFacade";
+import { Plugins } from "./plugin/Plugins";
+import { defaultPreferences, Preferences } from './preferences/Preferences';
 import { Services } from "./services/Services";
 import { Stores } from "./stores/Stores";
-import { Plugins } from "./plugin/Plugins";
-import { IControlledObject, ObjectCapability } from './IControlledObject';
-import { IListener } from './IListener';
-import { Preferences, defaultPreferences } from './preferences/Preferences';
-import { IEngineFacade } from "./adapters/IEngineFacade";
-import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
 
 export class Registry {
     stores: Stores;
@@ -22,17 +20,5 @@ export class Registry {
 
         this.plugins = new Plugins(this);
         this.engine = new Bab_EngineFacade(this);
-    }
-
-    registerObject(object: IControlledObject) {
-        if (ObjectCapability.hasObjectCapability(object, ObjectCapability.Listener)) {
-            this.services.event.addListener(<IListener> <unknown> object)
-        }
-    }
-
-    unregisterObject(object: IControlledObject) {
-        if (ObjectCapability.hasObjectCapability(object, ObjectCapability.Listener)) {
-            this.services.event.removeListener(<IListener> <unknown> object)
-        }
     }
 }

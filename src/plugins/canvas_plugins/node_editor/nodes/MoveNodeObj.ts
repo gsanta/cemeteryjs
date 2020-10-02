@@ -17,9 +17,9 @@ export const MoveNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('mesh', new MeshController());
-        controller.registerPropControl('move', new MeshMoveController());
-        controller.registerPropControl('speed', new MeshSpeedController());
+        controller.registerPropControl(new MeshController());
+        controller.registerPropControl(new MeshMoveController());
+        controller.registerPropControl(new MeshSpeedController());
         return controller;
     }
 }

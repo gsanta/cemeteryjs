@@ -17,6 +17,7 @@ export class DragNodeController extends PropController {
 
     onDndStart(context: PropContext) {
         context.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
+        context.registry.services.render.reRenderAll();
     }
 
     onDndEnd(context: PropContext, element: UI_Element) {

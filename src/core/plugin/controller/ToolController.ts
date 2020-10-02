@@ -76,7 +76,7 @@ export class ToolController implements UI_Controller {
         this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false));
 
         if (this.plugin.dropItem) {
-            this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem);
+            this.registry.plugins.getPropController(this.plugin.dropItem.pluginId).dndEnd(this.plugin.dropItem);
             this.plugin.dropItem = undefined;
         }
 

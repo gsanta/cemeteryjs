@@ -2,7 +2,8 @@ import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
 import { ViewTag } from '../../../core/models/views/View';
-import { CanvasControllerId, CanvasControllerProps, Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
+import { RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
+import { Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { Registry } from '../../../core/Registry';
 import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
@@ -33,12 +34,12 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
         const toolbar = canvas.toolbar();
         
-        let tool = toolbar.tool({controllerId: ToolType.Rectangle, key: ToolType.Rectangle});
+        let tool = toolbar.tool(ToolType.Rectangle);
         tool.icon = 'mesh';
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
 
-        tool = toolbar.tool({controllerId: ToolType.Sprite, key: ToolType.Sprite});
+        tool = toolbar.tool(ToolType.Sprite);
         tool.icon = 'sprite';
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
@@ -46,22 +47,22 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        tool = toolbar.tool({controllerId: ToolType.Path, key: ToolType.Path});
+        tool = toolbar.tool(ToolType.Path);
         tool.icon = 'path';
         tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
+        tool = toolbar.tool(ToolType.Select);
         tool.icon = 'select';
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Delete, key: ToolType.Delete});
+        tool = toolbar.tool(ToolType.Delete);
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Move});
+        tool = toolbar.tool(ToolType.Camera);
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
@@ -69,12 +70,12 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        let actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomIn});
+        let actionIcon = toolbar.actionIcon({prop: ZoomInProp});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.ZoomOut});
+        actionIcon = toolbar.actionIcon({prop: ZoomOutProp});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
@@ -82,12 +83,12 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.Undo});
+        actionIcon = toolbar.actionIcon({prop: UndoProp});
         actionIcon.icon = 'undo';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Undo';
 
-        actionIcon = toolbar.actionIcon({controllerId: CanvasControllerId, prop: CanvasControllerProps.Redo});
+        actionIcon = toolbar.actionIcon({prop: RedoProp});
         actionIcon.icon = 'redo';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Redo';

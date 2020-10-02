@@ -17,7 +17,7 @@ export const RouteNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('speed', new SaveEditControl());
+        controller.registerPropControl(new SaveEditControl());
         return controller;
     }
 }

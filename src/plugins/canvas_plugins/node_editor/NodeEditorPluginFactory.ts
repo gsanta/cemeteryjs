@@ -1,6 +1,6 @@
-import { AbstractCanvasPlugin, ZoomInControl as ZoomInController, ZoomOutControl as ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
@@ -8,12 +8,9 @@ import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorPlugin, NodeEditorPluginId } from "./NodeEditorPlugin";
-import { DragNodeController } from "./NodeEditorSettingsProps";
 import { JoinTool } from "./tools/JoinTool";
 
-export const NodeEditorToolControllerId = 'node-editor-tool-controller';
-
-export class NodeEditorPluginFactory implements PluginFactory {
+export class NodeEditorPluginFactory implements UI_PluginFactory {
     pluginId = NodeEditorPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {

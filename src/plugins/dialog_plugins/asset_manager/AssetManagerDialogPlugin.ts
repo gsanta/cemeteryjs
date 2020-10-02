@@ -15,7 +15,6 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     editedAsset: AssetObj;
 
     renderInto(layout: UI_Dialog): UI_Layout {
-        layout.controllerId = AssetManagerControllerId;
         layout.width = '530px';
         // layout.controllerId = AssetManagere;
 

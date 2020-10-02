@@ -16,9 +16,9 @@ export const AnimationNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('mesh', new AnimationMeshController());
-        controller.registerPropControl('startFrame', new StartFrameController());
-        controller.registerPropControl('endFrame', new EndFrameController());
+        controller.registerPropControl(new AnimationMeshController());
+        controller.registerPropControl(new StartFrameController());
+        controller.registerPropControl(new EndFrameController());
         return controller;
     }
 }

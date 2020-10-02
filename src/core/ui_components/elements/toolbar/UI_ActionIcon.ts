@@ -14,8 +14,8 @@ export class UI_ActionIcon extends UI_InputElement {
 
     placement: 'left' | 'middle' | 'right';
 
-    constructor(plugin: UI_Plugin) {
-        super(plugin);
+    constructor(pluginId: string) {
+        super(pluginId);
     }
 
     tooltip(): UI_Tooltip {

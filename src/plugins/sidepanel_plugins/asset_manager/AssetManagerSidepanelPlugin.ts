@@ -7,7 +7,6 @@ export class AssetManagerSidepanelPlugin extends UI_Plugin {
     id = 'asset-manager-sidepanel-plugin';
     displayName = 'Asset manager';
     region = UI_Region.Sidepanel;
-    isGlobalPlugin = true;
 
     renderInto(layout: UI_Layout): void {
         let row = layout.row({ key: AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen });

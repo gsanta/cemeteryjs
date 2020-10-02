@@ -1,12 +1,12 @@
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
 import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { AssetManagerSidepanelPlugin, AssetManagerSidepanelPluginId } from "./AssetManagerSidepanelPlugin";
 import { IsAssetManagerDialogOpenController } from "./AssetManagerSidepanelProps";
 
-export class AssetManagerSidepanelPluginFactory implements PluginFactory {
+export class AssetManagerSidepanelPluginFactory implements UI_PluginFactory {
     pluginId = AssetManagerSidepanelPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {

@@ -8,7 +8,6 @@ import { ToolType } from '../../../core/plugin/tools/Tool';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { ViewStore } from '../../../core/stores/ViewStore';
-import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../../core/ui_components/react/styles';
@@ -86,17 +85,17 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
         const toolbar = canvas.toolbar();
 
-        let tool = toolbar.tool({controllerId: ToolType.Select, key: ToolType.Select});
+        let tool = toolbar.tool(ToolType.Select);
         tool.icon = 'select';
         let tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Delete, key: ToolType.Delete});
+        tool = toolbar.tool(ToolType.Delete);
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({controllerId: ToolType.Camera, key: ToolType.Move});
+        tool = toolbar.tool(ToolType.Camera);
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';

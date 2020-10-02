@@ -8,26 +8,26 @@ export abstract class UI_InputElement extends UI_Element {
     inputWidth: string;
 
     change(newVal: any, registry: Registry): void {
-        registry.plugins.getPropController(this.plugin.id).change(newVal, this);
+        registry.plugins.getPropController(this.pluginId).change(newVal, this);
     }
 
     focus(registry: Registry): void {
-        registry.plugins.getPropController(this.plugin.id).focus(this);
+        registry.plugins.getPropController(this.pluginId).focus(this);
     }
 
     blur(registry: Registry): void {
-        registry.plugins.getPropController(this.plugin.id).blur(this);
+        registry.plugins.getPropController(this.pluginId).blur(this);
     }
 
     click(registry: Registry): void {
-        registry.plugins.getPropController(this.plugin.id).click(this);
+        registry.plugins.getPropController(this.pluginId).click(this);
     }
 
     val(registry: Registry): any {
-        return registry.plugins.getPropController(this.plugin.id).val(this);
+        return registry.plugins.getPropController(this.pluginId).val(this);
     }
 
     values(registry: Registry): any[] {
-        return registry.plugins.getPropController(this.plugin.id).values(this);
+        return registry.plugins.getPropController(this.pluginId).values(this);
     }
 }

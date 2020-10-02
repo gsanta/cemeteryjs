@@ -1,6 +1,6 @@
-import { AbstractCanvasPlugin, ZoomInControl, ZoomOutControl } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPlugin, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
@@ -11,7 +11,7 @@ import { GameTool } from "./tools/GameTool";
 
 export const GameViewerToolControllerId = 'game-viewer-tool-controller';
 
-export class GameViewerPluginFactory implements PluginFactory {
+export class GameViewerPluginFactory implements UI_PluginFactory {
     pluginId = GameViewerPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {
@@ -20,8 +20,8 @@ export class GameViewerPluginFactory implements PluginFactory {
 
     createPropControllers(): PropController[] {
         return [
-            new ZoomInControl(),
-            new ZoomOutControl(),
+            new ZoomInController(),
+            new ZoomOutController(),
             new PlayController(),
             new StopController()
         ]

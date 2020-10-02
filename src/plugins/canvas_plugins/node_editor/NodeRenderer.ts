@@ -8,9 +8,7 @@ import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
 
-export class NodeRenderer extends FormController {
-    controller: FormController;
-
+export class NodeRenderer {
     private joinPointsHeight: number;
 
     render(svgCanvas: UI_SvgCanvas, nodeView: NodeView) {
@@ -19,7 +17,6 @@ export class NodeRenderer extends FormController {
 
         this.renderRect(group, nodeView);
         const column = this.renderContent(group, nodeView);
-        column.controller = nodeView.controller;
         column.data = nodeView;
         this.renderInputsInto(column, nodeView);
     }
@@ -65,7 +62,6 @@ export class NodeRenderer extends FormController {
         const foreignObject = group.foreignObject({key: nodeView.id});
         foreignObject.width = nodeView.getBounds().getWidth();
         foreignObject.height = nodeView.getBounds().getHeight();
-        foreignObject.controller = this.controller;
         foreignObject.css = {
             userSelect: 'none'
         }

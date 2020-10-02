@@ -52,7 +52,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         const toolbar = canvas.toolbar();
 
-        let tool = toolbar.tool({key: ToolType.Camera});
+        let tool = toolbar.tool(ToolType.Camera);
         tool.icon = 'pan';
         let tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
@@ -73,7 +73,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        tool = toolbar.tool({key: GameToolType});
+        tool = toolbar.tool(GameToolType);
         tool.icon = 'games';
         tool.placement = 'middle';
         tooltip = tool.tooltip();

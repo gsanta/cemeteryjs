@@ -1,5 +1,5 @@
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
 import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
@@ -8,7 +8,7 @@ import { ClearLevelController, LevelController, LevelNameController } from "./Le
 
 export const AssetManagerControllerId = 'asset-manager-controller';
 
-export class LevelSettingsPluginFactory implements PluginFactory {
+export class LevelSettingsPluginFactory implements UI_PluginFactory {
     pluginId = LevelSettingsPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {

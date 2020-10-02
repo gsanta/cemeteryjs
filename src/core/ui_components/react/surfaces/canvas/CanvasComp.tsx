@@ -38,13 +38,13 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         );
 
         setTimeout(() => {
-            (this.props.element.plugin as AbstractCanvasPlugin).mounted(this.ref.current);
-            (this.props.element.plugin as AbstractCanvasPlugin).resize();
+            (this.props.registry.plugins.getById(this.props.element.pluginId) as AbstractCanvasPlugin).mounted(this.ref.current);
+            (this.props.registry.plugins.getById(this.props.element.pluginId) as AbstractCanvasPlugin).resize();
         }, 0);
     }
 
     render(): JSX.Element {
-        const plugin = this.props.element.plugin as AbstractCanvasPlugin;
+        const plugin = this.props.registry.plugins.getById(this.props.element.pluginId) as AbstractCanvasPlugin;
 
         return (
             <div 
@@ -73,7 +73,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     background: colors.panelBackgroundMedium
                 }}
                 tabIndex={0}
-                viewBox={((this.props.element.plugin as AbstractCanvasPlugin).getCamera() as Camera2D).getViewBoxAsString()}
+                viewBox={((this.props.registry.plugins.getById(this.props.element.pluginId) as AbstractCanvasPlugin).getCamera() as Camera2D).getViewBoxAsString()}
                 id={this.context.controllers.svgCanvasId}
                 onMouseDown={(e) => this.props.element.mouseDown(this.props.registry, e.nativeEvent)}
                 onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}                
@@ -130,7 +130,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = this.props.registry.plugins.getToolController(this.props.element.plugin.id).getActiveTool();
+        const activeTool = this.props.registry.plugins.getToolController(this.props.element.pluginId).getActiveTool();
         if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 

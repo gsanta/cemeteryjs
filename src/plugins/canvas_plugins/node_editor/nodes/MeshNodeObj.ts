@@ -15,7 +15,7 @@ export const MeshNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('mesh', new MeshController());
+        controller.registerPropControl(new MeshController());
         return controller;
     }
 }

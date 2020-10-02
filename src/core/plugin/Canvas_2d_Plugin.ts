@@ -31,13 +31,6 @@ function cameraInitializer(canvasId: string, registry: Registry) {
     }
 }
 
-export enum CanvasControllerProps {
-    ZoomIn = 'zoomIn',
-    ZoomOut = 'ZoomOut',
-    Undo = 'undo',
-    Redo = 'redo'
-}
-
 export const CanvasControllerId = 'canvas_controller_id';
 
 export class Canvas_2d_Plugin extends AbstractCanvasPlugin {

@@ -13,16 +13,15 @@ import { LayoutSettingsPluginFactory } from '../../plugins/sidepanel_plugins/lay
 import { LevelSettingsPluginFactory } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPluginFactory';
 import { Registry } from '../Registry';
 import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
-import { AbstractSidepanelPlugin } from './AbstractSidepanelPlugin';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
-import { PluginFactory } from './PluginFactory';
+import { UI_PluginFactory } from './PluginFactory';
 import { UI_Plugin, UI_Region } from './UI_Plugin';
 
 export class Plugins {
     private activePlugins: UI_Plugin[] = [];
 
-    private pluginFactories: Map<string, PluginFactory> = new Map();
+    private pluginFactories: Map<string, UI_PluginFactory> = new Map();
     private plugins: Map<string, UI_Plugin> = new Map();
     private controllers: Map<UI_Plugin, FormController> = new Map();
     private toolControllers: Map<UI_Plugin, ToolController> = new Map();
@@ -34,19 +33,19 @@ export class Plugins {
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.registerPluginNew(new SceneEditorPluginFactory());
-        this.registerPluginNew(new AssetManagerPluginFactory());
-        this.registerPluginNew(new GameViewerPluginFactory());
-        this.registerPluginNew(new NodeEditorPluginFactory());
-        this.registerPluginNew(new NodeEditorSettingsPluginFactory());
-        this.registerPluginNew(new ThumbnailDialogPluginFactory());
-        this.registerPluginNew(new ObjectSettingsPluginFactory());
-        this.registerPluginNew(new SpriteSheetManagerFactory());
-        this.registerPluginNew(new LevelSettingsPluginFactory());
-        this.registerPluginNew(new AssetManagerSidepanelPluginFactory());
-        this.registerPluginNew(new LayoutSettingsPluginFactory());
-        this.registerPluginNew(new FileSettingslPluginFactory());
-        this.registerPluginNew(new CodeEditorPluginFactory());
+        this.registerPlugin(new SceneEditorPluginFactory());
+        this.registerPlugin(new AssetManagerPluginFactory());
+        this.registerPlugin(new GameViewerPluginFactory());
+        this.registerPlugin(new NodeEditorPluginFactory());
+        this.registerPlugin(new NodeEditorSettingsPluginFactory());
+        this.registerPlugin(new ThumbnailDialogPluginFactory());
+        this.registerPlugin(new ObjectSettingsPluginFactory());
+        this.registerPlugin(new SpriteSheetManagerFactory());
+        this.registerPlugin(new LevelSettingsPluginFactory());
+        this.registerPlugin(new AssetManagerSidepanelPluginFactory());
+        this.registerPlugin(new FileSettingslPluginFactory());
+        this.registerPlugin(new CodeEditorPluginFactory());
+        this.registerPlugin(new LayoutSettingsPluginFactory());
     }
 
     private hoveredView: AbstractCanvasPlugin;
@@ -85,8 +84,30 @@ export class Plugins {
     }
 
     // TODO replace this with `registerPlugin` if that method is not used anymore
-    registerPluginNew(pluginFactory: PluginFactory) {
+    registerPlugin(pluginFactory: UI_PluginFactory) {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
+        
+        if (pluginFactory.isGlobalPlugin) {
+            this.showPlugin(pluginFactory.pluginId);
+        }
+    }
+
+    instantiatePlugin(pluginFactoryId: string) {
+        const pluginFactory = this.pluginFactories.get(pluginFactoryId);
+
+        const plugin = pluginFactory.createPlugin(this.registry);
+        this.plugins.set(plugin.id, plugin);
+
+        const propControllers = pluginFactory.createPropControllers(plugin, this.registry);
+        if (propControllers.length > 0) {
+            this.controllers.set(plugin, new FormController(plugin, this.registry, propControllers));
+        }
+
+        const tools = pluginFactory.createTools(plugin, this.registry);
+
+        if (tools.length > 0) {
+            this.toolControllers.set(plugin, new ToolController(plugin as AbstractCanvasPlugin, this.registry, tools));
+        }   
     }
 
     getPropController(pluginId: string): FormController {
@@ -98,23 +119,8 @@ export class Plugins {
     }
 
     showPlugin(pluginId: string) {        
-        if (this.pluginFactories.has(pluginId)) {
-            if (!this.plugins.has(pluginId)) {
-                const pluginFactory = this.pluginFactories.get(pluginId);
-                const plugin = pluginFactory.createPlugin(this.registry);
-                this.plugins.set(pluginId, plugin);
-
-                const propControllers = pluginFactory.createPropControllers(plugin, this.registry);
-                if (propControllers.length > 0) {
-                    this.controllers.set(plugin, new FormController(plugin, this.registry, propControllers));
-                }
-
-                const tools = pluginFactory.createTools(plugin, this.registry);
-
-                if (tools.length > 0) {
-                    this.toolControllers.set(plugin, new ToolController(plugin as AbstractCanvasPlugin, this.registry, tools));
-                }   
-            }
+        if (!this.plugins.has(pluginId)) {
+            this.instantiatePlugin(pluginId);
         }
 
         const plugin = this.getById(pluginId);

@@ -1,4 +1,3 @@
-import { IControlledObject } from '../IControlledObject';
 import { Registry } from '../Registry';
 import { UI_Container } from '../ui_components/elements/UI_Container';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
@@ -40,8 +39,7 @@ export namespace UI_Region {
     }
 }
 
-export abstract class UI_Plugin implements IControlledObject {
-    objectCapabilities = [];
+export abstract class UI_Plugin {
     id: string;
     displayName: string;
     region: UI_Region;
@@ -59,20 +57,19 @@ export abstract class UI_Plugin implements IControlledObject {
 
     render(): UI_Container {
         if (this.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(this, {});
+            const layout = UI_Factory.layout(this.id, {});
             const accordion = layout.accordion();
             accordion.title = this.displayName;
             this.renderInto(accordion);
             return layout;
         } else if (this.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog(this, {});
+            const dialog = UI_Factory.dialog(this.id, {});
             dialog.title = this.displayName;
             this.renderInto(dialog);
             return dialog;
 
         } else {
-            const layout = UI_Factory.layout(this, {});
-
+            const layout = UI_Factory.layout(this.id, {});
 
             this.renderInto(layout);
             return layout;

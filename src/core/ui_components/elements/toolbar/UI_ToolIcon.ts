@@ -1,4 +1,3 @@
-import { UI_Plugin } from '../../../plugin/UI_Plugin';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_Element } from '../UI_Element';
 import { UI_ElementType } from '../UI_ElementType';
@@ -15,8 +14,8 @@ export class UI_Tool extends UI_Element {
     toolId: string;
     color: string;
 
-    constructor(plugin: UI_Plugin) {
-        super(plugin);
+    constructor(pluginId: string) {
+        super(pluginId);
     }
 
     tooltip(): UI_Tooltip {

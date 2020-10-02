@@ -13,11 +13,11 @@ export class UI_Toolbar extends UI_Element {
         this.id = `${parent.id}_${this.elementType}`;
     }
 
-    tool(config: { controllerId?: string, key?: string, prop?: string }): UI_Tool {
-        return UI_Factory.tool(this, config);
+    tool(toolId: string): UI_Tool {
+        return UI_Factory.tool(this, toolId);
     }
 
-    actionIcon(config: { controllerId?: string, prop: string }): UI_ActionIcon {
+    actionIcon(config: { prop: string }): UI_ActionIcon {
         return UI_Factory.actionIcon(this, config);
     }
 

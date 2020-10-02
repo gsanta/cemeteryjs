@@ -12,10 +12,10 @@ const elementType = UI_ElementType.Layout;
 export class UI_Layout extends UI_Container {
     elementType = elementType;
 
-    constructor(plugin: UI_Plugin, region: UI_Region) {
-        super(plugin);
+    constructor(pluginId: string) {
+        super(pluginId);
 
-        this.id = `${plugin.id}_region-${region}_${elementType}`;
+        this.id = `${pluginId}_${elementType}`;
     }
 
     row(config: UI_ElementConfig): UI_Row {

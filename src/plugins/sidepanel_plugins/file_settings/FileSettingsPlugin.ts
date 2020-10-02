@@ -8,7 +8,6 @@ export class FileSettingsPlugin extends AbstractSidepanelPlugin {
     id = FileSettingsPluginId;
     displayName = 'File Settings';
     region = UI_Region.Sidepanel;
-    isGlobalPlugin = true;
 
     renderInto(layout: UI_Layout): UI_Layout {
         let row = layout.row({ key: FileSettingsProps.Export });

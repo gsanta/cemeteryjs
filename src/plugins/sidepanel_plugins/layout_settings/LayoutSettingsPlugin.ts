@@ -9,7 +9,6 @@ export class LayoutSettingsPlugin extends AbstractSidepanelPlugin {
     id = LayoutSettingsPluginId;
     displayName = 'Layout Settings';
     region = UI_Region.Sidepanel;
-    isGlobalPlugin = true;
 
     renderInto(layout: UI_Layout): UI_Layout {
         let row = layout.row({ key: LayoutSettingsProps.Layout });
