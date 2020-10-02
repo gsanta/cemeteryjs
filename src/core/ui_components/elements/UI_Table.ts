@@ -7,7 +7,7 @@ export class UI_Table extends UI_Container {
     width: number;
     columnWidths: number[];
 
-    tableRow(config: { isHeader?: boolean, controllerId?: string }) {
+    tableRow(config: { isHeader?: boolean }) {
         const row = UI_Factory.tableRow(this, config);
         row._derivedColumnWidths = this.columnWidths;
 

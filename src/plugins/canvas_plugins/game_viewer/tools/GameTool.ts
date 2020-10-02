@@ -1,11 +1,11 @@
-import { AbstractTool } from "../../../../core/plugin/tools/AbstractTool";
+import { NullTool } from "../../../../core/plugin/tools/NullTool";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
 import { Registry } from "../../../../core/Registry";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { KeyboardNodeType } from "../../node_editor/nodes/KeyboardNodeObj";
 
 export const GameToolType = 'game-tool';
-export class GameTool extends AbstractTool {
+export class GameTool extends NullTool {
     // TODO: not a good place for it
     lastExecutedKey: string;
 

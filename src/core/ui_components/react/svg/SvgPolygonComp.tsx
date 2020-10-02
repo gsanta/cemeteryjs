@@ -11,7 +11,8 @@ export const SvgPolygonComp = (props: UI_ComponentProps<UI_SvgPolygon>) => {
             points: props.element.points,
             style: props.element.css,
             onMouseEnter: e => props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data),
-            onMouseLeave: e =>props.element.mouseLeave(props.registry, e.nativeEvent, props.element.data)
+            onMouseLeave: e =>props.element.mouseLeave(props.registry, e.nativeEvent, props.element.data),
+            onMouseDown: e =>props.element.mouseDown(props.registry, e.nativeEvent)
         }
     );
 }

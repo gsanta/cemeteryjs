@@ -233,6 +233,8 @@ Id
         const text = new UI_SvgText(parent.pluginId);
         text.key = config && config.key;
 
+        text.scopedToolId = parent.scopedToolId;
+        text.data = parent.data;
         text.generateId(parent);
 
         parent.children.push(text);
@@ -244,6 +246,8 @@ Id
         const rect = new UI_SvgRect(parent.pluginId);
         rect.prop = config.prop;
 
+        rect.scopedToolId = parent.scopedToolId;
+        rect.data = parent.data;
         rect.generateId(parent);
     
         parent.children.push(rect);
@@ -255,6 +259,8 @@ Id
         const line = new UI_SvgLine(parent.pluginId);
         line.prop = config.prop;
 
+        line.scopedToolId = parent.scopedToolId;
+        line.data = parent.data;
         line.generateId(parent);
     
         parent.children.push(line);
@@ -266,6 +272,8 @@ Id
         const circle = new UI_SvgCircle(parent.pluginId);
         circle.prop = config.prop;
 
+        circle.scopedToolId = parent.scopedToolId;
+        circle.data = parent.data;
         circle.generateId(parent);
     
         parent.children.push(circle);
@@ -277,6 +285,8 @@ Id
         const path = new UI_SvgPath(parent.pluginId);
         path.prop = config.prop;
 
+        path.scopedToolId = parent.scopedToolId;
+        path.data = parent.data;
         path.generateId(parent);
     
         parent.children.push(path);
@@ -288,6 +298,8 @@ Id
         const polygon = new UI_SvgPolygon(parent.pluginId);
         polygon.prop = config.prop;
 
+        polygon.scopedToolId = parent.scopedToolId;
+        polygon.data = parent.data;
         polygon.generateId(parent);
     
         parent.children.push(polygon);
@@ -299,6 +311,8 @@ Id
         const image = new UI_SvgImage(parent.pluginId);
         image.prop = config.prop;
     
+        image.scopedToolId = parent.scopedToolId;
+        image.data = parent.data;
         image.generateId(parent);
 
         parent.children.push(image);
@@ -310,6 +324,8 @@ Id
         const group = new UI_SvgGroup(parent.pluginId);
         group.key = config.key;
         
+        group.scopedToolId = parent.scopedToolId;
+        group.data = parent.data;
         group.generateId(parent);
 
         parent.children.push(group);
@@ -321,6 +337,8 @@ Id
         const foreignObject = new UI_SvgForeignObject(parent.pluginId);
         foreignObject.key = config.key;
         
+        foreignObject.scopedToolId = parent.scopedToolId;
+        foreignObject.data = parent.data;
         foreignObject.generateId(parent);
 
         parent.children.push(foreignObject);

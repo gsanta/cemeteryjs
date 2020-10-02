@@ -4,7 +4,7 @@ import { UI_ElementType } from '../UI_ElementType';
 
 export class UI_SvgGroup extends UI_Container {
     elementType = UI_ElementType.SvgGroup;
-
+    scopedToolId: string;
     transform: string;
 
     rect(prop?: string) {
@@ -35,7 +35,7 @@ export class UI_SvgGroup extends UI_Container {
         return UI_Factory.svgGroup(this, {key});
     }
 
-    foreignObject(config: { controllerId?: string, key: string}) {
+    foreignObject(config: { key: string}) {
         return UI_Factory.svgForeignObject(this, config);
     }
 

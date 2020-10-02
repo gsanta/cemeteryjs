@@ -2,11 +2,11 @@ import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, Hotkey, HotkeyTrigger, IHotkeyEvent } from "../../services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from '../../services/input/KeyboardService';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { AbstractTool } from './AbstractTool';
+import { NullTool } from './NullTool';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 
-export class CameraTool extends AbstractTool {
+export class CameraTool extends NullTool {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
     private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
     private zoomHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, wheel: true, worksDuringMouseDown: true};

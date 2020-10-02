@@ -3,12 +3,12 @@ import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { MeshView } from '../../models/views/MeshView';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
+import { NullTool, createRectFromMousePointer } from './NullTool';
 import { ToolType } from './Tool';
 import { UI_Region } from '../UI_Plugin';
 import { View } from '../../models/views/View';
 
-export abstract class RectangleTool extends AbstractTool {
+export abstract class RectangleTool extends NullTool {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
 

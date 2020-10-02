@@ -3,7 +3,7 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Plugin';
-import { createRectFromMousePointer } from './AbstractTool';
+import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor, ToolType } from "./Tool";
 

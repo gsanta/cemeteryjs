@@ -3,7 +3,6 @@ import { UI_Region } from '../plugin/UI_Plugin';
 
 
 export interface Preferences {
-
     fullscreenRegion: UI_Region.Canvas1 | UI_Region.Canvas2;
     perspective: string;
 
@@ -23,6 +22,10 @@ export interface Preferences {
             twoColumnRatio: number,
             threeColumnRatio: number
         }
+    }
+
+    colors: {
+        green: string;
     }
 }
 
@@ -46,5 +49,9 @@ export const defaultPreferences: Preferences = {
             twoColumnRatio: 88,
             threeColumnRatio: 44
         }
+    },
+
+    colors: {
+        green: 'green'
     }
 }

@@ -16,7 +16,6 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
 
     renderInto(layout: UI_Dialog): UI_Layout {
         layout.width = '530px';
-        // layout.controllerId = AssetManagere;
 
         const row = layout.row({ key: '1' });
 
@@ -26,8 +25,6 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
 
         this.renderTableHeader(table);
         this.renderModelRows(table);
-
-        // const column2 = tableRow.tableColumn();
 
         return layout;
     }

@@ -1,7 +1,6 @@
 import { UI_Plugin } from '../../plugin/UI_Plugin';
 import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
-import { FormController } from '../../plugin/controller/FormController';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Registry } from '../../Registry';
 
@@ -30,6 +29,8 @@ export abstract class UI_Element {
     key: string;
     isBold: boolean;
     data: any;
+    //TODO: consider restrict it only to svg elements
+    scopedToolId: string;
     isInteractive: boolean = true;
     readonly target: string;
 
@@ -45,45 +46,33 @@ export abstract class UI_Element {
         this.id = `${parent.id}_${this.elementType}-${this.prop ? this.prop : this.key}`;
     }
 
-    mouseOver(registry: Registry, e: MouseEvent) {
-        if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseOver(this);
-        }
-    }
-
-    mouseOut(registry: Registry, e: MouseEvent) {
-        if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseOut(this);
-        }
-    }
-
     mouseDown(registry: Registry, e: MouseEvent) {
         if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseDown(e);
+            registry.plugins.getToolController(this.pluginId).mouseDown(e, this);
         }
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
         if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseMove(e);
+            registry.plugins.getToolController(this.pluginId).mouseMove(e, this);
         }
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
         if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseUp(e);
+            registry.plugins.getToolController(this.pluginId).mouseUp(e, this);
         }
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
         if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseLeave(e, data);
+            registry.plugins.getToolController(this.pluginId).mouseLeave(e, data, this);
         }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
         if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).mouseEnter(e, data);
+            registry.plugins.getToolController(this.pluginId).mouseEnter(e, data, this);
         }
     }
 
@@ -109,7 +98,7 @@ export abstract class UI_Element {
 
     dndEnd(registry: Registry, point: Point) {
         if (registry.plugins.getToolController(this.pluginId)) {
-            registry.plugins.getToolController(this.pluginId).dndDrop(point);
+            registry.plugins.getToolController(this.pluginId).dndDrop(point, this);
         }
     }
 }

@@ -2,6 +2,10 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { MousePointer, ToolController } from "../../plugin/controller/ToolController";
+import { UI_Element } from "../../ui_components/elements/UI_Element";
+import { UI_ElementType } from "../../ui_components/elements/UI_ElementType";
+import { UI_SvgGroup } from "../../ui_components/elements/svg/UI_SvgGroup";
+import { Tool } from "../../plugin/tools/Tool";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -39,45 +43,47 @@ export class PointerService {
         this.registry = registry;
     }
 
-    pointerDown(controller: ToolController, e: IPointerEvent): void {
+    pointerDown(controller: ToolController, e: IPointerEvent, element: UI_Element): void {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
         if (e.button !== 'left') { return }
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
-        controller.getActiveTool().down(e);
+        
+        this.determineTool(controller, element).down(e);
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerMove(controller: ToolController, e: IPointerEvent): void {
+    pointerMove(controller: ToolController, e: IPointerEvent, element: UI_Element): void {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
 
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
+
+        const tool = this.determineTool(controller, element);
+
         if (this.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
-            controller.getActiveTool().drag(e);
+            tool.drag(e);
         } else {
-            controller.getActiveTool().move();
+            tool.move();
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerUp(controller: ToolController, e: IPointerEvent): void {
+    pointerUp(controller: ToolController, e: IPointerEvent, element: UI_Element): void {
         this.pointer.droppedItemType = e.droppedItemId;
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
-        if (this.isDrag) {
-            controller.getActiveTool().draggedUp();
-        } else {
-            controller.getActiveTool().click();
-        }
+        const tool = this.determineTool(controller, element);
+
+        this.isDrag ? tool.draggedUp() : tool.click(); 
         
         controller.getActiveTool().up(e);
         this.isDown = false;
@@ -86,18 +92,15 @@ export class PointerService {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(controller: ToolController, e: IPointerEvent, data: View): void {
+    pointerLeave(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element): void {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
-            controller.getActiveTool().out(data);
+            this.determineTool(controller, element).out(data);
 
             this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
             this.hoveredItem = undefined;
     }
 
-    pointerOver() {
-    }
-
-    pointerEnter(controller: ToolController, e: IPointerEvent, data: View) {
+    pointerEnter(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element) {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
         this.hoveredItem = data;
 
@@ -105,7 +108,7 @@ export class PointerService {
             isHover: true
         });
 
-        controller.getActiveTool().over(data);
+        this.determineTool(controller, element).over(data);
 
         this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
     }
@@ -131,6 +134,16 @@ export class PointerService {
         this.wheel = Wheel.IDLE;
 
         controller.getActiveTool().wheelEnd();
+    }
+
+    private determineTool(toolController: ToolController, element: UI_Element): Tool {
+        let tool: Tool;
+
+        if (element.scopedToolId) {
+            tool = toolController.getById((<UI_SvgGroup> element).scopedToolId);
+        }
+
+        return tool || toolController.getActiveTool(); 
     }
     
     private getScreenPoint(point: Point): Point {

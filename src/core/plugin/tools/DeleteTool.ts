@@ -5,7 +5,7 @@ import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { ToolController } from '../controller/ToolController';
 import { UI_Region } from '../UI_Plugin';
-import { createRectFromMousePointer } from './AbstractTool';
+import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor, ToolType } from './Tool';
 

@@ -1,14 +1,11 @@
 import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
 import { View, ViewTag } from '../../models/views/View';
-import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
-import { ToolController } from '../controller/ToolController';
 import { UI_Region } from '../UI_Plugin';
-import { AbstractTool } from "./AbstractTool";
+import { NullTool } from "./NullTool";
 import { ToolType } from "./Tool";
 
-export abstract class PointerTool extends AbstractTool {
+export abstract class PointerTool extends NullTool {
     acceptedViews: string[] = [];
 
     protected movingItem: View = undefined;

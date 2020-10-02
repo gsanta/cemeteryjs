@@ -2,9 +2,9 @@ import { Registry } from "../../Registry";
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { IPointerEvent } from "../../services/input/PointerService";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
-import { UI_Controller } from "./UI_Controller";
 import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../tools/Tool";
+import { View } from "../../models/views/View";
 
 export class MousePointer {
     down: Point;
@@ -29,7 +29,7 @@ export class MousePointer {
     }
 }
 
-export class ToolController implements UI_Controller {
+export class ToolController {
     private registry: Registry;
     private plugin: AbstractCanvasPlugin;
 
@@ -47,33 +47,27 @@ export class ToolController implements UI_Controller {
         tools.length > 0 && this.setSelectedTool(tools[0].id);
     }
 
-    change(val: any, element: UI_Element) {}
-    click(element: UI_Element): void {}
-    blur(element: UI_Element): void {}
-    mouseOver(element: UI_Element): void {}
-    mouseOut(element: UI_Element): void {}
-
-    mouseDown(e: MouseEvent): void {
+    mouseDown(e: MouseEvent, element: UI_Element): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.registry.services.pointer.pointerDown(this, this.convertEvent(e, true));
+        this.registry.services.pointer.pointerDown(this, this.convertEvent(e, true), element);
     }
     
-    mouseMove(e: MouseEvent): void {
-        this.registry.services.pointer.pointerMove(this, this.convertEvent(e, this.registry.services.pointer.isDown));
+    mouseMove(e: MouseEvent, element: UI_Element): void {
+        this.registry.services.pointer.pointerMove(this, this.convertEvent(e, this.registry.services.pointer.isDown), element);
     }    
 
-    mouseUp(e: MouseEvent): void {
+    mouseUp(e: MouseEvent, element: UI_Element): void {
         if (this.isLeftButton(e)) {
-            this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false));
+            this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
         }
 
         this.registry.services.hotkey.focus();
     }
 
-    dndDrop(point: Point) {
+    dndDrop(point: Point, element: UI_Element) {
         const e = <MouseEvent> {x: point.x, y: point.y};
-        this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false));
+        this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
 
         if (this.plugin.dropItem) {
             this.registry.plugins.getPropController(this.plugin.dropItem.pluginId).dndEnd(this.plugin.dropItem);
@@ -83,12 +77,12 @@ export class ToolController implements UI_Controller {
         this.registry.services.render.reRenderAll();
     }
 
-    mouseLeave(e: MouseEvent, data: any): void {
-        this.registry.services.pointer.pointerLeave(this, this.convertEvent(e, false), data);
+    mouseLeave(e: MouseEvent, data: View, element: UI_Element): void {
+        this.registry.services.pointer.pointerLeave(this, this.convertEvent(e, false), data, element);
     }
 
-    mouseEnter(e: MouseEvent, data: any): void {
-        this.registry.services.pointer.pointerEnter(this, this.convertEvent(e, false), data);
+    mouseEnter(e: MouseEvent, data: View, element: UI_Element): void {
+        this.registry.services.pointer.pointerEnter(this, this.convertEvent(e, false), data, element);
     }
 
     mouseWheel(e: WheelEvent): void {

@@ -20,7 +20,7 @@ export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
     return rect;
 }
 
-export class AbstractTool implements Tool {
+export class NullTool implements Tool {
     rectangleSelection: Rectangle;
     id: string;
 

@@ -2,6 +2,7 @@ import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
 import { MeshObj } from '../objs/MeshObj';
+import { AxisView } from './child_views/AxisView';
 import { View, ViewFactory, ViewJson } from './View';
 
 export const MeshViewType = 'mesh-view';
@@ -33,6 +34,13 @@ export class MeshView extends View {
     yPos: number = 0;
     speed = 0.5;
     layer: number = 10;
+
+    axisView: AxisView;
+
+    constructor() {
+        super();
+        this.axisView = new AxisView(this);
+    }
 
     getObj(): MeshObj {
         return this.obj;
@@ -77,6 +85,9 @@ export class MeshView extends View {
     setBounds(rectangle: Rectangle) {
         this.bounds = rectangle;
         this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
+
+        const center = this.getBounds().getBoundingCenter();
+        this.axisView.setBounds(new Rectangle(new Point(center.x - 8, center.y - 60), new Point(center.x + 8, center.y)));
     }
 
     dispose() {

@@ -82,7 +82,7 @@ export abstract class View {
     fromJson(json: ViewJson, registry: Registry) {
         this.id = json.id;
         this.viewType = json.type;
-        this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
+        this.setBounds(json.dimensions && Rectangle.fromString(json.dimensions));
         this.setObj(registry.stores.objStore.getById(json.objId));
     }
 }

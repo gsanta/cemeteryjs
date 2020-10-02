@@ -1,3 +1,4 @@
+import { AxisView } from '../../../core/models/views/child_views/AxisView';
 import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
@@ -12,6 +13,7 @@ import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas'
 import { colors } from '../../../core/ui_components/react/styles';
 import { sort } from '../../../utils/geometry/Functions';
 import { toDegree } from '../../../utils/geometry/Measurements';
+import { AxisToolType } from './tools/AxisTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -126,28 +128,39 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
                 image.height = meshView.getBounds().getHeight();
             }
 
-            this.renderYPosControl(canvas, meshView);
+            if (meshView.isSelected()) {
+                this.renderYPosControl(canvas, meshView.axisView);
+            }
     
             return thumbnail;
         });
     }
 
-    private renderYPosControl(canvas: UI_SvgCanvas, meshView: MeshView) {
-        const line = canvas.line();
+    private renderYPosControl(canvas: UI_SvgCanvas, axisView: AxisView) {
+        const group = canvas.group(`y-control`);
+        group.data = axisView;
+        group.scopedToolId = AxisToolType;
+
+        const line = group.line();
         line.css = {
             pointerEvents: 'none',
             stroke: 'blue',
             strokeWidth: "3"
         }
-        const center = meshView.getBounds().getBoundingCenter();
+
+        const center = axisView.getBounds().getBoundingCenter();
+        const topLeft = axisView.getBounds().topLeft; 
+        const botRight = axisView.getBounds().bottomRight; 
         line.x1 = center.x;
-        line.y1 = center.y;
+        line.y1 = axisView.getBounds().topLeft.y + 10;
         line.x2 = center.x;
-        line.y2 = center.y - 50;
+        line.y2 = axisView.getBounds().bottomRight.y;
 
-
-        const polygon = canvas.polygon();
-        polygon.points = `${center.x - 8},${center.y - 50} ${center.x + 8},${center.y - 50} ${center.x},${center.y - 66}`;
+        const polygon = group.polygon();
+        polygon.points = `${topLeft.x},${topLeft.y + 15} ${botRight.x},${topLeft.y + 15} ${center.x},${topLeft.y}`;
+        polygon.css = {
+            fill: this.registry.preferences.colors.green
+        }
     }
 
     private renderSpriteViews(canvas: UI_SvgCanvas) {

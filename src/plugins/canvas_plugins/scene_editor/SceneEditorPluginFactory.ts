@@ -11,6 +11,7 @@ import { SceneEditorPlugin, SceneEditorPluginId } from "./SceneEditorPlugin";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SpriteTool } from "./tools/SpriteTool";
+import { AxisTool } from "./tools/AxisTool";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
@@ -37,7 +38,8 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
             new PathTool(plugin as AbstractCanvasPlugin, registry),
             new SelectTool(plugin as AbstractCanvasPlugin, registry),
             new DeleteTool(plugin as AbstractCanvasPlugin, registry),
-            new CameraTool(plugin as AbstractCanvasPlugin, registry)
+            new CameraTool(plugin as AbstractCanvasPlugin, registry),
+            new AxisTool(plugin as AbstractCanvasPlugin, registry)
         ];
     }
 }
