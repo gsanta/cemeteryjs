@@ -49,13 +49,6 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
         this.id = id;
 
-        const controller = new FormController(this, this.registry);
-        controller.registerPropControl(CanvasControllerProps.ZoomIn, ZoomInControl);
-        controller.registerPropControl(CanvasControllerProps.ZoomOut, ZoomOutControl);
-        controller.registerPropControl(CanvasControllerProps.Undo, UndoControl);
-        controller.registerPropControl(CanvasControllerProps.Redo, RedoControl);
-
-        this.controllers.set(CanvasControllerId, controller);
         this.camera = cameraInitializer(this.id, registry);
     }
 
@@ -75,33 +68,5 @@ export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
 
     getCamera() {
         return this.camera;
-    }
-}
-
-const ZoomInControl: PropController<any> = {
-    click(context) {
-        const toolController = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController);
-
-        (toolController.getById(ToolType.Camera) as CameraTool).zoomIn();
-    }
-}
-
-const ZoomOutControl: PropController<any> = {
-    click(context) {
-        const toolController = (this.props.registry.plugins.getControllers(this.props.element.plugin.id).get(this.props.element.controllerId) as ToolController);
-
-        (toolController.getById(ToolType.Camera) as CameraTool).zoomOut();
-    }
-}
-
-const UndoControl: PropController<any> = {
-    click(context) {
-        context.registry.services.history.undo()
-    }
-}
-
-const RedoControl: PropController<any> = {
-    click(context) {
-        context.registry.services.history.redo()
     }
 }

@@ -2,9 +2,9 @@ import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
 import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
-import { SpritesheetManagerDialogController, SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogProps";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { SpriteSheetObj, SpriteSheetObjType } from "../../../core/models/objs/SpriteSheetObj";
+import { SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogProps";
 
 export const SpriteSheetManagerDialogPluginId = 'sprite-sheet-manager-dialog-plugin'; 
 export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
@@ -12,16 +12,7 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Spritesheet manager';
 
-    private controller: SpritesheetManagerDialogController;
-
-    constructor(registry: Registry) {
-        super(registry);
-
-        this.controller = new SpritesheetManagerDialogController(this, registry);
-    }
-
     protected renderInto(layout: UI_Dialog): UI_Layout {
-        layout.controller = this.controller;
         layout.width = '530px';
 
         const row = layout.row({ key: '1' });
@@ -96,7 +87,10 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
 
         
         let fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.SpriteSheetJson);
-        fileUploadButton.label = this.controller.jsonPath ? this.controller.jsonPath : 'Upload json';
+        
+        const jsonPropContext = this.registry.plugins.getPropController(this.id).getPropContext(SpritesheetManagerDialogProps.SpriteSheetJson);
+
+        fileUploadButton.label = jsonPropContext.getTempVal() ? jsonPropContext.getTempVal() as string : 'Upload json';
         fileUploadButton.width = '170px';
         // textField.width = '170px';
 

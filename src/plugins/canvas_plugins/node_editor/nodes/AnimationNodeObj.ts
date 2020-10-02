@@ -1,11 +1,12 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
+import { FormController, PropContext, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
+import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 
 export const AnimationNodeFacotry: NodeFactory = {
@@ -15,9 +16,9 @@ export const AnimationNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('mesh', MeshControl);
-        controller.registerPropControl('startFrame', StartFrameControl);
-        controller.registerPropControl('endFrame', EndFrameControl);
+        controller.registerPropControl('mesh', new AnimationMeshController());
+        controller.registerPropControl('startFrame', new StartFrameController());
+        controller.registerPropControl('endFrame', new EndFrameController());
         return controller;
     }
 }
@@ -75,16 +76,22 @@ export class AnimationNodeObj extends NodeObj {
     }
 }
 
-const MeshControl: PropController<string> = {
+export class AnimationMeshController extends PropController<string> {
+
+    constructor() {
+        super('mesh');
+    }
+
+
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id);
-    },
+    }
     
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         const meshParam = nodeView.getObj().getParam('mesh').val;
         return context.registry.stores.viewStore.getById(meshParam)?.id;
-    },
+    }
 
     change(val: string, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
@@ -93,16 +100,21 @@ const MeshControl: PropController<string> = {
     }
 }
 
-const StartFrameControl: PropController<string> = {
+export class StartFrameController extends PropController<string> {
+
+    constructor() {
+        super('startFrame');
+    }
+
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('startFrame').val;
-    },
+    }
 
     change(val, context) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Canvas1);        
-    },
+    }
 
     blur(context, element) {
         try {
@@ -117,18 +129,23 @@ const StartFrameControl: PropController<string> = {
     }
 }
 
-const EndFrameControl: PropController<string> = {
-    defaultVal(context, element: UI_InputElement) {
+export class EndFrameController extends PropController<string> {
+
+    constructor() {
+        super('endFrame');
+    }
+
+    defaultVal(context: PropContext, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('endFrame').val;
-    },
+    }
 
-    change(val, context) {
+    change(val, context: PropContext) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Canvas1);        
-    },
+    }
 
-    blur(context, element) {
+    blur(context: PropContext, element: UI_Element) {
         try {
             const val = parseFloat(context.getTempVal());
             element.data.getObj().setParam('endFrame', val);

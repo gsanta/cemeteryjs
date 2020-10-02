@@ -3,7 +3,7 @@
 import { UI_ElementType } from "../UI_ElementType";
 import { UI_Layout } from '../UI_Layout';
 import { UI_Region, UI_Plugin } from "../../../plugin/UI_Plugin";
-import { GlobalControllerProps } from '../../../plugin/controller/FormController';
+import { Registry } from "../../../Registry";
 
 export class UI_Dialog extends UI_Layout {
     elementType = UI_ElementType.Dialog;
@@ -16,9 +16,8 @@ export class UI_Dialog extends UI_Layout {
     height: string;
     title: string;
 
-    close(): void {
-        const controller = this.controller || this.plugin.getControllerById(this.controllerId); 
-        controller.click(this);
+    close(registry: Registry): void {
+        registry.plugins.getPropController(this.plugin.id).click(this);
         this.plugin.unmounted();
     }
 }

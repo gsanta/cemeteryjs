@@ -8,7 +8,7 @@ import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { MeshControl } from "./MeshNodeObj";
+import { MeshController } from "./MeshNodeObj";
 
 export const MoveNodeFacotry: NodeFactory = {
     newNodeInstance(graph: NodeGraph): NodeObj {
@@ -17,9 +17,9 @@ export const MoveNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('mesh', MeshControl);
-        controller.registerPropControl('move', MoveControl);
-        controller.registerPropControl('speed', SpeedControl);
+        controller.registerPropControl('mesh', new MeshController());
+        controller.registerPropControl('move', new MeshMoveController());
+        controller.registerPropControl('speed', new MeshSpeedController());
         return controller;
     }
 }
@@ -75,14 +75,19 @@ export class MoveNodeObj extends NodeObj {
     }
 }
 
-const MoveControl: PropController<string> = {
+export class MeshMoveController extends PropController<string> {
+
+    constructor() {
+        super('move');
+    }
+
     values(context) {
         return ['forward', 'backward'];
-    },
+    }
 
     defaultVal(context, element: UI_InputElement) {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('move');
-    },
+    }
 
     change(val, context) {
         context.updateTempVal(val);
@@ -90,15 +95,20 @@ const MoveControl: PropController<string> = {
     }
 }
 
-const SpeedControl: PropController<string> = {
+export class MeshSpeedController extends PropController<string> {
+
+    constructor() {
+        super('speed');
+    }
+
     defaultVal(context, element: UI_InputElement) {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('speed');
-    },
+    }
 
     change(val, context) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
-    },
+    }
 
     blur(context, element: UI_InputElement) {
         const nodeObj = (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj();

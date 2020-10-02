@@ -1,32 +1,25 @@
-import { CodeEditorPlugin } from '../../plugins/canvas_plugins/code_editor/CodeEditorPlugin';
+import { CodeEditorPluginFactory } from '../../plugins/canvas_plugins/code_editor/CodeEditorPluginFactory';
 import { GameViewerPluginFactory } from '../../plugins/canvas_plugins/game_viewer/GameViewerPluginFactory';
 import { NodeEditorPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorPluginFactory';
-import { NodeEditorSettingsPlugin } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPlugin';
 import { NodeEditorSettingsPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPluginFactory';
-import { ObjectSettingsPlugin } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
 import { ObjectSettingsPluginFactory } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPluginFactory';
 import { SceneEditorPluginFactory } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPluginFactory';
 import { ThumbnailDialogPluginFactory } from '../../plugins/canvas_plugins/scene_editor/ThumbnailDialogPluginFactory';
-import { AssetManagerDialogPlugin } from '../../plugins/dialog_plugins/asset_manager/AssetManagerDialogPlugin';
 import { AssetManagerPluginFactory } from '../../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
-import { SpriteSheetManagerDialogPlugin } from '../../plugins/dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
-import { AssetManagerSidepanelPlugin } from '../../plugins/sidepanel_plugins/asset_manager/AssetManagerSidepanelPlugin';
-import { FileSettingsPlugin } from '../../plugins/sidepanel_plugins/file_settings/FileSettingsPlugin';
-import { LayoutSettingsPlugin } from '../../plugins/sidepanel_plugins/layout_settings/LayoutSettingsPlugin';
-import { LevelSettingsPlugin } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
+import { SpriteSheetManagerFactory } from '../../plugins/dialog_plugins/spritesheet_manager/SpriteSheetManagerFactory';
+import { AssetManagerSidepanelPluginFactory } from '../../plugins/sidepanel_plugins/asset_manager/AssetManagerSidepanelPluginFactory';
+import { FileSettingslPluginFactory } from '../../plugins/sidepanel_plugins/file_settings/FileSettingsPluginFactory';
+import { LayoutSettingsPluginFactory } from '../../plugins/sidepanel_plugins/layout_settings/LayoutSettingsPluginFactory';
+import { LevelSettingsPluginFactory } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPluginFactory';
 import { Registry } from '../Registry';
 import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
 import { AbstractSidepanelPlugin } from './AbstractSidepanelPlugin';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
-import { UI_Controller } from './controller/UI_Controller';
 import { PluginFactory } from './PluginFactory';
 import { UI_Plugin, UI_Region } from './UI_Plugin';
 
 export class Plugins {
-    codeEditor: CodeEditorPlugin;
-
-    private legacyPlugins: UI_Plugin[] = [];
     private activePlugins: UI_Plugin[] = [];
 
     private pluginFactories: Map<string, PluginFactory> = new Map();
@@ -40,17 +33,6 @@ export class Plugins {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.codeEditor = new CodeEditorPlugin(registry);
-
-        this.registerPlugin(this.codeEditor);
-
-        this.registerPlugin(new FileSettingsPlugin(this.registry));
-        this.registerPlugin(new LayoutSettingsPlugin(this.registry));
-        this.registerPlugin(new AssetManagerSidepanelPlugin(this.registry));
-
-        this.registerPlugin(new LevelSettingsPlugin(this.registry));
-        this.registerPlugin(new AssetManagerDialogPlugin(this.registry));
-        this.registerPlugin(new SpriteSheetManagerDialogPlugin(this.registry));
 
         this.registerPluginNew(new SceneEditorPluginFactory());
         this.registerPluginNew(new AssetManagerPluginFactory());
@@ -59,6 +41,12 @@ export class Plugins {
         this.registerPluginNew(new NodeEditorSettingsPluginFactory());
         this.registerPluginNew(new ThumbnailDialogPluginFactory());
         this.registerPluginNew(new ObjectSettingsPluginFactory());
+        this.registerPluginNew(new SpriteSheetManagerFactory());
+        this.registerPluginNew(new LevelSettingsPluginFactory());
+        this.registerPluginNew(new AssetManagerSidepanelPluginFactory());
+        this.registerPluginNew(new LayoutSettingsPluginFactory());
+        this.registerPluginNew(new FileSettingslPluginFactory());
+        this.registerPluginNew(new CodeEditorPluginFactory());
     }
 
     private hoveredView: AbstractCanvasPlugin;
@@ -77,10 +65,6 @@ export class Plugins {
         return this.hoveredView;
     }
 
-    getViewById<T extends AbstractCanvasPlugin = AbstractCanvasPlugin>(id: string): T {
-        return <T> this.legacyPlugins.find(view => view.id === id);
-    }
-    
     getActivePlugins(region?: UI_Region): UI_Plugin[] {
         if (region) {
             return this.activePlugins.filter(activePlugin => activePlugin.region === region);
@@ -93,19 +77,11 @@ export class Plugins {
     }
 
     getById(pluginId: string): UI_Plugin {
-        return this.legacyPlugins.find(plugin => plugin.id === pluginId);
+        return this.plugins.get(pluginId);
     } 
 
     getAll(): UI_Plugin[] {
-        return this.legacyPlugins;
-    }
-
-    registerPlugin(plugin: UI_Plugin) {
-        this.legacyPlugins.push(plugin);
-
-        if (plugin.region === UI_Region.Sidepanel) {
-            (<AbstractSidepanelPlugin> plugin).isGlobalPlugin && this.showPlugin(plugin.id);
-        }
+        return Array.from(this.plugins.values());
     }
 
     // TODO replace this with `registerPlugin` if that method is not used anymore
@@ -121,43 +97,38 @@ export class Plugins {
         return this.toolControllers.get(this.plugins.get(pluginId));
     }
 
-    showPlugin(pluginId: string) {
-        
-        //TODO: this is the relevant code, when all of the plugins will use PluginFactory
+    showPlugin(pluginId: string) {        
         if (this.pluginFactories.has(pluginId)) {
             if (!this.plugins.has(pluginId)) {
-                const plugin = this.pluginFactories.get(pluginId).createPlugin(this.registry);
+                const pluginFactory = this.pluginFactories.get(pluginId);
+                const plugin = pluginFactory.createPlugin(this.registry);
                 this.plugins.set(pluginId, plugin);
-                this.controllers.set(plugin, new Map());
 
-                const pluginControllers = this.pluginFactories.get(pluginId).createPropControllers(plugin, this.registry);
-                pluginControllers.forEach(controller => this.controllers.get(plugin).set(controller.id, controller)); 
+                const propControllers = pluginFactory.createPropControllers(plugin, this.registry);
+                if (propControllers.length > 0) {
+                    this.controllers.set(plugin, new FormController(plugin, this.registry, propControllers));
+                }
 
-                this.activePlugins.push(plugin);
-                plugin.activated();
+                const tools = pluginFactory.createTools(plugin, this.registry);
 
-                switch(plugin.region) {
-                    case UI_Region.Dialog:
-                        this.registry.services.render.reRender(UI_Region.Dialog);
-                    break;
-                }    
+                if (tools.length > 0) {
+                    this.toolControllers.set(plugin, new ToolController(plugin as AbstractCanvasPlugin, this.registry, tools));
+                }   
             }
-        // TODO_END
-        } else {
+        }
 
-            const plugin = this.getById(pluginId);
-            if (UI_Region.isSinglePluginRegion(plugin.region)) {
-                this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
-            }
-            
-            this.activePlugins.push(plugin);
-            plugin.activated();
-            // this.registry.services.ui.runUpdate(UI_Region.Dialog);
-            switch(plugin.region) {
-                case UI_Region.Dialog:
-                    this.registry.services.render.reRender(UI_Region.Dialog);
-                break;
-            }
+        const plugin = this.getById(pluginId);
+        if (UI_Region.isSinglePluginRegion(plugin.region)) {
+            this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
+        }
+        
+        this.activePlugins.push(plugin);
+        plugin.activated();
+
+        switch(plugin.region) {
+            case UI_Region.Dialog:
+                this.registry.services.render.reRender(UI_Region.Dialog);
+            break;
         }
     }
 

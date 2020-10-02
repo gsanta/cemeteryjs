@@ -1,6 +1,5 @@
 import { IControlledObject } from '../IControlledObject';
 import { Registry } from '../Registry';
-import { FormController } from './controller/FormController';
 import { UI_Container } from '../ui_components/elements/UI_Container';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { UI_Factory } from '../ui_components/UI_Factory';
@@ -50,8 +49,6 @@ export abstract class UI_Plugin implements IControlledObject {
     importer: AbstractPluginImporter;
     exporter: IDataExporter;
 
-    protected controllers: Map<string, FormController> = new Map();
-
     protected abstract renderInto(layout: UI_Container): void;
 
     protected registry: Registry;
@@ -62,8 +59,8 @@ export abstract class UI_Plugin implements IControlledObject {
 
     render(): UI_Container {
         if (this.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(this);
-            const accordion = layout.accordion(null);
+            const layout = UI_Factory.layout(this, {});
+            const accordion = layout.accordion();
             accordion.title = this.displayName;
             this.renderInto(accordion);
             return layout;
@@ -74,16 +71,12 @@ export abstract class UI_Plugin implements IControlledObject {
             return dialog;
 
         } else {
-            const layout = UI_Factory.layout(this);
+            const layout = UI_Factory.layout(this, {});
 
 
             this.renderInto(layout);
             return layout;
         }
-    }
-
-    getControllerById(id: string) {
-        return this.controllers.get(id);
     }
 
     activated() {}

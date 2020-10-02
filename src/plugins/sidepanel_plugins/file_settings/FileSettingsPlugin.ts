@@ -1,8 +1,7 @@
 import { AbstractSidepanelPlugin } from '../../../core/plugin/AbstractSidepanelPlugin';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
-import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { FileSettingsController, FileSettingsControllerId, FileSettingsProps } from './FileSettingsController';
+import { FileSettingsProps } from './FileSettingsProps';
 
 export const FileSettingsPluginId = 'file-settings-plugin'; 
 export class FileSettingsPlugin extends AbstractSidepanelPlugin {
@@ -11,14 +10,7 @@ export class FileSettingsPlugin extends AbstractSidepanelPlugin {
     region = UI_Region.Sidepanel;
     isGlobalPlugin = true;
 
-    constructor(registry: Registry) {
-        super(registry);
-
-        this.controllers.set(FileSettingsControllerId, new FileSettingsController(this, registry));
-    }
-
     renderInto(layout: UI_Layout): UI_Layout {
-        layout.controllerId = FileSettingsControllerId;
         let row = layout.row({ key: FileSettingsProps.Export });
 
         const exportButton = row.button(FileSettingsProps.Export);
@@ -41,3 +33,4 @@ export class FileSettingsPlugin extends AbstractSidepanelPlugin {
         return layout;
     }
 }
+

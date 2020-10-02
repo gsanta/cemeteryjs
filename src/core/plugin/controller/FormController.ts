@@ -142,7 +142,6 @@ export class PropContext<T = any> {
 }
 
 export class FormController {
-    readonly id: string;
     private handlers: Map<string, PropHandler<any>> = new Map();
     private propControls: Map<string, PropController<any>> = new Map();
     private propContexts: Map<string, PropContext<any>> = new Map();
@@ -150,10 +149,9 @@ export class FormController {
     protected registry: Registry;
     plugin: UI_Plugin;
 
-    constructor(plugin: UI_Plugin, registry: Registry, id?: string, propControls?: PropController<any>[]) {
+    constructor(plugin: UI_Plugin, registry: Registry, propControls?: PropController<any>[]) {
         this.plugin = plugin;
         this.registry = registry;
-        this.id = id;
 
         this.createPropHandler(GlobalControllerProps.CloseDialog)
             .onClick(() => {

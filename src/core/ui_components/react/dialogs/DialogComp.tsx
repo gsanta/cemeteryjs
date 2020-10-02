@@ -50,7 +50,7 @@ const DialogBodyStyled = styled.div`
 export function DialogComp(props: UI_ContainerProps<UI_Dialog> ) {
     return (
         <div onClick={e => e.stopPropagation()}>
-            <DialogOverlayStyled onClick={() => props.element.close()}></DialogOverlayStyled>
+            <DialogOverlayStyled onClick={() => props.element.close(props.registry)}></DialogOverlayStyled>
             <DialogStyled 
                 className='dialog'
                 style={{

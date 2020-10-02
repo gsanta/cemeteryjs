@@ -52,7 +52,7 @@ export class HotkeyService {
 
         if (this.registry.plugins.getHoveredPlugin()) {
             // TODO it should also return with the executed hotkeys
-            this.registry.plugins.getHoveredPlugin().toolController.getAll().filter(tool => tool.hotkey(hotkeyEvent));
+            this.registry.plugins.getToolController(this.registry.plugins.getHoveredPlugin().id).getAll().filter(tool => tool.hotkey(hotkeyEvent));
         }
 
         if (executedHotkeys.length > 0) {

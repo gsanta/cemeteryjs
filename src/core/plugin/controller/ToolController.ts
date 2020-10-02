@@ -30,7 +30,6 @@ export class MousePointer {
 }
 
 export class ToolController implements UI_Controller {
-    id: string;
     private registry: Registry;
     private plugin: AbstractCanvasPlugin;
 
@@ -40,12 +39,12 @@ export class ToolController implements UI_Controller {
     protected priorityTool: Tool;
     protected selectedTool: Tool;
 
-    constructor(id: string, plugin: AbstractCanvasPlugin, registry: Registry, tools: Tool[] = []) {
-        this.id = id;
+    constructor(plugin: AbstractCanvasPlugin, registry: Registry, tools: Tool[] = []) {
         this.registry = registry;
         this.plugin = plugin;
 
         tools.forEach(tool => this.registerTool(tool));
+        tools.length > 0 && this.setSelectedTool(tools[0].id);
     }
 
     change(val: any, element: UI_Element) {}

@@ -15,7 +15,7 @@ export const MeshNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('mesh', MeshControl);
+        controller.registerPropControl('mesh', new MeshController());
         return controller;
     }
 }
@@ -44,14 +44,19 @@ export class MeshNodeObj extends NodeObj {
     ];
 }
 
-export const MeshControl: PropController<string> = {
+export class MeshController extends PropController<string> {
+
+    constructor() {
+        super('mesh');
+    }
+
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id)
-    },
+    }
 
     defaultVal(context, element: UI_InputElement) {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('mesh').val;
-    },
+    }
 
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;

@@ -15,7 +15,7 @@ export const PathNodeFacotry: NodeFactory = {
 
     newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
-        controller.registerPropControl('path', PathControl);
+        controller.registerPropControl('path', new PathController());
         return controller;
     }
 }
@@ -44,15 +44,20 @@ export class PathNodeObj extends NodeObj {
     ];
 }
 
-const PathControl: PropController<string> = {
+export class PathController extends PropController<string> {
+
+    constructor() {
+        super('path')
+    }
+
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(PathViewType).map(pathView => pathView.id);
-    },
+    }
 
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         return nodeView.getObj().getParam('path').val;
-    },
+    }
 
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
