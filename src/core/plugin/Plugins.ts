@@ -15,7 +15,7 @@ import { Registry } from '../Registry';
 import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
-import { UI_PluginFactory } from './PluginFactory';
+import { UI_PluginFactory } from './UI_PluginFactory';
 import { UI_Plugin, UI_Region } from './UI_Plugin';
 
 export class Plugins {
@@ -23,7 +23,8 @@ export class Plugins {
 
     private pluginFactories: Map<string, UI_PluginFactory> = new Map();
     private plugins: Map<string, UI_Plugin> = new Map();
-    private controllers: Map<UI_Plugin, FormController> = new Map();
+
+    private formControllers: Map<string, FormController> = new Map();
     private toolControllers: Map<UI_Plugin, ToolController> = new Map();
 
     visibilityDirty = true;
@@ -100,7 +101,7 @@ export class Plugins {
 
         const propControllers = pluginFactory.createPropControllers(plugin, this.registry);
         if (propControllers.length > 0) {
-            this.controllers.set(plugin, new FormController(plugin, this.registry, propControllers));
+            this.formControllers.set(plugin.id, new FormController(plugin, this.registry, propControllers));
         }
 
         const tools = pluginFactory.createTools(plugin, this.registry);
@@ -110,8 +111,12 @@ export class Plugins {
         }   
     }
 
+    addPropController(pluginId: string, controller: FormController): void {
+        this.formControllers.set(pluginId, controller);
+    }
+
     getPropController(pluginId: string): FormController {
-        return this.controllers.get(this.plugins.get(pluginId));
+        return this.formControllers.get(pluginId);
     }
 
     getToolController(pluginId: string): ToolController {

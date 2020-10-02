@@ -11,11 +11,11 @@ import { SaveEditControl } from "../../../../dialog_plugins/asset_manager/AssetM
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeFacotry: NodeFactory = {
-    newNodeInstance(graph: NodeGraph): NodeObj {
+    createNodeObj(graph: NodeGraph): NodeObj {
         return new RouteNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+    createController(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new SaveEditControl());
         return controller;

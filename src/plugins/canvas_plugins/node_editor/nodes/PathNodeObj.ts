@@ -9,11 +9,11 @@ import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 
 export const PathNodeFacotry: NodeFactory = {
-    newNodeInstance(graph: NodeGraph): NodeObj {
+    createNodeObj(graph: NodeGraph): NodeObj {
         return new PathNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+    createController(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new PathController());
         return controller;

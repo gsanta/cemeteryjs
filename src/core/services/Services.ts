@@ -1,5 +1,4 @@
 import { Registry } from "../Registry";
-import { EventService } from './EventService';
 import { ExportService } from "./export/ExportService";
 import { GamepadService } from './GamepadService';
 import { GameService } from "./GameService";
@@ -7,7 +6,6 @@ import { HistoryService } from "./HistoryService";
 import { ImportService } from './import/ImportService';
 import { HotkeyService } from "./input/HotkeyService";
 import { KeyboardService } from './input/KeyboardService';
-import { ToolController } from '../plugin/controller/ToolController';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
@@ -30,7 +28,6 @@ export class Services {
     keyboard: KeyboardService;
     game: GameService;
     gamepad: GamepadService;
-    event: EventService;
     uiPerspective: UI_PerspectiveService;
     objService: ObjService;
     viewService: ViewService;
@@ -58,7 +55,6 @@ export class Services {
         this.game = new GameService(this.registry);
         this.gamepad = new GamepadService(this.registry);
         this.ui = new UI_Service();
-        this.event = new EventService(this.registry);
         this.uiPerspective = new UI_PerspectiveService(this.registry);
         this.objService = new ObjService(this.registry);
         this.viewService = new ViewService(this.registry);

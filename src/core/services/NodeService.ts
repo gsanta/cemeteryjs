@@ -38,7 +38,7 @@ export class NodeService {
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
             const plugin = registry.plugins.getById(NodeEditorPluginId);
-            this.defaultNodeRenderer = new NodeRenderer(plugin, this.registry);
+            this.defaultNodeRenderer = new NodeRenderer();
 
             this.registerNode(KeyboardNodeFacotry);
             this.registerNode(AnimationNodeFacotry);
@@ -55,7 +55,7 @@ export class NodeService {
 
     registerNode(nodeFactory: NodeFactory) {
         // TODO create dummygraph instead of passing undefined
-        const nodeTemplate = nodeFactory.newNodeInstance(undefined);
+        const nodeTemplate = nodeFactory.createNodeObj(undefined);
         this.nodeTemplates.set(nodeTemplate.type, nodeTemplate);
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
@@ -70,12 +70,14 @@ export class NodeService {
     }
 
     createNodeObj() {
-        return this.nodeFactories.get(this.currentNodeType).newNodeInstance(this.graph);
+        return this.nodeFactories.get(this.currentNodeType).createNodeObj(this.graph);
     }
 
     createNodeView(): NodeView {
         const nodeView = new NodeView();
-        nodeView.controller = this.nodeFactories.get(this.currentNodeType).newControllerInstance(this.registry.plugins.getById(NodeEditorPluginId), this.registry);
+        nodeView.controller = this.nodeFactories.get(this.currentNodeType).createController(this.registry.plugins.getById(NodeEditorPluginId), this.registry);
+        nodeView.id = this.registry.stores.viewStore.generateId(nodeView);
+        this.registry.plugins.addPropController(nodeView.id, nodeView.controller);
         return nodeView;
         // if (!this.nodeTemplates.has(nodeType)) {
         //     throw new Error(`Node creator registered for node type ${nodeType}`);
@@ -93,8 +95,8 @@ export class NodeService {
 }
 
 export interface NodeFactory {
-    newNodeInstance(graph: NodeGraph): NodeObj;
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController;
+    createNodeObj(graph: NodeGraph): NodeObj;
+    createController(plugin: UI_Plugin, registry: Registry): FormController;
 }
 
 class RemoveRelatedConnectionHook implements ViewStoreHook {

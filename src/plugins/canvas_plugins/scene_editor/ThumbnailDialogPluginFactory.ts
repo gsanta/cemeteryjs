@@ -2,7 +2,7 @@ import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin"
 import { FormController, PropController } from "../../../core/plugin/controller/FormController";
 import { ToolController } from "../../../core/plugin/controller/ToolController";
 import { UI_Controller } from "../../../core/plugin/controller/UI_Controller";
-import { UI_PluginFactory } from "../../../core/plugin/PluginFactory";
+import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";

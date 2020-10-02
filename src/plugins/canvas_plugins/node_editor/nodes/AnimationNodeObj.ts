@@ -10,11 +10,11 @@ import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 
 export const AnimationNodeFacotry: NodeFactory = {
-    newNodeInstance(graph: NodeGraph): NodeObj {
+    createNodeObj(graph: NodeGraph): NodeObj {
         return new AnimationNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+    createController(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new AnimationMeshController());
         controller.registerPropControl(new StartFrameController());

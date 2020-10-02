@@ -1,7 +1,6 @@
 import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_PluginFactory } from "../../../../core/plugin/PluginFactory";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
@@ -11,12 +10,17 @@ import { UI_InputElement } from "../../../../core/ui_components/elements/UI_Inpu
 import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";
 import { GameTool, GameToolType } from "../../game_viewer/tools/GameTool";
 
-export const KeyboardNodeFacotry: UI_PluginFactory = {
-    newNodeInstance(graph: NodeGraph): NodeObj {
+export const KeyboardNodeFacotry: NodeFactory = {
+    createNodeObj(graph: NodeGraph): NodeObj {
+        try {
+            throw new Error('err creating obj')
+        } catch(e) {
+            console.log(e)
+        }
         return new KeyboardNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+    createController(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new KeyControl('key1'));
         return controller;

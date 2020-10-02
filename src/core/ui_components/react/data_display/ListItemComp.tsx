@@ -28,8 +28,7 @@ export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
             },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
-            }),
-            end: (dropResult, monitor) => props.element.dndEnd(props.registry)
+            })
       });
     }
 

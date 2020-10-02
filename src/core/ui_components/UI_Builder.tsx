@@ -82,61 +82,61 @@ export class UI_Builder {
     }
 
     build(plugin: UI_Plugin): JSX.Element {
-        return this.buildContainer(plugin.render(), plugin);
+        return this.buildContainer(plugin.render(), plugin.id);
     }
 
-    private buildContainer(element: UI_Container, plugin: UI_Plugin): JSX.Element {
+    private buildContainer(element: UI_Container, pluginId: string): JSX.Element {
         if (!element) { return null; }
 
         switch(element.elementType) {
             case UI_ElementType.Layout:
-                return <div key={element.id}>{this.buildChildren(element, plugin)}</div>;
+                return <div key={element.id}>{this.buildChildren(element, pluginId)}</div>;
             case UI_ElementType.Row:
                 const row = element as UI_Row;
-                return <RowComp key={row.id} element={row}>{this.buildChildren(element, plugin)}</RowComp>;
+                return <RowComp key={row.id} element={row}>{this.buildChildren(element, pluginId)}</RowComp>;
             case UI_ElementType.Column:
                 const column = element as UI_Column;
-                return <ColumnComp registry={this.registry} key={column.id} element={column}>{this.buildChildren(element, plugin)}</ColumnComp>;
+                return <ColumnComp registry={this.registry} key={column.id} element={column}>{this.buildChildren(element, pluginId)}</ColumnComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
-                return <AccordionTabComp registry={this.registry} key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, plugin)}</AccordionTabComp>;
+                return <AccordionTabComp registry={this.registry} key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, pluginId)}</AccordionTabComp>;
             case UI_ElementType.Table:
                 const table = element as UI_Table;
-                return <TableComp element={table}>{this.buildChildren(element, plugin)}</TableComp>;
+                return <TableComp element={table}>{this.buildChildren(element, pluginId)}</TableComp>;
             case UI_ElementType.TableRow:
                 const tableRow = element as UI_TableRow;
-                return <TableRowComp element={tableRow}>{this.buildChildren(element, plugin)}</TableRowComp>;
+                return <TableRowComp element={tableRow}>{this.buildChildren(element, pluginId)}</TableRowComp>;
             case UI_ElementType.TableColumn:
                 const tableColumn = element as UI_TableColumn;
-                return <TableColumnComp element={tableColumn}>{this.buildChildren(element, plugin)}</TableColumnComp>;
+                return <TableColumnComp element={tableColumn}>{this.buildChildren(element, pluginId)}</TableColumnComp>;
             case UI_ElementType.SvgGroup:
                 const group = element as UI_SvgGroup;
-                return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element, plugin)}</SvgGroupComp>
+                return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element, pluginId)}</SvgGroupComp>
             case UI_ElementType.SvgCanvas:
-                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, plugin);
+                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, pluginId);
             case UI_ElementType.Box:
                 const box = element as UI_Box;
-                return <BoxComp registry={this.registry} element={box}>{this.buildChildren(element, plugin)}</BoxComp>;
+                return <BoxComp registry={this.registry} element={box}>{this.buildChildren(element, pluginId)}</BoxComp>;
             case UI_ElementType.Dialog:
                 const dialog = element as UI_Dialog;
-                return <DialogComp registry={this.registry} element={dialog}>{this.buildChildren(element, plugin)}</DialogComp>;
+                return <DialogComp registry={this.registry} element={dialog}>{this.buildChildren(element, pluginId)}</DialogComp>;
             case UI_ElementType.SvgForeignObject:
                 const foreignObject = element as UI_SvgForeignObject;
-                return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element, plugin)}</ForeignObjectComp>;
+                return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element, pluginId)}</ForeignObjectComp>;
         }
     }
 
-    private buildChildren(element: UI_Container, plugin: UI_Plugin): JSX.Element[] {
+    private buildChildren(element: UI_Container, pluginId: string): JSX.Element[] {
         return element.children.map(child => {
             if ((child as UI_Container).children !== undefined) {
-                return this.buildContainer(child as UI_Container, plugin);
+                return this.buildContainer(child as UI_Container, pluginId);
             } else {
                 return this.buildLeaf(child);
             }
         });
     }
 
-    private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas, plugin: UI_Plugin) {
+    private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas, pluginId: string) {
         let toolbar: JSX.Element = null;
 
         if (canvas._toolbar) {
@@ -151,7 +151,7 @@ export class UI_Builder {
         
         let children: JSX.Element[] = [];
         if (canvas.elementType === UI_ElementType.SvgCanvas) {
-            children = this.buildChildren(canvas as UI_SvgCanvas, plugin);
+            children = this.buildChildren(canvas as UI_SvgCanvas, pluginId);
         }
 
         return <CanvasComp registry={this.registry} toolbar={toolbar} dropLayer={dropLayer} element={canvas}>{children}</CanvasComp>;
@@ -258,7 +258,7 @@ export class UI_Builder {
                 const listItem = element as UI_ListItem;
                 return <ListItemComp registry={this.registry} element={listItem}/>;
             case UI_ElementType.HtmlCanvas:
-                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, element.plugin);
+                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, element.pluginId);
             case UI_ElementType.Image:
                 const image = element as UI_Image;
                 return <ImageComp registry={this.registry} element={image}/>;

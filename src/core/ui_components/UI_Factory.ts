@@ -50,7 +50,7 @@ export class UI_Factory {
     }
 
     static dialog(pluginId: string, config: UI_ElementConfig): UI_Dialog {
-        const dialog = new UI_Dialog(plugin);
+        const dialog = new UI_Dialog(pluginId);
 
         return dialog;
     }

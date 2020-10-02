@@ -1,12 +1,11 @@
-import { FormController } from '../../../core/plugin/controller/FormController';
-import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
-import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
-import { sizes, colors } from '../../../core/ui_components/react/styles';
 import { JoinPointView } from '../../../core/models/views/child_views/JoinPointView';
-import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
+import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
+import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
+import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
+import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
+import { colors, sizes } from '../../../core/ui_components/react/styles';
 
 export class NodeRenderer {
     private joinPointsHeight: number;
@@ -60,6 +59,7 @@ export class NodeRenderer {
 
     private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
         const foreignObject = group.foreignObject({key: nodeView.id});
+        foreignObject.pluginId = nodeView.id;
         foreignObject.width = nodeView.getBounds().getWidth();
         foreignObject.height = nodeView.getBounds().getHeight();
         foreignObject.css = {

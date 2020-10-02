@@ -36,6 +36,10 @@ export class ViewStore {
         this.idGenerator = idGenerator;
     }
 
+    generateId(view: View): string {
+        return this.idGenerator.generateId(view.viewType);
+    }
+
     addHook(hook: ViewStoreHook) {
         this.hooks.push(hook);
     }

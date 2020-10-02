@@ -11,11 +11,11 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { MeshController } from "./MeshNodeObj";
 
 export const MoveNodeFacotry: NodeFactory = {
-    newNodeInstance(graph: NodeGraph): NodeObj {
+    createNodeObj(graph: NodeGraph): NodeObj {
         return new MoveNodeObj(graph);
     },
 
-    newControllerInstance(plugin: UI_Plugin, registry: Registry): FormController {
+    createController(plugin: UI_Plugin, registry: Registry): FormController {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new MeshController());
         controller.registerPropControl(new MeshMoveController());
