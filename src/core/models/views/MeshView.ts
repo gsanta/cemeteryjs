@@ -26,7 +26,7 @@ export class MeshView extends View {
 
     id: string;
     private rotation: number;
-    private scale: number;
+    private scale: number = 1;
     
     thumbnailData: string;
 
@@ -40,6 +40,7 @@ export class MeshView extends View {
     constructor() {
         super();
         this.axisView = new AxisView(this);
+        this.children.push(this.axisView);
     }
 
     getObj(): MeshObj {
@@ -62,8 +63,12 @@ export class MeshView extends View {
     }
 
     setScale(scale: number) {
-        this.scale = scale;        
+        const currentScale = this.getScale();
+        this.bounds.scale(new Point(1 / currentScale, 1 / currentScale));
+        this.bounds.scale(new Point(scale, scale));
+        this.scale = scale;
         this.obj.setScale(new Point(scale, scale));
+        this.children.forEach(child => child.calcBounds());
     }
 
     getScale(): number {
@@ -76,6 +81,7 @@ export class MeshView extends View {
         this.bounds = this.bounds.translate(point);
 
         this.obj.move(point.div(10).negateY());
+        this.children.forEach(child => child.calcBounds());
     }
 
     getBounds(): Rectangle {
@@ -86,9 +92,9 @@ export class MeshView extends View {
         this.bounds = rectangle;
         this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
 
-        const center = this.getBounds().getBoundingCenter();
-        this.axisView.setBounds(new Rectangle(new Point(center.x - 8, center.y - 60), new Point(center.x + 8, center.y)));
+        this.children.forEach(child => child.calcBounds());
     }
+
 
     dispose() {
         // TODO: later when ObjStores are correctly introduced, dispose obj only when removing from obj store.

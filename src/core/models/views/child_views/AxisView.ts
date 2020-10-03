@@ -23,6 +23,7 @@ export class AxisView extends ChildView {
     constructor(parent: View) {
         super();
         this.parent = parent;
+        this.bounds = new Rectangle(new Point(0, 0), new Point(0, 0));
     }
 
     getObj(): IObj {
@@ -43,6 +44,11 @@ export class AxisView extends ChildView {
 
     setBounds(rectangle: Rectangle) {
         this.bounds = rectangle;
+    }
+
+    calcBounds() {
+        const center = this.parent.getBounds().getBoundingCenter();
+        this.setBounds(new Rectangle(new Point(center.x - 8, center.y - 60), new Point(center.x + 8, center.y)));
     }
 
     dispose() {}

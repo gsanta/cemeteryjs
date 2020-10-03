@@ -3,6 +3,7 @@ import { MeshView } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { NullTool } from "../../../../core/plugin/tools/NullTool";
+import { Cursor } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 
 export const AxisToolType = 'axis-tool-type';
@@ -14,11 +15,22 @@ export class AxisTool extends NullTool {
         super(AxisToolType, plugin, registry);
     }
 
+    over() {
+        this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
+        this.registry.services.render.scheduleRendering(this.plugin.region);
+    }
+
+    out() {
+        if (!this.downView) {
+            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+            this.registry.services.render.scheduleRendering(this.plugin.region);
+        }
+    }
+
     down() {
         if (this.registry.services.pointer.hoveredItem && this.registry.services.pointer.hoveredItem.viewType === AxisViewType) {
             this.downView = this.registry.services.pointer.hoveredItem;
         }
-        this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
     }
 
     drag() {
@@ -36,5 +48,9 @@ export class AxisTool extends NullTool {
     up() {
         this.downView = undefined;
         this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+    }
+
+    getCursor() {
+        return Cursor.N_Resize;
     }
 }

@@ -14,6 +14,7 @@ export interface UI_Element_Css {
     strokeDasharray?: string;
     pointerEvents?: 'none' | 'all';
     userSelect?: 'auto' | 'text' | 'none' | 'all';
+    opacity?: number;
 }
 
 export interface UI_ElementConfig {

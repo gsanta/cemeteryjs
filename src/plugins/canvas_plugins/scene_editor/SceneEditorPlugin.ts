@@ -107,8 +107,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
             const translation = `${meshView.getBounds().topLeft.x} ${meshView.getBounds().topLeft.y}`;
             const rotation = `${toDegree(meshView.getRotation())} ${meshView.getBounds().getWidth() / 2} ${meshView.getBounds().getHeight() / 2}`;
-            const scale = `${meshView.getScale(), meshView.getScale()}`;
-            group.transform = `translate(${translation}) rotate(${rotation}) scale(${scale})`;
+            group.transform = `translate(${translation}) rotate(${rotation})`;
             const rect = group.rect();
             rect.width = meshView.getBounds().getWidth();
             rect.height = meshView.getBounds().getHeight();
@@ -129,28 +128,41 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             }
 
             if (meshView.isSelected()) {
-                this.renderYPosControl(canvas, meshView.axisView);
+                this.renderAxisControl(canvas, meshView.axisView);
             }
     
             return thumbnail;
         });
     }
 
-    private renderYPosControl(canvas: UI_SvgCanvas, axisView: AxisView) {
+    private renderAxisControl(canvas: UI_SvgCanvas, axisView: AxisView) {
         const group = canvas.group(`y-control`);
         group.data = axisView;
         group.scopedToolId = AxisToolType;
-
-        const line = group.line();
-        line.css = {
-            pointerEvents: 'none',
-            stroke: 'blue',
-            strokeWidth: "3"
-        }
+        group.isInteractive = true;
 
         const center = axisView.getBounds().getBoundingCenter();
         const topLeft = axisView.getBounds().topLeft; 
         const botRight = axisView.getBounds().bottomRight; 
+
+        const rect = group.rect();
+        rect.x = topLeft.x;
+        rect.y = topLeft.y;
+        rect.width = axisView.getBounds().getWidth();
+        rect.height = axisView.getBounds().getHeight();
+        rect.css = {
+            opacity: 0,
+            fill: 'white',
+            strokeWidth: '0'
+        }
+
+        const line = group.line();
+        line.css = {
+            pointerEvents: 'none',
+            stroke: this.registry.preferences.colors.green,
+            strokeWidth: "3"
+        }
+
         line.x1 = center.x;
         line.y1 = axisView.getBounds().topLeft.y + 10;
         line.x2 = center.x;

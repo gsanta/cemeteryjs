@@ -42,7 +42,8 @@ export enum Cursor {
     Grab = 'grab',
     Crosshair = 'crosshair',
     Move = 'move',
-    ZoomIn = 'zoom-in'
+    ZoomIn = 'zoom-in',
+    N_Resize = 'n-resize'
 }
 
 export interface Tool extends IHotkey {

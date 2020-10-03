@@ -10,7 +10,6 @@ import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
-import { ToolController } from '../../../../plugin/controller/ToolController';
 
 const SelectionComponentStyled = styled.rect`
     stroke: red;

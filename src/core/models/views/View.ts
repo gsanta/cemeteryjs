@@ -67,6 +67,7 @@ export abstract class View {
 
     abstract getBounds(): Rectangle;
     abstract setBounds(rectangle: Rectangle): void;
+    calcBounds(): void {}
 
     abstract dispose(): void;
 

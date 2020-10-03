@@ -1,10 +1,8 @@
 import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
-import { FormController, PropController } from "../../../core/plugin/controller/FormController";
-import { ToolController } from "../../../core/plugin/controller/ToolController";
-import { UI_Controller } from "../../../core/plugin/controller/UI_Controller";
-import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
+import { PropController } from "../../../core/plugin/controller/FormController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
+import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { Registry } from "../../../core/Registry";
 import { ThumbnailDialogPlugin, ThumbnailDialogPluginId } from "./ThumbnailDialogPlugin";
 import { ClearThumbnailControl, ThumbnailCreateControl, ThumbnailUploadControl } from "./ThumbnailDialogProps";
