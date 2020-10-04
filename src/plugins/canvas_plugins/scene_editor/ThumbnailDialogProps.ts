@@ -1,5 +1,5 @@
 import { Tools } from "babylonjs";
-import { Bab_EngineFacade } from "../../../core/adapters/babylonjs/Bab_EngineFacade";
+import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { MeshView } from "../../../core/models/views/MeshView";
 import { PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Plugin";

@@ -26,7 +26,12 @@ export interface NodeConnectionViewJson extends ViewJson {
 
 export class NodeConnectionViewFactory implements ViewFactory {
     viewType = NodeConnectionViewType;
+
     newInstance() { return new NodeConnectionView(); }
+
+    renderInto() {
+        
+    }
 }
 
 export class NodeConnectionView extends View {

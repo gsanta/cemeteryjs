@@ -3,6 +3,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { IObj } from "../objs/IObj";
 import { Registry } from "../../Registry";
 import { ChildView } from "./child_views/ChildView";
+import { UI_Container } from "../../ui_components/elements/UI_Container";
 
 export interface ViewJson {
     id: string;
@@ -19,6 +20,8 @@ export enum ViewTag {
 export interface ViewFactory {
     viewType: string;
     newInstance(): View;
+
+    renderInto(container: UI_Container, view: View);
 }
 
 export abstract class View {
@@ -66,6 +69,10 @@ export abstract class View {
 
     deleteChild(child: View) {
         this.children.splice(this.children.indexOf(child), 1);    
+    }
+
+    setParent(parent: View) {
+        this.parent = parent;
     }
 
     getScale() { return 1; }

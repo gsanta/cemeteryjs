@@ -108,6 +108,11 @@ export class ScaleXController extends PropController<string> {
 
 
 export class ScaleYController extends PropController<string> {
+
+    constructor() {
+        super(SpriteSettingsProps.ScaleY);
+    }
+
     defaultVal(context: PropContext) {
         const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
 

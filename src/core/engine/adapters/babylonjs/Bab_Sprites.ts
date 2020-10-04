@@ -1,9 +1,9 @@
 import { Mesh, Sprite, SpriteManager, Vector3 } from "babylonjs";
-import { Point } from "../../../utils/geometry/shapes/Point";
-import { SpriteObj } from "../../models/objs/SpriteObj";
-import { Registry } from "../../Registry";
-import { RectangleFactory } from "../../stores/RectangleFactory";
-import { ISpriteAdapter } from "../ISpriteAdapter";
+import { Point } from "../../../../utils/geometry/shapes/Point";
+import { SpriteObj } from "../../../models/objs/SpriteObj";
+import { Registry } from "../../../Registry";
+import { RectangleFactory } from "../../../stores/RectangleFactory";
+import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 
 const placeholderSpriteSheet = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAA9UlEQVR4nO3RQQHAIBDAsGO6EIJFVA4bfSQWsvY9/5DxqWgREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiOkZGYe3KcDBIuxwCIAAAAASUVORK5CYII='

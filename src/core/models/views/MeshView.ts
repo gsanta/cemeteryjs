@@ -19,6 +19,10 @@ const MIN_VIEW_SIZE = 20;
 export class MeshViewFactory implements ViewFactory {
     viewType = MeshViewType;
     newInstance() { return new MeshView(); }
+
+    renderInto() {
+
+    }
 }
 
 export class MeshView extends View {
@@ -81,9 +85,7 @@ export class MeshView extends View {
         const savedBounds = this.bounds.clone();
 
         const diff = yPos === this.yPos ? 0 : (yPos - this.yPos) / 10;
-        console.log(diff)
-        const scaleFactor = 1 + diff;//this.yPos + 1 + diff;
-        // this.bounds.scale(new Point(1 / (this.yPos + 1), 1 / (this.yPos + 1)));
+        const scaleFactor = 1 + diff;
         this.bounds.scale(new Point(scaleFactor, scaleFactor));
 
         if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {

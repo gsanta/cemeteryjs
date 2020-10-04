@@ -12,6 +12,7 @@ import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SpriteTool } from "./tools/SpriteTool";
 import { AxisTool } from "./tools/AxisTool";
+import { YAxisHook } from "./hooks/YAxisHook";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
@@ -19,6 +20,7 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
     pluginId = SceneEditorPluginId;
     
     createPlugin(registry: Registry): UI_Plugin {
+        registry.plugins.engineHooks.registerMeshHook(new YAxisHook(registry));
         return new SceneEditorPlugin(registry);
     }
 

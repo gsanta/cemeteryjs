@@ -1,6 +1,6 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { ISpriteAdapter } from "../../adapters/ISpriteAdapter";
+import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
 import { IObj, ObjFactory } from "./IObj";
 

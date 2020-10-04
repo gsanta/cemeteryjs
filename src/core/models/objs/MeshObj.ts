@@ -1,5 +1,5 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
-import { IMeshAdapter } from '../../adapters/IMeshAdapter';
+import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
 import { IObj, ObjFactory, ObjJson } from './IObj';
 

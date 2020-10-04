@@ -1,13 +1,11 @@
-import { ParticleSystem, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from "babylonjs";
-import { Mesh } from "babylonjs/Meshes/mesh";
-import { Scene } from "babylonjs/scene";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { AssetObj } from "../../models/objs/AssetObj";
-import { MeshObj } from "../../models/objs/MeshObj";
-import { Registry } from "../../Registry";
-import { IMeshLoaderAdapter } from "../IMeshLoaderAdapter";
+import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
+import { AssetObj } from "../../../models/objs/AssetObj";
+import { MeshObj } from "../../../models/objs/MeshObj";
+import { Registry } from "../../../Registry";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { MeshData } from "./Bab_Meshes";
+
 
 export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     

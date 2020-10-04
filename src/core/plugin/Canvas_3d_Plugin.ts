@@ -1,4 +1,4 @@
-import { IEngineFacade } from "../adapters/IEngineFacade";
+import { IEngineFacade } from "../engine/IEngineFacade";
 import { ICamera } from "../models/misc/camera/ICamera";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";

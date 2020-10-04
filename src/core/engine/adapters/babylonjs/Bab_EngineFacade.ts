@@ -1,7 +1,7 @@
 import { Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
-import { Camera3D } from "../../models/misc/camera/Camera3D";
-import { Registry } from "../../Registry";
-import { IEngineFacade } from "../IEngineFacade";
+import { Camera3D } from "../../../models/misc/camera/Camera3D";
+import { Registry } from "../../../Registry";
+import { IEngineFacade } from "../../IEngineFacade";
 import { Bab_Meshes } from "./Bab_Meshes";
 import { Bab_MeshLoader } from "./Bab_MeshLoader";
 import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
@@ -24,7 +24,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.spriteLoader = new Bab_SpriteLoader(this.registry);
+        this.spriteLoader = new Bab_SpriteLoader(this.registry, this);
         this.sprites = new Bab_Sprites(this.registry, this);
         this.meshLoader = new Bab_MeshLoader(this.registry, this);
         this.meshes = new Bab_Meshes(this.registry, this);

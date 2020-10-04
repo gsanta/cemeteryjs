@@ -1,4 +1,4 @@
-import { Bab_EngineFacade } from '../../../core/adapters/babylonjs/Bab_EngineFacade';
+import { Bab_EngineFacade } from '../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
 import { ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';

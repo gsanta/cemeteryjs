@@ -25,6 +25,10 @@ export interface PathViewJson extends ViewJson {
 export class PathViewFactory implements ViewFactory {
     viewType = PathViewType;
     newInstance() { return new PathView(); }
+
+    renderInto() {
+        
+    }
 }
 
 export class PathView extends View {

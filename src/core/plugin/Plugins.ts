@@ -17,8 +17,11 @@ import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { UI_PluginFactory } from './UI_PluginFactory';
 import { UI_Plugin, UI_Region } from './UI_Plugin';
+import { EngineHooks } from '../engine/hooks/EngineHooks';
 
 export class Plugins {
+    engineHooks: EngineHooks;
+
     private activePlugins: UI_Plugin[] = [];
 
     private pluginFactories: Map<string, UI_PluginFactory> = new Map();
@@ -47,6 +50,8 @@ export class Plugins {
         this.registerPlugin(new FileSettingslPluginFactory());
         this.registerPlugin(new CodeEditorPluginFactory());
         this.registerPlugin(new LayoutSettingsPluginFactory());
+
+        this.engineHooks = new EngineHooks();
     }
 
     private hoveredView: AbstractCanvasPlugin;

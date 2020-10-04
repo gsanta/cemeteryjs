@@ -1,4 +1,3 @@
-import { AxisView, AxisViewType } from '../../../core/models/views/child_views/AxisView';
 import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
@@ -7,13 +6,11 @@ import { RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from '../../../core/plugi
 import { Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { Registry } from '../../../core/Registry';
-import { activeToolId } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../../core/ui_components/react/styles';
 import { sort } from '../../../utils/geometry/Functions';
 import { toDegree } from '../../../utils/geometry/Measurements';
-import { AxisToolType } from './tools/AxisTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -136,70 +133,11 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     private renderAxisControl(canvas: UI_SvgCanvas, meshView: MeshView) {
-        let axisView: AxisView;
-
-        if (meshView.isSelected()) {
-            axisView = <AxisView> meshView.children.find(child => child.viewType === AxisViewType);
-        }
-
-        if (!axisView) {
-            return;
-        }
-
-        const group = canvas.group(`y-control`);
-        group.data = axisView;
-        group.scopedToolId = AxisToolType;
-        group.isInteractive = true;
-
-        const center = axisView.getBounds().getBoundingCenter();
-        const topLeft = axisView.getBounds().topLeft; 
-        const botRight = axisView.getBounds().bottomRight; 
-
-        const rect = group.rect();
-        rect.x = topLeft.x;
-        rect.y = topLeft.y;
-        rect.width = axisView.getBounds().getWidth();
-        rect.height = axisView.getBounds().getHeight();
-        rect.css = {
-            opacity: 0,
-            fill: 'white',
-            strokeWidth: '0'
-        }
-
-        const line = group.line();
-        line.css = {
-            pointerEvents: 'none',
-            stroke: this.registry.preferences.colors.green,
-            strokeWidth: "3"
-        }
-
-        line.x1 = center.x;
-        line.y1 = axisView.getBounds().topLeft.y + 10;
-        line.x2 = center.x;
-        line.y2 = axisView.getBounds().bottomRight.y;
-
-        const polygon = group.polygon();
-        polygon.points = `${topLeft.x},${topLeft.y + 15} ${botRight.x},${topLeft.y + 15} ${center.x},${topLeft.y}`;
-        polygon.css = {
-            fill: this.registry.preferences.colors.green
-        }
+        meshView.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
     }
 
     private renderSpriteViews(canvas: UI_SvgCanvas) {
-        this.registry.stores.viewStore
-            .getViewsByType(SpriteViewType)
-            .forEach(spriteView => {
-                const group = canvas.group(spriteView.id);
-                group.data = spriteView;
-                group.transform = `translate(${spriteView.getBounds().topLeft.x} ${spriteView.getBounds().topLeft.y})`;
-                const rect = group.rect();
-                rect.width = spriteView.getBounds().getWidth();
-                rect.height = spriteView.getBounds().getHeight();
-                rect.fillColor = 'green';
-
-                rect.strokeColor = spriteView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
-    
-            });
+        this.registry.stores.viewStore.getViewsByType(SpriteViewType).forEach(spriteView => this.registry.services.viewService.renderInto(canvas, spriteView));
     }
 
     private renderPathViews(canvas: UI_SvgCanvas) {

@@ -1,5 +1,6 @@
-import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
-import { IEngineFacade } from "./adapters/IEngineFacade";
+import { Bab_EngineFacade } from "./engine/adapters/babylonjs/Bab_EngineFacade";
+import { IEngineFacade } from "./engine/IEngineFacade";
+import { Wrap_EngineFacade } from "./engine/adapters/wrapper/Wrap_EngineFacade";
 import { Plugins } from "./plugin/Plugins";
 import { defaultPreferences, Preferences } from './preferences/Preferences';
 import { Services } from "./services/Services";
@@ -19,6 +20,10 @@ export class Registry {
         this.services.setup();
 
         this.plugins = new Plugins(this);
-        this.engine = new Bab_EngineFacade(this);
+        
+        const wrapEngine = new Wrap_EngineFacade(this);
+        wrapEngine.realEngine = new Bab_EngineFacade(this);
+
+        this.engine = wrapEngine;
     }
 }

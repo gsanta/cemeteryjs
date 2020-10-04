@@ -35,6 +35,7 @@ export class ViewStore {
     protected views: View[] = [];
     private selectedViews: View[] = [];
     protected idMap: Map<string, View> = new Map();
+    protected byObjIdMap: Map<string, View> = new Map();
     private viewsByType: Map<string, View[]> = new Map();
     protected idGenerator: IdGenerator;
     private hooks: ViewStoreHook[] = [];
@@ -67,6 +68,7 @@ export class ViewStore {
 
         this.views.push(view);
         this.idMap.set(view.id, view);
+        this.byObjIdMap.set(view.getObj().id, view);
 
         if (!this.viewsByType.get(view.viewType)) {
             this.viewsByType.set(view.viewType, []);
@@ -106,6 +108,10 @@ export class ViewStore {
 
     getById(id: string): View {
         return this.idMap.get(id);
+    }
+
+    getByObjId(objId: string): View {
+        return this.byObjIdMap.get(objId);
     }
 
     getViewsByType(type: string): View[] {
@@ -157,6 +163,7 @@ export class ViewStore {
         }
         this.idMap = new Map();
         this.viewsByType = new Map();
+        this.byObjIdMap = new Map();
         this.idGenerator.clear();
         this.clearSelection();
     }
@@ -176,10 +183,19 @@ export class ViewLifeCycleHook extends EmptyViewStoreHook {
 }
 
 export class AxisControlHook extends EmptyViewStoreHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
 
     addSelectionHook(views: View[]) {
         if (views.length === 1) {
-            views[0].addChild(new AxisView(views[0]));
+            const child = this.registry.services.viewService.createView(AxisViewType);
+            child.setParent(views[0]);
+            views[0].addChild(child);
+
         }
     }
 

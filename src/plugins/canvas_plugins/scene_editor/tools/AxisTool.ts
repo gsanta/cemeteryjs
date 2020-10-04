@@ -38,6 +38,7 @@ export class AxisTool extends NullTool {
 
         if (this.downView) {
             const parent = <MeshView> this.downView.parent;
+            parent.getObj().setPosition
             const yPosDiff = this.registry.services.pointer.pointer.getDiff().y;
             parent.setYPos(parent.getYPos() + yPosDiff);
         }

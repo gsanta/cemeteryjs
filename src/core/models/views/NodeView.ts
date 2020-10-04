@@ -27,6 +27,10 @@ export class NodeViewFactory implements ViewFactory {
     }
 
     newInstance() { return this.registry.services.node.createNodeView() }
+
+    renderInto() {
+        
+    }
 }
 
 const HEADER_HIGHT = 30;

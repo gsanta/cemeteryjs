@@ -15,7 +15,7 @@ export class Editor {
         this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
 
         this.registry.stores.viewStore.addHook(new ViewLifeCycleHook(this.registry));
-        this.registry.stores.viewStore.addHook(new AxisControlHook());
+        this.registry.stores.viewStore.addHook(new AxisControlHook(this.registry));
     }
 
     setup(canvas: HTMLCanvasElement) {        
