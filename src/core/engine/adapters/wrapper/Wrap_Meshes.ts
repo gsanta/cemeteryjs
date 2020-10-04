@@ -1,4 +1,5 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { IMeshAdapter } from "../../IMeshAdapter";
@@ -13,11 +14,12 @@ export  class Wrap_Meshes implements IMeshAdapter {
         this.engineFacade = engineFacade;
     }
 
-    setPosition(meshObj: MeshObj, pos: Point): void {
+    setPosition(meshObj: MeshObj, pos: Point_3): void {
+        this.registry.plugins.engineHooks.getMeshHooks().forEach(meshHook => meshHook.setPositionHook(meshObj, pos));
         this.engineFacade.realEngine.meshes.setPosition(meshObj, pos);
     }
 
-    getPosition(meshObj: MeshObj): Point {
+    getPosition(meshObj: MeshObj): Point_3 {
         return this.engineFacade.realEngine.meshes.getPosition(meshObj);
     }
 

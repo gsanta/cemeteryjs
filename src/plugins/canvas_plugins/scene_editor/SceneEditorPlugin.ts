@@ -1,7 +1,7 @@
 import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
-import { ViewTag } from '../../../core/models/views/View';
+import { View, ViewTag } from '../../../core/models/views/View';
 import { RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
@@ -132,8 +132,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         });
     }
 
-    private renderAxisControl(canvas: UI_SvgCanvas, meshView: MeshView) {
-        meshView.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
+    private renderAxisControl(canvas: UI_SvgCanvas, view: View) {
+        view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
     }
 
     private renderSpriteViews(canvas: UI_SvgCanvas) {

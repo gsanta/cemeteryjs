@@ -6,6 +6,7 @@ import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { RectangleFactory } from "../../../stores/RectangleFactory";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 
 export interface MeshData {
     mainMesh: Mesh;
@@ -25,18 +26,18 @@ export  class Bab_Meshes implements IMeshAdapter {
         this.engineFacade = engineFacade;
     }
 
-    setPosition(meshObj: MeshObj, pos: Point): void {
+    setPosition(meshObj: MeshObj, pos: Point_3): void {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
 
-        meshData.mainMesh.position = new Vector3(pos.x, 0, pos.y);
+        meshData.mainMesh.position = new Vector3(pos.x, pos.y, pos.z);
     }
 
-    getPosition(meshObj: MeshObj): Point {
+    getPosition(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
 
-        return new Point(meshData.mainMesh.position.x, meshData.mainMesh.position.z);
+        return new Point_3(meshData.mainMesh.position.x, meshData.mainMesh.position.y, meshData.mainMesh.position.z);
     }
 
     setScale(meshObj: MeshObj, point: Point) {

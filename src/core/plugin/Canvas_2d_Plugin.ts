@@ -3,10 +3,6 @@ import { Camera2D } from "../models/misc/camera/Camera2D";
 import { Registry } from "../Registry";
 import { AbstractCanvasPlugin, calcOffsetFromDom } from "./AbstractCanvasPlugin";
 import { UI_Region } from "./UI_Plugin";
-import { FormController, PropController } from "./controller/FormController";
-import { ToolType } from "./tools/Tool";
-import { CameraTool } from "./tools/CameraTool";
-import { ToolController } from "./controller/ToolController";
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {

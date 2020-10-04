@@ -1,8 +1,8 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
 import { MeshObj } from '../objs/MeshObj';
-import { AxisView } from './child_views/AxisView';
 import { View, ViewFactory, ViewJson } from './View';
 
 export const MeshViewType = 'mesh-view';
@@ -48,7 +48,10 @@ export class MeshView extends View {
     setObj(obj: MeshObj) {
         this.obj = obj;
 
-        this.bounds && this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
+        if (this.bounds) { 
+            const pos2 = this.bounds.getBoundingCenter().div(10);
+            this.obj.setPosition(new Point_3(pos2.x, this.obj.getPosition().y, pos2.y));
+        }
     }
 
     getRotation(): number {
@@ -81,23 +84,6 @@ export class MeshView extends View {
         return this.scale;
     }
 
-    setYPos(yPos: number) {
-        const savedBounds = this.bounds.clone();
-
-        const diff = yPos === this.yPos ? 0 : (yPos - this.yPos) / 10;
-        const scaleFactor = 1 + diff;
-        this.bounds.scale(new Point(scaleFactor, scaleFactor));
-
-        if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
-            this.bounds = savedBounds;
-        } else {
-            this.children.forEach(child => child.calcBounds());
-        }
-
-        this.yPos += diff;
-    }
-
-
     getYPos() {
         return this.yPos;
     }
@@ -107,7 +93,8 @@ export class MeshView extends View {
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
 
-        this.obj.move(point.div(10).negateY());
+        const point2 = point.div(10).negateY();
+        this.obj.move(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
         this.children.forEach(child => child.calcBounds());
     }
 
@@ -115,10 +102,17 @@ export class MeshView extends View {
         return this.bounds;
     }
 
-    setBounds(rectangle: Rectangle) {
-        this.bounds = rectangle;
-        this.obj.setPosition(this.bounds.getBoundingCenter().div(10));
+    setBounds(bounds: Rectangle) {
+        const center = bounds.getBoundingCenter();
+        this.bounds = bounds;
 
+        const pos2 = this.bounds.getBoundingCenter().div(10);
+        const objPos = this.obj.getPosition();
+        
+        // TODO: fix this mess, it can break easily, causing infinite loop
+        if (this.bounds.getBoundingCenter() !== center) {
+            this.obj.setPosition(new Point_3(pos2.x, objPos ? objPos.y : 0, pos2.y));
+        }
         this.children.forEach(child => child.calcBounds());
     }
 
@@ -139,7 +133,8 @@ export class MeshView extends View {
 
     fromJson(json: MeshViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        this.obj.setPosition(this.bounds.getBoundingCenter().div(10).negateY());
+        const point2 = this.bounds.getBoundingCenter().div(10).negateY()
+        this.obj.setPosition(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
         this.rotation = json.rotation;
         this.scale = json.scale;
         this.yPos = json.yPos;

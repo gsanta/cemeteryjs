@@ -11,12 +11,6 @@ export function toDegree(radian: number) {
 }
 
 export class Measurements {
-    // TODO: rename to smth like "closeTo" so that the exact distance is not mentioned in the name
-    public static isDistanceSmallerThan(point1: Point, point2: Point, unit = 0.5) {
-        return point1.distanceTo(point2) <= unit;
-    }
-
-
     anglesEqual(angle1: Angle, angle2: Angle) {
         return Math.abs(angle1.getAngle() - angle2.getAngle()) < 0.1;
     }

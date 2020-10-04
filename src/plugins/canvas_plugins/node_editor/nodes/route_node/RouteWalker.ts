@@ -1,6 +1,7 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 
 const speedConstant = 250;
 
@@ -28,7 +29,10 @@ export class RouteWalker {
         
         this.updateControlPoint();
         console.log('delta: ' + this.progress + ' len: ' + this.vector.len());
-        this.meshObj.setPosition(this.calcPosition());
+
+        const pos2 = this.calcPosition();
+
+        this.meshObj.setPosition(new Point_3(pos2.x, this.meshObj.getPosition().y, pos2.y));
     }
 
     setSpeed(speed: number) {

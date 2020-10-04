@@ -5,6 +5,7 @@ import { Registry } from '../../../core/Registry';
 import { Camera3D } from '../../../core/models/misc/camera/Camera3D';
 import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin';
 import { Bab_EngineFacade } from '../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
+import { Wrap_EngineFacade } from '../../../core/engine/adapters/wrapper/Wrap_EngineFacade';
 
 export class AxisGizmo {
     private registry: Registry;
@@ -100,7 +101,7 @@ export class AxisGizmo {
             this.awake();    
         }
 
-        const engine = this.registry.engine as Bab_EngineFacade;
+        const engine = (<Wrap_EngineFacade> this.registry.engine).realEngine as Bab_EngineFacade;
         const camera = (<Camera3D> this.plugin.getCamera()).camera;
 
         this.updateOriginVector(engine.scene, engine.engine, camera);

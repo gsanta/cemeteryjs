@@ -15,7 +15,7 @@ export class ViewService {
     constructor(registry: Registry) {
         this.registry = registry;
         this.registerView(new MeshViewFactory());
-        this.registerView(new SpriteViewFactory());
+        this.registerView(new SpriteViewFactory(this.registry));
         this.registerView(new PathViewFactory());
         this.registerView(new NodeViewFactory(this.registry));
         this.registerView(new NodeConnectionViewFactory());

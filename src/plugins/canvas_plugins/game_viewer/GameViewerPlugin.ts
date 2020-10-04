@@ -34,8 +34,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         super.mounted(htmlElement);
 
         this.registry.engine.setup(document.querySelector(`#${GameViewerPluginId} canvas`));
-        (this.registry.engine as Bab_EngineFacade).engine.resize();
-        (this.registry.engine as Bab_EngineFacade).scene.registerAfterRender(() => {
+        this.registry.engine.resize();
+        this.registry.engine.registerRenderLoop(() => {
             this.gizmos.update();
         });
         

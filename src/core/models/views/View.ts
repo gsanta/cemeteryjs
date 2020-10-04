@@ -81,7 +81,6 @@ export abstract class View {
     abstract setBounds(rectangle: Rectangle): void;
     calcBounds(): void {}
 
-    setYPos(yPos: number) {}
     getYPos() { return undefined; }
 
     abstract dispose(): void;

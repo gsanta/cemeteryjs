@@ -64,67 +64,12 @@ export class Point {
         return new Point(this.x / amount, this.y / amount);
     }
 
-    perpendicularVector(): Point {
-        return new Point(this.y, -this.x);
-    }
-
-    /*
-     * Returns true if the line through this and the parameter is not
-     * vertical and not horizontal
-     */
-    isDiagonalTo(otherPoint: Point): boolean {
-        return this.x !== otherPoint.x && this.y !== otherPoint.y;
-    }
-
-    absoluteDistanceTo(otherPoint: Point): [number, number] {
-        return [
-            Math.abs(this.x - otherPoint.x),
-            Math.abs(this.y - otherPoint.y)
-        ];
-    }
-
-    distanceTo(otherPoint: Point): number {
-        return this.subtract(otherPoint).distanceToOrigin();
-    }
-
-    distanceToOrigin(): number {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-
     subtract(otherPoint: Point): Point {
         return new Point(this.x - otherPoint.x, this.y - otherPoint.y);
     }
 
-    normalize() {
-        const length = this.distanceToOrigin();
-
-        return new Point(this.x / length, this.y / length);
-    }
-
-    isNormalized() {
-        return this.distanceToOrigin() === 1;
-    }
-
-    angleTo(otherPoint: Point) {
-        const norm1 = this.normalize();
-        const norm2 = otherPoint.normalize();
-        return Math.atan2(norm1.y, norm1.x) - Math.atan2(norm2.y, norm2.x);
-    }
-
-    vectorAngle(): number {
-        return Math.atan2(this.y, this.x) + Math.PI / 2;
-    }
-
     len(): number {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-    }
-
-    limit(max: number) {
-        if (this.len() > max) {
-            const p = this.mul(max / this.len());
-            this.x = p.x;
-            this.y = p.y;
-        }
     }
 
     getVectorCenter(): Point {

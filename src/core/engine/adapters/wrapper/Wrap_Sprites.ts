@@ -1,8 +1,8 @@
-import { Mesh, Sprite, SpriteManager } from "babylonjs";
+import { Sprite } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { SpriteObj } from "../../../models/objs/SpriteObj";
 import { Registry } from "../../../Registry";
-import { RectangleFactory } from "../../../stores/RectangleFactory";
 import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
 
@@ -16,7 +16,8 @@ export class Wrap_Sprites implements ISpriteAdapter {
         this.engineFacade = engineFacade;
     }
 
-    setPosition(spriteObj: SpriteObj, pos: Point): void {
+    setPosition(spriteObj: SpriteObj, pos: Point_3): void {
+        this.registry.plugins.engineHooks.getSpriteHooks().forEach(spriteHook => spriteHook.setPositionHook(spriteObj, pos));
         this.engineFacade.realEngine.sprites.setPosition(spriteObj, pos);
     }
 

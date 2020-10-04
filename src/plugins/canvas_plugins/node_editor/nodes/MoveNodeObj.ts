@@ -8,6 +8,7 @@ import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point } from "../../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { MeshController } from "./MeshNodeObj";
 
 export const MoveNodeFacotry: NodeFactory = {
@@ -71,7 +72,7 @@ export class MoveNodeObj extends NodeObj {
         const meshId = this.getParam('mesh').val;
 
         const meshView = registry.stores.viewStore.getById(meshId) as MeshView;
-        meshView.getObj().move(new Point(0, 2));
+        meshView.getObj().move(new Point_3(0, 0, 2));
     }
 }
 

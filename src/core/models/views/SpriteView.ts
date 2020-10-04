@@ -18,6 +18,13 @@ export interface SpriteViewJson extends ViewJson {
 
 export class SpriteViewFactory implements ViewFactory {
     viewType = SpriteViewType;
+
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     newInstance() { return new SpriteView(); }
 
     renderInto(canvas: UI_SvgCanvas, view: SpriteView) {
@@ -30,6 +37,8 @@ export class SpriteViewFactory implements ViewFactory {
         rect.fillColor = 'green';
 
         rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+
+        view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
     }
 }
 

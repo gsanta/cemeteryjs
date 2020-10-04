@@ -7,7 +7,6 @@ import { Wrap_SpriteLoader } from "./Wrap_SpriteLoader";
 import { Wrap_Sprites } from "./Wrap_Sprites";
 
 export class Wrap_EngineFacade implements IEngineFacade {
-    private camera: Camera3D;
     private registry: Registry;
 
     realEngine: IEngineFacade;
@@ -27,7 +26,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     }
 
     getCamera(): Camera3D {
-        return this.camera;
+        return this.realEngine.getCamera();
     }
 
     setup(canvas: HTMLCanvasElement) {

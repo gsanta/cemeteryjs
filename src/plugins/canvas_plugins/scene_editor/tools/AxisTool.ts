@@ -5,6 +5,7 @@ import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlug
 import { NullTool } from "../../../../core/plugin/tools/NullTool";
 import { Cursor } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 
 export const AxisToolType = 'axis-tool-type';
 
@@ -38,9 +39,9 @@ export class AxisTool extends NullTool {
 
         if (this.downView) {
             const parent = <MeshView> this.downView.parent;
-            parent.getObj().setPosition
-            const yPosDiff = this.registry.services.pointer.pointer.getDiff().y;
-            parent.setYPos(parent.getYPos() + yPosDiff);
+            const objPos = parent.getObj().getPosition();
+            const delta = this.registry.services.pointer.pointer.getDiff().y / 10;
+            parent.getObj().setPosition(new Point_3(objPos.x, objPos.y + delta, objPos.z));
         }
 
         this.registry.services.render.scheduleRendering(this.plugin.region);

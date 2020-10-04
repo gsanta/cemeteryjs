@@ -1,4 +1,5 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
 import { IObj, ObjFactory, ObjJson } from './IObj';
@@ -10,6 +11,7 @@ export interface MeshObjJson extends ObjJson {
     scaleY: number;
     posX: number;
     posY: number;
+    posZ: number;
     rotation: number;
     modelId: string;
     textureId: string;
@@ -36,7 +38,7 @@ export class MeshObjFactory implements ObjFactory {
 export class MeshObj implements IObj {
     objType = MeshObjType;
 
-    private startPos: Point;
+    private startPos: Point_3;
     private scale: Point;
     private tempRotation: number = 0;
     id: string;
@@ -49,7 +51,7 @@ export class MeshObj implements IObj {
 
     meshAdapter: IMeshAdapter;
 
-    move(point: Point) {
+    move(point: Point_3) {
         this.startPos.add(point);
 
         if (this.meshAdapter) {
@@ -57,13 +59,13 @@ export class MeshObj implements IObj {
         }
     }
 
-    setPosition(pos: Point) {
+    setPosition(pos: Point_3) {
         this.startPos = pos;
 
         this.meshAdapter && this.meshAdapter.setPosition(this, pos);
     }
 
-    getPosition(): Point {
+    getPosition(): Point_3 {
         let pos = this.meshAdapter && this.meshAdapter.getPosition(this);
 
         if (!pos) {
@@ -109,6 +111,7 @@ export class MeshObj implements IObj {
             scaleY: this.getScale().y,
             posX: this.getPosition().x,
             posY: this.getPosition().y,
+            posZ: this.getPosition().z,
             y: this.yPos,
             rotation: this.getRotation(),
             modelId: this.modelId,
@@ -120,7 +123,7 @@ export class MeshObj implements IObj {
     fromJson(json: MeshObjJson) {
         this.id = json.id;
         this.setScale(new Point(json.scaleX, json.scaleY));
-        this.setPosition(new Point(json.posX, json.posY));
+        this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
         this.rotate(json.rotation);
         this.yPos = json.y;
         this.modelId = json.modelId;
