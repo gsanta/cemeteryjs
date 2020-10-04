@@ -13,7 +13,7 @@ import { View } from '../models/views/View';
 import { FormController } from '../plugin/controller/FormController';
 import { UI_Plugin } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
-import { ViewStoreHook } from '../stores/ViewStore';
+import { EmptyViewStoreHook, ViewStoreHook } from '../stores/ViewStore';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { NodeGraph } from './node/NodeGraph';
 
@@ -99,10 +99,11 @@ export interface NodeFactory {
     createController(plugin: UI_Plugin, registry: Registry): FormController;
 }
 
-class RemoveRelatedConnectionHook implements ViewStoreHook {
+class RemoveRelatedConnectionHook extends EmptyViewStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
@@ -140,10 +141,11 @@ class RemoveRelatedConnectionHook implements ViewStoreHook {
     }
 }
 
-class NodeGraphHook implements ViewStoreHook {
+class NodeGraphHook extends EmptyViewStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 

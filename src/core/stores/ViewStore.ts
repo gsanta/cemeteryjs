@@ -4,6 +4,7 @@ import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
+import { AxisView, AxisViewType } from "../models/views/child_views/AxisView";
 
 export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
     const x = rectangle.topLeft.x;
@@ -19,6 +20,15 @@ export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): Vi
 export interface ViewStoreHook {
     addViewHook(view: View);
     removeViewHook(view: View);
+    addSelectionHook(views: View[]);
+    removeSelectionHook(views: View[]);
+}
+
+export abstract class EmptyViewStoreHook implements ViewStoreHook {
+    addViewHook(view: View) {}
+    removeViewHook(view: View) {}
+    addSelectionHook(views: View[]) {}
+    removeSelectionHook(views: View[]) {}
 }
 
 export class ViewStore {
@@ -68,6 +78,10 @@ export class ViewStore {
     }
 
     removeView(view: View) {
+        if (view.isSelected()) {
+            this.removeSelectedView(view);
+        }
+
         this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
 
         this.hooks.forEach(hook => hook.removeViewHook(view));
@@ -109,11 +123,15 @@ export class ViewStore {
     addSelectedView(...items: View[]) {
         items.forEach(item => item.tags.add(ViewTag.Selected));
         this.selectedViews.push(...items);
+
+        this.hooks.forEach(hook => hook.addSelectionHook(items));
     }
 
     removeSelectedView(item: View) {
         item.tags.delete(ViewTag.Selected)
         this.selectedViews = without(this.selectedViews, item);
+
+        this.hooks.forEach(hook => hook.removeSelectionHook([item]));
     }
 
     getSelectedViews(): View[] {
@@ -129,7 +147,7 @@ export class ViewStore {
     }
 
     clearSelection() {
-        this.selectedViews.forEach(item => item.tags.delete(ViewTag.Selected));
+        this.selectedViews.forEach(item => this.removeSelectedView(item));
         this.selectedViews = [];
     }
 
@@ -144,18 +162,33 @@ export class ViewStore {
     }
 }
 
-export class ViewLifeCycleHook implements ViewStoreHook {
+export class ViewLifeCycleHook extends EmptyViewStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
-    }
-
-    addViewHook(view: View) {
-
     }
 
     removeViewHook(view: View) {
         this.registry.stores.objStore.removeObj(view.getObj());
+    }
+}
+
+export class AxisControlHook extends EmptyViewStoreHook {
+
+    addSelectionHook(views: View[]) {
+        if (views.length === 1) {
+            views[0].addChild(new AxisView(views[0]));
+        }
+    }
+
+    removeSelectionHook(views: View[]) {
+        views.forEach(view => {
+            const axisView = view.children.find(view => view.viewType === AxisViewType);
+            if (axisView) {
+                view.deleteChild(axisView);
+            }
+        });
     }
 }

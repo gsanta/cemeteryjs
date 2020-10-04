@@ -1,4 +1,4 @@
-import { AxisView } from '../../../core/models/views/child_views/AxisView';
+import { AxisView, AxisViewType } from '../../../core/models/views/child_views/AxisView';
 import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
@@ -128,14 +128,24 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             }
 
             if (meshView.isSelected()) {
-                this.renderAxisControl(canvas, meshView.axisView);
+                this.renderAxisControl(canvas, meshView);
             }
     
             return thumbnail;
         });
     }
 
-    private renderAxisControl(canvas: UI_SvgCanvas, axisView: AxisView) {
+    private renderAxisControl(canvas: UI_SvgCanvas, meshView: MeshView) {
+        let axisView: AxisView;
+
+        if (meshView.isSelected()) {
+            axisView = <AxisView> meshView.children.find(child => child.viewType === AxisViewType);
+        }
+
+        if (!axisView) {
+            return;
+        }
+
         const group = canvas.group(`y-control`);
         group.data = axisView;
         group.scopedToolId = AxisToolType;

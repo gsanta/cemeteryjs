@@ -37,14 +37,6 @@ export class MeshView extends View {
     speed = 0.5;
     layer: number = 10;
 
-    axisView: AxisView;
-
-    constructor() {
-        super();
-        this.axisView = new AxisView(this);
-        this.children.push(this.axisView);
-    }
-
     getObj(): MeshObj {
         return this.obj;
     }

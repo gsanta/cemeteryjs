@@ -59,6 +59,11 @@ export abstract class View {
         return this.activeChild;
     }
 
+    addChild(child: ChildView) {
+        this.children.push(child);
+        child.calcBounds();
+    }
+
     deleteChild(child: View) {
         this.children.splice(this.children.indexOf(child), 1);    
     }
