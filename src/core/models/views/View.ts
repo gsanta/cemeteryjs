@@ -69,6 +69,9 @@ export abstract class View {
     abstract setBounds(rectangle: Rectangle): void;
     calcBounds(): void {}
 
+    setYPos(yPos: number) {}
+    getYPos() { return undefined; }
+
     abstract dispose(): void;
 
     toJson(): ViewJson {
@@ -83,7 +86,7 @@ export abstract class View {
     fromJson(json: ViewJson, registry: Registry) {
         this.id = json.id;
         this.viewType = json.type;
-        this.setBounds(json.dimensions && Rectangle.fromString(json.dimensions));
+        this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
         this.setObj(registry.stores.objStore.getById(json.objId));
     }
 }

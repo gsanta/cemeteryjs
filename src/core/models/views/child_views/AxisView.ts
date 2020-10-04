@@ -1,5 +1,3 @@
-
-
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
@@ -8,7 +6,7 @@ import { PathObj } from "../../objs/PathObj";
 import { View, ViewJson } from "../View";
 import { ChildView } from "./ChildView";
 
-export interface EditPointViewJson extends ViewJson {
+export interface AxisViewJson extends ViewJson {
     point: string;
     parentId: string; 
 }
@@ -57,7 +55,7 @@ export class AxisView extends ChildView {
         return `${this.viewType}`;
     }
 
-    toJson(): EditPointViewJson {
+    toJson(): AxisViewJson {
         return {
             ...super.toJson(),
             point: this.point.toString(),
@@ -65,7 +63,7 @@ export class AxisView extends ChildView {
         }
     }
 
-    fromJson(json: EditPointViewJson, registry: Registry) {
+    fromJson(json: AxisViewJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
     }

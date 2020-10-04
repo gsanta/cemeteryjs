@@ -38,8 +38,8 @@ export class AxisTool extends NullTool {
 
         if (this.downView) {
             const parent = <MeshView> this.downView.parent;
-            const scaleDiff = -1 * this.registry.services.pointer.pointer.getDiff().y / 10;
-            parent.setScale(parent.getScale() + scaleDiff);
+            const yPosDiff = this.registry.services.pointer.pointer.getDiff().y;
+            parent.setYPos(parent.getYPos() + yPosDiff);
         }
 
         this.registry.services.render.scheduleRendering(this.plugin.region);

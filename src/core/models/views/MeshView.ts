@@ -14,6 +14,8 @@ export interface MeshViewJson extends ViewJson {
     yPos: number 
 }
 
+const MIN_VIEW_SIZE = 20;
+
 export class MeshViewFactory implements ViewFactory {
     viewType = MeshViewType;
     newInstance() { return new MeshView(); }
@@ -63,16 +65,47 @@ export class MeshView extends View {
     }
 
     setScale(scale: number) {
+        const savedBounds = this.bounds.clone();
+
         const currentScale = this.getScale();
         this.bounds.scale(new Point(1 / currentScale, 1 / currentScale));
         this.bounds.scale(new Point(scale, scale));
-        this.scale = scale;
+
+        if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
+            this.bounds = savedBounds;
+        } else {
+            this.children.forEach(child => child.calcBounds());
+            this.scale = scale;
+        }
+        
         this.obj.setScale(new Point(scale, scale));
-        this.children.forEach(child => child.calcBounds());
     }
 
     getScale(): number {
         return this.scale;
+    }
+
+    setYPos(yPos: number) {
+        const savedBounds = this.bounds.clone();
+
+        const diff = yPos === this.yPos ? 0 : (yPos - this.yPos) / 10;
+        console.log(diff)
+        const scaleFactor = 1 + diff;//this.yPos + 1 + diff;
+        // this.bounds.scale(new Point(1 / (this.yPos + 1), 1 / (this.yPos + 1)));
+        this.bounds.scale(new Point(scaleFactor, scaleFactor));
+
+        if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
+            this.bounds = savedBounds;
+        } else {
+            this.children.forEach(child => child.calcBounds());
+        }
+
+        this.yPos += diff;
+    }
+
+
+    getYPos() {
+        return this.yPos;
     }
 
     selectHoveredSubview() {}
