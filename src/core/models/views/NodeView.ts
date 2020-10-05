@@ -55,7 +55,7 @@ export class NodeView extends View {
         this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
     }
 
-    private setup() {
+    setup() {
         const standaloneJoinPointViews = [
             ...this.obj.inputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: true})),
             ...this.obj.outputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: false}))
@@ -66,6 +66,17 @@ export class NodeView extends View {
             .map(param => new JoinPointView(this, {slotName: param.name, isInput: false}));
         
         this.joinPointViews.push(...[...standaloneJoinPointViews, ...paramRelatedJoinPointViews]);
+        this.updateDimensions();
+    }
+
+    updateJoinPoints() {
+        this.obj.getParams().filter(param => param.isLink && param.isLink !== 'none')
+            .forEach(param => {
+                if (!this.findJoinPointView(param.name)) {
+                    this.joinPointViews.push( new JoinPointView(this, {slotName: param.name, isInput: false}));
+                }
+            });
+
         this.updateDimensions();
     }
 

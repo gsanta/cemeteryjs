@@ -1,9 +1,12 @@
+import { toDegree } from '../../../utils/geometry/shapes/Angle';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
+import { UI_SvgCanvas } from '../../ui_components/elements/UI_SvgCanvas';
+import { colors } from '../../ui_components/react/styles';
 import { MeshObj } from '../objs/MeshObj';
-import { View, ViewFactory, ViewJson } from './View';
+import { View, ViewFactory, ViewJson, ViewTag } from './View';
 
 export const MeshViewType = 'mesh-view';
 
@@ -20,8 +23,37 @@ export class MeshViewFactory implements ViewFactory {
     viewType = MeshViewType;
     newInstance() { return new MeshView(); }
 
-    renderInto() {
+    renderInto(canvas: UI_SvgCanvas, meshView: MeshView) {
+        const group = canvas.group(meshView.id);
+        group.data = meshView;
 
+        const translation = `${meshView.getBounds().topLeft.x} ${meshView.getBounds().topLeft.y}`;
+        const rotation = `${toDegree(meshView.getRotation())} ${meshView.getBounds().getWidth() / 2} ${meshView.getBounds().getHeight() / 2}`;
+        group.transform = `translate(${translation}) rotate(${rotation})`;
+        const rect = group.rect();
+        rect.width = meshView.getBounds().getWidth();
+        rect.height = meshView.getBounds().getHeight();
+
+        rect.css = {
+            strokeWidth: meshView.isSelected() ? '2' : '1'
+        }    
+
+        rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+
+        let thumbnail: JSX.Element = null;
+
+        if (meshView.thumbnailData) {
+            const image = group.image();
+            image.href = meshView.thumbnailData;
+            image.width = meshView.getBounds().getWidth();
+            image.height = meshView.getBounds().getHeight();
+        }
+
+        // if (meshView.isSelected()) {
+        //     this.renderAxisControl(canvas, meshView);
+        // }
+
+        return thumbnail;
     }
 }
 

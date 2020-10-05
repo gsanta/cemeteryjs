@@ -43,6 +43,8 @@ export class ViewService {
     }
 
     renderInto(canvas: UI_SvgCanvas, view: View) {
-        this.factoriesByType.get(view.viewType).renderInto(canvas, view);
+        if (this.factoriesByType.get(view.viewType)) {
+            this.factoriesByType.get(view.viewType).renderInto(canvas, view);
+        }
     }
 }

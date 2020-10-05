@@ -5,6 +5,8 @@ import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
 import { AxisView, AxisViewType } from "../models/views/child_views/AxisView";
+import { SpriteViewType } from "../models/views/SpriteView";
+import { MeshViewType } from "../models/views/MeshView";
 
 export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
     const x = rectangle.topLeft.x;
@@ -191,7 +193,7 @@ export class AxisControlHook extends EmptyViewStoreHook {
     }
 
     addSelectionHook(views: View[]) {
-        if (views.length === 1) {
+        if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
             const child = this.registry.services.viewService.createView(AxisViewType);
             child.setParent(views[0]);
             views[0].addChild(child);

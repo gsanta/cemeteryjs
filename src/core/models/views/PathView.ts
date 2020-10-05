@@ -5,6 +5,7 @@ import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
 import { PathObj } from "../objs/PathObj";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
 import { Registry } from "../../Registry";
+import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
@@ -26,8 +27,45 @@ export class PathViewFactory implements ViewFactory {
     viewType = PathViewType;
     newInstance() { return new PathView(); }
 
-    renderInto() {
-        
+    renderInto(canvas: UI_SvgCanvas, pathView: PathView) {
+        const group = canvas.group(pathView.id);
+        group.isInteractive = false;
+
+        if (pathView.children.length > 1) {
+            const highlightPath = group.path();
+            highlightPath.d = pathView.serializePath();
+            highlightPath.data = pathView;
+
+            highlightPath.css = {
+                fill: 'none',
+                stroke: 'blue',
+                strokeOpacity: pathView.isHovered() || pathView.isSelected() ? 0.5 : 0,
+                strokeWidth: "4"
+            }
+
+            const path = group.path();
+            path.d = pathView.serializePath();
+
+            path.css = {
+                fill: 'none',
+                stroke: 'black',
+                strokeWidth: "2",
+                pointerEvents: 'none'
+            }
+        }
+
+        pathView.children.forEach(editPoint => {
+            const circle = group.circle();
+
+            circle.cx = editPoint.point.x;
+            circle.cy = editPoint.point.y;
+            circle.r = pathView.radius;
+            circle.data = editPoint;
+
+            circle.css = {
+                fill: pathView.getActiveChild() === editPoint ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
+            }
+        });
     }
 }
 

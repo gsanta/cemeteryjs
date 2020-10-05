@@ -33,9 +33,6 @@ export class Rectangle extends Polygon {
     }
 
     setHeight(newHeight: number): Rectangle {
-        const delta = newHeight - this.getHeight();
-
-        this.topLeft = this.topLeft.addY(-delta / 2);
         this.bottomRight = this.bottomRight.setY(this.topLeft.y + newHeight);
         this.initPoints();
         return this;

@@ -85,16 +85,29 @@ export class KeyControl extends PropController {
         nodeView.getObj().setParam(element.prop, val);
         context.registry.services.history.createSnapshot();
 
+        const keyRegex = /key(\d*)/;
+
+        const keys = nodeView.getObj().getParams().filter(param => param.name.match(keyRegex));
+        let newIndex = 2;
+
+        const keyIndexes = keys.map(key => parseInt(key.name.match(keyRegex)[1], 10));
+        keyIndexes.sort((a, b) => b - a);
+
+        if (keyIndexes.length > 0) {
+            newIndex = keyIndexes[0] + 1;
+        }
+        
         nodeView.getObj().addParam({
-            name: 'key2',
+            name: `key${newIndex}`,
             val: '',
             inputType: 'list',
             valueType: 'string',
             isLink: 'output'
         });
         context.clearTempVal();
-        nodeView.updateDimensions();
-        nodeView.controller.registerPropControl(new KeyControl('key2'));
+        nodeView.setup();
+        // nodeView.updateDimensions();
+        nodeView.controller.registerPropControl(new KeyControl(`key${newIndex}`));
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

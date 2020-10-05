@@ -43,7 +43,7 @@ export class NodeConnectionView extends View {
     joinPoint1: JoinPointView;
     joinPoint2: JoinPointView;
 
-    private updateDimensions() {
+    updateDimensions() {
         if (this.point1 && this.point2) {
             this.bounds = Rectangle.fromTwoPoints(this.point1, this.point2);
         }
