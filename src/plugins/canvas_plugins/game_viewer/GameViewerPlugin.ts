@@ -16,8 +16,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     id = GameViewerPluginId;
     region = UI_Region.Canvas2;
 
-    isPlaying = false;
-
     private gizmos: Gizmos;
 
     constructor(registry: Registry) {
@@ -85,14 +83,14 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         actionIcon = toolbar.actionIcon({prop: GameViewerProps.Play});
         actionIcon.icon = 'play';
         actionIcon.placement = 'middle';
-        actionIcon.isActivated = this.isPlaying;
+        actionIcon.isActivated = this.registry.services.game.isPlaying;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Play';
 
         actionIcon = toolbar.actionIcon({prop: GameViewerProps.Stop});
         actionIcon.icon = 'stop';
         actionIcon.placement = 'middle';
-        actionIcon.isActivated = !this.isPlaying;
+        actionIcon.isActivated = !this.registry.services.game.isPlaying;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Stop';
 

@@ -6,6 +6,8 @@ import { ImportService } from "./import/ImportService";
 export class GameService {
     private afterRenders: (() => void)[] = [];
 
+    isPlaying = false;
+
     viewImporter: ImportService;
 
     private registry: Registry;
@@ -22,7 +24,9 @@ export class GameService {
     private renderLoop() {
         this.registry.services.node.graph.getNodesByType(RouteNodeObjType).forEach(node => node.getObj().execute(this.registry));
 
-        this.registry.services.node.graph.getNodesByType(AnimationNodeType).forEach(node => node.getObj().execute(this.registry));
+        if (this.isPlaying) {
+            this.registry.services.node.graph.getNodesByType(AnimationNodeType).forEach(node => node.getObj().execute(this.registry));
+        }
     }
 
     // updateConcepts(concepts: View[]) {

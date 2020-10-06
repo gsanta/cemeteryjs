@@ -4,6 +4,7 @@ import { FormController, PropController } from "../../../../core/plugin/controll
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
+import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
@@ -12,11 +13,6 @@ import { GameTool, GameToolType } from "../../game_viewer/tools/GameTool";
 
 export const KeyboardNodeFacotry: NodeFactory = {
     createNodeObj(graph: NodeGraph): NodeObj {
-        try {
-            throw new Error('err creating obj')
-        } catch(e) {
-            console.log(e)
-        }
         return new KeyboardNodeObj(graph);
     },
 
@@ -24,8 +20,14 @@ export const KeyboardNodeFacotry: NodeFactory = {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new KeyControl('key1'));
         return controller;
+    },
+
+    createExecutor(): INodeExecutor {
+        return new KeyboardNodeExecutor();
     }
 }
+
+const KEY_REGEX = /key(\d*)/;
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 export class KeyboardNodeObj extends NodeObj {
@@ -44,29 +46,26 @@ export class KeyboardNodeObj extends NodeObj {
             isLink: 'output'
         });
     }
-    
-    execute(registry: Registry) {
-        const keyParams = this.getKeyParams();
+}
+
+export class KeyboardNodeExecutor implements INodeExecutor {
+    execute(nodeObj: NodeObj, registry: Registry) {
+        const keyParams = this.getKeyParams(nodeObj);
 
         const gameTool = <GameTool> registry.plugins.getToolController(GameViewerPluginId).getById(GameToolType);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 
         if (param) {
-            const connection = this.connections.get(param.name);
-            connection && connection.getOtherNode(this).execute(registry);
+            const connection = nodeObj.connections.get(param.name);
+            connection && connection.getOtherNode(nodeObj).execute(registry);
         }
     }
 
-    private getKeyParams(): NodeParam[] {
-        const keyParams: NodeParam[] = [];
-        let i = 1;
-        while(this.hasParam(`key${i}`)) {
-            keyParams.push(this.getParam(`key${i}`));
-            break;
-        }
+    stop() {}
 
-        return keyParams;
+    private getKeyParams(nodeObj: NodeObj): NodeParam[] {
+        return nodeObj.getParams().filter(param => param.name.match(KEY_REGEX));
     }
 }
 
@@ -85,12 +84,10 @@ export class KeyControl extends PropController {
         nodeView.getObj().setParam(element.prop, val);
         context.registry.services.history.createSnapshot();
 
-        const keyRegex = /key(\d*)/;
-
-        const keys = nodeView.getObj().getParams().filter(param => param.name.match(keyRegex));
+        const keys = nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX));
         let newIndex = 2;
 
-        const keyIndexes = keys.map(key => parseInt(key.name.match(keyRegex)[1], 10));
+        const keyIndexes = keys.map(key => parseInt(key.name.match(KEY_REGEX)[1], 10));
         keyIndexes.sort((a, b) => b - a);
 
         if (keyIndexes.length > 0) {

@@ -1,5 +1,4 @@
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { GameViewerPlugin } from "./GameViewerPlugin";
 
 export enum GameViewerProps {
     Play = 'Play',
@@ -13,7 +12,7 @@ export class PlayController extends PropController {
     }
 
     click(context) {
-        (<GameViewerPlugin> context.plugin).isPlaying = true;
+        context.registry.services.game.isPlaying = true;
         context.registry.services.render.reRender(context.plugin.region);
     }
 }
@@ -25,7 +24,7 @@ export class StopController extends PropController {
     }
 
     click(context) {
-        (<GameViewerPlugin> context.plugin).isPlaying = false;
+        context.registry.services.game.isPlaying = false;
         context.registry.services.render.reRender(context.plugin.region);
     }
 }

@@ -4,6 +4,7 @@ import { PathViewType } from "../../../../core/models/views/PathView";
 import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
+import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
@@ -17,6 +18,10 @@ export const PathNodeFacotry: NodeFactory = {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new PathController());
         return controller;
+    },
+
+    createExecutor(): INodeExecutor {
+        return undefined;
     }
 }
 

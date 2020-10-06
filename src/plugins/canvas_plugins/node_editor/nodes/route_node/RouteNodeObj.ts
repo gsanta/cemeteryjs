@@ -5,6 +5,7 @@ import { NodeView } from "../../../../../core/models/views/NodeView";
 import { FormController, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../../core/Registry";
+import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../../core/services/NodeService";
 import { SaveEditControl } from "../../../../dialog_plugins/asset_manager/AssetManagerProps";
@@ -19,6 +20,10 @@ export const RouteNodeFacotry: NodeFactory = {
         const controller = new FormController(plugin, registry);
         controller.registerPropControl(new SaveEditControl());
         return controller;
+    },
+
+    createExecutor(): INodeExecutor {
+        return undefined;
     }
 }
 
@@ -112,17 +117,15 @@ export class SpeedControl extends PropController<string> {
 }
 
 
-class RouteNodeExecutor {
+class RouteNodeExecutor implements INodeExecutor {
 
-    private node: RouteNodeObj;
-    private registry: Registry;
     routWalker: RouteWalker;
 
     constructor(node: RouteNodeObj) {
         this.node = node;
     }
 
-    execute(registry: Registry) {
+    execute(nodeObj: NodeObj, registry: Registry) {
         const meshObj = this.getMeshObj(registry);
         const pathObj = this.getPathObj(registry);
 
@@ -134,6 +137,8 @@ class RouteNodeExecutor {
 
         this.routWalker.step();
     }
+
+    stop() {}
 
     private getMeshObj(registry: Registry): MeshObj {
         let meshParam = this.node.connections.get('mesh') && this.node.connections.get('mesh').getOtherNode(this.node).getParam('mesh');

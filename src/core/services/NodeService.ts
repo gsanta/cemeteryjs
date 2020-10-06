@@ -15,6 +15,7 @@ import { UI_Plugin } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
 import { EmptyViewStoreHook, ViewStoreHook } from '../stores/ViewStore';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
+import { INodeExecutor } from './node/INodeExecutor';
 import { NodeGraph } from './node/NodeGraph';
 
 export class NodeService {
@@ -97,6 +98,7 @@ export class NodeService {
 export interface NodeFactory {
     createNodeObj(graph: NodeGraph): NodeObj;
     createController(plugin: UI_Plugin, registry: Registry): FormController;
+    createExecutor(): INodeExecutor;
 }
 
 class RemoveRelatedConnectionHook extends EmptyViewStoreHook {

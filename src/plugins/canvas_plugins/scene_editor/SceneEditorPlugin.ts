@@ -1,4 +1,4 @@
-import { MeshView, MeshViewType } from '../../../core/models/views/MeshView';
+import { MeshViewType } from '../../../core/models/views/MeshView';
 import { PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
 import { View } from '../../../core/models/views/View';
@@ -8,7 +8,6 @@ import { ToolType } from '../../../core/plugin/tools/Tool';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { sort } from '../../../utils/geometry/Functions';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
@@ -105,15 +104,4 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
         });
     }
-
-    private renderMeshViews(canvas: UI_SvgCanvas) {
-        getSortedMeshViews(this.registry).map(meshView => {
-            this.registry.services.viewService.renderInto(canvas, meshView);
-        });
-    }
-}
-
-function getSortedMeshViews(registry: Registry) {
-    let items = <MeshView[]> [...registry.stores.viewStore.getViewsByType(MeshViewType)];
-    return sort(items, (a, b) => a.layer - b.layer);
 }

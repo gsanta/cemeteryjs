@@ -4,6 +4,7 @@ import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropContext, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
+import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
@@ -20,6 +21,10 @@ export const AnimationNodeFacotry: NodeFactory = {
         controller.registerPropControl(new StartFrameController());
         controller.registerPropControl(new EndFrameController());
         return controller;
+    },
+
+    createExecutor(): INodeExecutor {
+        return new AnimationNodeExecutor();
     }
 }
 
@@ -61,19 +66,24 @@ export class AnimationNodeObj extends NodeObj {
             name: 'action'
         }
     ];
+}
 
-    execute(registry: Registry) {
-        if (this.getParam('startFrame').val !== 0 && this.getParam('endFrame').val !== 0) {
-            const meshView = <MeshView> registry.stores.viewStore.getById(this.getParam('mesh').val);
+
+export class AnimationNodeExecutor implements INodeExecutor {
+    execute(nodeObj: NodeObj, registry: Registry) {
+        if (nodeObj.getParam('startFrame').val !== 0 && nodeObj.getParam('endFrame').val !== 0) {
+            const meshView = <MeshView> registry.stores.viewStore.getById(nodeObj.getParam('mesh').val);
             
-            if (!this.isAnimationPlaying) {
-                const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), this.getParam('startFrame').val, this.getParam('endFrame').val, true);
-                if (canPlay) {
-                    this.isAnimationPlaying = true;
-                }
-            }
+            // if (!this.isAnimationPlaying) {
+            //     const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), nodeObj.getParam('startFrame').val, nodeObj.getParam('endFrame').val, true);
+            //     if (canPlay) {
+            //         this.isAnimationPlaying = true;
+            //     }
+            // }
         }
     }
+
+    stop() {}
 }
 
 export class AnimationMeshController extends PropController<string> {
@@ -117,9 +127,11 @@ export class StartFrameController extends PropController<string> {
     }
 
     blur(context, element) {
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+
         try {
             const val = parseFloat(context.getTempVal());
-            element.data.getObj().setParam('startFrame', val);
+            nodeView.getObj().setParam('startFrame', val);
         } catch (e) {
             console.log(e);
         }
@@ -146,9 +158,11 @@ export class EndFrameController extends PropController<string> {
     }
 
     blur(context: PropContext, element: UI_Element) {
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+
         try {
             const val = parseFloat(context.getTempVal());
-            element.data.getObj().setParam('endFrame', val);
+            nodeView.getObj().setParam('endFrame', val);
         } catch (e) {
             console.log(e);
         }

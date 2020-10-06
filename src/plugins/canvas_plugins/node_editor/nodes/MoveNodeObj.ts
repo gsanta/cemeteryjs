@@ -4,6 +4,7 @@ import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
+import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
@@ -22,6 +23,10 @@ export const MoveNodeFacotry: NodeFactory = {
         controller.registerPropControl(new MeshMoveController());
         controller.registerPropControl(new MeshSpeedController());
         return controller;
+    },
+
+    createExecutor(): INodeExecutor {
+        return new MoveNodeExecutor();
     }
 }
 
@@ -43,7 +48,7 @@ export class MoveNodeObj extends NodeObj {
 
         this.addParam({
             name: 'move',
-            val: '',
+            val: 'forward',
             inputType: 'list',
             valueType: 'string'
         });
@@ -72,8 +77,29 @@ export class MoveNodeObj extends NodeObj {
         const meshId = this.getParam('mesh').val;
 
         const meshView = registry.stores.viewStore.getById(meshId) as MeshView;
-        meshView.getObj().move(new Point_3(0, 0, 2));
+
+        if (this.getParam('move').val === 'forward') {
+            meshView.getObj().move(new Point_3(0, 0, 2));
+        } else if (this.getParam('move').val === 'backward') {
+            meshView.getObj().move(new Point_3(0, 0, -2));
+        }
     }
+}
+
+export class MoveNodeExecutor implements INodeExecutor {
+    execute(nodeObj: NodeObj, registry: Registry) {
+        const meshId = nodeObj.getParam('mesh').val;
+
+        const meshView = registry.stores.viewStore.getById(meshId) as MeshView;
+
+        if (nodeObj.getParam('move').val === 'forward') {
+            meshView.getObj().move(new Point_3(0, 0, 2));
+        } else if (nodeObj.getParam('move').val === 'backward') {
+            meshView.getObj().move(new Point_3(0, 0, -2));
+        }
+    }
+
+    stop() {}
 }
 
 export class MeshMoveController extends PropController<string> {
@@ -90,8 +116,10 @@ export class MeshMoveController extends PropController<string> {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('move');
     }
 
-    change(val, context) {
+    change(val, context, element) {
         context.updateTempVal(val);
+        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        nodeView.getObj().setParam('move', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
