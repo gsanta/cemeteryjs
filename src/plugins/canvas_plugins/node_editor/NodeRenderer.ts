@@ -21,27 +21,29 @@ export class NodeRenderer {
     }
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
-        nodeView.getObj().getParams().map(param => {
-            let row = column.row({key: param.name});
-            row.height = '35px';
+        nodeView.getObj().getParams()
+            .filter(obj => obj.uiOptions)
+            .map(param => {
+                let row = column.row({key: param.name});
+                row.height = '35px';
 
-            switch(param.inputType) {
-                case 'textField':
-                    const textField = row.textField({prop: param.name, target: nodeView.id});
-                    textField.layout = 'horizontal';
-                    textField.type = 'number';
-                    textField.label = param.name;
-                    textField.isBold = true;
-                break;
-                case 'list':
-                    const select = row.select({prop: param.name, target: nodeView.id});
-                    select.layout = 'horizontal';
-                    select.label = param.name;
-                    select.placeholder = param.name;
-                    select.isBold = true;
-                break;
-            }
-        });
+                switch(param.uiOptions.inputType) {
+                    case 'textField':
+                        const textField = row.textField({prop: param.name, target: nodeView.id});
+                        textField.layout = 'horizontal';
+                        textField.type = 'number';
+                        textField.label = param.name;
+                        textField.isBold = true;
+                    break;
+                    case 'list':
+                        const select = row.select({prop: param.name, target: nodeView.id});
+                        select.layout = 'horizontal';
+                        select.label = param.name;
+                        select.placeholder = param.name;
+                        select.isBold = true;
+                    break;
+                }
+            });
     }
 
     private renderRect(group: UI_SvgGroup, nodeView: NodeView) {

@@ -16,6 +16,6 @@ export class GameTool extends NullTool {
     keydown(e: IKeyboardEvent) {
         this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
         this.registry.services.node.graph.getNodesByType(KeyboardNodeType)
-            .forEach(node => node.getObj().execute(this.registry));
+            .forEach(node => this.registry.services.node.executeNode(node.getObj()));
     }
 }

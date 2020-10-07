@@ -41,8 +41,10 @@ export class KeyboardNodeObj extends NodeObj {
         this.addParam({
             name: 'key1',
             val: '',
-            inputType: 'list',
-            valueType: 'string',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string',
+            },
             isLink: 'output'
         });
     }
@@ -58,7 +60,9 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 
         if (param) {
             const connection = nodeObj.connections.get(param.name);
-            connection && connection.getOtherNode(nodeObj).execute(registry);
+            if (connection) {
+                registry.services.node.executeNode(connection.getOtherNode(nodeObj));
+            }
         }
     }
 
@@ -97,8 +101,10 @@ export class KeyControl extends PropController {
         nodeView.getObj().addParam({
             name: `key${newIndex}`,
             val: '',
-            inputType: 'list',
-            valueType: 'string',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string',
+            },
             isLink: 'output'
         });
         context.clearTempVal();

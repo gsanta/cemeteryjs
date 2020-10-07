@@ -24,6 +24,7 @@ export class NodeService {
     graph: NodeGraph;
 
     private nodeFactories: Map<string, NodeFactory> = new Map();
+    private nodeExecutors: Map<string, INodeExecutor> = new Map();
 
     private defaultNodeRenderer: NodeRenderer;
 
@@ -60,6 +61,11 @@ export class NodeService {
         this.nodeTemplates.set(nodeTemplate.type, nodeTemplate);
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
+        this.nodeExecutors.set(nodeTemplate.type, nodeFactory.createExecutor());
+    }
+
+    executeNode(nodeObj: NodeObj) {
+        this.nodeExecutors.get(nodeObj.type).execute(nodeObj, this.registry);
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {

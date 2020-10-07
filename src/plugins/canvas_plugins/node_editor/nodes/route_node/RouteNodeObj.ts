@@ -33,18 +33,20 @@ export class RouteNodeObj extends NodeObj {
     category = NodeCategory.Default;
     displayName = 'Route';
 
-    private routeNodeExecutor: RouteNodeExecutor;
+    // private routeNodeExecutor: RouteNodeExecutor;
 
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);
 
-        this.routeNodeExecutor = new RouteNodeExecutor(this);
+        // this.routeNodeExecutor = new RouteNodeExecutor(this);
 
         this.addParam({
             name: 'speed',
             val: 1,
-            inputType: 'textField',
-            valueType: 'number'
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
         })
     }
 
@@ -74,13 +76,13 @@ export class RouteNodeObj extends NodeObj {
 
     setParam(name: string, value: any) {
         super.setParam(name, value);
-        this.routeNodeExecutor && this.routeNodeExecutor.routWalker.setSpeed(value);
+        // this.routeNodeExecutor && this.routeNodeExecutor.routWalker.setSpeed(value);
     }
 
     execute(registry: Registry) {
-        if (this.connections.get('mesh') && this.connections.get('path')) {
-            this.routeNodeExecutor.execute(registry);
-        }
+        // if (this.connections.get('mesh') && this.connections.get('path')) {
+        //     this.routeNodeExecutor.execute(registry);
+        // }
     }
 }
 
@@ -117,42 +119,42 @@ export class SpeedControl extends PropController<string> {
 }
 
 
-class RouteNodeExecutor implements INodeExecutor {
+// class RouteNodeExecutor implements INodeExecutor {
 
-    routWalker: RouteWalker;
+//     routWalker: RouteWalker;
 
-    constructor(node: RouteNodeObj) {
-        this.node = node;
-    }
+//     constructor(node: RouteNodeObj) {
+//         this.node = node;
+//     }
 
-    execute(nodeObj: NodeObj, registry: Registry) {
-        const meshObj = this.getMeshObj(registry);
-        const pathObj = this.getPathObj(registry);
+//     execute(nodeObj: NodeObj, registry: Registry) {
+//         const meshObj = this.getMeshObj(registry);
+//         const pathObj = this.getPathObj(registry);
 
-        if (!meshObj || !pathObj) { return; }
+//         if (!meshObj || !pathObj) { return; }
 
-        if (!this.routWalker) {
-            this.routWalker = new RouteWalker(meshObj, pathObj);
-        }
+//         if (!this.routWalker) {
+//             this.routWalker = new RouteWalker(meshObj, pathObj);
+//         }
 
-        this.routWalker.step();
-    }
+//         this.routWalker.step();
+//     }
 
-    stop() {}
+//     stop() {}
 
-    private getMeshObj(registry: Registry): MeshObj {
-        let meshParam = this.node.connections.get('mesh') && this.node.connections.get('mesh').getOtherNode(this.node).getParam('mesh');
+//     private getMeshObj(registry: Registry): MeshObj {
+//         let meshParam = this.node.connections.get('mesh') && this.node.connections.get('mesh').getOtherNode(this.node).getParam('mesh');
 
-        if (meshParam) {
-            return <MeshObj> registry.stores.viewStore.getById(meshParam.val)?.getObj();
-        }
-    }
+//         if (meshParam) {
+//             return <MeshObj> registry.stores.viewStore.getById(meshParam.val)?.getObj();
+//         }
+//     }
 
-    private getPathObj(registry: Registry): PathObj {
-        let pathParam = this.node.connections.get('path') && this.node.connections.get('path').getOtherNode(this.node).getParam('path');
+//     private getPathObj(registry: Registry): PathObj {
+//         let pathParam = this.node.connections.get('path') && this.node.connections.get('path').getOtherNode(this.node).getParam('path');
 
-        if (pathParam) {
-            return <PathObj> registry.stores.viewStore.getById(pathParam.val)?.getObj();
-        }
-    }
-}
+//         if (pathParam) {
+//             return <PathObj> registry.stores.viewStore.getById(pathParam.val)?.getObj();
+//         }
+//     }
+// }

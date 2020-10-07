@@ -37,8 +37,10 @@ export class PathNodeObj extends NodeObj {
         this.addParam({
             name: 'path',
             val: '',
-            inputType: 'list',
-            valueType: 'string'
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
         });
     }
 

@@ -42,22 +42,28 @@ export class MoveNodeObj extends NodeObj {
         this.addParam({
             name: 'mesh',
             val: '',
-            inputType: 'list',
-            valueType: 'string'
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
         });
 
         this.addParam({
             name: 'move',
             val: 'forward',
-            inputType: 'list',
-            valueType: 'string'
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
         });
 
         this.addParam({
             name: 'speed',
             val: 0.5,
-            inputType: 'textField',
-            valueType: 'number'
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
         });
     }
 

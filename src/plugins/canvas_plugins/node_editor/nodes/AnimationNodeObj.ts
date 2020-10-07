@@ -42,22 +42,28 @@ export class AnimationNodeObj extends NodeObj {
         this.addParam({
             name: 'mesh',
             val: '',
-            inputType: 'list',
-            valueType: 'string'
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
         });
         
         this.addParam({
             name: 'startFrame',
             val: 0,
-            inputType: 'textField',
-            valueType: 'number'
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
         });
 
         this.addParam({
             name: 'endFrame',
             val: 0,
-            inputType: 'textField',
-            valueType: 'number'
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
         });
     }
 

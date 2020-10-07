@@ -38,8 +38,10 @@ export interface NodeLink {
 export interface NodeParam {
     name: string;
     val: any;
-    inputType: 'textField' | 'list';
-    valueType: 'string' | 'number';
+    uiOptions?: {
+        inputType: 'textField' | 'list';
+        valueType: 'string' | 'number';
+    }
     isLink?: 'input' | 'output' | 'both' | 'none';
 }
 
@@ -121,6 +123,4 @@ export abstract class NodeObj implements IObj {
         this.params = json.params;
         this.params.forEach(param => this.cachedParams.set(param.name, param));
     }
-
-    execute(registry: Registry) {}
 }

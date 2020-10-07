@@ -37,8 +37,10 @@ export class MeshNodeObj extends NodeObj {
         this.addParam({
             name: 'mesh',
             val: '',
-            inputType: 'list',
-            valueType: 'string'
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
         });
     }
 
