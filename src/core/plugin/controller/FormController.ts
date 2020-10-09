@@ -8,12 +8,7 @@ export enum GlobalControllerProps {
 }
 
 export abstract class PropController<T = any> {
-    prop?: string;
-
-    // TODO: when all uses of PropControl as an interface is eliminated, make prop mandatory
-    constructor(prop?: string) {
-        this.prop = prop;
-    }
+    abstract acceptedProps(context: PropContext): string[];
 
     change?(val: T, context: PropContext<any>, element: UI_Element) {}
     click?(context: PropContext<T>, element: UI_Element) {}
@@ -31,7 +26,6 @@ export class PropContext<T = any> {
     element: UI_Element;
     registry: Registry;
     plugin: UI_Plugin;
-    controller: FormController;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -54,8 +48,8 @@ export class PropContext<T = any> {
 }
 
 export class FormController {
-    private propControllers: Map<string, PropController<any>> = new Map();
-    private propContexts: Map<string, PropContext<any>> = new Map();
+    private propControllers: PropController<any>[] = [];
+    private propContext: PropContext;
 
     protected registry: Registry;
     plugin: UI_Plugin;
@@ -63,6 +57,10 @@ export class FormController {
     constructor(plugin: UI_Plugin, registry: Registry, propControls?: PropController<any>[]) {
         this.plugin = plugin;
         this.registry = registry;
+
+        this.propContext = new PropContext();
+        this.propContext.registry = this.registry;
+        this.propContext.plugin = this.plugin;
 
         this.registerPropControl(new CloseDialogController());
 
@@ -74,70 +72,55 @@ export class FormController {
     }
 
     change(val: any, element: UI_Element): void {
-        const context = this.propContexts.get(element.prop);
-        this.propControllers.get(element.prop)?.change(val, context, element);
+        this.findController(element)?.change(val, this.propContext, element);
     }
 
     click(element: UI_Element): void {
-        const context = this.propContexts.get(element.prop);
-        this.propControllers.get(element.prop).click(context, element);
+        this.findController(element)?.click(this.propContext, element);
     }
 
     focus(element: UI_Element): void {
-        const context = this.propContexts.get(element.prop);
-        this.propControllers.get(element.prop).focus(context, element);
+        this.findController(element)?.focus(this.propContext, element);
     }
 
     blur(element: UI_Element): void {    
-        const context = this.propContexts.get(element.prop);
-        this.propControllers.get(element.prop).blur(context, element);
+        this.findController(element)?.blur(this.propContext, element);
     }
 
     dndStart(element: UI_Element, listItem: string): void {
-        const context = this.propContexts.get(element.prop);
-        this.propControllers.get(element.prop).onDndStart(context, element);
+        this.findController(element)?.onDndStart(this.propContext, element);
     }
 
     dndEnd(uiListItem: UI_ListItem): void {
-        const context = this.propContexts.get(uiListItem.prop);
-        this.propControllers.get(uiListItem.prop).onDndEnd(context, uiListItem);
+        this.findController(uiListItem)?.onDndEnd(this.propContext, uiListItem);
     }
 
     val(element: UI_Element): any {
-        const tmpVal = this.propContexts.get(element.prop)?.getTempVal();
-        const context = this.propContexts.get(element.prop);
+        const tmpVal = this.propContext.getTempVal();
 
-        return tmpVal !== undefined ? tmpVal :  this.propControllers.get(element.prop).defaultVal(context, element);
+        return tmpVal !== undefined ? tmpVal :  this.findController(element).defaultVal(this.propContext, element);
     }
 
     values(element: UI_Element): any[] {
-        if (this.propControllers.get(element.prop)) {
-            const context = this.propContexts.get(element.prop);
-            return this.propControllers.get(element.prop)?.values(context, element);
+        const controller = this.findController(element);
+        if (controller) {
+            return controller?.values(this.propContext, element);
         }
 
         return [];
     }
 
-    registerPropControl(propControl: PropController<any>) {
-        const context = new PropContext();
-        context.controller = this;
-        context.registry = this.registry;
-        context.plugin = this.plugin;
-        this.propContexts.set(propControl.prop, context);
-        this.propControllers.set(propControl.prop, propControl);
+    private findController(element: UI_Element): PropController {
+        return this.propControllers.find(controller => controller.acceptedProps(this.propContext).includes(element.prop));
     }
 
-    getPropContext<T>(prop: string): PropContext<T> {
-        return this.propContexts.get(prop);
+    registerPropControl(propController: PropController<any>) {
+        this.propControllers.push(propController);
     }
 }
 
 class CloseDialogController extends PropController {
-
-    constructor() {
-        super(GlobalControllerProps.CloseDialog);
-    }
+    acceptedProps() { return [GlobalControllerProps.CloseDialog]; }
 
     click(context: PropContext) {
         context.registry.plugins.deactivatePlugin(context.plugin.id);

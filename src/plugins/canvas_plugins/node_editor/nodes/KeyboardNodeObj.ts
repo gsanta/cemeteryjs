@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
@@ -16,10 +16,8 @@ export const KeyboardNodeFacotry: NodeFactory = {
         return new KeyboardNodeObj(graph);
     },
 
-    createController(plugin: UI_Plugin, registry: Registry): FormController {
-        const controller = new FormController(plugin, registry);
-        controller.registerPropControl(new KeyControl('key1'));
-        return controller;
+    createPropControllers(): PropController[] {
+        return [new KeyControl()];
     },
 
     createExecutor(): INodeExecutor {
@@ -74,6 +72,11 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 }
 
 export class KeyControl extends PropController {
+    acceptedProps(context: PropContext) {
+        const nodeView = context.registry.stores.viewStore.getById(context.element.target);
+        return (<NodeObj> nodeView.getObj()).getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
+    }
+
     values() {
         return getAllKeys();
     }
@@ -82,7 +85,7 @@ export class KeyControl extends PropController {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam(element.prop).val;
     }
 
-    change(val, context, element: UI_InputElement) {
+    change(val, context: PropContext, element: UI_InputElement) {
         context.updateTempVal(val);
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
         nodeView.getObj().setParam(element.prop, val);
@@ -109,8 +112,8 @@ export class KeyControl extends PropController {
         });
         context.clearTempVal();
         nodeView.setup();
-        // nodeView.updateDimensions();
-        nodeView.controller.registerPropControl(new KeyControl(`key${newIndex}`));
+
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

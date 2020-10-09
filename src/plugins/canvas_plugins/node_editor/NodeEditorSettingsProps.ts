@@ -10,10 +10,7 @@ export enum NodeEditorSettingsProps {
 }
 
 export class DragNodeController extends PropController {
-
-    constructor() {
-        super(NodeEditorSettingsProps.DragNode);
-    }
+    acceptedProps() { return [NodeEditorSettingsProps.DragNode]; }
 
     onDndStart(context: PropContext) {
         context.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);

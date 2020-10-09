@@ -1,9 +1,8 @@
-import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
-import { Registry } from "../../../core/Registry";
-import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
-import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
-import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { SpriteSheetObj, SpriteSheetObjType } from "../../../core/models/objs/SpriteSheetObj";
+import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
+import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
+import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
+import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
 import { SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogProps";
 
 export const SpriteSheetManagerDialogPluginId = 'sprite-sheet-manager-dialog-plugin'; 
@@ -11,6 +10,10 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
     id = SpriteSheetManagerDialogPluginId;
     region = UI_Region.Dialog;
     displayName = 'Spritesheet manager';
+
+    // TODO find a better place to store temporary data
+    tempSpriteSheetJson: string;
+    tempImagePath: string;
 
     protected renderInto(layout: UI_Dialog): UI_Layout {
         layout.width = '530px';
@@ -88,9 +91,7 @@ export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
         
         let fileUploadButton = row.fileUpload(SpritesheetManagerDialogProps.SpriteSheetJson);
         
-        const jsonPropContext = this.registry.plugins.getPropController(this.id).getPropContext(SpritesheetManagerDialogProps.SpriteSheetJson);
-
-        fileUploadButton.label = jsonPropContext.getTempVal() ? jsonPropContext.getTempVal() as string : 'Upload json';
+        fileUploadButton.label = this.tempSpriteSheetJson ? this.tempSpriteSheetJson : 'Upload json';
         fileUploadButton.width = '170px';
         // textField.width = '170px';
 

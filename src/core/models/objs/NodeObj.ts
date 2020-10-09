@@ -34,6 +34,15 @@ export interface NodeLink {
     name: string;
 }
 
+export interface NodeParamJson {
+    name: string;
+    val: any;
+    uiOptions?: {
+        inputType: 'textField' | 'list';
+        valueType: 'string' | 'number';
+    }
+    [otherData: string]: any;
+}
 
 export interface NodeParam {
     name: string;
@@ -43,6 +52,28 @@ export interface NodeParam {
         valueType: 'string' | 'number';
     }
     isLink?: 'input' | 'output' | 'both' | 'none';
+
+    toJson?(): NodeParamJson;
+    fromJson?(json: NodeObjJson);
+}
+
+/**
+ * It should be implemented and passed to a {@link NodeObj} when some of the params of the {@link NodeObj} contains
+ * a non-primitive value (e.g some custom object), so that it's serialization/deserialization can be done through this interface.
+ */
+export interface CustomNodeParamSerializer {
+    /**
+     * It will be called for every {@link NodeParam} in the {@link NodeObj}.
+     * 
+     *  @returns the serialized {@link NodeParam}, or for primitive values undefined can be returned and then the defult serializer will run.
+     */
+    serialize(param: NodeParam): NodeParamJson;
+    /**
+     * It will be called for every {@link NodeParamJson} when deserializing a {@link NodeObj}.
+     * 
+     *  @returns the deserialized {@link NodeParam}, or for primitive values undefined can be returned and then the defult deserializer will run.
+     */
+    deserialize(json: NodeParamJson): NodeParam;
 }
 
 export abstract class NodeObj implements IObj {
@@ -60,9 +91,11 @@ export abstract class NodeObj implements IObj {
     
     private cachedParams: Map<string, NodeParam> = new Map();
     private params: NodeParam[] = [];
+    private customParamSerializer: CustomNodeParamSerializer;
 
-    constructor(nodeGraph: NodeGraph) {
+    constructor(nodeGraph: NodeGraph, customParamSerializer?: CustomNodeParamSerializer) {
         this.graph = nodeGraph;
+        this.customParamSerializer = customParamSerializer;
 
         if (this.graph) {
             this.graph.addNode(this);
@@ -103,13 +136,19 @@ export abstract class NodeObj implements IObj {
         this.cachedParams.set(param.name, param);
     }
 
+    addAllParams(params: NodeParam[]) {
+        params.forEach(param => this.addParam(param));
+    }
+
     findSlotByName(name: string) {
         return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
     }
 
     dispose() {}
 
-    toJson(): NodeObjJson {
+    serialize(): NodeObjJson {
+        const params = this.params.map(param => this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param));
+
         return {
             id: this.id,
             type: this.type,
@@ -117,10 +156,28 @@ export abstract class NodeObj implements IObj {
         }
     }
 
-    fromJson(json: NodeObjJson, registry: Registry) {
+    deserialize(json: NodeObjJson, registry: Registry): void {
+
         this.id = json.id;
         this.type = json.type;
-        this.params = json.params;
+        this.params = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
         this.params.forEach(param => this.cachedParams.set(param.name, param));
+    }
+}
+
+function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
+    const uiOptions = param.uiOptions ? param.uiOptions : undefined;
+    return {
+        name: param.name,
+        val: param.val,
+        uiOptions: uiOptions
+    }
+}
+
+function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
+    return {
+        name: json.name,
+        val: json.val,
+        uiOptions: json.uiOptions
     }
 }

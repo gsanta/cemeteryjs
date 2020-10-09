@@ -8,10 +8,7 @@ export enum FileSettingsProps {
 }
 
 export class ExportFileController extends PropController<string> {
-    
-    constructor() {
-        super(FileSettingsProps.Export);
-    }
+    acceptedProps() { return [FileSettingsProps.Export]; }
 
     click(context: PropContext) {
         const file = context.registry.services.export.export();
@@ -21,10 +18,7 @@ export class ExportFileController extends PropController<string> {
 }
 
 export class ImportFileController extends PropController<{ data: string }> {
-    
-    constructor() {
-        super(FileSettingsProps.Import);
-    }
+    acceptedProps() { return [FileSettingsProps.Import]; }
 
     change(val: {data: string}, context: PropContext) {
         context.registry.stores.clear();
@@ -35,10 +29,7 @@ export class ImportFileController extends PropController<{ data: string }> {
 }
 
 export class NewProjectController extends PropController {
-    
-    constructor() {
-        super(FileSettingsProps.NewProject);
-    }
+    acceptedProps() { return [FileSettingsProps.NewProject]; }
 
     click(context: PropContext) {
         context.registry.stores.clear();

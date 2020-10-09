@@ -17,12 +17,12 @@ export const MoveNodeFacotry: NodeFactory = {
         return new MoveNodeObj(graph);
     },
 
-    createController(plugin: UI_Plugin, registry: Registry): FormController {
-        const controller = new FormController(plugin, registry);
-        controller.registerPropControl(new MeshController());
-        controller.registerPropControl(new MeshMoveController());
-        controller.registerPropControl(new MeshSpeedController());
-        return controller;
+    createPropControllers(): PropController[] {
+        return [
+            new MeshController(),
+            new MeshMoveController(),
+            new MeshSpeedController()
+        ];
     },
 
     createExecutor(): INodeExecutor {
@@ -109,10 +109,7 @@ export class MoveNodeExecutor implements INodeExecutor {
 }
 
 export class MeshMoveController extends PropController<string> {
-
-    constructor() {
-        super('move');
-    }
+    acceptedProps() { return ['move']; }
 
     values(context) {
         return ['forward', 'backward'];
@@ -131,10 +128,7 @@ export class MeshMoveController extends PropController<string> {
 }
 
 export class MeshSpeedController extends PropController<string> {
-
-    constructor() {
-        super('speed');
-    }
+    acceptedProps() { return ['speed']; }
 
     defaultVal(context, element: UI_InputElement) {
         return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('speed');

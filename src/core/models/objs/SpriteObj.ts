@@ -85,7 +85,7 @@ export class SpriteObj implements IObj {
         this.spriteAdapter && this.spriteAdapter.deleteInstance(this);
     }
 
-    toJson(): SpriteObjJson {
+    serialize(): SpriteObjJson {
         return {
             id: this.id,
             frameName: this.frameName,
@@ -97,7 +97,7 @@ export class SpriteObj implements IObj {
         }
     }
 
-    fromJson(json: SpriteObjJson) {
+    deserialize(json: SpriteObjJson) {
         this.frameName = json.frameName;
         if (json.x !== undefined && json.y !== undefined) {
             this.setPosition(new Point(json.x, json.y));

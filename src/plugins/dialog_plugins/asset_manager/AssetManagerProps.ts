@@ -1,3 +1,4 @@
+import { AssetObj } from '../../../core/models/objs/AssetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { UI_InputElement } from '../../../core/ui_components/elements/UI_InputElement';
@@ -13,9 +14,7 @@ export enum AssetManagerDialogProps {
 }
 
 export class DeleteAssetControl extends PropController<any> {
-    constructor() {
-        super(AssetManagerDialogProps.DeleteAsset);
-    }
+    acceptedProps() { return [AssetManagerDialogProps.DeleteAsset]; }
 
     click(context, element) {
         const asset = context.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
@@ -25,9 +24,7 @@ export class DeleteAssetControl extends PropController<any> {
 }
 
 export class EnterEditModeControl extends PropController<any> {
-    constructor() {
-        super(AssetManagerDialogProps.EnterEditMode);
-    }
+    acceptedProps() { return [AssetManagerDialogProps.EnterEditMode]; }
 
     click(context, element) {
         const asset = context.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
@@ -37,13 +34,15 @@ export class EnterEditModeControl extends PropController<any> {
 }
 
 export class AssetNameControl extends PropController<any> {
-    constructor() {
-        super(AssetManagerDialogProps.AssetName);
-    }
+    acceptedProps() { return [AssetManagerDialogProps.AssetName]; }
 
     change(val, context) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Dialog);
+    }
+
+    blur(context: PropContext) {
+        (<AssetManagerDialogPlugin> context.plugin).tempAssetName = context.getTempVal();
     }
 
     defaultVal(context) {
@@ -52,13 +51,15 @@ export class AssetNameControl extends PropController<any> {
 }
 
 export class AssetPathControl extends PropController<any> {
-    constructor() {
-        super(AssetManagerDialogProps.AssetPath);
-    }
+    acceptedProps() { return [AssetManagerDialogProps.AssetPath]; }
 
     change(val: any, context: PropContext<any>) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Dialog);
+    }
+
+    blur(context: PropContext) {
+        (<AssetManagerDialogPlugin> context.plugin).tempAssetPath = context.getTempVal();
     }
 
     defaultVal(context) {
@@ -67,18 +68,15 @@ export class AssetPathControl extends PropController<any> {
 }
 
 export class SaveEditControl extends PropController<any> {
-    constructor() {
-        super(AssetManagerDialogProps.SaveEdit);
-    }
+    acceptedProps() { return [AssetManagerDialogProps.SaveEdit]; }
 
     click(context: PropContext<any>) {
+        const plugin = (<AssetManagerDialogPlugin> context.plugin);
         const editedAsset = (<AssetManagerDialogPlugin> context.plugin).editedAsset;
 
-        editedAsset.name = context.controller.getPropContext<string>(AssetManagerDialogProps.AssetName).getTempVal();
-        context.controller.getPropContext<string>(AssetManagerDialogProps.AssetName).clearTempVal();
+        editedAsset.name = plugin.tempAssetName;
         
-        editedAsset.name = context.controller.getPropContext<string>(AssetManagerDialogProps.AssetName).getTempVal();
-        context.controller.getPropContext<string>(AssetManagerDialogProps.AssetName).clearTempVal();
+        editedAsset.name = plugin.tempAssetPath;
 
         (<AssetManagerDialogPlugin> context.plugin).editedAsset = undefined;
         context.registry.services.render.reRender(UI_Region.Dialog);
@@ -86,13 +84,9 @@ export class SaveEditControl extends PropController<any> {
 }
 
 export class CancelEditControl extends PropController<any> {
-    constructor() {
-        super(AssetManagerDialogProps.CancelEdit);
-    }
+    acceptedProps() { return [AssetManagerDialogProps.CancelEdit]; }
 
     click(context: PropContext<any>) {
-        context.controller.getPropContext<string>(AssetManagerDialogProps.AssetName).clearTempVal();
-        context.controller.getPropContext<string>(AssetManagerDialogProps.AssetName).clearTempVal();
 
         (<AssetManagerDialogPlugin> context.plugin).editedAsset = undefined;
         context.registry.services.render.reRender(UI_Region.Dialog);

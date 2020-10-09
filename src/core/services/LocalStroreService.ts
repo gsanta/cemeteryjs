@@ -90,7 +90,7 @@ export class LocalStoreService {
         const objectStore = db.transaction(["assets"], "readwrite").objectStore("assets");
 
         const data = await this.getData(objectStore.get(asset.id));
-        asset.fromJson(data);
+        asset.deserialize(data);
     }
 
     async clearAll() {

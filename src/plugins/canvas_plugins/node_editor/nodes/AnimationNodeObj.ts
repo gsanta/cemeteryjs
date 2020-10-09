@@ -15,12 +15,12 @@ export const AnimationNodeFacotry: NodeFactory = {
         return new AnimationNodeObj(graph);
     },
 
-    createController(plugin: UI_Plugin, registry: Registry): FormController {
-        const controller = new FormController(plugin, registry);
-        controller.registerPropControl(new AnimationMeshController());
-        controller.registerPropControl(new StartFrameController());
-        controller.registerPropControl(new EndFrameController());
-        return controller;
+    createPropControllers(): PropController[] {
+        return [
+            new AnimationMeshController(),
+            new StartFrameController(),
+            new EndFrameController()
+        ];
     },
 
     createExecutor(): INodeExecutor {
@@ -93,11 +93,7 @@ export class AnimationNodeExecutor implements INodeExecutor {
 }
 
 export class AnimationMeshController extends PropController<string> {
-
-    constructor() {
-        super('mesh');
-    }
-
+    acceptedProps() { return ['mesh']; }
 
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id);
@@ -117,10 +113,7 @@ export class AnimationMeshController extends PropController<string> {
 }
 
 export class StartFrameController extends PropController<string> {
-
-    constructor() {
-        super('startFrame');
-    }
+    acceptedProps() { return ['startFrame']; }
 
     defaultVal(context, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
@@ -148,10 +141,7 @@ export class StartFrameController extends PropController<string> {
 }
 
 export class EndFrameController extends PropController<string> {
-
-    constructor() {
-        super('endFrame');
-    }
+    acceptedProps() { return ['endFrame']; }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;

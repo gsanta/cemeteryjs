@@ -3,7 +3,6 @@ import { UI_Plugin, UI_Region } from '../../../core/plugin/UI_Plugin';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_Table } from '../../../core/ui_components/elements/UI_Table';
-import { AssetManagerControllerId } from './AssetManagerPluginFactory';
 import { AssetManagerDialogProps } from './AssetManagerProps';
 
 export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
@@ -12,7 +11,11 @@ export class AssetManagerDialogPlugin extends UI_Plugin {
     region = UI_Region.Dialog;
     displayName = 'Asset manager';
 
+    
+    // TODO find a better place to store temporary data
     editedAsset: AssetObj;
+    tempAssetName: string;
+    tempAssetPath: string;
 
     renderInto(layout: UI_Dialog): UI_Layout {
         layout.width = '530px';

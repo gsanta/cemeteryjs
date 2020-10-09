@@ -104,7 +104,7 @@ export class MeshObj implements IObj {
         this.meshAdapter && this.meshAdapter.deleteInstance(this);
     }
 
-    toJson(): MeshObjJson {
+    serialize(): MeshObjJson {
         return {
             id: this.id,
             scaleX: this.getScale().x,
@@ -120,7 +120,7 @@ export class MeshObj implements IObj {
         }
     }
     
-    fromJson(json: MeshObjJson) {
+    deserialize(json: MeshObjJson) {
         this.id = json.id;
         this.setScale(new Point(json.scaleX, json.scaleY));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));

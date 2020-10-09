@@ -6,9 +6,7 @@ export enum AssetManagerSidepanelControllerProps {
 }
 
 export class IsAssetManagerDialogOpenController extends PropController {
-    constructor() {
-        super(AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen);
-    }
+    acceptedProps() { return [AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen]; }
 
     click(context: PropContext) {
         context.registry.plugins.showPlugin(AssetManagerDialogPluginId);

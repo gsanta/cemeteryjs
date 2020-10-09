@@ -44,7 +44,7 @@ export class AssetObj implements IObj {
 
     dispose() {}
 
-    toJson(): AssetObjJson {
+    serialize(): AssetObjJson {
         return {
             id: this.id,
             assetType: this.assetType,
@@ -54,7 +54,7 @@ export class AssetObj implements IObj {
         };
     }
 
-    fromJson(json: AssetObjJson) {
+    deserialize(json: AssetObjJson) {
         this.id = json.id;
         this.assetType = <AssetType> json.assetType;
         this.path = json.path;

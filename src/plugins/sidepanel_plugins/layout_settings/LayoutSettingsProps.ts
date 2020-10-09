@@ -5,10 +5,7 @@ export enum LayoutSettingsProps {
 }
 
 export class LayoutControl extends PropController<string> {
-    
-    constructor() {
-        super(LayoutSettingsProps.Layout);
-    }
+    acceptedProps() { return [LayoutSettingsProps.Layout]; }
 
     defaultVal(context: PropContext) {
         return context.registry.services.uiPerspective.activePerspective ? context.registry.services.uiPerspective.activePerspective.name : '';

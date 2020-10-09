@@ -18,7 +18,7 @@ export class AssetObjImporter implements IDataImporter {
 
         assetJsons.forEach(assetJson => {
             const assetObj: AssetObj = new AssetObj();
-            assetObj.fromJson(<AssetObjJson> assetJson);
+            assetObj.deserialize(<AssetObjJson> assetJson);
     
             this.registry.stores.assetStore.addObj(assetObj);
 

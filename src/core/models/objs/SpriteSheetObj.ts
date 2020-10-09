@@ -23,7 +23,7 @@ export class SpriteSheetObj implements IObj {
 
     dispose() {}
 
-    toJson(): SpriteSheetObjJson {
+    serialize(): SpriteSheetObjJson {
         return {
             id: this.id,
             spriteAssetId: this.spriteAssetId,
@@ -31,7 +31,7 @@ export class SpriteSheetObj implements IObj {
         }
     }
 
-    fromJson(json: SpriteSheetObjJson): void {
+    deserialize(json: SpriteSheetObjJson): void {
         this.id = json.id;
         this.spriteAssetId = json.spriteAssetId;
         this.jsonAssetId = json.jsonAssetId;

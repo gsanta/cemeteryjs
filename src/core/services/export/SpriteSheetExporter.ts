@@ -26,7 +26,7 @@ export class SpriteSheetExporter implements IDataExporter {
         json.objs.push(objs);
 
         this.registry.stores.objStore.getAll().forEach(spriteSheetObj => {
-            objs.objs.push(spriteSheetObj.toJson());
+            objs.objs.push(spriteSheetObj.serialize());
         });
     }
 }

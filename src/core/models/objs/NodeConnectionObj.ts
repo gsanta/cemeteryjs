@@ -33,7 +33,7 @@ export class NodeConnectionObj implements IObj {
 
     dispose() {}
 
-    toJson(): NodeConnectionObjJson {
+    serialize(): NodeConnectionObjJson {
         return {
             id: this.id,
             joinPoint1: this.joinPoint1,
@@ -43,7 +43,7 @@ export class NodeConnectionObj implements IObj {
         }
     }
 
-    fromJson(json: NodeConnectionObjJson, registry: Registry) {
+    deserialize(json: NodeConnectionObjJson, registry: Registry) {
         this.id = json.id;
         this.joinPoint1 = json.joinPoint1;
         this.node1 = registry.stores.objStore.getById(json.node1Id) as NodeObj;

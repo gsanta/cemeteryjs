@@ -26,7 +26,7 @@ export class AssetObjExporter implements IDataExporter {
         json.objs.push(objs);
 
         this.registry.stores.assetStore.getAll().forEach(assetObj => {
-            objs.objs.push(assetObj.toJson());
+            objs.objs.push(assetObj.serialize());
         });
     }
 }

@@ -14,10 +14,8 @@ export const MeshNodeFacotry: NodeFactory = {
         return new MeshNodeObj(graph);
     },
 
-    createController(plugin: UI_Plugin, registry: Registry): FormController {
-        const controller = new FormController(plugin, registry);
-        controller.registerPropControl(new MeshController());
-        return controller;
+    createPropControllers(): PropController[] {
+        return [new MeshController()];
     },
 
     createExecutor(): INodeExecutor {
@@ -52,10 +50,7 @@ export class MeshNodeObj extends NodeObj {
 }
 
 export class MeshController extends PropController<string> {
-
-    constructor() {
-        super('mesh');
-    }
+    acceptedProps() { return ['mesh']; }
 
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id)

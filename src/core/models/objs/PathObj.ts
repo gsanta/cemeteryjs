@@ -25,7 +25,7 @@ export class PathObj implements IObj {
 
     dispose() {}
 
-    toJson(): PathObjJson {
+    serialize(): PathObjJson {
         const pointsJson = this.points.map(point => ({x: point.x, y: point.y}));
 
         return {
@@ -34,7 +34,7 @@ export class PathObj implements IObj {
         }
     }
 
-    fromJson(json: PathObjJson) {
+    deserialize(json: PathObjJson) {
         this.id = json.id;
         this.points = json.points.map(point => new Point(point.x, point.y));
     }

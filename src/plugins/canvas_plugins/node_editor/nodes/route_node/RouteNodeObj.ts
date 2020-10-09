@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { NodeCategory, NodeObj } from "../../../../../core/models/objs/NodeObj";
+import { NodeCategory, NodeObj, NodeParam } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { FormController, PropController } from "../../../../../core/plugin/controller/FormController";
@@ -16,16 +16,29 @@ export const RouteNodeFacotry: NodeFactory = {
         return new RouteNodeObj(graph);
     },
 
-    createController(plugin: UI_Plugin, registry: Registry): FormController {
-        const controller = new FormController(plugin, registry);
-        controller.registerPropControl(new SaveEditControl());
-        return controller;
+    createPropControllers(): PropController[] {
+        return [new SaveEditControl()];
     },
 
     createExecutor(): INodeExecutor {
         return undefined;
     }
 }
+
+const params: NodeParam[] = [
+    {
+        name: 'speed',
+        val: 1,
+        uiOptions: {
+            inputType: 'textField',
+            valueType: 'number'
+        }
+    },
+    {
+        name: 'routeWalker',
+        val: undefined
+    },
+];
 
 export const RouteNodeObjType = 'route-node-obj';
 export class RouteNodeObj extends NodeObj {
@@ -38,16 +51,7 @@ export class RouteNodeObj extends NodeObj {
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);
 
-        // this.routeNodeExecutor = new RouteNodeExecutor(this);
-
-        this.addParam({
-            name: 'speed',
-            val: 1,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        })
+        this.addAllParams(params);
     }
 
     inputs = [
@@ -87,10 +91,7 @@ export class RouteNodeObj extends NodeObj {
 }
 
 export class SpeedControl extends PropController<string> {
-
-    constructor() {
-        super('speed');
-    }
+    acceptedProps() { return ['speed']; }
 
     defaultVal(context, element) {
         const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
@@ -119,42 +120,37 @@ export class SpeedControl extends PropController<string> {
 }
 
 
-// class RouteNodeExecutor implements INodeExecutor {
+export class RouteNodeExecutor implements INodeExecutor {
+    routWalker: RouteWalker;
 
-//     routWalker: RouteWalker;
+    execute(nodeObj: NodeObj, registry: Registry) {
+        const meshObj = this.getMeshObj(nodeObj, registry);
+        const pathObj = this.getPathObj(nodeObj, registry);
 
-//     constructor(node: RouteNodeObj) {
-//         this.node = node;
-//     }
+        if (!meshObj || !pathObj) { return; }
 
-//     execute(nodeObj: NodeObj, registry: Registry) {
-//         const meshObj = this.getMeshObj(registry);
-//         const pathObj = this.getPathObj(registry);
+        if (!nodeObj.getParam('routeWalker').val) {
+            nodeObj.setParam('routeWalker', new RouteWalker(meshObj, pathObj));
+        }
 
-//         if (!meshObj || !pathObj) { return; }
+        this.routWalker.step();
+    }
 
-//         if (!this.routWalker) {
-//             this.routWalker = new RouteWalker(meshObj, pathObj);
-//         }
+    stop() {}
 
-//         this.routWalker.step();
-//     }
+    private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
+        let meshParam = nodeObj.connections.get('mesh') && nodeObj.connections.get('mesh').getOtherNode(nodeObj).getParam('mesh');
 
-//     stop() {}
+        if (meshParam) {
+            return <MeshObj> registry.stores.viewStore.getById(meshParam.val)?.getObj();
+        }
+    }
 
-//     private getMeshObj(registry: Registry): MeshObj {
-//         let meshParam = this.node.connections.get('mesh') && this.node.connections.get('mesh').getOtherNode(this.node).getParam('mesh');
+    private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
+        let pathParam = nodeObj.connections.get('path') && nodeObj.connections.get('path').getOtherNode(nodeObj).getParam('path');
 
-//         if (meshParam) {
-//             return <MeshObj> registry.stores.viewStore.getById(meshParam.val)?.getObj();
-//         }
-//     }
-
-//     private getPathObj(registry: Registry): PathObj {
-//         let pathParam = this.node.connections.get('path') && this.node.connections.get('path').getOtherNode(this.node).getParam('path');
-
-//         if (pathParam) {
-//             return <PathObj> registry.stores.viewStore.getById(pathParam.val)?.getObj();
-//         }
-//     }
-// }
+        if (pathParam) {
+            return <PathObj> registry.stores.viewStore.getById(pathParam.val)?.getObj();
+        }
+    }
+}

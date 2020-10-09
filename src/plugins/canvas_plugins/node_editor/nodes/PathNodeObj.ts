@@ -14,10 +14,8 @@ export const PathNodeFacotry: NodeFactory = {
         return new PathNodeObj(graph);
     },
 
-    createController(plugin: UI_Plugin, registry: Registry): FormController {
-        const controller = new FormController(plugin, registry);
-        controller.registerPropControl(new PathController());
-        return controller;
+    createPropControllers(): PropController[] {
+        return [new PathController()];
     },
 
     createExecutor(): INodeExecutor {
@@ -52,10 +50,7 @@ export class PathNodeObj extends NodeObj {
 }
 
 export class PathController extends PropController<string> {
-
-    constructor() {
-        super('path')
-    }
+    acceptedProps() { return ['path']; }
 
     values(context) {
         return context.registry.stores.viewStore.getViewsByType(PathViewType).map(pathView => pathView.id);

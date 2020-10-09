@@ -2,6 +2,7 @@ import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../core/models/objs/SpriteSheetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
 
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
 
@@ -12,23 +13,17 @@ export enum SpritesheetManagerDialogProps {
 }
 
 export class SpriteSheetJsonPathControl extends PropController<{data: string, path: string}> {
-
-    constructor() {
-        super(SpritesheetManagerDialogProps.SpriteSheetJson);
-    }
-
+    acceptedProps() { return [SpritesheetManagerDialogProps.SpriteSheetJson]; }
 
     change(val: {data: string, path: string}, context: PropContext) {
         const json = atob(val.data.split(',')[1]);
-        context.updateTempVal(json);
+        (<SpriteSheetManagerDialogPlugin> context.plugin).tempSpriteSheetJson = json;
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
 export class SpriteSheetImgController extends PropController<string> {
-    constructor() {
-        super(SpritesheetManagerDialogProps.SpriteSheetImg);
-    }
+    acceptedProps() { return [SpritesheetManagerDialogProps.SpriteSheetImg]; }
 
     defaultVal(context: PropContext) {
         return context.getTempVal();
@@ -41,28 +36,23 @@ export class SpriteSheetImgController extends PropController<string> {
     }
 
     blur(context: PropContext) {
+        (<SpriteSheetManagerDialogPlugin> context.plugin).tempImagePath = context.getTempVal();
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
 export class AddSpriteSheetController extends PropController<string> {
-    constructor() {
-        super(SpritesheetManagerDialogProps.AddSpriteSheet);
-    }
+    acceptedProps() { return [SpritesheetManagerDialogProps.AddSpriteSheet]; }
 
     click(context: PropContext) {
         const spriteSheetObj = new SpriteSheetObj();
+        const plugin = (<SpriteSheetManagerDialogPlugin> context.plugin);
 
-        const controller = context.registry.plugins.getPropController(context.plugin.id);
-        const jsonData = <string> controller.getPropContext(SpritesheetManagerDialogProps.SpriteSheetJson).getTempVal();
-        controller.getPropContext(SpritesheetManagerDialogProps.SpriteSheetJson).clearTempVal();
-
-        const imgPath = <string> controller.getPropContext(SpritesheetManagerDialogProps.SpriteSheetImg).getTempVal();
-        controller.getPropContext(SpritesheetManagerDialogProps.SpriteSheetImg).clearTempVal();
-
+        const spriteSheetJson = plugin.tempSpriteSheetJson;
+        const imgPath = plugin.tempImagePath;
         
         const imgAsset = new AssetObj({path: imgPath, assetType: AssetType.SpriteSheet});
-        const jsonAsset = new AssetObj({data: jsonData, assetType: AssetType.SpriteSheetJson});
+        const jsonAsset = new AssetObj({data: spriteSheetJson, assetType: AssetType.SpriteSheetJson});
 
         context.registry.stores.assetStore.addObj(imgAsset);
         context.registry.stores.assetStore.addObj(jsonAsset);
@@ -74,9 +64,11 @@ export class AddSpriteSheetController extends PropController<string> {
         spriteSheetObj.spriteAssetId = imgAsset.id;
         context.registry.stores.objStore.addObj(spriteSheetObj);
 
-
         context.registry.engine.spriteLoader.loadSpriteSheet(spriteSheetObj);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Dialog);
+
+        plugin.tempSpriteSheetJson = undefined;
+        plugin.tempImagePath = undefined;
     }
 }

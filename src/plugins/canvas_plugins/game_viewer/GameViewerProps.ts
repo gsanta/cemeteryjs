@@ -6,10 +6,7 @@ export enum GameViewerProps {
 }
 
 export class PlayController extends PropController {
-
-    constructor() {
-        super(GameViewerProps.Play);
-    }
+    acceptedProps() { return [GameViewerProps.Play]; }
 
     click(context) {
         context.registry.services.game.isPlaying = true;
@@ -18,10 +15,7 @@ export class PlayController extends PropController {
 }
 
 export class StopController extends PropController {
-
-    constructor() {
-        super(GameViewerProps.Stop);
-    }
+    acceptedProps() { return [GameViewerProps.Stop]; }
 
     click(context) {
         context.registry.services.game.isPlaying = false;

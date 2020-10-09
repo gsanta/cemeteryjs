@@ -14,10 +14,7 @@ export enum SpriteSettingsProps {
 }
 
 export class FrameName extends PropController<string> {
-
-    constructor() {
-        super(SpriteSettingsProps.FrameName);
-    }
+    acceptedProps() { return [SpriteSettingsProps.FrameName]; }
 
     defaultVal(context) {
         return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().frameName || '';
@@ -38,10 +35,7 @@ export class FrameName extends PropController<string> {
 }
 
 export class SelectSpriteSheetController extends PropController<string> {
-
-    constructor() {
-        super(SpriteSettingsProps.SelectSpriteSheet);
-    }
+    acceptedProps() { return [SpriteSettingsProps.SelectSpriteSheet]; }
 
     defaultVal(context) {
         return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().spriteSheetId;
@@ -61,10 +55,7 @@ export class SelectSpriteSheetController extends PropController<string> {
 }
 
 export class ManageSpriteSheetsController extends PropController<string> {
-
-    constructor() {
-        super(SpriteSettingsProps.ManageSpriteSheets);
-    }
+    acceptedProps() { return [SpriteSettingsProps.ManageSpriteSheets]; }
 
     click(context) {
         context.registry.plugins.showPlugin(SpriteSheetManagerDialogPluginId);
@@ -73,10 +64,7 @@ export class ManageSpriteSheetsController extends PropController<string> {
 }
 
 export class ScaleXController extends PropController<string> {
-    
-    constructor() {
-        super(SpriteSettingsProps.ScaleX);
-    }
+    acceptedProps() { return [SpriteSettingsProps.ScaleX]; }
 
     defaultVal(context: PropContext) {
         const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
@@ -108,10 +96,7 @@ export class ScaleXController extends PropController<string> {
 
 
 export class ScaleYController extends PropController<string> {
-
-    constructor() {
-        super(SpriteSettingsProps.ScaleY);
-    }
+    acceptedProps() { return [SpriteSettingsProps.ScaleY]; }
 
     defaultVal(context: PropContext) {
         const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();

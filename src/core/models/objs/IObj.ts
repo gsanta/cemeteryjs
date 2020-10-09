@@ -16,8 +16,8 @@ export interface IObj {
     objType: string;
 
     dispose(): void;
-    toJson(): ObjJson;
-    fromJson(json: ObjJson, registry: Registry);
+    serialize(): ObjJson;
+    deserialize(json: ObjJson, registry: Registry);
 }
 
 // export class ObjImporter {

@@ -59,7 +59,7 @@ export class ImportService {
                     this.registry.services.node.currentNodeType = (<NodeObjJson> obj).type;
                 }
                 const objInstance = this.registry.services.objService.createObj(objType.objType);
-                objInstance.fromJson(obj, this.registry);
+                objInstance.deserialize(obj, this.registry);
                 this.registry.stores.objStore.addObj(objInstance);
             });
         });

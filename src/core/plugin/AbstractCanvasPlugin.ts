@@ -70,9 +70,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
 export const ZoomInProp = 'zoom-in';
 export class ZoomInController extends PropController {
-    constructor() {
-        super(ZoomInProp);
-    }
+    acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext) {
         const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getById(ToolType.Camera);
@@ -82,9 +80,7 @@ export class ZoomInController extends PropController {
 
 export const ZoomOutProp = 'zoom-out';
 export class ZoomOutController extends PropController {
-    constructor() {
-        super(ZoomOutProp);
-    }
+    acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext) {
         const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getById(ToolType.Camera);
@@ -94,10 +90,7 @@ export class ZoomOutController extends PropController {
 
 export const UndoProp = 'undo';
 export class UndoController extends PropController<any> {
-
-    constructor() {
-        super(UndoProp);
-    }
+    acceptedProps() { return [UndoProp]; }
 
     click(context: PropContext) {
         context.registry.services.history.undo();
@@ -107,9 +100,7 @@ export class UndoController extends PropController<any> {
 export const RedoProp = 'redo';
 
 export class RedoController extends PropController<any> {
-    constructor() {
-        super(RedoProp);
-    }
+    acceptedProps() { return [RedoProp]; }
 
     click(context: PropContext) {
         context.registry.services.history.redo();

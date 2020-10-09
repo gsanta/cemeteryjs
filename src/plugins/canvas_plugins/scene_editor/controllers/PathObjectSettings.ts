@@ -9,10 +9,7 @@ export enum PathSettingsProps {
 export const PathSettingsControllerId = 'path-settings-controller';
 
 export class PathIdController extends PropController<any> {
-
-    constructor() {
-        super(PathSettingsProps.PathId);
-    }
+    acceptedProps() { return [PathSettingsProps.PathId]; }
 
     change(val, context) {
         context.updateTempVal(val);

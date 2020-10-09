@@ -86,7 +86,7 @@ export class NodeConnectionView extends View {
             point1Y: this.point1.y,
             point2X: this.point2.x,
             point2Y: this.point2.y,
-            obj: this.obj.toJson(),
+            obj: this.obj.serialize(),
             joinPoint1: {
                 nodeId: this.joinPoint1.parent.id,
                 joinPointName: this.joinPoint1.slotName

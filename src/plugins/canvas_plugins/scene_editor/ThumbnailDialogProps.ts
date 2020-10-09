@@ -12,9 +12,7 @@ export enum ThumbnailMakerControllerProps {
 }
 
 export class ThumbnailCreateControl extends PropController<any> {
-    constructor() {
-        super(ThumbnailMakerControllerProps.ThumbnailCreate);
-    }
+    acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailCreate]; }
     
     async click(context) {
         const engine = (<ThumbnailDialogPlugin> context.plugin).engine;
@@ -29,9 +27,7 @@ export class ThumbnailCreateControl extends PropController<any> {
 }
 
 export class ThumbnailUploadControl extends PropController<any> {
-    constructor() {
-        super(ThumbnailMakerControllerProps.ThumbnailUpload);
-    }
+    acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailUpload]; }
 
     change(val, context) {
         const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
@@ -43,9 +39,7 @@ export class ThumbnailUploadControl extends PropController<any> {
 }
 
 export class ClearThumbnailControl extends PropController<any> {
-    constructor() {
-        super(ThumbnailMakerControllerProps.ClearThumbnail);
-    }
+    acceptedProps() { return [ThumbnailMakerControllerProps.ClearThumbnail]; }
 
     change(val, context) {
         const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;

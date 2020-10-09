@@ -65,7 +65,7 @@ export class ExportService {
 
     private exportObjs(appJson: Partial<AppJson>) {
         this.registry.stores.objStore.getAllTypes().forEach(objType => {
-            const objJsons = this.registry.stores.objStore.getObjsByType(objType).map(obj => obj.toJson());
+            const objJsons = this.registry.stores.objStore.getObjsByType(objType).map(obj => obj.serialize());
 
             if (!appJson.objs) {
                 appJson.objs = [];

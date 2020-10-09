@@ -10,10 +10,9 @@ import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';
 import { View } from '../models/views/View';
-import { FormController } from '../plugin/controller/FormController';
-import { UI_Plugin } from '../plugin/UI_Plugin';
+import { PropController } from '../plugin/controller/FormController';
 import { Registry } from '../Registry';
-import { EmptyViewStoreHook, ViewStoreHook } from '../stores/ViewStore';
+import { EmptyViewStoreHook } from '../stores/ViewStore';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { INodeExecutor } from './node/INodeExecutor';
 import { NodeGraph } from './node/NodeGraph';
@@ -82,7 +81,6 @@ export class NodeService {
 
     createNodeView(): NodeView {
         const nodeView = new NodeView();
-        nodeView.controller = this.nodeFactories.get(this.currentNodeType).createController(this.registry.plugins.getById(NodeEditorPluginId), this.registry);
         nodeView.id = this.registry.stores.viewStore.generateId(nodeView);
         this.registry.plugins.addPropController(nodeView.id, nodeView.controller);
         return nodeView;
@@ -103,7 +101,7 @@ export class NodeService {
 
 export interface NodeFactory {
     createNodeObj(graph: NodeGraph): NodeObj;
-    createController(plugin: UI_Plugin, registry: Registry): FormController;
+    createPropControllers(): PropController[];
     createExecutor(): INodeExecutor;
 }
 

@@ -17,10 +17,7 @@ export enum MeshSettingsProps {
 }
 
 export class MeshIdController extends PropController<string> {
-
-    constructor() {
-        super(MeshSettingsProps.MeshId);
-    }
+    acceptedProps() { return [MeshSettingsProps.MeshId]; }
 
     defaultVal(context) {
         return (<MeshView> context.registry.stores.viewStore.getOneSelectedView()).id;
@@ -39,10 +36,7 @@ export class MeshIdController extends PropController<string> {
 }
 
 export class LayerController extends PropController<number> {
-
-    constructor() {
-        super(MeshSettingsProps.Layer);
-    }
+    acceptedProps() { return [MeshSettingsProps.Layer]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
@@ -58,10 +52,7 @@ export class LayerController extends PropController<number> {
 }
 
 export class RotationController extends PropController<string> {
-    
-    constructor() {
-        super(MeshSettingsProps.Rotation);
-    }
+    acceptedProps() { return [MeshSettingsProps.Rotation]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
@@ -90,10 +81,7 @@ export class RotationController extends PropController<string> {
 
 
 export class ScaleController extends PropController<string> {
-
-    constructor() {
-        super(MeshSettingsProps.Scale);
-    }
+    acceptedProps() { return [MeshSettingsProps.Scale]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
@@ -121,10 +109,7 @@ export class ScaleController extends PropController<string> {
 }
 
 export class YPosController extends PropController<string> {
-
-    constructor() {
-        super(MeshSettingsProps.YPos);
-    }
+    acceptedProps() { return [MeshSettingsProps.YPos]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
@@ -153,10 +138,7 @@ export class YPosController extends PropController<string> {
 }
 
 export class TextureController extends PropController<string> {
-
-    constructor() {
-        super(MeshSettingsProps.Texture);
-    }
+    acceptedProps() { return [MeshSettingsProps.Texture]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
@@ -190,10 +172,7 @@ export class TextureController extends PropController<string> {
 }
 
 export class ThumbnailController extends PropController {
-
-    constructor() {
-        super(MeshSettingsProps.Thumbnail);
-    }
+    acceptedProps() { return [MeshSettingsProps.Thumbnail]; }
 
     click(context) {
         context.registry.plugins.showPlugin(ThumbnailDialogPluginId);
@@ -201,10 +180,7 @@ export class ThumbnailController extends PropController {
 }
 
 export class ModelController extends PropController<string> {
-
-    constructor() {
-        super(MeshSettingsProps.Model);
-    }
+    acceptedProps() { return [MeshSettingsProps.Model]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();

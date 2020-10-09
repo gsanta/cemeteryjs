@@ -1,6 +1,5 @@
-import { FormController, PropContext, PropController } from "../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
-import { Registry } from "../../../core/Registry";
+import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../core/plugin/UI_Plugin";
 
 export enum LevelSettingsProps {
     Level = 'Level',
@@ -9,9 +8,7 @@ export enum LevelSettingsProps {
 }
 
 export class LevelController extends PropController {
-    constructor() {
-        super(LevelSettingsProps.Level);
-    }
+    acceptedProps() { return [LevelSettingsProps.Level]; }
 
     defaultVal(context: PropContext) {
         return context.registry.stores.levelStore.currentLevel.index;
@@ -23,9 +20,7 @@ export class LevelController extends PropController {
 }
 
 export class LevelNameController extends PropController {
-    constructor() {
-        super(LevelSettingsProps.LevelName);
-    }
+    acceptedProps() { return [LevelSettingsProps.LevelName]; }
 
     defaultVal(context: PropContext) {
         return context.registry.stores.levelStore.currentLevel.index;
@@ -43,9 +38,7 @@ export class LevelNameController extends PropController {
 }
 
 export class ClearLevelController extends PropController {
-    constructor() {
-        super(LevelSettingsProps.ClearLevel);
-    }
+    acceptedProps() { return [LevelSettingsProps.ClearLevel]; }
 
     click(context: PropContext) {
         context.registry.services.level.clearLevel()

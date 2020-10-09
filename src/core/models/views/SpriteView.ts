@@ -78,7 +78,7 @@ export class SpriteView extends View {
             frameName: this.obj.frameName,
             thumbnailData: this.thumbnailData,
             spriteSheetId: this.obj.spriteSheetId,
-            obj: this.obj.toJson()
+            obj: this.obj.serialize()
         }
     }
 
@@ -87,6 +87,6 @@ export class SpriteView extends View {
         this.thumbnailData = json.thumbnailData;
         this.obj.frameName = json.frameName;
         this.obj.spriteSheetId = json.spriteSheetId;
-        this.obj.fromJson(json.obj);
+        this.obj.deserialize(json.obj);
     }
 }
