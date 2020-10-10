@@ -26,21 +26,23 @@ export abstract class UI_Element {
     elementType: UI_ElementType;
     id: string;
     pluginId: string;
+    controllerId: string;
     prop: string;
     key: string;
+    
     isBold: boolean;
     data: any;
     //TODO: consider restrict it only to svg elements
     scopedToolId: string;
     isInteractive: boolean = true;
-    readonly target: string;
+    readonly targetId: string;
 
 
     css?: UI_Element_Css = {};
 
     constructor(pluginId: string, target?: string) {
         this.pluginId = pluginId;
-        this.target = target;
+        this.targetId = target;
     }
 
     generateId(parent: UI_Element): void {

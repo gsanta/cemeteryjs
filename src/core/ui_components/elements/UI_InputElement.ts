@@ -8,26 +8,50 @@ export abstract class UI_InputElement extends UI_Element {
     inputWidth: string;
 
     change(newVal: any, registry: Registry): void {
-        registry.plugins.getPropController(this.pluginId).change(newVal, this);
+        if (this.controllerId) {
+            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).change(newVal, this);
+        } else {
+            registry.plugins.getPropController(this.pluginId).change(newVal, this);
+        }
     }
 
     focus(registry: Registry): void {
-        registry.plugins.getPropController(this.pluginId).focus(this);
+        if (this.controllerId) {
+            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).focus(this);
+        } else {
+            registry.plugins.getPropController(this.pluginId).focus(this);
+        }
     }
 
     blur(registry: Registry): void {
-        registry.plugins.getPropController(this.pluginId).blur(this);
+        if (this.controllerId) {
+            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).blur(this);
+        } else {
+            registry.plugins.getPropController(this.pluginId).blur(this);
+        }
     }
 
     click(registry: Registry): void {
-        registry.plugins.getPropController(this.pluginId).click(this);
+        if (this.controllerId) {
+            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).click(this);
+        } else {
+            registry.plugins.getPropController(this.pluginId).click(this);
+        }
     }
 
     val(registry: Registry): any {
-        return registry.plugins.getPropController(this.pluginId).val(this);
+        if (this.controllerId) {
+            return registry.plugins.getById(this.pluginId).getFormController(this.controllerId).val(this);
+        } else {
+            return registry.plugins.getPropController(this.pluginId).val(this);
+        }
     }
 
     values(registry: Registry): any[] {
-        return registry.plugins.getPropController(this.pluginId).values(this);
+        if (this.controllerId) {
+            return registry.plugins.getById(this.pluginId).getFormController(this.controllerId).values(this);
+        } else {
+            return registry.plugins.getPropController(this.pluginId).values(this);
+        }
     }
 }

@@ -57,12 +57,12 @@ export class PathController extends PropController<string> {
     }
 
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('path').val;
     }
 
     change(val, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         nodeView.getObj().setParam('path', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

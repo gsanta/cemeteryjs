@@ -116,7 +116,7 @@ export class MeshMoveController extends PropController<string> {
     }
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('move');
+        return (context.registry.stores.viewStore.getById(element.targetId) as NodeView).getObj().getParam('move');
     }
 
     change(val, context, element) {
@@ -131,7 +131,7 @@ export class MeshSpeedController extends PropController<string> {
     acceptedProps() { return ['speed']; }
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('speed');
+        return (context.registry.stores.viewStore.getById(element.targetId) as NodeView).getObj().getParam('speed');
     }
 
     change(val, context) {
@@ -140,7 +140,7 @@ export class MeshSpeedController extends PropController<string> {
     }
 
     blur(context, element: UI_InputElement) {
-        const nodeObj = (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj();
+        const nodeObj = (context.registry.stores.viewStore.getById(element.targetId) as NodeView).getObj();
         nodeObj.setParam('speed', context.clearTempVal());
         context.registry.services.render.reRenderAll();
     }

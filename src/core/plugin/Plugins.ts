@@ -89,7 +89,6 @@ export class Plugins {
         return Array.from(this.plugins.values());
     }
 
-    // TODO replace this with `registerPlugin` if that method is not used anymore
     registerPlugin(pluginFactory: UI_PluginFactory) {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
         

@@ -72,36 +72,44 @@ export class FormController {
     }
 
     change(val: any, element: UI_Element): void {
+        this.propContext.element = element;
         this.findController(element)?.change(val, this.propContext, element);
     }
 
     click(element: UI_Element): void {
+        this.propContext.element = element;
         this.findController(element)?.click(this.propContext, element);
     }
 
     focus(element: UI_Element): void {
+        this.propContext.element = element;
         this.findController(element)?.focus(this.propContext, element);
     }
 
-    blur(element: UI_Element): void {    
+    blur(element: UI_Element): void {
+        this.propContext.element = element;
         this.findController(element)?.blur(this.propContext, element);
     }
 
     dndStart(element: UI_Element, listItem: string): void {
+        this.propContext.element = element;
         this.findController(element)?.onDndStart(this.propContext, element);
     }
 
-    dndEnd(uiListItem: UI_ListItem): void {
-        this.findController(uiListItem)?.onDndEnd(this.propContext, uiListItem);
+    dndEnd(element: UI_ListItem): void {
+        this.propContext.element = element;
+        this.findController(element)?.onDndEnd(this.propContext, element);
     }
 
     val(element: UI_Element): any {
+        this.propContext.element = element;
         const tmpVal = this.propContext.getTempVal();
 
         return tmpVal !== undefined ? tmpVal :  this.findController(element).defaultVal(this.propContext, element);
     }
 
     values(element: UI_Element): any[] {
+        this.propContext.element = element;
         const controller = this.findController(element);
         if (controller) {
             return controller?.values(this.propContext, element);

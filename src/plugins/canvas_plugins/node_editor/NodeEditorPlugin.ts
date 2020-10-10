@@ -4,14 +4,23 @@ import { NodeConnectionView, NodeConnectionViewType } from '../../../core/models
 import { NodeView, NodeViewType } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, calcOffsetFromDom, ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
+import { FormController } from '../../../core/plugin/controller/FormController';
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { ViewStore } from '../../../core/stores/ViewStore';
+import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../../core/ui_components/react/styles';
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { NodeRenderer } from './NodeRenderer';
+import { AnimationNodeFacotry } from './nodes/AnimationNodeObj';
+import { KeyboardNodeFacotry } from './nodes/KeyboardNodeObj';
+import { MeshNodeFacotry } from './nodes/MeshNodeObj';
+import { MoveNodeFacotry } from './nodes/MoveNodeObj';
+import { PathNodeFacotry } from './nodes/PathNodeObj';
+import { RouteNodeFacotry } from './nodes/route_node/RouteNodeObj';
 import { JoinTool } from './tools/JoinTool';
 
 function getScreenSize(canvasId: string): Point {
@@ -51,8 +60,20 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
     private camera: Camera2D;
 
+    private formControllers: Map<string, FormController> = new Map();
+    private defaultNodeRenderer = new NodeRenderer();
+
     constructor(registry: Registry) {
         super(registry);
+
+        setTimeout(() => {
+            this.registry.services.node.registerNode(KeyboardNodeFacotry);
+            this.registry.services.node.registerNode(AnimationNodeFacotry);
+            this.registry.services.node.registerNode(MeshNodeFacotry);
+            this.registry.services.node.registerNode(MoveNodeFacotry);
+            this.registry.services.node.registerNode(PathNodeFacotry);
+            this.registry.services.node.registerNode(RouteNodeFacotry);
+        }, 0);
 
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
     }
@@ -74,6 +95,14 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
     getCamera() {
         return this.camera;
+    }
+
+    getFormController(controllerId?: string): FormController {
+        return this.formControllers.get(controllerId);
+    }
+
+    addFormController(controllerId: string, formController: FormController): void {
+        this.formControllers.set(controllerId, formController);
     }
 
     protected renderInto(layout: UI_Layout): void {
@@ -134,7 +163,9 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        (<NodeView[]> this.registry.stores.viewStore.getViewsByType(NodeViewType)).forEach(node => this.registry.services.node.renderNodeInto(node, canvas))
+        (<NodeView[]> this.registry.stores.viewStore.getViewsByType(NodeViewType)).forEach(nodeView => {
+            this.defaultNodeRenderer.render(canvas, nodeView);
+        });
     }
 
     private renderConnectionsInto(canvas: UI_SvgCanvas) {

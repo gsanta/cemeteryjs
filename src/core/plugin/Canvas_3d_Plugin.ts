@@ -13,7 +13,7 @@ export function getCanvasElement(viewId: string): HTMLCanvasElement {
     }
 }
 
-export class Canvas_3d_Plugin extends AbstractCanvasPlugin {
+export abstract class Canvas_3d_Plugin extends AbstractCanvasPlugin {
     region = UI_Region.Canvas2;
     engine: IEngineFacade;
 

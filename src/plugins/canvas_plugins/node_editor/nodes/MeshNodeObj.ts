@@ -57,11 +57,11 @@ export class MeshController extends PropController<string> {
     }
 
     defaultVal(context, element: UI_InputElement) {
-        return (context.registry.stores.viewStore.getById(element.target) as NodeView).getObj().getParam('mesh').val;
+        return (context.registry.stores.viewStore.getById(element.targetId) as NodeView).getObj().getParam('mesh').val;
     }
 
     change(val, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         nodeView.getObj().setParam('mesh', val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);

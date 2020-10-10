@@ -10,9 +10,11 @@ import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';
 import { View } from '../models/views/View';
-import { PropController } from '../plugin/controller/FormController';
+import { FormController, PropController } from '../plugin/controller/FormController';
+import { UI_Region } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
 import { EmptyViewStoreHook } from '../stores/ViewStore';
+import { UI_Element } from '../ui_components/elements/UI_Element';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { INodeExecutor } from './node/INodeExecutor';
 import { NodeGraph } from './node/NodeGraph';
@@ -38,16 +40,6 @@ export class NodeService {
         
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
-            const plugin = registry.plugins.getById(NodeEditorPluginId);
-            this.defaultNodeRenderer = new NodeRenderer();
-
-            this.registerNode(KeyboardNodeFacotry);
-            this.registerNode(AnimationNodeFacotry);
-            this.registerNode(MeshNodeFacotry);
-            this.registerNode(MoveNodeFacotry);
-            this.registerNode(PathNodeFacotry);
-            this.registerNode(RouteNodeFacotry);
-
             // TODO: unregister somewhere
             this.registry.stores.viewStore.addHook(new RemoveRelatedConnectionHook(this.registry));
             this.registry.stores.viewStore.addHook(new NodeGraphHook(this.registry));
@@ -61,6 +53,9 @@ export class NodeService {
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
         this.nodeExecutors.set(nodeTemplate.type, nodeFactory.createExecutor());
+        const plugin = this.registry.plugins.getById(NodeEditorPluginId);
+        plugin.addFormController(nodeTemplate.type, new FormController(plugin, this.registry, nodeFactory.createPropControllers()));
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
     executeNode(nodeObj: NodeObj) {
@@ -82,6 +77,7 @@ export class NodeService {
     createNodeView(): NodeView {
         const nodeView = new NodeView();
         nodeView.id = this.registry.stores.viewStore.generateId(nodeView);
+
         this.registry.plugins.addPropController(nodeView.id, nodeView.controller);
         return nodeView;
         // if (!this.nodeTemplates.has(nodeType)) {

@@ -2,7 +2,6 @@ import { Point } from '../../utils/geometry/shapes/Point';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
-import { UI_Layout } from '../ui_components/elements/UI_Layout';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { PropContext, PropController } from './controller/FormController';
 import { CameraTool } from './tools/CameraTool';
@@ -24,10 +23,6 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
 }
 
 export abstract class AbstractCanvasPlugin extends UI_Plugin {
-    htmlElement: HTMLElement;
-
-    isFullScreen: boolean = false;
-
     dropItem: UI_ListItem;
 
     readonly keyboard: KeyboardService;
@@ -48,24 +43,10 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         this.registry.services.pointer.hoveredItem = undefined;
     }
 
-    setRenderer(renderFunc: () => void) {
-        this.renderFunc = renderFunc;
-    }
-
-    reRender() {
-        this.renderFunc && this.renderFunc();
-    }
-
     getOffset(): Point { return new Point(0, 0) }
     getCamera(): ICamera { 
         return undefined;
     };
-
-    mounted(htmlElement: HTMLElement) {
-        this.htmlElement = htmlElement;
-    }
-
-    protected renderInto(layout: UI_Layout) { }
 }
 
 export const ZoomInProp = 'zoom-in';

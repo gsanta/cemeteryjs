@@ -29,7 +29,7 @@ function cameraInitializer(canvasId: string, registry: Registry) {
 
 export const CanvasControllerId = 'canvas_controller_id';
 
-export class Canvas_2d_Plugin extends AbstractCanvasPlugin {
+export abstract class Canvas_2d_Plugin extends AbstractCanvasPlugin {
     region = UI_Region.Canvas1;
     private camera: Camera2D;
 

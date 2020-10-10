@@ -47,5 +47,7 @@ const input = ${json}
         }
 
         this.renderFunc && this.renderFunc();
-    } 
+    }
+
+    renderInto() {}
 }

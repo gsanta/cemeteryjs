@@ -3,6 +3,9 @@ import { UI_Container } from '../ui_components/elements/UI_Container';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { UI_Factory } from '../ui_components/UI_Factory';
 import { IDataExporter } from '../services/export/IDataExporter';
+import { UI_Element } from '../ui_components/elements/UI_Element';
+import { FormController } from './controller/FormController';
+import { ToolController } from './controller/ToolController';
 
 export enum UI_Region {
     Sidepanel = 'Sidepanel',
@@ -44,10 +47,16 @@ export abstract class UI_Plugin {
     displayName: string;
     region: UI_Region;
 
+    htmlElement: HTMLElement;
+
     importer: AbstractPluginImporter;
     exporter: IDataExporter;
 
     protected abstract renderInto(layout: UI_Container): void;
+
+    getFormController(controllerId: string): FormController { return undefined; }
+    addFormController(controllerId: string, controller: FormController): void {}
+    getToolController(): ToolController { return undefined; }
 
     protected registry: Registry;
 
@@ -77,7 +86,9 @@ export abstract class UI_Plugin {
     }
 
     activated() {}
-    mounted(htmlElement: HTMLElement) {}
+    mounted(htmlElement: HTMLElement) {
+        this.htmlElement = htmlElement;
+    }
     unmounted() {}
 
     // TODO should be temporary, port it to PointerService somehow

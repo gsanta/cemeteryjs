@@ -100,13 +100,13 @@ export class AnimationMeshController extends PropController<string> {
     }
     
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         const meshParam = nodeView.getObj().getParam('mesh').val;
         return context.registry.stores.viewStore.getById(meshParam)?.id;
     }
 
     change(val: string, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         nodeView.getObj().setParam('mesh', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
@@ -116,7 +116,7 @@ export class StartFrameController extends PropController<string> {
     acceptedProps() { return ['startFrame']; }
 
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('startFrame').val;
     }
 
@@ -144,7 +144,7 @@ export class EndFrameController extends PropController<string> {
     acceptedProps() { return ['endFrame']; }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('endFrame').val;
     }
 
@@ -154,7 +154,7 @@ export class EndFrameController extends PropController<string> {
     }
 
     blur(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
 
         try {
             const val = parseFloat(context.getTempVal());
