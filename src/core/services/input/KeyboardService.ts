@@ -63,24 +63,26 @@ export interface IKeyboardEvent {
 
 export class KeyboardService {
     private registry: Registry;
+    private handlers: ((keyboardEvent: IKeyboardEvent) => void)[] = []
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.onKeyUp = this.onKeyUp.bind(this);
+        this.keyDown = this.keyDown.bind(this);
+        this.keyUp = this.keyUp.bind(this);
     }
     
-    onKeyDown(e: KeyboardEvent): void {
+    keyDown(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, false);
         this.registry.services.hotkey.executeHotkey(convertedEvent);
         this.registry.plugins.getToolController(this.registry.plugins.getHoveredPlugin().id).getActiveTool()?.keydown(convertedEvent);
         this.registry.services.render.reRenderScheduled();
 
+        this.handlers.forEach(handler => handler(convertedEvent));
         e.preventDefault();
         e.stopPropagation();
     }
 
-    onKeyUp(e: KeyboardEvent): void {
+    keyUp(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, true);
         this.registry.services.hotkey.executeHotkey(convertedEvent);
         this.registry.plugins.getToolController(this.registry.plugins.getHoveredPlugin().id).getActiveTool()?.keyup(convertedEvent);
@@ -88,6 +90,10 @@ export class KeyboardService {
 
         e.preventDefault();
         e.stopPropagation();
+    }
+
+    onKeyDown(handler: (keyboardEvent: IKeyboardEvent) => void) {
+        this.handlers.push(handler);
     }
 
     private convertEvent(event: KeyboardEvent, isKeyup: boolean): IKeyboardEvent {

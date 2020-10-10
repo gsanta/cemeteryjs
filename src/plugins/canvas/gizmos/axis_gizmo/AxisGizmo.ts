@@ -6,17 +6,8 @@ import { Camera3D } from '../../../../core/models/misc/camera/Camera3D';
 import { AbstractCanvasPlugin } from '../../../../core/plugin/AbstractCanvasPlugin';
 import { Bab_EngineFacade } from '../../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
 import { Wrap_EngineFacade } from '../../../../core/engine/adapters/wrapper/Wrap_EngineFacade';
-import { IGizmo, IGizmoFactory } from '../../../../core/plugin/IGizmo';
 
-export const AxisGizmoFactory: IGizmoFactory = {
-    
-    newInstance(plugin: AbstractCanvasPlugin, registry: Registry) {
-        return new AxisGizmo(plugin, registry);
-    }
-    
-}
-
-export class AxisGizmo implements IGizmo {
+export class AxisGizmo {
     private registry: Registry;
     private advancedTexture: AdvancedDynamicTexture;
     private xVector: Vector3;
@@ -51,6 +42,8 @@ export class AxisGizmo implements IGizmo {
     destroy() {
         
     }
+
+    render() {}
 
     private createButtons() {
         var buttonX = Button.CreateSimpleButton("buttonX", "X");

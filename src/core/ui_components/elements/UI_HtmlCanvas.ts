@@ -43,7 +43,7 @@ export class UI_HtmlCanvas extends UI_Element {
         return UI_Factory.dropLayer(this, config);
     }
 
-    gizmoLayer(config: { prop: string}): UI_GizmoLayer {
+    gizmoLayer(config?: { prop: string}): UI_GizmoLayer {
         return UI_Factory.gizmoLayer(this, config);
     }
 }

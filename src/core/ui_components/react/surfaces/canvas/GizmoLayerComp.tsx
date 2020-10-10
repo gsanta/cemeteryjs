@@ -8,7 +8,14 @@ export const GizmoLayerComp = (props: UI_ContainerProps<UI_GizmoLayer>) => {
         {
             style: {
                 width: '100%',
-                height: '100%'
+                padding: '10px',
+                height: 'calc(100% - 30px)',
+                position: 'absolute',
+                top: '30px',
+                left: 0,
+                pointerEvents: 'none',
+                display: 'flex',
+                flexDirection: props.element.direction === 'left-to-right' ? 'row' : 'row-reverse'
             },
             className: 'gizmo-layer'
         },

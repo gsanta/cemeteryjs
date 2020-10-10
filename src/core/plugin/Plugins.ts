@@ -20,6 +20,7 @@ import { UI_Plugin, UI_Region } from './UI_Plugin';
 import { EngineHooks } from '../engine/hooks/EngineHooks';
 import { CanvasPlugins } from './CanvasPlugins';
 import * as axisGizmoPlugin from '../../plugins/canvas/gizmos/axis_gizmo/axisGizmoPlugin';
+import * as screenCastKeysGizmoPlugin from '../../plugins/canvas/gizmos/screencast_keys_gizmo/screenCastKeysGizmoPlugin';
 
 export class Plugins {
     engineHooks: EngineHooks;
@@ -44,6 +45,7 @@ export class Plugins {
         this.canvas = new CanvasPlugins();
 
         axisGizmoPlugin.register(this);
+        screenCastKeysGizmoPlugin.register(this);
 
         this.registerPlugin(new SceneEditorPluginFactory());
         this.registerPlugin(new AssetManagerPluginFactory());

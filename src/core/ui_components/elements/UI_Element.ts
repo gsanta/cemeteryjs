@@ -15,6 +15,8 @@ export interface UI_Element_Css {
     pointerEvents?: 'none' | 'all';
     userSelect?: 'auto' | 'text' | 'none' | 'all';
     opacity?: number;
+    color?: string;
+    backgroundColor?: string;
 }
 
 export interface UI_ElementConfig {
@@ -92,11 +94,11 @@ export abstract class UI_Element {
     }
 
     keyDown(registry: Registry, e: KeyboardEvent) {
-        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).keyboard.onKeyDown(e);
+        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).keyboard.keyDown(e);
     }
 
     keyUp(registry: Registry, e: KeyboardEvent) {
-        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).keyboard.onKeyUp(e);
+        (registry.plugins.getById(this.pluginId) as AbstractCanvasPlugin).keyboard.keyUp(e);
     }
 
     dndEnd(registry: Registry, point: Point) {

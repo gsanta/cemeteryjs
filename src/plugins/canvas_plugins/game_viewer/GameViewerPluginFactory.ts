@@ -35,5 +35,5 @@ export class GameViewerPluginFactory implements UI_PluginFactory {
         ];
     }
 
-    gizmos = [corePlugins.canvas.gizmos.AxisGizmo];
+    gizmos = [corePlugins.canvas.gizmos.ScreenCastKeysGimo];
 }

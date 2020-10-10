@@ -89,8 +89,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Redo';
 
-        canvas.gizmoLayer();
-
         const views = [
             ...this.registry.stores.viewStore.getViewsByType(SpriteViewType),
             ...this.registry.stores.viewStore.getViewsByType(MeshViewType),

@@ -20,6 +20,7 @@ const SelectionComponentStyled = styled.rect`
 export interface CanvasCompProps extends UI_ComponentProps<UI_SvgCanvas | UI_HtmlCanvas> {
     toolbar: JSX.Element;
     dropLayer: JSX.Element;
+    gizmoLayer?: JSX.Element;
 }
 
 export class CanvasComp extends React.Component<CanvasCompProps> {
@@ -56,7 +57,8 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 }}
             >
                 {this.props.toolbar}
-                {this.props.dropLayer ? this.props.dropLayer : null}
+                {this.props.dropLayer}
+                {this.props.gizmoLayer}
                 {this.props.element.elementType === UI_ElementType.SvgCanvas ? this.renderSvgCanvas() : this.renderHtmlCanvas()}
 
             </div>

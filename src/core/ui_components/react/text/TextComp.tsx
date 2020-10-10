@@ -11,6 +11,7 @@ export interface TextCompProps {
 export const TextComp = (props: UI_ComponentProps<UI_Text>) => {
 
     const style: React.CSSProperties = {
+        ...props.element.css,
         fontSize: props.element.size === 'small' ? '12px' : '14px'
     };
 
@@ -18,6 +19,6 @@ export const TextComp = (props: UI_ComponentProps<UI_Text>) => {
     props.element.color && (style.color = props.element.color);
     
     return (
-        <span style={style}>{props.element.text}</span> 
+        <div style={style}>{props.element.text}</div> 
     );
 }

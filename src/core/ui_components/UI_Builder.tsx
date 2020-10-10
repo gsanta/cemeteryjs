@@ -166,7 +166,7 @@ export class UI_Builder {
             children = this.buildChildren(canvas as UI_SvgCanvas, pluginId);
         }
 
-        return <CanvasComp registry={this.registry} toolbar={toolbar} dropLayer={dropLayer} element={canvas}>{children}</CanvasComp>;
+        return <CanvasComp registry={this.registry} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar) {

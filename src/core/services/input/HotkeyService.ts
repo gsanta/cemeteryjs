@@ -21,13 +21,13 @@ export class HotkeyService {
             this.primaryInput = input;
         }
 
-        input.addEventListener('keydown',  this.registry.services.keyboard.onKeyDown);
-        input.addEventListener('keyup', this.registry.services.keyboard.onKeyUp);
+        input.addEventListener('keydown',  this.registry.services.keyboard.keyDown);
+        input.addEventListener('keyup', this.registry.services.keyboard.keyUp);
     }
 
     unregisterInput(input: HTMLElement) {
-        input.removeEventListener('keydown',  this.registry.services.keyboard.onKeyDown);
-        input.removeEventListener('keyup', this.registry.services.keyboard.onKeyUp);
+        input.removeEventListener('keydown',  this.registry.services.keyboard.keyDown);
+        input.removeEventListener('keyup', this.registry.services.keyboard.keyUp);
     }
 
     registerHotkey(hotKey: Hotkey): void {
