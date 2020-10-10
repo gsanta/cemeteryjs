@@ -8,6 +8,7 @@ import { Registry } from "../../../core/Registry";
 import { GameViewerPlugin, GameViewerPluginId } from "./GameViewerPlugin";
 import { PlayController, StopController as StopController } from "./GameViewerProps";
 import { GameTool } from "./tools/GameTool";
+import { corePlugins } from "../../../core/plugin/corePlugins";
 
 export const GameViewerToolControllerId = 'game-viewer-tool-controller';
 
@@ -33,4 +34,6 @@ export class GameViewerPluginFactory implements UI_PluginFactory {
             new CameraTool(plugin as AbstractCanvasPlugin, registry)
         ];
     }
+
+    gizmos = [corePlugins.canvas.gizmos.AxisGizmo];
 }

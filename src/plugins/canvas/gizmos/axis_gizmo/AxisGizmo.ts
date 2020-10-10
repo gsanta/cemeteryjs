@@ -1,13 +1,22 @@
 import { Camera, Engine, Matrix, Scene, Vector3, Vector2 } from 'babylonjs';
 import { AdvancedDynamicTexture, Line, Button, Control } from 'babylonjs-gui';
-import { Point } from '../../../utils/geometry/shapes/Point';
-import { Registry } from '../../../core/Registry';
-import { Camera3D } from '../../../core/models/misc/camera/Camera3D';
-import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin';
-import { Bab_EngineFacade } from '../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
-import { Wrap_EngineFacade } from '../../../core/engine/adapters/wrapper/Wrap_EngineFacade';
+import { Point } from '../../../../utils/geometry/shapes/Point';
+import { Registry } from '../../../../core/Registry';
+import { Camera3D } from '../../../../core/models/misc/camera/Camera3D';
+import { AbstractCanvasPlugin } from '../../../../core/plugin/AbstractCanvasPlugin';
+import { Bab_EngineFacade } from '../../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
+import { Wrap_EngineFacade } from '../../../../core/engine/adapters/wrapper/Wrap_EngineFacade';
+import { IGizmo, IGizmoFactory } from '../../../../core/plugin/IGizmo';
 
-export class AxisGizmo {
+export const AxisGizmoFactory: IGizmoFactory = {
+    
+    newInstance(plugin: AbstractCanvasPlugin, registry: Registry) {
+        return new AxisGizmo(plugin, registry);
+    }
+    
+}
+
+export class AxisGizmo implements IGizmo {
     private registry: Registry;
     private advancedTexture: AdvancedDynamicTexture;
     private xVector: Vector3;
@@ -26,7 +35,7 @@ export class AxisGizmo {
         this.plugin = plugin;
     }
     
-    awake() {
+    mount() {
         this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
     
         this.createButtons();
@@ -34,7 +43,13 @@ export class AxisGizmo {
         this.createYLine();
         this.createZLine();
 
-        this.update();
+        this.registry.engine.registerRenderLoop(() => {
+            this.update();
+        });
+    }
+
+    destroy() {
+        
     }
 
     private createButtons() {
@@ -97,9 +112,9 @@ export class AxisGizmo {
     }
 
     update() {
-        if (!this.xLine) { 
-            this.awake();    
-        }
+        // if (!this.xLine) { 
+        //     this.awake();    
+        // }
 
         const engine = (<Wrap_EngineFacade> this.registry.engine).realEngine as Bab_EngineFacade;
         const camera = (<Camera3D> this.plugin.getCamera()).camera;

@@ -46,6 +46,9 @@ export enum UI_ElementType {
     ActionIcon = 'ActionIcon',
     IconSeparator = 'IconSeparator',
 
+
+    GizmoLayer = 'GizmoLayer',
+
     // views
     Node = 'Node'
 }

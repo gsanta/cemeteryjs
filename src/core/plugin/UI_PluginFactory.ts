@@ -9,4 +9,5 @@ export interface UI_PluginFactory {
     createPlugin(registry: Registry): UI_Plugin;
     createPropControllers(plugin: UI_Plugin, registry: Registry): PropController[];
     createTools(plugin: UI_Plugin, registry: Registry): Tool[];
+    gizmos?: string[]
 }

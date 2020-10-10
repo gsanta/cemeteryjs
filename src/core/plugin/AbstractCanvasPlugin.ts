@@ -4,6 +4,7 @@ import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { PropContext, PropController } from './controller/FormController';
+import { IGizmo, IGizmoFactory } from './IGizmo';
 import { CameraTool } from './tools/CameraTool';
 import { ToolType } from './tools/Tool';
 import { UI_Plugin } from './UI_Plugin';
@@ -25,6 +26,8 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
 export abstract class AbstractCanvasPlugin extends UI_Plugin {
     dropItem: UI_ListItem;
 
+    protected gizmos: IGizmo[] = [];
+
     readonly keyboard: KeyboardService;
 
     protected renderFunc: () => void;
@@ -33,6 +36,10 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         super(registry);
 
         this.keyboard = new KeyboardService(registry);
+    }
+
+    addGizmo(gizmo: IGizmo) {
+        this.gizmos.push(gizmo);
     }
 
     destroy(): void {}

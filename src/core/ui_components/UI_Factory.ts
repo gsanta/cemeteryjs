@@ -1,5 +1,6 @@
 import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
 import { Registry } from '../Registry';
+import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Accordion } from './elements/surfaces/UI_Accordion';
@@ -122,6 +123,20 @@ export class UI_Factory {
 
         return element;
     }
+
+    static gizmoLayer(parent: UI_HtmlCanvas | UI_SvgCanvas, config: UI_ElementConfig): UI_GizmoLayer {
+        const element = new UI_GizmoLayer(parent.pluginId);
+
+        config && (element.prop = config.prop);
+
+        parent._gizmoLayer = element;
+
+        element.generateId(parent);
+        this.setupElement(parent, element);
+
+        return element;
+    }
+
 
     static accordion(parent: UI_Container, config: UI_ElementConfig): UI_Accordion {
         const element = new UI_Accordion(parent.pluginId);

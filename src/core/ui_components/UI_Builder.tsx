@@ -71,6 +71,8 @@ import { DialogComp } from './react/dialogs/DialogComp';
 import { UI_Plugin } from '../plugin/UI_Plugin';
 import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
 import { SvgPolygonComp } from './react/svg/SvgPolygonComp';
+import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
+import { GizmoLayerComp } from './react/surfaces/canvas/GizmoLayerComp';
 
 
 export class UI_Builder {
@@ -85,7 +87,7 @@ export class UI_Builder {
         return this.buildContainer(plugin.render(), plugin.id);
     }
 
-    private buildContainer(element: UI_Container, pluginId: string): JSX.Element {
+    private buildContainer(element: UI_Container, pluginId?: string): JSX.Element {
         if (!element) { return null; }
 
         switch(element.elementType) {
@@ -123,6 +125,10 @@ export class UI_Builder {
             case UI_ElementType.SvgForeignObject:
                 const foreignObject = element as UI_SvgForeignObject;
                 return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element, pluginId)}</ForeignObjectComp>;
+            case UI_ElementType.GizmoLayer:
+                const gizmoLayer = element as UI_GizmoLayer;
+                return <GizmoLayerComp registry={this.registry} element={gizmoLayer}>{this.buildChildren(element, pluginId)}</GizmoLayerComp>
+
         }
     }
 
@@ -147,6 +153,12 @@ export class UI_Builder {
 
         if (canvas._dropLayer) {
             dropLayer = this.buildLeaf(canvas._dropLayer);
+        }
+
+        let gizmoLayer: JSX.Element = null;
+
+        if (canvas._gizmoLayer) {
+            gizmoLayer = this.buildContainer(canvas._gizmoLayer);
         }
         
         let children: JSX.Element[] = [];

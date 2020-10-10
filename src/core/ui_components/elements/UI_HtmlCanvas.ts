@@ -5,10 +5,12 @@ import { UI_Element } from './UI_Element';
 import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
 import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
 import { Registry } from "../../Registry";
+import { UI_GizmoLayer } from "./gizmo/UI_GizmoLayer";
 
 
 export class UI_HtmlCanvas extends UI_Element {
     _toolbar: UI_Toolbar;
+    _gizmoLayer: UI_GizmoLayer;
     _dropLayer: UI_DropLayer;
 
     elementType = UI_ElementType.HtmlCanvas;
@@ -39,5 +41,9 @@ export class UI_HtmlCanvas extends UI_Element {
 
     dropLayer(config: { prop: string}): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
+    }
+
+    gizmoLayer(config: { prop: string}): UI_GizmoLayer {
+        return UI_Factory.gizmoLayer(this, config);
     }
 }

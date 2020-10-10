@@ -1,4 +1,3 @@
-import { Bab_EngineFacade } from '../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
 import { ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
@@ -6,7 +5,6 @@ import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { GameViewerProps } from './GameViewerProps';
-import { Gizmos } from './Gizmos';
 import { GameToolType } from './tools/GameTool';
 (<any> window).earcut = require('earcut');
 
@@ -16,12 +14,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     id = GameViewerPluginId;
     region = UI_Region.Canvas2;
 
-    private gizmos: Gizmos;
-
     constructor(registry: Registry) {
         super(GameViewerPluginId, registry);
-
-        this.gizmos = new Gizmos(this, registry);
     }
 
     getStore() {
@@ -33,11 +27,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
         this.registry.engine.setup(document.querySelector(`#${GameViewerPluginId} canvas`));
         this.registry.engine.resize();
-        this.registry.engine.registerRenderLoop(() => {
-            this.gizmos.update();
-        });
-        
-        this.gizmos.awake();
+
+        this.gizmos.forEach(gizmo => gizmo.mount());
         this.renderFunc && this.renderFunc();
     }
 

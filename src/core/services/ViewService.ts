@@ -1,4 +1,4 @@
-import { AxisView, AxisViewFactory } from "../models/views/child_views/AxisView";
+import { AxisViewFactory } from "../models/views/child_views/AxisView";
 import { MeshViewFactory } from "../models/views/MeshView";
 import { NodeConnectionViewFactory } from "../models/views/NodeConnectionView";
 import { NodeViewFactory } from "../models/views/NodeView";

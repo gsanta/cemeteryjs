@@ -5,9 +5,11 @@ import { UI_Factory } from '../UI_Factory';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 import { Registry } from '../../Registry';
+import { UI_GizmoLayer } from './gizmo/UI_GizmoLayer';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
+    _gizmoLayer: UI_GizmoLayer;
     _dropLayer: UI_DropLayer;
 
     elementType = UI_ElementType.SvgCanvas;
@@ -38,5 +40,9 @@ export class UI_SvgCanvas extends UI_SvgGroup {
 
     dropLayer(config?: { prop: string}): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
+    }
+
+    gizmoLayer(config?: { prop: string}): UI_GizmoLayer {
+        return UI_Factory.gizmoLayer(this, config);
     }
 }

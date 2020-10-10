@@ -18,9 +18,13 @@ import { ToolController } from './controller/ToolController';
 import { UI_PluginFactory } from './UI_PluginFactory';
 import { UI_Plugin, UI_Region } from './UI_Plugin';
 import { EngineHooks } from '../engine/hooks/EngineHooks';
+import { CanvasPlugins } from './CanvasPlugins';
+import * as axisGizmoPlugin from '../../plugins/canvas/gizmos/axis_gizmo/axisGizmoPlugin';
 
 export class Plugins {
     engineHooks: EngineHooks;
+
+    canvas: CanvasPlugins;
 
     private activePlugins: UI_Plugin[] = [];
 
@@ -36,6 +40,10 @@ export class Plugins {
 
     constructor(registry: Registry) {
         this.registry = registry;
+
+        this.canvas = new CanvasPlugins();
+
+        axisGizmoPlugin.register(this);
 
         this.registerPlugin(new SceneEditorPluginFactory());
         this.registerPlugin(new AssetManagerPluginFactory());
@@ -112,7 +120,14 @@ export class Plugins {
 
         if (tools.length > 0) {
             this.toolControllers.set(plugin, new ToolController(plugin as AbstractCanvasPlugin, this.registry, tools));
-        }   
+        }
+
+        if (pluginFactory.gizmos) {
+            pluginFactory.gizmos.forEach(gizmoId => {
+                const gizmo = this.canvas.getGizmoFactory(gizmoId).newInstance(plugin as AbstractCanvasPlugin, this.registry);
+                (plugin as AbstractCanvasPlugin).addGizmo(gizmo);
+            });
+        }
     }
 
     addPropController(pluginId: string, controller: FormController): void {
