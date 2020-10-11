@@ -17,6 +17,10 @@ export interface UI_Element_Css {
     opacity?: number;
     color?: string;
     backgroundColor?: string;
+    fontSize?: string;
+    fontWeight?: "bold" | "normal" | number;
+    height?: string;
+    padding?: string;
 }
 
 export interface UI_ElementConfig {
