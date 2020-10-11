@@ -2,13 +2,13 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeCategory, NodeObj, NodeParam } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { FormController, PropController } from "../../../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../../../core/plugin/UI_Plugin";
+import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../../core/services/NodeService";
-import { SaveEditControl } from "../../../../dialog_plugins/asset_manager/AssetManagerProps";
+import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeFacotry: NodeFactory = {
@@ -17,11 +17,11 @@ export const RouteNodeFacotry: NodeFactory = {
     },
 
     createPropControllers(): PropController[] {
-        return [new SaveEditControl()];
+        return [new SpeedControl()];
     },
 
     createExecutor(): INodeExecutor {
-        return undefined;
+        return new RouteNodeExecutor();
     }
 }
 
@@ -93,8 +93,8 @@ export class RouteNodeObj extends NodeObj {
 export class SpeedControl extends PropController<string> {
     acceptedProps() { return ['speed']; }
 
-    defaultVal(context, element) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+    defaultVal(context: PropContext, element: UI_Element) {
+        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('speed').val;
     }
     
@@ -121,8 +121,6 @@ export class SpeedControl extends PropController<string> {
 
 
 export class RouteNodeExecutor implements INodeExecutor {
-    routWalker: RouteWalker;
-
     execute(nodeObj: NodeObj, registry: Registry) {
         const meshObj = this.getMeshObj(nodeObj, registry);
         const pathObj = this.getPathObj(nodeObj, registry);
@@ -133,7 +131,8 @@ export class RouteNodeExecutor implements INodeExecutor {
             nodeObj.setParam('routeWalker', new RouteWalker(meshObj, pathObj));
         }
 
-        this.routWalker.step();
+        const routeWalker = <RouteWalker> nodeObj.getParam('routeWalker').val;
+        routeWalker.step();
     }
 
     stop() {}

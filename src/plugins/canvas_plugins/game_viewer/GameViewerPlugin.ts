@@ -28,6 +28,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         this.registry.engine.setup(document.querySelector(`#${GameViewerPluginId} canvas`));
         this.registry.engine.resize();
 
+        this.gizmos.forEach(gizmo => gizmo.mount());
+
         this.renderFunc && this.renderFunc();
     }
 
@@ -86,7 +88,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
 
 
         const gizmoLayer = canvas.gizmoLayer();
-        gizmoLayer.direction = 'right-to-left';
         
         this.gizmos.forEach(gizmo => gizmo.renderInto(gizmoLayer));
     }

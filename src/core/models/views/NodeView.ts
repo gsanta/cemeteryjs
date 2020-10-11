@@ -82,8 +82,9 @@ export class NodeView extends View {
 
     updateDimensions() {
         const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
-        this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING; 
-        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (this.obj.getParams().length ? this.obj.getParams().length : 1) + NODE_PADDING * 2;
+        this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING;
+        const uiParams = this.obj.getParams().filter(param => param.uiOptions);
+        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (uiParams.length ? uiParams.length : 1) + NODE_PADDING * 2;
         this.bounds.setHeight(height);
 
         this.initStandaloneJoinPointPositions();

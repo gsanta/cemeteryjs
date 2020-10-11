@@ -7,7 +7,7 @@ import { UI_Row } from "../../../../core/ui_components/elements/UI_Row";
 export const ScreenCastKeysGizmoFactory: IGizmoFactory = {
     
     newInstance(plugin: AbstractCanvasPlugin, registry: Registry) {
-        const gizmo = new GizmoPlugin(registry);
+        const gizmo = new GizmoPlugin(registry, 100, 100);
         gizmo.setRenderer(renderer);
 
         plugin.keyboard.onKeyDown((event: IKeyboardEvent) => {

@@ -1,10 +1,11 @@
 import { Point } from '../../utils/geometry/shapes/Point';
+import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { PropContext, PropController } from './controller/FormController';
-import { GizmoPlugin, IGizmoFactory } from './IGizmo';
+import { GizmoPlugin } from './IGizmo';
 import { CameraTool } from './tools/CameraTool';
 import { ToolType } from './tools/Tool';
 import { UI_Plugin } from './UI_Plugin';
@@ -25,6 +26,7 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
 
 export abstract class AbstractCanvasPlugin extends UI_Plugin {
     dropItem: UI_ListItem;
+    bounds: Rectangle;
 
     protected gizmos: GizmoPlugin[] = [];
 
@@ -48,6 +50,13 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     out(): void {
         this.registry.plugins.removeHoveredView(this);
         this.registry.services.pointer.hoveredItem = undefined;
+    }
+
+    mounted(htmlElement: HTMLElement) {
+        super.mounted(htmlElement);
+
+        const boundingRect = htmlElement.getBoundingClientRect();
+        this.bounds = new Rectangle(new Point(boundingRect.left, boundingRect.top), new Point(boundingRect.width, boundingRect.height));
     }
 
     getOffset(): Point { return new Point(0, 0) }

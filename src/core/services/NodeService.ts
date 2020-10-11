@@ -37,6 +37,13 @@ export class NodeService {
     constructor(registry: Registry) {
         this.registry = registry;
         this.graph = new NodeGraph(this.registry);
+
+        this.registerNode(KeyboardNodeFacotry);
+        this.registerNode(AnimationNodeFacotry);
+        this.registerNode(MeshNodeFacotry);
+        this.registerNode(MoveNodeFacotry);
+        this.registerNode(PathNodeFacotry);
+        this.registerNode(RouteNodeFacotry);
         
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
@@ -59,7 +66,8 @@ export class NodeService {
     }
 
     executeNode(nodeObj: NodeObj) {
-        this.nodeExecutors.get(nodeObj.type).execute(nodeObj, this.registry);
+        const executor = this.nodeExecutors.get(nodeObj.type);
+        executor && executor.execute(nodeObj, this.registry); 
     }
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {

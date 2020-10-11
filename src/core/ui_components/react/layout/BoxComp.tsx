@@ -7,19 +7,23 @@ export function cssClassBuilder(...classes: string[]) {
     return classes.filter(c => c).join(' ');
 }
 
-const BoxStyled = styled.div`
-
-    &.ce-box {
-
-    }
-`;
-
 export function BoxComp(props: UI_ContainerProps<UI_Box>) {
     const classes = cssClassBuilder(
         'ce-box'
     );
 
-    return (
-        <BoxStyled className={classes}>{props.children}</BoxStyled>
+    // return (
+    //     <BoxStyled className={classes}>{props.children}</BoxStyled>
+    // );
+
+    return React.createElement(
+        'div',
+        {
+            style: {
+                width: props.element.width,
+                height: props.element.height
+            },
+        },
+        props.children
     );
 }

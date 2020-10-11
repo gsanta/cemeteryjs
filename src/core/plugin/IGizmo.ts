@@ -10,12 +10,17 @@ export interface IGizmoFactory {
 
 export class GizmoPlugin {
     private renderer: IRenderer;
+    private onMountFunc: () => void = () => undefined;
     private registry: Registry;
+    private width: number;
+    private height: number;
 
     private customData: Map<string, any> = new Map();
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, width: number, height: number) {
         this.registry = registry;
+        this.width = width;
+        this.height = height;
     }
 
     setData(key: string, value: any) {
@@ -34,6 +39,14 @@ export class GizmoPlugin {
         this.renderer = renderer;
     }
 
+    onMount(onMountFunc: () => void) {
+        this.onMountFunc = onMountFunc;
+    }
+
+    mount() {
+        this.onMountFunc();
+    }
+
     getFormController(controllerId: string): FormController {
         return null;
     }
@@ -42,8 +55,12 @@ export class GizmoPlugin {
     }
 
     renderInto(element: UI_Row): void {
+        const box = element.box({});
+        box.width = this.width + 'px' || '100px';
+        box.height = this.height + 'px' || '100px';
+        
         if (this.renderer) {
-            this.renderer(element, this, this.registry);
+            this.renderer(box, this, this.registry);
         }
     }
 }

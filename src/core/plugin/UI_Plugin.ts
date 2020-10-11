@@ -3,7 +3,6 @@ import { UI_Container } from '../ui_components/elements/UI_Container';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { UI_Factory } from '../ui_components/UI_Factory';
 import { IDataExporter } from '../services/export/IDataExporter';
-import { UI_Element } from '../ui_components/elements/UI_Element';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 

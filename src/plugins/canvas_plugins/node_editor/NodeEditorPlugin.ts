@@ -66,14 +66,9 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        setTimeout(() => {
-            this.registry.services.node.registerNode(KeyboardNodeFacotry);
-            this.registry.services.node.registerNode(AnimationNodeFacotry);
-            this.registry.services.node.registerNode(MeshNodeFacotry);
-            this.registry.services.node.registerNode(MoveNodeFacotry);
-            this.registry.services.node.registerNode(PathNodeFacotry);
-            this.registry.services.node.registerNode(RouteNodeFacotry);
-        }, 0);
+        // setTimeout(() => {
+    
+        // }, 0);
 
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
     }

@@ -19,6 +19,6 @@ export const TextComp = (props: UI_ComponentProps<UI_Text>) => {
     props.element.color && (style.color = props.element.color);
     
     return (
-        <div style={style}>{props.element.text}</div> 
+        <span style={style}>{props.element.text}</span> 
     );
 }
