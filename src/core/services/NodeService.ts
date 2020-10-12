@@ -37,13 +37,6 @@ export class NodeService {
     constructor(registry: Registry) {
         this.registry = registry;
         this.graph = new NodeGraph(this.registry);
-
-        this.registerNode(KeyboardNodeFacotry);
-        this.registerNode(AnimationNodeFacotry);
-        this.registerNode(MeshNodeFacotry);
-        this.registerNode(MoveNodeFacotry);
-        this.registerNode(PathNodeFacotry);
-        this.registerNode(RouteNodeFacotry);
         
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
@@ -62,7 +55,6 @@ export class NodeService {
         this.nodeExecutors.set(nodeTemplate.type, nodeFactory.createExecutor());
         const plugin = this.registry.plugins.getById(NodeEditorPluginId);
         plugin.addFormController(nodeTemplate.type, new FormController(plugin, this.registry, nodeFactory.createPropControllers()));
-        this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
     executeNode(nodeObj: NodeObj) {

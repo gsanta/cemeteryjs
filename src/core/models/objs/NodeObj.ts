@@ -42,6 +42,7 @@ export interface NodeParamJson {
         valueType: 'string' | 'number';
     }
     [otherData: string]: any;
+    isLink: 'input' | 'output' | 'both' | 'none';
 }
 
 export interface NodeParam {
@@ -170,7 +171,8 @@ function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
     return {
         name: param.name,
         val: param.val,
-        uiOptions: uiOptions
+        uiOptions: uiOptions,
+        isLink: param.isLink
     }
 }
 
@@ -178,6 +180,7 @@ function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
     return {
         name: json.name,
         val: json.val,
-        uiOptions: json.uiOptions
+        uiOptions: json.uiOptions,
+        isLink: json.isLink
     }
 }

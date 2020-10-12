@@ -44,7 +44,7 @@ export class ToolController {
         this.plugin = plugin;
 
         tools.forEach(tool => this.registerTool(tool));
-        tools.length > 0 && this.setSelectedTool(tools[0].id);
+        tools.length > 0 && (this.selectedTool = tools[0]);
     }
 
     mouseDown(e: MouseEvent, element: UI_Element): void {

@@ -47,20 +47,6 @@ export class Plugins {
         axisGizmoPlugin.register(this);
         screenCastKeysGizmoPlugin.register(this);
 
-        this.registerPlugin(new SceneEditorPluginFactory());
-        this.registerPlugin(new AssetManagerPluginFactory());
-        this.registerPlugin(new GameViewerPluginFactory());
-        this.registerPlugin(new NodeEditorPluginFactory());
-        this.registerPlugin(new NodeEditorSettingsPluginFactory());
-        this.registerPlugin(new ThumbnailDialogPluginFactory());
-        this.registerPlugin(new ObjectSettingsPluginFactory());
-        this.registerPlugin(new SpriteSheetManagerFactory());
-        this.registerPlugin(new LevelSettingsPluginFactory());
-        this.registerPlugin(new AssetManagerSidepanelPluginFactory());
-        this.registerPlugin(new FileSettingslPluginFactory());
-        this.registerPlugin(new CodeEditorPluginFactory());
-        this.registerPlugin(new LayoutSettingsPluginFactory());
-
         this.engineHooks = new EngineHooks();
     }
 
@@ -101,7 +87,8 @@ export class Plugins {
 
     registerPlugin(pluginFactory: UI_PluginFactory) {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
-        
+        this.instantiatePlugin(pluginFactory.pluginId);
+
         if (pluginFactory.isGlobalPlugin) {
             this.showPlugin(pluginFactory.pluginId);
         }
@@ -145,10 +132,6 @@ export class Plugins {
     }
 
     showPlugin(pluginId: string) {        
-        if (!this.plugins.has(pluginId)) {
-            this.instantiatePlugin(pluginId);
-        }
-
         const plugin = this.getById(pluginId);
         if (UI_Region.isSinglePluginRegion(plugin.region)) {
             this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);

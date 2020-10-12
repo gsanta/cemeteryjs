@@ -37,10 +37,10 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
             () => this.props.element.mouseWheelEnd(this.props.registry)
         );
 
-        setTimeout(() => {
+        // setTimeout(() => {
             (this.props.registry.plugins.getById(this.props.element.pluginId) as AbstractCanvasPlugin).mounted(this.ref.current);
             (this.props.registry.plugins.getById(this.props.element.pluginId) as AbstractCanvasPlugin).resize();
-        }, 0);
+        // }, 0);
     }
 
     render(): JSX.Element {
