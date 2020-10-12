@@ -89,7 +89,7 @@ export class AnimationNodeExecutor implements INodeExecutor {
         }
     }
 
-    stop() {}
+    executeStop() {}
 }
 
 export class AnimationMeshController extends PropController<string> {

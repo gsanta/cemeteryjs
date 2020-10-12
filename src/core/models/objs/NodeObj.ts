@@ -7,7 +7,7 @@ export const NodeObjType = 'node-obj';
 
 export interface NodeObjJson extends ObjJson {
     type: string;
-    params: NodeParam[];
+    params: NodeParamJson[];
 }
 
 export class NodeObjFactory implements ObjFactory {
@@ -22,6 +22,8 @@ export class NodeObjFactory implements ObjFactory {
     newInstance() {
         return this.registry.services.node.createNodeObj();
     }
+
+    
 }
 
 export enum NodeCategory {
@@ -89,6 +91,8 @@ export abstract class NodeObj implements IObj {
     outputs: NodeLink[] = [];
     connections: Map<string, NodeConnectionObj> = new Map();
     graph: NodeGraph;
+
+    isExecutionStopped = true;
     
     private cachedParams: Map<string, NodeParam> = new Map();
     private params: NodeParam[] = [];
@@ -153,7 +157,7 @@ export abstract class NodeObj implements IObj {
         return {
             id: this.id,
             type: this.type,
-            params: this.params,
+            params: params,
         }
     }
 

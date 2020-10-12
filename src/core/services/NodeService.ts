@@ -59,8 +59,23 @@ export class NodeService {
 
     executeNode(nodeObj: NodeObj) {
         const executor = this.nodeExecutors.get(nodeObj.type);
-        executor && executor.execute(nodeObj, this.registry); 
+        if (executor) {
+            !nodeObj.isExecutionStopped && executor.execute(nodeObj, this.registry); 
+        }
     }
+
+    executeStartNode(nodeObj: NodeObj) {
+        const executor = this.nodeExecutors.get(nodeObj.type);
+        nodeObj.isExecutionStopped = false;
+        executor && executor.executeStart && executor.executeStart(nodeObj, this.registry);
+    }
+
+    executeStopNode(nodeObj: NodeObj) {
+        const executor = this.nodeExecutors.get(nodeObj.type);
+        nodeObj.isExecutionStopped = true;
+        executor && executor.executeStop && executor.executeStop(nodeObj, this.registry);
+    }
+
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
         if (!this.nodeTemplates.has(nodeView.getObj().type)) {

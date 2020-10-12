@@ -1,4 +1,4 @@
-import { PropController } from "../../../core/plugin/controller/FormController";
+import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
 
 export enum GameViewerProps {
     Play = 'Play',
@@ -9,7 +9,7 @@ export class PlayController extends PropController {
     acceptedProps() { return [GameViewerProps.Play]; }
 
     click(context) {
-        context.registry.services.game.isPlaying = true;
+        context.registry.services.game.setPlaying(true);
         context.registry.services.render.reRender(context.plugin.region);
     }
 }
@@ -17,8 +17,8 @@ export class PlayController extends PropController {
 export class StopController extends PropController {
     acceptedProps() { return [GameViewerProps.Stop]; }
 
-    click(context) {
-        context.registry.services.game.isPlaying = false;
+    click(context: PropContext) {
+        context.registry.services.game.setPlaying(false);
         context.registry.services.render.reRender(context.plugin.region);
     }
 }

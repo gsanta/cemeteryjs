@@ -105,7 +105,7 @@ export class MoveNodeExecutor implements INodeExecutor {
         }
     }
 
-    stop() {}
+    executeStop() {}
 }
 
 export class MeshMoveController extends PropController<string> {

@@ -64,7 +64,7 @@ export class KeyboardNodeExecutor implements INodeExecutor {
         }
     }
 
-    stop() {}
+    executeStop() {}
 
     private getKeyParams(nodeObj: NodeObj): NodeParam[] {
         return nodeObj.getParams().filter(param => param.name.match(KEY_REGEX));

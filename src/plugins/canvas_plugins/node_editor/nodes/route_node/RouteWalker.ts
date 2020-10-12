@@ -35,6 +35,10 @@ export class RouteWalker {
         this.meshObj.setPosition(new Point_3(pos2.x, this.meshObj.getPosition().y, pos2.y));
     }
 
+    start() {
+        this.prevTime = undefined;
+    }
+
     setSpeed(speed: number) {
         this.speed = speed;
     }

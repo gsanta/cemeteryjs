@@ -46,8 +46,6 @@ export class RouteNodeObj extends NodeObj {
     category = NodeCategory.Default;
     displayName = 'Route';
 
-    // private routeNodeExecutor: RouteNodeExecutor;
-
     constructor(nodeGraph: NodeGraph) {
         super(nodeGraph);
 
@@ -80,13 +78,12 @@ export class RouteNodeObj extends NodeObj {
 
     setParam(name: string, value: any) {
         super.setParam(name, value);
-        // this.routeNodeExecutor && this.routeNodeExecutor.routWalker.setSpeed(value);
     }
+}
 
-    execute(registry: Registry) {
-        // if (this.connections.get('mesh') && this.connections.get('path')) {
-        //     this.routeNodeExecutor.execute(registry);
-        // }
+function serializer(nodeParam: NodeParam) {
+    if (nodeParam.name === 'routeWalker') {
+
     }
 }
 
@@ -135,7 +132,10 @@ export class RouteNodeExecutor implements INodeExecutor {
         routeWalker.step();
     }
 
-    stop() {}
+    executeStart(nodeObj: NodeObj, registry: Registry) {
+        const routeWalker = <RouteWalker> nodeObj.getParam('routeWalker').val;
+        routeWalker && routeWalker.start();
+    }
 
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
         let meshParam = nodeObj.connections.get('mesh') && nodeObj.connections.get('mesh').getOtherNode(nodeObj).getParam('mesh');
