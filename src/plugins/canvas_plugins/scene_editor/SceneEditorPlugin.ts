@@ -1,7 +1,7 @@
 import { MeshViewType } from '../../../core/models/views/MeshView';
 import { PathViewType } from '../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../core/models/views/SpriteView';
-import { View } from '../../../core/models/views/View';
+import { sortViewsByLayer, View } from '../../../core/models/views/View';
 import { RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
 import { ToolType } from '../../../core/plugin/tools/Tool';
@@ -93,7 +93,9 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             ...this.registry.stores.viewStore.getViewsByType(SpriteViewType),
             ...this.registry.stores.viewStore.getViewsByType(MeshViewType),
             ...this.registry.stores.viewStore.getViewsByType(PathViewType)
-        ]
+        ];
+
+        sortViewsByLayer(views);
 
         this.renderViews(canvas, views);
     }

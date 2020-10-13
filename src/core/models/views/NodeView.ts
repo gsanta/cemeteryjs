@@ -49,8 +49,8 @@ export class NodeView extends View {
 
     private paramsYPosStart: number;
 
-    constructor() {
-        super();
+    constructor(ownerPluginId: string) {
+        super(ownerPluginId);
         
         this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
     }

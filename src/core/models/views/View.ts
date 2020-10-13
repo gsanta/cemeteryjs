@@ -10,6 +10,7 @@ export interface ViewJson {
     type: string;
     dimensions: string;
     objId: string;
+    ownerPluginId?: string;
 }
 
 export enum ViewTag {
@@ -28,9 +29,15 @@ export abstract class View {
     id: string;
     viewType: string;
     tags: Set<ViewTag> = new Set();
+    layer: number = 10;
+    readonly ownerPluginId: string;
 
     parent: View;
     children: View[] = [];
+
+    constructor(ownerPluginId: string) {
+        this.ownerPluginId = ownerPluginId;
+    }
 
     protected obj: IObj;
 
@@ -100,4 +107,10 @@ export abstract class View {
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
         this.setObj(registry.stores.objStore.getById(json.objId));
     }
+}
+
+export function sortViewsByLayer(views: View[]): void {
+    const layerSorter = (a: View, b: View) => b.layer - a.layer;
+
+    views.sort(layerSorter);
 }

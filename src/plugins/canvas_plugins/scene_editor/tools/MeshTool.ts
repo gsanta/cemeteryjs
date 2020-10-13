@@ -6,6 +6,7 @@ import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
 import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { SceneEditorPluginId } from "../SceneEditorPlugin";
 
 export class MeshTool extends RectangleTool {
 
@@ -24,7 +25,7 @@ export class MeshTool extends RectangleTool {
         meshView.color = 'grey';
     
         this.registry.stores.objStore.addObj(meshObj);
-        this.registry.stores.viewStore.addView(meshView);
+        this.registry.stores.viewStore.addView(SceneEditorPluginId, meshView);
     
         return meshView;
     }

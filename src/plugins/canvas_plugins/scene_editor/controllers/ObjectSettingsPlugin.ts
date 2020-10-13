@@ -52,6 +52,9 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         row = layout.row({ key: MeshSettingsProps.Layer });
         const grid = row.grid({prop: MeshSettingsProps.Layer});
         grid.label = 'Layer';
+        const filledIndexes = new Set<number>();
+        this.registry.stores.viewStore.getAllViews().forEach(view => filledIndexes.add(view.layer));
+        grid.filledIndexes =  Array.from(filledIndexes);
 
         row = layout.row({ key: MeshSettingsProps.Rotation });
         const rotationTextField = row.textField({prop: MeshSettingsProps.Rotation});

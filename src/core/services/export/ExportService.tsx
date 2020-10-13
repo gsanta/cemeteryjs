@@ -53,7 +53,12 @@ export class ExportService {
 
     private exportViews(appJson: Partial<AppJson>) {
         this.registry.stores.viewStore.getAllTypes().forEach(viewType => {
-            const viewJsons = this.registry.stores.viewStore.getViewsByType(viewType).map(view => view.toJson());
+            const viewJsons = this.registry.stores.viewStore.getViewsByType(viewType).map(view => {
+                return {
+                    ...view.toJson(),
+                    ownerPluginId
+                }
+            });
 
             if (!appJson.viewsByType) {
                 appJson.viewsByType = [];

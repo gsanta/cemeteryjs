@@ -71,7 +71,6 @@ export class MeshView extends View {
     color: string = 'grey';
     yPos: number = 0;
     speed = 0.5;
-    layer: number = 10;
 
     getObj(): MeshObj {
         return this.obj;

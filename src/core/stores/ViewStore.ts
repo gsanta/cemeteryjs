@@ -1,12 +1,12 @@
-import { View, ViewTag } from "../models/views/View";
-import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
-import { Polygon } from "../../utils/geometry/shapes/Polygon";
-import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
-import { Registry } from "../Registry";
-import { AxisView, AxisViewType } from "../models/views/child_views/AxisView";
-import { SpriteViewType } from "../models/views/SpriteView";
+import { Polygon } from "../../utils/geometry/shapes/Polygon";
+import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
+import { AxisViewType } from "../models/views/child_views/AxisView";
 import { MeshViewType } from "../models/views/MeshView";
+import { SpriteViewType } from "../models/views/SpriteView";
+import { View, ViewTag } from "../models/views/View";
+import { Registry } from "../Registry";
+import { IdGenerator } from "./IdGenerator";
 
 export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
     const x = rectangle.topLeft.x;
@@ -34,12 +34,14 @@ export abstract class EmptyViewStoreHook implements ViewStoreHook {
 }
 
 export class ViewStore {
-    protected views: View[] = [];
+    private views: View[] = [];
     private selectedViews: View[] = [];
-    protected idMap: Map<string, View> = new Map();
-    protected byObjIdMap: Map<string, View> = new Map();
+    private idMap: Map<string, View> = new Map();
+    private byObjIdMap: Map<string, View> = new Map();
     private viewsByType: Map<string, View[]> = new Map();
-    protected idGenerator: IdGenerator;
+    private viewsByOwner: Map<string, View[]> = new Map();
+    private owners: Map<string, string> = new Map();
+    private idGenerator: IdGenerator;
     private hooks: ViewStoreHook[] = [];
 
     setIdGenerator(idGenerator: IdGenerator) {
@@ -120,8 +122,16 @@ export class ViewStore {
         return this.viewsByType.get(type) || [];
     }
 
+    getViewsByOwner(ownerId: string): View[] {
+        return this.viewsByOwner.get(ownerId) || [];
+    }
+
     getAllTypes(): string[] {
         return Array.from(this.viewsByType.keys());
+    }
+
+    getAllOwners(): string [] {
+        return Array.from(this.viewsByOwner.keys());
     }
 
     getAllViews(): View[]  {
