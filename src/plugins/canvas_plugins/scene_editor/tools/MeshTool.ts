@@ -25,7 +25,7 @@ export class MeshTool extends RectangleTool {
         meshView.color = 'grey';
     
         this.registry.stores.objStore.addObj(meshObj);
-        this.registry.stores.viewStore.addView(SceneEditorPluginId, meshView);
+        this.registry.stores.viewStore.addView(meshView);
     
         return meshView;
     }

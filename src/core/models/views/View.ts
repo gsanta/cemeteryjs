@@ -10,7 +10,6 @@ export interface ViewJson {
     type: string;
     dimensions: string;
     objId: string;
-    ownerPluginId?: string;
 }
 
 export enum ViewTag {
@@ -30,14 +29,9 @@ export abstract class View {
     viewType: string;
     tags: Set<ViewTag> = new Set();
     layer: number = 10;
-    readonly ownerPluginId: string;
 
     parent: View;
     children: View[] = [];
-
-    constructor(ownerPluginId: string) {
-        this.ownerPluginId = ownerPluginId;
-    }
 
     protected obj: IObj;
 
