@@ -46,7 +46,7 @@ export class Editor {
         this.registry.plugins.registerPlugin(new ThumbnailDialogPluginFactory());
         this.registry.plugins.registerPlugin(new ObjectSettingsPluginFactory());
         this.registry.plugins.registerPlugin(new SpriteSheetManagerFactory());
-        this.registry.plugins.registerPlugin(new LevelSettingsPluginFactory());
+        // this.registry.plugins.registerPlugin(new LevelSettingsPluginFactory());
         this.registry.plugins.registerPlugin(new AssetManagerSidepanelPluginFactory());
         this.registry.plugins.registerPlugin(new FileSettingslPluginFactory());
         this.registry.plugins.registerPlugin(new CodeEditorPluginFactory());

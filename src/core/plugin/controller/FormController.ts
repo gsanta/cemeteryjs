@@ -8,7 +8,7 @@ export enum GlobalControllerProps {
 }
 
 export abstract class PropController<T = any> {
-    abstract acceptedProps(context: PropContext): string[];
+    abstract acceptedProps(context: PropContext, element: UI_Element): string[];
 
     change?(val: T, context: PropContext<any>, element: UI_Element) {}
     click?(context: PropContext<T>, element: UI_Element) {}
@@ -23,7 +23,6 @@ export abstract class PropController<T = any> {
 
 export class PropContext<T = any> {
     private tempVal: T;
-    element: UI_Element;
     registry: Registry;
     plugin: UI_Plugin;
 
@@ -49,7 +48,7 @@ export class PropContext<T = any> {
 
 export class FormController {
     private propControllers: PropController<any>[] = [];
-    private propContext: PropContext;
+    private propContexts: Map<PropController, PropContext> = new Map();
 
     protected registry: Registry;
     plugin: UI_Plugin;
@@ -57,10 +56,6 @@ export class FormController {
     constructor(plugin: UI_Plugin, registry: Registry, propControls?: PropController<any>[]) {
         this.plugin = plugin;
         this.registry = registry;
-
-        this.propContext = new PropContext();
-        this.propContext.registry = this.registry;
-        this.propContext.plugin = this.plugin;
 
         this.registerPropControl(new CloseDialogController());
 
@@ -72,57 +67,80 @@ export class FormController {
     }
 
     change(val: any, element: UI_Element): void {
-        this.propContext.element = element;
-        this.findController(element)?.change(val, this.propContext, element);
+        const controller = this.findController(element); 
+
+        if (controller) {        
+            this.findController(element)?.change(val, this.propContexts.get(controller), element);
+        }
     }
 
     click(element: UI_Element): void {
-        this.propContext.element = element;
-        this.findController(element)?.click(this.propContext, element);
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).click(this.propContexts.get(controller), element);
+        }
     }
 
     focus(element: UI_Element): void {
-        this.propContext.element = element;
-        this.findController(element)?.focus(this.propContext, element);
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).focus(this.propContexts.get(controller), element);
+        }
     }
 
     blur(element: UI_Element): void {
-        this.propContext.element = element;
-        this.findController(element)?.blur(this.propContext, element);
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).blur(this.propContexts.get(controller), element);
+        }
     }
 
     dndStart(element: UI_Element, listItem: string): void {
-        this.propContext.element = element;
-        this.findController(element)?.onDndStart(this.propContext, element);
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).onDndStart(this.propContexts.get(controller), element);
+        }
     }
 
     dndEnd(element: UI_ListItem): void {
-        this.propContext.element = element;
-        this.findController(element)?.onDndEnd(this.propContext, element);
+        const controller = this.findController(element); 
+        if (controller) {
+            controller.onDndEnd(this.propContexts.get(controller), element);
+        }
     }
 
     val(element: UI_Element): any {
-        this.propContext.element = element;
-        const tmpVal = this.propContext.getTempVal();
+        const controller = this.findController(element);
+        const context = this.propContexts.get(controller);
+        const tmpVal = context.getTempVal();
 
-        return tmpVal !== undefined ? tmpVal :  this.findController(element).defaultVal(this.propContext, element);
+        return tmpVal !== undefined ? tmpVal : controller?.defaultVal(this.propContexts.get(controller), element);
     }
 
     values(element: UI_Element): any[] {
-        this.propContext.element = element;
         const controller = this.findController(element);
         if (controller) {
-            return controller?.values(this.propContext, element);
+            const propContext = this.propContexts.get(controller);
+            return controller?.values(propContext, element);
         }
 
         return [];
     }
 
     private findController(element: UI_Element): PropController {
-        return this.propControllers.find(controller => controller.acceptedProps(this.propContext).includes(element.prop));
+        return this.propControllers.find(controller => controller.acceptedProps(this.propContexts.get(controller), element).includes(element.prop));
     }
 
     registerPropControl(propController: PropController<any>) {
+        const propContext = new PropContext();
+        propContext.registry = this.registry;
+        propContext.plugin = this.plugin;
+
+        this.propContexts.set(propController, propContext);
         this.propControllers.push(propController);
     }
 }

@@ -49,10 +49,6 @@ export class MeshViewFactory implements ViewFactory {
             image.height = meshView.getBounds().getHeight();
         }
 
-        // if (meshView.isSelected()) {
-        //     this.renderAxisControl(canvas, meshView);
-        // }
-
         return thumbnail;
     }
 }

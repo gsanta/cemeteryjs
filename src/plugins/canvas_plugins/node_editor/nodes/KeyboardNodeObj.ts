@@ -7,6 +7,7 @@ import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
+import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";
 import { GameTool, GameToolType } from "../../game_viewer/tools/GameTool";
@@ -72,8 +73,8 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 }
 
 export class KeyControl extends PropController {
-    acceptedProps(context: PropContext) {
-        const nodeView = context.registry.stores.views[context.element.targetId];
+    acceptedProps(context: PropContext, element: UI_Element) {
+        const nodeView = context.registry.stores.views[element.targetId];
         return (<NodeObj> nodeView.getObj()).getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
     }
 

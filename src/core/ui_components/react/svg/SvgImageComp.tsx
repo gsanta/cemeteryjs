@@ -8,8 +8,8 @@ export const SvgImageComp = (props: UI_ComponentProps<UI_SvgImage>) => {
             href={props.element.href}
             x={props.element.x || 0}
             y={props.element.y || 0} 
-            height={`${props.element.width}px`}
-            width={`${props.element.height}px`}
+            width={`${props.element.width}px`}
+            height={`${props.element.height}px`}
         />
     );
 }

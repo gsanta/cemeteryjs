@@ -198,7 +198,7 @@ export class ModelController extends PropController<string> {
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    async blur(context) {
+    async blur(context: PropContext) {
         const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         const val = context.getTempVal();

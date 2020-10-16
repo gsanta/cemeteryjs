@@ -48,7 +48,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     async createInstance(meshObj: MeshObj): Promise<void> {
-        this.engineFacade.realEngine.meshes.createInstance(meshObj);
+        await this.engineFacade.realEngine.meshes.createInstance(meshObj);
     }
 
     deleteInstance(meshObj: MeshObj) {

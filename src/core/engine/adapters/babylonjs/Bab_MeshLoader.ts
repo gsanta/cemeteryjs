@@ -27,7 +27,6 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
         this.loadedIds.add(assetObj.id);
 
-        await this.registry.services.localStore.loadAsset(assetObj);
         await this.loadMesh(assetObj)
 
         this.setupInstance(meshObj);

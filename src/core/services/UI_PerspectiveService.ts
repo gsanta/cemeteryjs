@@ -147,7 +147,7 @@ export class UI_PerspectiveService {
             canvas1Plugin: NodeEditorPluginId,
             canvas2Plugin: GameViewerPluginId,
             sidepanelPlugins: [
-                LevelSettingsPluginId,
+                // LevelSettingsPluginId,
                 NodeEditorSettingsPluginId
             ]
         });

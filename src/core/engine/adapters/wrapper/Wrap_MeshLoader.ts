@@ -13,7 +13,7 @@ export class Wrap_MeshLoader implements IMeshLoaderAdapter {
     }
 
     async load(meshObj: MeshObj): Promise<void> {
-        this.engineFacade.realEngine.meshLoader.load(meshObj);
+        await this.engineFacade.realEngine.meshLoader.load(meshObj);
     }
 
     clear() {
