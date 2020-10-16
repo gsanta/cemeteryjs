@@ -1,5 +1,6 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
 import { IObj, ObjFactory } from "./IObj";
@@ -59,14 +60,14 @@ export class SpriteObj implements IObj {
         this.spriteAdapter && this.spriteAdapter.setPosition(this, pos);
     }
 
-    getPosition(): Point {
+    getPosition(): Point_3 {
         let pos = this.spriteAdapter && this.spriteAdapter.getPosition(this);
 
         if (!pos) {
             pos = this.startPos;
         }
 
-        return pos;
+        return <Point_3> pos;
     }
 
     setScale(scale: Point) {

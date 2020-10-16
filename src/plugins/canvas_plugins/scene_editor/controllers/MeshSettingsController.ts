@@ -47,6 +47,7 @@ export class LayerController extends PropController<number> {
     change(val, context: PropContext) {
         const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
         meshView.layer = val;
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
@@ -75,6 +76,7 @@ export class RotationController extends PropController<string> {
             console.log(e);
         }
         meshView.setRotation(rotation);
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }

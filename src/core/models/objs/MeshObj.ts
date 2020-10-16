@@ -78,9 +78,9 @@ export class MeshObj implements IObj {
     rotate(angle: number) {
         if (this.meshAdapter) {
             this.meshAdapter.rotate(this, angle)
-        } else {
-            this.tempRotation += angle;
         }
+        
+        this.tempRotation += angle;
     }
 
     getRotation(): number {

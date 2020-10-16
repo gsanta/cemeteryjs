@@ -33,6 +33,9 @@ export class Rectangle extends Polygon {
     }
 
     setHeight(newHeight: number): Rectangle {
+        const delta = newHeight - this.getHeight();
+
+        this.topLeft = this.topLeft.addY(-delta / 2);
         this.bottomRight = this.bottomRight.setY(this.topLeft.y + newHeight);
         this.initPoints();
         return this;
@@ -51,10 +54,10 @@ export class Rectangle extends Polygon {
     }
 
     scale(amount: Point): Rectangle {
-        const center = this.getBoundingCenter();
+        // const center = this.getBoundingCenter();
         this.setWidth(this.getWidth() * amount.x);
         this.setHeight(this.getHeight() * amount.y);
-        this.moveCenterTo(center);
+        // this.moveCenterTo(center);
 
         return this;
     }

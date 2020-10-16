@@ -76,7 +76,7 @@ export class MeshView extends View {
         this.obj = obj;
 
         if (this.bounds) { 
-            const pos2 = this.bounds.getBoundingCenter().div(10);
+            const pos2 = this.bounds.getBoundingCenter().div(10).negateY();
             this.obj.setPosition(new Point_3(pos2.x, this.obj.getPosition().y, pos2.y));
         }
     }
@@ -133,7 +133,7 @@ export class MeshView extends View {
         const center = bounds.getBoundingCenter();
         this.bounds = bounds;
 
-        const pos2 = this.bounds.getBoundingCenter().div(10);
+        const pos2 = this.bounds.getBoundingCenter().div(10).negateY();
         const objPos = this.obj.getPosition();
         
         // TODO: fix this mess, it can break easily, causing infinite loop

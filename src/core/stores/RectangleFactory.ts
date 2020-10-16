@@ -43,7 +43,7 @@ export class RectangleFactory  {
 
         const scale = obj.getScale();
         mesh.scaling = new Vector3(scale.x, scale.x, scale.y);
-        mesh.translate(new Vector3(point.x + width / 2, 0, -point.y - depth / 2), 1, Space.WORLD);
+        mesh.translate(new Vector3(point.x + width / 2, 0, point.z - depth / 2), 1, Space.WORLD);
 
         mesh.material = this.createSimpleMaterial(scene);
 

@@ -64,7 +64,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         clone.position.y = meshObj.yPos;
         clone.rotationQuaternion = undefined;
 
-        clone.setAbsolutePosition(new Vector3(position.x, 0, position.y));
+        clone.setAbsolutePosition(new Vector3(position.x, 0, position.z));
 
         clone.rotation.y = meshObj.getRotation();
         

@@ -13,6 +13,7 @@ export class Camera3D implements ICamera {
     private registry: Registry;
     private engine: Engine;
     private scene: Scene;
+    private zoomFactor: number = 5;
 
     constructor(registry: Registry, engine: Engine, scene: Scene) {
         this.registry = registry;
@@ -51,7 +52,7 @@ export class Camera3D implements ICamera {
     }
 
     zoomWheel() {
-        const zoomRatio = -this.registry.services.pointer.wheelDiff / this.camera.wheelPrecision;
+        const zoomRatio = -this.registry.services.pointer.wheelDiff / this.camera.wheelPrecision / this.zoomFactor;
         this.zoom(zoomRatio);
     }
 
