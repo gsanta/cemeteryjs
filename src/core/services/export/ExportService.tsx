@@ -52,8 +52,8 @@ export class ExportService {
     }
 
     private exportViews(appJson: Partial<AppJson>) {
-        this.registry.stores.viewStore.getAllTypes().forEach(viewType => {
-            const viewJsons = this.registry.stores.viewStore.getViewsByType(viewType).map(view => view.toJson());
+        this.registry.stores.views.getAllTypes().forEach(viewType => {
+            const viewJsons = this.registry.stores.views.getViewsByType(viewType).map(view => view.toJson());
 
             if (!appJson.viewsByType) {
                 appJson.viewsByType = [];

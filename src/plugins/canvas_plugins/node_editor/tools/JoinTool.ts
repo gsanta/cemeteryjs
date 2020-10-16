@@ -59,7 +59,7 @@ export class JoinTool extends PointerTool {
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
             connectionView.setPoint2(joinPoint2.getAbsolutePosition());
             this.registry.stores.objStore.addObj(connectionObj);
-            this.registry.stores.viewStore.addView(connectionView);
+            this.registry.stores.views.addView(connectionView);
 
             this.registry.services.history.createSnapshot();
         }

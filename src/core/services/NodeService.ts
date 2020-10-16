@@ -1,11 +1,11 @@
 import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
 import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
-import { AnimationNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
+import { AnimationNodeFacotry, AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
 import { KeyboardNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
 import { MeshNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/MeshNodeObj';
 import { MoveNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/MoveNodeObj';
 import { PathNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
-import { RouteNodeFacotry } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
+import { RouteNodeFacotry, RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
 import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';
@@ -13,6 +13,7 @@ import { View } from '../models/views/View';
 import { FormController, PropController } from '../plugin/controller/FormController';
 import { UI_Region } from '../plugin/UI_Plugin';
 import { Registry } from '../Registry';
+import { GameState, GameStore, GameStoreHook } from '../stores/GameStore';
 import { EmptyViewStoreHook } from '../stores/ViewStore';
 import { UI_Element } from '../ui_components/elements/UI_Element';
 import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
@@ -41,8 +42,9 @@ export class NodeService {
         // TODO register default nodes somewhere else where registry is alredy setup correctly, to get rid of settimeout
         setTimeout(() => {
             // TODO: unregister somewhere
-            this.registry.stores.viewStore.addHook(new RemoveRelatedConnectionHook(this.registry));
-            this.registry.stores.viewStore.addHook(new NodeGraphHook(this.registry));
+            this.registry.stores.views.addHook(new RemoveRelatedConnectionHook(this.registry));
+            this.registry.stores.views.addHook(new NodeGraphHook(this.registry));
+            this.registry.stores.game.addHook(gameStateHook);
         });
     }
 
@@ -60,7 +62,7 @@ export class NodeService {
     executeNode(nodeObj: NodeObj) {
         const executor = this.nodeExecutors.get(nodeObj.type);
         if (executor) {
-            !nodeObj.isExecutionStopped && executor.execute(nodeObj, this.registry); 
+            executor.execute(nodeObj, this.registry); 
         }
     }
 
@@ -91,7 +93,7 @@ export class NodeService {
 
     createNodeView(): NodeView {
         const nodeView = new NodeView();
-        nodeView.id = this.registry.stores.viewStore.generateId(nodeView);
+        nodeView.id = this.registry.stores.views.generateId(nodeView);
 
         this.registry.plugins.addPropController(nodeView.id, nodeView.controller);
         return nodeView;
@@ -107,6 +109,23 @@ export class NodeService {
 
         
         // return nodeView;
+    }
+
+    setPlaying(isPlaying: boolean) {
+        this.registry.stores.game.gameState = 'running';
+
+        const playableNodes = [
+            ...this.registry.services.node.graph.getNodesByType(RouteNodeObjType),
+            ...this.registry.services.node.graph.getNodesByType(AnimationNodeType),
+        ];
+
+        playableNodes.forEach(node => {
+            if (isPlaying) {
+                this.registry.services.node.executeStartNode(node.getObj());
+            } else {
+                this.registry.services.node.executeStopNode(node.getObj());
+            }
+        });
     }
 }
 
@@ -140,19 +159,19 @@ class RemoveRelatedConnectionHook extends EmptyViewStoreHook {
     private removeRelatedConnections(nodeView: NodeView) {
         nodeView.joinPointViews.forEach(joinPointView => {
             if (joinPointView.connection) {
-                this.registry.stores.viewStore.removeView(joinPointView.connection);
+                this.registry.stores.views.removeView(joinPointView.connection);
             }
         });
     }
 
     private removeConnectionFromNode(nodeConnectionView: NodeConnectionView) {
         const joinPointView1 = nodeConnectionView.joinPoint1;
-        if (joinPointView1 && this.registry.stores.viewStore.hasView(joinPointView1.parent.id)) {
+        if (joinPointView1 && this.registry.stores.views.hasView(joinPointView1.parent.id)) {
             joinPointView1.connection = undefined;
         }
 
         const joinPointView2 = nodeConnectionView.joinPoint2;
-        if (joinPointView2 && this.registry.stores.viewStore.hasView(joinPointView2.parent.id)) {
+        if (joinPointView2 && this.registry.stores.views.hasView(joinPointView2.parent.id)) {
             joinPointView2.connection = undefined;
         }
     }
@@ -190,4 +209,19 @@ class NodeGraphHook extends EmptyViewStoreHook {
             break;
         }
     }
+}
+
+const gameStateHook: GameStoreHook = (registry: Registry, prop: string, val: GameState) => {
+    const playableNodes = [
+        ...registry.services.node.graph.getNodesByType(RouteNodeObjType),
+        ...registry.services.node.graph.getNodesByType(AnimationNodeType),
+    ];
+
+    playableNodes.forEach(node => {
+        if (val === 'running') {
+            registry.services.node.executeStartNode(node.getObj());
+        } else if (val === 'paused') {
+            registry.services.node.executeStopNode(node.getObj());
+        }
+    });
 }

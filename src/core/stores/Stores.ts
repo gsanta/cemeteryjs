@@ -4,6 +4,7 @@ import { LevelStore } from "./LevelStore";
 import { IdGenerator } from "./IdGenerator";
 import { ViewStore } from "./ViewStore";
 import { ObjStore } from "./ObjStore";
+import { GameState, GameStore } from "./GameStore";
 
 export const SceneStoreId = 'scene-store';
 export const SpriteStoreId = 'sprite-store';
@@ -14,26 +15,27 @@ export class Stores {
 
     levelStore: LevelStore;
     assetStore: AssetStore;
-
     objStore: ObjStore;
-    viewStore: ViewStore;
+    views: ViewStore;
+
+    game: GameStore;
 
     constructor(registry: Registry) {
         this.registry = registry;
         this.levelStore = new LevelStore();
         this.assetStore = new AssetStore(this.registry);
         this.objStore = new ObjStore();
-        this.viewStore = new ViewStore();
+        this.views = ViewStore.newInstance();
 
-        this.viewStore.setIdGenerator(new IdGenerator());
+        this.views.setIdGenerator(new IdGenerator());
         this.assetStore.setIdGenerator(new IdGenerator());
         this.objStore.setIdGenerator(new IdGenerator());
+        this.game = new GameStore(this.registry);
     }
 
     clear() {
-        this.viewStore.clear();
+        this.views.clear();
         this.objStore.clear();
         this.assetStore.clear();
-        this
     }
 }

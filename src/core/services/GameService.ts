@@ -4,10 +4,6 @@ import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
 
 export class GameService {
-    private afterRenders: (() => void)[] = [];
-
-    private _isPlaying = false;
-
     viewImporter: ImportService;
 
     private registry: Registry;
@@ -33,26 +29,22 @@ export class GameService {
         });
     }
 
-    setPlaying(isPlaying: boolean) {
-        this._isPlaying = isPlaying;
+    // setPlaying(isPlaying: boolean) {
+    //     this.registry.stores.game.gameState = 'running';
 
-        const playableNodes = [
-            ...this.registry.services.node.graph.getNodesByType(RouteNodeObjType),
-            ...this.registry.services.node.graph.getNodesByType(AnimationNodeType),
-        ];
+    //     const playableNodes = [
+    //         ...this.registry.services.node.graph.getNodesByType(RouteNodeObjType),
+    //         ...this.registry.services.node.graph.getNodesByType(AnimationNodeType),
+    //     ];
 
-        playableNodes.forEach(node => {
-            if (isPlaying) {
-                this.registry.services.node.executeStartNode(node.getObj());
-            } else {
-                this.registry.services.node.executeStopNode(node.getObj());
-            }
-        });
-    }
-
-    isPlaying() {
-        return this._isPlaying;
-    }
+    //     playableNodes.forEach(node => {
+    //         if (isPlaying) {
+    //             this.registry.services.node.executeStartNode(node.getObj());
+    //         } else {
+    //             this.registry.services.node.executeStopNode(node.getObj());
+    //         }
+    //     });
+    // }
 
     // updateConcepts(concepts: View[]) {
     //     this.deleteConcepts(concepts);

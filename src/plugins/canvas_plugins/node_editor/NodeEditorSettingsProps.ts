@@ -25,7 +25,7 @@ export class DragNodeController extends PropController {
         nodeView.setObj(nodeObj);
 
         context.registry.stores.objStore.addObj(nodeObj);
-        context.registry.stores.viewStore.addView(nodeView);
+        context.registry.stores.views.addView(nodeView);
 
         nodeView.getBounds().moveTo(context.registry.services.pointer.pointer.curr);
         context.registry.services.history.createSnapshot();

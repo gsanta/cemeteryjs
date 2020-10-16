@@ -22,8 +22,8 @@ export abstract class RectangleTool extends NullTool {
 
         const view = this.createView(rect);
 
-        this.registry.stores.viewStore.clearSelection()
-        this.registry.stores.viewStore.addSelectedView(view);
+        this.registry.stores.views.clearSelection()
+        this.registry.stores.views.addSelectedView(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();

@@ -19,7 +19,7 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     }
 
     getStore() {
-        return this.registry.stores.viewStore;
+        return this.registry.stores.views;
     }
 
     mounted(htmlElement: HTMLElement) {
@@ -75,14 +75,14 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         actionIcon = toolbar.actionIcon({prop: GameViewerProps.Play});
         actionIcon.icon = 'play';
         actionIcon.placement = 'middle';
-        actionIcon.isActivated = this.registry.services.game.isPlaying();
+        actionIcon.isActivated = this.registry.stores.game.gameState === 'running';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Play';
 
         actionIcon = toolbar.actionIcon({prop: GameViewerProps.Stop});
         actionIcon.icon = 'stop';
         actionIcon.placement = 'middle';
-        actionIcon.isActivated = !this.registry.services.game.isPlaying();
+        actionIcon.isActivated = this.registry.stores.game.gameState === 'paused';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Stop';
 

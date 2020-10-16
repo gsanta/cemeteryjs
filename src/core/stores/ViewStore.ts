@@ -169,7 +169,28 @@ export class ViewStore {
         this.idGenerator.clear();
         this.clearSelection();
     }
+
+    static newInstance(): ViewStore {
+        const viewStore = new ViewStore();
+        const proxy = new Proxy(viewStore, handler);
+        return proxy;
+    }
 }
+
+const handler = {
+    get: function(target: ViewStore, prop, receiver) {
+		var propValue = target[prop];
+        if (typeof propValue != "function") {
+			return target.getById(prop);
+		}
+		else{
+			return function(){
+				//"this" points to the proxy, is like using the "receiver" that the proxy has captured
+				return propValue.apply(target, arguments);
+			}
+		}
+    }
+};
 
 export class ViewLifeCycleHook extends EmptyViewStoreHook {
     private registry: Registry;

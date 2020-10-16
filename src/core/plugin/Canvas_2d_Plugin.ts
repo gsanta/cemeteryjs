@@ -42,7 +42,7 @@ export abstract class Canvas_2d_Plugin extends AbstractCanvasPlugin {
     }
 
     getStore() {
-        return this.registry.stores.viewStore;
+        return this.registry.stores.views;
     }
 
     resize(): void {

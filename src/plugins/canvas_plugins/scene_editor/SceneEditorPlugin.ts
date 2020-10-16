@@ -18,11 +18,11 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
     }
 
     getStore() {
-        return this.registry.stores.viewStore;
+        return this.registry.stores.views;
     }
 
     destroy() { 
-        this.registry.stores.viewStore.clearSelection();
+        this.registry.stores.views.clearSelection();
     }
 
     protected renderInto(layout: UI_Layout): void {
@@ -90,9 +90,9 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip.label = 'Redo';
 
         const views = [
-            ...this.registry.stores.viewStore.getViewsByType(SpriteViewType),
-            ...this.registry.stores.viewStore.getViewsByType(MeshViewType),
-            ...this.registry.stores.viewStore.getViewsByType(PathViewType)
+            ...this.registry.stores.views.getViewsByType(SpriteViewType),
+            ...this.registry.stores.views.getViewsByType(MeshViewType),
+            ...this.registry.stores.views.getViewsByType(PathViewType)
         ];
 
         sortViewsByLayer(views);

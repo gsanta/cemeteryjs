@@ -34,8 +34,8 @@ export class Editor {
 
         // hooks
         this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
-        this.registry.stores.viewStore.addHook(new ViewLifeCycleHook(this.registry));
-        this.registry.stores.viewStore.addHook(new AxisControlHook(this.registry));
+        this.registry.stores.views.addHook(new ViewLifeCycleHook(this.registry));
+        this.registry.stores.views.addHook(new AxisControlHook(this.registry));
 
         // plugins
         this.registry.plugins.registerPlugin(new SceneEditorPluginFactory());

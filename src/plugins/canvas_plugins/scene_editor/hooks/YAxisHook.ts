@@ -31,7 +31,7 @@ export class SpriteYAxisHook implements ISpriteHook {
 }
 
 function setPosition(registry: Registry, meshObj: SpriteObj | MeshObj, newPos: Point) {
-    const meshView = registry.stores.viewStore.getByObjId(meshObj.id);
+    const meshView = registry.stores.views.getByObjId(meshObj.id);
 
     if (!meshView) { return; }
 

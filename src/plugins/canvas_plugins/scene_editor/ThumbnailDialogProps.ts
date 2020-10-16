@@ -16,7 +16,7 @@ export class ThumbnailCreateControl extends PropController<any> {
     
     async click(context) {
         const engine = (<ThumbnailDialogPlugin> context.plugin).engine;
-        const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
+        const meshView = context.registry.stores.views.getOneSelectedView() as MeshView;
 
         // TODO: should not cast to Bab_EngineFacade
         const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((engine as Bab_EngineFacade).engine, engine.getCamera().camera, 1000)
@@ -30,7 +30,7 @@ export class ThumbnailUploadControl extends PropController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailUpload]; }
 
     change(val, context) {
-        const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
+        const meshView = context.registry.stores.views.getOneSelectedView() as MeshView;
                 
         meshView.thumbnailData = val.data;
         context.registry.services.history.createSnapshot();
@@ -42,7 +42,7 @@ export class ClearThumbnailControl extends PropController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ClearThumbnail]; }
 
     change(val, context) {
-        const meshView = context.registry.stores.viewStore.getOneSelectedView() as MeshView;
+        const meshView = context.registry.stores.views.getOneSelectedView() as MeshView;
  
         meshView.thumbnailData = undefined;
         context.registry.services.render.reRender(UI_Region.Dialog);

@@ -17,7 +17,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
     region = UI_Region.Sidepanel;
 
     renderInto(layout: UI_Layout): void {
-        const selectedViews = this.registry.stores.viewStore.getSelectedViews();
+        const selectedViews = this.registry.stores.views.getSelectedViews();
 
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {
@@ -53,7 +53,7 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         const grid = row.grid({prop: MeshSettingsProps.Layer});
         grid.label = 'Layer';
         const filledIndexes = new Set<number>();
-        this.registry.stores.viewStore.getAllViews().forEach(view => filledIndexes.add(view.layer));
+        this.registry.stores.views.getAllViews().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
         row = layout.row({ key: MeshSettingsProps.Rotation });

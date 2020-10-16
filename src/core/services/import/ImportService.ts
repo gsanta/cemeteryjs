@@ -75,7 +75,7 @@ export class ImportService {
                 }
                 const viewInstance = this.registry.services.viewService.createView(viewType.viewType);
                 viewInstance.fromJson(view, this.registry);
-                this.registry.stores.viewStore.addView(viewInstance);
+                this.registry.stores.views.addView(viewInstance);
             });
         });    
     }

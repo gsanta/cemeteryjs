@@ -17,7 +17,7 @@ export class FrameName extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.FrameName]; }
 
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().frameName || '';
+        return (<SpriteView> context.registry.stores.views.getOneSelectedView()).getObj().frameName || '';
     }
 
     change(val, context) {
@@ -26,7 +26,7 @@ export class FrameName extends PropController<string> {
     }
 
     blur(context) {
-        const spriteView = (<SpriteView> context.registry.stores.viewStore.getOneSelectedView());
+        const spriteView = (<SpriteView> context.registry.stores.views.getOneSelectedView());
         context.releaseTempVal((val) => spriteView.getObj().frameName = val);
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());
@@ -38,11 +38,11 @@ export class SelectSpriteSheetController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.SelectSpriteSheet]; }
 
     defaultVal(context) {
-        return (<SpriteView> context.registry.stores.viewStore.getOneSelectedView()).getObj().spriteSheetId;
+        return (<SpriteView> context.registry.stores.views.getOneSelectedView()).getObj().spriteSheetId;
     }
 
     change(val, context) {
-        const spriteView = (<SpriteView> context.registry.stores.viewStore.getOneSelectedView());
+        const spriteView = (<SpriteView> context.registry.stores.views.getOneSelectedView());
         spriteView.getObj().spriteSheetId = val;
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());
@@ -67,7 +67,7 @@ export class ScaleXController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.ScaleX]; }
 
     defaultVal(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
 
         return spriteView.getObj().getScale().x;
     }
@@ -78,7 +78,7 @@ export class ScaleXController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
 
         const currScale = spriteView.getObj().getScale();
         let scaleX = currScale.x;
@@ -99,7 +99,7 @@ export class ScaleYController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.ScaleY]; }
 
     defaultVal(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
 
         return spriteView.getObj().getScale().y;
     }
@@ -110,7 +110,7 @@ export class ScaleYController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.viewStore.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
 
         const currScale = spriteView.getObj().getScale();
         let scaleY = currScale.y;

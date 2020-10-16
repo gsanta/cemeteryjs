@@ -21,8 +21,8 @@ export class SelectTool extends PointerTool {
     click() {
         if (this.registry.services.pointer.hoveredItem) {
             super.click();
-        } else if (this.registry.stores.viewStore.getSelectedViews().length > 0) {
-            this.registry.stores.viewStore.clearSelection();
+        } else if (this.registry.stores.views.getSelectedViews().length > 0) {
+            this.registry.stores.views.clearSelection();
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
         }
     }
@@ -42,10 +42,10 @@ export class SelectTool extends PointerTool {
         } else {
             if (!this.rectangleSelection) { return }
     
-            const intersectingViews = getIntersectingViews(this.registry.stores.viewStore, this.rectangleSelection);
+            const intersectingViews = getIntersectingViews(this.registry.stores.views, this.rectangleSelection);
             
-            this.registry.stores.viewStore.clearSelection();
-            this.registry.stores.viewStore.addSelectedView(...intersectingViews)
+            this.registry.stores.views.clearSelection();
+            this.registry.stores.views.addSelectedView(...intersectingViews)
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);

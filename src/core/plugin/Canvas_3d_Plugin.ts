@@ -24,7 +24,7 @@ export abstract class Canvas_3d_Plugin extends AbstractCanvasPlugin {
     }
 
     getStore() {
-        return this.registry.stores.viewStore;
+        return this.registry.stores.views;
     }
 
     resize() {

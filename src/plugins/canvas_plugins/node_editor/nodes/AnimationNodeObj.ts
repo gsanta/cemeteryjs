@@ -78,7 +78,7 @@ export class AnimationNodeObj extends NodeObj {
 export class AnimationNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj, registry: Registry) {
         if (nodeObj.getParam('startFrame').val !== 0 && nodeObj.getParam('endFrame').val !== 0) {
-            const meshView = <MeshView> registry.stores.viewStore.getById(nodeObj.getParam('mesh').val);
+            const meshView = <MeshView> registry.stores.views.getById(nodeObj.getParam('mesh').val);
             
             // if (!this.isAnimationPlaying) {
             //     const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), nodeObj.getParam('startFrame').val, nodeObj.getParam('endFrame').val, true);
@@ -96,17 +96,17 @@ export class AnimationMeshController extends PropController<string> {
     acceptedProps() { return ['mesh']; }
 
     values(context) {
-        return context.registry.stores.viewStore.getViewsByType(MeshViewType).map(meshView => meshView.id);
+        return context.registry.stores.views.getViewsByType(MeshViewType).map(meshView => meshView.id);
     }
     
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         const meshParam = nodeView.getObj().getParam('mesh').val;
-        return context.registry.stores.viewStore.getById(meshParam)?.id;
+        return context.registry.stores.views.getById(meshParam)?.id;
     }
 
     change(val: string, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         nodeView.getObj().setParam('mesh', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
@@ -116,7 +116,7 @@ export class StartFrameController extends PropController<string> {
     acceptedProps() { return ['startFrame']; }
 
     defaultVal(context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('startFrame').val;
     }
 
@@ -126,7 +126,7 @@ export class StartFrameController extends PropController<string> {
     }
 
     blur(context, element) {
-        const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.target) as NodeView;
 
         try {
             const val = parseFloat(context.getTempVal());
@@ -144,7 +144,7 @@ export class EndFrameController extends PropController<string> {
     acceptedProps() { return ['endFrame']; }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('endFrame').val;
     }
 
@@ -154,7 +154,7 @@ export class EndFrameController extends PropController<string> {
     }
 
     blur(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
 
         try {
             const val = parseFloat(context.getTempVal());

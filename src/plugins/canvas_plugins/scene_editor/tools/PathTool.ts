@@ -29,7 +29,7 @@ export class PathTool extends PointerTool {
 
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
-            this.registry.stores.viewStore.clearSelection();
+            this.registry.stores.views.clearSelection();
             this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
 
             this.registry.services.history.createSnapshot();
@@ -60,7 +60,7 @@ export class PathTool extends PointerTool {
     }
 
     private drawPath() {
-        const pathes = <PathView[]> this.registry.stores.viewStore.getSelectedViewsByType(PathViewType);
+        const pathes = <PathView[]> this.registry.stores.views.getSelectedViewsByType(PathViewType);
 
         if (pathes.length > 1) { return }
 
@@ -84,7 +84,7 @@ export class PathTool extends PointerTool {
 
     private startNewPath() {
         const pointer = this.registry.services.pointer.pointer;
-        this.registry.stores.viewStore.clearSelection();
+        this.registry.stores.views.clearSelection();
 
         const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
         const pathView: PathView = <PathView> this.registry.services.viewService.createView(PathViewType);
@@ -92,9 +92,9 @@ export class PathTool extends PointerTool {
 
         const editPoint = new PathPointView(pathView, pointer.down.clone());
         pathView.addPathPoint(editPoint);
-        this.registry.stores.viewStore.addView(pathView);
+        this.registry.stores.views.addView(pathView);
         this.registry.stores.objStore.addObj(pathObj);
-        this.registry.stores.viewStore.addSelectedView(pathView);
+        this.registry.stores.views.addSelectedView(pathView);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

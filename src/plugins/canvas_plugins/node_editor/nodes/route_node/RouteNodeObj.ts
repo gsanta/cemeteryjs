@@ -91,7 +91,7 @@ export class SpeedControl extends PropController<string> {
     acceptedProps() { return ['speed']; }
 
     defaultVal(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.stores.viewStore.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('speed').val;
     }
     
@@ -107,7 +107,7 @@ export class SpeedControl extends PropController<string> {
         try {
             if (speed) {
                 const speedNum = parseFloat(speed);
-                const nodeView = context.registry.stores.viewStore.getById(element.target) as NodeView;
+                const nodeView = context.registry.stores.views.getById(element.target) as NodeView;
                 nodeView.getObj().setParam('speed', speedNum);
             }
         } catch (e) {
@@ -141,7 +141,7 @@ export class RouteNodeExecutor implements INodeExecutor {
         let meshParam = nodeObj.connections.get('mesh') && nodeObj.connections.get('mesh').getOtherNode(nodeObj).getParam('mesh');
 
         if (meshParam) {
-            return <MeshObj> registry.stores.viewStore.getById(meshParam.val)?.getObj();
+            return <MeshObj> registry.stores.views.getById(meshParam.val)?.getObj();
         }
     }
 
@@ -149,7 +149,7 @@ export class RouteNodeExecutor implements INodeExecutor {
         let pathParam = nodeObj.connections.get('path') && nodeObj.connections.get('path').getOtherNode(nodeObj).getParam('path');
 
         if (pathParam) {
-            return <PathObj> registry.stores.viewStore.getById(pathParam.val)?.getObj();
+            return <PathObj> registry.stores.views.getById(pathParam.val)?.getObj();
         }
     }
 }

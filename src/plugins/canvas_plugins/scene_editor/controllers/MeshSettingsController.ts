@@ -20,7 +20,7 @@ export class MeshIdController extends PropController<string> {
     acceptedProps() { return [MeshSettingsProps.MeshId]; }
 
     defaultVal(context) {
-        return (<MeshView> context.registry.stores.viewStore.getOneSelectedView()).id;
+        return (<MeshView> context.registry.stores.views.getOneSelectedView()).id;
     }
     
     change(val, context) {
@@ -29,7 +29,7 @@ export class MeshIdController extends PropController<string> {
     }
 
     blur(context) {
-        context.releaseTempVal((val) => (<MeshView> context.registry.stores.viewStore.getOneSelectedView()).id = val);
+        context.releaseTempVal((val) => (<MeshView> context.registry.stores.views.getOneSelectedView()).id = val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }    
@@ -39,13 +39,13 @@ export class LayerController extends PropController<number> {
     acceptedProps() { return [MeshSettingsProps.Layer]; }
 
     defaultVal(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         return meshView.layer;
     }
 
     change(val, context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
         meshView.layer = val;
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
@@ -55,7 +55,7 @@ export class RotationController extends PropController<string> {
     acceptedProps() { return [MeshSettingsProps.Rotation]; }
 
     defaultVal(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         return Math.round(toDegree(meshView.getRotation())).toString();
     }
@@ -66,7 +66,7 @@ export class RotationController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         let rotation = meshView.getRotation();
         try {
@@ -84,7 +84,7 @@ export class ScaleController extends PropController<string> {
     acceptedProps() { return [MeshSettingsProps.Scale]; }
 
     defaultVal(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         return meshView.getScale();
     }
@@ -95,7 +95,7 @@ export class ScaleController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         let scale = meshView.getScale();
         try {
@@ -112,7 +112,7 @@ export class YPosController extends PropController<string> {
     acceptedProps() { return [MeshSettingsProps.YPos]; }
 
     defaultVal(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         return meshView.yPos.toString();
     }
@@ -123,7 +123,7 @@ export class YPosController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         let yPos = meshView.yPos;
         try {
@@ -141,7 +141,7 @@ export class TextureController extends PropController<string> {
     acceptedProps() { return [MeshSettingsProps.Texture]; }
 
     defaultVal(context) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         if (meshView.getObj().textureId) {
             const assetObj = context.registry.stores.assetStore.getAssetById(meshView.getObj().textureId);
@@ -157,7 +157,7 @@ export class TextureController extends PropController<string> {
     }
 
     async blur(context) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         const val = context.getTempVal();
         context.clearTempVal();
@@ -183,7 +183,7 @@ export class ModelController extends PropController<string> {
     acceptedProps() { return [MeshSettingsProps.Model]; }
 
     defaultVal(context) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         if (meshView.getObj().modelId) {
             const assetObj = context.registry.stores.assetStore.getAssetById(meshView.getObj().modelId);
@@ -199,7 +199,7 @@ export class ModelController extends PropController<string> {
     }
 
     async blur(context) {
-        const meshView = <MeshView> context.registry.stores.viewStore.getOneSelectedView();
+        const meshView = <MeshView> context.registry.stores.views.getOneSelectedView();
 
         const val = context.getTempVal();
         context.clearTempVal();
