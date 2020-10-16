@@ -3,11 +3,12 @@ import booleanOverlaps from '@turf/boolean-overlap';
 import * as turfHelpers from '@turf/helpers';
 import polylabel from 'polylabel';
 import { Point } from './Point';
-import { Segment } from './Segment';
+import { FiniteLine } from './FiniteLine';
 import { BoundingInfo, Shape, ShapeOrigin } from './Shape';
 import { Angle } from './Angle';
 import { Measurements } from '../Measurements';
 import { minBy, maxBy, every } from '../Functions';
+import { Rectangle } from './Rectangle';
 
 
 export class Polygon implements Shape {
@@ -18,33 +19,19 @@ export class Polygon implements Shape {
         this.points = points;
         this.orederedPoints = this.orderPointsToStartAtBottomLeft(this.points);
         this.points = this.orederedPoints;
-        if (!this.arePointsClockwise()) {
-            this.orederedPoints = this.orderPointsToStartAtBottomLeft(this.orederedPoints.reverse());
-        }
     }
 
-    public getPoints(): Point[] {
+    getPoints(): Point[] {
         return this.orederedPoints;
     }
 
-    public setPoint(index: number, newPoint: Point): Polygon {
-        const clonedPoints = [...this.points];
-        clonedPoints.splice(index, 1, newPoint);
-
-        return new Polygon(clonedPoints);
-    }
-
-    public hasPoint(point: Point): boolean {
-        return this.points.find(p => p.equalTo(point)) !== undefined;
-    }
-
-    public getPointsStartingFrom(point: Point) {
+    getPointsStartingFrom(point: Point) {
         const index = this.getIndexOf(point);
 
         return [...this.getPoints().slice(index), this.getPoints().slice(0, index)];
     }
 
-    public getIndexOf(point: Point): number {
+    getIndexOf(point: Point): number {
         return this.orederedPoints.findIndex(p => p.equalTo(point));
     }
 
@@ -52,7 +39,7 @@ export class Polygon implements Shape {
      * The ordering of points within a `Shape` are stable (it is the order by which the `Polygon` was instantiated), and it returns with the previous `Point` based
      * on that order. The `Polygon` is a circular shape so whatever the index is, a valid `Point` will be returned.
      */
-    public getPreviousPoint(point: Point): Point {
+    getPreviousPoint(point: Point): Point {
         const index = this.getIndexOf(point);
 
         if (index === 0) {
@@ -62,7 +49,7 @@ export class Polygon implements Shape {
         return this.orederedPoints[index - 1];
     }
 
-    public getNextPoint(point: Point): Point {
+    getNextPoint(point: Point): Point {
         const index = this.getIndexOf(point);
         if (index === this.orederedPoints.length - 1) {
             return this.orederedPoints[0];
@@ -71,22 +58,17 @@ export class Polygon implements Shape {
         return this.orederedPoints[index + 1];
     }
 
-    public getOrderedIndex(point: Point) {
+    getOrderedIndex(point: Point) {
         const p = this.orederedPoints.find(p => p.equalTo(point));
         return this.orederedPoints.indexOf(p);
     }
 
-    public translate(point: Point): Polygon {
+    translate(point: Point): Polygon {
         const translatedPoints = this.points.map(p => p.addX(point.x).addY(point.y));
         return new Polygon(translatedPoints);
     }
 
-    public negate(axis: 'x' | 'y'): Polygon {
-        const translatedPoints = this.points.map(point => new Point(axis === 'x' ? -point.x : point.x, axis === 'y' ? -point.y : point.y));
-        return new Polygon(translatedPoints);
-    }
-
-    public getArea() {
+    getArea() {
         let area = 0;
         let prevIndex = this.points.length - 1;
 
@@ -99,7 +81,7 @@ export class Polygon implements Shape {
         let depth: number;
     }
 
-    public clone(): Polygon {
+    clone(): Polygon {
         const points = this.points.map(point => point.clone());
 
         const clone = new Polygon(points);
@@ -114,21 +96,21 @@ export class Polygon implements Shape {
         return booleanContains(poly, p);
     }
 
-    public contains(other: Polygon): boolean {
+    contains(other: Polygon): boolean {
         const poly1 = turfHelpers.polygon([this.toLinearRing().toTwoDimensionalArray()]);
         const poly2 = turfHelpers.polygon([other.toLinearRing().toTwoDimensionalArray()]);
 
         return booleanContains(poly1, poly2);
     }
 
-    public intersect(other: Polygon): boolean {
+    intersect(other: Polygon): boolean {
         const poly1 = turfHelpers.polygon([this.toLinearRing().toTwoDimensionalArray()]);
         const poly2 = turfHelpers.polygon([other.toLinearRing().toTwoDimensionalArray()]);
 
         return booleanOverlaps(poly1, poly2);
     }
 
-    public scale(amount: Point): Polygon {
+    scale(amount: Point): Polygon {
         const points = this.points.map(p => p.scaleX(amount.x)).map(p => p.scaleY(amount.y));
         return new Polygon(points);
     }
@@ -136,83 +118,35 @@ export class Polygon implements Shape {
     /**
      * Returns the center `Point` of the bounding `Rectangle`
      */
-    public getBoundingCenter(): Point {
+    getBoundingCenter(): Point {
         const center = polylabel([this.toTwoDimensionalArray()], 1.0);
         return new Point(center[0], center[1]);
     }
 
-    public getBoundingRectangle(): Shape {
+    getBoundingRectangle(): Rectangle {
         const boudingInfo = this.getBoundingInfo();
         const minX = boudingInfo.min[0];
         const maxX = boudingInfo.max[0];
         const minY = boudingInfo.min[1];
         const maxY = boudingInfo.max[1];
 
-        return new Polygon([
-            new Point(minX, minY),
-            new Point(minX, maxY),
-            new Point(maxX, maxY),
-            new Point(maxX, minY)
-        ]);
-    }
-
-    public setPosition(point: Point, origin: ShapeOrigin = ShapeOrigin.CENTER): Polygon {
-        if (this.points.length !== 4) {
-            throw new Error('setPosition is only supported for Rectangles.');
-        }
-
-        const boudingInfo = this.getBoundingRectangle().getBoundingInfo();
-
-        const width = boudingInfo.max[0] - boudingInfo.min[0]
-        const height = boudingInfo.max[1] - boudingInfo.min[1];
-
-        return Polygon.createRectangle(point.x - width / 2, point.y - height / 2, width, height);
+        return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 
     /**
      * @deprecated use `getEdges` instead, it has the same behaviour, but a more unified naming convention
      */
-    public getSidesFromBottomLeftClockwise(): Segment[] {
+    getSidesFromBottomLeftClockwise(): FiniteLine[] {
         return this.orederedPoints.map((point, index) => {
             if (index < this.orederedPoints.length - 1) {
-                return new Segment(point, this.orederedPoints[index + 1]);
+                return new FiniteLine(point, this.orederedPoints[index + 1]);
             } else {
-                return new Segment(point, this.orederedPoints[0]);
+                return new FiniteLine(point, this.orederedPoints[0]);
             }
         });
     }
 
-    /**
-     * Determines which sides (if any) of the `Polygon` lies on the same line as the given `Segment` segment.
-     * @returns an array of the following structure: the `Segment` segment representing the side of the `Polygon` and the index of that side
-     *      being the 0 index the bottom left side and counting clockwise.
-     */
-    public getCoincidingSidesForLine(line: Segment): [Segment, number][] {
-        const sides = this.getSidesFromBottomLeftClockwise();
-
-        return sides
-            .filter(side => side.isCoincidentToLine(line))
-            .map(side => [side, sides.indexOf(side)]);
-    }
-
-    public getCoincidentLineSegment(other: Shape): [Segment, number, number] {
-        const otherEdges = other.getEdges();
-        const thisEdges = this.getEdges();
-
-        let coincidentSegmentInfos: [Segment, number, number][] = [];
-        for (let i = 0; i < otherEdges.length; i++) {
-            for (let j = 0; j < thisEdges.length; j++) {
-                const coincidentInfo = otherEdges[i].getCoincidentLineSegment(thisEdges[j]);
-                if (coincidentInfo) {
-                    coincidentSegmentInfos.push([coincidentInfo[0], j, i]);
-                }
-            }
-        }
-
-        return maxBy<[Segment, number, number]>(coincidentSegmentInfos, (a, b) => a[0].getLength() - b[0].getLength());
-    }
-
-    public getBoundingInfo(): BoundingInfo {
+    getBoundingInfo(): BoundingInfo {
         const minX = minBy<Point>(this.points, (a, b) => a.x - b.x).x;
         const maxX = maxBy<Point>(this.points, (a, b) => a.x - b.x).x;
         const minY = minBy<Point>(this.points, (a, b) => a.y - b.y).y;
@@ -225,11 +159,7 @@ export class Polygon implements Shape {
         };
     }
 
-    public getEdges(): Segment[] {
-        return this.getSidesFromBottomLeftClockwise();
-    }
-
-    public equalTo(otherPolygon: Polygon): boolean {
+    equalTo(otherPolygon: Polygon): boolean {
         if (this.points.length !== otherPolygon.points.length) {
             return false;
         }
@@ -237,7 +167,7 @@ export class Polygon implements Shape {
         return every(this.orederedPoints, (point, index) => point.equalTo(otherPolygon.orederedPoints[index]));
     }
 
-    public removeStraightVertices(): Polygon {
+    removeStraightVertices(): Polygon {
         const firstPoint: Point = this.getPoints().find(point => {
             const a = point;
             const b = this.getPreviousPoint(point);
@@ -264,7 +194,7 @@ export class Polygon implements Shape {
         return new Polygon(reducedPoints);
     }
 
-    public toString(): string {
+    toString(): string {
         let str = '['
 
         this.points.forEach(point => str += point.toString());
@@ -274,7 +204,7 @@ export class Polygon implements Shape {
         return str;
     }
 
-    public static createRectangle(left: number, top: number,  width: number, height: number): Polygon {
+    static createRectangle(left: number, top: number,  width: number, height: number): Polygon {
         const minX = left;
         const maxX = left + width;
         const minY = top;
@@ -296,21 +226,6 @@ export class Polygon implements Shape {
         const clone = this.clone();
         clone.points.push(clone.points[0]);
         return clone;
-    }
-
-    private arePointsClockwise() {
-        const edges = this.getEdges();
-
-        const sum = edges.reduce(
-            (sum: number, nextEdge) => {
-                const point1 = nextEdge.getPoints()[0];
-                const point2 = nextEdge.getPoints()[1];
-                return sum + (point2.x - point1.x) * (point2.y + point1.y);
-            },
-            0
-        );
-
-        return sum >= 0;
     }
 
     private orderPointsToStartAtBottomLeft = (points: Point[]) => {

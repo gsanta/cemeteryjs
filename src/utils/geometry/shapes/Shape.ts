@@ -1,5 +1,6 @@
 import { Point } from "./Point";
-import { Segment } from "./Segment";
+import { Rectangle } from "./Rectangle";
+import { FiniteLine } from "./FiniteLine";
 
 export enum ShapeOrigin {
     CENTER
@@ -12,30 +13,12 @@ export interface BoundingInfo {
 }
 
 export interface Shape {
-    setPosition(point: Point, origin?: ShapeOrigin): Shape;
-    hasPoint(point: Point): boolean;
     scale(point: Point): Shape;
     translate(point: Point): Shape;
-    negate(axis: 'x' | 'y'): Shape;
 
-    getBoundingInfo(): BoundingInfo;
     getBoundingCenter(): Point;
-    getBoundingRectangle(): Shape;
+    getBoundingRectangle(): Rectangle;
 
     clone(): Shape;
-    /**
-     * Determines whether the two `Shape`s have coincident edges, if they have returns the following array structure
-     * [the common `Segment` segment, the index of the edge in this `Shape`, the index of the edge in the other `Shape`],
-     * otherwise returns undefined
-     */
-
-    getCoincidentLineSegment(other: Shape): [Segment, number, number];
-    /**
-     * Sets the `Point` at the given `index` based on the initial `Point` ordering, and returns with the new `Shape`.
-     */
-    setPoint(index: number, newPoint: Point): Shape;
-    getPoints(): Point[];
-    getEdges(): Segment[];
-    equalTo(otherShape: Shape): boolean;
     toString(): string;
 }

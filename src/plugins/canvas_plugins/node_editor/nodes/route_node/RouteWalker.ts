@@ -23,6 +23,10 @@ export class RouteWalker {
         this.points = this.pathObj.points;
     }
 
+    private createBezierPoints() {
+        
+    }
+
     step() {
         const delta = this.computeDelta() * this.speed / speedConstant;
         this.progress += delta;
@@ -54,6 +58,8 @@ export class RouteWalker {
             }
 
             this.vector = this.points[this.currentPointIndex + 1].subtract(this.points[this.currentPointIndex]);
+            const angle = this.vector.angleToOrigin();
+            this.meshObj.setRotation(angle);
 
             this.distance = this.vector.len();
         }

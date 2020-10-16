@@ -83,6 +83,11 @@ export class MeshObj implements IObj {
         this.tempRotation += angle;
     }
 
+    setRotation(angle: number): void {
+        this.meshAdapter && this.meshAdapter.setRotation(this, angle);
+        this.tempRotation = angle;
+    }
+
     getRotation(): number {
         const rotation = this.meshAdapter && this.meshAdapter.getRotation(this);
         return rotation || this.tempRotation;

@@ -16,7 +16,7 @@ export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): Vi
 
     const polygon = Polygon.createRectangle(x, y, width, height);
 
-    return store.getAllViews().filter(item => polygon.contains(item.getBounds()));
+    return store.getAllViews().filter(item => polygon.contains(item.getBounds().toPolygon()));
 }
 
 export interface ViewStoreHook {

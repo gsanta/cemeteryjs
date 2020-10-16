@@ -80,8 +80,13 @@ export class Point {
         return new Point(this.x, this.y);
     }
 
-    equalTo(otherPoint: Point) {
+    equalTo(otherPoint: Point): boolean {
+        if (!otherPoint) { return false; }
         return this.x === otherPoint.x && this.y === otherPoint.y;
+    }
+
+    angleToOrigin() {
+        return -Math.atan2(this.y, this.x);
     }
 
     toString(): string {

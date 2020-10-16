@@ -130,14 +130,14 @@ export class MeshView extends View {
     }
 
     setBounds(bounds: Rectangle) {
-        const center = bounds.getBoundingCenter();
+        const center = this.bounds && this.bounds.getBoundingCenter();
         this.bounds = bounds;
 
         const pos2 = this.bounds.getBoundingCenter().div(10).negateY();
         const objPos = this.obj.getPosition();
         
         // TODO: fix this mess, it can break easily, causing infinite loop
-        if (this.bounds.getBoundingCenter() !== center) {
+        if (!this.bounds.getBoundingCenter().equalTo(center)) {
             this.obj.setPosition(new Point_3(pos2.x, objPos ? objPos.y : 0, pos2.y));
         }
         this.children.forEach(child => child.calcBounds());

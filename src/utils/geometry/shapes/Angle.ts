@@ -1,6 +1,6 @@
 import * as linear from 'linear-solve';
 import { toRadian, Measurements } from '../Measurements';
-import { Line } from './Line';
+import { InfiniteLine } from './InfiniteLine';
 import { Point } from "./Point";
 
 /**
@@ -46,7 +46,7 @@ export class Angle {
         angle = angle < 0 ? angle + 2 * Math.PI : angle;
         const slope = Math.tan(angle);
 
-        const line = Line.fromPointSlopeForm(new Point(0, 0), slope);
+        const line = InfiniteLine.fromPointSlopeForm(new Point(0, 0), slope);
 
         let o = new Point(0, 0);
         let b = new Point(10, 0);
@@ -78,7 +78,7 @@ export class Angle {
         return new Angle(o, a, b);
     }
 
-    static fromTwoLines(line1: Line, line2: Line): Angle {
+    static fromTwoLines(line1: InfiniteLine, line2: InfiniteLine): Angle {
         if (new Measurements().linesParallel(line1, line2)) {
             return undefined;
         } else if (line1.isVertical()) {

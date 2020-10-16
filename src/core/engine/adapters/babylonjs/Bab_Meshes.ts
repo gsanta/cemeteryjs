@@ -68,6 +68,13 @@ export  class Bab_Meshes implements IMeshAdapter {
         meshData.mainMesh.rotation.y += angle;
     }
 
+    setRotation(meshObj: MeshObj, angle: number): void {
+        const meshData = this.meshes.get(meshObj.id);
+        if (!meshData) { return; }
+
+        meshData.mainMesh.rotation.y = angle;
+    }
+
     getRotation(meshObj: MeshObj): number {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }

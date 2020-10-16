@@ -1,20 +1,17 @@
 import { Point } from './Point';
 import { Polygon } from './Polygon';
+import { Shape } from './Shape';
 
-export class Rectangle extends Polygon {
+export class Rectangle implements Shape {
     topLeft: Point;
     bottomRight: Point;
 
-    constructor(topLeft: Point, bottomRight: Point) {
-        super([
-            topLeft,
-            new Point(bottomRight.x, topLeft.y),
-            bottomRight,
-            new Point(topLeft.x, bottomRight.y)
-        ]);
+    private center: Point;
 
+    constructor(topLeft: Point, bottomRight: Point) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+        this.recalc();
     }
 
     translate(point: Point): Rectangle {
@@ -23,12 +20,20 @@ export class Rectangle extends Polygon {
         return new Rectangle(topLeft, bottomRight);
     }
 
+    getBoundingCenter(): Point {
+        return this.center;
+    }
+
+    getBoundingRectangle(): Rectangle {
+        return this;
+    }
+
     setWidth(newWidth: number): Rectangle {
         const delta = newWidth - this.getWidth();
 
         this.topLeft = this.topLeft.addX(-delta / 2);
         this.bottomRight = this.bottomRight.setX(this.topLeft.x + newWidth);
-        this.initPoints();
+        this.recalc();
         return this;
     }
 
@@ -37,7 +42,7 @@ export class Rectangle extends Polygon {
 
         this.topLeft = this.topLeft.addY(-delta / 2);
         this.bottomRight = this.bottomRight.setY(this.topLeft.y + newHeight);
-        this.initPoints();
+        this.recalc();
         return this;
     }
 
@@ -54,11 +59,8 @@ export class Rectangle extends Polygon {
     }
 
     scale(amount: Point): Rectangle {
-        // const center = this.getBoundingCenter();
         this.setWidth(this.getWidth() * amount.x);
         this.setHeight(this.getHeight() * amount.y);
-        // this.moveCenterTo(center);
-
         return this;
     }
 
@@ -85,6 +87,10 @@ export class Rectangle extends Polygon {
         return new Rectangle(this.topLeft.div(num), this.bottomRight.div(num));
     }
 
+    toPolygon(): Polygon {
+        return new Polygon([this.topLeft, this.topLeft.clone().addX(this.getWidth()), this.bottomRight, this.bottomRight.clone().addX(-this.getWidth())]);
+    }
+
     static squareFromCenterPointAndRadius(centerPoint: Point, radius: number) {
         const topLeft = centerPoint.subtract(new Point(radius, radius));
         const bottomRight = centerPoint.add(new Point(radius, radius));
@@ -92,14 +98,8 @@ export class Rectangle extends Polygon {
         return new Rectangle(topLeft, bottomRight);
     }
 
-    private initPoints() {
-        this.points = [
-            this.topLeft,
-            new Point(this.bottomRight.x, this.topLeft.y),
-            this.bottomRight,
-            new Point(this.topLeft.x, this.bottomRight.y)
-        ];
-        this.orederedPoints= this.points;
+    private recalc() {
+        this.center = this.topLeft.clone().addX(this.getWidth() / 2).addY(this.getHeight() / 2);
     }
 
     toString() {

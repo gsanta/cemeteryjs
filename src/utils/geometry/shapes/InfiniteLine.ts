@@ -1,7 +1,7 @@
 import { Point } from "./Point";
 import { Angle } from "./Angle";
 
-export class Line {
+export class InfiniteLine {
     slope: number;
     yIntercept: number;
     xIntercept: number;
@@ -10,31 +10,6 @@ export class Line {
         this.slope = slope;
         this.yIntercept = yIntercept;
         this.xIntercept = xIntercept;
-    }
-
-    public getSegmentWithCenterPointAndDistance(centerPoint: Point, d: number): [Point, Point] {
-        if (this.isHorizontal()) {
-            return [
-                new Point(centerPoint.x - d, centerPoint.y),
-                new Point(centerPoint.x + d, centerPoint.y)
-            ];
-        } else if (this.isVertical()) {
-            return [
-                new Point(centerPoint.x, centerPoint.y - d),
-                new Point(centerPoint.x, centerPoint.y + d)
-            ];
-        } else {
-            const x1 = centerPoint.x + d / (Math.sqrt(1 + Math.pow(this.slope, 2)));
-            const x2 = centerPoint.x - d / (Math.sqrt(1 + Math.pow(this.slope, 2)));
-
-            const y1 = this.getY(x1);
-            const y2 = this.getY(x2);
-
-            return [
-                new Point(x1, y1),
-                new Point(x2, y2)
-            ];
-        }
     }
 
     public getX(y: number): number {
@@ -59,14 +34,14 @@ export class Line {
         return this.slope === 0;
     }
 
-    public hasEqualSlope(otherLine: Line): boolean {
+    public hasEqualSlope(otherLine: InfiniteLine): boolean {
         const thisM = this.slope === undefined ? Number.MAX_VALUE : this.slope;
         const thatM = otherLine.slope === undefined ? Number.MAX_VALUE: otherLine.slope;
 
         return Math.abs(thisM - thatM) < 0.1;
     }
 
-    public intersection(otherLine: Line): Point {
+    public intersection(otherLine: InfiniteLine): Point {
         if (this.slope === otherLine.slope) {
             return undefined;
         }
@@ -96,7 +71,7 @@ export class Line {
             return Angle.fromRadian(Math.PI / 2);
         }
 
-        const xAxis = Line.createHorizontalLine(0);
+        const xAxis = InfiniteLine.createHorizontalLine(0);
         const o = xAxis.intersection(this);
 
         if (o !== undefined) {
@@ -114,13 +89,13 @@ export class Line {
         );
     }
 
-    static fromTwoPoints(point1: Point, point2: Point): Line {
+    static fromTwoPoints(point1: Point, point2: Point): InfiniteLine {
         const slope = point1.x === point2.x ? undefined : (point1.y - point2.y) / (point1.x - point2.x);
 
-        return Line.fromPointSlopeForm(point1, slope);
+        return InfiniteLine.fromPointSlopeForm(point1, slope);
     }
 
-    static fromPointSlopeForm(point: Point, slope: number): Line {
+    static fromPointSlopeForm(point: Point, slope: number): InfiniteLine {
         let yIntercept: number;
         let xIntercept: number;
 
@@ -135,14 +110,14 @@ export class Line {
             xIntercept = (-1 * yIntercept) / slope;
         }
 
-        return new Line(slope, yIntercept, xIntercept);
+        return new InfiniteLine(slope, yIntercept, xIntercept);
     }
 
     public static createVerticalLine(x: number) {
-        return new Line(undefined, undefined, x);
+        return new InfiniteLine(undefined, undefined, x);
     }
 
     public static createHorizontalLine(y: number) {
-        return new Line(0, y, undefined);
+        return new InfiniteLine(0, y, undefined);
     }
 }

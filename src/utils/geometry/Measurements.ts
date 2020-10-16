@@ -1,6 +1,6 @@
 import { Point } from "./shapes/Point";
 import { Angle } from './shapes/Angle';
-import { Line } from './shapes/Line';
+import { InfiniteLine } from './shapes/InfiniteLine';
 
 export function toRadian(degree: number) {
     return degree * Math.PI / 180;
@@ -23,7 +23,7 @@ export class Measurements {
         return Math.abs(actualRad - expectedRad) < 0.1;
     }
 
-    linesParallel(line1: Line, line2: Line) {
+    linesParallel(line1: InfiniteLine, line2: InfiniteLine) {
         return line1.slope === line2.slope;
     }
 
