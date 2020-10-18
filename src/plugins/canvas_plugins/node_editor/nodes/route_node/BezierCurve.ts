@@ -4,64 +4,30 @@ import Bezier from 'bezier-js';
 export class BezierCurve {
     private curve: Bezier;
     private distance: number;
-    private dots: Point[];
-    private derivatives: Point[];
-    private normals: Point[];
+    private discretePoints: Point[];
 
-    constructor(points: Point[], distance: number = 1) {
+    constructor(points: Point[], distance: number = 3) {
+        this.checkPoints(points);
+
         this.distance = distance;
-
-        const flatPoints: number[] = [];
-        points.forEach(point => flatPoints.push(point.x, point.y));
-        this.curve = new Bezier(flatPoints);
+        this.curve = new Bezier(points);
     }
 
     getPoints(): Point[] {
-        if (!this.dots) {
-            this.createDots();
-        }
+        if (!this.discretePoints) { this.createDiscretePoints(); }
 
-        return this.dots;
+        return this.discretePoints;
     }
 
-    getNormalizedDerivatives(): Point[] {
-        if (!this.derivatives) {
-            this.createDerivatives();
-        }
-
-        return this.derivatives;
+    private checkPoints(points: Point[]) {
+        if (points.length !== 3) { throw new Error(`Only quadratic bezier curves are supported, which needs three points, not ${points.length}.`) }
     }
 
-    getNormals(): Point[] {
-        if (!this.normals) {
-            this.createNormals();
-        }
-
-        return this.normals;
-    }
-
-    private createDots() {
-        this.dots = [];
+    private createDiscretePoints() {
+        this.discretePoints = [];
         this.iteratePoints((t: number) => {
-            const nextDot = this.curve.get(t);
-            this.dots.push(new Point(nextDot.x, nextDot.y));
-        });
-    }
-
-    private createDerivatives() {
-        this.derivatives = [];
-        this.iteratePoints((t: number) => {
-            const nextDerivative = this.curve.derivative(t);
-            const magnitude = Math.sqrt(nextDerivative.x ** 2 + nextDerivative.y ** 2);
-            this.derivatives.push(new Point(nextDerivative.x / magnitude, nextDerivative.y / magnitude));
-        });
-    }
-
-    private createNormals() {
-        this.normals = [];
-        this.iteratePoints((t: number) => {
-            const nextNormal = this.curve.normal(t);
-            this.normals.push(new Point(nextNormal.x, nextNormal.y));
+            const nextPoint = this.curve.get(t);
+            this.discretePoints.push(new Point(nextPoint.x, nextPoint.y));
         });
     }
 

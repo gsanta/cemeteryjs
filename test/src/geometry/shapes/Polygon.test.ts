@@ -288,7 +288,7 @@ describe('Polygon', () => {
                 new Point(6, 5)
             ]);
 
-            expect(polygon.toString()).toEqual('[(3,5)(3,7)(6,7)(6,5)]');
+            expect(polygon.toString()).toEqual('[(3:5),(3:7),(6:7),(6:5)]');
         });
     });
 });

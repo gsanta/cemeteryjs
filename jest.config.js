@@ -6,7 +6,7 @@ module.exports = {
     transformIgnorePatterns: [
         "node_modules/(?!(@babylonjs/core)/)"
     ],
-    setupFilesAfterEnv: ['<rootDir>/test/assertions.ts'],
+    // setupFilesAfterEnv: ['<rootDir>/test/assertions.ts'],
     "coverageReporters": [
         "json",
         "text",

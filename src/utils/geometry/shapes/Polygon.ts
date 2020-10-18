@@ -197,11 +197,11 @@ export class Polygon implements Shape {
     toString(): string {
         let str = '['
 
-        this.points.forEach(point => str += point.toString());
+        const points = this.points.map(point => point.toString()).join(',');
 
         str += ']';
 
-        return str;
+        return `[${points}]`;
     }
 
     static createRectangle(left: number, top: number,  width: number, height: number): Polygon {

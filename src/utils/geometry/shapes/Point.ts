@@ -93,12 +93,18 @@ export class Point {
         return Math.sqrt(Math.pow(this.x - otherPoint.x, 2) + Math.pow(this.y - otherPoint.y, 2));
     }
 
+    normalize() {
+        const len = this.len();
+        this.x /= len;
+        this.y /= len;
+    }
+
     toString(): string {
-        return `${this.x}:${this.y}`;
+        return `(${this.x}:${this.y})`;
     }
 
     static fromString(str: string): Point {
-        const matcher = /([-\d\.]+):([-\d\.]+)/;
+        const matcher = /\(([-\d\.]+):([-\d\.]+)\)/;
         const match = str.match(matcher);
         return new Point(parseFloat(match[1]), parseFloat(match[2]));
     }
