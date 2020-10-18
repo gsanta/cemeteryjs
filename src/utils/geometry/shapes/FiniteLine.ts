@@ -60,6 +60,12 @@ export class FiniteLine implements Shape {
         return this.point1.equalTo(otherLine.point1) && this.point2.equalTo(otherLine.point2);
     }
 
+    getInnerPointAtT(ratio: number): Point {
+        const x = this.point1.x + (this.point2.x - this.point1.x) / ratio;
+        const y = this.point1.y + (this.point2.y - this.point1.y) / ratio;
+        return new Point(x, y);
+    }
+
     public getLength(): number {
         const xDistance = Math.abs(this.point1.x - this.point2.x);
         const yDistance = Math.abs(this.point1.y - this.point2.y);

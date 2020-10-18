@@ -1,5 +1,4 @@
 import { Point } from "./Point";
-import { Angle } from "./Angle";
 
 export class InfiniteLine {
     slope: number;
@@ -66,28 +65,6 @@ export class InfiniteLine {
         return new Point(x, y);
     }
 
-    getAngleToXAxis(): Angle {
-        if (this.isVertical()) {
-            return Angle.fromRadian(Math.PI / 2);
-        }
-
-        const xAxis = InfiniteLine.createHorizontalLine(0);
-        const o = xAxis.intersection(this);
-
-        if (o !== undefined) {
-            const a = new Point(o.x + 10, this.getY(o.x + 10));
-            const b = new Point(o.x + 10, 0);
-
-            return Angle.fromThreePoints(o, a, b);
-
-        }
-
-        return Angle.fromThreePoints(
-            new Point(0, 0),
-            new Point(0, 0),
-            new Point(0, 0)
-        );
-    }
 
     static fromTwoPoints(point1: Point, point2: Point): InfiniteLine {
         const slope = point1.x === point2.x ? undefined : (point1.y - point2.y) / (point1.x - point2.x);

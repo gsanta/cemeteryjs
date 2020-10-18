@@ -1,5 +1,4 @@
 import { InfiniteLine } from "../../../../src/utils/geometry/shapes/InfiniteLine";
-import { toDegree } from "../../../../src/utils/geometry/shapes/Angle";
 import { Point } from "../../../../src/utils/geometry/shapes/Point";
 
 describe(`Line`, () => {
@@ -97,26 +96,6 @@ describe(`Line`, () => {
 
             expect(line1.intersection(line2)).toEqual(new Point(0, -2));
             expect(line2.intersection(line1)).toEqual(new Point(0, -2));
-        });
-    });
-
-    describe(`getAngleToXAxis`, () => {
-        it ('returns with the line\'s angle to the x axis', () => {
-            const line45deg = InfiniteLine.fromPointSlopeForm(new Point(0, 0), 1);
-
-            expect(toDegree(line45deg.getAngleToXAxis().getAngle())).toEqual(45);
-
-            const lineHorizontal = InfiniteLine.createHorizontalLine(1);
-
-            expect(toDegree(lineHorizontal.getAngleToXAxis().getAngle())).toEqual(0);
-
-            const lineVertical = InfiniteLine.createVerticalLine(-2);
-
-            expect(toDegree(lineVertical.getAngleToXAxis().getAngle())).toEqual(90);
-
-            const lineneg45Deg = InfiniteLine.fromPointSlopeForm(new Point(0, 0), -1);
-
-            expect(toDegree(lineneg45Deg.getAngleToXAxis().getAngle())).toEqual(315);
         });
     });
 });

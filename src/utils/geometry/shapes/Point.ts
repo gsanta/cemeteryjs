@@ -89,6 +89,10 @@ export class Point {
         return -Math.atan2(this.y, this.x);
     }
 
+    distanceTo(otherPoint: Point) {
+        return Math.sqrt(Math.pow(this.x - otherPoint.x, 2) + Math.pow(this.y - otherPoint.y, 2));
+    }
+
     toString(): string {
         return `${this.x}:${this.y}`;
     }

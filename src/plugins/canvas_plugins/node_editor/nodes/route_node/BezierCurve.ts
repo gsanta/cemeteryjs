@@ -8,7 +8,7 @@ export class BezierCurve {
     private derivatives: Point[];
     private normals: Point[];
 
-    constructor(points: Point[], distance: number) {
+    constructor(points: Point[], distance: number = 1) {
         this.distance = distance;
 
         const flatPoints: number[] = [];
