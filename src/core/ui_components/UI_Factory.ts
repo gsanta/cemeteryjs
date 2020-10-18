@@ -38,6 +38,7 @@ import { UI_TableColumn } from "./elements/UI_TableColumn";
 import { UI_Text } from "./elements/UI_Text";
 import { UI_TextField } from './elements/UI_TextField';
 import { UI_Tooltip } from './elements/UI_Tooltip';
+import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 
 export class UI_Factory {
 
@@ -400,6 +401,18 @@ Id
         this.setupElement(parent, element);
 
         parent._toolbar = element;
+
+        return element;
+    }
+
+    static toolbarDropdown(parent: UI_Toolbar, config: UI_ElementConfig): UI_ToolbarDropdown {
+        const element = new UI_ToolbarDropdown(parent.pluginId);
+        element.prop = config.prop;
+
+        element.generateId(parent);
+        this.setupElement(parent, element);
+
+        parent.tools.push(element);
 
         return element;
     }

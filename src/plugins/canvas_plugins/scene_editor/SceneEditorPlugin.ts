@@ -40,6 +40,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
 
+        let toolbarDropdown = toolbar.toolbarDropdown({});
+
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 

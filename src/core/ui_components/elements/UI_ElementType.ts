@@ -43,6 +43,7 @@ export enum UI_ElementType {
 
     Toolbar = 'Toolbar',
     ToolIcon = 'ToolIcon',
+    ToolbarDropdown = 'ToolbarDropdown',
     ActionIcon = 'ActionIcon',
     IconSeparator = 'IconSeparator',
 

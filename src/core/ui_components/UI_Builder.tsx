@@ -73,6 +73,8 @@ import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
 import { SvgPolygonComp } from './react/svg/SvgPolygonComp';
 import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
 import { GizmoLayerComp } from './react/surfaces/canvas/GizmoLayerComp';
+import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
+import { ToolbarDropdownComp } from './react/surfaces/toolbar/ToolbarDropdownComp';
 
 
 export class UI_Builder {
@@ -128,6 +130,9 @@ export class UI_Builder {
             case UI_ElementType.GizmoLayer:
                 const gizmoLayer = element as UI_GizmoLayer;
                 return <GizmoLayerComp registry={this.registry} element={gizmoLayer}>{this.buildChildren(element, pluginId)}</GizmoLayerComp>
+            case UI_ElementType.ToolbarDropdown:
+                const toolbarDropdown = element as UI_ToolbarDropdown;
+                return <ToolbarDropdownComp registry={this.registry} element={toolbarDropdown}>{this.buildChildren(element, pluginId)}</ToolbarDropdownComp>
 
         }
     }
@@ -137,22 +142,30 @@ export class UI_Builder {
             if ((child as UI_Container).children !== undefined) {
                 return this.buildContainer(child as UI_Container, pluginId);
             } else {
-                return this.buildLeaf(child);
+                return this.buildLeaf(child, pluginId);
             }
         });
+    }
+
+    private buildElement(element: UI_Element, pluginId: string): JSX.Element {
+        if ((element as UI_Container).children !== undefined) {
+            return this.buildContainer(element as UI_Container, pluginId);
+        } else {
+            return this.buildLeaf(element, pluginId);
+        }
     }
 
     private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas, pluginId: string) {
         let toolbar: JSX.Element = null;
 
         if (canvas._toolbar) {
-            toolbar = this.buildToolbar(canvas._toolbar);
+            toolbar = this.buildToolbar(canvas._toolbar, pluginId);
         }
 
         let dropLayer: JSX.Element = null;
 
         if (canvas._dropLayer) {
-            dropLayer = this.buildLeaf(canvas._dropLayer);
+            dropLayer = this.buildLeaf(canvas._dropLayer, pluginId);
         }
 
         let gizmoLayer: JSX.Element = null;
@@ -169,7 +182,7 @@ export class UI_Builder {
         return <CanvasComp registry={this.registry} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
     }
 
-    private buildToolbar(uiToolbar: UI_Toolbar) {
+    private buildToolbar(uiToolbar: UI_Toolbar, pluginId: string) {
         const toolsLeft: JSX.Element[] = [];
         const toolsMiddle: JSX.Element[] = [];
         const toolsRight: JSX.Element[] = [];
@@ -178,13 +191,13 @@ export class UI_Builder {
             switch(child.placement) {
                 case 'left':
                 default:
-                    toolsLeft.push(this.buildLeaf(child));
+                    toolsLeft.push(this.buildElement(child, pluginId));
                 break;
                 case 'middle':
-                    toolsMiddle.push(this.buildLeaf(child));
+                    toolsMiddle.push(this.buildElement(child, pluginId));
                 break;
                 case 'right':
-                    toolsRight.push(this.buildLeaf(child));
+                    toolsRight.push(this.buildElement(child, pluginId));
                 break;
             }
         });
@@ -192,25 +205,25 @@ export class UI_Builder {
         return <ToolbarComp registry={this.registry} toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
     }
 
-    private buildTool(uiTool: UI_Tool) {
-        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip) : null;
+    private buildTool(uiTool: UI_Tool, pluginId: string) {
+        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip, pluginId) : null;
 
         return <ToolComp registry={this.registry} key={uiTool.id} tooltip={tooltip} element={uiTool}/>; 
     }
 
-    private buildActionIcon(uiActionIcon: UI_ActionIcon) {
-        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip) : null;
+    private buildActionIcon(uiActionIcon: UI_ActionIcon, pluginId: string) {
+        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip, pluginId) : null;
 
         return <ActionIconComp registry={this.registry} key={uiActionIcon.id} tooltip={tooltip} element={uiActionIcon}/>; 
     }
 
-    private buildIcon(uiIcon: UI_Icon) {
-        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip) : null;
+    private buildIcon(uiIcon: UI_Icon, pluginId: string) {
+        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip, pluginId) : null;
 
         return <IconComp registry={this.registry} key={uiIcon.id} tooltip={tooltip} element={uiIcon}/>; 
     }
 
-    private buildLeaf(element: UI_Element): JSX.Element {
+    private buildLeaf(element: UI_Element, pluginId: string): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
                 const text = element as UI_Text;
@@ -253,13 +266,13 @@ export class UI_Builder {
                 return <SvgTextComp registry={this.registry} element={svgText}/>;
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
-                return this.buildToolbar(toolbar);
+                return this.buildToolbar(toolbar, pluginId);
             case UI_ElementType.ToolIcon:
                 const tool = element as UI_Tool;
-                return this.buildTool(tool);
+                return this.buildTool(tool, pluginId);
             case UI_ElementType.ActionIcon:
                 const actionIcon = element as UI_ActionIcon;
-                return this.buildActionIcon(actionIcon);
+                return this.buildActionIcon(actionIcon, pluginId);
             case UI_ElementType.IconSeparator:
                 const iconSeparator = element as UI_ActionIcon;
                 return <IconSeparatorComp registry={this.registry} element={iconSeparator}/>;
@@ -276,7 +289,7 @@ export class UI_Builder {
                 return <ImageComp registry={this.registry} element={image}/>;
             case UI_ElementType.Icon:
                 const icon = element as UI_Icon;
-                return this.buildIcon(icon);
+                return this.buildIcon(icon, pluginId);
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
                 return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;

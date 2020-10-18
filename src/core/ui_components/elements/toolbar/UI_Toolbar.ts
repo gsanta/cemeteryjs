@@ -1,13 +1,14 @@
-import { UI_Element } from '../UI_Element';
+import { UI_Element, UI_ElementConfig } from '../UI_Element';
 import { UI_Tool } from './UI_ToolIcon';
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_ActionIcon } from './UI_ActionIcon';
 import { UI_IconSeparator } from './UI_IconSeparator';
+import { UI_ToolbarDropdown } from './UI_ToolbarDropdown';
 
 export class UI_Toolbar extends UI_Element {
     elementType = UI_ElementType.Toolbar;
-    tools: (UI_Tool | UI_ActionIcon | UI_IconSeparator)[] = [];
+    tools: (UI_Tool | UI_ActionIcon | UI_IconSeparator | UI_ToolbarDropdown)[] = [];
 
     generateId(parent: UI_Element): void {
         this.id = `${parent.id}_${this.elementType}`;
@@ -23,5 +24,9 @@ export class UI_Toolbar extends UI_Element {
 
     iconSeparator(): UI_IconSeparator {
         return UI_Factory.iconSeparator(this, {});
+    }
+
+    toolbarDropdown(config: UI_ElementConfig) {
+        return UI_Factory.toolbarDropdown(this, config);
     }
 }
