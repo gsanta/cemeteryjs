@@ -64,6 +64,7 @@ export class PathController extends PropController<string> {
     change(val, context, element: UI_InputElement) {
         const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         nodeView.getObj().setParam('path', val);
+        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

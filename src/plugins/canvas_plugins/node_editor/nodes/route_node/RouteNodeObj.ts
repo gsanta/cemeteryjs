@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { NodeCategory, NodeObj, NodeParam } from "../../../../../core/models/objs/NodeObj";
+import { NodeCategory, NodeObj, NodeParam, CustomNodeParamSerializer, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
@@ -47,7 +47,7 @@ export class RouteNodeObj extends NodeObj {
     displayName = 'Route';
 
     constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph);
+        super(nodeGraph, new RouteNodeSerializer());
 
         this.addAllParams(params);
     }
@@ -81,9 +81,19 @@ export class RouteNodeObj extends NodeObj {
     }
 }
 
-function serializer(nodeParam: NodeParam) {
-    if (nodeParam.name === 'routeWalker') {
-
+class RouteNodeSerializer implements CustomNodeParamSerializer {
+    serialize(param: NodeParam): NodeParamJson {
+        if (param.name === 'routeWalker') {
+            return {
+                name: 'routeWalker',
+                val: undefined,
+                isLink: 'none'
+            }
+        }
+    }
+    
+    deserialize(json: NodeParamJson): NodeParam {
+        return undefined;
     }
 }
 
@@ -104,15 +114,24 @@ export class SpeedControl extends PropController<string> {
         const speed = context.getTempVal();
         context.clearTempVal();
 
+        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
+
         try {
             if (speed) {
                 const speedNum = parseFloat(speed);
-                const nodeView = context.registry.stores.views.getById(element.target) as NodeView;
                 nodeView.getObj().setParam('speed', speedNum);
             }
         } catch (e) {
             console.log(e);
         }
+
+        const routeWalker = nodeView.getObj().getParam('routeWalker').val as RouteWalker;
+        if (routeWalker) {
+            routeWalker.setSpeed(nodeView.getObj().getParam('speed').val);
+        }
+
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 

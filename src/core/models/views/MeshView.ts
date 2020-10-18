@@ -87,7 +87,7 @@ export class MeshView extends View {
 
     setRotation(angle: number) {
         this.rotation = angle;
-        this.obj.rotate(angle);
+        this.obj.setRotation(angle);
     }
 
     setScale(scale: number) {

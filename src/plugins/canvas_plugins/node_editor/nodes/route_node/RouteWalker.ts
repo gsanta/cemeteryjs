@@ -20,7 +20,6 @@ export class RouteWalker {
     
     private prevTime: number;
     private prevDistanceCurrentDestinationtPoint: number = Number.MAX_VALUE;
-    private iter = 0
 
     constructor(meshObj: MeshObj, pathObj: PathObj) {
         this.meshObj = meshObj;
@@ -29,7 +28,6 @@ export class RouteWalker {
     }
 
     step() {
-
         const deltaTime = this.prevTime === undefined ? 0 : Date.now() - this.prevTime;
         this.prevTime = Date.now();
     

@@ -71,7 +71,7 @@ export class RotationController extends PropController<string> {
 
         let rotation = meshView.getRotation();
         try {
-            context.releaseTempVal((val) => rotation = toRadian(parseFloat(val)))
+            context.releaseTempVal((val) => rotation = toRadian(parseFloat(val)));
         } catch (e) {
             console.log(e);
         }

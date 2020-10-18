@@ -6,6 +6,8 @@ import { Registry } from '../../../core/Registry';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { ThumbnailMakerControllerProps } from './ThumbnailDialogProps';
+import { Point } from '../../../utils/geometry/shapes/Point';
+import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin';
 export const ThumbnailDialogToolControllerId = 'thumbnail-dialog-tool-controller';
@@ -74,7 +76,11 @@ export class ThumbnailDialogPlugin extends Canvas_3d_Plugin {
         this.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
 
         setTimeout(() => {
-            this.engine.meshes.createInstance(meshView.getObj());
+            this.engine.meshes.createInstance(meshView.getObj())
+                .then(() => {
+                    this.engine.meshes.setRotation(meshView.getObj(), 0);
+                    this.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
+                });
         }, 500);
     }
 
