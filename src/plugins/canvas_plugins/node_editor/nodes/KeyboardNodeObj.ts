@@ -53,7 +53,7 @@ export class KeyboardNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj, registry: Registry) {
         const keyParams = this.getKeyParams(nodeObj);
 
-        const gameTool = <GameTool> registry.plugins.getToolController(GameViewerPluginId).getById(GameToolType);
+        const gameTool = <GameTool> registry.plugins.getToolController(GameViewerPluginId).getToolById(GameToolType);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 

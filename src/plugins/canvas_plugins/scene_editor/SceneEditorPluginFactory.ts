@@ -1,18 +1,18 @@
 import { AbstractCanvasPlugin, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
 import { PropController } from "../../../core/plugin/controller/FormController";
-import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { Tool } from "../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
+import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { Registry } from "../../../core/Registry";
-import { SceneEditorPlugin, SceneEditorPluginId } from "./SceneEditorPlugin";
+import { SpriteYAxisHook, YAxisHook as MeshYAxisHook } from "./hooks/YAxisHook";
+import { SceneEditorPlugin, SceneEditorPluginId, PrimitiveShapeDropdownControl } from "./SceneEditorPlugin";
+import { AxisTool } from "./tools/AxisTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SpriteTool } from "./tools/SpriteTool";
-import { AxisTool } from "./tools/AxisTool";
-import { SpriteYAxisHook, YAxisHook as MeshYAxisHook } from "./hooks/YAxisHook";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
@@ -30,7 +30,8 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
             new ZoomInController(),
             new ZoomOutController(),
             new UndoController(),
-            new RedoController()
+            new RedoController(),
+            new PrimitiveShapeDropdownControl()
         ];
     }
 

@@ -22,6 +22,8 @@ const meshIcon = require('../../../../../../assets/images/icons/mesh.svg');
 const spriteIcon = require('../../../../../../assets/images/icons/sprite.svg');
 const playIcon = require('../../../../../../assets/images/icons/play.svg');
 const stopIcon = require('../../../../../../assets/images/icons/stop.svg');
+const cubeIcon = require('../../../../../../assets/images/icons/cube.png');
+const sphereIcon = require('../../../../../../assets/images/icons/sphere.png');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -136,6 +138,27 @@ const ToolbarStyled = styled.div`
 
         &.stop-icon {
             background-image: url(${stopIcon});
+        }
+
+        &.cube-icon {
+            background-image: url(${cubeIcon});
+        }
+
+        &.sphere-icon {
+            background-image: url(${sphereIcon});
+        }
+    }
+
+    .ce-toolbar-dropdown {
+        display: flex;
+        flex-direction: column;
+
+        .ce-toolbar-dropdown-tools {
+            background: ${colors.grey4};
+
+            .ce-tool {
+                margin-bottom: 2px;
+            }
         }
     }
 `;

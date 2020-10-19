@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { UI_ContainerProps } from '../../UI_ComponentProps';
-import { UI_Toolbar } from '../../../elements/toolbar/UI_Toolbar';
 import { UI_ToolbarDropdown } from '../../../elements/toolbar/UI_ToolbarDropdown';
 
-export class ToolbarDropdownComp extends React.Component<UI_ContainerProps<UI_ToolbarDropdown>> {
-    render(): JSX.Element {
-        return (
-            <div>
-                <div>
-                    <div>A</div>      
-                    <div>B</div>      
-                    <div>C</div>      
-                </div>
+export interface ToolbarDropdownProps extends UI_ContainerProps<UI_ToolbarDropdown> {
+    header: JSX.Element;
+}
+
+export const ToolbarDropdownComp = (props: ToolbarDropdownProps) => {
+    return (
+        <div className="ce-toolbar-dropdown">
+            {props.header}
+            <div className="ce-toolbar-dropdown-tools">
+
+                {props.children}
             </div>
-        )
-    }
+        </div>
+    );
 }

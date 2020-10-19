@@ -12,7 +12,7 @@ export abstract class RectangleTool extends NullTool {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
 
-    constructor(type: ToolType, plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(type: string, plugin: AbstractCanvasPlugin, registry: Registry) {
         super(type, plugin, registry);
     }
 

@@ -137,13 +137,13 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        const joinTool = <JoinTool> this.registry.plugins.getToolController(this.id).getById(ToolType.Join);
+        const joinTool = <JoinTool> this.registry.plugins.getToolController(this.id).getToolById(ToolType.Join);
 
         if (joinTool.startPoint && joinTool.endPoint) {
             const line = canvas.line()
             line.css = {
                 pointerEvents: 'none',
-                stroke: colors.grey4,
+                stroke: colors.grey1,
                 strokeWidth: "3",
                 strokeDasharray: "12 3"
             }
@@ -172,7 +172,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
             line.y2 = connection.point2.y;
             line.css = {
                 pointerEvents: 'none',
-                stroke: colors.grey4,
+                stroke: colors.grey1,
                 strokeWidth: "3"
             }
 

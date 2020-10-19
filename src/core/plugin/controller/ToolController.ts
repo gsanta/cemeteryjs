@@ -117,7 +117,7 @@ export class ToolController {
 
     setSelectedTool(toolId: string) {
         this.selectedTool && this.selectedTool.deselect();
-        this.selectedTool = this.getById(toolId);
+        this.selectedTool = this.getToolById(toolId);
         this.selectedTool.select();
         this.registry.services.render.reRender(this.plugin.region);
     }
@@ -130,7 +130,7 @@ export class ToolController {
         return this.priorityTool ? this.priorityTool : this.selectedTool;
     }
 
-    getById(toolId: string): Tool {
+    getToolById(toolId: string): Tool {
         return this.toolMap.get(toolId);
     }
 

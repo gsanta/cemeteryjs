@@ -70,7 +70,7 @@ export class ZoomInController extends PropController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getById(ToolType.Camera);
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(ToolType.Camera);
         cameraTool.zoomIn();
     }
 }
@@ -80,7 +80,7 @@ export class ZoomOutController extends PropController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getById(ToolType.Camera);
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(ToolType.Camera);
         cameraTool.zoomOut();
     }
 }

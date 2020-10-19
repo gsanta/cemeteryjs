@@ -1,9 +1,9 @@
 
 export const colors = {
+    grey1: '#8F8C83',
     grey2: 'lightgray',
     grey3: '#595959',
-    grey4: '#8F8C83',
-    grey5: '#BFBDB6',
+    grey4: '#444444',
     textColor: '#EDF0EE',
     textColorDark: '#1c1d1f',
     active: '#F2F1ED',

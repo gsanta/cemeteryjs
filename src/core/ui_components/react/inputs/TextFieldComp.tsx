@@ -10,7 +10,7 @@ const FormControlStyled = styled(Form.Control)`
     color: ${colors.textColorDark};
     border-radius: 0;
     box-shadow: none;
-    border: 1px solid ${colors.grey4};
+    border: 1px solid ${colors.grey1};
 
     &:focus {
         box-shadow: none;

@@ -140,7 +140,7 @@ export class PointerService {
         let tool: Tool;
 
         if (element.scopedToolId) {
-            tool = toolController.getById((<UI_SvgGroup> element).scopedToolId);
+            tool = toolController.getToolById((<UI_SvgGroup> element).scopedToolId);
         }
 
         return tool || toolController.getActiveTool(); 

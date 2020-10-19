@@ -39,7 +39,7 @@ const GridItemStyled = styled.div`
     border: 1px solid black;
     width: 15px;
     height: 15px;
-    background: ${(props: {active: boolean, marked: boolean}) => props.active ? colors.textColor : props.marked ? colors.success : colors.grey4 };
+    background: ${(props: {active: boolean, marked: boolean}) => props.active ? colors.textColor : props.marked ? colors.success : colors.grey1 };
     cursor: pointer;
 `;
 

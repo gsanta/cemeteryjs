@@ -39,6 +39,7 @@ import { UI_Text } from "./elements/UI_Text";
 import { UI_TextField } from './elements/UI_TextField';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
+import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
 
 export class UI_Factory {
 
@@ -412,12 +413,24 @@ Id
         element.generateId(parent);
         this.setupElement(parent, element);
 
-        parent.tools.push(element);
+        parent.children.push(element);
 
         return element;
     }
 
-    static tool(parent: UI_Toolbar, toolId: string): UI_Tool {
+    static toolDropdownHeader(parent: UI_ToolbarDropdown, config: UI_ElementConfig): UI_ToolDropdownHeader {
+        const element = new UI_ToolDropdownHeader(parent.pluginId);
+        element.prop = config.prop;
+
+        element.generateId(parent);
+        this.setupElement(parent, element);
+
+        parent._header = element;
+
+        return element;
+    }
+
+    static tool(parent: UI_Toolbar | UI_ToolDropdownHeader | UI_ToolbarDropdown, toolId: string): UI_Tool {
         const element = new UI_Tool(parent.pluginId);
         element.key = `key-${toolId}`;
         element.toolId = toolId;
@@ -425,7 +438,7 @@ Id
         element.generateId(parent);
         this.setupElement(parent, element);
 
-        parent.tools.push(element);
+        parent.children.push(element);
 
         return element;
     }
@@ -437,7 +450,7 @@ Id
         element.generateId(parent);
         this.setupElement(parent, element);
 
-        parent.tools.push(element);
+        parent.children.push(element);
 
         return element;
     }
@@ -447,7 +460,7 @@ Id
 
         this.setupElement(parent, element);
 
-        parent.tools.push(element);
+        parent.children.push(element);
 
         return element;
     }

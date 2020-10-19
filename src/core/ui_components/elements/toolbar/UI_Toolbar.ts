@@ -4,11 +4,11 @@ import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_ActionIcon } from './UI_ActionIcon';
 import { UI_IconSeparator } from './UI_IconSeparator';
-import { UI_ToolbarDropdown } from './UI_ToolbarDropdown';
+import { UI_Container } from '../UI_Container';
 
-export class UI_Toolbar extends UI_Element {
+export class UI_Toolbar extends UI_Container {
     elementType = UI_ElementType.Toolbar;
-    tools: (UI_Tool | UI_ActionIcon | UI_IconSeparator | UI_ToolbarDropdown)[] = [];
+    activeToolRef: string;
 
     generateId(parent: UI_Element): void {
         this.id = `${parent.id}_${this.elementType}`;

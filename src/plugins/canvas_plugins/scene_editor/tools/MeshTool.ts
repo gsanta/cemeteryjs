@@ -3,15 +3,21 @@ import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
-import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { SceneEditorPluginId } from "../SceneEditorPlugin";
+
+export const MeshToolId = 'mesh-tool';
+
+export enum PrimitiveShapeType {
+    Cube = 'Cube',
+    Sphere = 'Sphere'
+} 
 
 export class MeshTool extends RectangleTool {
+    selectedPrimitiveShape: PrimitiveShapeType = PrimitiveShapeType.Cube;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Rectangle, plugin, registry);
+        super(MeshToolId, plugin, registry);
     }
 
     protected createView(rect: Rectangle): View {

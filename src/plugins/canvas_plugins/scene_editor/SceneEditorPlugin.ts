@@ -8,10 +8,15 @@ import { ToolType } from '../../../core/plugin/tools/Tool';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
+import { MeshToolId, MeshTool, PrimitiveShapeType } from './tools/MeshTool';
+import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
+import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
+import { UI_Region } from '../../../core/plugin/UI_Plugin';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
     viewTypes: string[] = [MeshViewType, PathViewType, SpriteViewType];
+    isDropdownOpen = false;
 
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
@@ -30,7 +35,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
         const toolbar = canvas.toolbar();
         
-        let tool = toolbar.tool(ToolType.Rectangle);
+        let tool = toolbar.tool(MeshToolId);
         tool.icon = 'mesh';
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
@@ -40,8 +45,30 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
 
-        let toolbarDropdown = toolbar.toolbarDropdown({});
+        const meshTool = <MeshTool> (this.registry.plugins.getToolController(this.id).getToolById(MeshToolId));
 
+        if (meshTool) {
+            let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
+            const toolbarDropdownHeader = toolbarDropdown.header({});
+            let primitiveMeshTool = toolbarDropdownHeader.tool('abcd');
+            primitiveMeshTool.icon = meshTool.selectedPrimitiveShape.toLowerCase();
+            tooltip = primitiveMeshTool.tooltip();
+            tooltip.label = `${meshTool.selectedPrimitiveShape} tool`;
+    
+            toolbarDropdown.isOpen = this.isDropdownOpen;
+    
+            primitiveMeshTool = toolbarDropdown.tool('abcd');
+            primitiveMeshTool.icon = 'cube';
+            tooltip = primitiveMeshTool.tooltip();
+            tooltip.label = 'Cube tool';
+    
+            primitiveMeshTool = toolbarDropdown.tool('abcdefg');
+            primitiveMeshTool.icon = 'sphere';
+            tooltip = primitiveMeshTool.tooltip();
+            tooltip.label = 'Sphere tool';
+        }
+
+        
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
@@ -107,5 +134,20 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             this.registry.services.viewService.renderInto(canvas, view);
             view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
         });
+    }
+}
+
+export enum SceneEditorToolbarProps {
+    SelectPrimitiveShape = 'select-primitive-shape'
+}
+
+export class PrimitiveShapeDropdownControl extends PropController<any> {
+    acceptedProps() { return [SceneEditorToolbarProps.SelectPrimitiveShape]; }
+
+    click(context: PropContext, element: UI_Element) {
+        const meshTool = <MeshTool> context.registry.plugins.getById(element.pluginId).getToolController().getToolById(MeshToolId);
+        meshTool.selectedPrimitiveShape = element.targetId as PrimitiveShapeType;
+
+        context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

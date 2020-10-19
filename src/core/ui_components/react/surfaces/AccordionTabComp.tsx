@@ -20,7 +20,7 @@ const CardBodyStyled = styled(Card.Body)`
 `;
 
 const CardHeaderStyled = styled(Card.Header)`
-    background: ${(props: {level: 'primary' | 'secondary'}) => props.level === 'primary' ? colors.panelBackgroundLight : colors.grey4};
+    background: ${(props: {level: 'primary' | 'secondary'}) => props.level === 'primary' ? colors.panelBackgroundLight : colors.grey1};
     padding: 0;
 
     button, button:active, button:hover {

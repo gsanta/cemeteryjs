@@ -75,6 +75,9 @@ import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
 import { GizmoLayerComp } from './react/surfaces/canvas/GizmoLayerComp';
 import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 import { ToolbarDropdownComp } from './react/surfaces/toolbar/ToolbarDropdownComp';
+import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
+import { ToolDropdownHeaderComp } from './react/surfaces/toolbar/ToolDropdownHeaderComp';
+import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 
 
 export class UI_Builder {
@@ -132,8 +135,12 @@ export class UI_Builder {
                 return <GizmoLayerComp registry={this.registry} element={gizmoLayer}>{this.buildChildren(element, pluginId)}</GizmoLayerComp>
             case UI_ElementType.ToolbarDropdown:
                 const toolbarDropdown = element as UI_ToolbarDropdown;
-                return <ToolbarDropdownComp registry={this.registry} element={toolbarDropdown}>{this.buildChildren(element, pluginId)}</ToolbarDropdownComp>
-
+                const headerComp = toolbarDropdown._header && this.buildElement(toolbarDropdown._header, pluginId);
+                return <ToolbarDropdownComp registry={this.registry} header={headerComp} element={toolbarDropdown}>{this.buildChildren(element, pluginId)}</ToolbarDropdownComp>
+            case UI_ElementType.ToolbarDropdownHeader:
+                const toolbarDropdownHeader = element as UI_ToolDropdownHeader;
+                return <ToolDropdownHeaderComp registry={this.registry} element={toolbarDropdownHeader}>{this.buildChildren(element, pluginId)}</ToolDropdownHeaderComp>;
+    
         }
     }
 
@@ -187,8 +194,8 @@ export class UI_Builder {
         const toolsMiddle: JSX.Element[] = [];
         const toolsRight: JSX.Element[] = [];
 
-        uiToolbar.tools.forEach(child => {
-            switch(child.placement) {
+        uiToolbar.children.forEach(child => {
+            switch((child as UI_Tool | UI_ActionIcon | UI_IconSeparator | UI_ToolbarDropdown).placement) {
                 case 'left':
                 default:
                     toolsLeft.push(this.buildElement(child, pluginId));
@@ -292,10 +299,7 @@ export class UI_Builder {
                 return this.buildIcon(icon, pluginId);
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
-                return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;
-            case UI_ElementType.DropLayer:
-                const dropLayer = element as UI_DropLayer;
-                return <DropLayerComp registry={this.registry} element={dropLayer}></DropLayerComp>;
+                return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;            
         }
     }
 }   

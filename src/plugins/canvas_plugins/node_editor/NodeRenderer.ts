@@ -115,7 +115,7 @@ export class NodeRenderer {
         circle.cx = joinPointView.point.x;
         circle.cy = joinPointView.point.y;
         circle.r =  joinPointView.isHovered() ? 7 : 5;
-        circle.fillColor = colors.grey4
+        circle.fillColor = colors.grey1
         circle.data = joinPointView;
         circle.strokeColor = joinPointView.isHovered() ? 'blue' : colors.panelBackground;
         circle.css = {
