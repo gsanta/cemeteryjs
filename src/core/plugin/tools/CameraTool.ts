@@ -6,7 +6,7 @@ import { NullTool } from './NullTool';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 
-export cont
+export const CameraToolId = 'camera-tool';
 export class CameraTool extends NullTool {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
     private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
@@ -17,7 +17,7 @@ export class CameraTool extends NullTool {
     private isSpaceDown: boolean;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Camera, plugin, registry);
+        super(CameraToolId, plugin, registry);
     }
 
     wheel() {

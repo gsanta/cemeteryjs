@@ -5,16 +5,38 @@ import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../tools/Tool";
 import { View } from "../../models/views/View";
-import { PropController } from "./FormController";
+import { PropController, PropContext } from "./FormController";
+import { SelectToolId } from "../tools/SelectTool";
+import { MeshToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/MeshTool";
+import { DeleteToolId } from "../tools/DeleteTool";
+import { CameraToolId } from "../tools/CameraTool";
+import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SpriteTool";
+import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/PathTool";
 
 export class CommonToolController extends PropController<any> {
-    acceptedProps() { return [SelectTool]; }
+    acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        const meshTool = <MeshTool> context.registry.plugins.getToolController(element.pluginId).getToolById(MeshToolId);
-        meshTool.isShapeDropdownOpen = !meshTool.isShapeDropdownOpen;
+        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
+    }
+}
 
-        context.registry.services.render.reRender(UI_Region.Canvas1);
+export class SceneEditorToolController extends PropController<any> {
+    acceptedProps() { return [SpriteToolId, PathToolId]; }
+
+    click(context: PropContext, element: UI_Element) {
+        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
+    }
+}
+
+export class MeshToolController extends PropController<any> {
+    acceptedProps() { return [MeshToolId]; }
+
+    click(context: PropContext, element: UI_Element) {
+        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
     }
 }
 

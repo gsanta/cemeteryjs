@@ -40,7 +40,7 @@ import { UI_SvgPath } from './elements/svg/UI_SvgPath';
 import { SvgPathComp } from './react/svg/SvgPathComp';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
 import { ToolbarComp } from './react/surfaces/toolbar/ToolbarComp';
-import { UI_Tool } from './elements/toolbar/UI_ToolIcon';
+import { UI_Tool } from './elements/toolbar/UI_Tool';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_ListItem } from './elements/UI_ListItem';
 import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
@@ -61,8 +61,6 @@ import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { TableRowGroupComp } from './react/table/TableRowGroupComp';
 import { UI_Icon } from './elements/UI_Icon';
 import { IconComp } from './react/text/IconComp';
-import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
-import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
 import { SvgTextComp } from './react/svg/SvgTextComp';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { SvgLineComp } from './react/svg/SvgLineComp';
@@ -78,7 +76,6 @@ import { ToolbarDropdownComp } from './react/surfaces/toolbar/ToolbarDropdownCom
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
 import { ToolDropdownHeaderComp } from './react/surfaces/toolbar/ToolDropdownHeaderComp';
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
-
 
 export class UI_Builder {
 

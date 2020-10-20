@@ -13,6 +13,7 @@ import { AxisTool } from "./tools/AxisTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SpriteTool } from "./tools/SpriteTool";
+import { CommonToolController, MeshToolController, SceneEditorToolController } from "../../../core/plugin/controller/ToolController";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
@@ -32,7 +33,10 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
             new UndoController(),
             new RedoController(),
             new PrimitiveShapeDropdownControl(),
-            new PrimitiveShapeDropdownMenuOpenControl()
+            new PrimitiveShapeDropdownMenuOpenControl(),
+            new CommonToolController(),
+            new MeshToolController(),
+            new SceneEditorToolController()
         ];
     }
 

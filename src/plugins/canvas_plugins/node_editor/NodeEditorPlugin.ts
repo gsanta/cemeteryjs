@@ -24,6 +24,7 @@ import { RouteNodeFacotry } from './nodes/route_node/RouteNodeObj';
 import { JoinTool } from './tools/JoinTool';
 import { SelectToolId } from '../../../core/plugin/tools/SelectTool';
 import { DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
+import { CameraToolId } from '../../../core/plugin/tools/CameraTool';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -121,7 +122,7 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool(ToolType.Camera);
+        tool = toolbar.tool({prop: CameraToolId});
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';

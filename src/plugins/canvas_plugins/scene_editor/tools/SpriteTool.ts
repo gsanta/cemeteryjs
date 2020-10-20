@@ -1,17 +1,17 @@
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../../core/Registry";
-import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { View } from "../../../../core/models/views/View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { SpriteView, SpriteViewType } from "../../../../core/models/views/SpriteView";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { SpriteObj, SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 
+export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool {
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Sprite, plugin, registry);
+        super(SpriteToolId, plugin, registry);
     }
 
     protected createView(rect: Rectangle): View {

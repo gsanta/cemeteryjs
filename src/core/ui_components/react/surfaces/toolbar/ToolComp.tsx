@@ -11,12 +11,10 @@ export class ToolComp extends React.Component<ToolCompProps> {
     private ref: React.RefObject<HTMLDivElement> = React.createRef();
     
     render() {
-        const toolController = this.props.registry.plugins.getToolController(this.props.element.pluginId);
-
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,
-            toolController.getSelectedTool() && (toolController.getSelectedTool().id === this.props.element.prop) ? 'ce-tool-active' : undefined,
+            this.props.element.isActive ? 'ce-tool-active' : undefined,
             this.props.element.color ? `ce-bg-${this.props.element.color}` : undefined
         );
         

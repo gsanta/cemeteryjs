@@ -6,7 +6,7 @@ import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { PropContext, PropController } from './controller/FormController';
 import { GizmoPlugin } from './IGizmo';
-import { CameraTool } from './tools/CameraTool';
+import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { ToolType } from './tools/Tool';
 import { UI_Plugin } from './UI_Plugin';
 
@@ -70,7 +70,7 @@ export class ZoomInController extends PropController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(ToolType.Camera);
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
@@ -80,7 +80,7 @@ export class ZoomOutController extends PropController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(ToolType.Camera);
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }

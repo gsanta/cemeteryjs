@@ -22,8 +22,8 @@ export class UI_ToolbarDropdown extends UI_Container {
         return UI_Factory.toolDropdownHeader(this, config);
     }
 
-    tool(toolId: string): UI_Tool {
-        return UI_Factory.tool(this, toolId);
+    tool(config: UI_ElementConfig): UI_Tool {
+        return UI_Factory.tool(this, config);
     }
 
     // actionIcon(config: { prop: string }): UI_ActionIcon {
