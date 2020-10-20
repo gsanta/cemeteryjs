@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
-import { UI_Tool } from '../../../elements/toolbar/UI_ToolIcon';
+import { UI_Tool } from '../../../elements/toolbar/UI_Tool';
 import { cssClassBuilder } from '../../layout/BoxComp';
 
 export interface ToolCompProps extends UI_ComponentProps<UI_Tool> {
@@ -16,7 +16,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
         const classes = cssClassBuilder(
             'ce-tool',
             `${this.props.element.icon}-icon`,
-            toolController.getSelectedTool() && (toolController.getSelectedTool().id === this.props.element.toolId) ? 'ce-tool-active' : undefined,
+            toolController.getSelectedTool() && (toolController.getSelectedTool().id === this.props.element.prop) ? 'ce-tool-active' : undefined,
             this.props.element.color ? `ce-bg-${this.props.element.color}` : undefined
         );
         
@@ -25,7 +25,7 @@ export class ToolComp extends React.Component<ToolCompProps> {
                 id={this.props.element.id}
                 ref={this.ref}
                 className={classes}
-                onClick={() => toolController.setSelectedTool(this.props.element.toolId)}
+                onClick={() => this.props.element.click(this.props.registry)}
             >
                 {this.props.tooltip}
             </div>

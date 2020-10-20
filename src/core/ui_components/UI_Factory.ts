@@ -17,7 +17,7 @@ import { UI_SvgText } from './elements/svg/UI_SvgText';
 import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 import { UI_Toolbar } from './elements/toolbar/UI_Toolbar';
-import { UI_Tool } from './elements/toolbar/UI_ToolIcon';
+import { UI_Tool } from './elements/toolbar/UI_Tool';
 import { UI_Box } from './elements/UI_Box';
 import { UI_Button } from "./elements/UI_Button";
 import { UI_Column } from './elements/UI_Column';
@@ -430,10 +430,10 @@ Id
         return element;
     }
 
-    static tool(parent: UI_Toolbar | UI_ToolDropdownHeader | UI_ToolbarDropdown, toolId: string): UI_Tool {
+    static tool(parent: UI_Toolbar | UI_ToolDropdownHeader | UI_ToolbarDropdown, config: UI_ElementConfig): UI_Tool {
         const element = new UI_Tool(parent.pluginId);
-        element.key = `key-${toolId}`;
-        element.toolId = toolId;
+        element.key = `key-${config.prop}`;
+        element.prop = config.prop;
 
         element.generateId(parent);
         this.setupElement(parent, element);

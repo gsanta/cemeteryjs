@@ -11,7 +11,6 @@ export class UI_Tool extends UI_Element {
 
     placement: 'left' | 'middle' | 'right';
 
-    toolId: string;
     color: string;
 
     constructor(pluginId: string) {
@@ -24,5 +23,9 @@ export class UI_Tool extends UI_Element {
 
     getTooltip(): UI_Tooltip {
         return this._tooltip;
+    }
+
+    click(registry: Registry): void {
+        registry.plugins.getPropController(this.pluginId).click(this);
     }
 }

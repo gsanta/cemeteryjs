@@ -11,11 +11,12 @@ import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { PathObj, PathObjType } from "../../../../core/models/objs/PathObj";
 
+export const PathToolId = 'path-tool';
 export class PathTool extends PointerTool {
     acceptedViews = [PathViewType, PathPointViewType]
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Path, plugin, registry);
+        super(PathToolId, plugin, registry);
     }
 
     click() {

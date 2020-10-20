@@ -8,7 +8,7 @@ import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { Registry } from "../../../core/Registry";
 import { SpriteYAxisHook, YAxisHook as MeshYAxisHook } from "./hooks/YAxisHook";
-import { SceneEditorPlugin, SceneEditorPluginId, PrimitiveShapeDropdownControl } from "./SceneEditorPlugin";
+import { SceneEditorPlugin, SceneEditorPluginId, PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./SceneEditorPlugin";
 import { AxisTool } from "./tools/AxisTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
@@ -31,7 +31,8 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
             new ZoomOutController(),
             new UndoController(),
             new RedoController(),
-            new PrimitiveShapeDropdownControl()
+            new PrimitiveShapeDropdownControl(),
+            new PrimitiveShapeDropdownMenuOpenControl()
         ];
     }
 

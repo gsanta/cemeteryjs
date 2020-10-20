@@ -1,8 +1,9 @@
 import { UI_Element } from '../UI_Element';
-import { UI_Tool } from './UI_ToolIcon';
+import { UI_Tool } from './UI_Tool';
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_Container } from '../UI_Container';
+import { Registry } from '../../../Registry';
 
 export class UI_ToolDropdownHeader extends UI_Container {
     elementType = UI_ElementType.ToolbarDropdownHeader;
@@ -16,5 +17,9 @@ export class UI_ToolDropdownHeader extends UI_Container {
 
     tool(toolId: string): UI_Tool {
         return UI_Factory.tool(this, toolId);
+    }
+
+    click(registry: Registry): void {
+        registry.plugins.getPropController(this.pluginId).click(this);
     }
 }

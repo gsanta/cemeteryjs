@@ -22,6 +22,8 @@ import { MoveNodeFacotry } from './nodes/MoveNodeObj';
 import { PathNodeFacotry } from './nodes/PathNodeObj';
 import { RouteNodeFacotry } from './nodes/route_node/RouteNodeObj';
 import { JoinTool } from './tools/JoinTool';
+import { SelectToolId } from '../../../core/plugin/tools/SelectTool';
+import { DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -109,12 +111,12 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
 
         const toolbar = canvas.toolbar();
 
-        let tool = toolbar.tool(ToolType.Select);
+        let tool = toolbar.tool({prop: SelectToolId});
         tool.icon = 'select';
         let tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool(ToolType.Delete);
+        tool = toolbar.tool({prop: DeleteToolId});
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';

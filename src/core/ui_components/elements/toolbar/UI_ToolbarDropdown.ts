@@ -1,5 +1,5 @@
 import { UI_Element, UI_ElementConfig } from '../UI_Element';
-import { UI_Tool } from './UI_ToolIcon';
+import { UI_Tool } from './UI_Tool';
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_ActionIcon } from './UI_ActionIcon';

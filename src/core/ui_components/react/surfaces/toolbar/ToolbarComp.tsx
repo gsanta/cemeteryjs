@@ -24,6 +24,7 @@ const playIcon = require('../../../../../../assets/images/icons/play.svg');
 const stopIcon = require('../../../../../../assets/images/icons/stop.svg');
 const cubeIcon = require('../../../../../../assets/images/icons/cube.png');
 const sphereIcon = require('../../../../../../assets/images/icons/sphere.png');
+const expandMore = require('../../../../../../assets/images/icons/expand_more.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -57,6 +58,7 @@ const ToolbarStyled = styled.div`
         width: 24px;
         height: 24px;
         cursor: pointer;
+        margin-right: 3px;
 
         background: ${colors.grey3};
         background-size: cover;
@@ -147,14 +149,31 @@ const ToolbarStyled = styled.div`
         &.sphere-icon {
             background-image: url(${sphereIcon});
         }
+
+        &.expand-more-icon {
+            background-image: url(${expandMore});
+        }
     }
 
     .ce-toolbar-dropdown {
         display: flex;
         flex-direction: column;
 
+        .ce-toolbar-dropdown-header {
+            cursor: pointer;
+            background: ${colors.grey3};
+            display: flex;
+            .ce-menu-expand {
+                width: 20px;
+                height: 100%;
+                background-position: center;
+                background-image: url(${expandMore});
+            }
+        }
+
         .ce-toolbar-dropdown-tools {
             background: ${colors.grey4};
+            width: 24px;
 
             .ce-tool {
                 margin-bottom: 2px;

@@ -7,9 +7,10 @@ import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor, ToolType } from "./Tool";
 
+export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(ToolType.Select, plugin, registry);
+        super(SelectToolId, plugin, registry);
     }
 
     down() {

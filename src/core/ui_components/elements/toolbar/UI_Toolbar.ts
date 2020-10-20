@@ -1,5 +1,5 @@
 import { UI_Element, UI_ElementConfig } from '../UI_Element';
-import { UI_Tool } from './UI_ToolIcon';
+import { UI_Tool } from './UI_Tool';
 import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_ActionIcon } from './UI_ActionIcon';
@@ -14,8 +14,8 @@ export class UI_Toolbar extends UI_Container {
         this.id = `${parent.id}_${this.elementType}`;
     }
 
-    tool(toolId: string): UI_Tool {
-        return UI_Factory.tool(this, toolId);
+    tool(config: UI_ElementConfig): UI_Tool {
+        return UI_Factory.tool(this, config);
     }
 
     actionIcon(config: { prop: string }): UI_ActionIcon {

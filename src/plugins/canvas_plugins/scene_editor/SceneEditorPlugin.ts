@@ -12,11 +12,12 @@ import { MeshToolId, MeshTool, PrimitiveShapeType } from './tools/MeshTool';
 import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { SelectToolId } from '../../../core/plugin/tools/SelectTool';
+import { PathToolId } from './tools/PathTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
     viewTypes: string[] = [MeshViewType, PathViewType, SpriteViewType];
-    isDropdownOpen = false;
 
     constructor(registry: Registry) {
         super(SceneEditorPluginId, registry);
@@ -49,35 +50,34 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
         if (meshTool) {
             let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
-            const toolbarDropdownHeader = toolbarDropdown.header({});
+            const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });
             let primitiveMeshTool = toolbarDropdownHeader.tool('abcd');
             primitiveMeshTool.icon = meshTool.selectedPrimitiveShape.toLowerCase();
             tooltip = primitiveMeshTool.tooltip();
             tooltip.label = `${meshTool.selectedPrimitiveShape} tool`;
     
-            toolbarDropdown.isOpen = this.isDropdownOpen;
-    
-            primitiveMeshTool = toolbarDropdown.tool('abcd');
-            primitiveMeshTool.icon = 'cube';
-            tooltip = primitiveMeshTool.tooltip();
-            tooltip.label = 'Cube tool';
-    
-            primitiveMeshTool = toolbarDropdown.tool('abcdefg');
-            primitiveMeshTool.icon = 'sphere';
-            tooltip = primitiveMeshTool.tooltip();
-            tooltip.label = 'Sphere tool';
+            if (meshTool.isShapeDropdownOpen) {
+                meshTool.shapes.forEach(shape => {
+                    if (shape !== meshTool.selectedPrimitiveShape) {
+                        primitiveMeshTool = toolbarDropdown.tool(shape);
+                        primitiveMeshTool.icon = shape.toLowerCase();
+                        tooltip = primitiveMeshTool.tooltip();
+                        tooltip.label = `${shape} tool`;
+                    }
+                });    
+            }
         }
 
         
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        tool = toolbar.tool(ToolType.Path);
+        tool = toolbar.tool({prop: PathToolId});
         tool.icon = 'path';
         tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
-        tool = toolbar.tool(ToolType.Select);
+        tool = toolbar.tool({prop: SelectToolId});
         tool.icon = 'select';
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
@@ -138,14 +138,26 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 }
 
 export enum SceneEditorToolbarProps {
-    SelectPrimitiveShape = 'select-primitive-shape'
+    SelectPrimitiveShape = 'select-primitive-shape',
+    OpenDropdown = 'open-dropdown'
+}
+
+export class PrimitiveShapeDropdownMenuOpenControl extends PropController<any> {
+    acceptedProps() { return [SceneEditorToolbarProps.OpenDropdown]; }
+
+    click(context: PropContext, element: UI_Element) {
+        const meshTool = <MeshTool> context.registry.plugins.getToolController(element.pluginId).getToolById(MeshToolId);
+        meshTool.isShapeDropdownOpen = !meshTool.isShapeDropdownOpen;
+
+        context.registry.services.render.reRender(UI_Region.Canvas1);
+    }
 }
 
 export class PrimitiveShapeDropdownControl extends PropController<any> {
     acceptedProps() { return [SceneEditorToolbarProps.SelectPrimitiveShape]; }
 
     click(context: PropContext, element: UI_Element) {
-        const meshTool = <MeshTool> context.registry.plugins.getById(element.pluginId).getToolController().getToolById(MeshToolId);
+        const meshTool = <MeshTool> context.registry.plugins.getToolController(element.pluginId).getToolById(MeshToolId);
         meshTool.selectedPrimitiveShape = element.targetId as PrimitiveShapeType;
 
         context.registry.services.render.reRender(UI_Region.Canvas1);

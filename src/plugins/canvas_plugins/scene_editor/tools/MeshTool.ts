@@ -15,9 +15,13 @@ export enum PrimitiveShapeType {
 
 export class MeshTool extends RectangleTool {
     selectedPrimitiveShape: PrimitiveShapeType = PrimitiveShapeType.Cube;
+    shapes: PrimitiveShapeType[];
+    isShapeDropdownOpen: boolean = false;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(MeshToolId, plugin, registry);
+
+        this.shapes = Object.values(PrimitiveShapeType).map(value => value);
     }
 
     protected createView(rect: Rectangle): View {

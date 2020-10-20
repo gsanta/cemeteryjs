@@ -5,6 +5,18 @@ import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../tools/Tool";
 import { View } from "../../models/views/View";
+import { PropController } from "./FormController";
+
+export class CommonToolController extends PropController<any> {
+    acceptedProps() { return [SelectTool]; }
+
+    click(context: PropContext, element: UI_Element) {
+        const meshTool = <MeshTool> context.registry.plugins.getToolController(element.pluginId).getToolById(MeshToolId);
+        meshTool.isShapeDropdownOpen = !meshTool.isShapeDropdownOpen;
+
+        context.registry.services.render.reRender(UI_Region.Canvas1);
+    }
+}
 
 export class MousePointer {
     down: Point;
