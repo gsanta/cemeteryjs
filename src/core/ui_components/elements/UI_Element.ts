@@ -41,7 +41,7 @@ export abstract class UI_Element {
     //TODO: consider restrict it only to svg elements
     scopedToolId: string;
     isInteractive: boolean = true;
-    readonly targetId: string;
+    targetId: string;
 
 
     css?: UI_Element_Css = {};

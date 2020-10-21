@@ -12,6 +12,8 @@ import { DeleteToolId } from "../tools/DeleteTool";
 import { CameraToolId } from "../tools/CameraTool";
 import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SpriteTool";
 import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/PathTool";
+import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/CubeTool";
+import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SphereTool";
 
 export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -23,16 +25,7 @@ export class CommonToolController extends PropController<any> {
 }
 
 export class SceneEditorToolController extends PropController<any> {
-    acceptedProps() { return [SpriteToolId, PathToolId]; }
-
-    click(context: PropContext, element: UI_Element) {
-        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
-        context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
-    }
-}
-
-export class MeshToolController extends PropController<any> {
-    acceptedProps() { return [MeshToolId]; }
+    acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
 
     click(context: PropContext, element: UI_Element) {
         context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);

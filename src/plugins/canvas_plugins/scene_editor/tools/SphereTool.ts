@@ -1,28 +1,18 @@
+import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
+import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
+import { Registry } from "../../../../core/Registry";
+import { View } from "../../../../core/models/views/View";
 import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
-import { View } from "../../../../core/models/views/View";
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
-import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
-import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 
-export const MeshToolId = 'mesh-tool';
-
-export enum PrimitiveShapeType {
-    Cube = 'Cube',
-    Sphere = 'Sphere',
-    Mesh = 'Mesh'
-} 
-
-export class MeshTool extends RectangleTool {
-    basicShapes: PrimitiveShapeType[] = [PrimitiveShapeType.Cube, PrimitiveShapeType.Sphere];
-    selectedBasicShape: PrimitiveShapeType = PrimitiveShapeType.Cube;
-
-    activeShape: PrimitiveShapeType; 
-    isShapeDropdownOpen: boolean = false;
+export const SphereToolId = 'sphere-tool';
+export class SphereTool extends RectangleTool {
+    icon = 'sphere';
+    displayName = 'Sphere';
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(MeshToolId, plugin, registry);
+        super(SphereToolId, plugin, registry);
     }
 
     protected createView(rect: Rectangle): View {
@@ -33,7 +23,7 @@ export class MeshTool extends RectangleTool {
         meshObj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
         meshView.setScale(1);
-        meshView.color = 'grey';
+        meshView.color = 'yellow';
     
         this.registry.stores.objStore.addObj(meshObj);
         this.registry.stores.views.addView(meshView);

@@ -13,7 +13,9 @@ import { AxisTool } from "./tools/AxisTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SpriteTool } from "./tools/SpriteTool";
-import { CommonToolController, MeshToolController, SceneEditorToolController } from "../../../core/plugin/controller/ToolController";
+import { CommonToolController, SceneEditorToolController } from "../../../core/plugin/controller/ToolController";
+import { CubeTool } from "./tools/CubeTool";
+import { SphereTool } from "./tools/SphereTool";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
@@ -35,7 +37,6 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
             new PrimitiveShapeDropdownControl(),
             new PrimitiveShapeDropdownMenuOpenControl(),
             new CommonToolController(),
-            new MeshToolController(),
             new SceneEditorToolController()
         ];
     }
@@ -48,7 +49,9 @@ export class SceneEditorPluginFactory implements UI_PluginFactory {
             new SelectTool(plugin as AbstractCanvasPlugin, registry),
             new DeleteTool(plugin as AbstractCanvasPlugin, registry),
             new CameraTool(plugin as AbstractCanvasPlugin, registry),
-            new AxisTool(plugin as AbstractCanvasPlugin, registry)
+            new AxisTool(plugin as AbstractCanvasPlugin, registry),
+            new CubeTool(plugin as AbstractCanvasPlugin, registry),
+            new SphereTool(plugin as AbstractCanvasPlugin, registry),
         ];
     }
 }

@@ -16,9 +16,15 @@ import { PathToolId } from './tools/PathTool';
 import { CameraToolId } from '../../../core/plugin/tools/CameraTool';
 import { DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
 import { SpriteToolId } from './tools/SpriteTool';
+import { UI_Toolbar } from '../../../core/ui_components/elements/toolbar/UI_Toolbar';
+import { CubeToolId } from './tools/CubeTool';
+import { SphereToolId } from './tools/SphereTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin'; 
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
+    activeShapeToolId: string = CubeToolId;
+    isShapeDropdownOpen = false;
+
     viewTypes: string[] = [MeshViewType, PathViewType, SpriteViewType];
 
     constructor(registry: Registry) {
@@ -40,9 +46,11 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
         const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
         
+        const meshTool = <MeshTool> (this.registry.plugins.getToolController(this.id).getToolById(MeshToolId));
+        
         let tool = toolbar.tool({prop: MeshToolId});
         tool.icon = 'mesh';
-        tool.isActive = selectedTool.id === MeshToolId;
+        tool.isActive = selectedTool.id === MeshToolId && meshTool.activeShape === PrimitiveShapeType.Mesh;
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
 
@@ -52,29 +60,28 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
 
-        const meshTool = <MeshTool> (this.registry.plugins.getToolController(this.id).getToolById(MeshToolId));
+        this.renderShapeDropdown(toolbar);
+        // if (meshTool) {
+        //     let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
+        //     const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });
+        //     let shapeTool = toolbarDropdownHeader.tool({prop: MeshToolId});
+        //     shapeTool.isActive = selectedTool.id === MeshToolId && meshTool.basicShapes.includes(meshTool.activeShape);
 
-        if (meshTool) {
-            let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
-            const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });
-            let shapeTool = toolbarDropdownHeader.tool({prop: MeshToolId});
-            shapeTool.isActive = selectedTool.id === MeshToolId && meshTool.selectedPrimitiveShape !== undefined;
-
-            shapeTool.icon = meshTool.selectedPrimitiveShape.toLowerCase();
-            tooltip = shapeTool.tooltip();
-            tooltip.label = `${meshTool.selectedPrimitiveShape} tool`;
+        //     shapeTool.icon = meshTool.selectedBasicShape.toLowerCase();
+        //     tooltip = shapeTool.tooltip();
+        //     tooltip.label = `${meshTool.selectedBasicShape} tool`;
     
-            if (meshTool.isShapeDropdownOpen) {
-                meshTool.shapes.forEach(shape => {
-                    if (shape !== meshTool.selectedPrimitiveShape) {
-                        shapeTool = toolbarDropdown.tool({prop: MeshToolId});
-                        shapeTool.icon = shape.toLowerCase();
-                        tooltip = shapeTool.tooltip();
-                        tooltip.label = `${shape} tool`;
-                    }
-                });    
-            }
-        }
+        //     if (meshTool.isShapeDropdownOpen) {
+        //         meshTool.basicShapes.forEach(shape => {
+        //             if (shape !== meshTool.selectedBasicShape) {
+        //                 shapeTool = toolbarDropdown.tool({prop: MeshToolId});
+        //                 shapeTool.icon = shape.toLowerCase();
+        //                 tooltip = shapeTool.tooltip();
+        //                 tooltip.label = `${shape} tool`;
+        //             }
+        //         });    
+        //     }
+        // }
 
         
         let separator = toolbar.iconSeparator();
@@ -147,6 +154,37 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
             view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
         });
     }
+
+    private renderShapeDropdown(toolbar: UI_Toolbar) {
+        const toolController = this.registry.plugins.getToolController(this.id);
+        const selectedTool = toolController.getSelectedTool();
+
+        let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
+        const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });
+        
+        let tool = toolController.getToolById(this.activeShapeToolId);
+        let shapeTool = toolbarDropdownHeader.tool({prop: this.activeShapeToolId});
+        shapeTool.isActive = selectedTool.id === this.activeShapeToolId;
+        shapeTool.icon = tool.icon;
+        let tooltip = shapeTool.tooltip();
+        tooltip.label = `${tool.displayName} tool`;
+
+        if (this.isShapeDropdownOpen) {
+            tool = toolController.getToolById(CubeToolId);
+            shapeTool = toolbarDropdown.tool({prop: SceneEditorToolbarProps.SelectPrimitiveShape});
+            shapeTool.targetId = CubeToolId;
+            shapeTool.icon = tool.icon;
+            tooltip = shapeTool.tooltip();
+            tooltip.label = `${tool.displayName} tool`;
+
+            tool = toolController.getToolById(SphereToolId);
+            shapeTool = toolbarDropdown.tool({prop: SceneEditorToolbarProps.SelectPrimitiveShape});
+            shapeTool.targetId = SphereToolId;
+            shapeTool.icon = tool.icon;
+            tooltip = shapeTool.tooltip();
+            tooltip.label = `${tool.displayName} tool`;
+        }
+    }
 }
 
 export enum SceneEditorToolbarProps {
@@ -158,9 +196,8 @@ export class PrimitiveShapeDropdownMenuOpenControl extends PropController<any> {
     acceptedProps() { return [SceneEditorToolbarProps.OpenDropdown]; }
 
     click(context: PropContext, element: UI_Element) {
-        const meshTool = <MeshTool> context.registry.plugins.getToolController(element.pluginId).getToolById(MeshToolId);
-        meshTool.isShapeDropdownOpen = !meshTool.isShapeDropdownOpen;
-
+        const plugin = <SceneEditorPlugin> context.registry.plugins.getById(element.pluginId);
+        plugin.isShapeDropdownOpen = !plugin.isShapeDropdownOpen;
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
@@ -169,9 +206,9 @@ export class PrimitiveShapeDropdownControl extends PropController<any> {
     acceptedProps() { return [SceneEditorToolbarProps.SelectPrimitiveShape]; }
 
     click(context: PropContext, element: UI_Element) {
-        const meshTool = <MeshTool> context.registry.plugins.getToolController(element.pluginId).getToolById(MeshToolId);
-        meshTool.selectedPrimitiveShape = element.targetId as PrimitiveShapeType;
-
+        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.targetId);
+        (<SceneEditorPlugin> context.registry.plugins.getById(element.pluginId)).isShapeDropdownOpen = false;
+        (<SceneEditorPlugin> context.registry.plugins.getById(element.pluginId)).activeShapeToolId = element.targetId;
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
