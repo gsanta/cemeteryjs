@@ -7,7 +7,7 @@ import { Canvas_2d_Plugin } from '../../../core/plugin/Canvas_2d_Plugin';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { MeshToolId, MeshTool, PrimitiveShapeType } from './tools/MeshTool';
+import { MeshToolId, MeshTool } from './tools/MeshTool';
 import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Region } from '../../../core/plugin/UI_Plugin';
@@ -50,7 +50,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         
         let tool = toolbar.tool({prop: MeshToolId});
         tool.icon = 'mesh';
-        tool.isActive = selectedTool.id === MeshToolId && meshTool.activeShape === PrimitiveShapeType.Mesh;
+        tool.isActive = selectedTool.id === MeshToolId;
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
 
@@ -61,28 +61,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         tooltip.label = 'Add Sprite';
 
         this.renderShapeDropdown(toolbar);
-        // if (meshTool) {
-        //     let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
-        //     const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });
-        //     let shapeTool = toolbarDropdownHeader.tool({prop: MeshToolId});
-        //     shapeTool.isActive = selectedTool.id === MeshToolId && meshTool.basicShapes.includes(meshTool.activeShape);
-
-        //     shapeTool.icon = meshTool.selectedBasicShape.toLowerCase();
-        //     tooltip = shapeTool.tooltip();
-        //     tooltip.label = `${meshTool.selectedBasicShape} tool`;
-    
-        //     if (meshTool.isShapeDropdownOpen) {
-        //         meshTool.basicShapes.forEach(shape => {
-        //             if (shape !== meshTool.selectedBasicShape) {
-        //                 shapeTool = toolbarDropdown.tool({prop: MeshToolId});
-        //                 shapeTool.icon = shape.toLowerCase();
-        //                 tooltip = shapeTool.tooltip();
-        //                 tooltip.label = `${shape} tool`;
-        //             }
-        //         });    
-        //     }
-        // }
-
         
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';

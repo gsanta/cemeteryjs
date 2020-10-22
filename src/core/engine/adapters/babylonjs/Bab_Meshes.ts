@@ -101,13 +101,17 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     async createInstance(meshObj: MeshObj): Promise<void> {
-        if (!meshObj.modelId) {
+        if (meshObj.shapeConfig) {
+            if (meshObj.shapeConfig.shapeType === 'Box') {
+                this.registry.engine.meshFactory.box(meshObj);
+            }
+        } else if(meshObj.modelId) {
+            await this.engineFacade.meshLoader.load(meshObj);
+        } else {
             const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
             this.meshes.set(meshObj.id, {mainMesh: mesh, skeletons: []});
-            return;
         }
 
-        await this.engineFacade.meshLoader.load(meshObj);
     }
 
     deleteInstance(meshObj: MeshObj) {

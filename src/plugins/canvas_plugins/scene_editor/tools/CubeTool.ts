@@ -20,7 +20,10 @@ export class CubeTool extends RectangleTool {
         meshObj.color = 'black';
 
         meshObj.shapeConfig = <MeshBoxConfig> {
-            
+            shapeType: 'Box',
+            width: 2,
+            height: 2,
+            depth: 2
         }
 
         const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(MeshViewType);

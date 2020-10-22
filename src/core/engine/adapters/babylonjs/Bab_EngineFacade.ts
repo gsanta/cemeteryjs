@@ -3,6 +3,7 @@ import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
 import { IEngineFacade } from "../../IEngineFacade";
 import { Bab_Meshes } from "./Bab_Meshes";
+import { Bab_MeshFactory } from "./Bab_MeshFactory";
 import { Bab_MeshLoader } from "./Bab_MeshLoader";
 import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
 import { Bab_Sprites } from "./Bab_Sprites";
@@ -18,6 +19,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     sprites: Bab_Sprites;
     meshLoader: Bab_MeshLoader;
     meshes: Bab_Meshes;
+    meshFactory: Bab_MeshFactory;
 
     private renderLoops: (() => void)[] = [];
 
@@ -28,6 +30,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.sprites = new Bab_Sprites(this.registry, this);
         this.meshLoader = new Bab_MeshLoader(this.registry, this);
         this.meshes = new Bab_Meshes(this.registry, this);
+        this.meshFactory = new Bab_MeshFactory(this.registry, this);
     }
 
     getCamera(): Camera3D {

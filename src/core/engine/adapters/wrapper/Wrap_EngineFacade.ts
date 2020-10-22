@@ -2,6 +2,7 @@ import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
 import { IEngineFacade } from "../../IEngineFacade";
 import { Wrap_Meshes } from "./Wrap_Meshes";
+import { Wrap_MeshFactory } from "./Wrap_MeshFactory";
 import { Wrap_MeshLoader } from "./Wrap_MeshLoader";
 import { Wrap_SpriteLoader } from "./Wrap_SpriteLoader";
 import { Wrap_Sprites } from "./Wrap_Sprites";
@@ -15,6 +16,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     sprites: Wrap_Sprites;
     meshLoader: Wrap_MeshLoader;
     meshes: Wrap_Meshes;
+    meshFactory: Wrap_MeshFactory;
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -23,6 +25,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
         this.sprites = new Wrap_Sprites(this.registry, this);
         this.meshLoader = new Wrap_MeshLoader(this.registry, this);
         this.meshes = new Wrap_Meshes(this.registry, this);
+        this.meshFactory = new Wrap_MeshFactory(this.registry, this)
     }
 
     getCamera(): Camera3D {
