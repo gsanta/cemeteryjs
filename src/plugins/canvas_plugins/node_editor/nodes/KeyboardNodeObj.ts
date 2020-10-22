@@ -5,16 +5,29 @@ import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";
 import { GameTool, GameToolType } from "../../game_viewer/tools/GameTool";
 
+export const KeyboardNodeType = 'keyboard-node-obj';
+
 export const KeyboardNodeFacotry: NodeFactory = {
-    createNodeObj(graph: NodeGraph): NodeObj {
-        return new KeyboardNodeObj(graph);
+    createNodeObj(): NodeObj {
+        const obj = new NodeObj(KeyboardNodeType, {displayName: 'Keyboard'});
+
+        obj.addParam({
+            name: 'key1',
+            val: '',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string',
+            },
+            isLink: 'output'
+        });
+
+        return obj;
     },
 
     createPropControllers(): PropController[] {
@@ -27,27 +40,6 @@ export const KeyboardNodeFacotry: NodeFactory = {
 }
 
 const KEY_REGEX = /key(\d*)/;
-
-export const KeyboardNodeType = 'keyboard-node-obj';
-export class KeyboardNodeObj extends NodeObj {
-    type = KeyboardNodeType;
-    category = NodeCategory.Default;
-    displayName = 'Keyboard';
-
-    constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph);
-
-        this.addParam({
-            name: 'key1',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string',
-            },
-            isLink: 'output'
-        });
-    }
-}
 
 export class KeyboardNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj, registry: Registry) {

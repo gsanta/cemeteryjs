@@ -79,7 +79,13 @@ export interface CustomNodeParamSerializer {
     deserialize(json: NodeParamJson): NodeParam;
 }
 
-export abstract class NodeObj implements IObj {
+export interface NodeObjConfig {
+    displayName?: string;
+    category?: string;
+    customParamSerializer?: CustomNodeParamSerializer;
+}
+
+export class NodeObj implements IObj {
     id: string;
     objType = NodeObjType;
     type: string;
@@ -90,20 +96,18 @@ export abstract class NodeObj implements IObj {
     inputs: NodeLink[] = [];
     outputs: NodeLink[] = [];
     connections: Map<string, NodeConnectionObj> = new Map();
-    graph: NodeGraph;
-
     isExecutionStopped = true;
     
     private cachedParams: Map<string, NodeParam> = new Map();
     private params: NodeParam[] = [];
     private customParamSerializer: CustomNodeParamSerializer;
 
-    constructor(nodeGraph: NodeGraph, customParamSerializer?: CustomNodeParamSerializer) {
-        this.graph = nodeGraph;
-        this.customParamSerializer = customParamSerializer;
-
-        if (this.graph) {
-            this.graph.addNode(this);
+    constructor(nodeType: string, config?: NodeObjConfig) {
+        this.type = nodeType;
+        if (config) {
+            this.customParamSerializer = config.customParamSerializer;
+            this.category = config.category || NodeCategory.Default;
+            this.displayName = config.displayName || nodeType;
         }
     }
 

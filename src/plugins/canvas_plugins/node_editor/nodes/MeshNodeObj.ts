@@ -1,17 +1,34 @@
-import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
-import { Registry } from "../../../../core/Registry";
+import { PropController } from "../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 
+export const MeshNodeType = 'mesh-node-obj';
+
 export const MeshNodeFacotry: NodeFactory = {
-    createNodeObj(graph: NodeGraph): NodeObj {
-        return new MeshNodeObj(graph);
+    createNodeObj(): NodeObj {
+        const obj = new NodeObj(MeshNodeType, {displayName: 'Mesh'});
+
+        obj.addParam({
+            name: 'mesh',
+            val: '',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
+        });
+
+        obj.outputs = [
+            {
+                name: 'action'
+            }
+        ];
+    
+        return obj;
     },
 
     createPropControllers(): PropController[] {
@@ -21,32 +38,6 @@ export const MeshNodeFacotry: NodeFactory = {
     createExecutor(): INodeExecutor {
         return undefined;
     }
-}
-
-export const MeshNodeType = 'mesh-node-obj';
-export class MeshNodeObj extends NodeObj {
-    type = MeshNodeType;
-    category = NodeCategory.Default;
-    displayName = 'Mesh';
-
-    constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph);
-
-        this.addParam({
-            name: 'mesh',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
-            }
-        });
-    }
-
-    outputs = [
-        {
-            name: 'action'
-        }
-    ];
 }
 
 export class MeshController extends PropController<string> {

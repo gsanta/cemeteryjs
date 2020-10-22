@@ -1,19 +1,46 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { NodeCategory, NodeObj, NodeParam, CustomNodeParamSerializer, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
+import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
-import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../../core/services/NodeService";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { RouteWalker } from "./RouteWalker";
 
+export const RouteNodeObjType = 'route-node-obj';
+
 export const RouteNodeFacotry: NodeFactory = {
-    createNodeObj(graph: NodeGraph): NodeObj {
-        return new RouteNodeObj(graph);
+    createNodeObj(): NodeObj {
+        const obj = new NodeObj(RouteNodeObjType, {displayName: 'Route', customParamSerializer: new RouteNodeSerializer()});
+
+        obj.inputs = [
+            {
+                name: 'mesh'
+            },
+            {
+                name: 'path'
+            }
+        ];
+    
+        obj.outputs = [
+            {
+                name: 'onStart'
+            },
+            {
+                name: 'onTurnStart'
+            },
+            {
+                name: 'onTurnEnd'
+            },
+            {
+                name: 'onFinish'
+            }
+        ];
+
+        return obj;
     },
 
     createPropControllers(): PropController[] {
@@ -39,47 +66,6 @@ const params: NodeParam[] = [
         val: undefined
     },
 ];
-
-export const RouteNodeObjType = 'route-node-obj';
-export class RouteNodeObj extends NodeObj {
-    type = RouteNodeObjType;
-    category = NodeCategory.Default;
-    displayName = 'Route';
-
-    constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph, new RouteNodeSerializer());
-
-        this.addAllParams(params);
-    }
-
-    inputs = [
-        {
-            name: 'mesh'
-        },
-        {
-            name: 'path'
-        }
-    ];
-
-    outputs = [
-        {
-            name: 'onStart'
-        },
-        {
-            name: 'onTurnStart'
-        },
-        {
-            name: 'onTurnEnd'
-        },
-        {
-            name: 'onFinish'
-        }
-    ];
-
-    setParam(name: string, value: any) {
-        super.setParam(name, value);
-    }
-}
 
 class RouteNodeSerializer implements CustomNodeParamSerializer {
     serialize(param: NodeParam): NodeParamJson {

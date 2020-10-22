@@ -1,17 +1,34 @@
-import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
-import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
-import { Registry } from "../../../../core/Registry";
+import { PropController } from "../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 
+export const PathNodeType = 'path-node-obj';
+
 export const PathNodeFacotry: NodeFactory = {
-    createNodeObj(graph: NodeGraph): NodeObj {
-        return new PathNodeObj(graph);
+    createNodeObj(): NodeObj {
+        const obj = new NodeObj(PathNodeType, {displayName: 'Path'});
+
+        obj.addParam({
+            name: 'path',
+            val: '',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
+        });
+
+        obj.outputs = [
+            {
+                name: 'action'
+            }
+        ];
+
+        return obj;
     },
 
     createPropControllers(): PropController[] {
@@ -21,32 +38,6 @@ export const PathNodeFacotry: NodeFactory = {
     createExecutor(): INodeExecutor {
         return undefined;
     }
-}
-
-export const PathNodeType = 'path-node-obj';
-export class PathNodeObj extends NodeObj {
-    type = PathNodeType;
-    category = NodeCategory.Default;
-    displayName = 'Path';
-    
-    constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph);
-
-        this.addParam({
-            name: 'path',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
-            }
-        });
-    }
-
-    outputs = [
-        {
-            name: 'action'
-        }
-    ];
 }
 
 export class PathController extends PropController<string> {

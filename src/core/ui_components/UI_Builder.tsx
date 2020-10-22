@@ -76,6 +76,8 @@ import { ToolbarDropdownComp } from './react/surfaces/toolbar/ToolbarDropdownCom
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
 import { ToolDropdownHeaderComp } from './react/surfaces/toolbar/ToolDropdownHeaderComp';
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
+import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
+import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
 
 export class UI_Builder {
 
@@ -296,7 +298,11 @@ export class UI_Builder {
                 return this.buildIcon(icon, pluginId);
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
-                return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;            
+                return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;
+            case UI_ElementType.DropLayer:
+                const dropLayer = element as UI_DropLayer;
+                return <DropLayerComp registry={this.registry} element={dropLayer}></DropLayerComp>;
+     
         }
     }
 }   

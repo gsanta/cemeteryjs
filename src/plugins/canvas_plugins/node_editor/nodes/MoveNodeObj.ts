@@ -1,20 +1,61 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { PropController } from "../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { MeshController } from "./MeshNodeObj";
 
+export const MoveNodeType = 'move-node-obj';
+
 export const MoveNodeFacotry: NodeFactory = {
-    createNodeObj(graph: NodeGraph): NodeObj {
-        return new MoveNodeObj(graph);
+    createNodeObj(): NodeObj {
+        const obj = new NodeObj(MoveNodeType, {displayName: 'Move'});
+
+        obj.addParam({
+            name: 'mesh',
+            val: '',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
+        });
+
+        obj.addParam({
+            name: 'move',
+            val: 'forward',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
+        });
+
+        obj.addParam({
+            name: 'speed',
+            val: 0.5,
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
+        });
+
+        obj.inputs = [
+            {
+                name: 'input'
+            }
+        ];
+    
+        obj.outputs = [
+            {
+                name: 'animation'
+            }
+        ];
+        
+        return obj;
     },
 
     createPropControllers(): PropController[] {
@@ -27,68 +68,6 @@ export const MoveNodeFacotry: NodeFactory = {
 
     createExecutor(): INodeExecutor {
         return new MoveNodeExecutor();
-    }
-}
-
-export const MoveNodeType = 'move-node-obj';
-export class MoveNodeObj extends NodeObj {
-    type = MoveNodeType;
-    category = NodeCategory.Default;
-    displayName = 'Move';
-
-    constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph);
-
-        this.addParam({
-            name: 'mesh',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
-            }
-        });
-
-        this.addParam({
-            name: 'move',
-            val: 'forward',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
-            }
-        });
-
-        this.addParam({
-            name: 'speed',
-            val: 0.5,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
-    }
-
-    inputs = [
-        {
-            name: 'input'
-        }
-    ];
-
-    outputs = [
-        {
-            name: 'animation'
-        }
-    ];
-
-    execute(registry: Registry) {
-        const meshId = this.getParam('mesh').val;
-
-        const meshView = registry.stores.views.getById(meshId) as MeshView;
-
-        if (this.getParam('move').val === 'forward') {
-            meshView.getObj().move(new Point_3(0, 0, 2));
-        } else if (this.getParam('move').val === 'backward') {
-            meshView.getObj().move(new Point_3(0, 0, -2));
-        }
     }
 }
 

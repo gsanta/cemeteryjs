@@ -50,7 +50,7 @@ export class NodeService {
 
     registerNode(nodeFactory: NodeFactory) {
         // TODO create dummygraph instead of passing undefined
-        const nodeTemplate = nodeFactory.createNodeObj(undefined);
+        const nodeTemplate = nodeFactory.createNodeObj();
         this.nodeTemplates.set(nodeTemplate.type, nodeTemplate);
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
@@ -87,8 +87,11 @@ export class NodeService {
         this.defaultNodeRenderer.render(ui_svgCanvas, nodeView);
     }
 
-    createNodeObj() {
-        return this.nodeFactories.get(this.currentNodeType).createNodeObj(this.graph);
+    createNodeObj(): NodeObj {
+        const nodeObj = this.nodeFactories.get(this.currentNodeType).createNodeObj();
+        this.graph && this.graph.addNode(nodeObj);
+
+        return nodeObj;
     }
 
     createNodeView(): NodeView {
@@ -130,7 +133,7 @@ export class NodeService {
 }
 
 export interface NodeFactory {
-    createNodeObj(graph: NodeGraph): NodeObj;
+    createNodeObj(): NodeObj;
     createPropControllers(): PropController[];
     createExecutor(): INodeExecutor;
 }

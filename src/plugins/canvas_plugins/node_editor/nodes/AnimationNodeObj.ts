@@ -1,18 +1,54 @@
-import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropContext, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Plugin, UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeGraph } from "../../../../core/services/node/NodeGraph";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 
+export const AnimationNodeType = 'animation-node-obj';
+
 export const AnimationNodeFacotry: NodeFactory = {
-    createNodeObj(graph: NodeGraph): NodeObj {
-        return new AnimationNodeObj(graph);
+    createNodeObj(): NodeObj {
+        const obj = new NodeObj(AnimationNodeType, {displayName: 'Animation'});
+
+        obj.addParam({
+            name: 'mesh',
+            val: '',
+            uiOptions: {
+                inputType: 'list',
+                valueType: 'string'
+            }
+        });
+        
+        obj.addParam({
+            name: 'startFrame',
+            val: 0,
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
+        });
+
+        obj.addParam({
+            name: 'endFrame',
+            val: 0,
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
+        });
+
+        obj.inputs = [
+            {
+                name: 'action'
+            }
+        ];
+
+        return obj;
     },
 
     createPropControllers(): PropController[] {
@@ -27,53 +63,6 @@ export const AnimationNodeFacotry: NodeFactory = {
         return new AnimationNodeExecutor();
     }
 }
-
-export const AnimationNodeType = 'animation-node-obj';
-export class AnimationNodeObj extends NodeObj {
-    type = AnimationNodeType;
-    category = NodeCategory.Default;
-    displayName = 'Animation';
-
-    private isAnimationPlaying = false;
-
-    constructor(nodeGraph: NodeGraph) {
-        super(nodeGraph);
-
-        this.addParam({
-            name: 'mesh',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
-            }
-        });
-        
-        this.addParam({
-            name: 'startFrame',
-            val: 0,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
-
-        this.addParam({
-            name: 'endFrame',
-            val: 0,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
-    }
-
-    inputs = [
-        {
-            name: 'action'
-        }
-    ];
-}
-
 
 export class AnimationNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj, registry: Registry) {
