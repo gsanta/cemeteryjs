@@ -16,12 +16,15 @@ export class SpriteTool extends RectangleTool {
 
     protected createView(rect: Rectangle): View {
         const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
+        spriteObj.color = 'green';
+
         const spriteView: SpriteView = <SpriteView> this.registry.services.viewService.createView(SpriteViewType);
         spriteView.setObj(spriteObj);
         spriteView.setBounds(rect);
         spriteObj.spriteAdapter = this.registry.engine.sprites;
         spriteObj.setScale(new Point(3, 3));
-        spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y); 
+        spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y);
+        spriteView.color = 'green';
 
         this.registry.stores.views.addView(spriteView);
         this.registry.stores.objStore.addObj(spriteObj);

@@ -17,6 +17,8 @@ export interface MeshObjJson extends ObjJson {
     textureId: string;
     routeId: string;
     y: number;
+    color: string;
+    shapeConfig: MeshShapeConfig;
 }
 
 export class MeshObjFactory implements ObjFactory {
@@ -35,6 +37,16 @@ export class MeshObjFactory implements ObjFactory {
     }
 }
 
+export interface MeshShapeConfig {
+    shapeType: string;
+}
+
+export interface MeshBoxConfig extends MeshShapeConfig {
+    width?: number;
+    height?: number;
+    depth?: number;
+}
+
 export class MeshObj implements IObj {
     objType = MeshObjType;
 
@@ -43,6 +55,8 @@ export class MeshObj implements IObj {
     private tempRotation: number = 0;
     id: string;
 
+    shapeConfig: MeshShapeConfig;
+    color: string;
     modelId: string;
     textureId: string;
     routeId: string;
@@ -121,7 +135,9 @@ export class MeshObj implements IObj {
             rotation: this.getRotation(),
             modelId: this.modelId,
             textureId: this.textureId,
-            routeId: this.routeId
+            routeId: this.routeId,
+            color: this.color,
+            shapeConfig: this.shapeConfig
         }
     }
     
@@ -134,5 +150,7 @@ export class MeshObj implements IObj {
         this.modelId = json.modelId;
         this.textureId = json.textureId;
         this.routeId = json.routeId;
+        this.color = json.color;
+        this.shapeConfig = json.shapeConfig;
     }
 }

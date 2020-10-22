@@ -45,7 +45,7 @@ export class RectangleFactory  {
         mesh.scaling = new Vector3(scale.x, scale.x, scale.y);
         mesh.translate(new Vector3(point.x + width / 2, 0, point.z - depth / 2), 1, Space.WORLD);
 
-        mesh.material = this.createSimpleMaterial(scene);
+        mesh.material = this.createSimpleMaterial(scene, obj);
 
         mesh.computeWorldMatrix(true);
 
@@ -53,9 +53,29 @@ export class RectangleFactory  {
     }
 
     
-    private createSimpleMaterial(scene: Scene): StandardMaterial {
+    private createSimpleMaterial(scene: Scene, obj: MeshObj | SpriteObj): StandardMaterial {
         const mat =  this.materialBuilder.CreateMaterial(`${this.materialIndex++}`, scene);
-        mat.diffuseColor = Color3.FromHexString(this.color);
+        mat.diffuseColor = this.toColor3(obj.color);
         return mat;
+    }
+
+    private toColor3(color: string) {
+        switch(color) {
+            case 'green':
+                return Color3.Green();
+            case 'red':
+                return Color3.Red();
+            case 'blue':
+                return Color3.Blue();
+            case 'white':
+                return Color3.White();
+            case 'yellow':
+                return Color3.Yellow();
+            case 'black':
+            case undefined:
+                return Color3.White();
+            default:
+                return Color3.FromHexString(color);
+        }
     }
 }

@@ -39,6 +39,7 @@ export class SpriteObj implements IObj {
 
     spriteAdapter: ISpriteAdapter;
 
+    color: string;
     sprite: Sprite;
     startPos: Point;
     startScale: Point = new Point(1, 1);

@@ -105,7 +105,14 @@ export class ObjLifeCycleHook implements ObjStoreHook {
     addObjHook(obj: IObj) {
         switch(obj.objType) {
             case MeshObjType:
-                this.registry.engine.meshes.createInstance(<MeshObj> obj);
+                const meshObj = <MeshObj> obj;
+                if (meshObj.shapeConfig) {
+                    if (meshObj.shapeConfig.shapeType === 'Box') {
+                        this.registry.engine.meshFactory.box(meshObj);
+                    }
+                } else {
+                    this.registry.engine.meshes.createInstance(<MeshObj> obj);
+                }
                 break;
             case SpriteObjType:
                 this.registry.engine.sprites.createInstance(<SpriteObj> obj);

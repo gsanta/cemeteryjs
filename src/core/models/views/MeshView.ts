@@ -14,7 +14,8 @@ export interface MeshViewJson extends ViewJson {
     rotation: number;
     thumbnailData: string;
     scale: number;
-    yPos: number 
+    yPos: number;
+    color: string;
 }
 
 const MIN_VIEW_SIZE = 20;
@@ -155,6 +156,7 @@ export class MeshView extends View {
             thumbnailData: this.thumbnailData,
             scale: this.scale,
             yPos: this.yPos,
+            color: this.color
         }
     }
 
@@ -166,6 +168,7 @@ export class MeshView extends View {
         this.scale = json.scale;
         this.yPos = json.yPos;
         this.thumbnailData = json.thumbnailData;
+        this.color = json.color;
     }
 }
 

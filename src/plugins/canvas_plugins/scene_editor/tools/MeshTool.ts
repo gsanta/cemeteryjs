@@ -5,35 +5,26 @@ import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlug
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { colors } from "../../../../core/ui_components/react/styles";
 
 export const MeshToolId = 'mesh-tool';
 
-export enum PrimitiveShapeType {
-    Cube = 'Cube',
-    Sphere = 'Sphere',
-    Mesh = 'Mesh'
-} 
-
 export class MeshTool extends RectangleTool {
-    basicShapes: PrimitiveShapeType[] = [PrimitiveShapeType.Cube, PrimitiveShapeType.Sphere];
-    selectedBasicShape: PrimitiveShapeType = PrimitiveShapeType.Cube;
-
-    activeShape: PrimitiveShapeType; 
-    isShapeDropdownOpen: boolean = false;
-
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(MeshToolId, plugin, registry);
     }
 
     protected createView(rect: Rectangle): View {
         const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
+        meshObj.color = colors.lightPink;
+
         const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(MeshViewType);
         meshView.setObj(meshObj);
         meshView.setBounds(rect);
         meshObj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
         meshView.setScale(1);
-        meshView.color = 'grey';
+        meshView.color = colors.lightPink;
     
         this.registry.stores.objStore.addObj(meshObj);
         this.registry.stores.views.addView(meshView);

@@ -45,6 +45,7 @@ export class SpriteViewFactory implements ViewFactory {
 export class SpriteView extends View {
     viewType = SpriteViewType;
 
+    color: string;
     thumbnailData: string;
     protected obj: SpriteObj;
 
