@@ -104,6 +104,8 @@ export  class Bab_Meshes implements IMeshAdapter {
         if (meshObj.shapeConfig) {
             if (meshObj.shapeConfig.shapeType === 'Box') {
                 this.registry.engine.meshFactory.box(meshObj);
+            } else if (meshObj.shapeConfig.shapeType === 'Sphere') {
+                this.registry.engine.meshFactory.sphere(meshObj);
             }
         } else if(meshObj.modelId) {
             await this.engineFacade.meshLoader.load(meshObj);

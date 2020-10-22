@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../models/objs/MeshObj";
-import { IMeshFactory, BoxConfig } from "../../IMeshFactory";
+import { IMeshFactory } from "../../IMeshFactory";
 import { Registry } from "../../../Registry";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
 
@@ -16,7 +16,11 @@ export class Wrap_MeshFactory implements IMeshFactory {
         this.engineFacade = engineFacade;
     }
 
-    box(meshObj: MeshObj) {
-        this.engineFacade.realEngine.meshFactory.box(meshObj);
+    box(obj: MeshObj) {
+        this.engineFacade.realEngine.meshFactory.box(obj);
+    }
+
+    sphere(obj: MeshObj) {
+        this.engineFacade.realEngine.meshFactory.sphere(obj);
     }
 }

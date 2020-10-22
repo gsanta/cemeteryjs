@@ -21,9 +21,9 @@ export class CubeTool extends RectangleTool {
 
         meshObj.shapeConfig = <MeshBoxConfig> {
             shapeType: 'Box',
-            width: 2,
-            height: 2,
-            depth: 2
+            width: 5,
+            height: 5,
+            depth: 5
         }
 
         const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(MeshViewType);
@@ -36,6 +36,10 @@ export class CubeTool extends RectangleTool {
     
         this.registry.stores.objStore.addObj(meshObj);
         this.registry.stores.views.addView(meshView);
+
+        const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj());
+        meshView.getBounds().setWidth(realDimensions.x);
+        meshView.getBounds().setHeight(realDimensions.y);
     
         return meshView;
     }

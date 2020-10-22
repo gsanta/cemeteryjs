@@ -47,6 +47,11 @@ export interface MeshBoxConfig extends MeshShapeConfig {
     depth?: number;
 }
 
+export interface MeshSphereConfig extends MeshShapeConfig {
+    diameter?: number;
+}
+
+
 export class MeshObj implements IObj {
     objType = MeshObjType;
 
