@@ -19,7 +19,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         this.createMaterial(obj, mesh);
 
         const point = obj.getPosition();
-        mesh.translate(new Vector3(point.x + config.width / 2, 0, point.z - config.depth / 2), 1, Space.WORLD);
+        mesh.translate(new Vector3(point.x, 0, point.z), 1, Space.WORLD);
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 

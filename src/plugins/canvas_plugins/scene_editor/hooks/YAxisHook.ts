@@ -1,3 +1,4 @@
+import { Rectangle } from "babylonjs-gui";
 import { IMeshHook } from "../../../../core/engine/hooks/IMeshHook";
 import { ISpriteHook } from "../../../../core/engine/hooks/ISpriteHook";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
@@ -21,8 +22,11 @@ export class YAxisHook implements IMeshHook {
     hookCreateInstance(meshObj: MeshObj): void {
         const realDimensions = this.registry.engine.meshes.getDimensions(meshObj);
         const meshView = this.registry.stores.views.getByObjId(meshObj.id);
-        meshView.getBounds().setWidth(realDimensions.x);
-        meshView.getBounds().setHeight(realDimensions.y);
+        const rect = meshView.getBounds().clone();
+        rect.setWidth(realDimensions.x);
+        rect.setHeight(realDimensions.y);
+
+        meshView.setBounds(rect);
     }
 }
 
