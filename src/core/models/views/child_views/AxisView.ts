@@ -1,4 +1,4 @@
-import { AxisToolType } from "../../../../plugins/canvas_plugins/scene_editor/tools/AxisTool";
+import { AxisToolId } from "../../../../plugins/canvas_plugins/scene_editor/tools/AxisTool";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
@@ -29,7 +29,7 @@ export class AxisViewFactory implements ViewFactory {
     renderInto(canvas: UI_SvgCanvas, axisView: AxisView) {
         const group = canvas.group(`y-control`);
         group.data = axisView;
-        group.scopedToolId = AxisToolType;
+        group.scopedToolId = AxisToolId;
         group.isInteractive = true;
 
         const center = axisView.getBounds().getBoundingCenter();

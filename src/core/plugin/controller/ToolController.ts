@@ -14,6 +14,8 @@ import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/tools
 import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/PathTool";
 import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/CubeTool";
 import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SphereTool";
+import { ScaleToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/ScaleTool";
+import { AxisToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/AxisTool";
 
 export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -28,10 +30,21 @@ export class SceneEditorToolController extends PropController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        (<AbstractCanvasPlugin> context.plugin).getToolController().getToolById(element.prop).isSelected = true;
         context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
     }
 }
+
+export class CanvasContextDependentToolController extends PropController<any> {
+    acceptedProps() { return [ScaleToolId, AxisToolId]; }
+
+    click(context: PropContext, element: UI_Element) {
+        const tool = context.registry.plugins.getToolController(element.pluginId).getToolById(element.prop);
+        tool.isSelected = !tool.isSelected;
+        context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
+    }
+}
+
 
 export class MousePointer {
     down: Point;
@@ -143,9 +156,11 @@ export class ToolController {
     }
 
     setSelectedTool(toolId: string) {
+        this.selectedTool && (this.selectedTool.isSelected = false);
         this.selectedTool && this.selectedTool.deselect();
         this.selectedTool = this.getToolById(toolId);
         this.selectedTool.select();
+        this.selectedTool.isSelected = true;
         this.registry.services.render.reRender(this.plugin.region);
     }
 
