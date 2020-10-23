@@ -22,7 +22,7 @@ import { SphereToolId } from './tools/SphereTool';
 import { ScaleToolId } from './tools/ScaleTool';
 import { AxisToolId } from './tools/AxisTool';
 
-export const SceneEditorPluginId = 'scene-editor-plugin'; 
+export const SceneEditorPluginId = 'scene-editor-plugin';
 export class SceneEditorPlugin extends Canvas_2d_Plugin {
     activeShapeToolId: string = CubeToolId;
     isShapeDropdownOpen = false;
@@ -46,10 +46,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
         const toolbar = canvas.toolbar();
 
-        const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
-        
-        const meshTool = <MeshTool> (this.registry.plugins.getToolController(this.id).getToolById(MeshToolId));
-        
         let tool = toolbar.tool({prop: MeshToolId});
         tool.icon = 'mesh';
         tool.isActive = this.getToolController().getToolById(MeshToolId).isSelected;
@@ -152,7 +148,6 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
     private renderShapeDropdown(toolbar: UI_Toolbar) {
         const toolController = this.registry.plugins.getToolController(this.id);
-        const selectedTool = toolController.getSelectedTool();
 
         let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
         const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });

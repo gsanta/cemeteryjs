@@ -1,6 +1,7 @@
 import { AxisToolId } from "../../../../plugins/canvas_plugins/scene_editor/tools/AxisTool";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { AbstractCanvasPlugin } from "../../../plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../Registry";
 import { UI_SvgCanvas } from "../../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../../objs/IObj";
@@ -27,6 +28,12 @@ export class AxisViewFactory implements ViewFactory {
     newInstance() { return new AxisView(); }
 
     renderInto(canvas: UI_SvgCanvas, axisView: AxisView) {
+        const plugin = (<AbstractCanvasPlugin> this.registry.plugins.getById(canvas.pluginId));
+        
+        if (!plugin.getToolController().getToolById(AxisToolId).isSelected) {
+            return null;
+        }
+
         const group = canvas.group(`y-control`);
         group.data = axisView;
         group.scopedToolId = AxisToolId;

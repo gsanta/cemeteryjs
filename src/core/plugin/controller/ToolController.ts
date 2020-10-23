@@ -30,7 +30,7 @@ export class SceneEditorToolController extends PropController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        (<AbstractCanvasPlugin> context.plugin).getToolController().getToolById(element.prop).isSelected = true;
+        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
         context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
     }
 }
@@ -41,6 +41,12 @@ export class CanvasContextDependentToolController extends PropController<any> {
     click(context: PropContext, element: UI_Element) {
         const tool = context.registry.plugins.getToolController(element.pluginId).getToolById(element.prop);
         tool.isSelected = !tool.isSelected;
+
+        if (tool.id === ScaleToolId) {
+            context.registry.plugins.getToolController(element.pluginId).getToolById(AxisToolId).isSelected = false;
+        } else if (tool.id === AxisToolId) {
+            context.registry.plugins.getToolController(element.pluginId).getToolById(ScaleToolId).isSelected = false;
+        }
         context.registry.services.render.reRender(context.registry.plugins.getById(element.pluginId).region);
     }
 }
@@ -84,7 +90,12 @@ export class ToolController {
         this.plugin = plugin;
 
         tools.forEach(tool => this.registerTool(tool));
-        tools.length > 0 && (this.selectedTool = tools[0]);
+
+        // TODO: it should call this.setSelectedTool(), but currently the renderer is not alive at that point throwing an error
+        if (tools.length) {
+            this.selectedTool = tools[0];
+            this.selectedTool.isSelected = true;
+        } 
     }
 
     mouseDown(e: MouseEvent, element: UI_Element): void {

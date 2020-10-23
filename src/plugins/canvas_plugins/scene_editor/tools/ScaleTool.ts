@@ -34,6 +34,8 @@ export class ScaleTool extends NullTool {
         }
     }
 
+    
+
     drag() {
         if (!this.downView) { return; }
 
