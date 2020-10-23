@@ -3,7 +3,7 @@ import { UI_PluginFactory } from "../../../../core/plugin/UI_PluginFactory";
 import { Tool } from "../../../../core/plugin/tools/Tool";
 import { UI_Plugin } from "../../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../../core/Registry";
-import { LayerController, MeshIdController, ModelController, RotationController, ScaleController, TextureController, ThumbnailController, YPosController } from "./MeshSettingsController";
+import { DepthController, HeightController, LayerController, MeshIdController, ModelController, RotationController, ScaleController, TextureController, ThumbnailController, WidthController, YPosController } from "./MeshSettingsController";
 import { ObjectSettingsPlugin, ObjectSettingsPluginId } from "./ObjectSettingsPlugin";
 import { PathIdController } from "./PathObjectSettings";
 import { FrameName, ManageSpriteSheetsController, ScaleXController, ScaleYController, SelectSpriteSheetController } from "./SpriteSettingsController";
@@ -26,6 +26,9 @@ export class ObjectSettingsPluginFactory implements UI_PluginFactory {
             new TextureController(),
             new ModelController(),
             new ThumbnailController(),
+            new WidthController(),
+            new DepthController(),
+            new HeightController(),
 
             // path
             new PathIdController(),

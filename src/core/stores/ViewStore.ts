@@ -62,11 +62,11 @@ export class ViewStore {
     }
 
     addView(view: View) {
-        if (view.id) {
-            this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
-        } else {
-            view.id = this.idGenerator.generateId(view.viewType);
-        }
+        this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
+        // if (view.id) {
+        // } else {
+        //     view.id = this.idGenerator.generateId(view.viewType);
+        // }
 
         this.views.push(view);
         this.idMap.set(view.id, view);

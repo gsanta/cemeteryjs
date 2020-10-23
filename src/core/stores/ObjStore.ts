@@ -25,6 +25,10 @@ export class ObjStore {
         this.idGenerator = idGenerator;
     }
 
+    generateId(obj: IObj): string {
+        return this.idGenerator.generateId(obj.objType);
+    }
+
     addObj(obj: IObj) {
         if (obj.id) {
             this.idGenerator.registerExistingIdForPrefix(obj.objType, obj.id);

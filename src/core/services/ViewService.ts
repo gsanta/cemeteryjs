@@ -39,7 +39,9 @@ export class ViewService {
             throw new Error(`No factory for ViewType ${viewType} exists`);
         }
 
-        return this.factoriesByType.get(viewType).newInstance();
+        const view = this.factoriesByType.get(viewType).newInstance();
+        view.id = this.registry.stores.views.generateId(view);
+        return view;
     }
 
     renderInto(canvas: UI_SvgCanvas, view: View) {

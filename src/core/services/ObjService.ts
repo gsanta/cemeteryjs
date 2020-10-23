@@ -40,6 +40,8 @@ export class ObjService {
             throw new Error(`No factory for ObjType ${objType} exists`);
         }
 
-        return this.factoriesByType.get(objType).newInstance();
+        const obj = this.factoriesByType.get(objType).newInstance();
+        obj.id = this.registry.stores.objStore.generateId(obj);
+        return obj;
     }
 }

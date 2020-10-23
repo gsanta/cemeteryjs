@@ -1,12 +1,9 @@
 import { MeshView, MeshViewType } from '../../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../../core/models/views/PathView';
-import { SpriteView, SpriteViewType } from '../../../../core/models/views/SpriteView';
-import { FormController } from '../../../../core/plugin/controller/FormController';
+import { SpriteViewType } from '../../../../core/models/views/SpriteView';
 import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
-import { Registry } from '../../../../core/Registry';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
 import { MeshSettingsProps } from './MeshSettingsController';
-import { PathIdController, PathSettingsProps } from './PathObjectSettings';
 import { SpriteSettingsProps } from './SpriteSettingsController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
@@ -90,7 +87,33 @@ export class ObjectSettingsPlugin extends UI_Plugin {
         const changeThumbnailButton = row.button(MeshSettingsProps.Thumbnail);
         changeThumbnailButton.label = 'Change thumbnail';
         changeThumbnailButton.width = '200px';
+
+        if (meshView.getObj().shapeConfig) {
+            if (meshView.getObj().shapeConfig.shapeType === 'Box') {
+                this.renderBoxSettings(layout, meshView);
+            }
+        }
     }
+
+    private renderBoxSettings(layout: UI_Layout, meshView: MeshView) {
+        let row = layout.row({ key: MeshSettingsProps.Width });
+        const widthField = row.textField({prop: MeshSettingsProps.Width});
+        widthField.layout = 'horizontal';
+        widthField.label = 'Width';
+        widthField.type = 'number';
+
+        row = layout.row({ key: MeshSettingsProps.Height });
+        const heightField = row.textField({prop: MeshSettingsProps.Height});
+        heightField.layout = 'horizontal';
+        heightField.label = 'Height';
+        heightField.type = 'number';
+
+        row = layout.row({ key: MeshSettingsProps.Depth });
+        const depthField = row.textField({prop: MeshSettingsProps.Depth});
+        depthField.layout = 'horizontal';
+        depthField.label = 'Depth';
+        depthField.type = 'number';
+    }   
 
     private renderSpriteObjectSettings(layout: UI_Layout) {
         let row = layout.row({ key: SpriteSettingsProps.FrameName });

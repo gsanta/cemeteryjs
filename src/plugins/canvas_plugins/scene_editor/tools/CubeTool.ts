@@ -34,8 +34,8 @@ export class CubeTool extends RectangleTool {
         meshView.setScale(1);
         meshView.color = 'black';
     
-        this.registry.stores.objStore.addObj(meshObj);
         this.registry.stores.views.addView(meshView);
+        this.registry.stores.objStore.addObj(meshObj);
 
         const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj());
         meshView.getBounds().setWidth(realDimensions.x);
