@@ -26,6 +26,8 @@ export interface Preferences {
 
     colors: {
         green: string;
+        red: string;
+        blue: string;
     }
 }
 
@@ -52,6 +54,8 @@ export const defaultPreferences: Preferences = {
     },
 
     colors: {
-        green: 'green'
+        green: 'green',
+        red: 'red',
+        blue: 'blue'
     }
 }

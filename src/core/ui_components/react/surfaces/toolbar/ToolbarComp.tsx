@@ -24,6 +24,8 @@ const playIcon = require('../../../../../../assets/images/icons/play.svg');
 const stopIcon = require('../../../../../../assets/images/icons/stop.svg');
 const cubeIcon = require('../../../../../../assets/images/icons/cube.png');
 const sphereIcon = require('../../../../../../assets/images/icons/sphere.png');
+const scaleIcon = require('../../../../../../assets/images/icons/scale.png');
+const moveIcon = require('../../../../../../assets/images/icons/move.svg');
 const expandMore = require('../../../../../../assets/images/icons/expand_more.svg');
 
 const ToolbarStyled = styled.div`
@@ -152,6 +154,14 @@ const ToolbarStyled = styled.div`
 
         &.expand-more-icon {
             background-image: url(${expandMore});
+        }
+
+        &.scale-icon {
+            background-image: url(${scaleIcon});
+        }
+
+        &.move-icon {
+            background-image: url(${moveIcon});
         }
     }
 

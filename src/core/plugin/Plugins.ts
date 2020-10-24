@@ -1,26 +1,13 @@
-import { CodeEditorPluginFactory } from '../../plugins/canvas_plugins/code_editor/CodeEditorPluginFactory';
-import { GameViewerPluginFactory } from '../../plugins/canvas_plugins/game_viewer/GameViewerPluginFactory';
-import { NodeEditorPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorPluginFactory';
-import { NodeEditorSettingsPluginFactory } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPluginFactory';
-import { ObjectSettingsPluginFactory } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPluginFactory';
-import { SceneEditorPluginFactory } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPluginFactory';
-import { ThumbnailDialogPluginFactory } from '../../plugins/canvas_plugins/scene_editor/ThumbnailDialogPluginFactory';
-import { AssetManagerPluginFactory } from '../../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
-import { SpriteSheetManagerFactory } from '../../plugins/dialog_plugins/spritesheet_manager/SpriteSheetManagerFactory';
-import { AssetManagerSidepanelPluginFactory } from '../../plugins/sidepanel_plugins/asset_manager/AssetManagerSidepanelPluginFactory';
-import { FileSettingslPluginFactory } from '../../plugins/sidepanel_plugins/file_settings/FileSettingsPluginFactory';
-import { LayoutSettingsPluginFactory } from '../../plugins/sidepanel_plugins/layout_settings/LayoutSettingsPluginFactory';
-import { LevelSettingsPluginFactory } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPluginFactory';
-import { Registry } from '../Registry';
-import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
-import { FormController } from './controller/FormController';
-import { ToolController } from './controller/ToolController';
-import { UI_PluginFactory } from './UI_PluginFactory';
-import { UI_Plugin, UI_Region } from './UI_Plugin';
-import { EngineHooks } from '../engine/hooks/EngineHooks';
-import { CanvasPlugins } from './CanvasPlugins';
 import * as axisGizmoPlugin from '../../plugins/canvas/gizmos/axis_gizmo/axisGizmoPlugin';
 import * as screenCastKeysGizmoPlugin from '../../plugins/canvas/gizmos/screencast_keys_gizmo/screenCastKeysGizmoPlugin';
+import { EngineHooks } from '../engine/hooks/EngineHooks';
+import { Registry } from '../Registry';
+import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
+import { CanvasPlugins } from './CanvasPlugins';
+import { FormController } from './controller/FormController';
+import { ToolController } from './controller/ToolController';
+import { UI_Plugin, UI_Region } from './UI_Plugin';
+import { UI_PluginFactory } from './UI_PluginFactory';
 
 export class Plugins {
     engineHooks: EngineHooks;

@@ -23,6 +23,7 @@ export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
 export class NullTool implements Tool {
     rectangleSelection: Rectangle;
     id: string;
+    isSelected = false;
 
     getCursor() { return Cursor.Default; }
     

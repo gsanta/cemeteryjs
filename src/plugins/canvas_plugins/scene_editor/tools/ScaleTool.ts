@@ -7,13 +7,13 @@ import { Cursor } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 
-export const AxisToolId = 'axis-tool';
+export const ScaleToolId = 'scale-tool';
 
-export class AxisTool extends NullTool {
+export class ScaleTool extends NullTool {
     private downView: View;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(AxisToolId, plugin, registry);
+        super(ScaleToolId, plugin, registry);
     }
 
     over() {
@@ -33,6 +33,8 @@ export class AxisTool extends NullTool {
             this.downView = this.registry.services.pointer.hoveredItem;
         }
     }
+
+    
 
     drag() {
         if (!this.downView) { return; }

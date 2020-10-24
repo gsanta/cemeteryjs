@@ -63,6 +63,10 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     getCamera(): ICamera { 
         return undefined;
     };
+
+    getToolController() {
+        return this.registry.plugins.getToolController(this.id);
+    }
 }
 
 export const ZoomInProp = 'zoom-in';

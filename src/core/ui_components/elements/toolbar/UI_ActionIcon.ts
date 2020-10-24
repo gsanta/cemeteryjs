@@ -1,6 +1,5 @@
 import { UI_ElementType } from "../UI_ElementType";
 import { UI_Tooltip } from "../UI_Tooltip";
-import { UI_Plugin } from "../../../plugin/UI_Plugin";
 import { UI_Factory } from "../../UI_Factory";
 import { UI_InputElement } from "../UI_InputElement";
 

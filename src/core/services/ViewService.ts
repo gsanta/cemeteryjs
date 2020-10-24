@@ -1,4 +1,5 @@
 import { AxisViewFactory } from "../models/views/child_views/AxisView";
+import { ScaleViewFactory } from "../models/views/child_views/ScaleView";
 import { MeshViewFactory } from "../models/views/MeshView";
 import { NodeConnectionViewFactory } from "../models/views/NodeConnectionView";
 import { NodeViewFactory } from "../models/views/NodeView";
@@ -20,6 +21,7 @@ export class ViewService {
         this.registerView(new NodeViewFactory(this.registry));
         this.registerView(new NodeConnectionViewFactory());
         this.registerView(new AxisViewFactory(this.registry));
+        this.registerView(new ScaleViewFactory(this.registry));
     }
 
     getRegisteredTypes(): string[] {
