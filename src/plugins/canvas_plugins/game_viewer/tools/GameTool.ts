@@ -4,13 +4,13 @@ import { Registry } from "../../../../core/Registry";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { KeyboardNodeType } from "../../node_editor/nodes/KeyboardNodeObj";
 
-export const GameToolType = 'game-tool';
+export const GameToolId = 'game-tool';
 export class GameTool extends NullTool {
     // TODO: not a good place for it
     lastExecutedKey: string;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
-        super(GameToolType, plugin, registry);
+        super(GameToolId, plugin, registry);
     }
 
     keydown(e: IKeyboardEvent) {

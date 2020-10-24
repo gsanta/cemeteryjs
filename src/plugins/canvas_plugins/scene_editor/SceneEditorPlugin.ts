@@ -45,9 +45,7 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
         const toolbar = canvas.toolbar();
 
         const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
-        
-        const meshTool = <MeshTool> (this.registry.plugins.getToolController(this.id).getToolById(MeshToolId));
-        
+                
         let tool = toolbar.tool({prop: MeshToolId});
         tool.icon = 'mesh';
         tool.isActive = selectedTool.id === MeshToolId;

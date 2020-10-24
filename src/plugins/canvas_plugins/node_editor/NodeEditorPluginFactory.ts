@@ -9,6 +9,7 @@ import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { NodeEditorPlugin, NodeEditorPluginId } from "./NodeEditorPlugin";
 import { JoinTool } from "./tools/JoinTool";
+import { CommonToolController } from "../../../core/plugin/controller/ToolController";
 
 export class NodeEditorPluginFactory implements UI_PluginFactory {
     pluginId = NodeEditorPluginId;
@@ -20,7 +21,8 @@ export class NodeEditorPluginFactory implements UI_PluginFactory {
     createPropControllers(): PropController[] {
         return [
             new ZoomInController(),
-            new ZoomOutController()
+            new ZoomOutController(),
+            new CommonToolController()
         ];
     }
 

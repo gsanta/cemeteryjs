@@ -9,7 +9,7 @@ import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";
-import { GameTool, GameToolType } from "../../game_viewer/tools/GameTool";
+import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
@@ -45,7 +45,7 @@ export class KeyboardNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj, registry: Registry) {
         const keyParams = this.getKeyParams(nodeObj);
 
-        const gameTool = <GameTool> registry.plugins.getToolController(GameViewerPluginId).getToolById(GameToolType);
+        const gameTool = <GameTool> registry.plugins.getToolController(GameViewerPluginId).getToolById(GameToolId);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 

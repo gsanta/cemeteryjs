@@ -16,6 +16,20 @@ export const RouteNodeFacotry: NodeFactory = {
     createNodeObj(): NodeObj {
         const obj = new NodeObj(RouteNodeObjType, {displayName: 'Route', customParamSerializer: new RouteNodeSerializer()});
 
+        obj.addParam({
+            name: 'speed',
+            val: 1,
+            uiOptions: {
+                inputType: 'textField',
+                valueType: 'number'
+            }
+        });
+
+        obj.addParam({
+            name: 'routeWalker',
+            val: undefined
+        });
+
         obj.inputs = [
             {
                 name: 'mesh'
@@ -51,21 +65,6 @@ export const RouteNodeFacotry: NodeFactory = {
         return new RouteNodeExecutor();
     }
 }
-
-const params: NodeParam[] = [
-    {
-        name: 'speed',
-        val: 1,
-        uiOptions: {
-            inputType: 'textField',
-            valueType: 'number'
-        }
-    },
-    {
-        name: 'routeWalker',
-        val: undefined
-    },
-];
 
 class RouteNodeSerializer implements CustomNodeParamSerializer {
     serialize(param: NodeParam): NodeParamJson {

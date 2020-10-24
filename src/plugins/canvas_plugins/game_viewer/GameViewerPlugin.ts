@@ -5,7 +5,7 @@ import { UI_Region } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { GameViewerProps } from './GameViewerProps';
-import { GameToolType } from './tools/GameTool';
+import { GameToolId } from './tools/GameTool';
 import { CameraToolId } from '../../../core/plugin/tools/CameraTool';
 (<any> window).earcut = require('earcut');
 
@@ -41,9 +41,12 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
     protected renderInto(layout: UI_Layout): void {
         const canvas = layout.htmlCanvas();
 
+        const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
+
         const toolbar = canvas.toolbar();
 
         let tool = toolbar.tool({prop: CameraToolId});
+        tool.isActive = selectedTool.id === CameraToolId;
         tool.icon = 'pan';
         let tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
@@ -64,7 +67,8 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        tool = toolbar.tool({prop: GameToolType});
+        tool = toolbar.tool({prop: GameToolId});
+        tool.isActive = selectedTool.id === GameToolId;
         tool.icon = 'games';
         tool.placement = 'middle';
         tooltip = tool.tooltip();

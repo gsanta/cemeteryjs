@@ -1,5 +1,4 @@
 import { Registry } from '../../Registry';
-import { NodeGraph } from '../../services/node/NodeGraph';
 import { IObj, ObjFactory, ObjJson } from './IObj';
 import { NodeConnectionObj } from './NodeConnectionObj';
 
@@ -112,11 +111,11 @@ export class NodeObj implements IObj {
     }
 
     getParam(name: string): NodeParam {
-        this.checkParam(name);
         return this.cachedParams.get(name);
     }
 
     getParams(): NodeParam[] {
+        this.checkParam(name);
         return this.params;
     }
 
@@ -128,11 +127,9 @@ export class NodeObj implements IObj {
         if (this.cachedParams.get(name) === undefined) {
             const param = this.params.find(param => param.name === name);
 
-            if (!param) {
-                throw new Error(`Param name ${name} does not exist in node obj type ${this.type}`);
+            if (param) {
+                this.cachedParams.set(param.name, param);
             }
-
-            this.cachedParams.set(param.name, param);
         }
     }
 

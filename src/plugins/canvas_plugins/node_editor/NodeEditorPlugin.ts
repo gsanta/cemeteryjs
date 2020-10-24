@@ -69,10 +69,6 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
     constructor(registry: Registry) {
         super(registry);
 
-        // setTimeout(() => {
-    
-        // }, 0);
-
         this.camera = cameraInitializer(NodeEditorPluginId, registry);
     }
 
@@ -111,18 +107,22 @@ export class NodeEditorPlugin extends AbstractCanvasPlugin {
         dropLayer.isDragging = !!this.dropItem;
 
         const toolbar = canvas.toolbar();
+        const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
 
         let tool = toolbar.tool({prop: SelectToolId});
         tool.icon = 'select';
+        tool.isActive = selectedTool.id === SelectToolId;
         let tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
         tool = toolbar.tool({prop: DeleteToolId});
+        tool.isActive = selectedTool.id === DeleteToolId;
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
         tool = toolbar.tool({prop: CameraToolId});
+        tool.isActive = selectedTool.id === CameraToolId;
         tool.icon = 'pan';
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
