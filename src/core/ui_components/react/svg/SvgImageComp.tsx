@@ -10,6 +10,7 @@ export const SvgImageComp = (props: UI_ComponentProps<UI_SvgImage>) => {
             y={props.element.y || 0} 
             width={`${props.element.width}px`}
             height={`${props.element.height}px`}
+            preserveAspectRatio={props.element.preservAspectRatio}
         />
     );
 }

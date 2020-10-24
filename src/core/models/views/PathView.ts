@@ -6,6 +6,7 @@ import { PathObj } from "../objs/PathObj";
 import { minBy, maxBy } from "../../../utils/geometry/Functions";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
+import { sceneAndGameViewRatio } from "../../stores/ViewStore";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
@@ -95,7 +96,7 @@ export class PathView extends View {
     }
 
     update() {
-        this.obj.points = this.children.map(point => point.point.clone().div(10).negateY());
+        this.obj.points = this.children.map(point => point.point.clone().divX(9.3).divY(10).negateY());
         this.str = undefined;
     }
 

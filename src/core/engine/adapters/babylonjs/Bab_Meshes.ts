@@ -19,7 +19,7 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     private registry: Registry;
     private engineFacade: Bab_EngineFacade;
-    private rectangleFactory: RectangleFactory = new RectangleFactory(0.1, 'black');
+    private rectangleFactory: RectangleFactory = new RectangleFactory(1, 'black');
 
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;

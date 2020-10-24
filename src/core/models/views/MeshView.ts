@@ -3,6 +3,7 @@ import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
+import { sceneAndGameViewRatio } from '../../stores/ViewStore';
 import { UI_SvgCanvas } from '../../ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../ui_components/react/styles';
 import { MeshObj } from '../objs/MeshObj';
@@ -48,6 +49,7 @@ export class MeshViewFactory implements ViewFactory {
             image.href = meshView.thumbnailData;
             image.width = meshView.getBounds().getWidth();
             image.height = meshView.getBounds().getHeight();
+            image.preservAspectRatio = "xMidYMid slice";
         }
 
         return thumbnail;
@@ -77,7 +79,7 @@ export class MeshView extends View {
         this.obj = obj;
 
         if (this.bounds) { 
-            const pos2 = this.bounds.getBoundingCenter().div(10).negateY();
+            const pos2 = this.bounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
             this.obj.setPosition(new Point_3(pos2.x, this.obj.getPosition().y, pos2.y));
         }
     }
@@ -121,7 +123,7 @@ export class MeshView extends View {
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
 
-        const point2 = point.div(10).negateY();
+        const point2 = point.div(sceneAndGameViewRatio).negateY();
         this.obj.move(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
         this.children.forEach(child => child.calcBounds());
     }
@@ -134,7 +136,7 @@ export class MeshView extends View {
         const center = this.bounds && this.bounds.getBoundingCenter();
         this.bounds = bounds;
 
-        const pos2 = this.bounds.getBoundingCenter().div(10).negateY();
+        const pos2 = this.bounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
         const objPos = this.obj.getPosition();
         
         // TODO: fix this mess, it can break easily, causing infinite loop
@@ -162,7 +164,7 @@ export class MeshView extends View {
 
     fromJson(json: MeshViewJson, registry: Registry) {
         super.fromJson(json, registry);
-        const point2 = this.bounds.getBoundingCenter().div(10).negateY()
+        const point2 = this.bounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY()
         this.obj.setPosition(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
         this.rotation = json.rotation;
         this.scale = json.scale;

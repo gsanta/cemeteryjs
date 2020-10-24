@@ -10,7 +10,7 @@ export type GameState = 'running' | 'paused';
 export class GameStore {
     private hooks: GameStoreHook[] = [];
 
-    private _gameState: GameState = 'paused';
+    private _gameState: GameState = 'running';
 
     private registry: Registry;
 

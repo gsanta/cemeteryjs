@@ -6,6 +6,7 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { SpriteView, SpriteViewType } from "../../../../core/models/views/SpriteView";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { SpriteObj, SpriteObjType } from "../../../../core/models/objs/SpriteObj";
+import { colors } from "../../../../core/ui_components/react/styles";
 
 export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool {
@@ -16,7 +17,7 @@ export class SpriteTool extends RectangleTool {
 
     protected createView(rect: Rectangle): View {
         const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
-        spriteObj.color = 'green';
+        spriteObj.color = colors.darkorchid;
 
         const spriteView: SpriteView = <SpriteView> this.registry.services.viewService.createView(SpriteViewType);
         spriteView.setObj(spriteObj);
@@ -24,7 +25,6 @@ export class SpriteTool extends RectangleTool {
         spriteObj.spriteAdapter = this.registry.engine.sprites;
         spriteObj.setScale(new Point(3, 3));
         spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y);
-        spriteView.color = 'green';
 
         this.registry.stores.views.addView(spriteView);
         this.registry.stores.objStore.addObj(spriteObj);

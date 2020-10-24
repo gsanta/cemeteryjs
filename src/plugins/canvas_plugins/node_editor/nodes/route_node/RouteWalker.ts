@@ -31,7 +31,7 @@ export class RouteWalker {
         const deltaTime = this.prevTime === undefined ? 0 : Date.now() - this.prevTime;
         this.prevTime = Date.now();
     
-        if (this.currentDestinationPointIndex === -1) {
+    if (this.currentDestinationPointIndex === -1) {
             this.initRoute();
         } else {
             this.updateRoute(deltaTime);

@@ -23,7 +23,7 @@ export class SpriteViewFactory implements ViewFactory {
 
     constructor(registry: Registry) {
         this.registry = registry;
-    }
+}
 
     newInstance() { return new SpriteView(); }
 
@@ -34,7 +34,7 @@ export class SpriteViewFactory implements ViewFactory {
         const rect = group.rect();
         rect.width = view.getBounds().getWidth();
         rect.height = view.getBounds().getHeight();
-        rect.fillColor = 'green';
+        rect.fillColor = 'grey';
 
         rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 

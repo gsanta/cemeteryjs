@@ -9,6 +9,8 @@ import { SpriteViewType } from "../models/views/SpriteView";
 import { MeshViewType } from "../models/views/MeshView";
 import { ScaleViewType } from "../models/views/child_views/ScaleView";
 
+export const sceneAndGameViewRatio = 10;
+
 export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
     const x = rectangle.topLeft.x;
     const y = rectangle.topLeft.y;

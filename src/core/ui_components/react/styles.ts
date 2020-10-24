@@ -5,6 +5,9 @@ export const colors = {
     grey3: '#595959',
     grey4: '#444444',
     lightPink: '#FFB6C1',
+    darkorchid: '#9932CC',
+
+
     textColor: '#EDF0EE',
     textColorDark: '#1c1d1f',
     active: '#F2F1ED',
@@ -21,7 +24,7 @@ export const colors = {
     views: {
         highlight: '#5e5ad1',
         stroke: 'black',
-        delete: 'red'
+        delete: 'red',
     },
 }
 

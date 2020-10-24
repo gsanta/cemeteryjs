@@ -16,7 +16,7 @@ export class MeshTool extends RectangleTool {
 
     protected createView(rect: Rectangle): View {
         const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
-        meshObj.color = colors.lightPink;
+        meshObj.color = colors.darkorchid;
 
         const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(MeshViewType);
         meshView.setObj(meshObj);

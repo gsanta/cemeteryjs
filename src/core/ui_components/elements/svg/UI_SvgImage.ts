@@ -11,6 +11,7 @@ export class UI_SvgImage extends UI_Element {
     transform: string;
     width: number;
     height: number;
+    preservAspectRatio: string;
     x: number;
     y: number;
     strokeColor: string;
