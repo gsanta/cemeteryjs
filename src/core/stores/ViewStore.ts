@@ -4,10 +4,11 @@ import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
-import { AxisView, AxisViewRenderer, AxisViewType } from "../models/views/child_views/AxisView";
+import { AxisView, AxisViewType } from "../models/views/child_views/AxisView";
 import { SpriteViewType } from "../models/views/SpriteView";
 import { MeshViewType } from "../models/views/MeshView";
-import { CanvasAxis, ScaleView, ScaleViewType } from "../models/views/child_views/ScaleView";
+import { ScaleView, ScaleViewType } from "../models/views/child_views/ScaleView";
+import { CanvasAxis } from "../models/misc/CanvasAxis";
 
 export const sceneAndGameViewRatio = 10;
 
@@ -219,9 +220,14 @@ export class AxisControlHook extends EmptyViewStoreHook {
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
             let axisView: AxisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            axisView.axis = CanvasAxis.Z;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
+            axisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            axisView.axis = CanvasAxis.X;
+            axisView.setParent(views[0]);
+            views[0].addChild(axisView);
 
             let scaleView: ScaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
             scaleView.axis = CanvasAxis.X;

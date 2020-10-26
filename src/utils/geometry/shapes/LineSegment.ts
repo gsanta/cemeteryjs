@@ -2,7 +2,7 @@ import { Point } from './Point';
 import { Rectangle } from './Rectangle';
 import { Shape } from './Shape';
 
-export class FiniteLine implements Shape {
+export class LineSegment implements Shape {
     point1: Point;
     point2: Point;
     
@@ -14,11 +14,11 @@ export class FiniteLine implements Shape {
     public translate(point: Point): Shape {
         const point0 = this.point1.addX(point.x).addY(point.y);
         const point1 = this.point2.addX(point.x).addY(point.y);
-        return new FiniteLine(point0, point1);
+        return new LineSegment(point0, point1);
     }
 
     public clone(): Shape {
-        return new FiniteLine(this.point1, this.point2);
+        return new LineSegment(this.point1, this.point2);
     }
 
     public getBoundingRectangle(): Rectangle {
@@ -35,7 +35,7 @@ export class FiniteLine implements Shape {
         return new Point((this.point1.x + this.point2.x) / 2, (this.point1.y + this.point2.y) / 2);
     }
 
-    public getEdges(): FiniteLine[] {
+    public getEdges(): LineSegment[] {
         return [this];
     }
 
@@ -50,13 +50,13 @@ export class FiniteLine implements Shape {
         return new Point(x, y);
     }
 
-    public scale(scalePoint: Point): FiniteLine {
+    public scale(scalePoint: Point): LineSegment {
         const point0 = this.point1.scaleX(scalePoint.x).scaleY(scalePoint.y);
         const point1 = this.point2.scaleX(scalePoint.x).scaleY(scalePoint.y);
-        return new FiniteLine(point0, point1);
+        return new LineSegment(point0, point1);
     }
 
-    public equalTo(otherLine: FiniteLine): boolean {
+    public equalTo(otherLine: LineSegment): boolean {
         return this.point1.equalTo(otherLine.point1) && this.point2.equalTo(otherLine.point2);
     }
 

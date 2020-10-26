@@ -1,7 +1,7 @@
 import { Rectangle } from "../../../../src/utils/geometry/shapes/Rectangle";
 import { Point } from "../../../../src/utils/geometry/shapes/Point";
 import { Polygon } from "../../../../src/utils/geometry/shapes/Polygon";
-import { FiniteLine } from "../../../../src/utils/geometry/shapes/FiniteLine";
+import { LineSegment } from "../../../../src/utils/geometry/shapes/LineSegment";
 
 describe('Polygon', () => {
     describe('contains', () => {

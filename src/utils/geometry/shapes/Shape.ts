@@ -1,6 +1,6 @@
 import { Point } from "./Point";
 import { Rectangle } from "./Rectangle";
-import { FiniteLine } from "./FiniteLine";
+import { LineSegment } from "./LineSegment";
 
 export enum ShapeOrigin {
     CENTER

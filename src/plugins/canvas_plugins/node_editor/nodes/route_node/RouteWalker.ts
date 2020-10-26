@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
-import { FiniteLine } from "../../../../../utils/geometry/shapes/FiniteLine";
+import { LineSegment } from "../../../../../utils/geometry/shapes/LineSegment";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { BezierCurve } from "./BezierCurve";

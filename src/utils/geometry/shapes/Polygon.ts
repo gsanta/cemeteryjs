@@ -3,7 +3,7 @@ import booleanOverlaps from '@turf/boolean-overlap';
 import * as turfHelpers from '@turf/helpers';
 import polylabel from 'polylabel';
 import { Point } from './Point';
-import { FiniteLine } from './FiniteLine';
+import { LineSegment } from './LineSegment';
 import { BoundingInfo, Shape, ShapeOrigin } from './Shape';
 import { Angle } from './Angle';
 import { Measurements } from '../Measurements';
@@ -136,12 +136,12 @@ export class Polygon implements Shape {
     /**
      * @deprecated use `getEdges` instead, it has the same behaviour, but a more unified naming convention
      */
-    getSidesFromBottomLeftClockwise(): FiniteLine[] {
+    getSidesFromBottomLeftClockwise(): LineSegment[] {
         return this.orederedPoints.map((point, index) => {
             if (index < this.orederedPoints.length - 1) {
-                return new FiniteLine(point, this.orederedPoints[index + 1]);
+                return new LineSegment(point, this.orederedPoints[index + 1]);
             } else {
-                return new FiniteLine(point, this.orederedPoints[0]);
+                return new LineSegment(point, this.orederedPoints[0]);
             }
         });
     }

@@ -1,6 +1,6 @@
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { BezierCurve } from "./BezierCurve";
-import { FiniteLine } from "../../../../../utils/geometry/shapes/FiniteLine";
+import { LineSegment } from "../../../../../utils/geometry/shapes/LineSegment";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 
 export class BezierCurvePath {
@@ -38,13 +38,13 @@ export class BezierCurvePath {
     }
 
     private createBezierPointsForPathPoint(currPoint: Point, prevPoint: Point, nextPoint: Point) {
-        const line1 = new FiniteLine(prevPoint, currPoint);
+        const line1 = new LineSegment(prevPoint, currPoint);
         const t1 = (line1.getLength() - this.bezierDelta) / line1.getLength();
         const point1 = line1.getPointAtRatio(t1);
 
         const controlPoint = currPoint;
 
-        const line2 = new FiniteLine(currPoint, nextPoint);
+        const line2 = new LineSegment(currPoint, nextPoint);
         const t2 = this.bezierDelta / line2.getLength();
         const point2 = line2.getPointAtRatio(t2);
 

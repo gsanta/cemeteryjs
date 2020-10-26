@@ -1,5 +1,6 @@
+import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
 import { AxisViewType } from "../../../../core/models/views/child_views/AxisView";
-import { CanvasAxis, ScaleView } from "../../../../core/models/views/child_views/ScaleView";
+import { ScaleView } from "../../../../core/models/views/child_views/ScaleView";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
@@ -24,7 +25,7 @@ export class ScaleTool extends NullTool {
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    out(view: ScaleView) {
+    out() {
         this.hoveredView = undefined;
         if (!this.downView) {
             this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);

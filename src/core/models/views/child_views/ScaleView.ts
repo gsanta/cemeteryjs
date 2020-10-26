@@ -5,6 +5,7 @@ import { AbstractCanvasPlugin } from "../../../plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../Registry";
 import { UI_SvgGroup } from "../../../ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../ui_components/elements/UI_SvgCanvas";
+import { CanvasAxis } from "../../misc/CanvasAxis";
 import { IObj } from "../../objs/IObj";
 import { PathObj } from "../../objs/PathObj";
 import { View, ViewFactory, ViewJson, ViewRenderer } from "../View";
@@ -13,12 +14,6 @@ import { ChildView } from "./ChildView";
 export interface AxisViewJson extends ViewJson {
     point: string;
     parentId: string; 
-}
-
-export enum CanvasAxis {
-    X = 'X',
-    Y = 'Y',
-    Z = 'Z'
 }
 
 export const ScaleViewType = 'scale-view';
@@ -40,6 +35,9 @@ export class ScaleViewFactory implements ViewFactory {
 }
 
 const arrowLength = 50;
+export interface ArrowBounds {
+    [axis: string]: Rectangle;
+}
 
 class ScaleViewRenderer implements ViewRenderer {
     private registry: Registry;
@@ -51,37 +49,17 @@ class ScaleViewRenderer implements ViewRenderer {
         [CanvasAxis.Z]: undefined,
     }
 
-    private relativeArrowLineCoords = {
-        [CanvasAxis.X]: {
-            topLeft: [0, 0],
-            botRight: [arrowLength, 0]
-        },
-        [CanvasAxis.Z]: {
-            topLeft: [0, -arrowLength],
-            botRight: [0, 0]
-        }
+    private lineBounds: ArrowBounds = {
+        [CanvasAxis.X]: new Rectangle(new Point(0, 0), new Point(arrowLength, 0)),
+        [CanvasAxis.Z]: new Rectangle(new Point(0, -arrowLength), new Point(0, 0))
     }
-
-    private relativeArrowHeadCoords = {
-        [CanvasAxis.X]: {
-            topLeft: [arrowLength, -7],
-            botRight: [arrowLength + 14, 7]
-        },
-        [CanvasAxis.Z]: {
-            topLeft: [-7, - arrowLength - 14],
-            botRight: [7, - arrowLength]
-        }
+    private arrowHeadBounds: ArrowBounds = {
+        [CanvasAxis.X]: new Rectangle(new Point(arrowLength, -7), new Point(arrowLength + 14, 7)),
+        [CanvasAxis.Z]: new Rectangle(new Point(-7, - arrowLength - 14), new Point(7, - arrowLength))
     }
-
-    private relativeBoundingRectCoords = {
-        [CanvasAxis.X]: {
-            topLeft: [0, -7],
-            botRight: [arrowLength + 14, 7]
-        },
-        [CanvasAxis.Z]: {
-            topLeft: [-7, - arrowLength - 14],
-            botRight: [7, 0]
-        }
+    private arrowBounds: ArrowBounds = {
+        [CanvasAxis.X]: new Rectangle(new Point(0, -7), new Point(arrowLength + 14, 7)),
+        [CanvasAxis.Z]: new Rectangle(new Point(-7, - arrowLength - 14), new Point(7, 0))
     }
 
     constructor(registry: Registry) {
@@ -109,10 +87,10 @@ class ScaleViewRenderer implements ViewRenderer {
     private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleView) {
         const center = scaleView.parent.getBounds().getBoundingCenter();
 
-        const x1 = center.x + this.relativeBoundingRectCoords[scaleView.axis].topLeft[0];
-        const y1 = center.y + this.relativeBoundingRectCoords[scaleView.axis].topLeft[1];
-        const x2 = center.x + this.relativeBoundingRectCoords[scaleView.axis].botRight[0];
-        const y2 = center.y + this.relativeBoundingRectCoords[scaleView.axis].botRight[1];
+        const x1 = center.x + this.arrowBounds[scaleView.axis].topLeft.x;
+        const y1 = center.y + this.arrowBounds[scaleView.axis].topLeft.y;
+        const x2 = center.x + this.arrowBounds[scaleView.axis].bottomRight.x;
+        const y2 = center.y + this.arrowBounds[scaleView.axis].bottomRight.y;
 
         const rect = group.rect();
         rect.x = x1;
@@ -136,10 +114,10 @@ class ScaleViewRenderer implements ViewRenderer {
             strokeWidth: "3"
         }
 
-        const x1 = center.x + this.relativeArrowLineCoords[scaleView.axis].topLeft[0];
-        const y1 = center.y + this.relativeArrowLineCoords[scaleView.axis].topLeft[1];
-        const x2 = center.x + this.relativeArrowLineCoords[scaleView.axis].botRight[0];
-        const y2 = center.y + this.relativeArrowLineCoords[scaleView.axis].botRight[1];
+        const x1 = center.x + this.lineBounds[scaleView.axis].topLeft.x;
+        const y1 = center.y + this.lineBounds[scaleView.axis].topLeft.y;
+        const x2 = center.x + this.lineBounds[scaleView.axis].bottomRight.x;
+        const y2 = center.y + this.lineBounds[scaleView.axis].bottomRight.y;
 
         line.x1 = x1;
         line.y1 = y1;
@@ -151,10 +129,10 @@ class ScaleViewRenderer implements ViewRenderer {
         const center = scaleView.parent.getBounds().getBoundingCenter();
         const polygon = group.polygon();
 
-        const x1 = center.x + this.relativeArrowHeadCoords[scaleView.axis].topLeft[0];
-        const y1 = center.y + this.relativeArrowHeadCoords[scaleView.axis].topLeft[1];
-        const x2 = center.x + this.relativeArrowHeadCoords[scaleView.axis].botRight[0];
-        const y2 = center.y + this.relativeArrowHeadCoords[scaleView.axis].botRight[1];
+        const x1 = center.x + this.arrowHeadBounds[scaleView.axis].topLeft.x;
+        const y1 = center.y + this.arrowHeadBounds[scaleView.axis].topLeft.y;
+        const x2 = center.x + this.arrowHeadBounds[scaleView.axis].bottomRight.x;
+        const y2 = center.y + this.arrowHeadBounds[scaleView.axis].bottomRight.y;
 
         polygon.points = `${x1},${y1} ${x1},${y2} ${x2},${y2} ${x2},${y1}`;
         polygon.css = {
