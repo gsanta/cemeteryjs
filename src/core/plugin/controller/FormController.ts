@@ -16,7 +16,6 @@ export abstract class PropController<T = any> {
     blur?(context: PropContext<T>, element: UI_Element) {}
     defaultVal?(context: PropContext<T>, element: UI_Element) {}
     values?(context: PropContext<T>, element: UI_Element): T[] { return []; }
-
     onDndStart(context: PropContext<T>, element: UI_Element) {}
     onDndEnd(context: PropContext<T>, element: UI_Element) {}
 }

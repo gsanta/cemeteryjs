@@ -1,4 +1,5 @@
 import { AxisViewType } from "../../../../core/models/views/child_views/AxisView";
+import { CanvasAxis, ScaleView } from "../../../../core/models/views/child_views/ScaleView";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
@@ -11,17 +12,20 @@ export const ScaleToolId = 'scale-tool';
 
 export class ScaleTool extends NullTool {
     private downView: View;
+    private hoveredView: ScaleView;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(ScaleToolId, plugin, registry);
     }
 
-    over() {
+    over(view: ScaleView) {
+        this.hoveredView = view;
         this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    out() {
+    out(view: ScaleView) {
+        this.hoveredView = undefined;
         if (!this.downView) {
             this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.plugin.region);
@@ -55,6 +59,6 @@ export class ScaleTool extends NullTool {
     }
 
     getCursor() {
-        return Cursor.N_Resize;
+        return this.hoveredView ? this.hoveredView.axis === CanvasAxis.X ? Cursor.W_Resize : Cursor.N_Resize : Cursor.Default;
     }
 }

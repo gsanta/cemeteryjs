@@ -1,10 +1,12 @@
 import { Point } from '../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { ICamera } from '../models/misc/camera/ICamera';
+import { View } from '../models/views/View';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { PropContext, PropController } from './controller/FormController';
+import { ToolController } from './controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { ToolType } from './tools/Tool';
@@ -66,6 +68,13 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     getToolController() {
         return this.registry.plugins.getToolController(this.id);
+    }
+
+    toolController(view: View, toolId: string): ToolController {
+        const toolController = this.getToolController();
+        toolController.controlledView = view;
+        toolController.scopedTool = toolController.getToolById(toolId);
+        return toolController;
     }
 }
 

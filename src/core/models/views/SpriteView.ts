@@ -1,5 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
@@ -27,7 +28,7 @@ export class SpriteViewFactory implements ViewFactory {
 
     newInstance() { return new SpriteView(); }
 
-    renderInto(canvas: UI_SvgCanvas, view: SpriteView) {
+    renderInto(canvas: UI_SvgCanvas, view: SpriteView, plugin: AbstractCanvasPlugin) {
         const group = canvas.group(view.id);
         group.data = view;
         group.transform = `translate(${view.getBounds().topLeft.x} ${view.getBounds().topLeft.y})`;
@@ -38,7 +39,7 @@ export class SpriteViewFactory implements ViewFactory {
 
         rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
-        view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
+        view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child, plugin));
     }
 }
 

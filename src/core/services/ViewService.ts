@@ -5,12 +5,14 @@ import { NodeConnectionViewFactory } from "../models/views/NodeConnectionView";
 import { NodeViewFactory } from "../models/views/NodeView";
 import { PathViewFactory } from "../models/views/PathView";
 import { SpriteViewFactory } from "../models/views/SpriteView";
-import { View, ViewFactory } from "../models/views/View";
+import { View, ViewFactory, ViewRenderer } from "../models/views/View";
+import { AbstractCanvasPlugin } from "../plugin/AbstractCanvasPlugin";
 import { Registry } from "../Registry";
 import { UI_SvgCanvas } from "../ui_components/elements/UI_SvgCanvas";
 
 export class ViewService {
     private factoriesByType: Map<string, ViewFactory> = new Map();
+    private renderers: Map<string, ViewRenderer> = new Map();
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -34,6 +36,10 @@ export class ViewService {
 
     registerView(viewFactory: ViewFactory) {
         this.factoriesByType.set(viewFactory.viewType, viewFactory);
+
+        if (viewFactory.createRenderer) {
+            this.renderers.set(viewFactory.viewType, viewFactory.createRenderer(this.registry)); 
+        }
     }
 
     createView(viewType: string): View {
@@ -46,9 +52,11 @@ export class ViewService {
         return view;
     }
 
-    renderInto(canvas: UI_SvgCanvas, view: View) {
-        if (this.factoriesByType.get(view.viewType)) {
-            this.factoriesByType.get(view.viewType).renderInto(canvas, view);
+    renderInto(canvas: UI_SvgCanvas, view: View, plugin: AbstractCanvasPlugin) {
+        if (this.renderers.get(view.viewType)) {
+            this.renderers.get(view.viewType).renderInto(canvas, view, plugin);
+        } else if (this.factoriesByType.get(view.viewType)) {
+            this.factoriesByType.get(view.viewType).renderInto(canvas, view, plugin);
         }
     }
 }

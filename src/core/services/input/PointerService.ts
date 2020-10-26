@@ -108,7 +108,8 @@ export class PointerService {
             isHover: true
         });
 
-        this.determineTool(controller, element).over(data);
+        const view = controller.controlledView || data;
+        this.determineTool(controller, element).over(view);
 
         this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
     }
@@ -139,11 +140,11 @@ export class PointerService {
     private determineTool(toolController: ToolController, element: UI_Element): Tool {
         let tool: Tool;
 
-        if (element.scopedToolId) {
-            tool = toolController.getToolById((<UI_SvgGroup> element).scopedToolId);
-        }
+        // if (element.scopedToolId) {
+            // tool = toolController.getToolById((<UI_SvgGroup> element).scopedToolId);
+        // }
 
-        return tool || toolController.getActiveTool(); 
+        return toolController.scopedTool || toolController.getActiveTool(); 
     }
     
     private getScreenPoint(point: Point): Point {

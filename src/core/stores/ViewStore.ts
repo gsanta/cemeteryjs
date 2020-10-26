@@ -4,10 +4,10 @@ import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
-import { AxisView, AxisViewType } from "../models/views/child_views/AxisView";
+import { AxisView, AxisViewRenderer, AxisViewType } from "../models/views/child_views/AxisView";
 import { SpriteViewType } from "../models/views/SpriteView";
 import { MeshViewType } from "../models/views/MeshView";
-import { ScaleViewType } from "../models/views/child_views/ScaleView";
+import { CanvasAxis, ScaleView, ScaleViewType } from "../models/views/child_views/ScaleView";
 
 export const sceneAndGameViewRatio = 10;
 
@@ -218,22 +218,27 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
-            let child = this.registry.services.viewService.createView(AxisViewType);
-            child.setParent(views[0]);
-            views[0].addChild(child);
+            let axisView: AxisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            axisView.setParent(views[0]);
+            views[0].addChild(axisView);
 
-            child = this.registry.services.viewService.createView(ScaleViewType);
-            child.setParent(views[0]);
-            views[0].addChild(child);
+
+            let scaleView: ScaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
+            scaleView.axis = CanvasAxis.X;
+            scaleView.setParent(views[0]);
+            views[0].addChild(scaleView);
+
+            scaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
+            scaleView.axis = CanvasAxis.Z;
+            scaleView.setParent(views[0]);
+            views[0].addChild(scaleView);
         }
     }
 
     removeSelectionHook(views: View[]) {
         views.forEach(view => {
-            const axisView = view.children.find(view => view.viewType === AxisViewType);
-            if (axisView) {
-                view.deleteChild(axisView);
-            }
+            view.children.filter(view => view.viewType === AxisViewType).forEach(child => view.deleteChild(child));
+            view.children.filter(view => view.viewType === ScaleViewType).forEach(child => view.deleteChild(child));
         });
     }
 }

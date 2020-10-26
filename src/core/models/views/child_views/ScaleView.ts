@@ -7,7 +7,7 @@ import { UI_SvgGroup } from "../../../ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../../objs/IObj";
 import { PathObj } from "../../objs/PathObj";
-import { View, ViewFactory, ViewJson } from "../View";
+import { View, ViewFactory, ViewJson, ViewRenderer } from "../View";
 import { ChildView } from "./ChildView";
 
 export interface AxisViewJson extends ViewJson {
@@ -15,7 +15,7 @@ export interface AxisViewJson extends ViewJson {
     parentId: string; 
 }
 
-enum CanvasAxis {
+export enum CanvasAxis {
     X = 'X',
     Y = 'Y',
     Z = 'Z'
@@ -34,16 +34,14 @@ export class ScaleViewFactory implements ViewFactory {
 
     newInstance() { return new ScaleView(); }
 
-    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleView) {
-        new ArrowRenderer(this.registry, CanvasAxis.Z).renderInto(canvas.group(`z-control`), scaleView);
-        new ArrowRenderer(this.registry, CanvasAxis.X).renderInto(canvas.group(`x-control`), scaleView);
+    createRenderer(registry: Registry) {
+        return new ScaleViewRenderer(registry);
     }
 }
 
 const arrowLength = 50;
 
-class ArrowRenderer {
-    private axis: CanvasAxis;
+class ScaleViewRenderer implements ViewRenderer {
     private registry: Registry;
 
     static readonly arrowLength = 50;
@@ -86,23 +84,21 @@ class ArrowRenderer {
         }
     }
 
-    constructor(registry: Registry, axis: CanvasAxis) {
+    constructor(registry: Registry) {
         this.registry = registry;
-        this.axis = axis;
 
         this.colors[CanvasAxis.X] = this.registry.preferences.colors.red;
         this.colors[CanvasAxis.Z] = this.registry.preferences.colors.blue;
     }
 
-    renderInto(group: UI_SvgGroup, scaleView: ScaleView) {
-        const plugin = (<AbstractCanvasPlugin> this.registry.plugins.getById(group.pluginId));
-        
+    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleView, plugin: AbstractCanvasPlugin) {
         if (!plugin.getToolController().getToolById(ScaleToolId).isSelected) {
             return null;
         }
 
+        const group = canvas.group(scaleView.id)
         group.data = scaleView;
-        group.scopedToolId = ScaleToolId;
+        group.controller = () => plugin.toolController(scaleView, ScaleToolId)
         group.isInteractive = true;
 
         this.renderBoundingRect(group, scaleView);
@@ -113,10 +109,10 @@ class ArrowRenderer {
     private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleView) {
         const center = scaleView.parent.getBounds().getBoundingCenter();
 
-        const x1 = center.x + this.relativeBoundingRectCoords[this.axis].topLeft[0];
-        const y1 = center.y + this.relativeBoundingRectCoords[this.axis].topLeft[1];
-        const x2 = center.x + this.relativeBoundingRectCoords[this.axis].botRight[0];
-        const y2 = center.y + this.relativeBoundingRectCoords[this.axis].botRight[1];
+        const x1 = center.x + this.relativeBoundingRectCoords[scaleView.axis].topLeft[0];
+        const y1 = center.y + this.relativeBoundingRectCoords[scaleView.axis].topLeft[1];
+        const x2 = center.x + this.relativeBoundingRectCoords[scaleView.axis].botRight[0];
+        const y2 = center.y + this.relativeBoundingRectCoords[scaleView.axis].botRight[1];
 
         const rect = group.rect();
         rect.x = x1;
@@ -136,14 +132,14 @@ class ArrowRenderer {
         const line = group.line();
         line.css = {
             pointerEvents: 'none',
-            stroke: this.colors[this.axis],
+            stroke: this.colors[scaleView.axis],
             strokeWidth: "3"
         }
 
-        const x1 = center.x + this.relativeArrowLineCoords[this.axis].topLeft[0];
-        const y1 = center.y + this.relativeArrowLineCoords[this.axis].topLeft[1];
-        const x2 = center.x + this.relativeArrowLineCoords[this.axis].botRight[0];
-        const y2 = center.y + this.relativeArrowLineCoords[this.axis].botRight[1];
+        const x1 = center.x + this.relativeArrowLineCoords[scaleView.axis].topLeft[0];
+        const y1 = center.y + this.relativeArrowLineCoords[scaleView.axis].topLeft[1];
+        const x2 = center.x + this.relativeArrowLineCoords[scaleView.axis].botRight[0];
+        const y2 = center.y + this.relativeArrowLineCoords[scaleView.axis].botRight[1];
 
         line.x1 = x1;
         line.y1 = y1;
@@ -155,14 +151,14 @@ class ArrowRenderer {
         const center = scaleView.parent.getBounds().getBoundingCenter();
         const polygon = group.polygon();
 
-        const x1 = center.x + this.relativeArrowHeadCoords[this.axis].topLeft[0];
-        const y1 = center.y + this.relativeArrowHeadCoords[this.axis].topLeft[1];
-        const x2 = center.x + this.relativeArrowHeadCoords[this.axis].botRight[0];
-        const y2 = center.y + this.relativeArrowHeadCoords[this.axis].botRight[1];
+        const x1 = center.x + this.relativeArrowHeadCoords[scaleView.axis].topLeft[0];
+        const y1 = center.y + this.relativeArrowHeadCoords[scaleView.axis].topLeft[1];
+        const x2 = center.x + this.relativeArrowHeadCoords[scaleView.axis].botRight[0];
+        const y2 = center.y + this.relativeArrowHeadCoords[scaleView.axis].botRight[1];
 
         polygon.points = `${x1},${y1} ${x1},${y2} ${x2},${y2} ${x2},${y1}`;
         polygon.css = {
-            fill: this.colors[this.axis]
+            fill: this.colors[scaleView.axis]
         }
     }
 }
@@ -171,6 +167,7 @@ export class ScaleView extends ChildView {
     id: string;
     viewType = ScaleViewType;
     point: Point;
+    axis: CanvasAxis;
     readonly parent: View;
 
     constructor() {

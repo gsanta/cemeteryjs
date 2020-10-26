@@ -141,8 +141,8 @@ export class SceneEditorPlugin extends Canvas_2d_Plugin {
 
     private renderViews(canvas: UI_SvgCanvas, views: View[]) {
         views.forEach(view => {
-            this.registry.services.viewService.renderInto(canvas, view);
-            view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child));
+            this.registry.services.viewService.renderInto(canvas, view, this);
+            view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child, this));
         });
     }
 

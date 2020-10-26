@@ -3,10 +3,11 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPlugin } from "../../../plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../Registry";
+import { UI_Container } from "../../../ui_components/elements/UI_Container";
 import { UI_SvgCanvas } from "../../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../../objs/IObj";
 import { PathObj } from "../../objs/PathObj";
-import { View, ViewFactory, ViewJson } from "../View";
+import { View, ViewFactory, ViewJson, ViewRenderer } from "../View";
 import { ChildView } from "./ChildView";
 
 export interface AxisViewJson extends ViewJson {
@@ -27,14 +28,25 @@ export class AxisViewFactory implements ViewFactory {
 
     newInstance() { return new AxisView(); }
 
-    renderInto(canvas: UI_SvgCanvas, axisView: AxisView) {
-        const plugin = (<AbstractCanvasPlugin> this.registry.plugins.getById(canvas.pluginId));
-        
+    createRenderer(registry: Registry) {
+        return new AxisViewRenderer(registry);
+    }
+}
+
+export class AxisViewRenderer implements ViewRenderer {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    renderInto(canvas: UI_SvgCanvas, axisView: View, plugin: AbstractCanvasPlugin) {
         if (!plugin.getToolController().getToolById(AxisToolId).isSelected) {
             return null;
         }
 
         const group = canvas.group(`y-control`);
+        group.controller = () => plugin.toolController(axisView, AxisToolId);
         group.data = axisView;
         group.scopedToolId = AxisToolId;
         group.isInteractive = true;

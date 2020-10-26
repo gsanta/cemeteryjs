@@ -76,6 +76,9 @@ export class MousePointer {
 }
 
 export class ToolController {
+    controlledView: View;
+    scopedTool: Tool;
+
     private registry: Registry;
     private plugin: AbstractCanvasPlugin;
 
