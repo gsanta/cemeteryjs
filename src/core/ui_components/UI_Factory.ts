@@ -40,6 +40,8 @@ import { UI_TextField } from './elements/UI_TextField';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
+import { UI_SvgDef } from './elements/svg/UI_SvgDef';
+import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 
 export class UI_Factory {
 
@@ -373,6 +375,28 @@ Id
         element.data = parent.data;
         element.generateId(parent);
         this.setupElement(parent, element);
+
+        parent.children.push(element);
+        
+        return element;
+    }
+
+    static svgDef(parent: UI_Container, config: UI_ElementConfig): UI_SvgDef {
+        const element = new UI_SvgDef(parent.pluginId);
+        element.key = config.key;
+        
+        element.generateId(parent);
+
+        parent.children.push(element);
+        
+        return element;
+    }
+
+    static svgMarker(parent: UI_Container, config: UI_ElementConfig): UI_SvgMarker {
+        const element = new UI_SvgMarker(parent.pluginId);
+        element.key = config.key;
+        
+        element.generateId(parent);
 
         parent.children.push(element);
         

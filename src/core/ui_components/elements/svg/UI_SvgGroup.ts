@@ -1,5 +1,6 @@
 import { UI_Factory } from '../../UI_Factory';
 import { UI_Container } from '../UI_Container';
+import { UI_ElementConfig } from '../UI_Element';
 import { UI_ElementType } from '../UI_ElementType';
 
 export class UI_SvgGroup extends UI_Container {
@@ -41,5 +42,9 @@ export class UI_SvgGroup extends UI_Container {
 
     svgText(config: {key: string}) {
         return UI_Factory.svgText(this, config);
+    }
+
+    def(config: UI_ElementConfig) {
+        return UI_Factory.svgDef(this, config);
     }
 }

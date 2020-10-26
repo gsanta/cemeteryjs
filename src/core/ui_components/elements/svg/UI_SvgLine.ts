@@ -8,6 +8,8 @@ export class UI_SvgLine extends UI_Element {
         this.id = `${parent.id}_${this.elementType}-${this.prop}`;
     }
 
+    markerEnd: string;
+
     transform: string;
     width: number;
     stroke: string = 'black';

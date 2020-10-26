@@ -78,6 +78,10 @@ import { ToolDropdownHeaderComp } from './react/surfaces/toolbar/ToolDropdownHea
 import { UI_IconSeparator } from './elements/toolbar/UI_IconSeparator';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
+import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
+import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
+import { UI_SvgDef } from './elements/svg/UI_SvgDef';
+import { SvgDefComp } from './react/svg/SvgDefComp';
 
 export class UI_Builder {
 
@@ -118,6 +122,12 @@ export class UI_Builder {
             case UI_ElementType.SvgGroup:
                 const group = element as UI_SvgGroup;
                 return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element, pluginId)}</SvgGroupComp>
+            case UI_ElementType.SvgMarker:
+                const marker = element as UI_SvgMarker;
+                return <SvgMarkerComp registry={this.registry} element={marker}>{this.buildChildren(element, pluginId)}</SvgMarkerComp>
+            case UI_ElementType.SvgDef:
+                const def = element as UI_SvgDef;
+                return <SvgDefComp registry={this.registry} element={def}>{this.buildChildren(element, pluginId)}</SvgDefComp>
             case UI_ElementType.SvgCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, pluginId);
             case UI_ElementType.Box:

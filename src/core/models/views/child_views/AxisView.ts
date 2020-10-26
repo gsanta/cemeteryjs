@@ -38,7 +38,7 @@ export class AxisViewFactory implements ViewFactory {
 }
 
 const arrowLength = 50;
-const diagonalArrowLength = Math.sqrt(2) * arrowLength;
+const diagonalArrowLength = arrowLength / Math.sqrt(2);
 
 export class AxisViewRenderer implements ViewRenderer {
     private registry: Registry;
@@ -51,17 +51,19 @@ export class AxisViewRenderer implements ViewRenderer {
 
     private lineBounds: { [axis: string]: LineSegment } = {
         [CanvasAxis.X]: new LineSegment(new Point(0, 0), new Point(arrowLength, 0)),
-        [CanvasAxis.Y]: new LineSegment(new Point(0, -arrowLength), new Point(0, 0)),
+        [CanvasAxis.Y]: new LineSegment(new Point(0, 0), new Point(diagonalArrowLength, -diagonalArrowLength)),
         [CanvasAxis.Z]: new LineSegment(new Point(0, -arrowLength), new Point(0, 0))
     }
 
     private arrowHeadBounds: { [axis: string]: {p1: Point, p2: Point, p3: Point} } = {
         [CanvasAxis.X]: { p1: new Point(arrowLength, -7), p2: new Point(arrowLength + 14, 0), p3: new Point(arrowLength, 7)},
+        [CanvasAxis.Y]: { p1: new Point(arrowLength, -7), p2: new Point(arrowLength + 14, 0), p3: new Point(arrowLength, 7)},
         [CanvasAxis.Z]: { p1: new Point(-7, -arrowLength), p2: new Point(0, -arrowLength - 14), p3: new Point(7, -arrowLength)},
     }
 
     private arrowBounds: ArrowBounds = {
         [CanvasAxis.X]: new Rectangle(new Point(0, -7), new Point(arrowLength + 14, 7)),
+        [CanvasAxis.Y]: new Rectangle(new Point(0, -7), new Point(arrowLength + 14, 7)),
         [CanvasAxis.Z]: new Rectangle(new Point(-7, - arrowLength - 14), new Point(7, 0))
     }
 
@@ -69,6 +71,7 @@ export class AxisViewRenderer implements ViewRenderer {
         this.registry = registry;
 
         this.colors[CanvasAxis.X] = this.registry.preferences.colors.red;
+        this.colors[CanvasAxis.Y] = this.registry.preferences.colors.green;
         this.colors[CanvasAxis.Z] = this.registry.preferences.colors.blue;
     }
 
@@ -111,6 +114,7 @@ export class AxisViewRenderer implements ViewRenderer {
         const center = scaleView.parent.getBounds().getBoundingCenter();
         
         const line = group.line();
+        line.markerEnd = `marker-end="url(#${scaleView.axis})"`;
         line.css = {
             pointerEvents: 'none',
             stroke: this.colors[scaleView.axis],
@@ -129,18 +133,29 @@ export class AxisViewRenderer implements ViewRenderer {
     }
 
     private renderArrowHead(group: UI_SvgGroup, scaleView: ScaleView) {
+        const def = group.def({});
+        const marker = def.marker({});
+        marker.id = scaleView.axis;
+        marker.refX = 5;
+        marker.refY = 5;
+        marker.markerWidth = 10;
+        marker.markerHeight = 10;
+        marker.viewBox = "0 0 10 10";
+
         const center = scaleView.parent.getBounds().getBoundingCenter();
-        const polygon = group.polygon();
+        const path = marker.path();
+        path.d = "M 0 0 L 10 5 L 0 10 z";
 
-        const x1 = center.x + this.arrowHeadBounds[scaleView.axis].p1.x;
-        const y1 = center.y + this.arrowHeadBounds[scaleView.axis].p1.y;
-        const x2 = center.x + this.arrowHeadBounds[scaleView.axis].p2.x;
-        const y2 = center.y + this.arrowHeadBounds[scaleView.axis].p2.y;
-        const x3 = center.x + this.arrowHeadBounds[scaleView.axis].p3.x;
-        const y3 = center.y + this.arrowHeadBounds[scaleView.axis].p3.y;
 
-        polygon.points = `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x1},${y1}`;
-        polygon.css = {
+        // const x1 = center.x + this.arrowHeadBounds[scaleView.axis].p1.x;
+        // const y1 = center.y + this.arrowHeadBounds[scaleView.axis].p1.y;
+        // const x2 = center.x + this.arrowHeadBounds[scaleView.axis].p2.x;
+        // const y2 = center.y + this.arrowHeadBounds[scaleView.axis].p2.y;
+        // const x3 = center.x + this.arrowHeadBounds[scaleView.axis].p3.x;
+        // const y3 = center.y + this.arrowHeadBounds[scaleView.axis].p3.y;
+
+        // polygon.points = `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x1},${y1}`;
+        path.css = {
             fill: this.colors[scaleView.axis]
         }
     }

@@ -220,12 +220,17 @@ export class AxisControlHook extends EmptyViewStoreHook {
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
             let axisView: AxisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
-            axisView.axis = CanvasAxis.Z;
+            axisView.axis = CanvasAxis.X;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
             axisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
-            axisView.axis = CanvasAxis.X;
+            axisView.axis = CanvasAxis.Y;
+            axisView.setParent(views[0]);
+            views[0].addChild(axisView);
+
+            axisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            axisView.axis = CanvasAxis.Z;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
