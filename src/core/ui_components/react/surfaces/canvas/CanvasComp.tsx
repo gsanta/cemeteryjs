@@ -21,6 +21,7 @@ export interface CanvasCompProps extends UI_ComponentProps<UI_SvgCanvas | UI_Htm
     toolbar: JSX.Element;
     dropLayer: JSX.Element;
     gizmoLayer?: JSX.Element;
+    markers: JSX.Element[];
 }
 
 export class CanvasComp extends React.Component<CanvasCompProps> {
@@ -89,6 +90,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
             >
                 <defs>
                     <PathMarkersComponent/>
+                    {this.props.markers}
                 </defs>
                 {this.props.children}
                 {this.renderFeedbacks()}

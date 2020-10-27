@@ -12,7 +12,7 @@ export abstract class PointerTool extends NullTool {
     private isDragStart = true;
 
     click(): void {
-        const hoveredItem = this.registry.services.pointer.hoveredItem;
+        const hoveredItem = this.registry.services.pointer.hoveredView;
         if (!hoveredItem) { return; }
 
         if (hoveredItem.isChildView()) {
@@ -85,7 +85,7 @@ export abstract class PointerTool extends NullTool {
     }
 
     private initMove(): boolean {
-        const hovered = this.registry.services.pointer.hoveredItem;
+        const hovered = this.registry.services.pointer.hoveredView;
         if (hovered) {
             this.movingItem = hovered;
             this.moveItems();

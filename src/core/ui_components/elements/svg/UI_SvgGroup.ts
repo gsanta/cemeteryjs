@@ -44,7 +44,7 @@ export class UI_SvgGroup extends UI_Container {
         return UI_Factory.svgText(this, config);
     }
 
-    def(config: UI_ElementConfig) {
-        return UI_Factory.svgDef(this, config);
+    marker(config: UI_ElementConfig) {
+        return UI_Factory.svgMarker(this, config);
     }
 }

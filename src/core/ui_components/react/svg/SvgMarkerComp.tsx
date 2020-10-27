@@ -11,6 +11,7 @@ export const SvgMarkerComp = (props: UI_ContainerProps<UI_SvgMarker>) => {
             refY: props.element.refY,
             markerWidth: props.element.markerWidth,
             markerHeight: props.element.markerHeight,
+            orient: props.element.orient,
             viewBox: props.element.viewBox,
             id: props.element.id
         },

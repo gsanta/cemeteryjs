@@ -11,6 +11,7 @@ export class UI_SvgMarker extends UI_SvgGroup {
     refY: number;
     markerWidth: number;
     markerHeight: number;
+    orient: string = 'auto-start-reverse';
 
     generateId(parent: UI_Element): void {
         this.id = `${parent.id}_${this.elementType}-${this.prop}`;

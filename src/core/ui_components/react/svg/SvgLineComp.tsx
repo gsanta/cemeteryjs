@@ -16,7 +16,9 @@ export const SvgLineComp = (props: UI_ComponentProps<UI_SvgLine>) => {
             y1: props.element.y1,
             y2: props.element.y2,
             markerEnd: props.element.markerEnd,
-            onMouseEnter: e => props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data),
+            onMouseEnter: e => {
+                props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data)
+            },
             onMouseLeave: e =>props.element.mouseLeave(props.registry, e.nativeEvent, props.element.data)
         }
     );

@@ -77,7 +77,7 @@ export class MousePointer {
 
 export class ToolController {
     controlledView: View;
-    scopedTool: Tool;
+    private scopedTool: Tool;
 
     private registry: Registry;
     private plugin: AbstractCanvasPlugin;
@@ -183,7 +183,7 @@ export class ToolController {
     }
 
     getActiveTool(): Tool {
-        return this.priorityTool ? this.priorityTool : this.selectedTool;
+        return this.priorityTool ? this.priorityTool  : this.scopedTool ? this.scopedTool : this.selectedTool;
     }
 
     getToolById(toolId: string): Tool {
@@ -208,6 +208,21 @@ export class ToolController {
             this.priorityTool.deselect();
             this.priorityTool = null;
             this.registry.services.render.reRender(this.plugin.region);
+        }
+    }
+
+    setScopedTool(toolId: string) {
+        if (!this.scopedTool || this.scopedTool.id !== toolId) {
+            this.getActiveTool().leave();
+            this.scopedTool = this.toolMap.get(toolId);
+            this.scopedTool.select();
+            this.registry.services.render.reRender(this.plugin.region);
+        }
+    }
+
+    removeScopedTool(toolId: string) {
+        if (this.scopedTool && this.scopedTool.id === toolId) {
+            this.scopedTool = undefined;
         }
     }
 

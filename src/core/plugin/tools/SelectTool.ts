@@ -14,13 +14,13 @@ export class SelectTool extends PointerTool {
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredItem && this.registry.services.pointer.hoveredItem.isSelected()) {
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.isSelected()) {
             super.down();
         }
     }
 
     click() {
-        if (this.registry.services.pointer.hoveredItem) {
+        if (this.registry.services.pointer.hoveredView) {
             super.click();
         } else if (this.registry.stores.views.getSelectedViews().length > 0) {
             this.registry.stores.views.clearSelection();
@@ -54,7 +54,7 @@ export class SelectTool extends PointerTool {
     }
 
     getCursor() {
-        if (this.registry.services.pointer.hoveredItem) {
+        if (this.registry.services.pointer.hoveredView) {
             return Cursor.Pointer;
         }
 

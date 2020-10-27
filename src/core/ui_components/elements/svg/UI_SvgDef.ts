@@ -4,7 +4,7 @@ import { UI_Element, UI_ElementConfig } from "../UI_Element";
 import { UI_ElementType } from "../UI_ElementType";
 
 
-export class UI_SvgDef extends UI_Container {
+export class UI_SvgDefs extends UI_Container {
     elementType = UI_ElementType.SvgDef;
 
     generateId(parent: UI_Element): void {

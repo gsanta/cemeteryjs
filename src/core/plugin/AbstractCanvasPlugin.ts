@@ -51,7 +51,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     over(): void { this.registry.plugins.setHoveredView(this) }
     out(): void {
         this.registry.plugins.removeHoveredView(this);
-        this.registry.services.pointer.hoveredItem = undefined;
+        this.registry.services.pointer.hoveredView = undefined;
     }
 
     mounted(htmlElement: HTMLElement) {
@@ -73,7 +73,7 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
     toolController(view: View, toolId: string): ToolController {
         const toolController = this.getToolController();
         toolController.controlledView = view;
-        toolController.scopedTool = toolController.getToolById(toolId);
+        toolController.setScopedTool(toolId);
         return toolController;
     }
 }

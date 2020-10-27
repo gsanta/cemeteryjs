@@ -34,8 +34,8 @@ export class ScaleTool extends NullTool {
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredItem && this.registry.services.pointer.hoveredItem.viewType === AxisViewType) {
-            this.downView = this.registry.services.pointer.hoveredItem;
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === AxisViewType) {
+            this.downView = this.registry.services.pointer.hoveredView;
         }
     }
 

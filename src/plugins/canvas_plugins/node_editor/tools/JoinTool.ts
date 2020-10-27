@@ -19,7 +19,7 @@ export class JoinTool extends PointerTool {
 
     down() {
         this.startPoint = this.registry.services.pointer.pointer.curr;
-        this.joinPoint1 = <JoinPointView> this.registry.services.pointer.hoveredItem;
+        this.joinPoint1 = <JoinPointView> this.registry.services.pointer.hoveredView;
         this.endPoint = this.registry.services.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
@@ -39,7 +39,7 @@ export class JoinTool extends PointerTool {
 
         if (this.checkConnectionValidity()) {
             let joinPoint1 = this.joinPoint1;
-            let joinPoint2 = <JoinPointView> this.registry.services.pointer.hoveredItem;
+            let joinPoint2 = <JoinPointView> this.registry.services.pointer.hoveredView;
             if (joinPoint2.isInput) {
                 [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
             }
@@ -71,7 +71,7 @@ export class JoinTool extends PointerTool {
 
     private checkConnectionValidity() {
         const start = this.joinPoint1;
-        const end = <JoinPointView> this.registry.services.pointer.hoveredItem;
+        const end = <JoinPointView> this.registry.services.pointer.hoveredView;
 
         if (!end || !start) { return false; }
         if (start.viewType !== JoinPointViewType || end.viewType !== JoinPointViewType) { return false; }

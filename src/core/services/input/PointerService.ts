@@ -3,8 +3,6 @@ import { View } from "../../models/views/View";
 import { Registry } from "../../Registry";
 import { MousePointer, ToolController } from "../../plugin/controller/ToolController";
 import { UI_Element } from "../../ui_components/elements/UI_Element";
-import { UI_ElementType } from "../../ui_components/elements/UI_ElementType";
-import { UI_SvgGroup } from "../../ui_components/elements/svg/UI_SvgGroup";
 import { Tool } from "../../plugin/tools/Tool";
 
 export enum Wheel {
@@ -30,7 +28,7 @@ export class PointerService {
     wheelState: number = 0;
     prevWheelState: number = 0;
     wheelDiff: number = undefined;
-    hoveredItem: View;
+    hoveredView: View;
     dropType: string;
 
     // hoveredPlugin: AbstractCanvasPlugin;
@@ -97,12 +95,12 @@ export class PointerService {
             this.determineTool(controller, element).out(data);
 
             this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
-            this.hoveredItem = undefined;
+            this.hoveredView = undefined;
     }
 
     pointerEnter(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element) {
         if (!this.registry.plugins.getHoveredPlugin()) { return; }
-        this.hoveredItem = data;
+        this.hoveredView = data;
 
         this.registry.services.hotkey.executeHotkey({
             isHover: true
@@ -144,7 +142,7 @@ export class PointerService {
             // tool = toolController.getToolById((<UI_SvgGroup> element).scopedToolId);
         // }
 
-        return toolController.scopedTool || toolController.getActiveTool(); 
+        return toolController.getActiveTool(); 
     }
     
     private getScreenPoint(point: Point): Point {

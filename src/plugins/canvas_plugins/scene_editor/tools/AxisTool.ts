@@ -17,20 +17,20 @@ export class AxisTool extends NullTool {
     }
 
     over() {
-        this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
+        this.registry.plugins.getToolController(this.plugin.id).setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
-    out() {
+    out(view: View) {
         if (!this.downView) {
-            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+            this.registry.plugins.getToolController(this.plugin.id).removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.plugin.region);
         }
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredItem && this.registry.services.pointer.hoveredItem.viewType === AxisViewType) {
-            this.downView = this.registry.services.pointer.hoveredItem;
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === AxisViewType) {
+            this.downView = this.registry.services.pointer.hoveredView;
         }
     }
 
@@ -48,8 +48,11 @@ export class AxisTool extends NullTool {
     }
 
     up() {
+        if (this.registry.services.pointer.hoveredView !== this.downView) {
+            this.registry.plugins.getToolController(this.plugin.id).removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.plugin.region);
+        }
         this.downView = undefined;
-        this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
     }
 
     getCursor() {

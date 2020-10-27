@@ -20,7 +20,7 @@ export class PathTool extends PointerTool {
     }
 
     click() {
-        const hoveredItem = this.registry.services.pointer.hoveredItem;
+        const hoveredItem = this.registry.services.pointer.hoveredView;
         if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
             super.click();
         } else {

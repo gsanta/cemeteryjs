@@ -80,12 +80,19 @@ import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
-import { UI_SvgDef } from './elements/svg/UI_SvgDef';
+import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
 
 export class UI_Builder {
 
     private registry: Registry;
+    /**
+     * Since the `defs` element of svg needs to go right under the `svg` element and we allow markers to appear also under `g` elements
+     * for supporting better hierarchical structures we need to collect here all of the `marker` elements and assemble them under a final `defs`
+     * at the top `svg` element
+     */
+    private svgMarkers: UI_SvgMarker[] = [];
+    private isDefsSection = false;
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -124,10 +131,20 @@ export class UI_Builder {
                 return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element, pluginId)}</SvgGroupComp>
             case UI_ElementType.SvgMarker:
                 const marker = element as UI_SvgMarker;
-                return <SvgMarkerComp registry={this.registry} element={marker}>{this.buildChildren(element, pluginId)}</SvgMarkerComp>
+                if (this.isDefsSection) {
+                    return <SvgMarkerComp registry={this.registry} element={marker}>{this.buildChildren(element, pluginId)}</SvgMarkerComp>
+                } else {
+                    this.svgMarkers.push(marker);
+                    break;
+                }
             case UI_ElementType.SvgDef:
-                const def = element as UI_SvgDef;
-                return <SvgDefComp registry={this.registry} element={def}>{this.buildChildren(element, pluginId)}</SvgDefComp>
+                const def = element as UI_SvgDefs;
+                const children = this.buildChildren(element, pluginId);
+                this.isDefsSection = true;
+                const markers = this.svgMarkers.map(marker => this.buildElement(marker, pluginId));
+                const defComp = <SvgDefComp registry={this.registry} element={def}>{}</SvgDefComp>
+                this.isDefsSection = false;
+                return defComp;
             case UI_ElementType.SvgCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, pluginId);
             case UI_ElementType.Box:
@@ -195,7 +212,11 @@ export class UI_Builder {
             children = this.buildChildren(canvas as UI_SvgCanvas, pluginId);
         }
 
-        return <CanvasComp registry={this.registry} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
+        this.isDefsSection = true;
+        const markers = this.svgMarkers.map(marker => this.buildElement(marker, pluginId));
+        this.isDefsSection = false;
+
+        return <CanvasComp registry={this.registry} markers={markers} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar, pluginId: string) {

@@ -52,19 +52,7 @@ export class AxisViewRenderer implements ViewRenderer {
     private lineBounds: { [axis: string]: LineSegment } = {
         [CanvasAxis.X]: new LineSegment(new Point(0, 0), new Point(arrowLength, 0)),
         [CanvasAxis.Y]: new LineSegment(new Point(0, 0), new Point(diagonalArrowLength, -diagonalArrowLength)),
-        [CanvasAxis.Z]: new LineSegment(new Point(0, -arrowLength), new Point(0, 0))
-    }
-
-    private arrowHeadBounds: { [axis: string]: {p1: Point, p2: Point, p3: Point} } = {
-        [CanvasAxis.X]: { p1: new Point(arrowLength, -7), p2: new Point(arrowLength + 14, 0), p3: new Point(arrowLength, 7)},
-        [CanvasAxis.Y]: { p1: new Point(arrowLength, -7), p2: new Point(arrowLength + 14, 0), p3: new Point(arrowLength, 7)},
-        [CanvasAxis.Z]: { p1: new Point(-7, -arrowLength), p2: new Point(0, -arrowLength - 14), p3: new Point(7, -arrowLength)},
-    }
-
-    private arrowBounds: ArrowBounds = {
-        [CanvasAxis.X]: new Rectangle(new Point(0, -7), new Point(arrowLength + 14, 7)),
-        [CanvasAxis.Y]: new Rectangle(new Point(0, -7), new Point(arrowLength + 14, 7)),
-        [CanvasAxis.Z]: new Rectangle(new Point(-7, - arrowLength - 14), new Point(7, 0))
+        [CanvasAxis.Z]: new LineSegment(new Point(0, 0), new Point(0, -arrowLength))
     }
 
     constructor(registry: Registry) {
@@ -80,51 +68,31 @@ export class AxisViewRenderer implements ViewRenderer {
             return null;
         }
 
-        const group = canvas.group(axisView.id)
-        group.data = axisView;
-        group.controller = () => plugin.toolController(axisView, AxisToolId)
-        group.isInteractive = true;
+        const group = canvas.group(axisView.id);
+        group.isInteractive = false;
 
-        this.renderBoundingRect(group, axisView);
         this.renderArrowLine(group, axisView);
         this.renderArrowHead(group, axisView);
+        this.renderHighlightLine(group, axisView, plugin);
     }
 
-    private renderBoundingRect(group: UI_SvgGroup, axisView: AxisView) {
+    private renderHighlightLine(group: UI_SvgGroup, axisView: AxisView, plugin: AbstractCanvasPlugin) {
         const center = axisView.parent.getBounds().getBoundingCenter();
-
-        const x1 = center.x + this.arrowBounds[axisView.axis].topLeft.x;
-        const y1 = center.y + this.arrowBounds[axisView.axis].topLeft.y;
-        const x2 = center.x + this.arrowBounds[axisView.axis].bottomRight.x;
-        const y2 = center.y + this.arrowBounds[axisView.axis].bottomRight.y;
-
-        const rect = group.rect();
-        rect.x = x1;
-        rect.y = y1;
-        rect.width = x2 - x1;
-        rect.height = y2 - y1;
-        rect.css = {
-            opacity: 0,
-            fill: 'white',
-            strokeWidth: '0'
-        }
-    }
-
-    private renderArrowLine(group: UI_SvgGroup, scaleView: ScaleView) {
-        const center = scaleView.parent.getBounds().getBoundingCenter();
         
         const line = group.line();
-        line.markerEnd = `marker-end="url(#${scaleView.axis})"`;
         line.css = {
-            pointerEvents: 'none',
-            stroke: this.colors[scaleView.axis],
-            strokeWidth: "3"
+            stroke: 'transparent',
+            strokeWidth: "6"
         }
 
-        const x1 = center.x + this.lineBounds[scaleView.axis].point1.x;
-        const y1 = center.y + this.lineBounds[scaleView.axis].point1.y;
-        const x2 = center.x + this.lineBounds[scaleView.axis].point2.x;
-        const y2 = center.y + this.lineBounds[scaleView.axis].point2.y;
+        line.data = axisView;
+        line.controller = () => plugin.toolController(axisView, AxisToolId)
+        line.isInteractive = true;
+
+        const x1 = center.x + this.lineBounds[axisView.axis].point1.x;
+        const y1 = center.y + this.lineBounds[axisView.axis].point1.y;
+        const x2 = center.x + this.lineBounds[axisView.axis].point2.x;
+        const y2 = center.y + this.lineBounds[axisView.axis].point2.y;
 
         line.x1 = x1;
         line.y1 = y1;
@@ -132,20 +100,39 @@ export class AxisViewRenderer implements ViewRenderer {
         line.y2 = y2;
     }
 
-    private renderArrowHead(group: UI_SvgGroup, scaleView: ScaleView) {
-        const def = group.def({});
-        const marker = def.marker({});
-        marker.id = scaleView.axis;
+    private renderArrowLine(group: UI_SvgGroup, axisView: ScaleView) {
+        const center = axisView.parent.getBounds().getBoundingCenter();
+        
+        const line = group.line();
+        line.markerEnd = `url(#${axisView.axis})`;
+        line.css = {
+            stroke: this.colors[axisView.axis],
+            strokeWidth: "3"
+        }
+
+        const x1 = center.x + this.lineBounds[axisView.axis].point1.x;
+        const y1 = center.y + this.lineBounds[axisView.axis].point1.y;
+        const x2 = center.x + this.lineBounds[axisView.axis].point2.x;
+        const y2 = center.y + this.lineBounds[axisView.axis].point2.y;
+
+        line.x1 = x1;
+        line.y1 = y1;
+        line.x2 = x2;
+        line.y2 = y2;
+    }
+
+    private renderArrowHead(group: UI_SvgGroup, axisView: ScaleView) {
+        const marker = group.marker({});
+        marker.id = axisView.axis;
         marker.refX = 5;
         marker.refY = 5;
-        marker.markerWidth = 10;
-        marker.markerHeight = 10;
+        marker.markerWidth = 5;
+        marker.markerHeight = 5;
         marker.viewBox = "0 0 10 10";
 
-        const center = scaleView.parent.getBounds().getBoundingCenter();
+        const center = axisView.parent.getBounds().getBoundingCenter();
         const path = marker.path();
         path.d = "M 0 0 L 10 5 L 0 10 z";
-
 
         // const x1 = center.x + this.arrowHeadBounds[scaleView.axis].p1.x;
         // const y1 = center.y + this.arrowHeadBounds[scaleView.axis].p1.y;
@@ -156,7 +143,7 @@ export class AxisViewRenderer implements ViewRenderer {
 
         // polygon.points = `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x1},${y1}`;
         path.css = {
-            fill: this.colors[scaleView.axis]
+            fill: this.colors[axisView.axis]
         }
     }
 }
