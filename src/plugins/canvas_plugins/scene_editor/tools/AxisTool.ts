@@ -1,4 +1,5 @@
-import { AxisViewType } from "../../../../core/models/views/child_views/AxisView";
+import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
+import { AxisView, AxisViewType } from "../../../../core/models/views/child_views/AxisView";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
@@ -9,14 +10,17 @@ import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 
 export const AxisToolId = 'axis-tool';
 
+// TODO: merge together the duplicate code with ScaleTool
 export class AxisTool extends NullTool {
-    private downView: View;
+    private downView: AxisView;
+    private hoveredView: AxisView;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
         super(AxisToolId, plugin, registry);
     }
 
-    over() {
+    over(view: View) {
+        this.hoveredView = <AxisView> view;
         this.registry.plugins.getToolController(this.plugin.id).setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
@@ -30,7 +34,7 @@ export class AxisTool extends NullTool {
 
     down() {
         if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === AxisViewType) {
-            this.downView = this.registry.services.pointer.hoveredView;
+            this.downView = <AxisView> this.registry.services.pointer.hoveredView;
         }
     }
 
@@ -56,6 +60,8 @@ export class AxisTool extends NullTool {
     }
 
     getCursor() {
-        return Cursor.N_Resize;
+        if (this.hoveredView) {
+            return this.hoveredView.axis === CanvasAxis.X ? Cursor.W_Resize : this.hoveredView.axis === CanvasAxis.Y ? Cursor.NE_Resize : Cursor.N_Resize;
+        }
     }
 }

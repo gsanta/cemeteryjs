@@ -240,6 +240,11 @@ export class AxisControlHook extends EmptyViewStoreHook {
             views[0].addChild(scaleView);
 
             scaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
+            scaleView.axis = CanvasAxis.Y;
+            scaleView.setParent(views[0]);
+            views[0].addChild(scaleView);
+
+            scaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
             scaleView.axis = CanvasAxis.Z;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);

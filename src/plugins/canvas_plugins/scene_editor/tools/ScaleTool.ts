@@ -1,6 +1,5 @@
 import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
-import { AxisViewType } from "../../../../core/models/views/child_views/AxisView";
-import { ScaleView } from "../../../../core/models/views/child_views/ScaleView";
+import { ScaleView, ScaleViewType } from "../../../../core/models/views/child_views/ScaleView";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
@@ -21,25 +20,22 @@ export class ScaleTool extends NullTool {
 
     over(view: ScaleView) {
         this.hoveredView = view;
-        this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
+        this.registry.plugins.getToolController(this.plugin.id).setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     out() {
-        this.hoveredView = undefined;
         if (!this.downView) {
-            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+            this.registry.plugins.getToolController(this.plugin.id).removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.plugin.region);
         }
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === AxisViewType) {
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === ScaleViewType) {
             this.downView = this.registry.services.pointer.hoveredView;
         }
     }
-
-    
 
     drag() {
         if (!this.downView) { return; }
@@ -55,11 +51,16 @@ export class ScaleTool extends NullTool {
     }
 
     up() {
+        if (this.registry.services.pointer.hoveredView !== this.downView) {
+            this.registry.plugins.getToolController(this.plugin.id).removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.plugin.region);
+        }
         this.downView = undefined;
-        this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
     }
 
     getCursor() {
-        return this.hoveredView ? this.hoveredView.axis === CanvasAxis.X ? Cursor.W_Resize : Cursor.N_Resize : Cursor.Default;
+        if (this.hoveredView) {
+            return this.hoveredView.axis === CanvasAxis.X ? Cursor.W_Resize : this.hoveredView.axis === CanvasAxis.Y ? Cursor.NE_Resize : Cursor.N_Resize;
+        }    
     }
 }

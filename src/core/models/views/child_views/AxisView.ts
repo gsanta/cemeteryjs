@@ -5,14 +5,13 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPlugin } from "../../../plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../Registry";
 import { UI_SvgGroup } from "../../../ui_components/elements/svg/UI_SvgGroup";
-import { UI_Container } from "../../../ui_components/elements/UI_Container";
 import { UI_SvgCanvas } from "../../../ui_components/elements/UI_SvgCanvas";
 import { CanvasAxis } from "../../misc/CanvasAxis";
 import { IObj } from "../../objs/IObj";
 import { PathObj } from "../../objs/PathObj";
 import { View, ViewFactory, ViewJson, ViewRenderer } from "../View";
 import { ChildView } from "./ChildView";
-import { ArrowBounds, ScaleView } from "./ScaleView";
+import { ScaleView } from "./ScaleView";
 
 export interface AxisViewJson extends ViewJson {
     point: string;
@@ -40,6 +39,7 @@ export class AxisViewFactory implements ViewFactory {
 const arrowLength = 50;
 const diagonalArrowLength = arrowLength / Math.sqrt(2);
 
+// TODO: merge together the duplicate code with ScaleView
 export class AxisViewRenderer implements ViewRenderer {
     private registry: Registry;
 
@@ -130,18 +130,9 @@ export class AxisViewRenderer implements ViewRenderer {
         marker.markerHeight = 5;
         marker.viewBox = "0 0 10 10";
 
-        const center = axisView.parent.getBounds().getBoundingCenter();
         const path = marker.path();
         path.d = "M 0 0 L 10 5 L 0 10 z";
 
-        // const x1 = center.x + this.arrowHeadBounds[scaleView.axis].p1.x;
-        // const y1 = center.y + this.arrowHeadBounds[scaleView.axis].p1.y;
-        // const x2 = center.x + this.arrowHeadBounds[scaleView.axis].p2.x;
-        // const y2 = center.y + this.arrowHeadBounds[scaleView.axis].p2.y;
-        // const x3 = center.x + this.arrowHeadBounds[scaleView.axis].p3.x;
-        // const y3 = center.y + this.arrowHeadBounds[scaleView.axis].p3.y;
-
-        // polygon.points = `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x1},${y1}`;
         path.css = {
             fill: this.colors[axisView.axis]
         }

@@ -44,7 +44,8 @@ export enum Cursor {
     Move = 'move',
     ZoomIn = 'zoom-in',
     N_Resize = 'n-resize',
-    W_Resize = 'w-resize'
+    W_Resize = 'w-resize',
+    NE_Resize = 'ne-resize'
 }
 
 export interface Tool extends IHotkey {
