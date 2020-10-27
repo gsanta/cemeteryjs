@@ -1,6 +1,7 @@
 import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
 import { ScaleView, ScaleViewType } from "../../../../core/models/views/child_views/ScaleView";
 import { MeshView } from "../../../../core/models/views/MeshView";
+import { SpriteView } from "../../../../core/models/views/SpriteView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { NullTool } from "../../../../core/plugin/tools/NullTool";
@@ -11,7 +12,7 @@ import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 export const ScaleToolId = 'scale-tool';
 
 export class ScaleTool extends NullTool {
-    private downView: View;
+    private downView: ScaleView;
     private hoveredView: ScaleView;
 
     constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
@@ -33,7 +34,7 @@ export class ScaleTool extends NullTool {
 
     down() {
         if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === ScaleViewType) {
-            this.downView = this.registry.services.pointer.hoveredView;
+            this.downView = <ScaleView> this.registry.services.pointer.hoveredView;
         }
     }
 
@@ -41,12 +42,25 @@ export class ScaleTool extends NullTool {
         if (!this.downView) { return; }
 
         if (this.downView) {
+            let delta: number = 1;
             const parent = <MeshView> this.downView.parent;
-            const objPos = parent.getObj().getPosition();
-            const delta = this.registry.services.pointer.pointer.getDiff().y / 10;
-            parent.getObj().setPosition(new Point_3(objPos.x, objPos.y + delta, objPos.z));
-        }
 
+            switch(this.downView.axis) {
+                case CanvasAxis.X:
+                    delta = this.registry.services.pointer.pointer.getDiff().x / 10;
+                break;
+                case CanvasAxis.Y:
+                    const objPos = parent.getObj().getPosition();
+                    const deltaY = this.registry.services.pointer.pointer.getDiff().y / 10;
+                    parent.getObj().setPosition(new Point_3(objPos.x, objPos.y + deltaY, objPos.z));
+                break;
+                case CanvasAxis.Z:
+                    delta = this.registry.services.pointer.pointer.getDiff().x / 10;
+                break;
+            }
+
+            parent.setScale(parent.getScale() + delta);
+        }
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 

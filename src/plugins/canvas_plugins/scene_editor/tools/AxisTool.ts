@@ -1,6 +1,7 @@
 import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
 import { AxisView, AxisViewType } from "../../../../core/models/views/child_views/AxisView";
 import { MeshView } from "../../../../core/models/views/MeshView";
+import { SpriteView } from "../../../../core/models/views/SpriteView";
 import { View } from "../../../../core/models/views/View";
 import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { NullTool } from "../../../../core/plugin/tools/NullTool";
@@ -42,10 +43,24 @@ export class AxisTool extends NullTool {
         if (!this.downView) { return; }
 
         if (this.downView) {
-            const parent = <MeshView> this.downView.parent;
-            const objPos = parent.getObj().getPosition();
-            const delta = this.registry.services.pointer.pointer.getDiff().y / 10;
-            parent.getObj().setPosition(new Point_3(objPos.x, objPos.y + delta, objPos.z));
+            let delta: Point_3 = new Point_3(0, 0, 0);
+            const parent = <MeshView | SpriteView> this.downView.parent;
+
+            switch(this.downView.axis) {
+                case CanvasAxis.X:
+                    delta = new Point_3(this.registry.services.pointer.pointer.getDiff().x, 0, 0);    
+                break;
+                case CanvasAxis.Y:
+                    const objPos = parent.getObj().getPosition();
+                    const deltaY = this.registry.services.pointer.pointer.getDiff().y / 10;
+                    parent.getObj().setPosition(new Point_3(objPos.x, objPos.y + deltaY, objPos.z));
+                break;
+                case CanvasAxis.Z:
+                    delta = new Point_3(0, this.registry.services.pointer.pointer.getDiff().y, 0);
+                break;
+            }
+
+            this.downView.parent.move(delta);
         }
 
         this.registry.services.render.scheduleRendering(this.plugin.region);
