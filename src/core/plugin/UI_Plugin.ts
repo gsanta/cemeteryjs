@@ -51,7 +51,7 @@ export abstract class UI_Plugin {
     importer: AbstractPluginImporter;
     exporter: IDataExporter;
 
-    protected abstract renderInto(layout: UI_Container): void;
+    protected abstract renderInto?(layout: UI_Container): void;
 
     getFormController(controllerId: string): FormController { return undefined; }
     addFormController(controllerId: string, controller: FormController): void {}

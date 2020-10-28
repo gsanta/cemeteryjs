@@ -41,7 +41,7 @@ export class Camera3D implements ICamera {
     }
 
     resize() {
-        
+        (this.engine || this.registry.engine).resize();
     }
 
     pan(pointer: MousePointer) {

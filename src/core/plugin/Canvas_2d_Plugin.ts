@@ -26,36 +26,3 @@ function cameraInitializer(canvasId: string, registry: Registry) {
         return new Camera2D(registry, DUMMY_CAMERA_SIZE);
     }
 }
-
-export const CanvasControllerId = 'canvas_controller_id';
-
-export abstract class Canvas_2d_Plugin extends AbstractCanvasPlugin {
-    region = UI_Region.Canvas1;
-    private camera: Camera2D;
-
-    constructor(id: string, registry: Registry) {
-        super(registry);
-
-        this.id = id;
-
-        this.camera = cameraInitializer(this.id, registry);
-    }
-
-    getStore() {
-        return this.registry.stores.views;
-    }
-
-    resize(): void {
-        const screenSize = getScreenSize(this.id);
-        screenSize && this.camera.resize(screenSize);
-        this.renderFunc && this.renderFunc();
-    }
-
-    getOffset() {
-        return calcOffsetFromDom(this.htmlElement);
-    }
-
-    getCamera() {
-        return this.camera;
-    }
-}

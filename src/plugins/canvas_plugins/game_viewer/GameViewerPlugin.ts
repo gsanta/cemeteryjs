@@ -19,10 +19,6 @@ export class GameViewerPlugin extends Canvas_3d_Plugin {
         super(GameViewerPluginId, registry);
     }
 
-    getStore() {
-        return this.registry.stores.views;
-    }
-
     mounted(htmlElement: HTMLElement) {
         super.mounted(htmlElement);
 

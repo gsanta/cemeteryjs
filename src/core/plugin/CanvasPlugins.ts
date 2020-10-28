@@ -11,4 +11,6 @@ export class CanvasPlugins {
     getGizmoFactory(gizmoId: string): IGizmoFactory {
         return this.gizmos.get(gizmoId);
     }
+
+    // create2DCanvas(): Abstraft
 }

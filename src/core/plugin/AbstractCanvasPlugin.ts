@@ -9,12 +9,18 @@ import { PropContext, PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
-import { ToolType } from './tools/Tool';
-import { UI_Plugin } from './UI_Plugin';
+import { UI_Plugin, UI_Region } from './UI_Plugin';
 
-export interface CanvasViewSettings {
-    initialSizePercent: number;
-    minSizePixel: number;
+function getScreenSize(canvasId: string): Point {
+    if (typeof document !== 'undefined') {
+        const svg: HTMLElement = document.getElementById(canvasId);
+
+        if (svg) {
+            const rect: ClientRect = svg.getBoundingClientRect();
+            return new Point(rect.width, rect.height);
+        }
+    }
+    return undefined;
 }
 
 export function calcOffsetFromDom(element: HTMLElement): Point {
@@ -36,8 +42,13 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
 
     protected renderFunc: () => void;
 
-    constructor(registry: Registry) {
+    private camera: ICamera;
+
+    constructor(registry: Registry, camera: ICamera, region: UI_Region) {
         super(registry);
+
+        this.region = region;
+        this.camera = camera;
 
         this.keyboard = new KeyboardService(registry);
     }
@@ -46,11 +57,19 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         this.gizmos.push(gizmo);
     }
 
-    destroy(): void {}
-    resize() {};
-    over(): void { this.registry.plugins.setHoveredView(this) }
+    destroy(): void {
+        this.registry.stores.views.clearSelection();
+    }
+
+    resize(): void {
+        const screenSize = getScreenSize(this.id);
+        screenSize && this.getCamera().resize(screenSize);
+        this.renderFunc && this.renderFunc();
+    }
+
+    over(): void { this.registry.plugins.setHoveredPlugin(this) }
     out(): void {
-        this.registry.plugins.removeHoveredView(this);
+        this.registry.plugins.removeHoveredPlugin(this);
         this.registry.services.pointer.hoveredView = undefined;
     }
 
@@ -61,9 +80,12 @@ export abstract class AbstractCanvasPlugin extends UI_Plugin {
         this.bounds = new Rectangle(new Point(boundingRect.left, boundingRect.top), new Point(boundingRect.width, boundingRect.height));
     }
 
-    getOffset(): Point { return new Point(0, 0) }
+    getOffset() {
+        return calcOffsetFromDom(this.htmlElement);
+    }
+
     getCamera(): ICamera { 
-        return undefined;
+        return this.camera;
     };
 
     getToolController() {

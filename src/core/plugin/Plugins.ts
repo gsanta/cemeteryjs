@@ -39,11 +39,11 @@ export class Plugins {
 
     private hoveredView: AbstractCanvasPlugin;
     
-    setHoveredView(view: AbstractCanvasPlugin) {
+    setHoveredPlugin(view: AbstractCanvasPlugin) {
         this.hoveredView = view;
     }
 
-    removeHoveredView(view: AbstractCanvasPlugin) {
+    removeHoveredPlugin(view: AbstractCanvasPlugin) {
         if (this.hoveredView === view) {
             this.hoveredView = undefined;
         }
