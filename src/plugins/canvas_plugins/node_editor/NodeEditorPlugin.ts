@@ -62,7 +62,7 @@ export class NodeEditorPlugin implements UI_Plugin {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(NodeEditorPluginId, registry), this.region, NodeEditorPluginId);
+        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(NodeEditorPluginId, registry), this.region, NodeEditorPluginId, this);
 
         const propControllers = [
             new ZoomInController(),
@@ -70,13 +70,13 @@ export class NodeEditorPlugin implements UI_Plugin {
             new CommonToolController()
         ]
 
-        this.controller = new FormController(this.panel, registry, propControllers);
+        this.controller = new FormController(this, registry, propControllers);
 
         const tools = [
-            new SelectTool(this.panel as AbstractCanvasPlugin, registry),
-            new DeleteTool(this.panel as AbstractCanvasPlugin, registry),
-            new CameraTool(this.panel as AbstractCanvasPlugin, registry),
-            new JoinTool(this.panel as AbstractCanvasPlugin, registry)
+            new SelectTool(this, registry),
+            new DeleteTool(this, registry),
+            new CameraTool(this, registry),
+            new JoinTool(this, registry)
         ]
 
         this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
@@ -108,7 +108,7 @@ export class NodeEditorPlugin implements UI_Plugin {
         dropLayer.isDragging = !!(this.panel as AbstractCanvasPlugin).dropItem;
 
         const toolbar = canvas.toolbar();
-        const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
+        const selectedTool = this.getToolController().getSelectedTool();
 
         let tool = toolbar.tool({prop: SelectToolId});
         tool.icon = 'select';
@@ -141,7 +141,7 @@ export class NodeEditorPlugin implements UI_Plugin {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        const joinTool = <JoinTool> this.registry.plugins.getToolController(this.id).getToolById(ToolType.Join);
+        const joinTool = <JoinTool> this.getToolController().getToolById(ToolType.Join);
 
         if (joinTool.startPoint && joinTool.endPoint) {
             const line = canvas.line()

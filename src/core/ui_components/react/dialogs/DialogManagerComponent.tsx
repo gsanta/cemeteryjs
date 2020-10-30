@@ -14,7 +14,7 @@ export class DialogManagerComponent extends React.Component {
     }
 
     render() {
-        const plugins = this.context.registry.plugins.getByRegion(UI_Region.Dialog);
+        const plugins = this.context.registry.plugins.getPanelByRegion(UI_Region.Dialog);
 
         if (!plugins.length) { return null; }
 

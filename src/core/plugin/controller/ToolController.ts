@@ -21,7 +21,7 @@ export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.plugin.getToolController().setSelectedTool(element.prop);
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }
@@ -30,7 +30,7 @@ export class SceneEditorToolController extends PropController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.plugin.getToolController().setSelectedTool(element.prop);
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }
@@ -39,13 +39,13 @@ export class CanvasContextDependentToolController extends PropController<any> {
     acceptedProps() { return [ScaleToolId, AxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        const tool = context.registry.plugins.getToolController(element.pluginId).getToolById(element.prop);
+        const tool = context.plugin.getToolController().getToolById(element.prop);
         tool.isSelected = !tool.isSelected;
 
         if (tool.id === ScaleToolId) {
-            context.registry.plugins.getToolController(element.pluginId).getToolById(AxisToolId).isSelected = false;
+            context.plugin.getToolController().getToolById(AxisToolId).isSelected = false;
         } else if (tool.id === AxisToolId) {
-            context.registry.plugins.getToolController(element.pluginId).getToolById(ScaleToolId).isSelected = false;
+            context.plugin.getToolController().getToolById(ScaleToolId).isSelected = false;
         }
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }

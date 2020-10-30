@@ -10,6 +10,7 @@ import { ToolController } from './controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { UI_Panel, UI_Region } from './UI_Panel';
+import { UI_Plugin } from './UI_Plugin';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -43,13 +44,15 @@ export class AbstractCanvasPlugin extends UI_Panel {
     protected renderFunc: () => void;
 
     private camera: ICamera;
+    private plugin: UI_Plugin;
 
-    constructor(registry: Registry, camera: ICamera, region: UI_Region, id: string) {
+    constructor(registry: Registry, camera: ICamera, region: UI_Region, id: string, plugin: UI_Plugin) {
         super(registry);
 
         this.region = region;
         this.camera = camera;
         this.id = id;
+        this.plugin = plugin;
 
         this.keyboard = new KeyboardService(registry);
     }
@@ -90,7 +93,7 @@ export class AbstractCanvasPlugin extends UI_Panel {
     };
 
     getToolController() {
-        return this.registry.plugins.getToolController(this.id);
+        return this.plugin.getToolController();
     }
 
     toolController(view: View, toolId: string): ToolController {
@@ -106,7 +109,7 @@ export class ZoomInController extends PropController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.panel.id).getToolById(CameraToolId);
+        const cameraTool = <CameraTool> context.plugin.getToolController().getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
@@ -116,7 +119,7 @@ export class ZoomOutController extends PropController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.panel.id).getToolById(CameraToolId);
+        const cameraTool = <CameraTool> context.plugin.getToolController().getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }

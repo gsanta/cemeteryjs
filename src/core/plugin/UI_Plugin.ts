@@ -35,9 +35,9 @@ export interface UI_Plugin {
     id: string;
     displayName: string;
     region: UI_Region;
+
     getPanel(): UI_Panel;
     getController(): FormController;
-    
     getToolController(): ToolController;
     toolController?(view: View, toolId: string): ToolController;
 

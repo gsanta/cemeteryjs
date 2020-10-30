@@ -5,7 +5,7 @@ import { sortViewsByLayer, View } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, RedoController, RedoProp, UndoController, UndoProp, ZoomInController, ZoomInProp, ZoomOutController, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { FormController, PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController, ToolController } from '../../../core/plugin/controller/ToolController';
-iisimport { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
+import { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
 import { DeleteTool, DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
 import { SelectTool, SelectToolId } from '../../../core/plugin/tools/SelectTool';
 import { UI_Model } from '../../../core/plugin/UI_Model';
@@ -41,7 +41,7 @@ export class SceneEditorPlugin implements UI_Plugin {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(SceneEditorPluginId, registry), this.region, SceneEditorPluginId);
+        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(SceneEditorPluginId, registry), this.region, SceneEditorPluginId, this);
 
 
         const propControllers = [
@@ -56,19 +56,19 @@ export class SceneEditorPlugin implements UI_Plugin {
             new CanvasContextDependentToolController()
         ]
 
-        this.controller = new FormController(this.panel, registry, propControllers);
+        this.controller = new FormController(this, registry, propControllers);
 
         const tools = [
             new MeshTool(this, registry),
             new SpriteTool(this, registry),
             new PathTool(this, registry),
-            new SelectTool(this.panel as AbstractCanvasPlugin, registry),
-            new DeleteTool(this.panel as AbstractCanvasPlugin, registry),
-            new CameraTool(this.panel as AbstractCanvasPlugin, registry),
-            new AxisTool(this.panel as AbstractCanvasPlugin, registry),
-            new CubeTool(this.panel as AbstractCanvasPlugin, registry),
-            new SphereTool(this.panel as AbstractCanvasPlugin, registry),
-            new ScaleTool(this.panel as AbstractCanvasPlugin, registry)
+            new SelectTool(this, registry),
+            new DeleteTool(this, registry),
+            new CameraTool(this, registry),
+            new AxisTool(this, registry),
+            new CubeTool(this, registry),
+            new SphereTool(this, registry),
+            new ScaleTool(this, registry)
         ];
 
         this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);

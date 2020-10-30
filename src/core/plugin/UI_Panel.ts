@@ -1,7 +1,6 @@
 import { Registry } from '../Registry';
 import { UI_Container } from '../ui_components/elements/UI_Container';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
-import { UI_Factory } from '../ui_components/UI_Factory';
 import { IDataExporter } from '../services/export/IDataExporter';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
@@ -51,6 +50,9 @@ export abstract class UI_Panel {
     importer: AbstractPluginImporter;
     exporter: IDataExporter;
 
+    private onMountedFunc: () => void;
+    private onUnmountedFunc: () => void;
+
     renderInto(layout: UI_Container): void {}
 
     getFormController(controllerId: string): FormController { return undefined; }
@@ -66,8 +68,20 @@ export abstract class UI_Panel {
     activated() {}
     mounted(htmlElement: HTMLElement) {
         this.htmlElement = htmlElement;
+        this.onMountedFunc && this.onMountedFunc();
     }
-    unmounted() {}
+
+    unmounted() {
+        this.onUnmountedFunc && this.onUnmountedFunc();
+    }
+
+    onMounted(onMountedFunc: () => void) {
+        this.onMountedFunc = onMountedFunc;
+    }
+
+    onUnmounted(onUnmountedFunc: () => void) {
+        this.onUnmounted = onUnmountedFunc;
+    }
 
     // TODO should be temporary, port it to PointerService somehow
     over() {

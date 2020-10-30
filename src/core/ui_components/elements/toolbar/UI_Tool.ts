@@ -28,6 +28,6 @@ export class UI_Tool extends UI_Element {
     }
 
     click(registry: Registry): void {
-        registry.plugins.getPropController(this.pluginId).click(this);
+        registry.plugins.getPlugin(this.pluginId).getController().click(this);
     }
 }

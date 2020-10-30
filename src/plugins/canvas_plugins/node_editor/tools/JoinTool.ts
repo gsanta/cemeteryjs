@@ -2,18 +2,18 @@ import { NodeConnectionObj, NodeConnectionObjType } from "../../../../core/model
 import { JoinPointView, JoinPointViewType } from "../../../../core/models/views/child_views/JoinPointView";
 import { NodeConnectionView, NodeConnectionViewType } from "../../../../core/models/views/NodeConnectionView";
 import { View } from "../../../../core/models/views/View";
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../core/Registry";
 import { Point } from "../../../../utils/geometry/shapes/Point";
+import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
     endPoint: Point;
     joinPoint1: JoinPointView;
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(ToolType.Join, plugin, registry);
     }
 
@@ -34,7 +34,7 @@ export class JoinTool extends PointerTool {
     }
 
     draggedUp() {
-        this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+        this.plugin.getToolController().removePriorityTool(this.id);
 
 
         if (this.checkConnectionValidity()) {
@@ -83,7 +83,7 @@ export class JoinTool extends PointerTool {
     out(view: View) {
         super.out(view);
         if (!this.registry.services.pointer.isDown) {
-            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+            this.plugin.getToolController().removePriorityTool(this.id);
         }
     }
 

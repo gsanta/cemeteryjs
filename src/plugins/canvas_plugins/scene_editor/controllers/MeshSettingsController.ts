@@ -180,7 +180,7 @@ export class TextureController extends PropController<string> {
 export class ThumbnailController extends PropController {
     acceptedProps() { return [MeshSettingsProps.Thumbnail]; }
 
-    click(context) {
+    click(context: PropContext) {
         context.registry.plugins.showPlugin(ThumbnailDialogPluginId);
     }
 }

@@ -22,13 +22,13 @@ export class AxisTool extends NullTool {
 
     over(view: View) {
         this.hoveredView = <AxisView> view;
-        this.registry.plugins.getToolController(this.plugin.id).setScopedTool(this.id);
+        this.plugin.getToolController().setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     out(view: View) {
         if (!this.downView) {
-            this.registry.plugins.getToolController(this.plugin.id).removeScopedTool(this.id);
+            this.plugin.getToolController().removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.plugin.region);
         }
     }
@@ -68,7 +68,7 @@ export class AxisTool extends NullTool {
 
     up() {
         if (this.registry.services.pointer.hoveredView !== this.downView) {
-            this.registry.plugins.getToolController(this.plugin.id).removeScopedTool(this.id);
+            this.plugin.getToolController().removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.plugin.region);
         }
         this.downView = undefined;

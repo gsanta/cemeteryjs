@@ -65,7 +65,7 @@ export class Plugins {
         return this.activePlugins;
     }
 
-    getByRegion(region: UI_Region): UI_Panel[] {
+    getPanelByRegion(region: UI_Region): UI_Panel[] {
         return this.activePlugins.filter(plugin => plugin.region === region);
     }
 
@@ -75,6 +75,10 @@ export class Plugins {
 
     getPlugin(pluginId: string): UI_Plugin {
         return this.plugins.get(pluginId);
+    }
+
+    getPluginsByRegion(region: UI_Region): UI_Plugin {
+        return this.activePlugins
     }
 
     getAll(): UI_Panel[] {
@@ -141,7 +145,8 @@ export class Plugins {
     }
 
     showPlugin(pluginId: string) {        
-        const plugin = this.getPanelById(pluginId);
+        const plugin = this.plugins.get(pluginId) ? this.plugins.get(pluginId).getPanel() : this.getPanelById(pluginId);
+
         if (UI_Region.isSinglePluginRegion(plugin.region)) {
             this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
         }

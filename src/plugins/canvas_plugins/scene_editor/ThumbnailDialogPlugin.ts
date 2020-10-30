@@ -13,13 +13,14 @@ import { GizmoPlugin } from '../../../core/plugin/IGizmo';
 import { IEngineFacade } from '../../../core/engine/IEngineFacade';
 import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
+import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin';
 export const ThumbnailDialogToolControllerId = 'thumbnail-dialog-tool-controller';
 
 export class ThumbnailDialogPlugin implements UI_Plugin {
     id: string = ThumbnailDialogPluginId;
-    region: UI_Region = UI_Region.Canvas2;
+    region: UI_Region = UI_Region.Dialog;
     displayName = 'Thumbnail';
     private panel: UI_Panel;
     private controller: FormController;
@@ -35,7 +36,7 @@ export class ThumbnailDialogPlugin implements UI_Plugin {
 
         this.engine = new Bab_EngineFacade(this.registry);
 
-        this.panel = new AbstractCanvasPlugin(registry, this.engine.getCamera(), this.region, ThumbnailDialogPluginId);
+        this.panel = new AbstractCanvasPlugin(registry, this.engine.getCamera(), this.region, ThumbnailDialogPluginId, this);
 
         const propControllers = [
             new ThumbnailCreateControl(),
@@ -46,12 +47,33 @@ export class ThumbnailDialogPlugin implements UI_Plugin {
         this.controller = new FormController(this, registry, propControllers);
 
         const tools = [
-            new CameraTool(this.panel as AbstractCanvasPlugin, registry)
+            new CameraTool(this, registry)
         ];
 
         this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
 
         this.model = new UI_Model();
+
+        this.panel.onMounted(() => this.mounted());
+        this.panel.onUnmounted(() => this.unmounted());
+    }
+
+    mounted() {
+        const meshView = this.registry.stores.views.getOneSelectedView() as MeshView;
+
+        this.engine.setup(this.panel.htmlElement.getElementsByTagName('canvas')[0]);
+
+        setTimeout(() => {
+            this.engine.meshes.createInstance(meshView.getObj())
+                .then(() => {
+                    this.engine.meshes.setRotation(meshView.getObj(), 0);
+                    this.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
+                });
+        }, 500);
+    }
+
+    unmounted() {
+        (this.engine as Bab_EngineFacade).engine.dispose();
     }
 
     getPanel() {
@@ -117,23 +139,4 @@ export class ThumbnailDialogPlugin implements UI_Plugin {
 
         return layout;
     }
-
-    // mounted(htmlElement: HTMLElement) {
-    //     super.mounted(htmlElement);
-    //     const meshView = this.registry.stores.views.getOneSelectedView() as MeshView;
-
-    //     this.engine.setup(htmlElement.getElementsByTagName('canvas')[0]);
-
-    //     setTimeout(() => {
-    //         this.engine.meshes.createInstance(meshView.getObj())
-    //             .then(() => {
-    //                 this.engine.meshes.setRotation(meshView.getObj(), 0);
-    //                 this.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
-    //             });
-    //     }, 500);
-    // }
-
-    // unmounted() {
-    //     (this.engine as Bab_EngineFacade).engine.dispose();
-    // }
 }

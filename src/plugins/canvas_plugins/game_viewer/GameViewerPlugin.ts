@@ -31,7 +31,7 @@ export class GameViewerPlugin implements UI_Plugin {
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.panel = new AbstractCanvasPlugin(registry, this.registry.engine.getCamera(), this.region, GameViewerPluginId);
+        this.panel = new AbstractCanvasPlugin(registry, this.registry.engine.getCamera(), this.region, GameViewerPluginId, this);
 
         const propControllers = [
             new ZoomInController(),
@@ -42,16 +42,30 @@ export class GameViewerPlugin implements UI_Plugin {
             new GameViewerToolController()
         ]
 
-        this.controller = new FormController(this.panel, registry, propControllers);
+        this.controller = new FormController(this, registry, propControllers);
 
         const tools = [
-            new GameTool(this.panel as AbstractCanvasPlugin, registry),
-            new CameraTool(this.panel as AbstractCanvasPlugin, registry)
+            new GameTool(this, registry),
+            new CameraTool(this, registry)
         ]
 
         this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
 
         this.model = new UI_Model();
+
+        this.panel.onMounted(() => this.mounted());
+        this.panel.onUnmounted(() => this.unmounted());
+    }
+
+    private mounted() {
+        this.registry.engine.setup(document.querySelector(`#${GameViewerPluginId} canvas`));
+        this.registry.engine.resize();
+
+        this.gizmos.forEach(gizmo => gizmo.mount());
+    }
+
+    private unmounted() {
+        this.registry.engine.meshLoader.clear();
     }
 
     getPanel() {
@@ -73,7 +87,7 @@ export class GameViewerPlugin implements UI_Plugin {
     renderInto(layout: UI_Layout) {
         const canvas = layout.htmlCanvas();
 
-        const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();
+        const selectedTool = this.getToolController().getSelectedTool();
 
         const toolbar = canvas.toolbar();
 
@@ -134,7 +148,7 @@ export class GameViewerToolController extends PropController<any> {
     acceptedProps() { return [GameToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.plugin.getToolController().setSelectedTool(element.prop);
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }

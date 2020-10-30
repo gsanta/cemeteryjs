@@ -1,9 +1,10 @@
-import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3, Scene, Engine } from 'babylonjs';
+import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonjs';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
+import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineFacade';
 import { MousePointer } from '../../../plugin/controller/ToolController';
-import { ICamera } from './ICamera';
 import { Registry } from '../../../Registry';
+import { ICamera } from './ICamera';
 
 export class Camera3D implements ICamera {
     private startY: number;
@@ -11,15 +12,17 @@ export class Camera3D implements ICamera {
     private plane = Plane.FromPositionAndNormal(Vector3.Zero(), Axis.Y);
     private inertialPanning = Vector3.Zero();
     private registry: Registry;
-    private engine: Engine;
-    private scene: Scene;
+    private engine: Bab_EngineFacade;
     private zoomFactor: number = 5;
 
-    constructor(registry: Registry, engine: Engine, scene: Scene) {
+    constructor(registry: Registry) {
         this.registry = registry;
+    }
+
+    setEngine(engine: Bab_EngineFacade) {
         this.engine = engine;
-        this.scene = scene;
-        this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), scene);
+
+        this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), this.engine.scene);
 
         this.startY = this.camera.position.y;
         this.camera.inertia = 0.7;
@@ -28,7 +31,7 @@ export class Camera3D implements ICamera {
         this.camera.upperBetaLimit = Math.PI / 2 - 0.1;
         this.camera.angularSensibilityX = this.camera.angularSensibilityY = 500;
 
-        scene.onBeforeRenderObservable.add(
+        this.engine.scene.onBeforeRenderObservable.add(
             () => {
                 if (this.inertialPanning.x !== 0 || this.inertialPanning.y !== 0 || this.inertialPanning.z !== 0) {
                     this.camera.target.addInPlace(this.inertialPanning);
@@ -37,11 +40,10 @@ export class Camera3D implements ICamera {
                 }
             }
         );
-
     }
 
     resize() {
-        (this.engine || this.registry.engine).resize();
+        this.engine && this.engine.engine && this.engine.engine.resize();
     }
 
     pan(pointer: MousePointer) {
@@ -102,7 +104,11 @@ export class Camera3D implements ICamera {
     }
 
     screenToCanvasPoint(screenPoint: Point): Point {
-        const ray = this.scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), this.camera, false);
+        if (!this.engine || !this.engine.scene) {
+            return new Point(0, 0);
+        }
+
+        const ray = this.engine.scene.createPickingRay(screenPoint.x, screenPoint.y, Matrix.Identity(), this.camera, false);
         const distance = ray.intersectsPlane(this.plane);
     
         const vector3 = distance !== null ? ray.origin.addInPlace(ray.direction.scaleInPlace(distance)) : null;
@@ -114,8 +120,7 @@ export class Camera3D implements ICamera {
     }
 
     private getScreenBox(): Rectangle {
-        const engine = this.engine;
-        return new Rectangle(new Point(0, 0), new Point(engine.getRenderWidth(), engine.getRenderHeight()));
+        return new Rectangle(new Point(0, 0), new Point(this.engine.engine.getRenderWidth(), this.engine.engine.getRenderHeight()));
     }
 
     rotate(pointer: MousePointer) {

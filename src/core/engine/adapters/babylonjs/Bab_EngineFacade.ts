@@ -26,6 +26,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     constructor(registry: Registry) {
         this.registry = registry;
 
+        this.camera = new Camera3D(this.registry);
         this.spriteLoader = new Bab_SpriteLoader(this.registry, this);
         this.sprites = new Bab_Sprites(this.registry, this);
         this.meshLoader = new Bab_MeshLoader(this.registry, this);
@@ -41,8 +42,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.scene = new Scene(this.engine);
         this.engine.getInputElement = () => canvas;
-
-        this.camera = new Camera3D(this.registry, this.engine, this.scene);
+        this.camera.setEngine(this);
         this.light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);
 
         this.light.diffuse = new Color3(1, 1, 1);
