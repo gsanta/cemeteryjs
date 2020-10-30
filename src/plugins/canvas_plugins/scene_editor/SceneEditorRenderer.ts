@@ -6,7 +6,7 @@ import { ZoomInProp, ZoomOutProp, UndoProp, RedoProp, AbstractCanvasPlugin } fro
 import { CameraToolId } from "../../../core/plugin/tools/CameraTool";
 import { DeleteToolId } from "../../../core/plugin/tools/DeleteTool";
 import { SelectToolId } from "../../../core/plugin/tools/SelectTool";
-import { CanvasRenderer } from "../../../core/plugin/UI_PluginFactory";
+import { UI_Renderer } from "../../../core/plugin/UI_PluginFactory";
 import { Registry } from "../../../core/Registry";
 import { UI_Toolbar } from "../../../core/ui_components/elements/toolbar/UI_Toolbar";
 import { UI_Container } from "../../../core/ui_components/elements/UI_Container";
@@ -20,21 +20,23 @@ import { PathToolId } from "./tools/PathTool";
 import { ScaleToolId } from "./tools/ScaleTool";
 import { SphereToolId } from "./tools/SphereTool";
 import { SpriteToolId } from "./tools/SpriteTool";
+import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
 
 
-export class SceneEditorRenderer implements CanvasRenderer {
+export class SceneEditorRenderer implements UI_Renderer {
     private registry: Registry;
-    private plugin: AbstractCanvasPlugin;
+    
+    private plugin: UI_Plugin;
 
     activeShapeToolId: string = CubeToolId;
     isShapeDropdownOpen = false;
 
-    constructor(registry: Registry, plugin: AbstractCanvasPlugin) {
+    constructor(registry: Registry, plugin: UI_Plugin) {
         this.registry = registry;
         this.plugin = plugin;
     }
 
-    renderInto(layout: UI_Layout, plugin: AbstractCanvasPlugin): void {
+    renderInto(layout: UI_Layout): void {
 
         const canvas = layout.svgCanvas();
 
@@ -42,13 +44,13 @@ export class SceneEditorRenderer implements CanvasRenderer {
 
         let tool = toolbar.tool({prop: MeshToolId});
         tool.icon = 'mesh';
-        tool.isActive = plugin.getToolController().getToolById(MeshToolId).isSelected;
+        tool.isActive = this.plugin.getToolController().getToolById(MeshToolId).isSelected;
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
 
         tool = toolbar.tool({prop: SpriteToolId});
         tool.icon = 'sprite';
-        tool.isActive = plugin.getToolController().getToolById(SpriteToolId).isSelected;
+        tool.isActive = this.plugin.getToolController().getToolById(SpriteToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
 
@@ -59,25 +61,25 @@ export class SceneEditorRenderer implements CanvasRenderer {
 
         tool = toolbar.tool({prop: PathToolId});
         tool.icon = 'path';
-        tool.isActive = plugin.getToolController().getToolById(PathToolId).isSelected;
+        tool.isActive = this.plugin.getToolController().getToolById(PathToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
         tool = toolbar.tool({prop: SelectToolId});
         tool.icon = 'select';
-        tool.isActive = plugin.getToolController().getToolById(SelectToolId).isSelected;
+        tool.isActive = this.plugin.getToolController().getToolById(SelectToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
         tool = toolbar.tool({prop: DeleteToolId});
         tool.icon = 'delete';
-        tool.isActive = plugin.getToolController().getToolById(DeleteToolId).isSelected;
+        tool.isActive = this.plugin.getToolController().getToolById(DeleteToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
         tool = toolbar.tool({prop: CameraToolId});
         tool.icon = 'pan';
-        tool.isActive = plugin.getToolController().getToolById(CameraToolId).isSelected;
+        tool.isActive = this.plugin.getToolController().getToolById(CameraToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
@@ -99,13 +101,13 @@ export class SceneEditorRenderer implements CanvasRenderer {
 
         actionIcon = toolbar.actionIcon({prop: ScaleToolId});
         actionIcon.icon = 'scale';
-        actionIcon.isActivated = plugin.getToolController().getToolById(ScaleToolId).isSelected;
+        actionIcon.isActivated = this.plugin.getToolController().getToolById(ScaleToolId).isSelected;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Scale';
 
         actionIcon = toolbar.actionIcon({prop: AxisToolId});
         actionIcon.icon = 'move';
-        actionIcon.isActivated = plugin.getToolController().getToolById(AxisToolId).isSelected;
+        actionIcon.isActivated = this.plugin.getToolController().getToolById(AxisToolId).isSelected;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Move';
 

@@ -1,4 +1,4 @@
-import { UI_Plugin, UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
@@ -7,7 +7,7 @@ import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin'
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
-export class NodeEditorSettingsPlugin extends UI_Plugin {
+export class NodeEditorSettingsPlugin extends UI_Panel {
     id = NodeEditorSettingsPluginId;
     displayName = 'Node Editor';
     region = UI_Region.Sidepanel;

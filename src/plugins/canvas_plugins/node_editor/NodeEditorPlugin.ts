@@ -1,30 +1,24 @@
 import { Camera2D } from '../../../core/models/misc/camera/Camera2D';
-import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../../../core/models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../../../core/models/views/NodeView';
 import { ViewTag } from '../../../core/models/views/View';
-import { AbstractCanvasPlugin, calcOffsetFromDom, ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPlugin, ZoomInController, ZoomInProp, ZoomOutController, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { FormController } from '../../../core/plugin/controller/FormController';
+import { CommonToolController, ToolController } from '../../../core/plugin/controller/ToolController';
+import { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
+import { DeleteTool, DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
+import { SelectTool, SelectToolId } from '../../../core/plugin/tools/SelectTool';
 import { ToolType } from '../../../core/plugin/tools/Tool';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Model } from '../../../core/plugin/UI_Model';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
+import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
-import { ViewStore } from '../../../core/stores/ViewStore';
-import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../../core/ui_components/react/styles';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { NodeRenderer } from './NodeRenderer';
-import { AnimationNodeFacotry } from './nodes/AnimationNodeObj';
-import { KeyboardNodeFacotry } from './nodes/KeyboardNodeObj';
-import { MeshNodeFacotry } from './nodes/MeshNodeObj';
-import { MoveNodeFacotry } from './nodes/MoveNodeObj';
-import { PathNodeFacotry } from './nodes/PathNodeObj';
-import { RouteNodeFacotry } from './nodes/route_node/RouteNodeObj';
 import { JoinTool } from './tools/JoinTool';
-import { SelectToolId } from '../../../core/plugin/tools/SelectTool';
-import { DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
-import { CameraToolId } from '../../../core/plugin/tools/CameraTool';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -55,56 +49,63 @@ export enum CanvasTag {
 export const NodeEditorPluginId = 'node-editor-plugin'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
-export class NodeEditorPlugin extends AbstractCanvasPlugin {
-    id = NodeEditorPluginId;
-    region = UI_Region.Canvas1;
-
-    nodeObjects: NodeObj;
-
-    private camera: Camera2D;
-
-    private formControllers: Map<string, FormController> = new Map();
+export class NodeEditorPlugin implements UI_Plugin {
+    id: string;
+    region: UI_Region;
+    private panel: UI_Panel;
+    private controller: FormController;
+    private toolController: ToolController;
+    private model: UI_Model;
+    private registry: Registry;
     private defaultNodeRenderer = new NodeRenderer();
 
-    constructor(registry: Registry) {
-        super(registry);
+    constructor(registry: Registry, region: UI_Region) {
+        this.registry = registry;
+        this.region = region;
+        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(NodeEditorPluginId, registry), this.region);
 
-        this.camera = cameraInitializer(NodeEditorPluginId, registry);
+        const propControllers = [
+            new ZoomInController(),
+            new ZoomOutController(),
+            new CommonToolController()
+        ]
+
+        this.controller = new FormController(this.panel, registry, propControllers);
+
+        const tools = [
+            new SelectTool(this.panel as AbstractCanvasPlugin, registry),
+            new DeleteTool(this.panel as AbstractCanvasPlugin, registry),
+            new CameraTool(this.panel as AbstractCanvasPlugin, registry),
+            new JoinTool(this.panel as AbstractCanvasPlugin, registry)
+        ]
+
+        this.toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+
+        this.model = new UI_Model();
     }
 
-    getStore(): ViewStore {
-        return this.registry.stores.views;
+    getPanel() {
+        return this.panel;
     }
 
-    resize(): void {
-        const screenSize = getScreenSize(NodeEditorPluginId);
-        screenSize && this.camera.resize(screenSize);
-
-        this.registry.services.render.reRender(this.region);
-    };
-
-    getOffset() {
-        return calcOffsetFromDom(this.htmlElement);
+    getController() {
+        return this.controller;
     }
 
-    getCamera() {
-        return this.camera;
+    getToolController() {
+        return this.toolController;
     }
 
-    getFormController(controllerId?: string): FormController {
-        return this.formControllers.get(controllerId);
+    getModel() {
+        return this.model;
     }
 
-    addFormController(controllerId: string, formController: FormController): void {
-        this.formControllers.set(controllerId, formController);
-    }
-
-    protected renderInto(layout: UI_Layout): void {
+    renderInto(layout: UI_Layout) {
         const canvas = layout.svgCanvas();
 
         const dropLayer = canvas.dropLayer();
         dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes
-        dropLayer.isDragging = !!this.dropItem;
+        dropLayer.isDragging = !!(this.panel as AbstractCanvasPlugin).dropItem;
 
         const toolbar = canvas.toolbar();
         const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();

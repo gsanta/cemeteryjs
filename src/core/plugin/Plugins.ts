@@ -6,21 +6,26 @@ import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
 import { CanvasPlugins } from './CanvasPlugins';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
-import { UI_Plugin, UI_Region } from './UI_Plugin';
-import { UI_PluginFactory } from './UI_PluginFactory';
+import { UI_Panel, UI_Region } from './UI_Panel';
+import { UI_PluginFactory, UI_Renderer } from './UI_PluginFactory';
+import { UI_Container } from '../ui_components/elements/UI_Container';
+import { UI_Plugin } from './UI_Plugin';
 
 export class Plugins {
     engineHooks: EngineHooks;
 
     canvas: CanvasPlugins;
 
-    private activePlugins: UI_Plugin[] = [];
+    private activePlugins: UI_Panel[] = [];
 
     private pluginFactories: Map<string, UI_PluginFactory> = new Map();
+    private renderers: Map<string, UI_Renderer> = new Map();
+    private panels: Map<string, UI_Panel> = new Map();
+
     private plugins: Map<string, UI_Plugin> = new Map();
 
     private formControllers: Map<string, FormController> = new Map();
-    private toolControllers: Map<UI_Plugin, ToolController> = new Map();
+    private toolControllers: Map<UI_Panel, ToolController> = new Map();
 
     visibilityDirty = true;
 
@@ -53,39 +58,47 @@ export class Plugins {
         return this.hoveredView;
     }
 
-    getActivePlugins(region?: UI_Region): UI_Plugin[] {
+    getActivePlugins(region?: UI_Region): UI_Panel[] {
         if (region) {
             return this.activePlugins.filter(activePlugin => activePlugin.region === region);
         }
         return this.activePlugins;
     }
 
-    getByRegion(region: UI_Region): UI_Plugin[] {
+    getByRegion(region: UI_Region): UI_Panel[] {
         return this.activePlugins.filter(plugin => plugin.region === region);
     }
 
-    getById(pluginId: string): UI_Plugin {
-        return this.plugins.get(pluginId);
+    getById(pluginId: string): UI_Panel {
+        return this.panels.get(pluginId);
     } 
 
-    getAll(): UI_Plugin[] {
-        return Array.from(this.plugins.values());
+    getAll(): UI_Panel[] {
+        return Array.from(this.panels.values());
+    }
+
+    registerPlugin2(plugin: UI_Plugin) {
+        this.plugins.set(plugin.id, plugin);
     }
 
     registerPlugin(pluginFactory: UI_PluginFactory) {
         this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
         this.instantiatePlugin(pluginFactory.pluginId);
 
+        if (pluginFactory.createRenderer) {
+            this.renderers.set(pluginFactory.pluginId, pluginFactory.createRenderer(this.registry));
+        }
+
         if (pluginFactory.isGlobalPlugin) {
             this.showPlugin(pluginFactory.pluginId);
         }
     }
-
+    
     instantiatePlugin(pluginFactoryId: string) {
         const pluginFactory = this.pluginFactories.get(pluginFactoryId);
 
         const plugin = pluginFactory.createPlugin(this.registry);
-        this.plugins.set(plugin.id, plugin);
+        this.panels.set(plugin.id, plugin);
 
         const propControllers = pluginFactory.createPropControllers(plugin, this.registry);
         if (propControllers.length > 0) {
@@ -115,7 +128,15 @@ export class Plugins {
     }
 
     getToolController(pluginId: string): ToolController {
-        return this.toolControllers.get(this.plugins.get(pluginId));
+        return this.toolControllers.get(this.panels.get(pluginId));
+    }
+
+    renderInto(element: UI_Container, pluginId: string) {
+        if (this.renderers.get(pluginId)) {
+            this.renderers.get(pluginId).renderInto(element, this.getById(pluginId));
+        } else {
+            this.getById(pluginId).renderInto(element);
+        }
     }
 
     showPlugin(pluginId: string) {        

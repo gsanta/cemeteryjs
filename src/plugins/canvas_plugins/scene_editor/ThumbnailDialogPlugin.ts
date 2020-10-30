@@ -1,7 +1,7 @@
 import { Bab_EngineFacade } from '../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
 import { MeshView } from '../../../core/models/views/MeshView';
 import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Region } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';

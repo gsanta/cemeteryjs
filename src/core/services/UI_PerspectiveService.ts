@@ -6,7 +6,7 @@ import { NodeEditorSettingsPluginId } from '../../plugins/canvas_plugins/node_ed
 import { CodeEditorPluginId } from '../../plugins/canvas_plugins/code_editor/CodeEditorPlugin';
 import { Registry } from '../Registry';
 import Split from 'split.js';
-import { UI_Region } from '../plugin/UI_Plugin';
+import { UI_Region } from '../plugin/UI_Panel';
 import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
 import { LevelSettingsPluginId } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
 

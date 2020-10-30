@@ -1,14 +1,14 @@
 import { MeshView, MeshViewType } from '../../../../core/models/views/MeshView';
 import { PathView, PathViewType } from '../../../../core/models/views/PathView';
 import { SpriteViewType } from '../../../../core/models/views/SpriteView';
-import { UI_Plugin, UI_Region } from '../../../../core/plugin/UI_Plugin';
+import { UI_Panel, UI_Region } from '../../../../core/plugin/UI_Panel';
 import { UI_Layout } from '../../../../core/ui_components/elements/UI_Layout';
 import { MeshSettingsProps } from './MeshSettingsController';
 import { SpriteSettingsProps } from './SpriteSettingsController';
 
 export const ObjectSettingsPluginId = 'object-settings-plugin';
 
-export class ObjectSettingsPlugin extends UI_Plugin {
+export class ObjectSettingsPlugin extends UI_Panel {
     id = ObjectSettingsPluginId;
     displayName = 'Object Settings';
     region = UI_Region.Sidepanel;

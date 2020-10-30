@@ -6,6 +6,7 @@ import { ChildView } from "./child_views/ChildView";
 import { UI_Container } from "../../ui_components/elements/UI_Container";
 import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
+import { UI_Plugin } from '../../plugin/UI_Plugin';
 
 export interface ViewJson {
     id: string;
@@ -23,12 +24,12 @@ export interface ViewFactory {
     viewType: string;
     newInstance(): View;
 
-    renderInto?(container: UI_Container, view: View, plugin?: AbstractCanvasPlugin);
+    renderInto?(container: UI_Container, view: View, plugin: UI_Plugin);
     createRenderer?(registry: Registry): ViewRenderer;
 }
 
 export interface ViewRenderer {
-    renderInto(container: UI_SvgCanvas, view: View, plugin: AbstractCanvasPlugin);
+    renderInto(container: UI_SvgCanvas, view: View, plugin: UI_Plugin);
 }
 
 export abstract class View {

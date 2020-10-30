@@ -1,7 +1,7 @@
 import { Registry } from '../../Registry';
 import { UI_Element } from '../../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../../ui_components/elements/UI_ListItem';
-import { UI_Plugin } from '../UI_Plugin';
+import { UI_Panel } from '../UI_Panel';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -23,7 +23,7 @@ export abstract class PropController<T = any> {
 export class PropContext<T = any> {
     private tempVal: T;
     registry: Registry;
-    plugin: UI_Plugin;
+    plugin: UI_Panel;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -50,9 +50,9 @@ export class FormController {
     private propContexts: Map<PropController, PropContext> = new Map();
 
     protected registry: Registry;
-    plugin: UI_Plugin;
+    plugin: UI_Panel;
 
-    constructor(plugin: UI_Plugin, registry: Registry, propControls?: PropController<any>[]) {
+    constructor(plugin: UI_Panel, registry: Registry, propControls?: PropController<any>[]) {
         this.plugin = plugin;
         this.registry = registry;
 

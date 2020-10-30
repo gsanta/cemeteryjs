@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";

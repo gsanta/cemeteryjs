@@ -5,7 +5,7 @@ import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { NullTool, createRectFromMousePointer } from './NullTool';
 import { ToolType } from './Tool';
-import { UI_Region } from '../UI_Plugin';
+import { UI_Region } from '../UI_Panel';
 import { View } from '../../models/views/View';
 
 export abstract class RectangleTool extends NullTool {

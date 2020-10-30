@@ -2,7 +2,7 @@ import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";

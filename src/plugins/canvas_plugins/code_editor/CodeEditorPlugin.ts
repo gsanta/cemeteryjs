@@ -1,6 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { AbstractCanvasPlugin } from "../../../core/plugin/AbstractCanvasPlugin";
-import { UI_Region } from "../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { ICamera } from "../../../core/models/misc/camera/ICamera";
 import { Tool } from "../../../core/plugin/tools/Tool";
 

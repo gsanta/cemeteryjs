@@ -2,7 +2,7 @@ import { Tools } from "babylonjs";
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { MeshView } from "../../../core/models/views/MeshView";
 import { PropController, PropContext } from "../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { ThumbnailDialogPlugin } from "./ThumbnailDialogPlugin";
 import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 

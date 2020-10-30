@@ -1,40 +1,76 @@
-import { ZoomInProp, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
-import { Canvas_3d_Plugin } from '../../../core/plugin/Canvas_3d_Plugin';
-import { ToolType } from '../../../core/plugin/tools/Tool';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { AbstractCanvasPlugin, ZoomInController, ZoomInProp, ZoomOutController, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { GameViewerProps } from './GameViewerProps';
-import { GameToolId } from './tools/GameTool';
-import { CameraToolId } from '../../../core/plugin/tools/CameraTool';
+import { GameViewerProps, PlayController, StopController } from './GameViewerProps';
+import { GameTool, GameToolId } from './tools/GameTool';
+import { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
+import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
+import { FormController } from '../../../core/plugin/controller/FormController';
+import { CommonToolController, ToolController } from '../../../core/plugin/controller/ToolController';
+import { UI_Model } from '../../../core/plugin/UI_Model';
+import { GameViewerToolController } from './GameViewerPluginFactory';
+import { GizmoPlugin } from '../../../core/plugin/IGizmo';
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPluginId = 'game-viewer-plugin'; 
-export const GameViewerPluginControllerId = 'game-viewer-plugin-controller'; 
-export class GameViewerPlugin extends Canvas_3d_Plugin {
-    id = GameViewerPluginId;
-    region = UI_Region.Canvas2;
+export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
-    constructor(registry: Registry) {
-        super(GameViewerPluginId, registry);
+export class GameViewerPlugin implements UI_Plugin {
+    id: string;
+    region: UI_Region;
+    private panel: UI_Panel;
+    private controller: FormController;
+    private toolController: ToolController;
+    private model: UI_Model;
+    private registry: Registry;
+
+    private gizmos: GizmoPlugin[] = [];
+
+    constructor(registry: Registry, region: UI_Region) {
+        this.registry = registry;
+        this.region = region;
+
+        this.panel = new AbstractCanvasPlugin(registry, this.registry.engine.getCamera(), this.region);
+
+        const propControllers = [
+            new ZoomInController(),
+            new ZoomOutController(),
+            new PlayController(),
+            new StopController(),
+            new CommonToolController(),
+            new GameViewerToolController()
+        ]
+
+        this.controller = new FormController(this.panel, registry, propControllers);
+
+        const tools = [
+            new GameTool(this.panel as AbstractCanvasPlugin, registry),
+            new CameraTool(this.panel as AbstractCanvasPlugin, registry)
+        ]
+
+        this.toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+
+        this.model = new UI_Model();
     }
 
-    mounted(htmlElement: HTMLElement) {
-        super.mounted(htmlElement);
-
-        this.registry.engine.setup(document.querySelector(`#${GameViewerPluginId} canvas`));
-        this.registry.engine.resize();
-
-        this.gizmos.forEach(gizmo => gizmo.mount());
-
-        this.renderFunc && this.renderFunc();
+    getPanel() {
+        return this.panel;
     }
 
-    destroy() {
-        this.registry.engine.meshLoader.clear();
+    getController() {
+        return this.controller;
     }
 
-    protected renderInto(layout: UI_Layout): void {
+    getToolController() {
+        return this.toolController;
+    }
+
+    getModel() {
+        return this.model;
+    }
+
+    renderInto(layout: UI_Layout) {
         const canvas = layout.htmlCanvas();
 
         const selectedTool = this.registry.plugins.getToolController(this.id).getSelectedTool();

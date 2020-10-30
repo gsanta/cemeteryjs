@@ -3,7 +3,7 @@ import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkey
 import { Keyboard } from '../../services/input/KeyboardService';
 import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
-import { UI_Region } from '../UI_Plugin';
+import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor } from './Tool';

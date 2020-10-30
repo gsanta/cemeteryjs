@@ -66,7 +66,7 @@ import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { SvgLineComp } from './react/svg/SvgLineComp';
 import { ListItemComp } from './react/data_display/ListItemComp';
 import { DialogComp } from './react/dialogs/DialogComp';
-import { UI_Plugin } from '../plugin/UI_Plugin';
+import { UI_Panel, UI_Region } from '../plugin/UI_Panel';
 import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
 import { SvgPolygonComp } from './react/svg/SvgPolygonComp';
 import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
@@ -82,6 +82,7 @@ import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
+import { UI_Factory } from './UI_Factory';
 
 export class UI_Builder {
 
@@ -98,8 +99,47 @@ export class UI_Builder {
         this.registry = registry;
     }
 
-    build(plugin: UI_Plugin): JSX.Element {
-        return this.buildContainer(plugin.render(), plugin.id);
+    build(plugin: UI_Panel): JSX.Element {
+        if (plugin.region === UI_Region.Sidepanel) {
+            const layout = UI_Factory.layout(plugin.id, {});
+            const accordion = layout.accordion();
+            accordion.title = plugin.displayName;
+            plugin.renderInto(accordion);
+
+            return this.buildElement(accordion, plugin.id);
+        } else if (plugin.region === UI_Region.Dialog) {
+            const dialog = UI_Factory.dialog(plugin.id, {});
+            dialog.title = plugin.displayName;
+            plugin.renderInto(dialog);
+            
+            return this.buildElement(dialog, plugin.id);
+        } else {
+            const layout = UI_Factory.layout(plugin.id, {});
+            plugin.renderInto(layout);
+
+            return this.buildElement(layout, plugin.id);
+        }
+    }
+
+    render(plugin: UI_Panel): UI_Container {
+        if (plugin.region === UI_Region.Sidepanel) {
+            const layout = UI_Factory.layout(plugin.id, {});
+            const accordion = layout.accordion();
+            accordion.title = plugin.displayName;
+            plugin.renderInto(accordion);
+            return layout;
+        } else if (plugin.region === UI_Region.Dialog) {
+            const dialog = UI_Factory.dialog(plugin.id, {});
+            dialog.title = plugin.displayName;
+            plugin.renderInto(dialog);
+            return dialog;
+
+        } else {
+            const layout = UI_Factory.layout(plugin.id, {});
+
+            plugin.renderInto(layout);
+            return layout;
+        }
     }
 
     private buildContainer(element: UI_Container, pluginId?: string): JSX.Element {

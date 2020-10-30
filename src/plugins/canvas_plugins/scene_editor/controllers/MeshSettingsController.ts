@@ -2,7 +2,7 @@ import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { MeshBoxConfig } from '../../../../core/models/objs/MeshObj';
 import { MeshView } from '../../../../core/models/views/MeshView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
-import { UI_Region } from '../../../../core/plugin/UI_Plugin';
+import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { ThumbnailDialogPluginId } from '../ThumbnailDialogPlugin';
 

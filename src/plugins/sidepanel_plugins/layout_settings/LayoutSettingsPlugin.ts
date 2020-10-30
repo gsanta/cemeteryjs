@@ -1,5 +1,5 @@
 import { AbstractSidepanelPlugin } from '../../../core/plugin/AbstractSidepanelPlugin';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Region } from '../../../core/plugin/UI_Panel';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { LayoutSettingsProps } from './LayoutSettingsProps';
 

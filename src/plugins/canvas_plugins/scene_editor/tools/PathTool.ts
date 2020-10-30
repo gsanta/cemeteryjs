@@ -8,7 +8,7 @@ import { IHotkeyEvent } from "../../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../../core/services/input/KeyboardService";
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { ToolType } from "../../../../core/plugin/tools/Tool";
-import { UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { PathObj, PathObjType } from "../../../../core/models/objs/PathObj";
 
 export const PathToolId = 'path-tool';

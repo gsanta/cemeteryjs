@@ -1,5 +1,5 @@
-import { UI_Plugin, UI_Region } from './UI_Plugin';
+import { UI_Panel, UI_Region } from './UI_Panel';
 
-export abstract class AbstractSidepanelPlugin extends UI_Plugin {
+export abstract class AbstractSidepanelPlugin extends UI_Panel {
     region = UI_Region.Sidepanel;
 }

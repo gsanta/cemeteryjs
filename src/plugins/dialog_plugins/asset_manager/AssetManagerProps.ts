@@ -1,6 +1,6 @@
 import { AssetObj } from '../../../core/models/objs/AssetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Region } from '../../../core/plugin/UI_Panel';
 import { UI_InputElement } from '../../../core/ui_components/elements/UI_InputElement';
 import { AssetManagerDialogPlugin } from './AssetManagerDialogPlugin';
 

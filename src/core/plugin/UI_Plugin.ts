@@ -1,97 +1,42 @@
-import { Registry } from '../Registry';
-import { UI_Container } from '../ui_components/elements/UI_Container';
-import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
-import { UI_Factory } from '../ui_components/UI_Factory';
-import { IDataExporter } from '../services/export/IDataExporter';
+import { UI_Panel } from "./UI_Panel";
+import { UI_Renderer } from "./UI_PluginFactory";
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
+import { UI_Model } from "./UI_Model";
+import { Point } from "../../utils/geometry/shapes/Point";
+import { Camera2D } from "../models/misc/camera/Camera2D";
+import { Registry } from "../Registry";
+import { UI_Container } from "../ui_components/elements/UI_Container";
 
-export enum UI_Region {
-    Sidepanel = 'Sidepanel',
-    Dialog = 'Dialog',
-    Canvas1 = 'Canvas1',
-    Canvas2 = 'Canvas2'
+export function getScreenSize(canvasId: string): Point {
+    if (typeof document !== 'undefined') {
+        const svg: HTMLElement = document.getElementById(canvasId);
+
+        if (svg) {
+            const rect: ClientRect = svg.getBoundingClientRect();
+            return new Point(rect.width, rect.height);
+        }
+    }
+    return undefined;
 }
 
-export namespace UI_Region {
-    let regions: UI_Region[];
+export const DUMMY_CAMERA_SIZE = new Point(100, 100);
 
-    export function all() {
-        if (regions) { return regions; }
-
-        regions = [];
-        for (let item in UI_Region) {
-            if (isNaN(Number(item))) {
-                regions.push(item as UI_Region);
-            }
-        }
-
-        return regions;
-    }
-
-    export function isSinglePluginRegion(region: UI_Region) {
-        switch(region) {
-            case UI_Region.Canvas1:
-            case UI_Region.Canvas2:
-            case UI_Region.Dialog:
-                return true;
-            default:
-                return false;
-        }
+export function cameraInitializer(canvasId: string, registry: Registry) {
+    const screenSize = getScreenSize(canvasId);
+    if (screenSize) {
+        return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
+    } else {
+        return new Camera2D(registry, DUMMY_CAMERA_SIZE);
     }
 }
 
-export abstract class UI_Plugin {
+export interface UI_Plugin {
     id: string;
-    displayName: string;
-    region: UI_Region;
+    getPanel(): UI_Panel;
+    getController(): FormController;
+    getToolController(): ToolController;
+    getModel(): UI_Model;
 
-    htmlElement: HTMLElement;
-
-    importer: AbstractPluginImporter;
-    exporter: IDataExporter;
-
-    protected abstract renderInto?(layout: UI_Container): void;
-
-    getFormController(controllerId: string): FormController { return undefined; }
-    addFormController(controllerId: string, controller: FormController): void {}
-    getToolController(): ToolController { return undefined; }
-
-    protected registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
-    render(): UI_Container {
-        if (this.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(this.id, {});
-            const accordion = layout.accordion();
-            accordion.title = this.displayName;
-            this.renderInto(accordion);
-            return layout;
-        } else if (this.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog(this.id, {});
-            dialog.title = this.displayName;
-            this.renderInto(dialog);
-            return dialog;
-
-        } else {
-            const layout = UI_Factory.layout(this.id, {});
-
-            this.renderInto(layout);
-            return layout;
-        }
-    }
-
-    activated() {}
-    mounted(htmlElement: HTMLElement) {
-        this.htmlElement = htmlElement;
-    }
-    unmounted() {}
-
-    // TODO should be temporary, port it to PointerService somehow
-    over() {
-
-    }
+    renderInto(layout: UI_Container, plugin: UI_Panel): void;
 }

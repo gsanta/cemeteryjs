@@ -2,7 +2,7 @@ import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
 import { PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";

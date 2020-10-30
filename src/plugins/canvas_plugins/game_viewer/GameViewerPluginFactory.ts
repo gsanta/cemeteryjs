@@ -3,7 +3,7 @@ import { PropContext, PropController } from "../../../core/plugin/controller/For
 import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { Tool } from "../../../core/plugin/tools/Tool";
-import { UI_Plugin } from "../../../core/plugin/UI_Plugin";
+import { UI_Panel } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { GameViewerPlugin, GameViewerPluginId } from "./GameViewerPlugin";
 import { PlayController, StopController as StopController } from "./GameViewerProps";
@@ -17,7 +17,7 @@ export const GameViewerToolControllerId = 'game-viewer-tool-controller';
 export class GameViewerPluginFactory implements UI_PluginFactory {
     pluginId = GameViewerPluginId;
     
-    createPlugin(registry: Registry): UI_Plugin {
+    createPlugin(registry: Registry): UI_Panel {
         return new GameViewerPlugin(registry);
     }
 
@@ -32,7 +32,7 @@ export class GameViewerPluginFactory implements UI_PluginFactory {
         ]
     }
 
-    createTools(plugin: UI_Plugin, registry: Registry): Tool[] {
+    createTools(plugin: UI_Panel, registry: Registry): Tool[] {
         return [
             new GameTool(plugin as AbstractCanvasPlugin, registry),
             new CameraTool(plugin as AbstractCanvasPlugin, registry)

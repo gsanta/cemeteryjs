@@ -9,7 +9,7 @@ import { PropContext, PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
-import { UI_Plugin, UI_Region } from './UI_Plugin';
+import { UI_Panel, UI_Region } from './UI_Panel';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -32,7 +32,7 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
     return new Point(0, 0);
 }
 
-export abstract class AbstractCanvasPlugin extends UI_Plugin {
+export class AbstractCanvasPlugin extends UI_Panel {
     dropItem: UI_ListItem;
     bounds: Rectangle;
 

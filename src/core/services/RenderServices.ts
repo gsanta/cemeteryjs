@@ -1,5 +1,5 @@
 import { Registry } from '../Registry';
-import { UI_Region } from '../plugin/UI_Plugin';
+import { UI_Region } from '../plugin/UI_Panel';
 
 export enum RenderTask {
     RenderFocusedView = 'RenderFocusedView',

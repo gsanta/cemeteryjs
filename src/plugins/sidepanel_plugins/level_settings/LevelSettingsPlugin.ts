@@ -1,10 +1,10 @@
-import { UI_Plugin, UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { LevelSettingsProps } from './LevelSettingsProps';
 
 export const LevelSettingsPluginId = 'level-settings-plugin';
 
-export class LevelSettingsPlugin extends UI_Plugin {
+export class LevelSettingsPlugin extends UI_Panel {
     id = LevelSettingsPluginId;
     displayName = 'Level Settings';
     region = UI_Region.Sidepanel;

@@ -2,7 +2,7 @@ import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { getIntersectingViews } from '../../stores/ViewStore';
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
-import { UI_Region } from '../UI_Plugin';
+import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor, ToolType } from "./Tool";

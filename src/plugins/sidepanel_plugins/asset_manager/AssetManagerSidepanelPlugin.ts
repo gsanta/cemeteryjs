@@ -1,9 +1,9 @@
-import { UI_Plugin, UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { AssetManagerSidepanelControllerProps } from './AssetManagerSidepanelProps';
 
 export const AssetManagerSidepanelPluginId = 'asset-manager-sidepanel-plugin' 
-export class AssetManagerSidepanelPlugin extends UI_Plugin {
+export class AssetManagerSidepanelPlugin extends UI_Panel {
     id = 'asset-manager-sidepanel-plugin';
     displayName = 'Asset manager';
     region = UI_Region.Sidepanel;

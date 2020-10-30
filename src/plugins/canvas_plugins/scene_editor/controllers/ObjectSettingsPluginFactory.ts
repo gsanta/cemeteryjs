@@ -1,7 +1,7 @@
 import { PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_PluginFactory } from "../../../../core/plugin/UI_PluginFactory";
 import { Tool } from "../../../../core/plugin/tools/Tool";
-import { UI_Plugin } from "../../../../core/plugin/UI_Plugin";
+import { UI_Panel } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { DepthController, HeightController, LayerController, MeshIdController, ModelController, RotationController, ScaleController, TextureController, ThumbnailController, WidthController, YPosController } from "./MeshSettingsController";
 import { ObjectSettingsPlugin, ObjectSettingsPluginId } from "./ObjectSettingsPlugin";
@@ -11,11 +11,11 @@ import { FrameName, ManageSpriteSheetsController, ScaleXController, ScaleYContro
 export class ObjectSettingsPluginFactory implements UI_PluginFactory {
     pluginId = ObjectSettingsPluginId;
     
-    createPlugin(registry: Registry): UI_Plugin {
+    createPlugin(registry: Registry): UI_Panel {
         return new ObjectSettingsPlugin(registry);
     }
 
-    createPropControllers(plugin: UI_Plugin, registry: Registry): PropController[] {
+    createPropControllers(plugin: UI_Panel, registry: Registry): PropController[] {
         return [
             // mesh
             new MeshIdController(),
@@ -42,5 +42,5 @@ export class ObjectSettingsPluginFactory implements UI_PluginFactory {
         ];
     }
 
-    createTools(plugin: UI_Plugin, registry: Registry): Tool[] { return []; }
+    createTools(plugin: UI_Panel, registry: Registry): Tool[] { return []; }
 }

@@ -1,7 +1,7 @@
 import { SpriteSheetObjType } from '../../../../core/models/objs/SpriteSheetObj';
 import { SpriteView } from '../../../../core/models/views/SpriteView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
-import { UI_Region } from '../../../../core/plugin/UI_Plugin';
+import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
 

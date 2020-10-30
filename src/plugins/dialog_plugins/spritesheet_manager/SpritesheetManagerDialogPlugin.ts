@@ -1,12 +1,12 @@
 import { SpriteSheetObj, SpriteSheetObjType } from "../../../core/models/objs/SpriteSheetObj";
-import { UI_Plugin, UI_Region } from "../../../core/plugin/UI_Plugin";
+import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
 import { SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogProps";
 
 export const SpriteSheetManagerDialogPluginId = 'sprite-sheet-manager-dialog-plugin'; 
-export class SpriteSheetManagerDialogPlugin extends UI_Plugin {
+export class SpriteSheetManagerDialogPlugin extends UI_Panel {
     id = SpriteSheetManagerDialogPluginId;
     region = UI_Region.Dialog;
     displayName = 'Spritesheet manager';

@@ -9,6 +9,7 @@ import { View, ViewFactory, ViewRenderer } from "../models/views/View";
 import { AbstractCanvasPlugin } from "../plugin/AbstractCanvasPlugin";
 import { Registry } from "../Registry";
 import { UI_SvgCanvas } from "../ui_components/elements/UI_SvgCanvas";
+import { UI_Plugin } from '../plugin/UI_Plugin';
 
 export class ViewService {
     private factoriesByType: Map<string, ViewFactory> = new Map();
@@ -52,7 +53,7 @@ export class ViewService {
         return view;
     }
 
-    renderInto(canvas: UI_SvgCanvas, view: View, plugin: AbstractCanvasPlugin) {
+    renderInto(canvas: UI_SvgCanvas, view: View, plugin: UI_Plugin) {
         if (this.renderers.get(view.viewType)) {
             this.renderers.get(view.viewType).renderInto(canvas, view, plugin);
         } else if (this.factoriesByType.get(view.viewType)) {

@@ -3,7 +3,7 @@ import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamJson } from "..
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../../core/services/NodeService";

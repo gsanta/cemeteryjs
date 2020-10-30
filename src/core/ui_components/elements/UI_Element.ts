@@ -1,4 +1,4 @@
-import { UI_Plugin } from '../../plugin/UI_Plugin';
+import { UI_Panel } from '../../plugin/UI_Panel';
 import { UI_ElementType } from './UI_ElementType';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { Point } from '../../../utils/geometry/shapes/Point';

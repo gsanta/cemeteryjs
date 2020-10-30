@@ -1,5 +1,5 @@
 import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 
 export enum LevelSettingsProps {
     Level = 'Level',

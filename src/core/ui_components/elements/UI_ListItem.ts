@@ -1,6 +1,6 @@
 import { UI_Element } from './UI_Element';
 import { UI_ElementType } from './UI_ElementType';
-import { UI_Plugin } from '../../plugin/UI_Plugin';
+import { UI_Panel } from '../../plugin/UI_Panel';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { Registry } from '../../Registry';
 
@@ -9,7 +9,7 @@ export class UI_ListItem extends UI_Element {
     label: string;
     droppable: boolean;
     listItemId: string;
-    dropTargetPlugin: UI_Plugin;
+    dropTargetPlugin: UI_Panel;
 
     dndStart(registry: Registry) {
         (<AbstractCanvasPlugin> this.dropTargetPlugin).dropItem = this;

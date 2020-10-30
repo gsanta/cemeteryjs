@@ -1,7 +1,7 @@
 import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
 import { View, ViewTag } from '../../models/views/View';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { UI_Region } from '../UI_Plugin';
+import { UI_Region } from '../UI_Panel';
 import { NullTool } from "./NullTool";
 import { ToolType } from "./Tool";
 

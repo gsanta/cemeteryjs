@@ -7,6 +7,7 @@ import { colors } from "../../ui_components/react/styles";
 import { SpriteObj, SpriteObjJson } from "../objs/SpriteObj";
 import { PathView } from "./PathView";
 import { View, ViewFactory, ViewJson, ViewTag } from "./View";
+import { UI_Plugin } from '../../plugin/UI_Plugin';
 
 export const SpriteViewType = 'sprite-view';
 
@@ -28,7 +29,7 @@ export class SpriteViewFactory implements ViewFactory {
 
     newInstance() { return new SpriteView(); }
 
-    renderInto(canvas: UI_SvgCanvas, view: SpriteView, plugin: AbstractCanvasPlugin) {
+    renderInto(canvas: UI_SvgCanvas, view: SpriteView, plugin: UI_Plugin) {
         const group = canvas.group(view.id);
         group.data = view;
         group.transform = `translate(${view.getBounds().topLeft.x} ${view.getBounds().topLeft.y})`;

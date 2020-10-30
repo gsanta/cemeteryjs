@@ -1,7 +1,7 @@
 import { NodeObj, NodeObjType } from "../../../core/models/objs/NodeObj";
 import { NodeView, NodeViewType } from "../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../core/plugin/UI_Plugin";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 import { UI_ListItem } from "../../../core/ui_components/elements/UI_ListItem";
 

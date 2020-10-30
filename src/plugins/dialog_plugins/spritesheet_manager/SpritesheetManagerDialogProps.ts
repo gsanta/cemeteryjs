@@ -1,7 +1,7 @@
 import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../core/models/objs/SpriteSheetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
-import { UI_Region } from '../../../core/plugin/UI_Plugin';
+import { UI_Region } from '../../../core/plugin/UI_Panel';
 import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
 
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
