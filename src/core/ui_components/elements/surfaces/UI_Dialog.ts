@@ -15,6 +15,6 @@ export class UI_Dialog extends UI_Layout {
 
     close(registry: Registry): void {
         registry.plugins.getPropController(this.pluginId).click(this);
-        registry.plugins.getById(this.pluginId).unmounted();
+        registry.plugins.getPanelById(this.pluginId).unmounted();
     }
 }

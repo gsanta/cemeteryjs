@@ -9,7 +9,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     change(newVal: any, registry: Registry): void {
         if (this.controllerId) {
-            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).change(newVal, this);
+            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).change(newVal, this);
         } else {
             registry.plugins.getPropController(this.pluginId).change(newVal, this);
         }
@@ -17,7 +17,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     focus(registry: Registry): void {
         if (this.controllerId) {
-            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).focus(this);
+            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).focus(this);
         } else {
             registry.plugins.getPropController(this.pluginId).focus(this);
         }
@@ -25,7 +25,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     blur(registry: Registry): void {
         if (this.controllerId) {
-            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).blur(this);
+            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).blur(this);
         } else {
             registry.plugins.getPropController(this.pluginId).blur(this);
         }
@@ -33,7 +33,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     click(registry: Registry): void {
         if (this.controllerId) {
-            registry.plugins.getById(this.pluginId).getFormController(this.controllerId).click(this);
+            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).click(this);
         } else {
             registry.plugins.getPropController(this.pluginId).click(this);
         }
@@ -41,7 +41,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     val(registry: Registry): any {
         if (this.controllerId) {
-            return registry.plugins.getById(this.pluginId).getFormController(this.controllerId).val(this);
+            return registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).val(this);
         } else {
             return registry.plugins.getPropController(this.pluginId).val(this);
         }
@@ -49,7 +49,7 @@ export abstract class UI_InputElement extends UI_Element {
 
     values(registry: Registry): any[] {
         if (this.controllerId) {
-            return registry.plugins.getById(this.pluginId).getFormController(this.controllerId).values(this);
+            return registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).values(this);
         } else {
             return registry.plugins.getPropController(this.pluginId).values(this);
         }

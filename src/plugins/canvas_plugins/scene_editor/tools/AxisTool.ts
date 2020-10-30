@@ -3,11 +3,11 @@ import { AxisView, AxisViewType } from "../../../../core/models/views/child_view
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { SpriteView } from "../../../../core/models/views/SpriteView";
 import { View } from "../../../../core/models/views/View";
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { NullTool } from "../../../../core/plugin/tools/NullTool";
 import { Cursor } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
 
 export const AxisToolId = 'axis-tool';
 
@@ -16,7 +16,7 @@ export class AxisTool extends NullTool {
     private downView: AxisView;
     private hoveredView: AxisView;
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(AxisToolId, plugin, registry);
     }
 

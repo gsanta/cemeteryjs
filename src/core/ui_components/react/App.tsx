@@ -15,7 +15,7 @@ import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService
 import styled from 'styled-components';
 import { GameViewerPluginId } from '../../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
-import { UI_Region } from '../../plugin/UI_Plugin';
+import { UI_Region } from '../../plugin/UI_Panel';
 
 export interface AppState {
     isDialogOpen: boolean;

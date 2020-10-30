@@ -1,17 +1,17 @@
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
 import { Registry } from "../../../../core/Registry";
 import { View } from "../../../../core/models/views/View";
 import { MeshBoxConfig, MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
 
 export const CubeToolId = 'cube-tool';
 export class CubeTool extends RectangleTool {
     icon = 'cube';
     displayName = 'Cube';
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(CubeToolId, plugin, registry);
     }
 

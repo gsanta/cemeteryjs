@@ -2,7 +2,7 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
@@ -95,7 +95,7 @@ export class SpeedControl extends PropController<string> {
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 
-    blur(context, element) {
+    blur(context: PropContext, element) {
         const speed = context.getTempVal();
         context.clearTempVal();
 

@@ -28,7 +28,7 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
             nodeTypesByCategory.get(node.category).push(node);
         });
 
-        const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getById(NodeEditorPluginId);
+        const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getPanelById(NodeEditorPluginId);
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeObj[]) => {
             const accordion = rootContainer.accordion();

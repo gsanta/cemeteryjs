@@ -23,7 +23,7 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
 
         if (plugins.length) {
             const plugin = plugins[0];
-            component = new UI_Builder(this.context.registry).build(plugin);
+            component = new UI_Builder(this.context.registry).build(plugin, this.context.registry.plugins.getPlugin(plugin.id));
         }
 
         return (

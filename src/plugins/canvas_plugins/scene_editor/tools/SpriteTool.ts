@@ -7,11 +7,12 @@ import { SpriteView, SpriteViewType } from "../../../../core/models/views/Sprite
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { SpriteObj, SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 import { colors } from "../../../../core/ui_components/react/styles";
+import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
 
 export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool {
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(SpriteToolId, plugin, registry);
     }
 

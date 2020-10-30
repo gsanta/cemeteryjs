@@ -1,18 +1,16 @@
-import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { MeshView } from '../../models/views/MeshView';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { NullTool, createRectFromMousePointer } from './NullTool';
-import { ToolType } from './Tool';
 import { UI_Region } from '../UI_Panel';
 import { View } from '../../models/views/View';
+import { UI_Plugin } from '../UI_Plugin';
 
 export abstract class RectangleTool extends NullTool {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
 
-    constructor(type: string, plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(type: string, plugin: UI_Plugin, registry: Registry) {
         super(type, plugin, registry);
     }
 

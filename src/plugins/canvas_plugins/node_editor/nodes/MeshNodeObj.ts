@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropController } from "../../../../core/plugin/controller/FormController";
+import { PropController, PropContext } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
@@ -47,7 +47,7 @@ export class MeshController extends PropController<string> {
         return context.registry.stores.views.getViewsByType(MeshViewType).map(meshView => meshView.id)
     }
 
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam('mesh').val;
     }
 

@@ -17,7 +17,7 @@ export class SpriteSheetJsonPathControl extends PropController<{data: string, pa
 
     change(val: {data: string, path: string}, context: PropContext) {
         const json = atob(val.data.split(',')[1]);
-        (<SpriteSheetManagerDialogPlugin> context.plugin).tempSpriteSheetJson = json;
+        (<SpriteSheetManagerDialogPlugin> context.panel).tempSpriteSheetJson = json;
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -36,7 +36,7 @@ export class SpriteSheetImgController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        (<SpriteSheetManagerDialogPlugin> context.plugin).tempImagePath = context.getTempVal();
+        (<SpriteSheetManagerDialogPlugin> context.panel).tempImagePath = context.getTempVal();
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -46,7 +46,7 @@ export class AddSpriteSheetController extends PropController<string> {
 
     click(context: PropContext) {
         const spriteSheetObj = new SpriteSheetObj();
-        const plugin = (<SpriteSheetManagerDialogPlugin> context.plugin);
+        const plugin = (<SpriteSheetManagerDialogPlugin> context.panel);
 
         const spriteSheetJson = plugin.tempSpriteSheetJson;
         const imgPath = plugin.tempImagePath;

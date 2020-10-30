@@ -2,17 +2,17 @@ import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
 import { getIntersectingViews } from '../../stores/ViewStore';
-import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor } from './Tool';
+import { UI_Plugin } from '../UI_Plugin';
 
 export const DeleteToolId = 'delete-tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(plugin: AbstractCanvasPlugin,  registry: Registry) {
+    constructor(plugin: UI_Plugin,  registry: Registry) {
         super(DeleteToolId, plugin, registry);
     }
 
@@ -68,7 +68,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.registry.plugins.getToolController(this.plugin.id).setSelectedTool(this.id)
+            this.plugin.getToolController().setSelectedTool(this.id)
             
             return true;
         }

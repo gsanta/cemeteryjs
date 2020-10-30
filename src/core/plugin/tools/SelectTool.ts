@@ -1,15 +1,15 @@
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { getIntersectingViews } from '../../stores/ViewStore';
-import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
 import { UI_Region } from '../UI_Panel';
+import { UI_Plugin } from '../UI_Plugin';
 import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
-import { Cursor, ToolType } from "./Tool";
+import { Cursor } from "./Tool";
 
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(SelectToolId, plugin, registry);
     }
 

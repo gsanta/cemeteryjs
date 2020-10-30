@@ -11,6 +11,7 @@ import { IObj } from "../../objs/IObj";
 import { PathObj } from "../../objs/PathObj";
 import { View, ViewFactory, ViewJson, ViewRenderer } from "../View";
 import { ChildView } from "./ChildView";
+import { UI_Plugin } from '../../../plugin/UI_Plugin';
 
 export interface AxisViewJson extends ViewJson {
     point: string;
@@ -67,7 +68,7 @@ class ScaleViewRenderer implements ViewRenderer {
         this.colors[CanvasAxis.Z] = this.registry.preferences.colors.blue;
     }
 
-    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleView, plugin: AbstractCanvasPlugin) {
+    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleView, plugin: UI_Plugin) {
         if (!plugin.getToolController().getToolById(ScaleToolId).isSelected) {
             return null;
         }
@@ -80,7 +81,7 @@ class ScaleViewRenderer implements ViewRenderer {
         this.renderArrowHead(group, scaleView);
     }
 
-    private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleView, plugin: AbstractCanvasPlugin) {
+    private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleView, plugin: UI_Plugin) {
         const center = scaleView.parent.getBounds().getBoundingCenter();
         
         const line = group.line();

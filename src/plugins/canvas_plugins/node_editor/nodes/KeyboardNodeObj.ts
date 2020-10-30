@@ -1,6 +1,6 @@
 import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
@@ -74,7 +74,7 @@ export class KeyControl extends PropController {
         return getAllKeys();
     }
 
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam(element.prop).val;
     }
 

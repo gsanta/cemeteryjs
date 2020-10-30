@@ -83,6 +83,7 @@ import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
+import { UI_Plugin } from '../plugin/UI_Plugin';
 
 export class UI_Builder {
 
@@ -99,25 +100,30 @@ export class UI_Builder {
         this.registry = registry;
     }
 
-    build(plugin: UI_Panel): JSX.Element {
-        if (plugin.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(plugin.id, {});
+    build(panel: UI_Panel, plugin?: UI_Plugin): JSX.Element {
+        if (panel.region === UI_Region.Sidepanel) {
+            const layout = UI_Factory.layout(panel.id, {});
             const accordion = layout.accordion();
-            accordion.title = plugin.displayName;
-            plugin.renderInto(accordion);
+            accordion.title = panel.displayName;
+            panel.renderInto(accordion);
 
-            return this.buildElement(accordion, plugin.id);
-        } else if (plugin.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog(plugin.id, {});
-            dialog.title = plugin.displayName;
-            plugin.renderInto(dialog);
+            return this.buildElement(accordion, panel.id);
+        } else if (panel.region === UI_Region.Dialog) {
+            const dialog = UI_Factory.dialog(panel.id, {});
+            dialog.title = panel.displayName;
+            panel.renderInto(dialog);
             
-            return this.buildElement(dialog, plugin.id);
+            return this.buildElement(dialog, panel.id);
         } else {
-            const layout = UI_Factory.layout(plugin.id, {});
-            plugin.renderInto(layout);
+            const layout = UI_Factory.layout(panel.id, {});
+            
+            if (plugin) {
+                plugin.renderInto(layout, plugin.getPanel());
+            } else {
+                panel.renderInto(layout);
+            }
 
-            return this.buildElement(layout, plugin.id);
+            return this.buildElement(layout, panel.id);
         }
     }
 

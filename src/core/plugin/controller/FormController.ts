@@ -2,6 +2,7 @@ import { Registry } from '../../Registry';
 import { UI_Element } from '../../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../../ui_components/elements/UI_ListItem';
 import { UI_Panel } from '../UI_Panel';
+import { UI_Plugin } from '../UI_Plugin';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -23,7 +24,8 @@ export abstract class PropController<T = any> {
 export class PropContext<T = any> {
     private tempVal: T;
     registry: Registry;
-    plugin: UI_Panel;
+    panel: UI_Panel;
+    plugin: UI_Plugin;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -50,10 +52,16 @@ export class FormController {
     private propContexts: Map<PropController, PropContext> = new Map();
 
     protected registry: Registry;
-    plugin: UI_Panel;
+    panel: UI_Panel;
+    plugin: UI_Plugin;
 
-    constructor(plugin: UI_Panel, registry: Registry, propControls?: PropController<any>[]) {
-        this.plugin = plugin;
+    constructor(plugin: UI_Panel | UI_Plugin, registry: Registry, propControls?: PropController<any>[]) {
+        if ((plugin as any).getPanel) {
+            this.plugin = <UI_Plugin> plugin;
+            this.panel = this.plugin.getPanel();
+        } else {
+            this.panel = <UI_Panel> plugin;
+        }
         this.registry = registry;
 
         this.registerPropControl(new CloseDialogController());
@@ -137,6 +145,7 @@ export class FormController {
     registerPropControl(propController: PropController<any>) {
         const propContext = new PropContext();
         propContext.registry = this.registry;
+        propContext.panel = this.panel;
         propContext.plugin = this.plugin;
 
         this.propContexts.set(propController, propContext);
@@ -148,7 +157,7 @@ class CloseDialogController extends PropController {
     acceptedProps() { return [GlobalControllerProps.CloseDialog]; }
 
     click(context: PropContext) {
-        context.registry.plugins.deactivatePlugin(context.plugin.id);
+        context.registry.plugins.deactivatePlugin(context.panel.id);
         context.registry.services.render.reRenderAll();
     }
 }

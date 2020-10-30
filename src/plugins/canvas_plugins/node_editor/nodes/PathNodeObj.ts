@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
-import { PropController } from "../../../../core/plugin/controller/FormController";
+import { PropController, PropContext } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
@@ -47,7 +47,7 @@ export class PathController extends PropController<string> {
         return context.registry.stores.views.getViewsByType(PathViewType).map(pathView => pathView.id);
     }
 
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('path').val;
     }

@@ -1,7 +1,7 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropController } from "../../../../core/plugin/controller/FormController";
+import { PropController, PropContext } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
@@ -94,7 +94,7 @@ export class MeshMoveController extends PropController<string> {
         return ['forward', 'backward'];
     }
 
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam('move');
     }
 
@@ -109,7 +109,7 @@ export class MeshMoveController extends PropController<string> {
 export class MeshSpeedController extends PropController<string> {
     acceptedProps() { return ['speed']; }
 
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam('speed');
     }
 
@@ -118,7 +118,7 @@ export class MeshSpeedController extends PropController<string> {
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 
-    blur(context, element: UI_InputElement) {
+    blur(context: PropContext, element: UI_InputElement) {
         const nodeObj = (context.registry.stores.views.getById(element.targetId) as NodeView).getObj();
         nodeObj.setParam('speed', context.clearTempVal());
         context.registry.services.render.reRenderAll();

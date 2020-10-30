@@ -6,32 +6,32 @@ import { GameViewerProps, PlayController, StopController } from './GameViewerPro
 import { GameTool, GameToolId } from './tools/GameTool';
 import { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
 import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
-import { FormController } from '../../../core/plugin/controller/FormController';
+import { FormController, PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { CommonToolController, ToolController } from '../../../core/plugin/controller/ToolController';
 import { UI_Model } from '../../../core/plugin/UI_Model';
-import { GameViewerToolController } from './GameViewerPluginFactory';
 import { GizmoPlugin } from '../../../core/plugin/IGizmo';
+import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPluginId = 'game-viewer-plugin'; 
 export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
 export class GameViewerPlugin implements UI_Plugin {
-    id: string;
-    region: UI_Region;
+    id: string = GameViewerPluginId;
+    displayName = 'Game viewer';
+    region: UI_Region = UI_Region.Canvas2;
     private panel: UI_Panel;
     private controller: FormController;
-    private toolController: ToolController;
+    private _toolController: ToolController;
     private model: UI_Model;
     private registry: Registry;
 
     private gizmos: GizmoPlugin[] = [];
 
-    constructor(registry: Registry, region: UI_Region) {
+    constructor(registry: Registry) {
         this.registry = registry;
-        this.region = region;
 
-        this.panel = new AbstractCanvasPlugin(registry, this.registry.engine.getCamera(), this.region);
+        this.panel = new AbstractCanvasPlugin(registry, this.registry.engine.getCamera(), this.region, GameViewerPluginId);
 
         const propControllers = [
             new ZoomInController(),
@@ -49,7 +49,7 @@ export class GameViewerPlugin implements UI_Plugin {
             new CameraTool(this.panel as AbstractCanvasPlugin, registry)
         ]
 
-        this.toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+        this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
 
         this.model = new UI_Model();
     }
@@ -63,7 +63,7 @@ export class GameViewerPlugin implements UI_Plugin {
     }
 
     getToolController() {
-        return this.toolController;
+        return this._toolController;
     }
 
     getModel() {
@@ -127,5 +127,14 @@ export class GameViewerPlugin implements UI_Plugin {
         const gizmoLayer = canvas.gizmoLayer();
         
         this.gizmos.forEach(gizmo => gizmo.renderInto(gizmoLayer));
+    }
+}
+
+export class GameViewerToolController extends PropController<any> {
+    acceptedProps() { return [GameToolId]; }
+
+    click(context: PropContext, element: UI_Element) {
+        context.registry.plugins.getToolController(element.pluginId).setSelectedTool(element.prop);
+        context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }

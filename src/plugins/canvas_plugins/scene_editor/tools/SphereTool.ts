@@ -5,13 +5,14 @@ import { View } from "../../../../core/models/views/View";
 import { MeshObj, MeshObjType, MeshSphereConfig } from "../../../../core/models/objs/MeshObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
 
 export const SphereToolId = 'sphere-tool';
 export class SphereTool extends RectangleTool {
     icon = 'sphere';
     displayName = 'Sphere';
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(SphereToolId, plugin, registry);
     }
 

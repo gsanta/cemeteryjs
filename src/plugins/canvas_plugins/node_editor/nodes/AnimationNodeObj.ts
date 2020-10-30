@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
@@ -88,7 +88,7 @@ export class AnimationMeshController extends PropController<string> {
         return context.registry.stores.views.getViewsByType(MeshViewType).map(meshView => meshView.id);
     }
     
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         const meshParam = nodeView.getObj().getParam('mesh').val;
         return context.registry.stores.views.getById(meshParam)?.id;
@@ -104,7 +104,7 @@ export class AnimationMeshController extends PropController<string> {
 export class StartFrameController extends PropController<string> {
     acceptedProps() { return ['startFrame']; }
 
-    defaultVal(context, element: UI_InputElement) {
+    defaultVal(context: PropContext, element: UI_InputElement) {
         const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('startFrame').val;
     }
@@ -114,7 +114,7 @@ export class StartFrameController extends PropController<string> {
         context.registry.services.render.reRender(UI_Region.Canvas1);        
     }
 
-    blur(context, element) {
+    blur(context: PropContext, element) {
         const nodeView = context.registry.stores.views.getById(element.target) as NodeView;
 
         try {

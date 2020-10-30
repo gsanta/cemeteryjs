@@ -5,6 +5,7 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { NullTool } from './NullTool';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { UI_Plugin } from '../UI_Plugin';
 
 export const CameraToolId = 'camera-tool';
 export class CameraTool extends NullTool {
@@ -16,24 +17,24 @@ export class CameraTool extends NullTool {
     private activeCameraAction: 'zoom' | 'pan' | 'rotate' = this.defaultCameraAction;
     private isSpaceDown: boolean;
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: UI_Plugin, registry: Registry) {
         super(CameraToolId, plugin, registry);
     }
 
     wheel() {
-        this.plugin.getCamera().zoomWheel();
+        (this.plugin.getPanel() as AbstractCanvasPlugin).getCamera().zoomWheel();
     }
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id)
+        this.plugin.getToolController().removePriorityTool(this.id)
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
 
     drag(e: IPointerEvent) {
         super.drag(e);
 
-        const camera = this.plugin.getCamera();
+        const camera = (this.plugin.getPanel() as AbstractCanvasPlugin).getCamera();
 
         switch(this.activeCameraAction) {
             case 'pan':
@@ -50,13 +51,13 @@ export class CameraTool extends NullTool {
     }
 
     zoomIn() {
-        if (this.plugin.getCamera().zoomIn()) {
+        if ((this.plugin.getPanel() as AbstractCanvasPlugin).getCamera().zoomIn()) {
             this.registry.services.render.reRender(this.plugin.region);
         }
     }
 
     zoomOut() {
-        if (this.plugin.getCamera().zoomOut()) {
+        if ((this.plugin.getPanel() as AbstractCanvasPlugin).getCamera().zoomOut()) {
             this.registry.services.render.reRender(this.plugin.region);
         }
     }
@@ -86,14 +87,14 @@ export class CameraTool extends NullTool {
             setAsPriorityTool = true;
         }
 
-        setAsPriorityTool && this.registry.plugins.getToolController(this.plugin.id).setPriorityTool(this.id);
+        setAsPriorityTool && this.plugin.getToolController().setPriorityTool(this.id);
         return setAsPriorityTool;
     }
 
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.registry.plugins.getToolController(this.plugin.id).removePriorityTool(this.id);
+            this.plugin.getToolController().removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
         }
     }

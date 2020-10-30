@@ -44,11 +44,12 @@ export class AbstractCanvasPlugin extends UI_Panel {
 
     private camera: ICamera;
 
-    constructor(registry: Registry, camera: ICamera, region: UI_Region) {
+    constructor(registry: Registry, camera: ICamera, region: UI_Region, id: string) {
         super(registry);
 
         this.region = region;
         this.camera = camera;
+        this.id = id;
 
         this.keyboard = new KeyboardService(registry);
     }
@@ -105,7 +106,7 @@ export class ZoomInController extends PropController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(CameraToolId);
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.panel.id).getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
@@ -115,7 +116,7 @@ export class ZoomOutController extends PropController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.plugin.id).getToolById(CameraToolId);
+        const cameraTool = <CameraTool> context.registry.plugins.getToolController(context.panel.id).getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }

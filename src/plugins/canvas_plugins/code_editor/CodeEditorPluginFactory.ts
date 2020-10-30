@@ -9,7 +9,7 @@ export class CodeEditorPluginFactory implements UI_PluginFactory {
     pluginId = CodeEditorPluginId;
     
     createPlugin(registry: Registry): UI_Panel {
-        return new CodeEditorPlugin(registry);
+        return undefined
     }
 
     createPropControllers(): PropController[] { return []; }

@@ -49,7 +49,7 @@ export class NodeService {
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
         this.nodeExecutors.set(nodeTemplate.type, nodeFactory.createExecutor());
-        const plugin = this.registry.plugins.getById(NodeEditorPluginId);
+        const plugin = this.registry.plugins.getPanelById(NodeEditorPluginId);
         plugin.addFormController(nodeTemplate.type, new FormController(plugin, this.registry, nodeFactory.createPropControllers()));
     }
 

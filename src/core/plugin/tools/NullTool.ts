@@ -9,6 +9,7 @@ import { ViewStore } from '../../stores/ViewStore';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { MousePointer } from '../controller/ToolController';
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { UI_Plugin } from '../UI_Plugin';
 
 export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
     const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
@@ -27,10 +28,10 @@ export class NullTool implements Tool {
 
     getCursor() { return Cursor.Default; }
     
-    protected plugin: AbstractCanvasPlugin;
+    protected plugin: UI_Plugin;
     protected registry: Registry;
 
-    constructor(type: string, plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(type: string, plugin: UI_Plugin, registry: Registry) {
         this.id = type;
         this.plugin = plugin;
         this.registry = registry;

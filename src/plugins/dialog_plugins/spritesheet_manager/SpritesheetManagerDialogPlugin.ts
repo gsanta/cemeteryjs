@@ -15,7 +15,7 @@ export class SpriteSheetManagerDialogPlugin extends UI_Panel {
     tempSpriteSheetJson: string;
     tempImagePath: string;
 
-    protected renderInto(layout: UI_Dialog): UI_Layout {
+    renderInto(layout: UI_Dialog): UI_Layout {
         layout.width = '530px';
 
         const row = layout.row({ key: '1' });

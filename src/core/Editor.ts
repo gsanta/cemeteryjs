@@ -1,6 +1,4 @@
 import { CodeEditorPluginFactory } from '../plugins/canvas_plugins/code_editor/CodeEditorPluginFactory';
-import { GameViewerPluginFactory } from '../plugins/canvas_plugins/game_viewer/GameViewerPluginFactory';
-import { NodeEditorPluginFactory } from '../plugins/canvas_plugins/node_editor/NodeEditorPluginFactory';
 import { NodeEditorSettingsPluginFactory } from '../plugins/canvas_plugins/node_editor/NodeEditorSettingsPluginFactory';
 import { AnimationNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
 import { KeyboardNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
@@ -9,17 +7,18 @@ import { MoveNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/Mov
 import { PathNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
 import { RouteNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
 import { ObjectSettingsPluginFactory } from '../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPluginFactory';
-import { SceneEditorPluginFactory } from '../plugins/canvas_plugins/scene_editor/SceneEditorPluginFactory';
-import { ThumbnailDialogPluginFactory } from '../plugins/canvas_plugins/scene_editor/ThumbnailDialogPluginFactory';
 import { AssetManagerPluginFactory } from '../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
 import { SpriteSheetManagerFactory } from '../plugins/dialog_plugins/spritesheet_manager/SpriteSheetManagerFactory';
 import { AssetManagerSidepanelPluginFactory } from '../plugins/sidepanel_plugins/asset_manager/AssetManagerSidepanelPluginFactory';
 import { FileSettingslPluginFactory } from '../plugins/sidepanel_plugins/file_settings/FileSettingsPluginFactory';
 import { LayoutSettingsPluginFactory } from '../plugins/sidepanel_plugins/layout_settings/LayoutSettingsPluginFactory';
-import { LevelSettingsPluginFactory } from '../plugins/sidepanel_plugins/level_settings/LevelSettingsPluginFactory';
 import { Registry } from './Registry';
 import { ObjLifeCycleHook } from './stores/ObjStore';
 import { AxisControlHook, ViewLifeCycleHook } from './stores/ViewStore';
+import { SceneEditorPlugin } from '../plugins/canvas_plugins/scene_editor/SceneEditorPlugin';
+import { NodeEditorPlugin } from '../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
+import { GameViewerPlugin } from '../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
+import { ThumbnailDialogPlugin } from '../plugins/canvas_plugins/scene_editor/ThumbnailDialogPlugin';
 
 export class Editor {
     registry: Registry;
@@ -38,19 +37,20 @@ export class Editor {
         this.registry.stores.views.addHook(new AxisControlHook(this.registry));
 
         // plugins
-        this.registry.plugins.registerPlugin(new SceneEditorPluginFactory());
         this.registry.plugins.registerPlugin(new AssetManagerPluginFactory());
-        this.registry.plugins.registerPlugin(new GameViewerPluginFactory());
-        this.registry.plugins.registerPlugin(new NodeEditorPluginFactory());
         this.registry.plugins.registerPlugin(new NodeEditorSettingsPluginFactory());
-        this.registry.plugins.registerPlugin(new ThumbnailDialogPluginFactory());
         this.registry.plugins.registerPlugin(new ObjectSettingsPluginFactory());
         this.registry.plugins.registerPlugin(new SpriteSheetManagerFactory());
         // this.registry.plugins.registerPlugin(new LevelSettingsPluginFactory());
         this.registry.plugins.registerPlugin(new AssetManagerSidepanelPluginFactory());
         this.registry.plugins.registerPlugin(new FileSettingslPluginFactory());
-        this.registry.plugins.registerPlugin(new CodeEditorPluginFactory());
+        // this.registry.plugins.registerPlugin(new CodeEditorPluginFactory());
         this.registry.plugins.registerPlugin(new LayoutSettingsPluginFactory());
+
+        this.registry.plugins.registerPlugin2(new SceneEditorPlugin(this.registry));
+        this.registry.plugins.registerPlugin2(new NodeEditorPlugin(this.registry));
+        this.registry.plugins.registerPlugin2(new GameViewerPlugin(this.registry));
+        this.registry.plugins.registerPlugin2(new ThumbnailDialogPlugin(this.registry));
     
         // nodes
         this.registry.services.node.registerNode(KeyboardNodeFacotry);

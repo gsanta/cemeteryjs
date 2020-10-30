@@ -50,19 +50,19 @@ export const NodeEditorPluginId = 'node-editor-plugin';
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
 export class NodeEditorPlugin implements UI_Plugin {
-    id: string;
-    region: UI_Region;
+    id: string = NodeEditorPluginId;
+    region: UI_Region = UI_Region.Canvas1;
+    displayName = 'Node editor';
     private panel: UI_Panel;
     private controller: FormController;
-    private toolController: ToolController;
+    private _toolController: ToolController;
     private model: UI_Model;
     private registry: Registry;
     private defaultNodeRenderer = new NodeRenderer();
 
-    constructor(registry: Registry, region: UI_Region) {
+    constructor(registry: Registry) {
         this.registry = registry;
-        this.region = region;
-        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(NodeEditorPluginId, registry), this.region);
+        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(NodeEditorPluginId, registry), this.region, NodeEditorPluginId);
 
         const propControllers = [
             new ZoomInController(),
@@ -79,7 +79,7 @@ export class NodeEditorPlugin implements UI_Plugin {
             new JoinTool(this.panel as AbstractCanvasPlugin, registry)
         ]
 
-        this.toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+        this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
 
         this.model = new UI_Model();
     }
@@ -93,7 +93,7 @@ export class NodeEditorPlugin implements UI_Plugin {
     }
 
     getToolController() {
-        return this.toolController;
+        return this._toolController;
     }
 
     getModel() {

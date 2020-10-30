@@ -5,35 +5,33 @@ import { sortViewsByLayer, View } from '../../../core/models/views/View';
 import { AbstractCanvasPlugin, RedoController, RedoProp, UndoController, UndoProp, ZoomInController, ZoomInProp, ZoomOutController, ZoomOutProp } from '../../../core/plugin/AbstractCanvasPlugin';
 import { FormController, PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController, ToolController } from '../../../core/plugin/controller/ToolController';
-import { CameraToolId } from '../../../core/plugin/tools/CameraTool';
-import { DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
-import { SelectToolId } from '../../../core/plugin/tools/SelectTool';
+iisimport { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
+import { DeleteTool, DeleteToolId } from '../../../core/plugin/tools/DeleteTool';
+import { SelectTool, SelectToolId } from '../../../core/plugin/tools/SelectTool';
 import { UI_Model } from '../../../core/plugin/UI_Model';
 import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { cameraInitializer, UI_Plugin } from '../../../core/plugin/UI_Plugin';
-import { UI_Renderer } from '../../../core/plugin/UI_PluginFactory';
 import { Registry } from '../../../core/Registry';
 import { UI_Toolbar } from '../../../core/ui_components/elements/toolbar/UI_Toolbar';
-import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
-import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { SceneEditorRenderer } from './SceneEditorRenderer';
-import { AxisToolId } from './tools/AxisTool';
-import { CubeToolId } from './tools/CubeTool';
-import { MeshToolId } from './tools/MeshTool';
-import { PathToolId } from './tools/PathTool';
-import { ScaleToolId } from './tools/ScaleTool';
-import { SphereToolId } from './tools/SphereTool';
-import { SpriteToolId } from './tools/SpriteTool';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
+import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
+import { AxisTool, AxisToolId } from './tools/AxisTool';
+import { CubeTool, CubeToolId } from './tools/CubeTool';
+import { MeshTool, MeshToolId } from './tools/MeshTool';
+import { PathTool, PathToolId } from './tools/PathTool';
+import { ScaleTool, ScaleToolId } from './tools/ScaleTool';
+import { SphereTool, SphereToolId } from './tools/SphereTool';
+import { SpriteTool, SpriteToolId } from './tools/SpriteTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin';
 export class SceneEditorPlugin implements UI_Plugin {
-    id: string;
-    region: UI_Region;
+    id: string = SceneEditorPluginId;
+    displayName = 'Scene editor';
+    region: UI_Region = UI_Region.Canvas1;
     private panel: UI_Panel;
     private controller: FormController;
-    private toolController: ToolController;
+    private _toolController: ToolController;
     private model: UI_Model;
     private registry: Registry;
 
@@ -41,11 +39,9 @@ export class SceneEditorPlugin implements UI_Plugin {
     activeShapeToolId: string = CubeToolId;
     isShapeDropdownOpen = false;
 
-    constructor(registry: Registry, region: UI_Region) {
+    constructor(registry: Registry) {
         this.registry = registry;
-        this.region = region;
-        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(SceneEditorPluginId, registry), this.region);
-        this.renderer = new SceneEditorRenderer(registry, this);
+        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(SceneEditorPluginId, registry), this.region, SceneEditorPluginId);
 
 
         const propControllers = [
@@ -62,6 +58,21 @@ export class SceneEditorPlugin implements UI_Plugin {
 
         this.controller = new FormController(this.panel, registry, propControllers);
 
+        const tools = [
+            new MeshTool(this, registry),
+            new SpriteTool(this, registry),
+            new PathTool(this, registry),
+            new SelectTool(this.panel as AbstractCanvasPlugin, registry),
+            new DeleteTool(this.panel as AbstractCanvasPlugin, registry),
+            new CameraTool(this.panel as AbstractCanvasPlugin, registry),
+            new AxisTool(this.panel as AbstractCanvasPlugin, registry),
+            new CubeTool(this.panel as AbstractCanvasPlugin, registry),
+            new SphereTool(this.panel as AbstractCanvasPlugin, registry),
+            new ScaleTool(this.panel as AbstractCanvasPlugin, registry)
+        ];
+
+        this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+
         this.model = new UI_Model();
     }
 
@@ -74,7 +85,7 @@ export class SceneEditorPlugin implements UI_Plugin {
     }
 
     getToolController() {
-        return this.toolController;
+        return this._toolController;
     }
 
     getModel() {
@@ -187,7 +198,7 @@ export class SceneEditorPlugin implements UI_Plugin {
     }
 
     private renderShapeDropdown(toolbar: UI_Toolbar) {
-        const toolController = this.registry.plugins.getToolController(this.id);
+        const toolController = this.getToolController();
 
         let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
         const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });

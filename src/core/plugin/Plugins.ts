@@ -69,9 +69,13 @@ export class Plugins {
         return this.activePlugins.filter(plugin => plugin.region === region);
     }
 
-    getById(pluginId: string): UI_Panel {
-        return this.panels.get(pluginId);
+    getPanelById(pluginId: string): UI_Panel {
+        return this.plugins.has(pluginId) ? this.plugins.get(pluginId).getPanel() : this.panels.get(pluginId);
     } 
+
+    getPlugin(pluginId: string): UI_Plugin {
+        return this.plugins.get(pluginId);
+    }
 
     getAll(): UI_Panel[] {
         return Array.from(this.panels.values());
@@ -79,6 +83,7 @@ export class Plugins {
 
     registerPlugin2(plugin: UI_Plugin) {
         this.plugins.set(plugin.id, plugin);
+        this.panels.set(plugin.id, plugin.getPanel());
     }
 
     registerPlugin(pluginFactory: UI_PluginFactory) {
@@ -93,7 +98,7 @@ export class Plugins {
             this.showPlugin(pluginFactory.pluginId);
         }
     }
-    
+
     instantiatePlugin(pluginFactoryId: string) {
         const pluginFactory = this.pluginFactories.get(pluginFactoryId);
 
@@ -127,20 +132,16 @@ export class Plugins {
         return this.formControllers.get(pluginId);
     }
 
-    getToolController(pluginId: string): ToolController {
-        return this.toolControllers.get(this.panels.get(pluginId));
-    }
-
     renderInto(element: UI_Container, pluginId: string) {
         if (this.renderers.get(pluginId)) {
-            this.renderers.get(pluginId).renderInto(element, this.getById(pluginId));
+            this.renderers.get(pluginId).renderInto(element, this.getPanelById(pluginId));
         } else {
-            this.getById(pluginId).renderInto(element);
+            this.getPanelById(pluginId).renderInto(element);
         }
     }
 
     showPlugin(pluginId: string) {        
-        const plugin = this.getById(pluginId);
+        const plugin = this.getPanelById(pluginId);
         if (UI_Region.isSinglePluginRegion(plugin.region)) {
             this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
         }
@@ -156,7 +157,7 @@ export class Plugins {
     }
 
     deactivatePlugin(pluginId: string) {
-        const plugin = this.getById(pluginId);
+        const plugin = this.getPanelById(pluginId);
         this.activePlugins = this.activePlugins.filter(plugin => plugin.id !== pluginId);
 
         this.registry.services.ui.runUpdate(UI_Region.Dialog);
