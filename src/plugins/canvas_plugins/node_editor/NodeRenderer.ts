@@ -4,7 +4,6 @@ import { ViewTag } from '../../../core/models/views/View';
 import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
-import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../core/ui_components/react/styles';
 
@@ -62,6 +61,7 @@ export class NodeRenderer {
 
     private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
         const foreignObject = group.foreignObject({key: nodeView.id});
+        foreignObject.pluginId = nodeView.id;
         foreignObject.controllerId = nodeView.getObj().type;
         foreignObject.width = nodeView.getBounds().getWidth();
         foreignObject.height = nodeView.getBounds().getHeight();

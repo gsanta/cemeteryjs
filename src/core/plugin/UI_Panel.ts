@@ -56,7 +56,6 @@ export abstract class UI_Panel {
     renderInto(layout: UI_Container): void {}
 
     getFormController(controllerId: string): FormController { return undefined; }
-    addFormController(controllerId: string, controller: FormController): void {}
     getToolController(): ToolController { return undefined; }
 
     protected registry: Registry;

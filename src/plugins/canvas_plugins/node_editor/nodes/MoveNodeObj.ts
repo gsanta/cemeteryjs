@@ -1,18 +1,26 @@
 import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropController, PropContext } from '../../../../core/plugin/controller/FormController';
+import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { NodeEditorPluginId } from "../NodeEditorPlugin";
 import { MeshController } from "./MeshNodeObj";
 
 export const MoveNodeType = 'move-node-obj';
 
-export const MoveNodeFacotry: NodeFactory = {
+export class MoveNodeFacotry implements NodeFactory {
+    id = MoveNodeType;
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     createNodeObj(): NodeObj {
         const obj = new NodeObj(MoveNodeType, {displayName: 'Move'});
 
@@ -56,16 +64,18 @@ export const MoveNodeFacotry: NodeFactory = {
         ];
         
         return obj;
-    },
+    }
 
-    createPropControllers(): PropController[] {
-        return [
+    getController(): FormController {
+        const propControllers = [
             new MeshController(),
             new MeshMoveController(),
             new MeshSpeedController()
         ];
-    },
 
+        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, propControllers);
+    }
+    
     createExecutor(): INodeExecutor {
         return new MoveNodeExecutor();
     }

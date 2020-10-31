@@ -136,13 +136,12 @@ export class PointerService {
     }
 
     private determineTool(toolController: ToolController, element: UI_Element): Tool {
-        let tool: Tool;
+        if (element.scopedToolId) {
+            return toolController.getToolById(element.scopedToolId);
+        } else {
+            return toolController.getActiveTool(); 
+        }
 
-        // if (element.scopedToolId) {
-            // tool = toolController.getToolById((<UI_SvgGroup> element).scopedToolId);
-        // }
-
-        return toolController.getActiveTool(); 
     }
     
     private getScreenPoint(point: Point): Point {

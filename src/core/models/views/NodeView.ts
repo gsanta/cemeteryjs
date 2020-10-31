@@ -1,12 +1,14 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { FormController } from "../../plugin/controller/FormController";
+import { ViewPlugin } from "../../plugin/ViewPlugin";
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
+import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { sizes } from "../../ui_components/react/styles";
 import { NodeObj } from '../objs/NodeObj';
 import { JoinPointView } from "./child_views/JoinPointView";
-import { View, ViewFactory, ViewJson } from "./View";
+import { View, ViewJson } from "./View";
 
 export const NodeViewType = 'node-view';
 
@@ -18,15 +20,24 @@ export const defaultNodeViewConfig = {
 export interface NodeViewJson extends ViewJson {
 }
 
-export class NodeViewFactory implements ViewFactory {
-    viewType = NodeViewType;
+export class NodeViewPlugin implements ViewPlugin {
+    id = NodeViewType;
+    
     private registry: Registry;
 
     constructor(registry: Registry) {
         this.registry = registry;
     }
 
-    newInstance() { return this.registry.services.node.createNodeView() }
+    createView(): View {
+        return this.registry.services.node.createNodeView()
+    }
+
+    getController(element: UI_Element): FormController {
+        const node = <NodeView> this.registry.stores.views.getById(element.targetId);
+
+        return this.registry.services.node.getPlugin(node.getObj().type).getController();
+    }
 
     renderInto() {
         

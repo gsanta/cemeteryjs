@@ -14,7 +14,7 @@ export class UI_Dialog extends UI_Layout {
     readonly prop = GlobalControllerProps.CloseDialog;
 
     close(registry: Registry): void {
-        registry.plugins.getPlugin(this.pluginId).getController().click(this);
+        registry.plugins.getPlugin(this.pluginId).getController(this).click(this);
         registry.plugins.getPlugin(this.pluginId).getPanel().unmounted();
     }
 }

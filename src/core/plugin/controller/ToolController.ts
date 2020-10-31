@@ -14,8 +14,8 @@ import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/tools
 import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/PathTool";
 import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/CubeTool";
 import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SphereTool";
-import { ScaleToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/ScaleTool";
-import { AxisToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/AxisTool";
+import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
+import { MoveAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 
 export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -36,16 +36,16 @@ export class SceneEditorToolController extends PropController<any> {
 }
 
 export class CanvasContextDependentToolController extends PropController<any> {
-    acceptedProps() { return [ScaleToolId, AxisToolId]; }
+    acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {
         const tool = context.plugin.getToolController().getToolById(element.prop);
         tool.isSelected = !tool.isSelected;
 
-        if (tool.id === ScaleToolId) {
-            context.plugin.getToolController().getToolById(AxisToolId).isSelected = false;
-        } else if (tool.id === AxisToolId) {
-            context.plugin.getToolController().getToolById(ScaleToolId).isSelected = false;
+        if (tool.id === ScaleAxisToolId) {
+            context.plugin.getToolController().getToolById(MoveAxisToolId).isSelected = false;
+        } else if (tool.id === MoveAxisToolId) {
+            context.plugin.getToolController().getToolById(ScaleAxisToolId).isSelected = false;
         }
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
@@ -183,7 +183,7 @@ export class ToolController {
     }
 
     getActiveTool(): Tool {
-        return this.priorityTool ? this.priorityTool  : this.scopedTool ? this.scopedTool : this.selectedTool;
+        return this.priorityTool ? this.priorityTool : this.scopedTool ? this.scopedTool : this.selectedTool;
     }
 
     getToolById(toolId: string): Tool {

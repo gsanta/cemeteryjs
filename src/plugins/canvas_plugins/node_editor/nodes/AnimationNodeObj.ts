@@ -1,17 +1,25 @@
 import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
+import { NodeEditorPluginId } from "../NodeEditorPlugin";
 
 export const AnimationNodeType = 'animation-node-obj';
 
-export const AnimationNodeFacotry: NodeFactory = {
+export class AnimationNodeFacotry implements NodeFactory {
+    id = AnimationNodeType;
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     createNodeObj(): NodeObj {
         const obj = new NodeObj(AnimationNodeType, {displayName: 'Animation'});
 
@@ -49,15 +57,17 @@ export const AnimationNodeFacotry: NodeFactory = {
         ];
 
         return obj;
-    },
+    }
 
-    createPropControllers(): PropController[] {
-        return [
+    getController(): FormController {
+        const propControllers = [
             new AnimationMeshController(),
             new StartFrameController(),
             new EndFrameController()
         ];
-    },
+
+        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, propControllers);
+    }
 
     createExecutor(): INodeExecutor {
         return new AnimationNodeExecutor();

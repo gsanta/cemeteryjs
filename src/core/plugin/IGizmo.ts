@@ -51,9 +51,6 @@ export class GizmoPlugin {
         return null;
     }
 
-    addFormController(controllerId: string, controller: FormController): void {
-    }
-
     renderInto(element: UI_Row): void {
         const box = element.box({});
         box.width = this.width + 'px' || '100px';

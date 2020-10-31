@@ -4,11 +4,11 @@ import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
-import { AxisView, AxisViewType } from "../models/views/child_views/AxisView";
+import { MoveAxisView, MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
 import { SpriteViewType } from "../models/views/SpriteView";
 import { MeshViewType } from "../models/views/MeshView";
-import { ScaleView, ScaleViewType } from "../models/views/child_views/ScaleView";
 import { CanvasAxis } from "../models/misc/CanvasAxis";
+import { ScaleAxisView, ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
 
 export const sceneAndGameViewRatio = 10;
 
@@ -219,32 +219,32 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
-            let axisView: AxisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            let axisView: MoveAxisView = <MoveAxisView> this.registry.services.viewService.createView(MoveAxisViewType);
             axisView.axis = CanvasAxis.X;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            axisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            axisView = <MoveAxisView> this.registry.services.viewService.createView(MoveAxisViewType);
             axisView.axis = CanvasAxis.Y;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            axisView = <AxisView> this.registry.services.viewService.createView(AxisViewType);
+            axisView = <MoveAxisView> this.registry.services.viewService.createView(MoveAxisViewType);
             axisView.axis = CanvasAxis.Z;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            let scaleView: ScaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
+            let scaleView: ScaleAxisView = <ScaleAxisView> this.registry.services.viewService.createView(ScaleAxisViewType);
             scaleView.axis = CanvasAxis.X;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
 
-            scaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
+            scaleView = <ScaleAxisView> this.registry.services.viewService.createView(ScaleAxisViewType);
             scaleView.axis = CanvasAxis.Y;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
 
-            scaleView = <ScaleView> this.registry.services.viewService.createView(ScaleViewType);
+            scaleView = <ScaleAxisView> this.registry.services.viewService.createView(ScaleAxisViewType);
             scaleView.axis = CanvasAxis.Z;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
@@ -253,8 +253,8 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     removeSelectionHook(views: View[]) {
         views.forEach(view => {
-            view.children.filter(view => view.viewType === AxisViewType).forEach(child => view.deleteChild(child));
-            view.children.filter(view => view.viewType === ScaleViewType).forEach(child => view.deleteChild(child));
+            view.children.filter(view => view.viewType === MoveAxisViewType).forEach(child => view.deleteChild(child));
+            view.children.filter(view => view.viewType === ScaleAxisViewType).forEach(child => view.deleteChild(child));
         });
     }
 }

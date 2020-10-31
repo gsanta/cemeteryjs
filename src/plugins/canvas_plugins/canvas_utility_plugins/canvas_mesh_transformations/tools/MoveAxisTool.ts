@@ -1,27 +1,27 @@
-import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
-import { AxisView, AxisViewType } from "../../../../core/models/views/child_views/AxisView";
-import { MeshView } from "../../../../core/models/views/MeshView";
-import { SpriteView } from "../../../../core/models/views/SpriteView";
-import { View } from "../../../../core/models/views/View";
-import { NullTool } from "../../../../core/plugin/tools/NullTool";
-import { Cursor } from "../../../../core/plugin/tools/Tool";
-import { Registry } from "../../../../core/Registry";
-import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
+import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
+import { MoveAxisView, MoveAxisViewType } from "../views/MoveAxisView";
+import { MeshView } from "../../../../../core/models/views/MeshView";
+import { SpriteView } from "../../../../../core/models/views/SpriteView";
+import { View } from "../../../../../core/models/views/View";
+import { NullTool } from "../../../../../core/plugin/tools/NullTool";
+import { Cursor } from "../../../../../core/plugin/tools/Tool";
+import { Registry } from "../../../../../core/Registry";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { UI_Plugin } from '../../../../../core/plugin/UI_Plugin';
 
-export const AxisToolId = 'axis-tool';
+export const MoveAxisToolId = 'move-axis-tool';
 
-// TODO: merge together the duplicate code with ScaleTool
-export class AxisTool extends NullTool {
-    private downView: AxisView;
-    private hoveredView: AxisView;
+// TODO: merge together the duplicate code with ScaleAxisTool
+export class MoveAxisTool extends NullTool {
+    private downView: MoveAxisView;
+    private hoveredView: MoveAxisView;
 
     constructor(plugin: UI_Plugin, registry: Registry) {
-        super(AxisToolId, plugin, registry);
+        super(MoveAxisToolId, plugin, registry);
     }
 
     over(view: View) {
-        this.hoveredView = <AxisView> view;
+        this.hoveredView = <MoveAxisView> view;
         this.plugin.getToolController().setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
     }
@@ -34,8 +34,8 @@ export class AxisTool extends NullTool {
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === AxisViewType) {
-            this.downView = <AxisView> this.registry.services.pointer.hoveredView;
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === MoveAxisViewType) {
+            this.downView = <MoveAxisView> this.registry.services.pointer.hoveredView;
         }
     }
 

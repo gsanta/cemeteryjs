@@ -16,11 +16,11 @@ import { UI_Toolbar } from '../../../core/ui_components/elements/toolbar/UI_Tool
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
-import { AxisTool, AxisToolId } from './tools/AxisTool';
+import { MoveAxisTool, MoveAxisToolId } from '../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool';
 import { CubeTool, CubeToolId } from './tools/CubeTool';
 import { MeshTool, MeshToolId } from './tools/MeshTool';
 import { PathTool, PathToolId } from './tools/PathTool';
-import { ScaleTool, ScaleToolId } from './tools/ScaleTool';
+import { ScaleAxisTool, ScaleAxisToolId } from '../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool';
 import { SphereTool, SphereToolId } from './tools/SphereTool';
 import { SpriteTool, SpriteToolId } from './tools/SpriteTool';
 
@@ -65,10 +65,10 @@ export class SceneEditorPlugin implements UI_Plugin {
             new SelectTool(this, registry),
             new DeleteTool(this, registry),
             new CameraTool(this, registry),
-            new AxisTool(this, registry),
+            new MoveAxisTool(this, registry),
             new CubeTool(this, registry),
             new SphereTool(this, registry),
-            new ScaleTool(this, registry)
+            new ScaleAxisTool(this, registry)
         ];
 
         this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
@@ -154,15 +154,15 @@ export class SceneEditorPlugin implements UI_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        actionIcon = toolbar.actionIcon({prop: ScaleToolId});
+        actionIcon = toolbar.actionIcon({prop: ScaleAxisToolId});
         actionIcon.icon = 'scale';
-        actionIcon.isActivated = this.getToolController().getToolById(ScaleToolId).isSelected;
+        actionIcon.isActivated = this.getToolController().getToolById(ScaleAxisToolId).isSelected;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Scale';
 
-        actionIcon = toolbar.actionIcon({prop: AxisToolId});
+        actionIcon = toolbar.actionIcon({prop: MoveAxisToolId});
         actionIcon.icon = 'move';
-        actionIcon.isActivated = this.getToolController().getToolById(AxisToolId).isSelected;
+        actionIcon.isActivated = this.getToolController().getToolById(MoveAxisToolId).isSelected;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Move';
 

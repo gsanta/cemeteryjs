@@ -2,17 +2,26 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
+import { FormController, PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../../core/services/NodeService";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
+import { NodeEditorPluginId } from "../../NodeEditorPlugin";
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeObjType = 'route-node-obj';
 
-export const RouteNodeFacotry: NodeFactory = {
+export class RouteNodeFacotry implements NodeFactory {
+    id = RouteNodeObjType;
+    
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     createNodeObj(): NodeObj {
         const obj = new NodeObj(RouteNodeObjType, {displayName: 'Route', customParamSerializer: new RouteNodeSerializer()});
 
@@ -55,11 +64,11 @@ export const RouteNodeFacotry: NodeFactory = {
         ];
 
         return obj;
-    },
+    }
 
-    createPropControllers(): PropController[] {
-        return [new SpeedControl()];
-    },
+    getController(): FormController {
+        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new SpeedControl()]);
+    }
 
     createExecutor(): INodeExecutor {
         return new RouteNodeExecutor();

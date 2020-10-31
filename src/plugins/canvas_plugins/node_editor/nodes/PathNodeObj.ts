@@ -1,15 +1,25 @@
 import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
-import { PropController, PropContext } from '../../../../core/plugin/controller/FormController';
+import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
+import { NodeEditorPluginId } from "../NodeEditorPlugin";
 
 export const PathNodeType = 'path-node-obj';
 
-export const PathNodeFacotry: NodeFactory = {
+export class PathNodeFacotry implements NodeFactory {
+    id = PathNodeType;
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+
     createNodeObj(): NodeObj {
         const obj = new NodeObj(PathNodeType, {displayName: 'Path'});
 
@@ -29,11 +39,11 @@ export const PathNodeFacotry: NodeFactory = {
         ];
 
         return obj;
-    },
+    }
 
-    createPropControllers(): PropController[] {
-        return [new PathController()];
-    },
+    getController(): FormController {
+        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new PathController()]);
+    }
 
     createExecutor(): INodeExecutor {
         return undefined;

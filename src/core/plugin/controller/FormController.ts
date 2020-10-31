@@ -77,7 +77,7 @@ export class FormController {
         const controller = this.findController(element); 
 
         if (controller) {        
-            this.findController(element)?.change(val, this.propContexts.get(controller), element);
+            controller.change(val, this.propContexts.get(controller), element);
         }
     }
 

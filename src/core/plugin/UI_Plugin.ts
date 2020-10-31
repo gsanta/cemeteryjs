@@ -7,6 +7,7 @@ import { Camera2D } from "../models/misc/camera/Camera2D";
 import { Registry } from "../Registry";
 import { UI_Container } from "../ui_components/elements/UI_Container";
 import { View } from '../models/views/View';
+import { UI_Element } from '../ui_components/elements/UI_Element';
 
 export function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -37,9 +38,8 @@ export interface UI_Plugin {
     region: UI_Region;
 
     getPanel(): UI_Panel;
-    getController(): FormController;
+    getController(element: UI_Element): FormController;
     getToolController(): ToolController;
-    toolController?(view: View, toolId: string): ToolController;
 
     getModel(): UI_Model;
 

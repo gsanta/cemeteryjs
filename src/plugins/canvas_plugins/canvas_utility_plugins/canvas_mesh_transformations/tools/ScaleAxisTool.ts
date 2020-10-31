@@ -1,23 +1,23 @@
-import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
-import { ScaleView, ScaleViewType } from "../../../../core/models/views/child_views/ScaleView";
-import { MeshView } from "../../../../core/models/views/MeshView";
-import { NullTool } from "../../../../core/plugin/tools/NullTool";
-import { Cursor } from "../../../../core/plugin/tools/Tool";
-import { Registry } from "../../../../core/Registry";
-import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
+import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
+import { MeshView } from "../../../../../core/models/views/MeshView";
+import { NullTool } from "../../../../../core/plugin/tools/NullTool";
+import { Cursor } from "../../../../../core/plugin/tools/Tool";
+import { Registry } from "../../../../../core/Registry";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { UI_Plugin } from '../../../../../core/plugin/UI_Plugin';
+import { ScaleAxisView, ScaleAxisViewType } from "../views/ScaleAxisView";
 
-export const ScaleToolId = 'scale-tool';
+export const ScaleAxisToolId = 'scale-axis-tool';
 
-export class ScaleTool extends NullTool {
-    private downView: ScaleView;
-    private hoveredView: ScaleView;
+export class ScaleAxisTool extends NullTool {
+    private downView: ScaleAxisView;
+    private hoveredView: ScaleAxisView;
 
     constructor(plugin: UI_Plugin, registry: Registry) {
-        super(ScaleToolId, plugin, registry);
+        super(ScaleAxisToolId, plugin, registry);
     }
 
-    over(view: ScaleView) {
+    over(view: ScaleAxisView) {
         this.hoveredView = view;
         this.plugin.getToolController().setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.plugin.region);
@@ -31,8 +31,8 @@ export class ScaleTool extends NullTool {
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === ScaleViewType) {
-            this.downView = <ScaleView> this.registry.services.pointer.hoveredView;
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === ScaleAxisViewType) {
+            this.downView = <ScaleAxisView> this.registry.services.pointer.hoveredView;
         }
     }
 

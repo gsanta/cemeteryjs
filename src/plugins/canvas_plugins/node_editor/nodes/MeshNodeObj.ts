@@ -1,15 +1,24 @@
 import { NodeObj } from "../../../../core/models/objs/NodeObj";
 import { MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropController, PropContext } from '../../../../core/plugin/controller/FormController';
+import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodeService";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
+import { NodeEditorPluginId } from "../NodeEditorPlugin";
 
 export const MeshNodeType = 'mesh-node-obj';
 
-export const MeshNodeFacotry: NodeFactory = {
+export class MeshNodeFacotry implements NodeFactory {
+    id = MeshNodeType;
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     createNodeObj(): NodeObj {
         const obj = new NodeObj(MeshNodeType, {displayName: 'Mesh'});
 
@@ -29,11 +38,11 @@ export const MeshNodeFacotry: NodeFactory = {
         ];
     
         return obj;
-    },
+    }
 
-    createPropControllers(): PropController[] {
-        return [new MeshController()];
-    },
+    getController(): FormController {
+        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new MeshController()]);
+    }
 
     createExecutor(): INodeExecutor {
         return undefined;

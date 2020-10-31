@@ -1,4 +1,3 @@
-import { CodeEditorPluginFactory } from '../plugins/canvas_plugins/code_editor/CodeEditorPluginFactory';
 import { NodeEditorSettingsPluginFactory } from '../plugins/canvas_plugins/node_editor/NodeEditorSettingsPluginFactory';
 import { AnimationNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
 import { KeyboardNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
@@ -53,12 +52,12 @@ export class Editor {
         this.registry.plugins.registerPlugin2(new ThumbnailDialogPlugin(this.registry));
     
         // nodes
-        this.registry.services.node.registerNode(KeyboardNodeFacotry);
-        this.registry.services.node.registerNode(AnimationNodeFacotry);
-        this.registry.services.node.registerNode(MeshNodeFacotry);
-        this.registry.services.node.registerNode(MoveNodeFacotry);
-        this.registry.services.node.registerNode(PathNodeFacotry);
-        this.registry.services.node.registerNode(RouteNodeFacotry);
+        this.registry.services.node.registerNode(new KeyboardNodeFacotry(this.registry));
+        this.registry.services.node.registerNode(new AnimationNodeFacotry(this.registry));
+        this.registry.services.node.registerNode(new MeshNodeFacotry(this.registry));
+        this.registry.services.node.registerNode(new MoveNodeFacotry(this.registry));
+        this.registry.services.node.registerNode(new PathNodeFacotry(this.registry));
+        this.registry.services.node.registerNode(new RouteNodeFacotry(this.registry));
     }
 
     setup(canvas: HTMLCanvasElement) {

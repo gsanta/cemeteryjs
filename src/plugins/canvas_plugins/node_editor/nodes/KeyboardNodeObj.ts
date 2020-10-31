@@ -1,6 +1,6 @@
 import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
@@ -10,10 +10,19 @@ import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";
 import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
+import { NodeEditorPluginId } from "../NodeEditorPlugin";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
-export const KeyboardNodeFacotry: NodeFactory = {
+export class KeyboardNodeFacotry implements NodeFactory {
+    id = KeyboardNodeType;
+
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
     createNodeObj(): NodeObj {
         const obj = new NodeObj(KeyboardNodeType, {displayName: 'Keyboard'});
 
@@ -28,11 +37,11 @@ export const KeyboardNodeFacotry: NodeFactory = {
         });
 
         return obj;
-    },
+    }
 
-    createPropControllers(): PropController[] {
-        return [new KeyControl()];
-    },
+    getController(): FormController {
+        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new KeyControl()]);
+    }
 
     createExecutor(): INodeExecutor {
         return new KeyboardNodeExecutor();

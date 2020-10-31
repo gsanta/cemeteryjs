@@ -1,5 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { ViewPlugin } from "../../plugin/ViewPlugin";
 import { Registry } from "../../Registry";
 import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
 import { JoinPointView } from "./child_views/JoinPointView";
@@ -24,10 +25,14 @@ export interface NodeConnectionViewJson extends ViewJson {
     }
 }
 
-export class NodeConnectionViewFactory implements ViewFactory {
-    viewType = NodeConnectionViewType;
+export class NodeConnectionViewPlugin implements ViewPlugin {
+    id = NodeConnectionViewType;
 
-    newInstance() { return new NodeConnectionView(); }
+    createView() { return new NodeConnectionView(); }
+
+    getController() {
+        return undefined;
+    }
 
     renderInto() {
         

@@ -49,8 +49,10 @@ export class NodeService {
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
         this.nodeExecutors.set(nodeTemplate.type, nodeFactory.createExecutor());
-        const plugin = this.registry.plugins.getPanelById(NodeEditorPluginId);
-        plugin.addFormController(nodeTemplate.type, new FormController(plugin, this.registry, nodeFactory.createPropControllers()));
+    }
+
+    getPlugin(pluginId: string): NodeFactory {
+        return this.nodeFactories.get(pluginId);
     }
 
     executeNode(nodeObj: NodeObj) {
@@ -127,8 +129,9 @@ export class NodeService {
 }
 
 export interface NodeFactory {
+    id: string;
     createNodeObj(): NodeObj;
-    createPropControllers(): PropController[];
+    getController(): FormController;
     createExecutor(): INodeExecutor;
 }
 

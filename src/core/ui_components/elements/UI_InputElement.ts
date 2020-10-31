@@ -10,7 +10,7 @@ export abstract class UI_InputElement extends UI_Element {
         if (this.controllerId) {
             registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).change(newVal, this);
         } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController().change(newVal, this);
+            registry.plugins.getPlugin(this.pluginId).getController(this).change(newVal, this);
         } else {
             registry.plugins.getPropController(this.pluginId).change(newVal, this);
         }
@@ -20,7 +20,7 @@ export abstract class UI_InputElement extends UI_Element {
         if (this.controllerId) {
             registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).focus(this);
         } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController().focus(this);
+            registry.plugins.getPlugin(this.pluginId).getController(this).focus(this);
         } else {
             registry.plugins.getPropController(this.pluginId).focus(this);
         }
@@ -30,7 +30,7 @@ export abstract class UI_InputElement extends UI_Element {
         if (this.controllerId) {
             registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).blur(this);
         } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController().blur(this);
+            registry.plugins.getPlugin(this.pluginId).getController(this).blur(this);
         } else {
             registry.plugins.getPropController(this.pluginId).blur(this);
         }
@@ -40,7 +40,7 @@ export abstract class UI_InputElement extends UI_Element {
         if (this.controllerId) {
             registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).click(this);
         } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController().click(this);
+            registry.plugins.getPlugin(this.pluginId).getController(this).click(this);
         } else {
             registry.plugins.getPropController(this.pluginId).click(this);
         }
@@ -50,7 +50,7 @@ export abstract class UI_InputElement extends UI_Element {
         if (this.controllerId) {
             return registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).val(this);
         } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController().val(this);
+            registry.plugins.getPlugin(this.pluginId).getController(this).val(this);
         } else {
             return registry.plugins.getPropController(this.pluginId).val(this);
         }
@@ -60,7 +60,7 @@ export abstract class UI_InputElement extends UI_Element {
         if (this.controllerId) {
             return registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).values(this);
         } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController().values(this);
+            registry.plugins.getPlugin(this.pluginId).getController(this).values(this);
         } else {
             return registry.plugins.getPropController(this.pluginId).values(this);
         }

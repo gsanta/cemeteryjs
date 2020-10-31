@@ -9,14 +9,14 @@ import { UI_PluginFactory } from "../../../core/plugin/UI_PluginFactory";
 import { Registry } from "../../../core/Registry";
 import { SpriteYAxisHook, YAxisHook as MeshYAxisHook } from "./hooks/YAxisHook";
 import { SceneEditorPlugin, SceneEditorPluginId, PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./SceneEditorPlugin";
-import { AxisTool } from "./tools/AxisTool";
+import { MoveAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SpriteTool } from "./tools/SpriteTool";
 import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/plugin/controller/ToolController";
 import { CubeTool } from "./tools/CubeTool";
 import { SphereTool } from "./tools/SphereTool";
-import { ScaleTool } from "./tools/ScaleTool";
+import { ScaleAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 
 export const SceneEditorToolControllerId = 'scene-editor-tool-controller'; 
 
