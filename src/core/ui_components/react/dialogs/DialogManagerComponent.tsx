@@ -14,12 +14,12 @@ export class DialogManagerComponent extends React.Component {
     }
 
     render() {
-        const plugins = this.context.registry.plugins.getPanelByRegion(UI_Region.Dialog);
+        const plugins = this.context.registry.plugins.getPluginsByRegion(UI_Region.Dialog);
 
         if (!plugins.length) { return null; }
 
         const dialogPlugin = plugins[0];
-        const dialog = new UI_Builder(this.context.registry).build(dialogPlugin);
+        const dialog = new UI_Builder(this.context.registry).build(dialogPlugin.getPanel(), dialogPlugin);
 
         return dialog;
     }

@@ -111,7 +111,12 @@ export class UI_Builder {
         } else if (panel.region === UI_Region.Dialog) {
             const dialog = UI_Factory.dialog(panel.id, {});
             dialog.title = panel.displayName;
-            panel.renderInto(dialog);
+
+            if (plugin) {
+                plugin.renderInto(dialog, plugin.getPanel());
+            } else {
+                panel.renderInto(dialog);
+            }
             
             return this.buildElement(dialog, panel.id);
         } else {

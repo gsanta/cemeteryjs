@@ -16,7 +16,8 @@ export class Plugins {
 
     canvas: CanvasPlugins;
 
-    private activePlugins: UI_Panel[] = [];
+    private activePanels: UI_Panel[] = [];
+    private activePlugins: UI_Plugin[] = [];
 
     private pluginFactories: Map<string, UI_PluginFactory> = new Map();
     private renderers: Map<string, UI_Renderer> = new Map();
@@ -60,13 +61,13 @@ export class Plugins {
 
     getActivePlugins(region?: UI_Region): UI_Panel[] {
         if (region) {
-            return this.activePlugins.filter(activePlugin => activePlugin.region === region);
+            return this.activePanels.filter(activePlugin => activePlugin.region === region);
         }
-        return this.activePlugins;
+        return this.activePanels;
     }
 
     getPanelByRegion(region: UI_Region): UI_Panel[] {
-        return this.activePlugins.filter(plugin => plugin.region === region);
+        return this.activePanels.filter(plugin => plugin.region === region);
     }
 
     getPanelById(pluginId: string): UI_Panel {
@@ -77,8 +78,8 @@ export class Plugins {
         return this.plugins.get(pluginId);
     }
 
-    getPluginsByRegion(region: UI_Region): UI_Plugin {
-        return this.activePlugins
+    getPluginsByRegion(region: UI_Region): UI_Plugin[] {
+        return this.activePlugins.filter(plugin => plugin.region === region);
     }
 
     getAll(): UI_Panel[] {
@@ -144,17 +145,19 @@ export class Plugins {
         }
     }
 
-    showPlugin(pluginId: string) {        
-        const plugin = this.plugins.get(pluginId) ? this.plugins.get(pluginId).getPanel() : this.getPanelById(pluginId);
+    showPlugin(pluginId: string) {
+        const plugin  = this.plugins.get(pluginId);
+        const panel = plugin ? plugin.getPanel() : this.getPanelById(pluginId);
 
-        if (UI_Region.isSinglePluginRegion(plugin.region)) {
-            this.activePlugins = this.activePlugins.filter(activePlugin => activePlugin.region !== plugin.region);
+        if (UI_Region.isSinglePluginRegion(panel.region)) {
+            this.activePanels = this.activePanels.filter(activePlugin => activePlugin.region !== panel.region);
         }
         
-        this.activePlugins.push(plugin);
-        plugin.activated();
+        this.activePanels.push(panel);
+        plugin && this.activePlugins.push(plugin);
+        panel.activated();
 
-        switch(plugin.region) {
+        switch(panel.region) {
             case UI_Region.Dialog:
                 this.registry.services.render.reRender(UI_Region.Dialog);
             break;
@@ -162,7 +165,7 @@ export class Plugins {
     }
 
     deactivatePlugin(pluginId: string) {
-        const plugin = this.getPanelById(pluginId);
+        this.activePanels = this.activePanels.filter(plugin => plugin.id !== pluginId);
         this.activePlugins = this.activePlugins.filter(plugin => plugin.id !== pluginId);
 
         this.registry.services.ui.runUpdate(UI_Region.Dialog);

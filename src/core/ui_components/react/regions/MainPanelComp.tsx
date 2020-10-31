@@ -17,13 +17,13 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
 
     render() {
         const region = this.props.region === UI_Region.Canvas1 ? UI_Region.Canvas1 : UI_Region.Canvas2;
-        const plugins = this.context.registry.plugins.getByRegion(region);
+        const plugins = this.context.registry.plugins.getPluginsByRegion(region);
 
         let component: JSX.Element = null;
 
         if (plugins.length) {
             const plugin = plugins[0];
-            component = new UI_Builder(this.context.registry).build(plugin, this.context.registry.plugins.getPlugin(plugin.id));
+            component = new UI_Builder(this.context.registry).build(plugin.getPanel(), plugin);
         }
 
         return (
