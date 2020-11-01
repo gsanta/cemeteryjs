@@ -1,5 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { ToolController } from '../../plugin/controller/ToolController';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
 
@@ -30,7 +31,7 @@ export abstract class UI_Element {
     elementType: UI_ElementType;
     pluginId: string;
     controllerId: string;
-    key: string;
+    readonly key: string;
     
     isBold: boolean;
     data: any;
@@ -40,13 +41,16 @@ export abstract class UI_Element {
     targetId: string;
 
     readonly uniqueId: string;
+    readonly toolController: ToolController;
 
     css?: UI_Element_Css = {};
 
-    constructor(pluginId: string, target?: string, uniqueId?: string) {
-        this.pluginId = pluginId;
-        this.targetId = target;
-        this.uniqueId = uniqueId
+    constructor(config: {pluginId: string, key?: string, target?: string, uniqueId?: string, toolController?: ToolController} = { pluginId: undefined }) {
+        this.pluginId = config.pluginId;
+        this.targetId = config.target;
+        this.uniqueId = config.uniqueId;
+        this.toolController = config.toolController;
+        this.key = config.key;
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {

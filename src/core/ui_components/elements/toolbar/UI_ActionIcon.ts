@@ -15,11 +15,6 @@ export class UI_ActionIcon extends UI_InputElement {
 
     readonly uniqueId: string;
 
-    constructor(pluginId: string, uniqueId: string) {
-        super(pluginId);
-        this.uniqueId = uniqueId;
-    }
-
     tooltip(): UI_Tooltip {
         return UI_Factory.tooltip(this, { anchorId: this.uniqueId });
     }
