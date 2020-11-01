@@ -97,13 +97,13 @@ export class SceneEditorPlugin implements UI_Plugin {
 
         const toolbar = canvas.toolbar();
 
-        let tool = toolbar.tool({prop: MeshToolId});
+        let tool = toolbar.tool({key: MeshToolId});
         tool.icon = 'mesh';
         tool.isActive = this.getToolController().getToolById(MeshToolId).isSelected;
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
 
-        tool = toolbar.tool({prop: SpriteToolId});
+        tool = toolbar.tool({key: SpriteToolId});
         tool.icon = 'sprite';
         tool.isActive = this.getToolController().getToolById(SpriteToolId).isSelected;
         tooltip = tool.tooltip();
@@ -114,25 +114,25 @@ export class SceneEditorPlugin implements UI_Plugin {
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        tool = toolbar.tool({prop: PathToolId});
+        tool = toolbar.tool({key: PathToolId});
         tool.icon = 'path';
         tool.isActive = this.getToolController().getToolById(PathToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
-        tool = toolbar.tool({prop: SelectToolId});
+        tool = toolbar.tool({key: SelectToolId});
         tool.icon = 'select';
         tool.isActive = this.getToolController().getToolById(SelectToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({prop: DeleteToolId});
+        tool = toolbar.tool({key: DeleteToolId});
         tool.icon = 'delete';
         tool.isActive = this.getToolController().getToolById(DeleteToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({prop: CameraToolId});
+        tool = toolbar.tool({key: CameraToolId});
         tool.icon = 'pan';
         tool.isActive = this.getToolController().getToolById(CameraToolId).isSelected;
         tooltip = tool.tooltip();
@@ -141,12 +141,12 @@ export class SceneEditorPlugin implements UI_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        let actionIcon = toolbar.actionIcon({prop: ZoomInProp});
+        let actionIcon = toolbar.actionIcon({key: ZoomInProp, uniqueId: `${ZoomInProp}-${this.id}`});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({prop: ZoomOutProp});
+        actionIcon = toolbar.actionIcon({key: ZoomOutProp, uniqueId: `${ZoomOutProp}-${this.id}`});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
@@ -154,13 +154,13 @@ export class SceneEditorPlugin implements UI_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        actionIcon = toolbar.actionIcon({prop: ScaleAxisToolId});
+        actionIcon = toolbar.actionIcon({key: ScaleAxisToolId, uniqueId: `${ScaleAxisToolId}-${this.id}`});
         actionIcon.icon = 'scale';
         actionIcon.isActivated = this.getToolController().getToolById(ScaleAxisToolId).isSelected;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Scale';
 
-        actionIcon = toolbar.actionIcon({prop: MoveAxisToolId});
+        actionIcon = toolbar.actionIcon({key: MoveAxisToolId, uniqueId: `${MoveAxisToolId}-${this.id}`});
         actionIcon.icon = 'move';
         actionIcon.isActivated = this.getToolController().getToolById(MoveAxisToolId).isSelected;
         tooltip = actionIcon.tooltip();
@@ -169,12 +169,12 @@ export class SceneEditorPlugin implements UI_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        actionIcon = toolbar.actionIcon({prop: UndoProp});
+        actionIcon = toolbar.actionIcon({key: UndoProp, uniqueId: `${UndoProp}-${this.id}`});
         actionIcon.icon = 'undo';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Undo';
 
-        actionIcon = toolbar.actionIcon({prop: RedoProp});
+        actionIcon = toolbar.actionIcon({key: RedoProp, uniqueId: `${RedoProp}-${this.id}`});
         actionIcon.icon = 'redo';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Redo';
@@ -200,11 +200,11 @@ export class SceneEditorPlugin implements UI_Plugin {
     private renderShapeDropdown(toolbar: UI_Toolbar) {
         const toolController = this.getToolController();
 
-        let toolbarDropdown = toolbar.toolbarDropdown({ prop: SceneEditorToolbarProps.SelectPrimitiveShape });
-        const toolbarDropdownHeader = toolbarDropdown.header({ prop: SceneEditorToolbarProps.OpenDropdown });
+        let toolbarDropdown = toolbar.toolbarDropdown({ key: SceneEditorToolbarProps.SelectPrimitiveShape });
+        const toolbarDropdownHeader = toolbarDropdown.header({ key: SceneEditorToolbarProps.OpenDropdown });
         
         let tool = toolController.getToolById(this.activeShapeToolId);
-        let shapeTool = toolbarDropdownHeader.tool({prop: this.activeShapeToolId});
+        let shapeTool = toolbarDropdownHeader.tool({key: this.activeShapeToolId});
         shapeTool.isActive = this.getToolController().getToolById(this.activeShapeToolId).isSelected;
         shapeTool.icon = tool.icon;
         let tooltip = shapeTool.tooltip();
@@ -212,14 +212,14 @@ export class SceneEditorPlugin implements UI_Plugin {
 
         if (this.isShapeDropdownOpen) {
             tool = toolController.getToolById(CubeToolId);
-            shapeTool = toolbarDropdown.tool({prop: SceneEditorToolbarProps.SelectPrimitiveShape});
+            shapeTool = toolbarDropdown.tool({key: SceneEditorToolbarProps.SelectPrimitiveShape});
             shapeTool.targetId = CubeToolId;
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;
 
             tool = toolController.getToolById(SphereToolId);
-            shapeTool = toolbarDropdown.tool({prop: SceneEditorToolbarProps.SelectPrimitiveShape});
+            shapeTool = toolbarDropdown.tool({key: SceneEditorToolbarProps.SelectPrimitiveShape});
             shapeTool.targetId = SphereToolId;
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();

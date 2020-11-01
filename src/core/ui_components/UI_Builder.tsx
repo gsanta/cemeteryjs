@@ -158,16 +158,16 @@ export class UI_Builder {
 
         switch(element.elementType) {
             case UI_ElementType.Layout:
-                return <div key={element.id}>{this.buildChildren(element, pluginId)}</div>;
+                return <div key={element.uniqueId}>{this.buildChildren(element, pluginId)}</div>;
             case UI_ElementType.Row:
                 const row = element as UI_Row;
-                return <RowComp key={row.id} element={row}>{this.buildChildren(element, pluginId)}</RowComp>;
+                return <RowComp key={row.uniqueId} element={row}>{this.buildChildren(element, pluginId)}</RowComp>;
             case UI_ElementType.Column:
                 const column = element as UI_Column;
-                return <ColumnComp registry={this.registry} key={column.id} element={column}>{this.buildChildren(element, pluginId)}</ColumnComp>;
+                return <ColumnComp registry={this.registry} key={column.uniqueId} element={column}>{this.buildChildren(element, pluginId)}</ColumnComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
-                return <AccordionTabComp registry={this.registry} key={accordionTab.id} element={accordionTab}>{this.buildChildren(element, pluginId)}</AccordionTabComp>;
+                return <AccordionTabComp registry={this.registry} key={accordionTab.uniqueId} element={accordionTab}>{this.buildChildren(element, pluginId)}</AccordionTabComp>;
             case UI_ElementType.Table:
                 const table = element as UI_Table;
                 return <TableComp element={table}>{this.buildChildren(element, pluginId)}</TableComp>;
@@ -296,19 +296,19 @@ export class UI_Builder {
     private buildTool(uiTool: UI_Tool, pluginId: string) {
         const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip, pluginId) : null;
 
-        return <ToolComp registry={this.registry} key={uiTool.id} tooltip={tooltip} element={uiTool}/>; 
+        return <ToolComp registry={this.registry} key={uiTool.uniqueId} tooltip={tooltip} element={uiTool}/>; 
     }
 
     private buildActionIcon(uiActionIcon: UI_ActionIcon, pluginId: string) {
         const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip, pluginId) : null;
 
-        return <ActionIconComp registry={this.registry} key={uiActionIcon.id} tooltip={tooltip} element={uiActionIcon}/>; 
+        return <ActionIconComp registry={this.registry} key={uiActionIcon.uniqueId} tooltip={tooltip} element={uiActionIcon}/>; 
     }
 
     private buildIcon(uiIcon: UI_Icon, pluginId: string) {
         const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip, pluginId) : null;
 
-        return <IconComp registry={this.registry} key={uiIcon.id} tooltip={tooltip} element={uiIcon}/>; 
+        return <IconComp registry={this.registry} key={uiIcon.uniqueId} tooltip={tooltip} element={uiIcon}/>; 
     }
 
     private buildLeaf(element: UI_Element, pluginId: string): JSX.Element {

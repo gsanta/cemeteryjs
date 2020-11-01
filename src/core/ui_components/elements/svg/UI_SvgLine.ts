@@ -3,13 +3,7 @@ import { UI_Element } from '../UI_Element';
 
 export class UI_SvgLine extends UI_Element {
     elementType = UI_ElementType.SvgLine;
-
-    generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}-${this.prop}`;
-    }
-
     markerEnd: string;
-
     transform: string;
     width: number;
     stroke: string = 'black';

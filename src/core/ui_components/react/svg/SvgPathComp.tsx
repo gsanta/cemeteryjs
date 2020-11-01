@@ -7,7 +7,7 @@ export const SvgPathComp = (props: UI_ComponentProps<UI_SvgPath>) => {
     return React.createElement(
         'path',
         {
-            key: props.element.id,
+            key: props.element.key,
             d: props.element.d,
             style: props.element.css,
             onMouseEnter: e => {debugger; props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data)},

@@ -7,7 +7,7 @@ export const SvgPolygonComp = (props: UI_ComponentProps<UI_SvgPolygon>) => {
     return React.createElement(
         'polygon',
         {
-            key: props.element.id,
+            key: props.element.key,
             points: props.element.points,
             style: props.element.css,
             onMouseEnter: e => props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data),

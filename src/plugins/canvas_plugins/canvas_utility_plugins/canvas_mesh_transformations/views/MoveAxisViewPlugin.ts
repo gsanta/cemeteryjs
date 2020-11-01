@@ -80,8 +80,7 @@ export class MoveAxisViewPlugin implements ViewPlugin {
     }
 
     private renderArrowHead(group: UI_SvgGroup, axisView: ScaleAxisView) {
-        const marker = group.marker({});
-        marker.id = axisView.axis;
+        const marker = group.marker({key: `${MoveAxisToolId}-${axisView.axis}`, uniqueId: `${MoveAxisToolId}-${axisView.axis}`});
         marker.refX = 5;
         marker.refY = 5;
         marker.markerWidth = 5;

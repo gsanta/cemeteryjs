@@ -84,7 +84,7 @@ export class SpriteSheetManagerDialogPlugin extends UI_Panel {
 
         row.hAlign = 'space-around';
 
-        let textField = row.textField({prop: SpritesheetManagerDialogProps.SpriteSheetImg});
+        let textField = row.textField({key: SpritesheetManagerDialogProps.SpriteSheetImg});
         textField.label = 'Sprite sheet img';
         // fileUploadButton.width = '170px';
 

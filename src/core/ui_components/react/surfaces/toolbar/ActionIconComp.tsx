@@ -30,7 +30,7 @@ export class ActionIconComp extends React.Component<ActionIconCompProps> {
         
         return (
             <div
-                id={this.props.element.id}
+                id={this.props.element.uniqueId}
                 ref={this.ref}
                 className={classes}
                 onClick={() => this.props.element.click(this.props.registry)}

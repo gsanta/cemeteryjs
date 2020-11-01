@@ -8,28 +8,28 @@ export class UI_SvgGroup extends UI_Container {
     scopedToolId: string;
     transform: string;
 
-    rect(prop?: string) {
-        return UI_Factory.svgRect(this, {prop});
+    rect(key?: string) {
+        return UI_Factory.svgRect(this, {key});
     }
 
-    line(prop?: string) {
-        return UI_Factory.svgLine(this, {prop});
+    line(key?: string) {
+        return UI_Factory.svgLine(this, {key});
     }
 
-    circle(prop?: string) {
-        return UI_Factory.svgCircle(this, {prop});
+    circle(key?: string) {
+        return UI_Factory.svgCircle(this, {key});
     }
 
-    path(prop?: string) {
-        return UI_Factory.svgPath(this, {prop});
+    path(key?: string) {
+        return UI_Factory.svgPath(this, {key});
     }
 
-    polygon(prop?: string) {
-        return UI_Factory.svgPolygon(this, {prop});
+    polygon(key?: string) {
+        return UI_Factory.svgPolygon(this, {key});
     }
 
-    image(prop?: string) {
-        return UI_Factory.svgImage(this, {prop});
+    image(key?: string) {
+        return UI_Factory.svgImage(this, {key});
     }
 
     group(key: string) {
@@ -44,7 +44,7 @@ export class UI_SvgGroup extends UI_Container {
         return UI_Factory.svgText(this, config);
     }
 
-    marker(config: UI_ElementConfig) {
-        return UI_Factory.svgMarker(this, config);
+    marker(props: {key: string, uniqueId: string}) {
+        return UI_Factory.svgMarker(this, props);
     }
 }

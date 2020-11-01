@@ -129,7 +129,7 @@ export class IconComp extends React.Component<IconCompProps> {
     
         if (this.props.element.iconName) {
             return (
-                <IconStyled ref={this.ref} className={classes} id={this.props.element.id} onClick={() => this.props.element.click(this.props.registry)}>{this.props.tooltip}</IconStyled>
+                <IconStyled ref={this.ref} className={classes} id={this.props.element.uniqueId} onClick={() => this.props.element.click(this.props.registry)}>{this.props.tooltip}</IconStyled>
             )
         } else {
             return (
@@ -139,7 +139,7 @@ export class IconComp extends React.Component<IconCompProps> {
                         height: this.props.element.height ? this.props.element.height : '100px',
                         background: 'black'
                     }}
-                    id={this.props.element.id}
+                    id={this.props.element.uniqueId}
                     onClick={() => this.props.element.click(this.props.registry)}
                 ></div>
             )

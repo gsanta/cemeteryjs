@@ -16,7 +16,7 @@ export const SvgGroupComp = (props: UI_ContainerProps<UI_SvgGroup>) => {
     return React.createElement(
         'g',
         {
-            key: `${props.element.id}-group`,
+            key: props.element.key,
             transform: props.element.transform,
             style: props.element.css,
             ...eventHandlers

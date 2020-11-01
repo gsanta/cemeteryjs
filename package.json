@@ -10,8 +10,7 @@
     "build": "./node_modules/.bin/webpack",
     "tsc": "tsc --declaration",
     "doc": "typedoc --out api-doc src --mode file --excludeNotExported",
-    "start": "./node_modules/.bin/webpack-dev-server --host 0.0.0.0",
-    "start:example": "./node_modules/.bin/webpack-dev-server --config webpack-sample-game.config.js"
+    "start": "./node_modules/.bin/webpack-dev-server --host 0.0.0.0"
   },
   "publishConfig": {
     "access": "public"

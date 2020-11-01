@@ -13,27 +13,23 @@ export class UI_SvgMarker extends UI_SvgGroup {
     markerHeight: number;
     orient: string = 'auto-start-reverse';
 
-    generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}-${this.prop}`;
+    rect(key?: string) {
+        return UI_Factory.svgRect(this, {key});
     }
 
-    rect(prop?: string) {
-        return UI_Factory.svgRect(this, {prop});
+    line(key?: string) {
+        return UI_Factory.svgLine(this, {key});
     }
 
-    line(prop?: string) {
-        return UI_Factory.svgLine(this, {prop});
+    circle(key?: string) {
+        return UI_Factory.svgCircle(this, {key});
     }
 
-    circle(prop?: string) {
-        return UI_Factory.svgCircle(this, {prop});
+    path(key?: string) {
+        return UI_Factory.svgPath(this, {key});
     }
 
-    path(prop?: string) {
-        return UI_Factory.svgPath(this, {prop});
-    }
-
-    polygon(prop?: string) {
-        return UI_Factory.svgPolygon(this, {prop});
+    polygon(key?: string) {
+        return UI_Factory.svgPolygon(this, {key});
     }
 }

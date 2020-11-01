@@ -21,7 +21,7 @@ export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.plugin.getToolController().setSelectedTool(element.prop);
+        context.plugin.getToolController().setSelectedTool(element.key);
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }
@@ -30,7 +30,7 @@ export class SceneEditorToolController extends PropController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.plugin.getToolController().setSelectedTool(element.prop);
+        context.plugin.getToolController().setSelectedTool(element.key);
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }
@@ -39,7 +39,7 @@ export class CanvasContextDependentToolController extends PropController<any> {
     acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        const tool = context.plugin.getToolController().getToolById(element.prop);
+        const tool = context.plugin.getToolController().getToolById(element.key);
         tool.isSelected = !tool.isSelected;
 
         if (tool.id === ScaleAxisToolId) {

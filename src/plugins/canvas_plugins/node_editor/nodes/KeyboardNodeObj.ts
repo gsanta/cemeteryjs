@@ -84,13 +84,13 @@ export class KeyControl extends PropController {
     }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam(element.prop).val;
+        return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam(element.key).val;
     }
 
     change(val, context: PropContext, element: UI_InputElement) {
         context.updateTempVal(val);
         const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
-        nodeView.getObj().setParam(element.prop, val);
+        nodeView.getObj().setParam(element.key, val);
         context.registry.services.history.createSnapshot();
 
         const keys = nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX));

@@ -18,7 +18,7 @@ export const SvgCircleComp = (props: UI_ComponentProps<UI_SvgCircle>) => {
     return React.createElement(
         'circle',
         {
-            key: props.element.id,
+            key: props.element.key,
             cx: props.element.cx,
             cy: props.element.cy,
             r: props.element.r,

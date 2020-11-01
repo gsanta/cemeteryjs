@@ -42,43 +42,43 @@ export class ObjectSettingsPlugin extends UI_Panel {
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
         let row = layout.row({ key: MeshSettingsProps.MeshId });
 
-        const textField = row.textField({prop: MeshSettingsProps.MeshId});
+        const textField = row.textField({key: MeshSettingsProps.MeshId});
         textField.layout = 'horizontal';
         textField.label = 'Id';
 
         row = layout.row({ key: MeshSettingsProps.Layer });
-        const grid = row.grid({prop: MeshSettingsProps.Layer});
+        const grid = row.grid({key: MeshSettingsProps.Layer});
         grid.label = 'Layer';
         const filledIndexes = new Set<number>();
         this.registry.stores.views.getAllViews().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
         row = layout.row({ key: MeshSettingsProps.Rotation });
-        const rotationTextField = row.textField({prop: MeshSettingsProps.Rotation});
+        const rotationTextField = row.textField({key: MeshSettingsProps.Rotation});
         rotationTextField.layout = 'horizontal';
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.Scale });
-        const scaleTextField = row.textField({prop: MeshSettingsProps.Scale});
+        const scaleTextField = row.textField({key: MeshSettingsProps.Scale});
         scaleTextField.layout = 'horizontal';
         scaleTextField.label = 'Scale';
         scaleTextField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.YPos });
-        const yPosTextField = row.textField({prop: MeshSettingsProps.YPos});
+        const yPosTextField = row.textField({key: MeshSettingsProps.YPos});
         yPosTextField.layout = 'horizontal';
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.Model });
-        const modelTextField = row.textField({prop: MeshSettingsProps.Model});
+        const modelTextField = row.textField({key: MeshSettingsProps.Model});
         modelTextField.layout = 'horizontal';
         modelTextField.label = 'Model path';
         modelTextField.type = 'text';
 
         row = layout.row({ key: MeshSettingsProps.Texture });
-        const textureTextField = row.textField({prop: MeshSettingsProps.Texture});
+        const textureTextField = row.textField({key: MeshSettingsProps.Texture});
         textureTextField.layout = 'horizontal';
         textureTextField.label = 'Texture path';
         textureTextField.type = 'text';
@@ -97,19 +97,19 @@ export class ObjectSettingsPlugin extends UI_Panel {
 
     private renderBoxSettings(layout: UI_Layout, meshView: MeshView) {
         let row = layout.row({ key: MeshSettingsProps.Width });
-        const widthField = row.textField({prop: MeshSettingsProps.Width});
+        const widthField = row.textField({key: MeshSettingsProps.Width});
         widthField.layout = 'horizontal';
         widthField.label = 'Width';
         widthField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.Height });
-        const heightField = row.textField({prop: MeshSettingsProps.Height});
+        const heightField = row.textField({key: MeshSettingsProps.Height});
         heightField.layout = 'horizontal';
         heightField.label = 'Height';
         heightField.type = 'number';
 
         row = layout.row({ key: MeshSettingsProps.Depth });
-        const depthField = row.textField({prop: MeshSettingsProps.Depth});
+        const depthField = row.textField({key: MeshSettingsProps.Depth});
         depthField.layout = 'horizontal';
         depthField.label = 'Depth';
         depthField.type = 'number';
@@ -118,26 +118,26 @@ export class ObjectSettingsPlugin extends UI_Panel {
     private renderSpriteObjectSettings(layout: UI_Layout) {
         let row = layout.row({ key: SpriteSettingsProps.FrameName });
 
-        let textField = row.textField({prop: SpriteSettingsProps.FrameName});
+        let textField = row.textField({key: SpriteSettingsProps.FrameName});
         textField.layout = 'horizontal';
         textField.label = 'FrameName';
 
         row = layout.row({ key: SpriteSettingsProps.SelectSpriteSheet });
 
-        const layoutSelect = row.select({prop: SpriteSettingsProps.SelectSpriteSheet});
+        const layoutSelect = row.select({key: SpriteSettingsProps.SelectSpriteSheet});
         layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'SpriteSheet';
         layoutSelect.placeholder = 'Select SpriteSheet';
 
         row = layout.row({ key: SpriteSettingsProps.ScaleX });
 
-        textField = row.textField({prop: SpriteSettingsProps.ScaleX});
+        textField = row.textField({key: SpriteSettingsProps.ScaleX});
         textField.layout = 'horizontal';
         textField.label = 'Scale X';
 
         row = layout.row({ key: SpriteSettingsProps.ScaleY });
 
-        textField = row.textField({prop: SpriteSettingsProps.ScaleY});
+        textField = row.textField({key: SpriteSettingsProps.ScaleY});
         textField.layout = 'horizontal';
         textField.label = 'Scale Y';
 

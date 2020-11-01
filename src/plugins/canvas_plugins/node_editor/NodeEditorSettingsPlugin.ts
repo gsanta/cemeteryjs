@@ -35,7 +35,7 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {
-                const listItem = accordion.listItem({prop: NodeEditorSettingsProps.DragNode, dropTargetPlugin: nodeEditorPlugin, dropId: node.type})
+                const listItem = accordion.listItem({key: NodeEditorSettingsProps.DragNode, dropTargetPlugin: nodeEditorPlugin, dropId: node.type})
                 listItem.label = node.displayName;
                 listItem.droppable = true; 
                 listItem.listItemId = node.type;

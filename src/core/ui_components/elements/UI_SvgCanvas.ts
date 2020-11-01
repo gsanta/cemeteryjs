@@ -38,11 +38,11 @@ export class UI_SvgCanvas extends UI_SvgGroup {
         return UI_Factory.toolbar(this, {});
     }
 
-    dropLayer(config?: { prop: string}): UI_DropLayer {
+    dropLayer(config?: { key: string}): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
     }
 
-    gizmoLayer(config?: { prop: string}): UI_GizmoLayer {
+    gizmoLayer(config?: { key: string}): UI_GizmoLayer {
         return UI_Factory.gizmoLayer(this, config);
     }
 }

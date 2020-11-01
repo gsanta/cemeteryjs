@@ -12,11 +12,11 @@ export class LevelSettingsPlugin extends UI_Panel {
     renderInto(layout: UI_Layout): void {
         let row = layout.row({ key: LevelSettingsProps.Level });
 
-        const grid = row.grid({prop: LevelSettingsProps.Level});
+        const grid = row.grid({key: LevelSettingsProps.Level});
         grid.label = 'Level'
 
         row = layout.row({ key: LevelSettingsProps.LevelName });
-        const textField = row.textField({prop: LevelSettingsProps.LevelName});
+        const textField = row.textField({key: LevelSettingsProps.LevelName});
         textField.label = 'Name';
 
         row = layout.row({ key: LevelSettingsProps.ClearLevel });

@@ -1,9 +1,7 @@
-import { UI_Panel } from '../../plugin/UI_Panel';
-import { UI_ElementType } from './UI_ElementType';
-import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { Registry } from '../../Registry';
-import { ToolController } from '../../plugin/controller/ToolController';
+import { UI_ElementType } from './UI_ElementType';
 
 export const activeToolId = '__activeTool__'
 
@@ -26,15 +24,12 @@ export interface UI_Element_Css {
 
 export interface UI_ElementConfig {
     key?: string;
-    prop?: string;
 }
 
 export abstract class UI_Element {
     elementType: UI_ElementType;
-    id: string;
     pluginId: string;
     controllerId: string;
-    prop: string;
     key: string;
     
     isBold: boolean;
@@ -44,72 +39,54 @@ export abstract class UI_Element {
     isInteractive: boolean = true;
     targetId: string;
 
-    controller: () => ToolController
-
+    readonly uniqueId: string;
 
     css?: UI_Element_Css = {};
 
-    constructor(pluginId: string, target?: string) {
+    constructor(pluginId: string, target?: string, uniqueId?: string) {
         this.pluginId = pluginId;
         this.targetId = target;
-    }
-
-    generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}-${this.prop ? this.prop : this.key}`;
+        this.uniqueId = uniqueId
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {
-        if (this.controller) {
-            this.controller().mouseDown(e, this);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseDown(e, this);
         }
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
-        if (this.controller) {
-            this.controller().mouseMove(e, this);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseMove(e, this);
         }
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
-        if (this.controller) {
-            this.controller().mouseUp(e, this);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseUp(e, this);
         }
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
-        if (this.controller) {
-            this.controller().mouseLeave(e, data, this);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseLeave(e, data, this);
         }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
-        if (this.controller) {
-            this.controller().mouseEnter(e, data, this);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseEnter(e, data, this);
         }
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
-        if (this.controller) {
-            this.controller().mouseWheel(e);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseWheel(e);
         }
     }
 
     mouseWheelEnd(registry: Registry) {
-        if (this.controller) {
-            this.controller().mouseWheelEnd();
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().mouseWheelEnd();
         }
     }
@@ -123,9 +100,7 @@ export abstract class UI_Element {
     }
 
     dndEnd(registry: Registry, point: Point) {
-        if (this.controller) {
-            this.controller().dndDrop(point, this);
-        } else if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
+        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
             registry.plugins.getPlugin(this.pluginId).getToolController().dndDrop(point, this);
         }
     }

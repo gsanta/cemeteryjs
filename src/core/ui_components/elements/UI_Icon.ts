@@ -18,7 +18,7 @@ export class UI_Icon extends UI_InputElement {
     toolId: string;
 
     tooltip(): UI_Tooltip {
-        return UI_Factory.tooltip(this, { anchorId: this.id });
+        return UI_Factory.tooltip(this, { anchorId: this.uniqueId });
     }
 
     getTooltip(): UI_Tooltip {

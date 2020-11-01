@@ -38,7 +38,7 @@ export class LayoutHandler {
 
         let minSize = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].minPixel);
 
-        this.split = Split(panelIds.map(id => `#${id}`),
+        this.split = Split(panelIds.map(id => `#${id.toLowerCase()}`),
             {
                 sizes: sizes,
                 minSize: minSize,

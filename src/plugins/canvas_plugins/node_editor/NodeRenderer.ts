@@ -29,14 +29,14 @@ export class NodeRenderer {
 
                 switch(param.uiOptions.inputType) {
                     case 'textField':
-                        const textField = row.textField({prop: param.name, target: nodeView.id});
+                        const textField = row.textField({key: param.name, target: nodeView.id});
                         textField.layout = 'horizontal';
                         textField.type = 'number';
                         textField.label = param.name;
                         textField.isBold = true;
                     break;
                     case 'list':
-                        const select = row.select({prop: param.name, target: nodeView.id});
+                        const select = row.select({key: param.name, target: nodeView.id});
                         select.layout = 'horizontal';
                         select.label = param.name;
                         select.placeholder = param.name;

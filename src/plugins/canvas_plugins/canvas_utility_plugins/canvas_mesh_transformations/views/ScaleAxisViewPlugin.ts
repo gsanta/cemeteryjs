@@ -81,13 +81,12 @@ export class ScaleAxisViewPlugin implements ViewPlugin {
     }
 
     private renderArrowHead(group: UI_SvgGroup, scaleView: ScaleAxisView) {
-        const marker = group.marker({});
+        const marker = group.marker({key: `${scaleView.viewType}-${scaleView.axis}`, uniqueId: `${scaleView.viewType}-${scaleView.axis}`});
         marker.refX = 5;
         marker.refY = 5;
         marker.markerWidth = 5;
         marker.markerHeight = 5;
         marker.viewBox = "0 0 10 10";
-        marker.id = `${scaleView.viewType}-${scaleView.axis}`;
 
         const path = marker.path();
         path.d = "M 0 0 L 10 0 L 10 10 L 0 10 z";

@@ -139,7 +139,7 @@ export class FormController {
     }
 
     private findController(element: UI_Element): PropController {
-        return this.propControllers.find(controller => controller.acceptedProps(this.propContexts.get(controller), element).includes(element.prop));
+        return this.propControllers.find(controller => controller.acceptedProps(this.propContexts.get(controller), element).includes(element.key));
     }
 
     registerPropControl(propController: PropController<any>) {

@@ -14,10 +14,6 @@ export class UI_ToolbarDropdown extends UI_Container {
     isOpen: boolean;
     _header: UI_ToolDropdownHeader;
 
-    generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}`;
-    }
-
     header(config: UI_ElementConfig): UI_ToolDropdownHeader {
         return UI_Factory.toolDropdownHeader(this, config);
     }

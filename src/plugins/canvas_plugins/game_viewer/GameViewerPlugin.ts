@@ -91,7 +91,7 @@ export class GameViewerPlugin implements UI_Plugin {
 
         const toolbar = canvas.toolbar();
 
-        let tool = toolbar.tool({prop: CameraToolId});
+        let tool = toolbar.tool({key: CameraToolId});
         tool.isActive = selectedTool.id === CameraToolId;
         tool.icon = 'pan';
         let tooltip = tool.tooltip();
@@ -103,17 +103,17 @@ export class GameViewerPlugin implements UI_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        let actionIcon = toolbar.actionIcon({prop: ZoomInProp});
+        let actionIcon = toolbar.actionIcon({key: ZoomInProp, uniqueId: `${ZoomInProp}-${this.id}`});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({prop: ZoomOutProp});
+        actionIcon = toolbar.actionIcon({key: ZoomOutProp, uniqueId: `${ZoomOutProp}-${this.id}`});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
-        tool = toolbar.tool({prop: GameToolId});
+        tool = toolbar.tool({key: GameToolId});
         tool.isActive = selectedTool.id === GameToolId;
         tool.icon = 'games';
         tool.placement = 'middle';
@@ -123,14 +123,14 @@ export class GameViewerPlugin implements UI_Plugin {
         separator = toolbar.iconSeparator();
         separator.placement = 'middle';
 
-        actionIcon = toolbar.actionIcon({prop: GameViewerProps.Play});
+        actionIcon = toolbar.actionIcon({key: GameViewerProps.Play, uniqueId: `${GameViewerProps.Play}-${this.id}`});
         actionIcon.icon = 'play';
         actionIcon.placement = 'middle';
         actionIcon.isActivated = this.registry.stores.game.gameState === 'running';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Play';
 
-        actionIcon = toolbar.actionIcon({prop: GameViewerProps.Stop});
+        actionIcon = toolbar.actionIcon({key: GameViewerProps.Stop, uniqueId: `${GameViewerProps.Stop}-${this.id}`});
         actionIcon.icon = 'stop';
         actionIcon.placement = 'middle';
         actionIcon.isActivated = this.registry.stores.game.gameState === 'paused';
@@ -148,7 +148,7 @@ export class GameViewerToolController extends PropController<any> {
     acceptedProps() { return [GameToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.plugin.getToolController().setSelectedTool(element.prop);
+        context.plugin.getToolController().setSelectedTool(element.key);
         context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
     }
 }

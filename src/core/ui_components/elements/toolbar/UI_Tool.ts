@@ -15,12 +15,8 @@ export class UI_Tool extends UI_Element {
 
     color: string;
 
-    constructor(pluginId: string) {
-        super(pluginId);
-    }
-
     tooltip(): UI_Tooltip {
-        return UI_Factory.tooltip(this, { anchorId: this.id });
+        return UI_Factory.tooltip(this, { anchorId: this.uniqueId });
     }
 
     getTooltip(): UI_Tooltip {

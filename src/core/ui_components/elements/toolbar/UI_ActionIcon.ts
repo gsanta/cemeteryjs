@@ -13,12 +13,15 @@ export class UI_ActionIcon extends UI_InputElement {
 
     placement: 'left' | 'middle' | 'right';
 
-    constructor(pluginId: string) {
+    readonly uniqueId: string;
+
+    constructor(pluginId: string, uniqueId: string) {
         super(pluginId);
+        this.uniqueId = uniqueId;
     }
 
     tooltip(): UI_Tooltip {
-        return UI_Factory.tooltip(this, { anchorId: this.id });
+        return UI_Factory.tooltip(this, { anchorId: this.uniqueId });
     }
 
     getTooltip(): UI_Tooltip {

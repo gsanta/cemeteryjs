@@ -8,8 +8,4 @@ export class UI_SvgForeignObject extends UI_DefaultContainer {
     height: number;
     x: number = 0;
     y: number = 0;
-
-    generateId(parent: UI_Element): void {
-        this.id = `${parent.id}_${this.elementType}-${this.prop}`;
-    }
 }

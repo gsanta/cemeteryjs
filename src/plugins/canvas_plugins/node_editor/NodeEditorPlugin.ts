@@ -110,19 +110,19 @@ export class NodeEditorPlugin implements UI_Plugin {
         const toolbar = canvas.toolbar();
         const selectedTool = this.getToolController().getSelectedTool();
 
-        let tool = toolbar.tool({prop: SelectToolId});
+        let tool = toolbar.tool({key: SelectToolId});
         tool.icon = 'select';
         tool.isActive = selectedTool.id === SelectToolId;
         let tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
-        tool = toolbar.tool({prop: DeleteToolId});
+        tool = toolbar.tool({key: DeleteToolId});
         tool.isActive = selectedTool.id === DeleteToolId;
         tool.icon = 'delete';
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
-        tool = toolbar.tool({prop: CameraToolId});
+        tool = toolbar.tool({key: CameraToolId});
         tool.isActive = selectedTool.id === CameraToolId;
         tool.icon = 'pan';
         tooltip = tool.tooltip();
@@ -131,12 +131,12 @@ export class NodeEditorPlugin implements UI_Plugin {
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
         
-        let actionIcon = toolbar.actionIcon({prop: ZoomInProp});
+        let actionIcon = toolbar.actionIcon({key: ZoomInProp, uniqueId: `${this.id}-${ZoomInProp}`});
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
-        actionIcon = toolbar.actionIcon({prop: ZoomOutProp});
+        actionIcon = toolbar.actionIcon({key: ZoomOutProp, uniqueId: `${this.id}-${ZoomOutProp}`});
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';

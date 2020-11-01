@@ -9,12 +9,11 @@ import { UI_Column } from './UI_Column';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
-import { FormController } from '../../plugin/controller/FormController';
 import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
 import { UI_ElementConfig } from './UI_Element';
 
 export class UI_DefaultContainer extends UI_Container {
-    listItem(config: {prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
+    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
         return UI_Factory.listItem(this, config);
     }
 
@@ -38,23 +37,23 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.text(this, {});
     }
 
-    button(prop: string): UI_Button {
-        return UI_Factory.button(this, {prop});
+    button(key: string): UI_Button {
+        return UI_Factory.button(this, {key});
     }
 
-    select(config: {prop: string, target?: string}) {
+    select(config: {key: string, target?: string}) {
         return UI_Factory.select(this, config);
     }
 
-    fileUpload(prop: string) {
-        return UI_Factory.fileUpload(this, {prop});
+    fileUpload(key: string) {
+        return UI_Factory.fileUpload(this, {key});
     }
 
-    textField(config: {prop: string, target?: string}) {
+    textField(config: {key: string, target?: string}) {
         return UI_Factory.textField(this, config);
     }
 
-    grid(config: {prop: string, filledIndexProp?: string}) {
+    grid(config: {key: string, filledIndexProp?: string}) {
         return UI_Factory.grid(this, config);
     }
 

@@ -64,7 +64,6 @@ export class UI_Factory {
         const element = new UI_Row(parent.pluginId);
         element.key = config && config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -76,7 +75,6 @@ export class UI_Factory {
         const element = new UI_Column(parent.pluginId);
         element.key = config && config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -88,7 +86,6 @@ export class UI_Factory {
         const element = new UI_Box(parent.pluginId);
         element.key = config.key;
         
-        element.generateId(parent);
         this.setupElement(parent, element);
         parent.children.push(element);
 
@@ -99,7 +96,6 @@ export class UI_Factory {
         const element = new UI_HtmlCanvas(parent.pluginId);
         parent.children.push(element);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         return element;
@@ -109,7 +105,6 @@ export class UI_Factory {
         const element = new UI_SvgCanvas(parent.pluginId);
         parent.children.push(element);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         return element;
@@ -118,11 +113,10 @@ export class UI_Factory {
     static dropLayer(parent: UI_HtmlCanvas | UI_SvgCanvas, config: UI_ElementConfig): UI_DropLayer {
         const element = new UI_DropLayer(parent.pluginId);
 
-        config && (element.prop = config.prop);
+        config && (element.key = config.key);
 
         parent._dropLayer = element;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         return element;
@@ -131,11 +125,10 @@ export class UI_Factory {
     static gizmoLayer(parent: UI_HtmlCanvas | UI_SvgCanvas, config: UI_ElementConfig): UI_GizmoLayer {
         const element = new UI_GizmoLayer(parent.pluginId);
 
-        config && (element.prop = config.prop);
+        config && (element.key = config.key);
 
         parent._gizmoLayer = element;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         return element;
@@ -145,7 +138,6 @@ export class UI_Factory {
     static accordion(parent: UI_Container, config: UI_ElementConfig): UI_Accordion {
         const element = new UI_Accordion(parent.pluginId);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -156,7 +148,6 @@ export class UI_Factory {
     static text(parent: UI_Container, config: UI_ElementConfig): UI_Text {
         const element = new UI_Text(parent.pluginId);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -168,7 +159,6 @@ export class UI_Factory {
         const element = new UI_Image(parent.pluginId);
         element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -178,9 +168,8 @@ export class UI_Factory {
 
     static icon(parent: UI_Container, config: UI_ElementConfig): UI_Icon {
         const element = new UI_Icon(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.id = `${parent.id}_${element.elementType}-${element.prop ? element.prop : element.key}`;
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -188,15 +177,14 @@ export class UI_Factory {
         return element;
     }
 
-    static listItem(parent: UI_Container, config: {prop: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
+    static listItem(parent: UI_Container, config: {key: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
         const element = new UI_ListItem(parent.pluginId);
 
         if (config) {
-            element.prop = config.prop;
+            element.key = config.key;
             element.listItemId = config.dropId;
             element.dropTargetPlugin = config.dropTargetPlugin;
-            element.generateId(parent);
-
+    
         }
 
         this.setupElement(parent, element);
@@ -207,9 +195,8 @@ export class UI_Factory {
 
     static button(parent: UI_Container, config: UI_ElementConfig): UI_Button {
         const element = new UI_Button(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -217,11 +204,10 @@ export class UI_Factory {
         return element;
     }
 
-    static select(parent: UI_Container, config: { prop: string, target?: string}) {
+    static select(parent: UI_Container, config: { key: string, target?: string}) {
         const element = new UI_Select(parent.pluginId, config.target);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -231,9 +217,8 @@ export class UI_Factory {
 
     static fileUpload(parent: UI_Container, config: UI_ElementConfig): UI_FileUpload {
         const element = new UI_FileUpload(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -241,12 +226,11 @@ export class UI_Factory {
         return element;
     }
 
-    static textField(parent: UI_Container, config: { prop: string, target?: string}): UI_TextField {
+    static textField(parent: UI_Container, config: { key: string, target?: string}): UI_TextField {
         const element = new UI_TextField(parent.pluginId, config.target);
-        element.prop = config.prop;
+        element.key = config.key;
         element.type = 'text';
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -254,11 +238,10 @@ export class UI_Factory {
         return element;
     }
 
-    static grid(parent: UI_Container, config: { prop: string, filledIndexProp?: string}): UI_GridSelect {
+    static grid(parent: UI_Container, config: { key: string, filledIndexProp?: string}): UI_GridSelect {
         const element = new UI_GridSelect(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -275,7 +258,6 @@ Id
 
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -285,11 +267,10 @@ Id
 
     static svgRect(parent: UI_Container, config: UI_ElementConfig): UI_SvgRect {
         const element = new UI_SvgRect(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
     
         parent.children.push(element);
@@ -299,11 +280,10 @@ Id
 
     static svgLine(parent: UI_Container, config: UI_ElementConfig): UI_SvgLine {
         const element = new UI_SvgLine(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
     
         parent.children.push(element);
@@ -313,11 +293,10 @@ Id
 
     static svgCircle(parent: UI_Container, config: UI_ElementConfig): UI_SvgCircle {
         const element = new UI_SvgCircle(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
     
         parent.children.push(element);
@@ -327,11 +306,10 @@ Id
 
     static svgPath(parent: UI_Container, config: UI_ElementConfig): UI_SvgPath {
         const element = new UI_SvgPath(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
     
         parent.children.push(element);
@@ -341,11 +319,10 @@ Id
 
     static svgPolygon(parent: UI_Container, config: UI_ElementConfig): UI_SvgPolygon {
         const element = new UI_SvgPolygon(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
     
         parent.children.push(element);
@@ -355,11 +332,10 @@ Id
 
     static svgImage(parent: UI_Container, config: UI_ElementConfig): UI_SvgImage {
         const element = new UI_SvgImage(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
     
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -373,7 +349,6 @@ Id
         
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -385,18 +360,16 @@ Id
         const element = new UI_SvgDefs(parent.pluginId);
         element.key = config.key;
         
-        element.generateId(parent);
 
         parent.children.push(element);
         
         return element;
     }
 
-    static svgMarker(parent: UI_Container, config: UI_ElementConfig): UI_SvgMarker {
-        const element = new UI_SvgMarker(parent.pluginId);
-        element.key = config.key;
+    static svgMarker(parent: UI_Container, props: {key: string, uniqueId: string}): UI_SvgMarker {
+        const element = new UI_SvgMarker(parent.pluginId, undefined, props.uniqueId);
+        element.key = props.key;
         
-        element.generateId(parent);
 
         parent.children.push(element);
         
@@ -409,7 +382,6 @@ Id
         
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -422,7 +394,6 @@ Id
     static toolbar(parent: UI_SvgCanvas | UI_HtmlCanvas, config: UI_ElementConfig): UI_Toolbar {
         const element = new UI_Toolbar(parent.pluginId, parent.pluginId);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent._toolbar = element;
@@ -432,9 +403,8 @@ Id
 
     static toolbarDropdown(parent: UI_Toolbar, config: UI_ElementConfig): UI_ToolbarDropdown {
         const element = new UI_ToolbarDropdown(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -444,9 +414,8 @@ Id
 
     static toolDropdownHeader(parent: UI_ToolbarDropdown, config: UI_ElementConfig): UI_ToolDropdownHeader {
         const element = new UI_ToolDropdownHeader(parent.pluginId);
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent._header = element;
@@ -456,10 +425,8 @@ Id
 
     static tool(parent: UI_Toolbar | UI_ToolDropdownHeader | UI_ToolbarDropdown, config: UI_ElementConfig): UI_Tool {
         const element = new UI_Tool(parent.pluginId);
-        element.key = `key-${config.prop}`;
-        element.prop = config.prop;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -467,11 +434,11 @@ Id
         return element;
     }
 
-    static actionIcon(parent: UI_Toolbar, config: UI_ElementConfig): UI_ActionIcon {
-        const element = new UI_ActionIcon(parent.pluginId);
-        element.prop = config.prop;
+    static actionIcon(parent: UI_Toolbar, config: {key: string, uniqueId: string}): UI_ActionIcon {
+        const element = new UI_ActionIcon(parent.pluginId, config.uniqueId);
+        element.pluginId = parent.pluginId;
+        element.key = config.key;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -495,7 +462,6 @@ Id
     static table(parent: UI_Container, config: UI_ElementConfig): UI_Table {
         const element = new UI_Table(parent.pluginId);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -517,7 +483,6 @@ Id
     static tableColumn(parent: UI_Container, config: UI_ElementConfig) {
         const element = new UI_TableColumn(parent.pluginId);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -529,7 +494,6 @@ Id
         const element = new UI_TableRow(parent.pluginId);
         element.isHeader = config.isHeader;
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);
@@ -540,7 +504,6 @@ Id
     static tableRowGroup(parent: UI_Table, config: UI_ElementConfig) {
         const element = new UI_TableRowGroup(parent.pluginId);
 
-        element.generateId(parent);
         this.setupElement(parent, element);
 
         parent.children.push(element);

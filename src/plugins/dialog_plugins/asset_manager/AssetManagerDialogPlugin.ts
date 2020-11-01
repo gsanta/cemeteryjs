@@ -85,13 +85,13 @@ export class AssetManagerDialogPlugin extends UI_Panel {
 
         const iconRow = column.row({ key: 'icons' });
 
-        let icon = iconRow.icon({ prop: AssetManagerDialogProps.EnterEditMode });
+        let icon = iconRow.icon({ key: AssetManagerDialogProps.EnterEditMode });
         icon.iconName = 'brush';
         icon.listItemId = asset.id;
         let tooltip = icon.tooltip();
         tooltip.label = 'Edit';
 
-        icon = iconRow.icon({ prop: AssetManagerDialogProps.DeleteAsset });
+        icon = iconRow.icon({ key: AssetManagerDialogProps.DeleteAsset });
         icon.iconName = 'delete';
         icon.listItemId = asset.id;
         icon.variant = 'danger';
@@ -107,24 +107,24 @@ export class AssetManagerDialogPlugin extends UI_Panel {
         text.text = asset.id;
 
         column = tableRow.tableColumn();
-        let textField = column.textField({prop: AssetManagerDialogProps.AssetName});
+        let textField = column.textField({key: AssetManagerDialogProps.AssetName});
 
         column = tableRow.tableColumn();
-        textField = column.textField({prop: AssetManagerDialogProps.AssetPath});
+        textField = column.textField({key: AssetManagerDialogProps.AssetPath});
 
         column = tableRow.tableColumn();
         column.width = 100;
 
         const iconRow = column.row({ key: 'icons' });
 
-        let icon = iconRow.icon({ prop: AssetManagerDialogProps.SaveEdit });
+        let icon = iconRow.icon({ key: AssetManagerDialogProps.SaveEdit });
         icon.iconName = 'done';
         icon.listItemId = asset.id;
         icon.variant = 'success';
         let tooltip = icon.tooltip();
         tooltip.label = 'Done';
 
-        icon = iconRow.icon({ prop: AssetManagerDialogProps.CancelEdit });
+        icon = iconRow.icon({ key: AssetManagerDialogProps.CancelEdit });
         icon.iconName = 'remove';
         icon.listItemId = asset.id;
         icon.variant = 'danger';

@@ -122,7 +122,7 @@ export class ThumbnailDialogPlugin implements UI_Plugin {
 
         const toolbar = canvas.toolbar();
         
-        let actionIcon = toolbar.actionIcon({prop: ThumbnailMakerControllerProps.ThumbnailCreate});
+        let actionIcon = toolbar.actionIcon({key: ThumbnailMakerControllerProps.ThumbnailCreate, uniqueId: `${this.id}-${ThumbnailMakerControllerProps.ThumbnailCreate}`});
         actionIcon.icon = 'insert-photo';
         let tooltip = actionIcon.tooltip();
         tooltip.label = 'Create thumbnail';

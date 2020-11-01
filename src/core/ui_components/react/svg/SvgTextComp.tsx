@@ -11,7 +11,7 @@ export const SvgTextComp = (props: UI_ComponentProps<UI_SvgText>) => {
     return (
         <text
             style={style}
-            key={`${props.element.id}`}
+            key={props.element.key}
             x={props.element.x ? props.element.x : 0}
             y={props.element.y ? props.element.y : 0}
             fill={props.element.color}

@@ -12,12 +12,6 @@ const elementType = UI_ElementType.Layout;
 export class UI_Layout extends UI_Container {
     elementType = elementType;
 
-    constructor(pluginId: string) {
-        super(pluginId);
-
-        this.id = `${pluginId}_${elementType}`;
-    }
-
     row(config: UI_ElementConfig): UI_Row {
         return UI_Factory.row(this, config);
     }
