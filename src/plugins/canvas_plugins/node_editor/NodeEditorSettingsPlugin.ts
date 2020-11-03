@@ -3,7 +3,7 @@ import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
 import { NodeEditorPluginId } from './NodeEditorPlugin';
-import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
@@ -28,7 +28,7 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
             nodeTypesByCategory.get(node.category).push(node);
         });
 
-        const nodeEditorPlugin = <AbstractCanvasPlugin> this.registry.plugins.getPanelById(NodeEditorPluginId);
+        const nodeEditorPlugin = <AbstractCanvasPanel> this.registry.plugins.getPanelById(NodeEditorPluginId);
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeObj[]) => {
             const accordion = rootContainer.accordion();

@@ -9,11 +9,11 @@ import { UI_Column } from './UI_Column';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
-import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ElementConfig } from './UI_Element';
 
 export class UI_DefaultContainer extends UI_Container {
-    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
+    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel, dropId: string}): UI_ListItem {
         return UI_Factory.listItem(this, config);
     }
 

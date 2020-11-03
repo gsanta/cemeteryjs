@@ -11,7 +11,7 @@ import { ToolController } from '../../../core/plugin/controller/ToolController';
 import { UI_Model } from '../../../core/plugin/UI_Model';
 import { GizmoPlugin } from '../../../core/plugin/IGizmo';
 import { IEngineFacade } from '../../../core/engine/IEngineFacade';
-import { AbstractCanvasPlugin } from '../../../core/plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { CameraTool } from '../../../core/plugin/tools/CameraTool';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 
@@ -36,7 +36,7 @@ export class ThumbnailDialogPlugin implements PanelPlugin {
 
         this.engine = new Bab_EngineFacade(this.registry);
 
-        this.panel = new AbstractCanvasPlugin(registry, this.engine.getCamera(), this.region, ThumbnailDialogPluginId, this);
+        this.panel = new AbstractCanvasPanel(registry, this.engine.getCamera(), this.region, ThumbnailDialogPluginId, this);
 
         const propControllers = [
             new ThumbnailCreateControl(),
@@ -50,7 +50,7 @@ export class ThumbnailDialogPlugin implements PanelPlugin {
             new CameraTool(this, registry)
         ];
 
-        this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+        this._toolController = new ToolController(this.panel as AbstractCanvasPanel, this.registry, tools);
 
         this.model = new UI_Model();
 

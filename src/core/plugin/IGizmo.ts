@@ -1,11 +1,11 @@
 import { Registry } from "../Registry";
 import { UI_Row } from "../ui_components/elements/UI_Row";
-import { AbstractCanvasPlugin } from "./AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
 import { FormController } from "./controller/FormController";
 import { IRenderer } from "./IRenderer";
 
 export interface IGizmoFactory {
-    newInstance(plugin: AbstractCanvasPlugin, registry: Registry): GizmoPlugin;
+    newInstance(plugin: AbstractCanvasPanel, registry: Registry): GizmoPlugin;
 }
 
 export class GizmoPlugin {

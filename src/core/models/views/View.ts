@@ -4,7 +4,7 @@ import { IObj } from "../objs/IObj";
 import { Registry } from "../../Registry";
 import { ChildView } from "./child_views/ChildView";
 import { UI_Container } from "../../ui_components/elements/UI_Container";
-import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { UI_Plugin } from '../../plugin/UI_Plugin';
 import { IControlledModel } from "../../plugin/IControlledModel";

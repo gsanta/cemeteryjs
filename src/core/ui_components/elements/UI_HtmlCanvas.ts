@@ -3,7 +3,7 @@ import { UI_ElementType } from "./UI_ElementType";
 import { UI_Factory } from '../UI_Factory';
 import { UI_Element } from './UI_Element';
 import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
-import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
 import { UI_GizmoLayer } from "./gizmo/UI_GizmoLayer";
 
@@ -19,7 +19,7 @@ export class UI_HtmlCanvas extends UI_Element {
 
     mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPlugin).over()
+        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).over()
     }
 
     mouseOut(registry: Registry, e: MouseEvent) {
@@ -28,11 +28,11 @@ export class UI_HtmlCanvas extends UI_Element {
     }
 
     mouseEnter(registry: Registry, e: MouseEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPlugin).over()
+        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).over()
     }
 
     mouseLeave(registry: Registry) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPlugin).out()
+        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).out()
     }
 
     toolbar(): UI_Toolbar {

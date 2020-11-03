@@ -1,11 +1,10 @@
+import { Gizmo } from 'babylonjs';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { ICamera } from '../models/misc/camera/ICamera';
-import { View } from '../models/views/View';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { FormController, PropContext, PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { ICanvasRenderer } from './ICanvasRenderer';
@@ -13,7 +12,6 @@ import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
 import { UI_Panel, UI_Region } from './UI_Panel';
-import { UI_Plugin } from './UI_Plugin';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -36,9 +34,11 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
     return new Point(0, 0);
 }
 
-export class AbstractCanvasPlugin extends UI_Panel {
+export class AbstractCanvasPanel extends UI_Panel {
     dropItem: UI_ListItem;
     bounds: Rectangle;
+
+    readonly displayName: string;
 
     protected gizmos: GizmoPlugin[] = [];
 
@@ -48,20 +48,27 @@ export class AbstractCanvasPlugin extends UI_Panel {
 
     private camera: ICamera;
     
-    readonly controller: FormController;
+    controller: FormController;
     readonly toolController: ToolController;
 
     renderer: ICanvasRenderer;
 
-    constructor(registry: Registry, camera: ICamera, region: UI_Region, id: string, controller: FormController) {
+    constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {
         super(registry);
 
         this.region = region;
-        this.camera = camera;
         this.id = id;
-        this.controller = controller;
-        
+        this.displayName = displayName;
+
         this.keyboard = new KeyboardService(registry);
+    }
+
+    protected setCamera(camera: ICamera) {
+        this.camera = camera;
+    }
+
+    setController(controller: FormController) {
+        this.controller = controller;
     }
 
     addTool(tool: Tool) {
@@ -70,6 +77,10 @@ export class AbstractCanvasPlugin extends UI_Panel {
 
     addGizmo(gizmo: GizmoPlugin) {
         this.gizmos.push(gizmo);
+    }
+
+    getGizmos(): GizmoPlugin[] {
+        return this.gizmos;
     }
 
     destroy(): void {

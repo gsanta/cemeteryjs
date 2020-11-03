@@ -1,16 +1,20 @@
 
 
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
-import { AbstractCanvasPlugin, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../../../core/plugin/Canvas2DPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
 import { CommonToolController } from "../../../core/plugin/controller/ToolController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { NodeEditorPluginId } from "./NodeEditorPlugin";
 import { JoinTool } from "./tools/JoinTool";
+
+export const NodeEditorPluginId = 'node-editor-plugin'; 
+export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
 export function registerNodeEditor(registry: Registry) {
     const canvas = createCanvas(registry);
@@ -18,25 +22,24 @@ export function registerNodeEditor(registry: Registry) {
     registry.plugins.canvas.registerCanvas(canvas);
 }
 
-function createCanvas(registry: Registry): AbstractCanvasPlugin {
+function createCanvas(registry: Registry): AbstractCanvasPanel {
+    const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, NodeEditorPluginId, 'Node editor');
+
     const propControllers = [
         new ZoomInController(),
         new ZoomOutController(),
         new CommonToolController()
-    ]
-
-    const controller = new FormController(this, registry, propControllers);
-    const camera = cameraInitializer(NodeEditorPluginId, registry);
-
-    const canvas = new AbstractCanvasPlugin(registry, camera, this.region, NodeEditorPluginId, controller);
+    ];
 
     const tools = [
-        new SelectTool(this, registry),
-        new DeleteTool(this, registry),
-        new CameraTool(this, registry),
-        new JoinTool(this, registry)
-    ]
+        new SelectTool(canvas, registry),
+        new DeleteTool(canvas, registry),
+        new CameraTool(canvas, registry),
+        new JoinTool(canvas, registry)
+    ];
 
+    canvas.setController(new FormController(canvas, registry, propControllers));
+    canvas.setCamera(cameraInitializer(NodeEditorPluginId, registry))
     tools.forEach(tool => canvas.addTool(tool));
 
     return canvas;

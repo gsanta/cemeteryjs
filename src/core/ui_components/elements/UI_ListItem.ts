@@ -1,7 +1,7 @@
 import { UI_Element } from './UI_Element';
 import { UI_ElementType } from './UI_ElementType';
 import { UI_Panel } from '../../plugin/UI_Panel';
-import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { Registry } from '../../Registry';
 
 export class UI_ListItem extends UI_Element {
@@ -12,9 +12,9 @@ export class UI_ListItem extends UI_Element {
     dropTargetPlugin: UI_Panel;
 
     dndStart(registry: Registry) {
-        (<AbstractCanvasPlugin> this.dropTargetPlugin).dropItem = this;
+        (<AbstractCanvasPanel> this.dropTargetPlugin).dropItem = this;
         // TODO find a better design, this is not ideal at all
-        registry.plugins.setHoveredPlugin(<AbstractCanvasPlugin> this.dropTargetPlugin);
+        registry.plugins.setHoveredPlugin(<AbstractCanvasPanel> this.dropTargetPlugin);
         registry.plugins.getPropController(this.pluginId).dndStart(this, this.listItemId);
     }
 

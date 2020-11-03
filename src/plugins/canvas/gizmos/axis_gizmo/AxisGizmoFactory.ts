@@ -3,14 +3,14 @@ import { AdvancedDynamicTexture, Line, Button, Control } from 'babylonjs-gui';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Registry } from '../../../../core/Registry';
 import { Camera3D } from '../../../../core/models/misc/camera/Camera3D';
-import { AbstractCanvasPlugin } from '../../../../core/plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
 import { Bab_EngineFacade } from '../../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
 import { Wrap_EngineFacade } from '../../../../core/engine/adapters/wrapper/Wrap_EngineFacade';
 import { GizmoPlugin, IGizmoFactory } from '../../../../core/plugin/IGizmo';
 
 export const AxisGizmoFactory: IGizmoFactory = {
     
-    newInstance(plugin: AbstractCanvasPlugin, registry: Registry) {
+    newInstance(plugin: AbstractCanvasPanel, registry: Registry) {
         const gizmo = new GizmoPlugin(registry, 100, 100);
         
         // TODO: native gizmo, no html rendering (handle it in a better way)
@@ -36,9 +36,9 @@ export class AxisGizmo {
     private origin3D: Vector3;
     private origin2D = new Point(40, 60);
     private axisLen = 45;
-    private plugin: AbstractCanvasPlugin;
+    private plugin: AbstractCanvasPanel;
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPanel, registry: Registry) {
         this.registry = registry;
         this.plugin = plugin;
     }

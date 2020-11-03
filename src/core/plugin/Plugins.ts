@@ -2,7 +2,7 @@ import * as axisGizmoPlugin from '../../plugins/canvas/gizmos/axis_gizmo/axisGiz
 import * as screenCastKeysGizmoPlugin from '../../plugins/canvas/gizmos/screencast_keys_gizmo/screenCastKeysGizmoPlugin';
 import { EngineHooks } from '../engine/hooks/EngineHooks';
 import { Registry } from '../Registry';
-import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from './AbstractCanvasPanel';
 import { CanvasLookup } from './CanvasPlugins';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
@@ -45,19 +45,19 @@ export class Plugins {
         this.engineHooks = new EngineHooks();
     }
 
-    private hoveredView: AbstractCanvasPlugin;
+    private hoveredView: AbstractCanvasPanel;
     
-    setHoveredPlugin(view: AbstractCanvasPlugin) {
+    setHoveredPlugin(view: AbstractCanvasPanel) {
         this.hoveredView = view;
     }
 
-    removeHoveredPlugin(view: AbstractCanvasPlugin) {
+    removeHoveredPlugin(view: AbstractCanvasPanel) {
         if (this.hoveredView === view) {
             this.hoveredView = undefined;
         }
     }
 
-    getHoveredPlugin(): AbstractCanvasPlugin {
+    getHoveredPlugin(): AbstractCanvasPanel {
         return this.hoveredView;
     }
 
@@ -120,13 +120,13 @@ export class Plugins {
         const tools = pluginFactory.createTools(plugin, this.registry);
 
         if (tools.length > 0) {
-            this.toolControllers.set(plugin, new ToolController(plugin as AbstractCanvasPlugin, this.registry, tools));
+            this.toolControllers.set(plugin, new ToolController(plugin as AbstractCanvasPanel, this.registry, tools));
         }
 
         if (pluginFactory.gizmos) {
             pluginFactory.gizmos.forEach(gizmoId => {
-                const gizmo = this.canvas.getGizmoFactory(gizmoId).newInstance(plugin as AbstractCanvasPlugin, this.registry);
-                (plugin as AbstractCanvasPlugin).addGizmo(gizmo);
+                const gizmo = this.canvas.getGizmoFactory(gizmoId).newInstance(plugin as AbstractCanvasPanel, this.registry);
+                (plugin as AbstractCanvasPanel).addGizmo(gizmo);
             });
         }
     }

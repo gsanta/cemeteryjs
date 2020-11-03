@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { Registry } from '../../Registry';
 import { IHotkeyEvent } from '../../services/input/HotkeyService';
 import { IKeyboardEvent } from '../../services/input/KeyboardService';

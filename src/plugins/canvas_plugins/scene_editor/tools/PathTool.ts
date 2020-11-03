@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { PathPointView, PathPointViewType } from "../../../../core/models/views/child_views/PathPointView";
 import { PathView, PathViewType } from "../../../../core/models/views/PathView";

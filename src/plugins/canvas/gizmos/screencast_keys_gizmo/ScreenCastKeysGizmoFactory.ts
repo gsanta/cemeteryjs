@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { GizmoPlugin, IGizmoFactory } from "../../../../core/plugin/IGizmo";
 import { Registry } from "../../../../core/Registry";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
@@ -6,7 +6,7 @@ import { UI_Row } from "../../../../core/ui_components/elements/UI_Row";
 
 export const ScreenCastKeysGizmoFactory: IGizmoFactory = {
     
-    newInstance(plugin: AbstractCanvasPlugin, registry: Registry) {
+    newInstance(plugin: AbstractCanvasPanel, registry: Registry) {
         const gizmo = new GizmoPlugin(registry, 100, 100);
         gizmo.setRenderer(renderer);
 
@@ -19,7 +19,7 @@ export const ScreenCastKeysGizmoFactory: IGizmoFactory = {
     }
 }
 
-function onKeyDown(event: IKeyboardEvent, gizmo: GizmoPlugin, plugin: AbstractCanvasPlugin, registry: Registry) {
+function onKeyDown(event: IKeyboardEvent, gizmo: GizmoPlugin, plugin: AbstractCanvasPanel, registry: Registry) {
     const ctrl = event.isCtrlDown ? 'Ctrl/Cmd' : undefined;
     const shift = event.isShiftDown ? 'Shift' : undefined;
     const alt =  event.isAltDown ? 'Alt' : undefined;

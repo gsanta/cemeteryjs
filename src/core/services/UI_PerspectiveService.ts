@@ -7,7 +7,7 @@ import { CodeEditorPluginId } from '../../plugins/canvas_plugins/code_editor/Cod
 import { Registry } from '../Registry';
 import Split from 'split.js';
 import { UI_Region } from '../plugin/UI_Panel';
-import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { LevelSettingsPluginId } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
 
 
@@ -57,10 +57,10 @@ export class LayoutHandler {
 
     resizePlugins() {
         if (this.registry.preferences.fullscreenRegion) {
-            (this.registry.plugins.getPanelByRegion(this.registry.preferences.fullscreenRegion)[0] as AbstractCanvasPlugin).resize()
+            (this.registry.plugins.getPanelByRegion(this.registry.preferences.fullscreenRegion)[0] as AbstractCanvasPanel).resize()
         } else {
-            (this.registry.plugins.getPanelByRegion(UI_Region.Canvas1)[0] as AbstractCanvasPlugin).resize();
-            (this.registry.plugins.getPanelByRegion(UI_Region.Canvas2)[0] as AbstractCanvasPlugin).resize();
+            (this.registry.plugins.getPanelByRegion(UI_Region.Canvas1)[0] as AbstractCanvasPanel).resize();
+            (this.registry.plugins.getPanelByRegion(UI_Region.Canvas2)[0] as AbstractCanvasPanel).resize();
         }
     }
 

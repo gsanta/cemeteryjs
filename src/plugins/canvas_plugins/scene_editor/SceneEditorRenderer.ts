@@ -2,7 +2,7 @@ import { MeshViewType } from "../../../core/models/views/MeshView";
 import { PathViewType } from "../../../core/models/views/PathView";
 import { SpriteViewType } from "../../../core/models/views/SpriteView";
 import { sortViewsByLayer, View } from "../../../core/models/views/View";
-import { AbstractCanvasPlugin, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../core/plugin/tools/CameraTool";
 import { DeleteToolId } from "../../../core/plugin/tools/DeleteTool";
@@ -12,23 +12,22 @@ import { UI_Toolbar } from "../../../core/ui_components/elements/toolbar/UI_Tool
 import { UI_SvgCanvas } from "../../../core/ui_components/elements/UI_SvgCanvas";
 import { MoveAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 import { ScaleAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
-import { SceneEditorToolbarProps } from "./SceneEditorPlugin";
+import { SceneEditorToolbarProps } from "./SceneEditorControllers";
 import { CubeToolId } from "./tools/CubeTool";
 import { MeshToolId } from "./tools/MeshTool";
 import { PathToolId } from "./tools/PathTool";
 import { SphereToolId } from "./tools/SphereTool";
 import { SpriteToolId } from "./tools/SpriteTool";
 
-
 export class SceneEditorRenderer implements ICanvasRenderer {
-    private canvas: AbstractCanvasPlugin;
+    private canvas: AbstractCanvasPanel;
     private registry: Registry;
 
     // TODO: temporary fields, should be in UI_Model
     activeShapeToolId: string = CubeToolId;
     isShapeDropdownOpen = false;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPlugin) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.canvas = canvas;
         this.registry = registry;
     }

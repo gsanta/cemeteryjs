@@ -13,12 +13,3 @@ export class PlayController extends PropController {
         context.registry.services.render.reRender(context.plugin.region);
     }
 }
-
-export class StopController extends PropController {
-    acceptedProps() { return [GameViewerProps.Stop]; }
-
-    click(context: PropContext) {
-        context.registry.stores.game.gameState = 'paused';
-        context.registry.services.render.reRender(context.panel.region);
-    }
-}

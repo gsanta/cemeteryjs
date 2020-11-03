@@ -1,4 +1,4 @@
-import { AbstractCanvasPlugin } from '../plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { Registry } from '../Registry';
 import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
@@ -168,7 +168,7 @@ export class UI_Factory {
         return element;
     }
 
-    static listItem(parent: UI_Container, config: {key: string, dropTargetPlugin: AbstractCanvasPlugin, dropId: string}): UI_ListItem {
+    static listItem(parent: UI_Container, config: {key: string, dropTargetPlugin: AbstractCanvasPanel, dropId: string}): UI_ListItem {
         const element = new UI_ListItem({pluginId: parent.pluginId, ...config});
 
         if (config) {

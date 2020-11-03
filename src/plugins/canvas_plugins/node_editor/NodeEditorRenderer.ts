@@ -1,7 +1,7 @@
 import { NodeConnectionViewType, NodeConnectionView } from "../../../core/models/views/NodeConnectionView";
 import { NodeView, NodeViewType } from "../../../core/models/views/NodeView";
 import { ViewTag } from "../../../core/models/views/View";
-import { AbstractCanvasPlugin, ZoomInProp, ZoomOutProp } from "../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel, ZoomInProp, ZoomOutProp } from "../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../core/plugin/tools/CameraTool";
 import { DeleteToolId } from "../../../core/plugin/tools/DeleteTool";
@@ -14,11 +14,11 @@ import { NodeRenderer } from "./NodeRenderer";
 import { JoinTool } from "./tools/JoinTool";
 
 export class NodeEditorRenderer implements ICanvasRenderer {
-    private canvas: AbstractCanvasPlugin;
+    private canvas: AbstractCanvasPanel;
     private registry: Registry;
     private defaultNodeRenderer = new NodeRenderer();
 
-    constructor(registry: Registry, canvas: AbstractCanvasPlugin) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.canvas = canvas;
         this.registry = registry;
     }

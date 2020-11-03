@@ -1,7 +1,7 @@
 import { Registry } from "../../Registry";
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { IPointerEvent } from "../../services/input/PointerService";
-import { AbstractCanvasPlugin } from '../AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../tools/Tool";
 import { View } from "../../models/views/View";
@@ -80,7 +80,7 @@ export class ToolController {
     private scopedTool: Tool;
 
     private registry: Registry;
-    private plugin: AbstractCanvasPlugin;
+    private plugin: AbstractCanvasPanel;
 
     private toolMap: Map<string, Tool> = new Map();
     private tools: Tool[] = [];
@@ -88,7 +88,7 @@ export class ToolController {
     protected priorityTool: Tool;
     protected selectedTool: Tool;
 
-    constructor(plugin: AbstractCanvasPlugin, registry: Registry, tools: Tool[] = []) {
+    constructor(plugin: AbstractCanvasPanel, registry: Registry, tools: Tool[] = []) {
         this.registry = registry;
         this.plugin = plugin;
 

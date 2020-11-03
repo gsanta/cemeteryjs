@@ -1,5 +1,5 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
-import { AbstractCanvasPlugin } from '../../plugin/AbstractCanvasPlugin';
+import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { ToolController } from '../../plugin/controller/ToolController';
 import { UI_Plugin } from '../../plugin/UI_Plugin';
 import { Registry } from '../../Registry';
@@ -33,6 +33,8 @@ export abstract class UI_Element {
     pluginId: string;
     controllerId: string;
     readonly key: string;
+
+    readonly canvasPanel: AbstractCanvasPanel;
     
     isBold: boolean;
     data: any;
@@ -98,11 +100,11 @@ export abstract class UI_Element {
     }
 
     keyDown(registry: Registry, e: KeyboardEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPlugin).keyboard.keyDown(e);
+        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).keyboard.keyDown(e);
     }
 
     keyUp(registry: Registry, e: KeyboardEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPlugin).keyboard.keyUp(e);
+        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).keyboard.keyUp(e);
     }
 
     dndEnd(registry: Registry, point: Point) {

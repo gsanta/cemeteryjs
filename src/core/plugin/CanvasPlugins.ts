@@ -1,10 +1,10 @@
-import { AbstractCanvasPlugin } from "./AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
 import { IGizmoFactory } from "./IGizmo";
 
 
 export class CanvasLookup {
     private gizmos: Map<string, IGizmoFactory> = new Map();
-    private canvases: Map<string, AbstractCanvasPlugin> = new Map();
+    private canvases: Map<string, AbstractCanvasPanel> = new Map();
 
     registerGizmo(id: string, gizmo: IGizmoFactory) {
         this.gizmos.set(id, gizmo);
@@ -14,7 +14,7 @@ export class CanvasLookup {
         return this.gizmos.get(gizmoId);
     }
 
-    registerCanvas(canvas: AbstractCanvasPlugin) {
+    registerCanvas(canvas: AbstractCanvasPanel) {
         this.canvases.set(canvas.id, canvas);
     }
 

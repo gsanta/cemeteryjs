@@ -1,5 +1,5 @@
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
-import { AbstractCanvasPlugin } from "../../../../core/plugin/AbstractCanvasPlugin";
+import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../core/Registry";
 import { View } from "../../../../core/models/views/View";
 import { MeshObj, MeshObjType, MeshSphereConfig } from "../../../../core/models/objs/MeshObj";
