@@ -5,7 +5,7 @@ import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeFactory } from "../../../../core/services/NodeService";
+import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";

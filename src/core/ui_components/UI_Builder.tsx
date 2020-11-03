@@ -267,7 +267,7 @@ export class UI_Builder {
         const markers = this.svgMarkers.map(marker => this.buildElement(marker, pluginId));
         this.isDefsSection = false;
 
-        return <CanvasComp registry={this.registry} markers={markers} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
+        return <CanvasComp key={canvas.key} registry={this.registry} markers={markers} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
     }
 
     private buildToolbar(uiToolbar: UI_Toolbar, pluginId: string) {

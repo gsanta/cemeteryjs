@@ -7,6 +7,7 @@ import { UI_Container } from "../../ui_components/elements/UI_Container";
 import { AbstractCanvasPlugin } from "../../plugin/AbstractCanvasPlugin";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { UI_Plugin } from '../../plugin/UI_Plugin';
+import { IControlledModel } from "../../plugin/IControlledModel";
 
 export interface ViewJson {
     id: string;
@@ -32,7 +33,7 @@ export interface ViewRenderer {
     renderInto(container: UI_SvgCanvas, view: View, plugin: UI_Plugin);
 }
 
-export abstract class View {
+export abstract class View implements IControlledModel {
     id: string;
     viewType: string;
     tags: Set<ViewTag> = new Set();
@@ -40,6 +41,8 @@ export abstract class View {
 
     parent: View;
     children: View[] = [];
+
+    controller = undefined;
 
     protected obj: IObj;
 

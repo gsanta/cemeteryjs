@@ -5,7 +5,7 @@ import { Registry } from '../../../core/Registry';
 import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { ThumbnailCreateControl, ThumbnailMakerControllerProps, ThumbnailUploadControl, ClearThumbnailControl } from './ThumbnailDialogProps';
-import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
+import { PanelPlugin, UI_Plugin } from '../../../core/plugin/UI_Plugin';
 import { FormController } from '../../../core/plugin/controller/FormController';
 import { ToolController } from '../../../core/plugin/controller/ToolController';
 import { UI_Model } from '../../../core/plugin/UI_Model';
@@ -18,7 +18,7 @@ import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 export const ThumbnailDialogPluginId = 'thumbnail-dialog-plugin';
 export const ThumbnailDialogToolControllerId = 'thumbnail-dialog-tool-controller';
 
-export class ThumbnailDialogPlugin implements UI_Plugin {
+export class ThumbnailDialogPlugin implements PanelPlugin {
     id: string = ThumbnailDialogPluginId;
     region: UI_Region = UI_Region.Dialog;
     displayName = 'Thumbnail';

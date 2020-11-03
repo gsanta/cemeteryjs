@@ -3,18 +3,20 @@ import * as screenCastKeysGizmoPlugin from '../../plugins/canvas/gizmos/screenca
 import { EngineHooks } from '../engine/hooks/EngineHooks';
 import { Registry } from '../Registry';
 import { AbstractCanvasPlugin } from './AbstractCanvasPlugin';
-import { CanvasPlugins } from './CanvasPlugins';
+import { CanvasLookup } from './CanvasPlugins';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { UI_Panel, UI_Region } from './UI_Panel';
 import { UI_PluginFactory, UI_Renderer } from './UI_PluginFactory';
 import { UI_Container } from '../ui_components/elements/UI_Container';
-import { UI_Plugin } from './UI_Plugin';
+import { PanelPlugin, UI_Plugin } from './UI_Plugin';
+import { NodePlugin } from '../services/NodePlugin';
 
 export class Plugins {
     engineHooks: EngineHooks;
 
-    canvas: CanvasPlugins;
+    canvas: CanvasLookup;
+    node: NodePlugin;
 
     private activePanels: UI_Panel[] = [];
     private activePlugins: UI_Plugin[] = [];
@@ -35,7 +37,7 @@ export class Plugins {
     constructor(registry: Registry) {
         this.registry = registry;
 
-        this.canvas = new CanvasPlugins();
+        this.canvas = new CanvasLookup();
 
         axisGizmoPlugin.register(this);
         screenCastKeysGizmoPlugin.register(this);
@@ -66,7 +68,7 @@ export class Plugins {
         return this.activePanels;
     }
 
-    getPanelByRegion(region: UI_Region): UI_Panel[] {
+    getPanelByRegion(region: UI_Region): PanelPlugin[] {
         return this.activePanels.filter(plugin => plugin.region === region);
     }
 
@@ -74,7 +76,7 @@ export class Plugins {
         return this.plugins.has(pluginId) ? this.plugins.get(pluginId).getPanel() : this.panels.get(pluginId);
     } 
 
-    getPlugin(pluginId: string): UI_Plugin {
+    getPlugin(pluginId: string): PanelPlugin {
         return this.plugins.get(pluginId);
     }
 

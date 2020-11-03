@@ -40,7 +40,7 @@ export class NodeViewPlugin implements ViewPlugin {
     }
 
     renderInto() {
-        
+        1
     }
 }
 

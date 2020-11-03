@@ -1,4 +1,3 @@
-import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
 import { NodeRenderer } from '../../plugins/canvas_plugins/node_editor/NodeRenderer';
 import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
 import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
@@ -6,7 +5,7 @@ import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';
 import { View } from '../models/views/View';
-import { FormController, PropController } from '../plugin/controller/FormController';
+import { FormController } from '../plugin/controller/FormController';
 import { Registry } from '../Registry';
 import { GameState, GameStoreHook } from '../stores/GameStore';
 import { EmptyViewStoreHook } from '../stores/ViewStore';
@@ -14,7 +13,7 @@ import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
 import { INodeExecutor } from './node/INodeExecutor';
 import { NodeGraph } from './node/NodeGraph';
 
-export class NodeService {
+export class NodePlugin {
     nodeTemplates: Map<string, NodeObj> = new Map();
     nodeTypes: string[] = [];
     graph: NodeGraph;

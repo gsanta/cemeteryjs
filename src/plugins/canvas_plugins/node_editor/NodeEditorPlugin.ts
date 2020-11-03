@@ -11,7 +11,7 @@ import { SelectTool, SelectToolId } from '../../../core/plugin/tools/SelectTool'
 import { ToolType } from '../../../core/plugin/tools/Tool';
 import { UI_Model } from '../../../core/plugin/UI_Model';
 import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
-import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
+import { PanelPlugin, UI_Plugin } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
@@ -49,7 +49,7 @@ export enum CanvasTag {
 export const NodeEditorPluginId = 'node-editor-plugin'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
-export class NodeEditorPlugin implements UI_Plugin {
+export class NodeEditorPlugin implements PanelPlugin {
     id: string = NodeEditorPluginId;
     region: UI_Region = UI_Region.Canvas1;
     displayName = 'Node editor';
@@ -101,7 +101,7 @@ export class NodeEditorPlugin implements UI_Plugin {
     }
 
     renderInto(layout: UI_Layout) {
-        const canvas = layout.svgCanvas();
+        const canvas = layout.svgCanvas({ key: this.id });
 
         const dropLayer = canvas.dropLayer();
         dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes

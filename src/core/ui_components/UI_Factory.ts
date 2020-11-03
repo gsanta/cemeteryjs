@@ -424,7 +424,6 @@ Id
         return element;
     }
 
-
     ///////////////////////////////////////////// Table /////////////////////////////////////////////
 
     static table(parent: UI_Container, config: UI_ElementConfig): UI_Table {

@@ -5,7 +5,7 @@ import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { GameViewerProps, PlayController, StopController } from './GameViewerProps';
 import { GameTool, GameToolId } from './tools/GameTool';
 import { CameraTool, CameraToolId } from '../../../core/plugin/tools/CameraTool';
-import { UI_Plugin } from '../../../core/plugin/UI_Plugin';
+import { PanelPlugin, UI_Plugin } from '../../../core/plugin/UI_Plugin';
 import { FormController, PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { CommonToolController, ToolController } from '../../../core/plugin/controller/ToolController';
 import { UI_Model } from '../../../core/plugin/UI_Model';
@@ -16,7 +16,7 @@ import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 export const GameViewerPluginId = 'game-viewer-plugin'; 
 export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
-export class GameViewerPlugin implements UI_Plugin {
+export class GameViewerPlugin implements PanelPlugin {
     id: string = GameViewerPluginId;
     displayName = 'Game viewer';
     region: UI_Region = UI_Region.Canvas2;

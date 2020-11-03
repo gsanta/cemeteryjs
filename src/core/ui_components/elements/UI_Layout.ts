@@ -20,8 +20,8 @@ export class UI_Layout extends UI_Container {
         return UI_Factory.accordion(this, {});
     }
 
-    svgCanvas(): UI_SvgCanvas {
-        return UI_Factory.svgCanvas(this, {});
+    svgCanvas(config: UI_ElementConfig): UI_SvgCanvas {
+        return UI_Factory.svgCanvas(this, config);
     }
 
     htmlCanvas(): UI_HtmlCanvas {

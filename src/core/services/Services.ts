@@ -9,7 +9,6 @@ import { KeyboardService } from './input/KeyboardService';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
-import { NodeService } from './NodeService';
 import { ObjService } from "./ObjService";
 import { RenderService } from "./RenderServices";
 import { UI_PerspectiveService } from './UI_PerspectiveService';
@@ -31,8 +30,6 @@ export class Services {
     uiPerspective: UI_PerspectiveService;
     objService: ObjService;
     viewService: ViewService;
-
-    node: NodeService;
 
     ui: UI_Service;
 
@@ -58,8 +55,6 @@ export class Services {
         this.uiPerspective = new UI_PerspectiveService(this.registry);
         this.objService = new ObjService(this.registry);
         this.viewService = new ViewService(this.registry);
-
-        this.node = new NodeService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

@@ -10,7 +10,7 @@ import { DeleteTool, DeleteToolId } from '../../../core/plugin/tools/DeleteTool'
 import { SelectTool, SelectToolId } from '../../../core/plugin/tools/SelectTool';
 import { UI_Model } from '../../../core/plugin/UI_Model';
 import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
-import { cameraInitializer, UI_Plugin } from '../../../core/plugin/UI_Plugin';
+import { cameraInitializer } from '../../../core/plugin/UI_Plugin';
 import { Registry } from '../../../core/Registry';
 import { UI_Toolbar } from '../../../core/ui_components/elements/toolbar/UI_Toolbar';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
@@ -25,7 +25,7 @@ import { SphereTool, SphereToolId } from './tools/SphereTool';
 import { SpriteTool, SpriteToolId } from './tools/SpriteTool';
 
 export const SceneEditorPluginId = 'scene-editor-plugin';
-export class SceneEditorPlugin implements UI_Plugin {
+export class SceneEditorPlugin implements PanelPlugin {
     id: string = SceneEditorPluginId;
     displayName = 'Scene editor';
     region: UI_Region = UI_Region.Canvas1;
@@ -41,7 +41,6 @@ export class SceneEditorPlugin implements UI_Plugin {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.panel = new AbstractCanvasPlugin(registry, cameraInitializer(SceneEditorPluginId, registry), this.region, SceneEditorPluginId, this);
 
 
         const propControllers = [
@@ -56,8 +55,9 @@ export class SceneEditorPlugin implements UI_Plugin {
             new CanvasContextDependentToolController()
         ]
 
-        this.controller = new FormController(this, registry, propControllers);
+        const controller = new FormController(this, registry, propControllers);
 
+        
         const tools = [
             new MeshTool(this, registry),
             new SpriteTool(this, registry),
@@ -71,7 +71,10 @@ export class SceneEditorPlugin implements UI_Plugin {
             new ScaleAxisTool(this, registry)
         ];
 
-        this._toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+        const toolController = new ToolController(this.panel as AbstractCanvasPlugin, this.registry, tools);
+
+        const camera = cameraInitializer(SceneEditorPluginId, registry);
+        this.panel = new AbstractCanvasPlugin(registry, camera, this.region, SceneEditorPluginId, toolController, controller);
 
         this.model = new UI_Model();
     }
@@ -93,7 +96,7 @@ export class SceneEditorPlugin implements UI_Plugin {
     }
 
     renderInto(layout: UI_Layout) {
-        const canvas = layout.svgCanvas();
+        const canvas = layout.svgCanvas({ key: this.id });
 
         const toolbar = canvas.toolbar();
 

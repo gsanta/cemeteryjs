@@ -32,16 +32,15 @@ export function cameraInitializer(canvasId: string, registry: Registry) {
     }
 }
 
-export interface UI_Plugin {
-    id: string;
+export interface UI_Plugin {UI_Element): FormController;
+    renderInto(layout: UI_Container, plugin: UI_Panel): void;
+}
+
+export interface CanvasPlugin extends UI_Plugin {
     displayName: string;
     region: UI_Region;
 
     getPanel(): UI_Panel;
-    getController(element: UI_Element): FormController;
     getToolController(): ToolController;
-
     getModel(): UI_Model;
-
-    renderInto(layout: UI_Container, plugin: UI_Panel): void;
 }

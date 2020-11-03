@@ -5,10 +5,13 @@ import { View } from '../models/views/View';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { PropContext, PropController } from './controller/FormController';
+import { UI_SvgCanvas } from '../ui_components/elements/UI_SvgCanvas';
+import { FormController, PropContext, PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
+import { ICanvasRenderer } from './ICanvasRenderer';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
+import { Tool } from './tools/Tool';
 import { UI_Panel, UI_Region } from './UI_Panel';
 import { UI_Plugin } from './UI_Plugin';
 
@@ -44,17 +47,25 @@ export class AbstractCanvasPlugin extends UI_Panel {
     protected renderFunc: () => void;
 
     private camera: ICamera;
-    private plugin: UI_Plugin;
+    
+    readonly controller: FormController;
+    readonly toolController: ToolController;
 
-    constructor(registry: Registry, camera: ICamera, region: UI_Region, id: string, plugin: UI_Plugin) {
+    renderer: ICanvasRenderer;
+
+    constructor(registry: Registry, camera: ICamera, region: UI_Region, id: string, controller: FormController) {
         super(registry);
 
         this.region = region;
         this.camera = camera;
         this.id = id;
-        this.plugin = plugin;
-
+        this.controller = controller;
+        
         this.keyboard = new KeyboardService(registry);
+    }
+
+    addTool(tool: Tool) {
+        this.toolController.registerTool(tool);
     }
 
     addGizmo(gizmo: GizmoPlugin) {
@@ -91,17 +102,6 @@ export class AbstractCanvasPlugin extends UI_Panel {
     getCamera(): ICamera { 
         return this.camera;
     };
-
-    getToolController() {
-        return this.plugin.getToolController();
-    }
-
-    toolController(view: View, toolId: string): ToolController {
-        const toolController = this.getToolController();
-        toolController.controlledView = view;
-        toolController.setScopedTool(toolId);
-        return toolController;
-    }
 }
 
 export const ZoomInProp = 'zoom-in';
@@ -109,7 +109,7 @@ export class ZoomInController extends PropController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext) {
-        const cameraTool = <CameraTool> context.plugin.getToolController().getToolById(CameraToolId);
+        const cameraTool = <CameraTool> context.plugin.tool.getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
