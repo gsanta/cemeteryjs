@@ -28,12 +28,12 @@ export class NullTool implements Tool {
 
     getCursor() { return Cursor.Default; }
     
-    protected plugin: UI_Plugin;
+    protected panel: AbstractCanvasPanel;
     protected registry: Registry;
 
-    constructor(type: string, plugin: UI_Plugin, registry: Registry) {
+    constructor(type: string, panel: AbstractCanvasPanel, registry: Registry) {
         this.id = type;
-        this.plugin = plugin;
+        this.panel = panel;
         this.registry = registry;
     }
 

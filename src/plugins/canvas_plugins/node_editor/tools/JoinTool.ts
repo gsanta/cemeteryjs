@@ -7,13 +7,14 @@ import { Cursor, ToolType } from '../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../core/Registry";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
+import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
     endPoint: Point;
     joinPoint1: JoinPointView;
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
+    constructor(plugin: AbstractCanvasPanel, registry: Registry) {
         super(ToolType.Join, plugin, registry);
     }
 
@@ -21,7 +22,7 @@ export class JoinTool extends PointerTool {
         this.startPoint = this.registry.services.pointer.pointer.curr;
         this.joinPoint1 = <JoinPointView> this.registry.services.pointer.hoveredView;
         this.endPoint = this.registry.services.pointer.pointer.curr;
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     click() {}
@@ -30,11 +31,11 @@ export class JoinTool extends PointerTool {
 
     drag() {
         this.endPoint = this.registry.services.pointer.pointer.curr;
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     draggedUp() {
-        this.plugin.getToolController().removePriorityTool(this.id);
+        this.panel.getToolController().removePriorityTool(this.id);
 
 
         if (this.checkConnectionValidity()) {
@@ -66,7 +67,7 @@ export class JoinTool extends PointerTool {
 
         this.startPoint = undefined;
         this.endPoint = undefined;
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     private checkConnectionValidity() {
@@ -83,7 +84,7 @@ export class JoinTool extends PointerTool {
     out(view: View) {
         super.out(view);
         if (!this.registry.services.pointer.isDown) {
-            this.plugin.getToolController().removePriorityTool(this.id);
+            this.panel.getToolController().removePriorityTool(this.id);
         }
     }
 

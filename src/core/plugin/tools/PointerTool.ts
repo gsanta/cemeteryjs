@@ -17,20 +17,20 @@ export abstract class PointerTool extends NullTool {
 
         if (hoveredItem.isChildView()) {
             if (!hoveredItem.parent.isSelected()) {
-                this.registry.stores.views.clearSelection();
-                this.registry.stores.views.addSelectedView(hoveredItem.parent);
+                this.panel.views.clearSelection();
+                this.panel.views.addSelectedView(hoveredItem.parent);
             }
             hoveredItem.parent.setActiveChild(hoveredItem);
-            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         } else {
-            this.registry.stores.views.clearSelection();
-            this.registry.stores.views.addSelectedView(hoveredItem);
-            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
+            this.panel.views.clearSelection();
+            this.panel.views.addSelectedView(hoveredItem);
+            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         }
     }
 
     down() {
-        this.initMove() &&  this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.initMove() &&  this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     drag(e: IPointerEvent) {
@@ -38,7 +38,7 @@ export abstract class PointerTool extends NullTool {
 
         if (this.movingItem) {
             this.moveItems();
-            this.registry.services.render.scheduleRendering(this.plugin.region);
+            this.registry.services.render.scheduleRendering(this.panel.region);
         }
         
         this.isDragStart = false;
@@ -65,23 +65,23 @@ export abstract class PointerTool extends NullTool {
 
     over(view: View) {
         if (view.viewType === JoinPointViewType) {
-            this.plugin.getToolController().setPriorityTool(ToolType.Join);
+            this.panel.getToolController().setPriorityTool(ToolType.Join);
         }
         
         view.tags.add(ViewTag.Hovered);
         view.parent?.tags.add(ViewTag.Hovered);
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     out(view: View) {
         if (!this.registry.services.pointer.isDown && view.viewType === JoinPointViewType) {
-            this.plugin.getToolController().removePriorityTool(ToolType.Join);
+            this.panel.getToolController().removePriorityTool(ToolType.Join);
 
         } 
         
         view.tags.delete(ViewTag.Hovered);
         view.parent?.tags.delete(ViewTag.Hovered);
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     private initMove(): boolean {
@@ -98,9 +98,9 @@ export abstract class PointerTool extends NullTool {
         if (this.movingItem.isChildView()) {
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else {
-            const views = this.registry.stores.views.getSelectedViews();
+            const views = this.panel.views.getSelectedViews();
             views.forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 }

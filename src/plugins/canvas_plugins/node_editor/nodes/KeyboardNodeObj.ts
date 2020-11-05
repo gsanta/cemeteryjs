@@ -8,11 +8,26 @@ import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { GameViewerPluginId } from "../../game_viewer/GameViewerPlugin";
 import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
-import { NodeEditorPluginId } from "../NodeEditorPlugin";
+import { AbstractNode } from "./AbstractNode";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
+
+export class KeyboardNode extends AbstractNode {
+    getParams(): NodeParam[] {
+        return [
+            {
+                name: 'key1',
+                val: '',
+                uiOptions: {
+                    inputType: 'list',
+                    valueType: 'string',
+                },
+                isLink: 'output'
+            }
+        ];
+    }
+}
 
 export class KeyboardNodeFacotry implements NodeFactory {
     id = KeyboardNodeType;

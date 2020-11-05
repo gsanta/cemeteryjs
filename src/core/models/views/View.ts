@@ -30,7 +30,7 @@ export interface ViewFactory {
 }
 
 export interface ViewRenderer {
-    renderInto(container: UI_SvgCanvas, view: View, plugin: UI_Plugin);
+    renderInto(container: UI_SvgCanvas, view: View, panel: AbstractCanvasPanel);
 }
 
 export abstract class View implements IControlledModel {
@@ -43,6 +43,7 @@ export abstract class View implements IControlledModel {
     children: View[] = [];
 
     controller = undefined;
+    renderer: ViewRenderer;
 
     protected obj: IObj;
 

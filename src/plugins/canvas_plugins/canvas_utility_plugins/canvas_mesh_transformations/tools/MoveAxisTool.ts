@@ -22,14 +22,14 @@ export class MoveAxisTool extends NullTool {
 
     over(view: View) {
         this.hoveredView = <MoveAxisView> view;
-        this.plugin.getToolController().setScopedTool(this.id);
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.panel.getToolController().setScopedTool(this.id);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     out(view: View) {
         if (!this.downView) {
-            this.plugin.getToolController().removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.plugin.region);
+            this.panel.getToolController().removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.panel.region);
         }
     }
 
@@ -63,13 +63,13 @@ export class MoveAxisTool extends NullTool {
             this.downView.parent.move(delta);
         }
 
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     up() {
         if (this.registry.services.pointer.hoveredView !== this.downView) {
-            this.plugin.getToolController().removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.plugin.region);
+            this.panel.getToolController().removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.panel.region);
         }
         this.downView = undefined;
     }

@@ -34,7 +34,7 @@ export class CubeTool extends RectangleTool {
         meshView.setScale(1);
         meshView.color = 'black';
     
-        this.registry.stores.views.addView(meshView);
+        this.panel.views.addView(meshView);
         this.registry.stores.objStore.addObj(meshObj);
 
         const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj());
@@ -45,6 +45,6 @@ export class CubeTool extends RectangleTool {
     }
     
     protected removeTmpView() {
-        this.registry.stores.views.removeView(this.tmpView);
+        this.panel.views.removeView(this.tmpView);
     }
 }

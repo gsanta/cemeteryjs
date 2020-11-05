@@ -22,9 +22,9 @@ export class SelectTool extends PointerTool {
     click() {
         if (this.registry.services.pointer.hoveredView) {
             super.click();
-        } else if (this.registry.stores.views.getSelectedViews().length > 0) {
-            this.registry.stores.views.clearSelection();
-            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
+        } else if (this.panel.views.getSelectedViews().length > 0) {
+            this.panel.views.clearSelection();
+            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         }
     }
 
@@ -33,7 +33,7 @@ export class SelectTool extends PointerTool {
             super.drag(e);
         } else {
             this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
-            this.registry.services.render.scheduleRendering(this.plugin.region);
+            this.registry.services.render.scheduleRendering(this.panel.region);
         }
     }
 
@@ -43,13 +43,13 @@ export class SelectTool extends PointerTool {
         } else {
             if (!this.rectangleSelection) { return }
     
-            const intersectingViews = getIntersectingViews(this.registry.stores.views, this.rectangleSelection);
+            const intersectingViews = getIntersectingViews(this.panel.views, this.rectangleSelection);
             
-            this.registry.stores.views.clearSelection();
-            this.registry.stores.views.addSelectedView(...intersectingViews)
+            this.panel.views.clearSelection();
+            this.panel.views.addSelectedView(...intersectingViews)
     
             this.rectangleSelection = undefined;
-            this.registry.services.render.scheduleRendering(this.plugin.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         }
     }
 

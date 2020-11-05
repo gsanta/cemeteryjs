@@ -45,6 +45,7 @@ export class ViewStore {
     private viewsByType: Map<string, View[]> = new Map();
     protected idGenerator: IdGenerator;
     private hooks: ViewStoreHook[] = [];
+    private viewFactories: Map<string, () => View> = new Map();
 
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
@@ -63,6 +64,16 @@ export class ViewStore {
 
     removeHook(hook: ViewStoreHook) {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
+    }
+
+    registerViewType(viewType: string, createView: () => View) {
+        this.viewFactories.set(viewType, createView);
+    }
+
+    createView(viewType: string): View {
+        const view = this.viewFactories.get(viewType)();
+        view.id = this.generateId(view);
+        return view;
     }
 
     addView(view: View) {

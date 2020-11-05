@@ -33,12 +33,12 @@ export class SphereTool extends RectangleTool {
         meshView.color = 'black';
     
         this.registry.stores.objStore.addObj(meshObj);
-        this.registry.stores.views.addView(meshView);
+        this.panel.views.addView(meshView);
     
         return meshView;
     }
     
     protected removeTmpView() {
-        this.registry.stores.views.removeView(this.tmpView);
+        this.panel.views.removeView(this.tmpView);
     }
 }

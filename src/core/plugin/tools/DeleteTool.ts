@@ -2,18 +2,18 @@ import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
 import { getIntersectingViews } from '../../stores/ViewStore';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor } from './Tool';
-import { UI_Plugin } from '../UI_Plugin';
 
 export const DeleteToolId = 'delete-tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(plugin: UI_Plugin,  registry: Registry) {
-        super(DeleteToolId, plugin, registry);
+    constructor(panel: AbstractCanvasPanel,  registry: Registry) {
+        super(DeleteToolId, panel, registry);
     }
 
     drag() {
@@ -29,7 +29,7 @@ export class DeleteTool extends PointerTool {
         if (hoveredItem.isChildView()) {
             hoveredItem.parent.deleteChild(hoveredItem);
         } else {
-            this.registry.stores.views.removeView(hoveredItem);
+            this.panel.views.removeView(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -41,8 +41,8 @@ export class DeleteTool extends PointerTool {
 
     
     draggedUp() {
-        const intersectingViews = getIntersectingViews(this.registry.stores.views, this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.registry.stores.views.removeView(view));
+        const intersectingViews = getIntersectingViews(this.panel.views, this.rectangleSelection);
+        intersectingViews.forEach(view =>  this.panel.views.removeView(view));
 
         this.rectangleSelection = undefined;
 
@@ -58,7 +58,7 @@ export class DeleteTool extends PointerTool {
 
     eraseAll() {
         this.registry.services.localStore.clearAll();
-        this.registry.stores.views.clear();
+        this.panel.views.clear();
         this.registry.services.render.reRenderAll();
     }
 
@@ -68,7 +68,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.plugin.getToolController().setSelectedTool(this.id)
+            this.panel.getToolController().setSelectedTool(this.id)
             
             return true;
         }

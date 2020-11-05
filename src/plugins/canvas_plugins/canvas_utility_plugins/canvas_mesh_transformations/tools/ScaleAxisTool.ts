@@ -19,14 +19,14 @@ export class ScaleAxisTool extends NullTool {
 
     over(view: ScaleAxisView) {
         this.hoveredView = view;
-        this.plugin.getToolController().setScopedTool(this.id);
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.panel.getToolController().setScopedTool(this.id);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     out() {
         if (!this.downView) {
-            this.plugin.getToolController().removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.plugin.region);
+            this.panel.getToolController().removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.panel.region);
         }
     }
 
@@ -59,13 +59,13 @@ export class ScaleAxisTool extends NullTool {
 
             parent.setScale(parent.getScale() + delta);
         }
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     up() {
         if (this.registry.services.pointer.hoveredView !== this.downView) {
-            this.plugin.getToolController().removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.plugin.region);
+            this.panel.getToolController().removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.panel.region);
         }
         this.downView = undefined;
     }

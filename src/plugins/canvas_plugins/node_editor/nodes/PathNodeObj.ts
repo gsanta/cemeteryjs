@@ -7,9 +7,14 @@ import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { NodeEditorPluginId } from "../NodeEditorPlugin";
+import { AbstractNodeView } from "./AbstractNode";
 
 export const PathNodeType = 'path-node-obj';
+
+export class PathNodeView extends AbstractNodeView {
+
+
+}
 
 export class PathNodeFacotry implements NodeFactory {
     id = PathNodeType;

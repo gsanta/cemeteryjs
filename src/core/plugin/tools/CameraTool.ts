@@ -22,28 +22,28 @@ export class CameraTool extends NullTool {
     }
 
     wheel() {
-        (this.plugin.getPanel() as AbstractCanvasPanel).getCamera().zoomWheel();
+        (this.panel.getPanel() as AbstractCanvasPanel).getCamera().zoomWheel();
     }
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.plugin.getToolController().removePriorityTool(this.id)
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.panel.getToolController().removePriorityTool(this.id)
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     drag(e: IPointerEvent) {
         super.drag(e);
 
-        const camera = (this.plugin.getPanel() as AbstractCanvasPanel).getCamera();
+        const camera = (this.panel.getPanel() as AbstractCanvasPanel).getCamera();
 
         switch(this.activeCameraAction) {
             case 'pan':
                 camera.pan(this.registry.services.pointer.pointer);
-                this.registry.services.render.scheduleRendering(this.plugin.region);
+                this.registry.services.render.scheduleRendering(this.panel.region);
                 break;
             case 'rotate':
                 camera.rotate(this.registry.services.pointer.pointer);
-                this.registry.services.render.scheduleRendering(this.plugin.region);
+                this.registry.services.render.scheduleRendering(this.panel.region);
                 break;
         }
 
@@ -51,14 +51,14 @@ export class CameraTool extends NullTool {
     }
 
     zoomIn() {
-        if ((this.plugin.getPanel() as AbstractCanvasPanel).getCamera().zoomIn()) {
-            this.registry.services.render.reRender(this.plugin.region);
+        if ((this.panel.getPanel() as AbstractCanvasPanel).getCamera().zoomIn()) {
+            this.registry.services.render.reRender(this.panel.region);
         }
     }
 
     zoomOut() {
-        if ((this.plugin.getPanel() as AbstractCanvasPanel).getCamera().zoomOut()) {
-            this.registry.services.render.reRender(this.plugin.region);
+        if ((this.panel.getPanel() as AbstractCanvasPanel).getCamera().zoomOut()) {
+            this.registry.services.render.reRender(this.panel.region);
         }
     }
 
@@ -87,14 +87,14 @@ export class CameraTool extends NullTool {
             setAsPriorityTool = true;
         }
 
-        setAsPriorityTool && this.plugin.getToolController().setPriorityTool(this.id);
+        setAsPriorityTool && this.panel.getToolController().setPriorityTool(this.id);
         return setAsPriorityTool;
     }
 
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.plugin.getToolController().removePriorityTool(this.id);
+            this.panel.getToolController().removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
         }
     }

@@ -4,14 +4,14 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { NullTool, createRectFromMousePointer } from './NullTool';
 import { UI_Region } from '../UI_Panel';
 import { View } from '../../models/views/View';
-import { UI_Plugin } from '../UI_Plugin';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 
 export abstract class RectangleTool extends NullTool {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
 
-    constructor(type: string, plugin: UI_Plugin, registry: Registry) {
-        super(type, plugin, registry);
+    constructor(type: string, panel: AbstractCanvasPanel, registry: Registry) {
+        super(type, panel, registry);
     }
 
     click() {
@@ -20,8 +20,8 @@ export abstract class RectangleTool extends NullTool {
 
         const view = this.createView(rect);
 
-        this.registry.stores.views.clearSelection()
-        this.registry.stores.views.addSelectedView(view);
+        this.panel.views.clearSelection()
+        this.panel.views.addSelectedView(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();
@@ -37,7 +37,7 @@ export abstract class RectangleTool extends NullTool {
 
         this.tmpView = this.createView(this.rectangleFeedback);
 
-        this.registry.services.render.scheduleRendering(this.plugin.region);
+        this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     draggedUp() {

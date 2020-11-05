@@ -4,6 +4,7 @@ import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
+import { ViewStore } from '../stores/ViewStore';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { FormController, PropContext, PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
@@ -50,6 +51,7 @@ export class AbstractCanvasPanel extends UI_Panel {
     
     controller: FormController;
     readonly toolController: ToolController;
+    readonly views: ViewStore;
 
     renderer: ICanvasRenderer;
 
@@ -59,6 +61,7 @@ export class AbstractCanvasPanel extends UI_Panel {
         this.region = region;
         this.id = id;
         this.displayName = displayName;
+        this.views = new ViewStore();
 
         this.keyboard = new KeyboardService(registry);
     }

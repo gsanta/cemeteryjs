@@ -9,8 +9,6 @@ import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
-import { AbstractCanvasPlugin } from '../../../../plugin/AbstractCanvasPlugin';
-import { UI_Plugin } from '../../../../plugin/UI_Plugin';
 
 const SelectionComponentStyled = styled.rect`
     stroke: red;
@@ -40,19 +38,17 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         );
 
         // setTimeout(() => {
-            (this.props.registry.plugins.getPanelById(this.props.element.pluginId) as AbstractCanvasPlugin).mounted(this.ref.current);
-            (this.props.registry.plugins.getPanelById(this.props.element.pluginId) as AbstractCanvasPlugin).resize();
+            this.props.element.canvasPanel.mounted(this.ref.current);
+            this.props.element.canvasPanel.resize();
         // }, 0);
     }
 
     render(): JSX.Element {
-        const plugin = this.props.registry.plugins.getPlugin(this.props.element.pluginId) as UI_Plugin;
-
         return (
             <div 
-                ref={this.ref} id={plugin.id}
+                ref={this.ref} id={this.props.element.canvasPanel.id}
                 style={{
-                    cursor: plugin.getToolController().getActiveTool().getCursor(),
+                    cursor: this.props.element.canvasPanel.getToolController().getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
                     height: this.props.element.height ? this.props.element.height :'100%',
                     position: 'relative'
@@ -76,7 +72,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     background: colors.panelBackgroundMedium
                 }}
                 tabIndex={0}
-                viewBox={((this.props.registry.plugins.getPanelById(this.props.element.pluginId) as AbstractCanvasPlugin).getCamera() as Camera2D).getViewBoxAsString()}
+                viewBox={(this.props.element.canvasPanel.getCamera() as Camera2D).getViewBoxAsString()}
                 id={this.context.controllers.svgCanvasId}
                 onMouseDown={(e) => this.props.element.mouseDown(this.props.registry, e.nativeEvent)}
                 onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}                

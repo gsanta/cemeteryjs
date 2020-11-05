@@ -65,41 +65,6 @@ export class MeshViewPlugin implements ViewPlugin {
     }
 }
 
-export class MeshViewFactory implements ViewFactory {
-    viewType = MeshViewType;
-    newInstance() { return new MeshView(); }
-
-    renderInto(canvas: UI_SvgCanvas, meshView: MeshView) {
-        const group = canvas.group(meshView.id);
-        group.data = meshView;
-
-        const translation = `${meshView.getBounds().topLeft.x} ${meshView.getBounds().topLeft.y}`;
-        const rotation = `${toDegree(meshView.getRotation())} ${meshView.getBounds().getWidth() / 2} ${meshView.getBounds().getHeight() / 2}`;
-        group.transform = `translate(${translation}) rotate(${rotation})`;
-        const rect = group.rect();
-        rect.width = meshView.getBounds().getWidth();
-        rect.height = meshView.getBounds().getHeight();
-
-        rect.css = {
-            strokeWidth: meshView.isSelected() ? '2' : '1'
-        }    
-
-        rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
-
-        let thumbnail: JSX.Element = null;
-
-        if (meshView.thumbnailData) {
-            const image = group.image();
-            image.href = meshView.thumbnailData;
-            image.width = meshView.getBounds().getWidth();
-            image.height = meshView.getBounds().getHeight();
-            image.preservAspectRatio = "xMidYMid slice";
-        }
-
-        return thumbnail;
-    }
-}
-
 export class MeshView extends View {
     viewType = MeshViewType;
 
