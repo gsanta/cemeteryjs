@@ -21,7 +21,7 @@ export const SceneEditorPluginId = 'scene-editor-plugin';
 export function registerSceneEditor(registry: Registry) {
     const canvas = createCanvas(registry);
 
-    registry.plugins.canvas.registerCanvas(canvas);
+    registry.ui.canvas.registerCanvas(canvas);
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {

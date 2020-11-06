@@ -18,7 +18,7 @@ export class UI_SvgCanvas extends UI_SvgGroup {
 
     mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).over()
+        this.canvasPanel.over();
     }
 
     mouseOut(registry: Registry, e: MouseEvent) {
@@ -27,11 +27,11 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     }
 
     mouseEnter(registry: Registry, e: MouseEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).over()
+        this.canvasPanel.over();
     }
 
     mouseLeave(registry: Registry, e: MouseEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).out()
+        this.canvasPanel.out();
     }
 
     toolbar(): UI_Toolbar {

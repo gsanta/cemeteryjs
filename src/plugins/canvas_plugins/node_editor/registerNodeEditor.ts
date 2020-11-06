@@ -19,7 +19,7 @@ export const NodeEditorToolControllerId = 'node-editor-tool-controller';
 export function registerNodeEditor(registry: Registry) {
     const canvas = createCanvas(registry);
 
-    registry.plugins.canvas.registerCanvas(canvas);
+    registry.ui.canvas.registerCanvas(canvas);
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {

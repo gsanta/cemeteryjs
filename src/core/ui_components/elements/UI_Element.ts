@@ -1,6 +1,8 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
+import { FormController } from '../../plugin/controller/FormController';
 import { ToolController } from '../../plugin/controller/ToolController';
+import { UI_Panel } from '../../plugin/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
 
@@ -25,15 +27,15 @@ export interface UI_Element_Css {
 
 export interface UI_ElementConfig {
     key?: string;
+    controller?: FormController;
 }
 
 export abstract class UI_Element {
     elementType: UI_ElementType;
-    pluginId: string;
-    controllerId: string;
     readonly key: string;
 
     readonly canvasPanel: AbstractCanvasPanel;
+    readonly panel: UI_Panel;
     
     isBold: boolean;
     data: any;
@@ -44,71 +46,56 @@ export abstract class UI_Element {
 
     readonly uniqueId: string;
     readonly toolController: ToolController;
+    readonly controller: FormController;
 
     css?: UI_Element_Css = {};
 
-    constructor(config: {pluginId: string, key?: string, target?: string, uniqueId?: string, toolController?: ToolController} = { pluginId: undefined }) {
-        this.pluginId = config.pluginId;
+    constructor(config: {controller: FormController, key?: string, target?: string, uniqueId?: string, toolController?: ToolController}) {
         this.targetId = config.target;
         this.uniqueId = config.uniqueId;
         this.toolController = config.toolController;
+        this.controller = config.controller;
         this.key = config.key;
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseDown(e, this);
-        }
+        this.toolController && this.toolController.mouseDown(e, this);
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseMove(e, this);
-        }
+            this.toolController && this.toolController.mouseMove(e, this);
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseUp(e, this);
-        }
+        this.toolController && this.toolController.mouseUp(e, this);
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseLeave(e, data, this);
-        }
+        this.toolController && this.toolController.mouseLeave(e, data, this);
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseEnter(e, data, this);
-        }
+        this.toolController && this.toolController.mouseEnter(e, data, this);
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseWheel(e);
-        }
+        this.toolController && this.toolController.mouseWheel(e);
     }
 
     mouseWheelEnd(registry: Registry) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().mouseWheelEnd();
-        }
+        this.toolController && this.toolController.mouseWheelEnd();
     }
 
     keyDown(registry: Registry, e: KeyboardEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).keyboard.keyDown(e);
+        this.canvasPanel && this.canvasPanel.keyboard.keyDown(e);
     }
 
     keyUp(registry: Registry, e: KeyboardEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).keyboard.keyUp(e);
+        this.canvasPanel && this.canvasPanel.keyboard.keyUp(e);
     }
 
     dndEnd(registry: Registry, point: Point) {
-        if (registry.plugins.getPlugin(this.pluginId).getToolController()) {
-            registry.plugins.getPlugin(this.pluginId).getToolController().dndDrop(point, this);
-        }
+        this.toolController && this.toolController.dndDrop(point, this);
     }
 }
 

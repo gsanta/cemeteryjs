@@ -15,10 +15,10 @@ export class UI_ListItem extends UI_Element {
         (<AbstractCanvasPanel> this.dropTargetPlugin).dropItem = this;
         // TODO find a better design, this is not ideal at all
         registry.plugins.setHoveredPlugin(<AbstractCanvasPanel> this.dropTargetPlugin);
-        registry.plugins.getPropController(this.pluginId).dndStart(this, this.listItemId);
+        this.controller && this.controller.dndStart(this, this.listItemId);
     }
 
     dndEnd(registry: Registry) {
-        registry.plugins.getPropController(this.pluginId).dndEnd(this);
+        this.controller && this.controller.dndEnd(this);
     }
 }

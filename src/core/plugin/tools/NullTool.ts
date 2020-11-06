@@ -1,15 +1,13 @@
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
+import { Point } from '../../../utils/geometry/shapes/Point';
+import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
+import { View } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { IHotkeyEvent } from '../../services/input/HotkeyService';
 import { IKeyboardEvent } from '../../services/input/KeyboardService';
-import { Cursor, Tool, ToolType } from './Tool';
-import { View } from '../../models/views/View';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { ViewStore } from '../../stores/ViewStore';
-import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { MousePointer } from '../controller/ToolController';
-import { Point } from '../../../utils/geometry/shapes/Point';
-import { UI_Plugin } from '../UI_Plugin';
+import { Cursor, Tool } from './Tool';
 
 export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
     const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;

@@ -3,17 +3,13 @@ import * as screenCastKeysGizmoPlugin from '../../plugins/canvas/gizmos/screenca
 import { EngineHooks } from '../engine/hooks/EngineHooks';
 import { Registry } from '../Registry';
 import { AbstractCanvasPanel } from './AbstractCanvasPanel';
-import { CanvasLookup } from './CanvasPlugins';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { UI_Panel, UI_Region } from './UI_Panel';
-import { UI_PluginFactory, UI_Renderer } from './UI_PluginFactory';
-import { UI_Container } from '../ui_components/elements/UI_Container';
+import { UI_PluginFactory } from './UI_PluginFactory';
 
 export class Plugins {
     engineHooks: EngineHooks;
-
-    canvas: CanvasLookup;
 
     private activePanels: UI_Panel[] = [];
 
@@ -26,8 +22,6 @@ export class Plugins {
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        this.canvas = new CanvasLookup();
 
         axisGizmoPlugin.register(this);
         screenCastKeysGizmoPlugin.register(this);

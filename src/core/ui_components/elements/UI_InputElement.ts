@@ -7,62 +7,26 @@ export abstract class UI_InputElement extends UI_Element {
     inputWidth: string;
 
     change(newVal: any, registry: Registry): void {
-        if (this.controllerId) {
-            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).change(newVal, this);
-        } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController(this).change(newVal, this);
-        } else {
-            registry.plugins.getPropController(this.pluginId).change(newVal, this);
-        }
+        this.controller && this.controller.change(newVal, this);
     }
 
     focus(registry: Registry): void {
-        if (this.controllerId) {
-            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).focus(this);
-        } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController(this).focus(this);
-        } else {
-            registry.plugins.getPropController(this.pluginId).focus(this);
-        }
+        this.controller && this.controller.focus(this);
     }
 
     blur(registry: Registry): void {
-        if (this.controllerId) {
-            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).blur(this);
-        } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController(this).blur(this);
-        } else {
-            registry.plugins.getPropController(this.pluginId).blur(this);
-        }
+        this.controller && this.controller.blur(this);
     }
 
     click(registry: Registry): void {
-        if (this.controllerId) {
-            registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).click(this);
-        } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController(this).click(this);
-        } else {
-            registry.plugins.getPropController(this.pluginId).click(this);
-        }
+        this.controller && this.controller.click(this);
     }
 
     val(registry: Registry): any {
-        if (this.controllerId) {
-            return registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).val(this);
-        } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController(this).val(this);
-        } else {
-            return registry.plugins.getPropController(this.pluginId).val(this);
-        }
+        return this.controller && this.controller.val(this);
     }
 
     values(registry: Registry): any[] {
-        if (this.controllerId) {
-            return registry.plugins.getPanelById(this.pluginId).getFormController(this.controllerId).values(this);
-        } else if (registry.plugins.getPlugin(this.pluginId)) {
-            registry.plugins.getPlugin(this.pluginId).getController(this).values(this);
-        } else {
-            return registry.plugins.getPropController(this.pluginId).values(this);
-        }
+        return this.controller && this.controller.values(this);
     }
 }

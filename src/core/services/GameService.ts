@@ -18,15 +18,11 @@ export class GameService {
     }
 
     private renderLoop() {
-        const animationNodes = this.registry.services.node.graph.getNodesByType(RouteNodeObjType);
-        animationNodes.forEach(animationNode => {
-            this.registry.services.node.executeNode(animationNode.getObj())
-        });
+        const animationNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
+        animationNodes.forEach(animationNode => animationNode.getObj().execute());
 
-        const routeNodes = this.registry.services.node.graph.getNodesByType(RouteNodeObjType);
-        routeNodes.forEach(routeNode => {
-            this.registry.services.node.executeNode(routeNode.getObj())
-        });
+        const routeNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
+        routeNodes.forEach(routeNode => routeNode.getObj().execute());
     }
 
     // setPlaying(isPlaying: boolean) {

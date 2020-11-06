@@ -15,6 +15,6 @@ export class UI_Dialog extends UI_Layout {
 
     close(registry: Registry): void {
         registry.plugins.getPlugin(this.pluginId).getController(this).click(this);
-        registry.plugins.getPlugin(this.pluginId).getPanel().unmounted();
+        this.canvasPanel.unmounted();
     }
 }

@@ -16,6 +16,6 @@ export class UI_ToolDropdownHeader extends UI_Container {
     }
 
     click(registry: Registry): void {
-        registry.plugins.getPropController(this.pluginId).click(this);
+        this.controller && this.controller.click(this);
     }
 }
