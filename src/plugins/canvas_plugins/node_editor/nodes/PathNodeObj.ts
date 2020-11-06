@@ -1,4 +1,4 @@
-import { NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../../../core/models/views/PathView";
 import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
@@ -7,50 +7,51 @@ import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { AbstractNodeView } from "./AbstractNode";
+import { AbstractNode } from "./AbstractNode";
 
 export const PathNodeType = 'path-node-obj';
 
-export class PathNodeView extends AbstractNodeView {
-
-
-}
-
-export class PathNodeFacotry implements NodeFactory {
-    id = PathNodeType;
+export class PathNode extends AbstractNode {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
+    nodeType = PathNodeType;
+    displayName = 'Path';
 
-    createNodeObj(): NodeObj {
-        const obj = new NodeObj(PathNodeType, {displayName: 'Path'});
-
-        obj.addParam({
-            name: 'path',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
+    getParams(): NodeParam[] {
+        return [
+            {
+                name: 'path',
+                val: '',
+                uiOptions: {
+                    inputType: 'list',
+                    valueType: 'string'
+                }
             }
-        });
+        ];
+    }
 
-        obj.outputs = [
+    getOutputLinks(): NodeLink[] {
+        return [
             {
                 name: 'action'
             }
-        ];
+        ]
+    }
 
-        return obj;
+    getInputLinks(): NodeLink[] {
+        return [];
     }
 
     getController(): FormController {
-        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new PathController()]);
+        return new FormController(undefined, this.registry, [new PathController()]);
     }
 
-    createExecutor(): INodeExecutor {
+    getExecutor(): INodeExecutor {
         return undefined;
     }
 }

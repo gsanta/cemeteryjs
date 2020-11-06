@@ -1,4 +1,4 @@
-import { NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
@@ -7,44 +7,51 @@ import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { NodeEditorPluginId } from "../NodeEditorPlugin";
+import { AbstractNode } from "./AbstractNode";
 
 export const MeshNodeType = 'mesh-node-obj';
 
-export class MeshNodeFacotry implements NodeFactory {
-    id = MeshNodeType;
+export class MeshNode extends AbstractNode {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
-    createNodeObj(): NodeObj {
-        const obj = new NodeObj(MeshNodeType, {displayName: 'Mesh'});
+    nodeType = MeshNodeType;
+    displayName = 'Mesh';
 
-        obj.addParam({
-            name: 'mesh',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
+    getParams(): NodeParam[] {
+        return [
+            {
+                name: 'mesh',
+                val: '',
+                uiOptions: {
+                    inputType: 'list',
+                    valueType: 'string'
+                }
             }
-        });
+        ];
+    }
 
-        obj.outputs = [
+    getOutputLinks(): NodeLink[] {
+        return [
             {
                 name: 'action'
             }
         ];
-    
-        return obj;
+    }
+
+    getInputLinks(): NodeLink[] {
+        return [];
     }
 
     getController(): FormController {
-        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new MeshController()]);
+        return new FormController(undefined, this.registry, [new MeshController()]);
     }
 
-    createExecutor(): INodeExecutor {
+    getExecutor(): INodeExecutor {
         return undefined;
     }
 }

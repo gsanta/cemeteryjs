@@ -1,4 +1,4 @@
-import { NodeCategory, NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeCategory, NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
@@ -8,62 +8,65 @@ import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { NodeEditorPluginId } from "../NodeEditorPlugin";
+import { AbstractNode } from "./AbstractNode";
 import { MeshController } from "./MeshNodeObj";
 
 export const MoveNodeType = 'move-node-obj';
 
-export class MoveNodeFacotry implements NodeFactory {
-    id = MoveNodeType;
+export class MoveNode extends AbstractNode {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
-    createNodeObj(): NodeObj {
-        const obj = new NodeObj(MoveNodeType, {displayName: 'Move'});
+    nodeType = MoveNodeType;
+    displayName = 'Move';
 
-        obj.addParam({
-            name: 'mesh',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
+    getParams(): NodeParam[] {
+        return [
+            {
+                name: 'mesh',
+                val: '',
+                uiOptions: {
+                    inputType: 'list',
+                    valueType: 'string'
+                }
+            },
+            {
+                name: 'move',
+                val: 'forward',
+                uiOptions: {
+                    inputType: 'list',
+                    valueType: 'string'
+                }
+            },
+            {
+                name: 'speed',
+                val: 0.5,
+                uiOptions: {
+                    inputType: 'textField',
+                    valueType: 'number'
+                }
             }
-        });
+        ];
+    }
 
-        obj.addParam({
-            name: 'move',
-            val: 'forward',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
+    getOutputLinks(): NodeLink[] {
+        return [
+            {
+                name: 'animation'
             }
-        });
+        ]
+    }
 
-        obj.addParam({
-            name: 'speed',
-            val: 0.5,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
-
-        obj.inputs = [
+    getInputLinks(): NodeLink[] {
+        return [
             {
                 name: 'input'
             }
         ];
-    
-        obj.outputs = [
-            {
-                name: 'animation'
-            }
-        ];
-        
-        return obj;
     }
 
     getController(): FormController {
@@ -73,10 +76,10 @@ export class MoveNodeFacotry implements NodeFactory {
             new MeshSpeedController()
         ];
 
-        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, propControllers);
+        return new FormController(undefined, this.registry, propControllers);
     }
     
-    createExecutor(): INodeExecutor {
+    getExecutor(): INodeExecutor {
         return new MoveNodeExecutor();
     }
 }

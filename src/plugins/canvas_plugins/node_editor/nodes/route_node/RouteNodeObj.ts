@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
+import { CustomNodeParamSerializer, NodeLink, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { FormController, PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
@@ -8,47 +8,41 @@ import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
-import { NodeEditorPluginId } from "../../NodeEditorPlugin";
+import { AbstractNode } from "../AbstractNode";
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeObjType = 'route-node-obj';
 
-export class RouteNodeFacotry implements NodeFactory {
-    id = RouteNodeObjType;
-    
+export class RouteNode extends AbstractNode {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
-    createNodeObj(): NodeObj {
-        const obj = new NodeObj(RouteNodeObjType, {displayName: 'Route', customParamSerializer: new RouteNodeSerializer()});
+    nodeType = RouteNodeObjType;
+    displayName = 'Route';
 
-        obj.addParam({
-            name: 'speed',
-            val: 1,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
-
-        obj.addParam({
-            name: 'routeWalker',
-            val: undefined
-        });
-
-        obj.inputs = [
+    getParams(): NodeParam[] {
+        return [
             {
-                name: 'mesh'
+                name: 'speed',
+                val: 1,
+                uiOptions: {
+                    inputType: 'textField',
+                    valueType: 'number'
+                }
             },
             {
-                name: 'path'
+                name: 'routeWalker',
+                val: undefined
             }
         ];
-    
-        obj.outputs = [
+    }
+
+    getOutputLinks(): NodeLink[] {
+        return [
             {
                 name: 'onStart'
             },
@@ -61,16 +55,25 @@ export class RouteNodeFacotry implements NodeFactory {
             {
                 name: 'onFinish'
             }
-        ];
+        ]
+    }
 
-        return obj;
+    getInputLinks(): NodeLink[] {
+        return [
+            {
+                name: 'mesh'
+            },
+            {
+                name: 'path'
+            }
+        ];
     }
 
     getController(): FormController {
-        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new SpeedControl()]);
+        return new FormController(undefined, this.registry, [new SpeedControl()]);
     }
 
-    createExecutor(): INodeExecutor {
+    getExecutor(): INodeExecutor {
         return new RouteNodeExecutor();
     }
 }

@@ -1,19 +1,29 @@
-import { NodeCategory, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
+import { GameViewerPluginId } from "../../game_viewer/registerGameViewer";
 import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
 import { AbstractNode } from "./AbstractNode";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
 export class KeyboardNode extends AbstractNode {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    nodeType = KeyboardNodeType;
+    displayName = 'Keyboard';
+
     getParams(): NodeParam[] {
         return [
             {
@@ -27,38 +37,21 @@ export class KeyboardNode extends AbstractNode {
             }
         ];
     }
-}
 
-export class KeyboardNodeFacotry implements NodeFactory {
-    id = KeyboardNodeType;
-
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
+    getOutputLinks(): NodeLink[] {
+        return [];
     }
 
-    createNodeObj(): NodeObj {
-        const obj = new NodeObj(KeyboardNodeType, {displayName: 'Keyboard'});
-
-        obj.addParam({
-            name: 'key1',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string',
-            },
-            isLink: 'output'
-        });
-
-        return obj;
+    getInputLinks(): NodeLink[] {
+        return [];
     }
 
+    
     getController(): FormController {
         return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new KeyControl()]);
     }
 
-    createExecutor(): INodeExecutor {
+    getExecutor(): INodeExecutor {
         return new KeyboardNodeExecutor();
     }
 }

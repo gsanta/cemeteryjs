@@ -1,4 +1,4 @@
-import { NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -8,55 +8,60 @@ import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { NodeEditorPluginId } from "../NodeEditorPlugin";
+import { AbstractNode } from "./AbstractNode";
 
 export const AnimationNodeType = 'animation-node-obj';
 
-export class AnimationNodeFacotry implements NodeFactory {
-    id = AnimationNodeType;
+export class AnimationNode extends AbstractNode {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
-    createNodeObj(): NodeObj {
-        const obj = new NodeObj(AnimationNodeType, {displayName: 'Animation'});
+    nodeType = AnimationNodeType;
+    displayName = 'Animation';
 
-        obj.addParam({
-            name: 'mesh',
-            val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string'
+    getParams(): NodeParam[] {
+        return [
+            {
+                name: 'mesh',
+                val: '',
+                uiOptions: {
+                    inputType: 'list',
+                    valueType: 'string'
+                }
+            },
+            {
+                name: 'startFrame',
+                val: 0,
+                uiOptions: {
+                    inputType: 'textField',
+                    valueType: 'number'
+                }
+            },
+            {
+                name: 'endFrame',
+                val: 0,
+                uiOptions: {
+                    inputType: 'textField',
+                    valueType: 'number'
+                }
             }
-        });
-        
-        obj.addParam({
-            name: 'startFrame',
-            val: 0,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
+        ];
+    }
 
-        obj.addParam({
-            name: 'endFrame',
-            val: 0,
-            uiOptions: {
-                inputType: 'textField',
-                valueType: 'number'
-            }
-        });
+    getOutputLinks(): NodeLink[] {
+        return [];
+    }
 
-        obj.inputs = [
+    getInputLinks(): NodeLink[] {
+        return [
             {
                 name: 'action'
             }
         ];
-
-        return obj;
     }
 
     getController(): FormController {
@@ -66,10 +71,10 @@ export class AnimationNodeFacotry implements NodeFactory {
             new EndFrameController()
         ];
 
-        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, propControllers);
+        return new FormController(undefined, this.registry, propControllers);
     }
 
-    createExecutor(): INodeExecutor {
+    getExecutor(): INodeExecutor {
         return new AnimationNodeExecutor();
     }
 }
