@@ -1,10 +1,10 @@
 import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { MeshView } from "../../../../../core/models/views/MeshView";
+import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { NullTool } from "../../../../../core/plugin/tools/NullTool";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { UI_Plugin } from '../../../../../core/plugin/UI_Plugin';
 import { ScaleAxisView, ScaleAxisViewType } from "../views/ScaleAxisView";
 
 export const ScaleAxisToolId = 'scale-axis-tool';
@@ -13,8 +13,8 @@ export class ScaleAxisTool extends NullTool {
     private downView: ScaleAxisView;
     private hoveredView: ScaleAxisView;
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
-        super(ScaleAxisToolId, plugin, registry);
+    constructor(panel: AbstractCanvasPanel, registry: Registry) {
+        super(ScaleAxisToolId, panel, registry);
     }
 
     over(view: ScaleAxisView) {

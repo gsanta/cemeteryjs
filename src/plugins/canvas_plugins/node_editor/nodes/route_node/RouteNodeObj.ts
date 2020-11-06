@@ -6,7 +6,6 @@ import { FormController, PropContext, PropController } from '../../../../../core
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
-import { NodeFactory } from "../../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { AbstractNode } from "../AbstractNode";
 import { RouteWalker } from "./RouteWalker";
@@ -23,6 +22,7 @@ export class RouteNode extends AbstractNode {
 
     nodeType = RouteNodeObjType;
     displayName = 'Route';
+    category = 'Default';
 
     getParams(): NodeParam[] {
         return [

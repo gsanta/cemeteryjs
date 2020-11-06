@@ -21,6 +21,7 @@ export class MeshNode extends AbstractNode {
 
     nodeType = MeshNodeType;
     displayName = 'Mesh';
+    category = 'Default';
 
     getParams(): NodeParam[] {
         return [

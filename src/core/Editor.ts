@@ -1,10 +1,4 @@
 import { NodeEditorSettingsPluginFactory } from '../plugins/canvas_plugins/node_editor/NodeEditorSettingsPluginFactory';
-import { AnimationNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
-import { KeyboardNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
-import { MeshNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/MeshNodeObj';
-import { MoveNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/MoveNodeObj';
-import { PathNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
-import { RouteNodeFacotry } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
 import { ObjectSettingsPluginFactory } from '../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPluginFactory';
 import { AssetManagerPluginFactory } from '../plugins/dialog_plugins/asset_manager/AssetManagerPluginFactory';
 import { SpriteSheetManagerFactory } from '../plugins/dialog_plugins/spritesheet_manager/SpriteSheetManagerFactory';
@@ -14,10 +8,16 @@ import { LayoutSettingsPluginFactory } from '../plugins/sidepanel_plugins/layout
 import { Registry } from './Registry';
 import { ObjLifeCycleHook } from './stores/ObjStore';
 import { AxisControlHook, ViewLifeCycleHook } from './stores/ViewStore';
-import { SceneEditorPlugin } from '../plugins/canvas_plugins/scene_editor/SceneEditorPlugin';
-import { NodeEditorPlugin } from '../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
-import { GameViewerPlugin } from '../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
 import { ThumbnailDialogPlugin } from '../plugins/canvas_plugins/scene_editor/ThumbnailDialogPlugin';
+import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
+import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
+import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNodeObj';
+import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/MoveNodeObj';
+import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
+import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
+import { registerSceneEditor } from '../plugins/canvas_plugins/scene_editor/registerSceneEditor';
+import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
+import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/registerGameViewer';
 
 export class Editor {
     registry: Registry;
@@ -46,18 +46,19 @@ export class Editor {
         // this.registry.plugins.registerPlugin(new CodeEditorPluginFactory());
         this.registry.plugins.registerPlugin(new LayoutSettingsPluginFactory());
 
-        this.registry.plugins.registerPlugin2(new SceneEditorPlugin(this.registry));
-        this.registry.plugins.registerPlugin2(new NodeEditorPlugin(this.registry));
-        this.registry.plugins.registerPlugin2(new GameViewerPlugin(this.registry));
+
+        registerSceneEditor(this.registry);
+        registerNodeEditor(this.registry);
+        registerGameViewer(this.registry);
         this.registry.plugins.registerPlugin2(new ThumbnailDialogPlugin(this.registry));
     
         // nodes
-        this.registry.services.node.registerNode(new KeyboardNodeFacotry(this.registry));
-        this.registry.services.node.registerNode(new AnimationNodeFacotry(this.registry));
-        this.registry.services.node.registerNode(new MeshNodeFacotry(this.registry));
-        this.registry.services.node.registerNode(new MoveNodeFacotry(this.registry));
-        this.registry.services.node.registerNode(new PathNodeFacotry(this.registry));
-        this.registry.services.node.registerNode(new RouteNodeFacotry(this.registry));
+        this.registry.data.helper.node.registerNode(new KeyboardNode(this.registry));
+        this.registry.data.helper.node.registerNode(new AnimationNode(this.registry));
+        this.registry.data.helper.node.registerNode(new MeshNode(this.registry));
+        this.registry.data.helper.node.registerNode(new MoveNode(this.registry));
+        this.registry.data.helper.node.registerNode(new PathNode(this.registry));
+        this.registry.data.helper.node.registerNode(new RouteNode(this.registry));
     }
 
     setup(canvas: HTMLCanvasElement) {

@@ -9,7 +9,7 @@ import { sceneAndGameViewRatio } from '../../stores/ViewStore';
 import { UI_SvgCanvas } from '../../ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../ui_components/react/styles';
 import { MeshObj } from '../objs/MeshObj';
-import { View, ViewFactory, ViewJson, ViewTag } from './View';
+import { View, ViewJson, ViewRenderer, ViewTag } from './View';
 
 export const MeshViewType = 'mesh-view';
 
@@ -23,17 +23,7 @@ export interface MeshViewJson extends ViewJson {
 
 const MIN_VIEW_SIZE = 20;
 
-export class MeshViewPlugin implements ViewPlugin {
-    id: string = MeshViewType;
-
-    getController(): FormController {
-        return undefined;
-    }
-
-    createView(): View {
-        return new MeshView();
-    }
-
+export class MeshRenderer implements ViewRenderer {
     renderInto(canvas: UI_SvgCanvas, meshView: MeshView) {
         const group = canvas.group(meshView.id);
         group.data = meshView;
@@ -79,6 +69,11 @@ export class MeshView extends View {
     color: string = 'grey';
     yPos: number = 0;
     speed = 0.5;
+
+    constructor() {
+        super();
+        this.renderer = new MeshRenderer();
+    }
 
     getObj(): MeshObj {
         return this.obj;

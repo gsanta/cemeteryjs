@@ -22,6 +22,7 @@ export class AnimationNode extends AbstractNode {
 
     nodeType = AnimationNodeType;
     displayName = 'Animation';
+    category = 'Default';
 
     getParams(): NodeParam[] {
         return [

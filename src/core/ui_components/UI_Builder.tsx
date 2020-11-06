@@ -83,7 +83,6 @@ import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
-import { UI_Plugin } from '../plugin/UI_Plugin';
 
 export class UI_Builder {
 
@@ -100,7 +99,7 @@ export class UI_Builder {
         this.registry = registry;
     }
 
-    build(panel: UI_Panel, plugin?: UI_Plugin): JSX.Element {
+    build(panel: UI_Panel): JSX.Element {
         if (panel.region === UI_Region.Sidepanel) {
             const layout = UI_Factory.layout(panel.id, {});
             const accordion = layout.accordion();
@@ -112,43 +111,35 @@ export class UI_Builder {
             const dialog = UI_Factory.dialog(panel.id, {});
             dialog.title = panel.displayName;
 
-            if (plugin) {
-                plugin.renderInto(dialog, plugin.getPanel());
-            } else {
-                panel.renderInto(dialog);
-            }
+            panel.renderInto(dialog);
             
             return this.buildElement(dialog, panel.id);
         } else {
             const layout = UI_Factory.layout(panel.id, {});
             
-            if (plugin) {
-                plugin.renderInto(layout, plugin.getPanel());
-            } else {
-                panel.renderInto(layout);
-            }
+            panel.renderInto(layout);
 
             return this.buildElement(layout, panel.id);
         }
     }
 
-    render(plugin: UI_Panel): UI_Container {
-        if (plugin.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(plugin.id, {});
+    render(panel: UI_Panel): UI_Container {
+        if (panel.region === UI_Region.Sidepanel) {
+            const layout = UI_Factory.layout(panel.id, {});
             const accordion = layout.accordion();
-            accordion.title = plugin.displayName;
-            plugin.renderInto(accordion);
+            accordion.title = panel.displayName;
+            panel.renderInto(accordion);
             return layout;
-        } else if (plugin.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog(plugin.id, {});
-            dialog.title = plugin.displayName;
-            plugin.renderInto(dialog);
+        } else if (panel.region === UI_Region.Dialog) {
+            const dialog = UI_Factory.dialog(panel.id, {});
+            dialog.title = panel.displayName;
+            panel.renderInto(dialog);
             return dialog;
 
         } else {
-            const layout = UI_Factory.layout(plugin.id, {});
+            const layout = UI_Factory.layout(panel.id, {});
 
-            plugin.renderInto(layout);
+            panel.renderInto(layout);
             return layout;
         }
     }

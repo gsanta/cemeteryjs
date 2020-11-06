@@ -9,26 +9,16 @@ import { ToolController } from './controller/ToolController';
 import { UI_Panel, UI_Region } from './UI_Panel';
 import { UI_PluginFactory, UI_Renderer } from './UI_PluginFactory';
 import { UI_Container } from '../ui_components/elements/UI_Container';
-import { PanelPlugin, UI_Plugin } from './UI_Plugin';
-import { NodePlugin } from '../services/NodePlugin';
 
 export class Plugins {
     engineHooks: EngineHooks;
 
     canvas: CanvasLookup;
-    node: NodePlugin;
 
     private activePanels: UI_Panel[] = [];
-    private activePlugins: UI_Plugin[] = [];
 
     private pluginFactories: Map<string, UI_PluginFactory> = new Map();
-    private renderers: Map<string, UI_Renderer> = new Map();
     private panels: Map<string, UI_Panel> = new Map();
-
-    private plugins: Map<string, UI_Plugin> = new Map();
-
-    private formControllers: Map<string, FormController> = new Map();
-    private toolControllers: Map<UI_Panel, ToolController> = new Map();
 
     visibilityDirty = true;
 
@@ -68,10 +58,6 @@ export class Plugins {
         return this.activePanels;
     }
 
-    getPanelByRegion(region: UI_Region): PanelPlugin[] {
-        return this.activePanels.filter(plugin => plugin.region === region);
-    }
-
     getPanelById(pluginId: string): UI_Panel {
         return this.plugins.has(pluginId) ? this.plugins.get(pluginId).getPanel() : this.panels.get(pluginId);
     } 
@@ -86,24 +72,6 @@ export class Plugins {
 
     getAll(): UI_Panel[] {
         return Array.from(this.panels.values());
-    }
-
-    registerPlugin2(plugin: UI_Plugin) {
-        this.plugins.set(plugin.id, plugin);
-        this.panels.set(plugin.id, plugin.getPanel());
-    }
-
-    registerPlugin(pluginFactory: UI_PluginFactory) {
-        this.pluginFactories.set(pluginFactory.pluginId, pluginFactory);
-        this.instantiatePlugin(pluginFactory.pluginId);
-
-        if (pluginFactory.createRenderer) {
-            this.renderers.set(pluginFactory.pluginId, pluginFactory.createRenderer(this.registry));
-        }
-
-        if (pluginFactory.isGlobalPlugin) {
-            this.showPlugin(pluginFactory.pluginId);
-        }
     }
 
     instantiatePlugin(pluginFactoryId: string) {
@@ -128,22 +96,6 @@ export class Plugins {
                 const gizmo = this.canvas.getGizmoFactory(gizmoId).newInstance(plugin as AbstractCanvasPanel, this.registry);
                 (plugin as AbstractCanvasPanel).addGizmo(gizmo);
             });
-        }
-    }
-
-    addPropController(pluginId: string, controller: FormController): void {
-        this.formControllers.set(pluginId, controller);
-    }
-
-    getPropController(pluginId: string): FormController {
-        return this.formControllers.get(pluginId);
-    }
-
-    renderInto(element: UI_Container, pluginId: string) {
-        if (this.renderers.get(pluginId)) {
-            this.renderers.get(pluginId).renderInto(element, this.getPanelById(pluginId));
-        } else {
-            this.getPanelById(pluginId).renderInto(element);
         }
     }
 

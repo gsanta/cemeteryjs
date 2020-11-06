@@ -1,4 +1,5 @@
-import { UI_Plugin } from "../../../../../core/plugin/UI_Plugin";
+import { ViewRenderer } from "../../../../../core/models/views/View";
+import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { ViewPlugin } from "../../../../../core/plugin/ViewPlugin";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
@@ -8,7 +9,7 @@ import { axisLineBounds, getAxisColor } from "./axisUtils";
 import { MoveAxisViewType, MoveAxisView } from "./MoveAxisView";
 import { ScaleAxisView } from "./ScaleAxisView";
 
-export class MoveAxisViewPlugin implements ViewPlugin {
+export class MoveAxisViewRenderer implements ViewRenderer {
     id = MoveAxisViewType;
 
     private registry: Registry;
@@ -17,11 +18,8 @@ export class MoveAxisViewPlugin implements ViewPlugin {
         this.registry = registry;
     }
 
-    createView() { return new MoveAxisView(); }
-    getController() { return undefined; }
-
-    renderInto(canvas: UI_SvgCanvas, axisView: MoveAxisView, canvasPlugin: UI_Plugin) {
-        if (!canvasPlugin.getToolController().getToolById(MoveAxisToolId).isSelected) {
+    renderInto(canvas: UI_SvgCanvas, axisView: MoveAxisView, canvasPanel: AbstractCanvasPanel) {
+        if (!canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected) {
             return null;
         }
 
@@ -30,10 +28,10 @@ export class MoveAxisViewPlugin implements ViewPlugin {
 
         this.renderArrowLine(group, axisView);
         this.renderArrowHead(group, axisView);
-        this.renderHighlightLine(group, axisView, canvasPlugin);
+        this.renderHighlightLine(group, axisView);
     }
 
-    private renderHighlightLine(group: UI_SvgGroup, axisView: MoveAxisView, plugin: UI_Plugin) {
+    private renderHighlightLine(group: UI_SvgGroup, axisView: MoveAxisView) {
         const center = axisView.parent.getBounds().getBoundingCenter();
         
         const line = group.line();

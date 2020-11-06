@@ -6,7 +6,6 @@ import { ChildView } from "./child_views/ChildView";
 import { UI_Container } from "../../ui_components/elements/UI_Container";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
-import { UI_Plugin } from '../../plugin/UI_Plugin';
 import { IControlledModel } from "../../plugin/IControlledModel";
 
 export interface ViewJson {
@@ -25,7 +24,7 @@ export interface ViewFactory {
     viewType: string;
     newInstance(): View;
 
-    renderInto?(container: UI_Container, view: View, plugin: UI_Plugin);
+    renderInto?(container: UI_Container, view: View, plugin: AbstractCanvasPanel);
     createRenderer?(registry: Registry): ViewRenderer;
 }
 

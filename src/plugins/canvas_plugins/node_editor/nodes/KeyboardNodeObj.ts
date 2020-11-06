@@ -23,6 +23,7 @@ export class KeyboardNode extends AbstractNode {
 
     nodeType = KeyboardNodeType;
     displayName = 'Keyboard';
+category = 'Default';
 
     getParams(): NodeParam[] {
         return [

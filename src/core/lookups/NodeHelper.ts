@@ -3,6 +3,7 @@ import { AbstractNode } from "../../plugins/canvas_plugins/node_editor/nodes/Abs
 import { NodeObj } from "../models/objs/NodeObj";
 import { NodeView } from "../models/views/NodeView";
 import { Registry } from "../Registry";
+import { NodeGraph } from "../services/node/NodeGraph";
 
 
 export class NodeHelper {
@@ -10,8 +11,12 @@ export class NodeHelper {
 
     private nodes: Map<string, AbstractNode> = new Map();
 
+    // TODO consider putting it into NodeObj
+    graph: NodeGraph;
+
     constructor(registry: Registry) {
         this.registry = registry;
+        this.graph = new NodeGraph(registry);
     }
 
     registerNode(node: AbstractNode) {
@@ -44,5 +49,9 @@ export class NodeHelper {
 
     getRegisteredNodeTypes(): string[] {
         return Array.from(this.nodes.keys());
+    }
+
+    getNode(nodeType: string): AbstractNode {
+        return this.nodes.get(nodeType);
     }
 }

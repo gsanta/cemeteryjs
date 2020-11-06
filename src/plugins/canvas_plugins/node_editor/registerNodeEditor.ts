@@ -32,10 +32,10 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const tools = [
-        new SelectTool(canvas, registry),
-        new DeleteTool(canvas, registry),
+        new SelectTool(canvas, registry.data.view.node, registry),
+        new DeleteTool(canvas, registry.data.view.node, registry),
         new CameraTool(canvas, registry),
-        new JoinTool(canvas, registry)
+        new JoinTool(canvas, registry.data.view.node, registry)
     ];
 
     canvas.setController(new FormController(canvas, registry, propControllers));

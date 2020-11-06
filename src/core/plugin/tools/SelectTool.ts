@@ -9,12 +9,9 @@ import { Cursor } from "./Tool";
 
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
-    private viewStore: ViewStore;
 
-    constructor(plugin: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
-        super(SelectToolId, plugin, registry);
-
-        this.viewStore = store;
+    constructor(panel: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
+        super(SelectToolId, panel, store, registry);
     }
 
     down() {

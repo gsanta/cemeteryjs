@@ -6,16 +6,16 @@ import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../core/Registry";
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
+import { ViewStore } from "../../../../core/stores/ViewStore";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
     endPoint: Point;
     joinPoint1: JoinPointView;
 
-    constructor(plugin: AbstractCanvasPanel, registry: Registry) {
-        super(ToolType.Join, plugin, registry);
+    constructor(plugin: AbstractCanvasPanel, viewStore: ViewStore,  registry: Registry) {
+        super(ToolType.Join, plugin, viewStore, registry);
     }
 
     down() {

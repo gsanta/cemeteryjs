@@ -179,6 +179,7 @@ export class UI_PerspectiveService {
     }
 
     private _activatePerspective(perspective: UI_Perspective) {
+        this.registry.ui.helper.setPanel1(perspective.canvas1Plugin);
         this.registry.plugins.showPlugin(perspective.canvas1Plugin);
         
         if (perspective.canvas2Plugin) {

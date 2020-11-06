@@ -38,15 +38,15 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const tools = [
-        new MeshTool(this, registry),
-        new SpriteTool(this, registry),
-        new PathTool(this, registry),
-        new SelectTool(this, registry),
-        new DeleteTool(this, registry),
+        new MeshTool(this, registry.data.view.scene, registry),
+        new SpriteTool(this, registry.data.view.scene, registry),
+        new PathTool(this, registry.data.view.scene, registry),
+        new SelectTool(this, registry.data.view.scene, registry),
+        new DeleteTool(this, registry.data.view.scene, registry),
         new CameraTool(this, registry),
         new MoveAxisTool(this, registry),
-        new CubeTool(this, registry),
-        new SphereTool(this, registry),
+        new CubeTool(this, registry.data.view.scene, registry),
+        new SphereTool(this, registry.data.view.scene, registry),
         new ScaleAxisTool(this, registry)
     ];
 

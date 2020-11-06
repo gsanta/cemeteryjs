@@ -1,11 +1,10 @@
-import { NodeCategory, NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { MeshView } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
+import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { AbstractNode } from "./AbstractNode";
@@ -23,6 +22,7 @@ export class MoveNode extends AbstractNode {
 
     nodeType = MoveNodeType;
     displayName = 'Move';
+    category = 'Default';
 
     getParams(): NodeParam[] {
         return [

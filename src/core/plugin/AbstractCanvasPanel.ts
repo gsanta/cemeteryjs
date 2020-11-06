@@ -51,7 +51,6 @@ export class AbstractCanvasPanel extends UI_Panel {
     
     controller: FormController;
     readonly toolController: ToolController;
-    readonly views: ViewStore;
 
     renderer: ICanvasRenderer;
 
@@ -61,7 +60,6 @@ export class AbstractCanvasPanel extends UI_Panel {
         this.region = region;
         this.id = id;
         this.displayName = displayName;
-        this.views = new ViewStore();
 
         this.keyboard = new KeyboardService(registry);
     }

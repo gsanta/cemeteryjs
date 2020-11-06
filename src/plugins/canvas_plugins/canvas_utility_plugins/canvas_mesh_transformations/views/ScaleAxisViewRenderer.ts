@@ -1,5 +1,5 @@
-import { UI_Plugin } from "../../../../../core/plugin/UI_Plugin";
-import { ViewPlugin } from "../../../../../core/plugin/ViewPlugin";
+import { ViewRenderer } from "../../../../../core/models/views/View";
+import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
@@ -7,7 +7,7 @@ import { ScaleAxisToolId } from "../tools/ScaleAxisTool";
 import { axisLineBounds, getAxisColor } from "./axisUtils";
 import { ScaleAxisViewType, ScaleAxisView } from "./ScaleAxisView";
 
-export class ScaleAxisViewPlugin implements ViewPlugin {
+export class ScaleAxisViewRenderer implements ViewRenderer {
     id = ScaleAxisViewType;
 
     private registry: Registry;
@@ -15,25 +15,21 @@ export class ScaleAxisViewPlugin implements ViewPlugin {
     constructor(registry: Registry) {
         this.registry = registry;
     }
-
-    createView () { return new ScaleAxisView(); }
-
-    getController() { return undefined; }
-
-    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleAxisView, canvasPlugin: UI_Plugin): void {
-        if (!canvasPlugin.getToolController().getToolById(ScaleAxisToolId).isSelected) {
+    
+    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleAxisView, canvasPanel: AbstractCanvasPanel): void {
+        if (!canvasPanel.getToolController().getToolById(ScaleAxisToolId).isSelected) {
             return null;
         }
 
         const group = canvas.group(scaleView.id);
         group.isInteractive = false;
 
-        this.renderBoundingRect(group, scaleView, canvasPlugin);
+        this.renderBoundingRect(group, scaleView);
         this.renderArrowLine(group, scaleView);
         this.renderArrowHead(group, scaleView);
     }
 
-    private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleAxisView, plugin: UI_Plugin) {
+    private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleAxisView) {
         const center = scaleView.parent.getBounds().getBoundingCenter();
         
         const line = group.line();

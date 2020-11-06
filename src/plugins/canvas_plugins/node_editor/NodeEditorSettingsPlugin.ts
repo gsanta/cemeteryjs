@@ -2,11 +2,13 @@ import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { NodeObj } from '../../../core/models/objs/NodeObj';
 import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
 import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
-import { NodeEditorPluginId } from './NodeEditorPlugin';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
+import { AbstractNode } from './nodes/AbstractNode';
+import { NodeEditorPluginId } from './registerNodeEditor';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
+
 export class NodeEditorSettingsPlugin extends UI_Panel {
     id = NodeEditorSettingsPluginId;
     displayName = 'Node Editor';
@@ -19,9 +21,10 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
     }
 
     private renderNodesList(rootContainer: UI_Accordion) {
-        const nodeTypesByCategory: Map<string, NodeObj[]> = new Map();
+        const nodeTypesByCategory: Map<string, AbstractNode[]> = new Map();
 
-        this.registry.services.node.nodeTemplates.forEach(node => {
+        this.registry.data.helper.node.getRegisteredNodeTypes().forEach(nodeType => {
+            const node = this.registry.data.helper.node.getNode(nodeType);
             if (!nodeTypesByCategory.get(node.category)) {
                 nodeTypesByCategory.set(node.category, []);
             }
@@ -30,15 +33,15 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
 
         const nodeEditorPlugin = <AbstractCanvasPanel> this.registry.plugins.getPanelById(NodeEditorPluginId);
 
-        Array.from(nodeTypesByCategory.values()).forEach((nodes: NodeObj[]) => {
+        Array.from(nodeTypesByCategory.values()).forEach((nodes: AbstractNode[]) => {
             const accordion = rootContainer.accordion();
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {
-                const listItem = accordion.listItem({key: NodeEditorSettingsProps.DragNode, dropTargetPlugin: nodeEditorPlugin, dropId: node.type})
+                const listItem = accordion.listItem({key: NodeEditorSettingsProps.DragNode, dropTargetPlugin: nodeEditorPlugin, dropId: node.nodeType})
                 listItem.label = node.displayName;
                 listItem.droppable = true; 
-                listItem.listItemId = node.type;
+                listItem.listItemId = node.nodeType;
             });
         });
     }

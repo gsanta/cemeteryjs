@@ -1,7 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { ToolController } from '../../plugin/controller/ToolController';
-import { UI_Plugin } from '../../plugin/UI_Plugin';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
 
@@ -45,7 +44,6 @@ export abstract class UI_Element {
 
     readonly uniqueId: string;
     readonly toolController: ToolController;
-    readonly plugin: UI_Plugin;
 
     css?: UI_Element_Css = {};
 

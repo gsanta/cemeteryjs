@@ -20,6 +20,7 @@ export class PathNode extends AbstractNode {
 
     nodeType = PathNodeType;
     displayName = 'Path';
+    category = 'Default';
 
     getParams(): NodeParam[] {
         return [
