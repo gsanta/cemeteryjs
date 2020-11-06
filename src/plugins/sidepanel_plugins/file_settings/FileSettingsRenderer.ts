@@ -1,15 +1,9 @@
-import { AbstractSidepanelPlugin } from '../../../core/plugin/AbstractSidepanelPlugin';
-import { UI_Region } from '../../../core/plugin/UI_Panel';
-import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { FileSettingsProps } from './FileSettingsProps';
+import { IRenderer } from "../../../core/plugin/IRenderer";
+import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
+import { FileSettingsProps } from "./FileSettingsProps";
 
-export const FileSettingsPluginId = 'file-settings-plugin'; 
-export class FileSettingsPlugin extends AbstractSidepanelPlugin {
-    id = FileSettingsPluginId;
-    displayName = 'File Settings';
-    region = UI_Region.Sidepanel;
-
-    renderInto(layout: UI_Layout): UI_Layout {
+export class FileSettingsRenderer implements IRenderer<UI_Layout> {
+    renderInto(layout: UI_Layout): void {
         let row = layout.row({ key: FileSettingsProps.Export });
 
         const exportButton = row.button(FileSettingsProps.Export);
@@ -28,8 +22,5 @@ export class FileSettingsPlugin extends AbstractSidepanelPlugin {
         newProjectButton.label = 'New Project';
         newProjectButton.icon = 'blank-icon';
         newProjectButton.width = '200px';
-
-        return layout;
     }
 }
-

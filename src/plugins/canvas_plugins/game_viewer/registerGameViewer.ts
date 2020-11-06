@@ -18,7 +18,7 @@ export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 export function registerGameViewer(registry: Registry) {
     const canvas = createCanvas(registry);
 
-    registry.plugins.canvas.registerCanvas(canvas);
+    registry.ui.canvas.registerCanvas(canvas);
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {

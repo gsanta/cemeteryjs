@@ -1,21 +1,23 @@
 import { SpriteSheetObj, SpriteSheetObjType } from "../../../core/models/objs/SpriteSheetObj";
-import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
+import { IRenderer } from "../../../core/plugin/IRenderer";
+import { Registry } from "../../../core/Registry";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
-import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
 import { SpritesheetManagerDialogProps } from "./SpritesheetManagerDialogProps";
 
-export const SpriteSheetManagerDialogPluginId = 'sprite-sheet-manager-dialog-plugin'; 
-export class SpriteSheetManagerDialogPlugin extends UI_Panel {
-    id = SpriteSheetManagerDialogPluginId;
-    region = UI_Region.Dialog;
-    displayName = 'Spritesheet manager';
+
+export class SpriteSheetManagerDialogRenderer implements IRenderer<UI_Dialog> {
+    private registry: Registry;
 
     // TODO find a better place to store temporary data
     tempSpriteSheetJson: string;
     tempImagePath: string;
 
-    renderInto(layout: UI_Dialog): UI_Layout {
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    renderInto(layout: UI_Dialog): void {
         layout.width = '530px';
 
         const row = layout.row({ key: '1' });
@@ -28,8 +30,6 @@ export class SpriteSheetManagerDialogPlugin extends UI_Panel {
         this.renderTableRows(table);
 
         this.renderAddNewButton(layout);
-
-        return layout;
     }
 
     private renderTableHeader(table: UI_Table) {

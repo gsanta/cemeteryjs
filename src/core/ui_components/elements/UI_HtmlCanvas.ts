@@ -6,9 +6,10 @@ import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
 import { UI_GizmoLayer } from "./gizmo/UI_GizmoLayer";
+import { UI_Container } from "./UI_Container";
 
 
-export class UI_HtmlCanvas extends UI_Element {
+export class UI_HtmlCanvas extends UI_Container {
     _toolbar: UI_Toolbar;
     _gizmoLayer: UI_GizmoLayer;
     _dropLayer: UI_DropLayer;

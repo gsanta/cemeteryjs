@@ -4,6 +4,7 @@ import { AbstractPluginImporter } from '../services/import/AbstractPluginImporte
 import { IDataExporter } from '../services/export/IDataExporter';
 import { FormController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
+import { IRenderer } from './IRenderer';
 
 export enum UI_Region {
     Sidepanel = 'Sidepanel',
@@ -40,15 +41,19 @@ export namespace UI_Region {
     }
 }
 
-export abstract class UI_Panel {
+export class UI_Panel {
     id: string;
     displayName: string;
     region: UI_Region;
+    isGlobalPanel = true;
 
     htmlElement: HTMLElement;
 
     importer: AbstractPluginImporter;
     exporter: IDataExporter;
+
+    renderer: IRenderer;
+    controller: FormController;
 
     private onMountedFunc: () => void;
     private onUnmountedFunc: () => void;
@@ -60,8 +65,11 @@ export abstract class UI_Panel {
 
     protected registry: Registry;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {
         this.registry = registry;
+        this.region = region;
+        this.id = id;
+        this.displayName = displayName;
     }
 
     activated() {}

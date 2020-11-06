@@ -3,7 +3,6 @@ import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_En
 import { MeshView } from "../../../core/models/views/MeshView";
 import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../core/plugin/UI_Panel";
-import { ThumbnailDialogPlugin } from "./ThumbnailDialogPlugin";
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailCreate = 'ThumbnailFromModel',

@@ -6,6 +6,9 @@ import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
 import { AbstractNode } from './nodes/AbstractNode';
 import { NodeEditorPluginId } from './registerNodeEditor';
+import { IRenderer } from '../../../core/plugin/IRenderer';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
+import { Registry } from '../../../core/Registry';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
 
@@ -13,14 +16,16 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
     id = NodeEditorSettingsPluginId;
     displayName = 'Node Editor';
     region = UI_Region.Sidepanel;
+}
 
-    renderInto(rootContainer: UI_Accordion): UI_Container {
-        this.renderNodesList(rootContainer);
+export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
+    private registry: Registry;
 
-        return rootContainer;
+    constructor(registry: Registry) {
+        this.registry = registry;
     }
 
-    private renderNodesList(rootContainer: UI_Accordion) {
+    renderInto(container: UI_Layout): void {
         const nodeTypesByCategory: Map<string, AbstractNode[]> = new Map();
 
         this.registry.data.helper.node.getRegisteredNodeTypes().forEach(nodeType => {
@@ -34,7 +39,7 @@ export class NodeEditorSettingsPlugin extends UI_Panel {
         const nodeEditorPlugin = <AbstractCanvasPanel> this.registry.plugins.getPanelById(NodeEditorPluginId);
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: AbstractNode[]) => {
-            const accordion = rootContainer.accordion();
+            const accordion = container.accordion();
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {

@@ -1,7 +1,5 @@
-import { Registry } from "../Registry";
-import { UI_Element } from "../ui_components/elements/UI_Element";
-import { GizmoPlugin } from "./IGizmo";
+import { UI_Container } from "../ui_components/elements/UI_Container";
 
-export interface IRenderer {
-    (element: UI_Element, plugin: GizmoPlugin, registry: Registry): void;
+export interface IRenderer<U extends UI_Container = UI_Container> {
+    renderInto(container: U): void;
 }

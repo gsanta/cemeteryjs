@@ -35,7 +35,7 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
     return new Point(0, 0);
 }
 
-export class AbstractCanvasPanel extends UI_Panel {
+export abstract class AbstractCanvasPanel extends UI_Panel {
     dropItem: UI_ListItem;
     bounds: Rectangle;
 
@@ -49,15 +49,11 @@ export class AbstractCanvasPanel extends UI_Panel {
 
     private camera: ICamera;
     
-    controller: FormController;
     readonly toolController: ToolController;
 
-    renderer: ICanvasRenderer;
-
     constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {
-        super(registry);
+        super(registry, region, id, displayName);
 
-        this.region = region;
         this.id = id;
         this.displayName = displayName;
 

@@ -2,7 +2,7 @@ import { SceneEditorPluginId } from '../../plugins/canvas_plugins/scene_editor/S
 import { GameViewerPluginId } from '../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
 import { ObjectSettingsPluginId } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
 import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
-import { NodeEditorSettingsPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorSettingsPlugin';
+import { NodeEditorSettingsPluginId } from '../../plugins/canvas_plugins/node_editor/NodeListPanelRenderer';
 import { CodeEditorPluginId } from '../../plugins/canvas_plugins/code_editor/CodeEditorPlugin';
 import { Registry } from '../Registry';
 import Split from 'split.js';

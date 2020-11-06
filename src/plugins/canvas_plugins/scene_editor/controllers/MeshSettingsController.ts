@@ -4,7 +4,7 @@ import { MeshView } from '../../../../core/models/views/MeshView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
-import { ThumbnailDialogPluginId } from '../ThumbnailDialogPlugin';
+import { ThumbnailDialogPluginId } from '../../../dialog_plugins/thumbnail/ThumbnailDialogPlugin';
 
 export enum MeshSettingsProps {
     MeshId = 'MeshId',
