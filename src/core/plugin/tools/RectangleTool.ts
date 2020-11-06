@@ -5,13 +5,16 @@ import { NullTool, createRectFromMousePointer } from './NullTool';
 import { UI_Region } from '../UI_Panel';
 import { View } from '../../models/views/View';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
+import { ViewStore } from '../../stores/ViewStore';
 
 export abstract class RectangleTool extends NullTool {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
+    protected viewStore: ViewStore;
 
-    constructor(type: string, panel: AbstractCanvasPanel, registry: Registry) {
+    constructor(type: string, panel: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
         super(type, panel, registry);
+        this.viewStore = store;
     }
 
     click() {
@@ -20,8 +23,8 @@ export abstract class RectangleTool extends NullTool {
 
         const view = this.createView(rect);
 
-        this.panel.views.clearSelection()
-        this.panel.views.addSelectedView(view);
+        this.viewStore.clearSelection()
+        this.viewStore.addSelectedView(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();

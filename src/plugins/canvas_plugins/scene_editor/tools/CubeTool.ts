@@ -4,15 +4,16 @@ import { View } from "../../../../core/models/views/View";
 import { MeshBoxConfig, MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
+import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
+import { ViewStore } from "../../../../core/stores/ViewStore";
 
 export const CubeToolId = 'cube-tool';
 export class CubeTool extends RectangleTool {
     icon = 'cube';
     displayName = 'Cube';
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
-        super(CubeToolId, plugin, registry);
+    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore, registry: Registry) {
+        super(CubeToolId, panel, viewStore, registry);
     }
 
     protected createView(rect: Rectangle): View {
@@ -34,7 +35,7 @@ export class CubeTool extends RectangleTool {
         meshView.setScale(1);
         meshView.color = 'black';
     
-        this.panel.views.addView(meshView);
+        this.viewStore.addView(meshView);
         this.registry.stores.objStore.addObj(meshObj);
 
         const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj());
@@ -45,6 +46,6 @@ export class CubeTool extends RectangleTool {
     }
     
     protected removeTmpView() {
-        this.panel.views.removeView(this.tmpView);
+        this.viewStore.removeView(this.tmpView);
     }
 }

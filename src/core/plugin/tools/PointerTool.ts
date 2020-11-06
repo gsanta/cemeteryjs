@@ -1,6 +1,9 @@
 import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
 import { View, ViewTag } from '../../models/views/View';
+import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
+import { ViewStore } from '../../stores/ViewStore';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { NullTool } from "./NullTool";
 import { ToolType } from "./Tool";
@@ -10,6 +13,12 @@ export abstract class PointerTool extends NullTool {
 
     protected movingItem: View = undefined;
     private isDragStart = true;
+    protected viewStore: ViewStore;
+
+    constructor(type: string, panel: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
+        super(type, panel, registry);
+        this.viewStore = store;
+    }
 
     click(): void {
         const hoveredItem = this.registry.services.pointer.hoveredView;
@@ -17,14 +26,14 @@ export abstract class PointerTool extends NullTool {
 
         if (hoveredItem.isChildView()) {
             if (!hoveredItem.parent.isSelected()) {
-                this.panel.views.clearSelection();
-                this.panel.views.addSelectedView(hoveredItem.parent);
+                this.viewStore.clearSelection();
+                this.viewStore.addSelectedView(hoveredItem.parent);
             }
             hoveredItem.parent.setActiveChild(hoveredItem);
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         } else {
-            this.panel.views.clearSelection();
-            this.panel.views.addSelectedView(hoveredItem);
+            this.viewStore.clearSelection();
+            this.viewStore.addSelectedView(hoveredItem);
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         }
     }
@@ -98,7 +107,7 @@ export abstract class PointerTool extends NullTool {
         if (this.movingItem.isChildView()) {
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else {
-            const views = this.panel.views.getSelectedViews();
+            const views = this.viewStore.getSelectedViews();
             views.forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
         this.registry.services.render.scheduleRendering(this.panel.region);

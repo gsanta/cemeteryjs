@@ -14,7 +14,6 @@ import { INodeExecutor } from './node/INodeExecutor';
 import { NodeGraph } from './node/NodeGraph';
 
 export class NodePlugin {
-    nodeTemplates: Map<string, NodeObj> = new Map();
     nodeTypes: string[] = [];
     graph: NodeGraph;
 
@@ -44,7 +43,6 @@ export class NodePlugin {
     registerNode(nodeFactory: NodeFactory) {
         // TODO create dummygraph instead of passing undefined
         const nodeTemplate = nodeFactory.createNodeObj();
-        this.nodeTemplates.set(nodeTemplate.type, nodeTemplate);
         this.nodeTypes.push(nodeTemplate.type);
         this.nodeFactories.set(nodeTemplate.type, nodeFactory);
         this.nodeExecutors.set(nodeTemplate.type, nodeFactory.createExecutor());
@@ -75,10 +73,6 @@ export class NodePlugin {
 
 
     renderNodeInto(nodeView: NodeView, ui_svgCanvas: UI_SvgCanvas): void {
-        if (!this.nodeTemplates.has(nodeView.getObj().type)) {
-            throw new Error(`Node renderer registered for node type ${nodeView.getObj().type}`);
-        }
-
         this.defaultNodeRenderer.render(ui_svgCanvas, nodeView);
     }
 

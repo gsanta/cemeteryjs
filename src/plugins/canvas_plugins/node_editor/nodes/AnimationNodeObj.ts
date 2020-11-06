@@ -75,14 +75,20 @@ export class AnimationNode extends AbstractNode {
     }
 
     getExecutor(): INodeExecutor {
-        return new AnimationNodeExecutor();
+        return new AnimationNodeExecutor(this.registry);
     }
 }
 
 export class AnimationNodeExecutor implements INodeExecutor {
-    execute(nodeObj: NodeObj, registry: Registry) {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    execute(nodeObj: NodeObj) {
         if (nodeObj.getParam('startFrame').val !== 0 && nodeObj.getParam('endFrame').val !== 0) {
-            const meshView = <MeshView> registry.stores.views.getById(nodeObj.getParam('mesh').val);
+            const meshView = <MeshView> this.registry.stores.views.getById(nodeObj.getParam('mesh').val);
             
             // if (!this.isAnimationPlaying) {
             //     const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), nodeObj.getParam('startFrame').val, nodeObj.getParam('endFrame').val, true);

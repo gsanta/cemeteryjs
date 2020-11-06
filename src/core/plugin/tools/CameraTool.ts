@@ -5,7 +5,6 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { NullTool } from './NullTool';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { UI_Plugin } from '../UI_Plugin';
 
 export const CameraToolId = 'camera-tool';
 export class CameraTool extends NullTool {
@@ -17,12 +16,12 @@ export class CameraTool extends NullTool {
     private activeCameraAction: 'zoom' | 'pan' | 'rotate' = this.defaultCameraAction;
     private isSpaceDown: boolean;
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
-        super(CameraToolId, plugin, registry);
+    constructor(panel: AbstractCanvasPanel, registry: Registry) {
+        super(CameraToolId, panel, registry);
     }
 
     wheel() {
-        (this.panel.getPanel() as AbstractCanvasPanel).getCamera().zoomWheel();
+        this.panel.getCamera().zoomWheel();
     }
 
     wheelEnd() {
@@ -34,7 +33,7 @@ export class CameraTool extends NullTool {
     drag(e: IPointerEvent) {
         super.drag(e);
 
-        const camera = (this.panel.getPanel() as AbstractCanvasPanel).getCamera();
+        const camera = this.panel.getCamera();
 
         switch(this.activeCameraAction) {
             case 'pan':
@@ -51,13 +50,13 @@ export class CameraTool extends NullTool {
     }
 
     zoomIn() {
-        if ((this.panel.getPanel() as AbstractCanvasPanel).getCamera().zoomIn()) {
+        if (this.panel.getCamera().zoomIn()) {
             this.registry.services.render.reRender(this.panel.region);
         }
     }
 
     zoomOut() {
-        if ((this.panel.getPanel() as AbstractCanvasPanel).getCamera().zoomOut()) {
+        if (this.panel.getCamera().zoomOut()) {
             this.registry.services.render.reRender(this.panel.region);
         }
     }

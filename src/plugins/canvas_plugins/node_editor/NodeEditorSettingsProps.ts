@@ -18,10 +18,9 @@ export class DragNodeController extends PropController {
     }
 
     onDndEnd(context: PropContext, element: UI_Element) {
-        // TODO can be removed when there will be only a single NodeObject
-        context.registry.services.node.currentNodeType = (element as UI_ListItem).listItemId;
-        const nodeObj = <NodeObj> context.registry.services.objService.createObj(NodeObjType);
-        const nodeView: NodeView = <NodeView> context.registry.services.viewService.createView(NodeViewType);
+        const nodeType = (element as UI_ListItem).listItemId;
+        const nodeObj = context.registry.data.helper.node.createObj(nodeType);
+        const nodeView: NodeView = context.registry.data.helper.node.createView(nodeType);
         nodeView.setObj(nodeObj);
 
         context.registry.stores.objStore.addObj(nodeObj);

@@ -16,7 +16,6 @@ import { JoinTool } from "./tools/JoinTool";
 export class NodeEditorRenderer implements ICanvasRenderer {
     private canvas: AbstractCanvasPanel;
     private registry: Registry;
-    private defaultNodeRenderer = new NodeRenderer();
 
     constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.canvas = canvas;
@@ -25,7 +24,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
 
     renderInto(svgCanvas: UI_SvgCanvas): void {
         const dropLayer = svgCanvas.dropLayer();
-        dropLayer.acceptedDropIds = this.registry.services.node.nodeTypes
+        dropLayer.acceptedDropIds = this.registry.data.helper.node.getRegisteredNodeTypes();
         dropLayer.isDragging = !!this.canvas.dropItem;
 
         const toolbar = svgCanvas.toolbar();
@@ -84,7 +83,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
         (<NodeView[]> this.registry.stores.views.getViewsByType(NodeViewType)).forEach(nodeView => {
-            this.defaultNodeRenderer.render(canvas, nodeView);
+            nodeView.renderer.renderInto(canvas, nodeView, this.canvas);
         });
     }
 

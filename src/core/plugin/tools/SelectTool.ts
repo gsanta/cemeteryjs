@@ -1,16 +1,20 @@
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { getIntersectingViews } from '../../stores/ViewStore';
+import { getIntersectingViews, ViewStore } from '../../stores/ViewStore';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
-import { UI_Plugin } from '../UI_Plugin';
 import { createRectFromMousePointer } from './NullTool';
 import { PointerTool } from './PointerTool';
 import { Cursor } from "./Tool";
 
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
-    constructor(plugin: UI_Plugin, registry: Registry) {
+    private viewStore: ViewStore;
+
+    constructor(plugin: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
         super(SelectToolId, plugin, registry);
+
+        this.viewStore = store;
     }
 
     down() {
@@ -22,8 +26,8 @@ export class SelectTool extends PointerTool {
     click() {
         if (this.registry.services.pointer.hoveredView) {
             super.click();
-        } else if (this.panel.views.getSelectedViews().length > 0) {
-            this.panel.views.clearSelection();
+        } else if (this.viewStore.getSelectedViews().length > 0) {
+            this.viewStore.clearSelection();
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         }
     }
@@ -43,10 +47,10 @@ export class SelectTool extends PointerTool {
         } else {
             if (!this.rectangleSelection) { return }
     
-            const intersectingViews = getIntersectingViews(this.panel.views, this.rectangleSelection);
+            const intersectingViews = getIntersectingViews(this.viewStore, this.rectangleSelection);
             
-            this.panel.views.clearSelection();
-            this.panel.views.addSelectedView(...intersectingViews)
+            this.viewStore.clearSelection();
+            this.viewStore.addSelectedView(...intersectingViews)
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);

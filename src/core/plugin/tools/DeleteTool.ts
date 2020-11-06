@@ -1,7 +1,7 @@
 import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
-import { getIntersectingViews } from '../../stores/ViewStore';
+import { getIntersectingViews, ViewStore } from '../../stores/ViewStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './NullTool';
@@ -12,8 +12,8 @@ export const DeleteToolId = 'delete-tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(panel: AbstractCanvasPanel,  registry: Registry) {
-        super(DeleteToolId, panel, registry);
+    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore,  registry: Registry) {
+        super(DeleteToolId, panel, viewStore, registry);
     }
 
     drag() {
@@ -29,7 +29,7 @@ export class DeleteTool extends PointerTool {
         if (hoveredItem.isChildView()) {
             hoveredItem.parent.deleteChild(hoveredItem);
         } else {
-            this.panel.views.removeView(hoveredItem);
+            this.viewStore.removeView(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -41,8 +41,8 @@ export class DeleteTool extends PointerTool {
 
     
     draggedUp() {
-        const intersectingViews = getIntersectingViews(this.panel.views, this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.panel.views.removeView(view));
+        const intersectingViews = getIntersectingViews(this.viewStore, this.rectangleSelection);
+        intersectingViews.forEach(view =>  this.viewStore.removeView(view));
 
         this.rectangleSelection = undefined;
 
@@ -58,7 +58,7 @@ export class DeleteTool extends PointerTool {
 
     eraseAll() {
         this.registry.services.localStore.clearAll();
-        this.panel.views.clear();
+        this.viewStore.clear();
         this.registry.services.render.reRenderAll();
     }
 

@@ -80,15 +80,21 @@ export class MoveNode extends AbstractNode {
     }
     
     getExecutor(): INodeExecutor {
-        return new MoveNodeExecutor();
+        return new MoveNodeExecutor(this.registry);
     }
 }
 
 export class MoveNodeExecutor implements INodeExecutor {
-    execute(nodeObj: NodeObj, registry: Registry) {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    execute(nodeObj: NodeObj) {
         const meshId = nodeObj.getParam('mesh').val;
 
-        const meshView = registry.stores.views.getById(meshId) as MeshView;
+        const meshView = this.registry.stores.views.getById(meshId) as MeshView;
 
         if (nodeObj.getParam('move').val === 'forward') {
             meshView.getObj().move(new Point_3(0, 0, 2));

@@ -7,13 +7,13 @@ import { SpriteView, SpriteViewType } from "../../../../core/models/views/Sprite
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { SpriteObj, SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 import { colors } from "../../../../core/ui_components/react/styles";
-import { UI_Plugin } from '../../../../core/plugin/UI_Plugin';
+import { ViewStore } from "../../../../core/stores/ViewStore";
 
 export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool {
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
-        super(SpriteToolId, plugin, registry);
+    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore, registry: Registry) {
+        super(SpriteToolId, panel, viewStore, registry);
     }
 
     protected createView(rect: Rectangle): View {
@@ -27,13 +27,13 @@ export class SpriteTool extends RectangleTool {
         spriteObj.setScale(new Point(3, 3));
         spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y);
 
-        this.panel.views.addView(spriteView);
+        this.viewStore.addView(spriteView);
         this.registry.stores.objStore.addObj(spriteObj);
 
         return spriteView;
     }
     
     protected removeTmpView() {
-        this.panel.views.removeView(this.tmpView);
+        this.viewStore.removeView(this.tmpView);
     }
 }

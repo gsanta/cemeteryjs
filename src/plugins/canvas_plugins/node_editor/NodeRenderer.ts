@@ -1,16 +1,23 @@
 import { JoinPointView } from '../../../core/models/views/child_views/JoinPointView';
 import { NodeView } from '../../../core/models/views/NodeView';
-import { ViewTag } from '../../../core/models/views/View';
+import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
+import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../core/ui_components/react/styles';
 
-export class NodeRenderer {
-    private joinPointsHeight: number;
 
-    render(svgCanvas: UI_SvgCanvas, nodeView: NodeView): void {
+export class NodeRenderer implements ViewRenderer {
+    private joinPointsHeight: number;
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        this.nodeView = nodeView;
+    }
+
+    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeView, panel: AbstractCanvasPanel): void {
         const group = svgCanvas.group(nodeView.id);
         group.transform = `translate(${nodeView.getBounds().topLeft.x} ${nodeView.getBounds().topLeft.y})`;
 

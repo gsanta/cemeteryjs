@@ -48,28 +48,34 @@ export class KeyboardNode extends AbstractNode {
 
     
     getController(): FormController {
-        return new FormController(this.registry.plugins.getPlugin(NodeEditorPluginId), this.registry, [new KeyControl()]);
+        return new FormController(undefined, this.registry, [new KeyControl()]);
     }
 
     getExecutor(): INodeExecutor {
-        return new KeyboardNodeExecutor();
+        return new KeyboardNodeExecutor(this.registry);
     }
 }
 
 const KEY_REGEX = /key(\d*)/;
 
 export class KeyboardNodeExecutor implements INodeExecutor {
-    execute(nodeObj: NodeObj, registry: Registry) {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    execute(nodeObj: NodeObj) {
         const keyParams = this.getKeyParams(nodeObj);
 
-        const gameTool = <GameTool> registry.plugins.getPlugin(GameViewerPluginId).getToolController().getToolById(GameToolId);
+        const gameTool = <GameTool> this.registry.plugins.getPlugin(GameViewerPluginId).getToolController().getToolById(GameToolId);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 
         if (param) {
             const connection = nodeObj.connections.get(param.name);
             if (connection) {
-                registry.services.node.executeNode(connection.getOtherNode(nodeObj));
+                nodeObj.executor.execute(nodeObj);
             }
         }
     }

@@ -1,4 +1,5 @@
 import { Registry } from '../../Registry';
+import { INodeExecutor } from '../../services/node/INodeExecutor';
 import { IObj, ObjFactory, ObjJson } from './IObj';
 import { NodeConnectionObj } from './NodeConnectionObj';
 
@@ -96,6 +97,7 @@ export class NodeObj implements IObj {
     outputs: NodeLink[] = [];
     connections: Map<string, NodeConnectionObj> = new Map();
     isExecutionStopped = true;
+    executor: INodeExecutor;
     
     private cachedParams: Map<string, NodeParam> = new Map();
     private params: NodeParam[] = [];
@@ -108,6 +110,18 @@ export class NodeObj implements IObj {
             this.category = config.category || NodeCategory.Default;
             this.displayName = config.displayName || nodeType;
         }
+    }
+
+    execute() {
+        this.executor && this.executor.execute(this);
+    }
+
+    startExecution() {
+        this.executor && this.executor.executeStart && this.executor.executeStart(this);
+    }
+
+    stopExecution() {
+        this.executor && this.executor.executeStart && this.executor.executeStop(this);
     }
 
     getParam(name: string): NodeParam {

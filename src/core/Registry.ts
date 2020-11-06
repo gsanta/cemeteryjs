@@ -5,6 +5,7 @@ import { Plugins } from "./plugin/Plugins";
 import { defaultPreferences, Preferences } from './preferences/Preferences';
 import { Services } from "./services/Services";
 import { Stores } from "./stores/Stores";
+import { DataLookup } from "./lookups/DataLookup";
 
 export class Registry {
     stores: Stores;
@@ -13,6 +14,7 @@ export class Registry {
     // ui_regions: UI_Regions;
     preferences: Preferences = defaultPreferences;
     engine: IEngineFacade;
+    data: DataLookup;
 
     constructor() {
         this.stores = new Stores(this);
@@ -20,6 +22,8 @@ export class Registry {
         this.services.setup();
 
         this.plugins = new Plugins(this);
+
+        this.data = new DataLookup(this);
         
         const wrapEngine = new Wrap_EngineFacade(this);
         wrapEngine.realEngine = new Bab_EngineFacade(this);

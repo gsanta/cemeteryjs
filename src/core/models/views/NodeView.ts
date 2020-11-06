@@ -56,8 +56,6 @@ export class NodeView extends View {
     nodeGraph: NodeGraph;
     joinPointViews: JoinPointView[] = [];
 
-    controller: FormController;
-
     private paramsYPosStart: number;
 
     constructor() {

@@ -6,12 +6,13 @@ import { Registry } from "../../../../core/Registry";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { colors } from "../../../../core/ui_components/react/styles";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
+import { ViewStore } from "../../../../core/stores/ViewStore";
 
 export const MeshToolId = 'mesh-tool';
 
 export class MeshTool extends RectangleTool {
-    constructor(panel: AbstractCanvasPanel, registry: Registry) {
-        super(MeshToolId, panel, registry);
+    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore, registry: Registry) {
+        super(MeshToolId, panel, viewStore, registry);
     }
 
     protected createView(rect: Rectangle): View {
@@ -27,12 +28,12 @@ export class MeshTool extends RectangleTool {
         meshView.color = colors.lightPink;
     
         this.registry.stores.objStore.addObj(meshObj);
-        this.panel.views.addView(meshView);
+        this.viewStore.addView(meshView);
     
         return meshView;
     }
     
     protected removeTmpView() {
-        this.panel.views.removeView(this.tmpView);
+        this.viewStore.removeView(this.tmpView);
     }
 }

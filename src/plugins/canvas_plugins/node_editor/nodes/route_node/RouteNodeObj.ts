@@ -74,7 +74,7 @@ export class RouteNode extends AbstractNode {
     }
 
     getExecutor(): INodeExecutor {
-        return new RouteNodeExecutor();
+        return new RouteNodeExecutor(this.registry);
     }
 }
 
@@ -134,9 +134,15 @@ export class SpeedControl extends PropController<string> {
 
 
 export class RouteNodeExecutor implements INodeExecutor {
-    execute(nodeObj: NodeObj, registry: Registry) {
-        const meshObj = this.getMeshObj(nodeObj, registry);
-        const pathObj = this.getPathObj(nodeObj, registry);
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    execute(nodeObj: NodeObj) {
+        const meshObj = this.getMeshObj(nodeObj, this.registry);
+        const pathObj = this.getPathObj(nodeObj, this.registry);
 
         if (!meshObj || !pathObj) { return; }
 
@@ -148,7 +154,7 @@ export class RouteNodeExecutor implements INodeExecutor {
         routeWalker.step();
     }
 
-    executeStart(nodeObj: NodeObj, registry: Registry) {
+    executeStart(nodeObj: NodeObj) {
         const routeWalker = <RouteWalker> nodeObj.getParam('routeWalker').val;
         routeWalker && routeWalker.start();
     }

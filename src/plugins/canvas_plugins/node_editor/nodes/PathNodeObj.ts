@@ -5,7 +5,6 @@ import { PropController, PropContext, FormController } from '../../../../core/pl
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { AbstractNode } from "./AbstractNode";
 
