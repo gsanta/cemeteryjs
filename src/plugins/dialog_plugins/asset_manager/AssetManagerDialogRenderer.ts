@@ -1,26 +1,26 @@
-import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
-import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
-import { UI_Dialog } from '../../../core/ui_components/elements/surfaces/UI_Dialog';
-import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { UI_Table } from '../../../core/ui_components/elements/UI_Table';
-import { AssetManagerDialogProps } from './AssetManagerProps';
+import { AssetType, AssetObj } from "../../../core/models/objs/AssetObj";
+import { IRenderer } from "../../../core/plugin/IRenderer";
+import { Registry } from "../../../core/Registry";
+import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
+import { UI_Table } from "../../../core/ui_components/elements/UI_Table";
+import { AssetManagerDialogProps } from "./AssetManagerProps";
 
-export const AssetManagerDialogPluginId = 'asset-manager-dialog-plugin'; 
-export class AssetManagerDialogPlugin extends UI_Panel {
-    id = AssetManagerDialogPluginId;
-    region = UI_Region.Dialog;
-    displayName = 'Asset manager';
+export class AssetManagerDialogRenderer implements IRenderer<UI_Dialog> {
+    private registry: Registry;
 
-    
     // TODO find a better place to store temporary data
     editedAsset: AssetObj;
     tempAssetName: string;
     tempAssetPath: string;
 
-    renderInto(layout: UI_Dialog): UI_Layout {
-        layout.width = '530px';
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
 
-        const row = layout.row({ key: '1' });
+    renderInto(dialog: UI_Dialog): void {
+        dialog.width = '530px';
+
+        const row = dialog.row({ key: '1' });
 
         const table = row.table();
         table.columnWidths = [150, 150, 150, 54];
@@ -28,8 +28,6 @@ export class AssetManagerDialogPlugin extends UI_Panel {
 
         this.renderTableHeader(table);
         this.renderModelRows(table);
-
-        return layout;
     }
 
     private renderTableHeader(table: UI_Table) {

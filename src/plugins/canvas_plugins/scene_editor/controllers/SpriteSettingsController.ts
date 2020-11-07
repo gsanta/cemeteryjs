@@ -3,7 +3,7 @@ import { SpriteView } from '../../../../core/models/views/SpriteView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Point } from '../../../../utils/geometry/shapes/Point';
-import { SpriteSheetManagerDialogPluginId } from '../../../dialog_plugins/spritesheet_manager/SpritesheetManagerDialogPlugin';
+import { SpriteSheetManagerDialogId } from '../../../dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
 
 export enum SpriteSettingsProps {
     FrameName = 'FrameName',
@@ -57,8 +57,9 @@ export class SelectSpriteSheetController extends PropController<string> {
 export class ManageSpriteSheetsController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.ManageSpriteSheets]; }
 
-    click(context) {
-        context.registry.plugins.showPlugin(SpriteSheetManagerDialogPluginId);
+    click(context: PropContext) {
+        const dialog = context.registry.ui.panel.getPanel(SpriteSheetManagerDialogId);
+        context.registry.ui.helper.setDialogPanel(dialog);
         context.registry.services.render.reRenderAll();
     }
 }

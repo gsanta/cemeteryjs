@@ -1,5 +1,5 @@
 import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
-import { AssetManagerDialogPluginId } from "../../dialog_plugins/asset_manager/AssetManagerDialogPlugin";
+import { AssetManagerDialogId } from "../../dialog_plugins/asset_manager/registerAssetManagerDialog";
 
 export enum AssetManagerSidepanelControllerProps {
     IsAssetManagerDialogOpen = 'IsAssetManagerDialogOpen'
@@ -9,6 +9,7 @@ export class IsAssetManagerDialogOpenController extends PropController {
     acceptedProps() { return [AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen]; }
 
     click(context: PropContext) {
-        context.registry.plugins.showPlugin(AssetManagerDialogPluginId);
+        const dialog = context.registry.ui.panel.getPanel(AssetManagerDialogId);
+        context.registry.ui.helper.setDialogPanel(dialog);
     }
 }

@@ -1,14 +1,11 @@
-import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
-import { NodeObj } from '../../../core/models/objs/NodeObj';
-import { UI_Accordion } from '../../../core/ui_components/elements/surfaces/UI_Accordion';
-import { UI_Container } from '../../../core/ui_components/elements/UI_Container';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
+import { IRenderer } from '../../../core/plugin/IRenderer';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
+import { Registry } from '../../../core/Registry';
+import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
 import { AbstractNode } from './nodes/AbstractNode';
-import { NodeEditorPluginId } from './registerNodeEditor';
-import { IRenderer } from '../../../core/plugin/IRenderer';
-import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { Registry } from '../../../core/Registry';
+import { NodeEditorPanelId } from './registerNodeEditor';
 
 export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
 
@@ -36,7 +33,7 @@ export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
             nodeTypesByCategory.get(node.category).push(node);
         });
 
-        const nodeEditorPlugin = <AbstractCanvasPanel> this.registry.plugins.getPanelById(NodeEditorPluginId);
+        const nodeEditorPlugin = this.registry.ui.canvas.getCanvas(NodeEditorPanelId);
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: AbstractNode[]) => {
             const accordion = container.accordion();

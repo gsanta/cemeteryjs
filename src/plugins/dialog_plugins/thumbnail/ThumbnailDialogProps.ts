@@ -1,8 +1,10 @@
 import { Tools } from "babylonjs";
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { MeshView } from "../../../core/models/views/MeshView";
+import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../core/plugin/UI_Panel";
+import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailCreate = 'ThumbnailFromModel',
@@ -13,8 +15,8 @@ export enum ThumbnailMakerControllerProps {
 export class ThumbnailCreateControl extends PropController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailCreate]; }
     
-    async click(context: PropContext) {
-        const engine = (<ThumbnailDialogPlugin> context.plugin).engine;
+    async click(context: PropContext, element: UI_Element) {
+        const engine = (<Canvas3dPanel> element.canvasPanel).engine;
         const meshView = context.registry.stores.views.getOneSelectedView() as MeshView;
 
         // TODO: should not cast to Bab_EngineFacade

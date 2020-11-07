@@ -12,7 +12,7 @@ import { PlayController } from "./GameViewerProps";
 import { GameTool } from "./tools/GameTool";
 (<any> window).earcut = require('earcut');
 
-export const GameViewerPluginId = 'game-viewer-plugin'; 
+export const GameViewerPanelId = 'game-viewer-panel'; 
 export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
 export function registerGameViewer(registry: Registry) {
@@ -22,7 +22,7 @@ export function registerGameViewer(registry: Registry) {
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {
-    const canvas = new Canvas3dPanel(registry, UI_Region.Canvas2, GameViewerPluginId, 'Game viewer');
+    const canvas = new Canvas3dPanel(registry, UI_Region.Canvas2, GameViewerPanelId, 'Game viewer');
 
     const propControllers = [
         new ZoomInController(),
@@ -43,7 +43,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     tools.forEach(tool => canvas.addTool(tool));
 
     canvas.onMounted(() => {
-        registry.engine.setup(document.querySelector(`#${GameViewerPluginId} canvas`));
+        registry.engine.setup(document.querySelector(`#${GameViewerPanelId} canvas`));
         registry.engine.resize();
     
         canvas.getGizmos().forEach(gizmo => gizmo.mount());

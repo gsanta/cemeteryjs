@@ -16,7 +16,7 @@ import { PathTool } from "./tools/PathTool";
 import { SphereTool } from "./tools/SphereTool";
 import { SpriteTool } from "./tools/SpriteTool";
 
-export const SceneEditorPluginId = 'scene-editor-plugin';
+export const SceneEditorPanelId = 'scene-editor-panel';
 
 export function registerSceneEditor(registry: Registry) {
     const canvas = createCanvas(registry);
@@ -50,9 +50,9 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new ScaleAxisTool(this, registry)
     ];
 
-    const canvas = new Canvas2dPanel(registry, this.region, SceneEditorPluginId, 'Scene editor');
+    const canvas = new Canvas2dPanel(registry, this.region, SceneEditorPanelId, 'Scene editor');
     canvas.setController(new FormController(this, registry, propControllers))
-    canvas.setCamera(cameraInitializer(SceneEditorPluginId, registry));
+    canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));
     tools.forEach(tool => canvas.addTool(tool));
 
     return canvas;

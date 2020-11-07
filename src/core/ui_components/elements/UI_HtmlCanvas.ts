@@ -1,12 +1,10 @@
-import { UI_Toolbar } from "./toolbar/UI_Toolbar";
-import { UI_ElementType } from "./UI_ElementType";
-import { UI_Factory } from '../UI_Factory';
-import { UI_Element } from './UI_Element';
-import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
-import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
+import { UI_Factory } from '../UI_Factory';
 import { UI_GizmoLayer } from "./gizmo/UI_GizmoLayer";
+import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
+import { UI_Toolbar } from "./toolbar/UI_Toolbar";
 import { UI_Container } from "./UI_Container";
+import { UI_ElementType } from "./UI_ElementType";
 
 
 export class UI_HtmlCanvas extends UI_Container {
@@ -20,7 +18,7 @@ export class UI_HtmlCanvas extends UI_Container {
 
     mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).over()
+        this.canvasPanel.over()
     }
 
     mouseOut(registry: Registry, e: MouseEvent) {
@@ -29,11 +27,11 @@ export class UI_HtmlCanvas extends UI_Container {
     }
 
     mouseEnter(registry: Registry, e: MouseEvent) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).over()
+        this.canvasPanel.over()
     }
 
     mouseLeave(registry: Registry) {
-        (registry.plugins.getPanelById(this.pluginId) as AbstractCanvasPanel).out()
+        this.canvasPanel.out()
     }
 
     toolbar(): UI_Toolbar {

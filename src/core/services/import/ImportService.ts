@@ -6,6 +6,8 @@ import { AssetObjType } from '../../models/objs/AssetObj';
 import { SpriteSheetObjType } from '../../models/objs/SpriteSheetObj';
 import { NodeObj, NodeObjJson, NodeObjType } from '../../models/objs/NodeObj';
 import { NodeViewType } from '../../models/views/NodeView';
+import { IObj } from '../../models/objs/IObj';
+import { View } from '../../models/views/View';
 
 export class ImportService {
     private registry: Registry;
@@ -53,12 +55,15 @@ export class ImportService {
             if (objType.objType === AssetObjType) {
                 return;
             }
+
             objType.objs.forEach(obj => {
-                // TODO can be removed when there will be only a single NodeObject
+                let objInstance: IObj;
                 if (objType.objType === NodeObjType) {
-                    this.registry.services.node.currentNodeType = (<NodeObjJson> obj).type;
+                    objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type)
+                } else {
+                    objInstance = this.registry.services.objService.createObj(objType.objType);
                 }
-                const objInstance = this.registry.services.objService.createObj(objType.objType);
+
                 objInstance.deserialize(obj, this.registry);
                 this.registry.stores.objStore.addObj(objInstance);
             });
@@ -68,12 +73,13 @@ export class ImportService {
     private importViews(json: AppJson) {
         json.viewsByType.forEach(viewType => {
             viewType.views.forEach(view => {
-                // TODO can be removed when there will be only a single NodeObject
+                let viewInstance: View;
                 if (view.type === NodeViewType) {
                     const nodeType = (<NodeObj> this.registry.stores.objStore.getById(view.objId)).type;
-                    this.registry.services.node.currentNodeType = nodeType;
+                    viewInstance = this.registry.data.helper.node.createView(nodeType)
+                } else {
+                    viewInstance = this.registry.services.viewService.createView(viewType.viewType);
                 }
-                const viewInstance = this.registry.services.viewService.createView(viewType.viewType);
                 viewInstance.fromJson(view, this.registry);
                 this.registry.stores.views.addView(viewInstance);
             });

@@ -13,7 +13,6 @@ import { ObjService } from "./ObjService";
 import { RenderService } from "./RenderServices";
 import { UI_PerspectiveService } from './UI_PerspectiveService';
 import { UI_Service } from "./UI_Service";
-import { ViewService } from "./ViewService";
 
 export class Services {
     hotkey: HotkeyService;
@@ -29,7 +28,6 @@ export class Services {
     gamepad: GamepadService;
     uiPerspective: UI_PerspectiveService;
     objService: ObjService;
-    viewService: ViewService;
 
     ui: UI_Service;
 
@@ -54,7 +52,6 @@ export class Services {
         this.ui = new UI_Service();
         this.uiPerspective = new UI_PerspectiveService(this.registry);
         this.objService = new ObjService(this.registry);
-        this.viewService = new ViewService(this.registry);
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

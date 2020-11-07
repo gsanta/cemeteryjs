@@ -1,14 +1,12 @@
-import { SceneEditorPluginId } from '../../plugins/canvas_plugins/scene_editor/SceneEditorPlugin';
-import { GameViewerPluginId } from '../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
 import { ObjectSettingsPluginId } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
-import { NodeEditorPluginId } from '../../plugins/canvas_plugins/node_editor/NodeEditorPlugin';
 import { NodeEditorSettingsPluginId } from '../../plugins/canvas_plugins/node_editor/NodeListPanelRenderer';
-import { CodeEditorPluginId } from '../../plugins/canvas_plugins/code_editor/CodeEditorPlugin';
 import { Registry } from '../Registry';
 import Split from 'split.js';
 import { UI_Region } from '../plugin/UI_Panel';
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
-import { LevelSettingsPluginId } from '../../plugins/sidepanel_plugins/level_settings/LevelSettingsPlugin';
+import { GameViewerPanelId } from '../../plugins/canvas_plugins/game_viewer/registerGameViewer';
+import { NodeEditorPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeEditor';
+import { SceneEditorPanelId } from '../../plugins/canvas_plugins/scene_editor/registerSceneEditor';
 
 
 export class LayoutHandler {
@@ -56,12 +54,8 @@ export class LayoutHandler {
     }
 
     resizePlugins() {
-        if (this.registry.preferences.fullscreenRegion) {
-            (this.registry.plugins.getPanelByRegion(this.registry.preferences.fullscreenRegion)[0] as AbstractCanvasPanel).resize()
-        } else {
-            (this.registry.plugins.getPanelByRegion(UI_Region.Canvas1)[0] as AbstractCanvasPanel).resize();
-            (this.registry.plugins.getPanelByRegion(UI_Region.Canvas2)[0] as AbstractCanvasPanel).resize();
-        }
+        this.registry.ui.helper.getPanel1().resize();
+        this.registry.ui.helper.getPanel2().resize();
     }
 
     setSizesInPercent(sizes: number[]) {
@@ -135,8 +129,8 @@ export class UI_PerspectiveService {
 
         this.perspectives.push({
             name: SceneEditorPerspectiveName,
-            canvas1Plugin: SceneEditorPluginId,
-            canvas2Plugin: GameViewerPluginId,
+            canvas1Plugin: SceneEditorPanelId,
+            canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [
                 ObjectSettingsPluginId
             ]
@@ -144,48 +138,25 @@ export class UI_PerspectiveService {
 
         this.perspectives.push({
             name: 'Node Editor',
-            canvas1Plugin: NodeEditorPluginId,
-            canvas2Plugin: GameViewerPluginId,
+            canvas1Plugin: NodeEditorPanelId,
+            canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [
                 // LevelSettingsPluginId,
                 NodeEditorSettingsPluginId
             ]
         });
-
-        this.perspectives.push({
-            name: 'Code Editor',
-            canvas1Plugin: CodeEditorPluginId,
-            canvas2Plugin: GameViewerPluginId
-        });
     }
 
     activatePerspective(name: string) {
-        this.activePerspective && this.deactivatePerspective(this.activePerspective);
-
         const perspective = this.perspectives.find(perspective => perspective.name === name);
         this.activePerspective = perspective;
 
-        this._activatePerspective(this.activePerspective);
-    }
+        const panel1 = this.registry.ui.canvas.getCanvas(perspective.canvas1Plugin);
+        const panel2 = this.registry.ui.canvas.getCanvas(perspective.canvas2Plugin);
+        const sidepanels = perspective.sidepanelPlugins.map(panelId => this.registry.ui.panel.getPanel(panelId))
 
-    private deactivatePerspective(perspective: UI_Perspective) {
-        this.registry.plugins.deactivatePlugin(perspective.canvas1Plugin);
-        
-        if (perspective.canvas2Plugin) {
-            this.registry.plugins.deactivatePlugin(perspective.canvas2Plugin);
-        }
-
-        (perspective.sidepanelPlugins || []).forEach(plugin => this.registry.plugins.deactivatePlugin(plugin))
-    }
-
-    private _activatePerspective(perspective: UI_Perspective) {
-        this.registry.ui.helper.setPanel1(perspective.canvas1Plugin);
-        this.registry.plugins.showPlugin(perspective.canvas1Plugin);
-        
-        if (perspective.canvas2Plugin) {
-            this.registry.plugins.showPlugin(perspective.canvas2Plugin);
-        }
-
-        (perspective.sidepanelPlugins || []).forEach(plugin => this.registry.plugins.showPlugin(plugin))
+        this.registry.ui.helper.setPanel1(panel1);
+        this.registry.ui.helper.setPanel2(panel2);
+        this.registry.ui.helper.setSidebarPanels(sidepanels);
     }
 }

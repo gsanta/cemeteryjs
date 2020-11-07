@@ -22,7 +22,7 @@ export class CommonToolController extends PropController<any> {
 
     click(context: PropContext, element: UI_Element) {
         context.plugin.getToolController().setSelectedTool(element.key);
-        context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
+        context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
 
@@ -31,7 +31,7 @@ export class SceneEditorToolController extends PropController<any> {
 
     click(context: PropContext, element: UI_Element) {
         context.plugin.getToolController().setSelectedTool(element.key);
-        context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
+        context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
 
@@ -47,7 +47,7 @@ export class CanvasContextDependentToolController extends PropController<any> {
         } else if (tool.id === MoveAxisToolId) {
             context.plugin.getToolController().getToolById(ScaleAxisToolId).isSelected = false;
         }
-        context.registry.services.render.reRender(context.registry.plugins.getPanelById(element.pluginId).region);
+        context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
 
@@ -124,7 +124,7 @@ export class ToolController {
         this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
 
         if (this.plugin.dropItem) {
-            this.registry.plugins.getPropController(this.plugin.dropItem.pluginId).dndEnd(this.plugin.dropItem);
+            element.canvasPanel.controller.dndEnd(this.plugin.dropItem);
             this.plugin.dropItem = undefined;
         }
 

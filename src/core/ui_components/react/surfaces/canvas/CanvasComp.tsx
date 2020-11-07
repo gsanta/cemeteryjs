@@ -130,7 +130,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = this.props.registry.plugins.getPlugin(this.props.element.pluginId).getToolController().getActiveTool();
+        const activeTool = this.props.element.canvasPanel.toolController.getActiveTool();
         if (activeTool.rectangleSelection) {
             return (
                 <SelectionComponentStyled 

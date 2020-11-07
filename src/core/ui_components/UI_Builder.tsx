@@ -83,6 +83,7 @@ import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
+import { ButtonToolbar } from 'react-bootstrap';
 
 export class UI_Builder {
 
@@ -101,43 +102,43 @@ export class UI_Builder {
 
     build(panel: UI_Panel): JSX.Element {
         if (panel.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(panel.id, {});
+            const layout = UI_Factory.layout({});
             const accordion = layout.accordion();
             accordion.title = panel.displayName;
             panel.renderInto(accordion);
 
-            return this.buildElement(accordion, panel.id);
+            return this.buildElement(accordion);
         } else if (panel.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog(panel.id, {});
+            const dialog = UI_Factory.dialog({});
             dialog.title = panel.displayName;
 
             panel.renderInto(dialog);
             
-            return this.buildElement(dialog, panel.id);
+            return this.buildElement(dialog);
         } else {
-            const layout = UI_Factory.layout(panel.id, {});
+            const layout = UI_Factory.layout({});
             
             panel.renderInto(layout);
 
-            return this.buildElement(layout, panel.id);
+            return this.buildElement(layout);
         }
     }
 
     render(panel: UI_Panel): UI_Container {
         if (panel.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout(panel.id, {});
+            const layout = UI_Factory.layout({});
             const accordion = layout.accordion();
             accordion.title = panel.displayName;
             panel.renderInto(accordion);
             return layout;
         } else if (panel.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog(panel.id, {});
+            const dialog = UI_Factory.dialog({});
             dialog.title = panel.displayName;
             panel.renderInto(dialog);
             return dialog;
 
         } else {
-            const layout = UI_Factory.layout(panel.id, {});
+            const layout = UI_Factory.layout({});
 
             panel.renderInto(layout);
             return layout;
@@ -149,98 +150,98 @@ export class UI_Builder {
 
         switch(element.elementType) {
             case UI_ElementType.Layout:
-                return <div key={element.uniqueId}>{this.buildChildren(element, pluginId)}</div>;
+                return <div key={element.uniqueId}>{this.buildChildren(element)}</div>;
             case UI_ElementType.Row:
                 const row = element as UI_Row;
-                return <RowComp key={row.uniqueId} element={row}>{this.buildChildren(element, pluginId)}</RowComp>;
+                return <RowComp key={row.uniqueId} element={row}>{this.buildChildren(element)}</RowComp>;
             case UI_ElementType.Column:
                 const column = element as UI_Column;
-                return <ColumnComp registry={this.registry} key={column.uniqueId} element={column}>{this.buildChildren(element, pluginId)}</ColumnComp>;
+                return <ColumnComp registry={this.registry} key={column.uniqueId} element={column}>{this.buildChildren(element)}</ColumnComp>;
             case UI_ElementType.Accordion:
                 const accordionTab = element as UI_Accordion;
-                return <AccordionTabComp registry={this.registry} key={accordionTab.uniqueId} element={accordionTab}>{this.buildChildren(element, pluginId)}</AccordionTabComp>;
+                return <AccordionTabComp registry={this.registry} key={accordionTab.uniqueId} element={accordionTab}>{this.buildChildren(element)}</AccordionTabComp>;
             case UI_ElementType.Table:
                 const table = element as UI_Table;
-                return <TableComp element={table}>{this.buildChildren(element, pluginId)}</TableComp>;
+                return <TableComp element={table}>{this.buildChildren(element)}</TableComp>;
             case UI_ElementType.TableRow:
                 const tableRow = element as UI_TableRow;
-                return <TableRowComp element={tableRow}>{this.buildChildren(element, pluginId)}</TableRowComp>;
+                return <TableRowComp element={tableRow}>{this.buildChildren(element)}</TableRowComp>;
             case UI_ElementType.TableColumn:
                 const tableColumn = element as UI_TableColumn;
-                return <TableColumnComp element={tableColumn}>{this.buildChildren(element, pluginId)}</TableColumnComp>;
+                return <TableColumnComp element={tableColumn}>{this.buildChildren(element)}</TableColumnComp>;
             case UI_ElementType.SvgGroup:
                 const group = element as UI_SvgGroup;
-                return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element, pluginId)}</SvgGroupComp>
+                return <SvgGroupComp registry={this.registry} element={group}>{this.buildChildren(element)}</SvgGroupComp>
             case UI_ElementType.SvgMarker:
                 const marker = element as UI_SvgMarker;
                 if (this.isDefsSection) {
-                    return <SvgMarkerComp registry={this.registry} element={marker}>{this.buildChildren(element, pluginId)}</SvgMarkerComp>
+                    return <SvgMarkerComp registry={this.registry} element={marker}>{this.buildChildren(element)}</SvgMarkerComp>
                 } else {
                     this.svgMarkers.push(marker);
                     break;
                 }
             case UI_ElementType.SvgDef:
                 const def = element as UI_SvgDefs;
-                const children = this.buildChildren(element, pluginId);
+                const children = this.buildChildren(element);
                 this.isDefsSection = true;
-                const markers = this.svgMarkers.map(marker => this.buildElement(marker, pluginId));
+                const markers = this.svgMarkers.map(marker => this.buildElement(marker));
                 const defComp = <SvgDefComp registry={this.registry} element={def}>{}</SvgDefComp>
                 this.isDefsSection = false;
                 return defComp;
             case UI_ElementType.SvgCanvas:
-                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, pluginId);
+                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas);
             case UI_ElementType.Box:
                 const box = element as UI_Box;
-                return <BoxComp registry={this.registry} element={box}>{this.buildChildren(element, pluginId)}</BoxComp>;
+                return <BoxComp registry={this.registry} element={box}>{this.buildChildren(element)}</BoxComp>;
             case UI_ElementType.Dialog:
                 const dialog = element as UI_Dialog;
-                return <DialogComp registry={this.registry} element={dialog}>{this.buildChildren(element, pluginId)}</DialogComp>;
+                return <DialogComp registry={this.registry} element={dialog}>{this.buildChildren(element)}</DialogComp>;
             case UI_ElementType.SvgForeignObject:
                 const foreignObject = element as UI_SvgForeignObject;
-                return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element, pluginId)}</ForeignObjectComp>;
+                return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element)}</ForeignObjectComp>;
             case UI_ElementType.GizmoLayer:
                 const gizmoLayer = element as UI_GizmoLayer;
-                return <GizmoLayerComp registry={this.registry} element={gizmoLayer}>{this.buildChildren(element, pluginId)}</GizmoLayerComp>
+                return <GizmoLayerComp registry={this.registry} element={gizmoLayer}>{this.buildChildren(element)}</GizmoLayerComp>
             case UI_ElementType.ToolbarDropdown:
                 const toolbarDropdown = element as UI_ToolbarDropdown;
-                const headerComp = toolbarDropdown._header && this.buildElement(toolbarDropdown._header, pluginId);
-                return <ToolbarDropdownComp registry={this.registry} header={headerComp} element={toolbarDropdown}>{this.buildChildren(element, pluginId)}</ToolbarDropdownComp>
+                const headerComp = toolbarDropdown._header && this.buildElement(toolbarDropdown._header);
+                return <ToolbarDropdownComp registry={this.registry} header={headerComp} element={toolbarDropdown}>{this.buildChildren(element)}</ToolbarDropdownComp>
             case UI_ElementType.ToolbarDropdownHeader:
                 const toolbarDropdownHeader = element as UI_ToolDropdownHeader;
-                return <ToolDropdownHeaderComp registry={this.registry} element={toolbarDropdownHeader}>{this.buildChildren(element, pluginId)}</ToolDropdownHeaderComp>;
+                return <ToolDropdownHeaderComp registry={this.registry} element={toolbarDropdownHeader}>{this.buildChildren(element)}</ToolDropdownHeaderComp>;
     
         }
     }
 
-    private buildChildren(element: UI_Container, pluginId: string): JSX.Element[] {
+    private buildChildren(element: UI_Container): JSX.Element[] {
         return element.children.map(child => {
             if ((child as UI_Container).children !== undefined) {
-                return this.buildContainer(child as UI_Container, pluginId);
+                return this.buildContainer(child as UI_Container);
             } else {
-                return this.buildLeaf(child, pluginId);
+                return this.buildLeaf(child);
             }
         });
     }
 
-    private buildElement(element: UI_Element, pluginId: string): JSX.Element {
+    private buildElement(element: UI_Element): JSX.Element {
         if ((element as UI_Container).children !== undefined) {
-            return this.buildContainer(element as UI_Container, pluginId);
+            return this.buildContainer(element as UI_Container);
         } else {
-            return this.buildLeaf(element, pluginId);
+            return this.buildLeaf(element);
         }
     }
 
-    private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas, pluginId: string) {
+    private buildSvgCanvas(canvas: UI_SvgCanvas | UI_HtmlCanvas) {
         let toolbar: JSX.Element = null;
 
         if (canvas._toolbar) {
-            toolbar = this.buildToolbar(canvas._toolbar, pluginId);
+            toolbar = this.buildToolbar(canvas._toolbar);
         }
 
         let dropLayer: JSX.Element = null;
 
         if (canvas._dropLayer) {
-            dropLayer = this.buildLeaf(canvas._dropLayer, pluginId);
+            dropLayer = this.buildLeaf(canvas._dropLayer);
         }
 
         let gizmoLayer: JSX.Element = null;
@@ -251,17 +252,17 @@ export class UI_Builder {
         
         let children: JSX.Element[] = [];
         if (canvas.elementType === UI_ElementType.SvgCanvas) {
-            children = this.buildChildren(canvas as UI_SvgCanvas, pluginId);
+            children = this.buildChildren(canvas as UI_SvgCanvas);
         }
 
         this.isDefsSection = true;
-        const markers = this.svgMarkers.map(marker => this.buildElement(marker, pluginId));
+        const markers = this.svgMarkers.map(marker => this.buildElement(marker));
         this.isDefsSection = false;
 
         return <CanvasComp key={canvas.key} registry={this.registry} markers={markers} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
     }
 
-    private buildToolbar(uiToolbar: UI_Toolbar, pluginId: string) {
+    private buildToolbar(uiToolbar: UI_Toolbar) {
         const toolsLeft: JSX.Element[] = [];
         const toolsMiddle: JSX.Element[] = [];
         const toolsRight: JSX.Element[] = [];
@@ -270,13 +271,13 @@ export class UI_Builder {
             switch((child as UI_Tool | UI_ActionIcon | UI_IconSeparator | UI_ToolbarDropdown).placement) {
                 case 'left':
                 default:
-                    toolsLeft.push(this.buildElement(child, pluginId));
+                    toolsLeft.push(this.buildElement(child));
                 break;
                 case 'middle':
-                    toolsMiddle.push(this.buildElement(child, pluginId));
+                    toolsMiddle.push(this.buildElement(child));
                 break;
                 case 'right':
-                    toolsRight.push(this.buildElement(child, pluginId));
+                    toolsRight.push(this.buildElement(child));
                 break;
             }
         });
@@ -284,25 +285,25 @@ export class UI_Builder {
         return <ToolbarComp registry={this.registry} toolsLeft={toolsLeft} toolsMiddle={toolsMiddle} toolsRight={toolsRight} element={uiToolbar}></ToolbarComp>;
     }
 
-    private buildTool(uiTool: UI_Tool, pluginId: string) {
-        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip, pluginId) : null;
+    private buildTool(uiTool: UI_Tool) {
+        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip) : null;
 
         return <ToolComp registry={this.registry} key={uiTool.uniqueId} tooltip={tooltip} element={uiTool}/>; 
     }
 
-    private buildActionIcon(uiActionIcon: UI_ActionIcon, pluginId: string) {
-        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip, pluginId) : null;
+    private buildActionIcon(uiActionIcon: UI_ActionIcon) {
+        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip) : null;
 
         return <ActionIconComp registry={this.registry} key={uiActionIcon.uniqueId} tooltip={tooltip} element={uiActionIcon}/>; 
     }
 
-    private buildIcon(uiIcon: UI_Icon, pluginId: string) {
-        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip, pluginId) : null;
+    private buildIcon(uiIcon: UI_Icon) {
+        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip) : null;
 
         return <IconComp registry={this.registry} key={uiIcon.uniqueId} tooltip={tooltip} element={uiIcon}/>; 
     }
 
-    private buildLeaf(element: UI_Element, pluginId: string): JSX.Element {
+    private buildLeaf(element: UI_Element): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
                 const text = element as UI_Text;
@@ -345,13 +346,13 @@ export class UI_Builder {
                 return <SvgTextComp registry={this.registry} element={svgText}/>;
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
-                return this.buildToolbar(toolbar, pluginId);
+                return this.buildToolbar(toolbar);
             case UI_ElementType.ToolIcon:
                 const tool = element as UI_Tool;
-                return this.buildTool(tool, pluginId);
+                return this.buildTool(tool);
             case UI_ElementType.ActionIcon:
                 const actionIcon = element as UI_ActionIcon;
-                return this.buildActionIcon(actionIcon, pluginId);
+                return this.buildActionIcon(actionIcon);
             case UI_ElementType.IconSeparator:
                 const iconSeparator = element as UI_ActionIcon;
                 return <IconSeparatorComp registry={this.registry} element={iconSeparator}/>;
@@ -362,13 +363,13 @@ export class UI_Builder {
                 const listItem = element as UI_ListItem;
                 return <ListItemComp registry={this.registry} element={listItem}/>;
             case UI_ElementType.HtmlCanvas:
-                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas, element.pluginId);
+                return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas);
             case UI_ElementType.Image:
                 const image = element as UI_Image;
                 return <ImageComp registry={this.registry} element={image}/>;
             case UI_ElementType.Icon:
                 const icon = element as UI_Icon;
-                return this.buildIcon(icon, pluginId);
+                return this.buildIcon(icon);
             case UI_ElementType.TableRowGroup:
                 const tableRowGroup = element as UI_TableRowGroup;
                 return <TableRowGroupComp registry={this.registry} element={tableRowGroup}></TableRowGroupComp>;

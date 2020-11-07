@@ -8,7 +8,7 @@ export class PanelLookup {
         this.panels.set(panel.id, panel);
     }
 
-    getCanvas(id: string) {
+    getPanel(id: string) {
         return this.panels.get(id);
     }
 }

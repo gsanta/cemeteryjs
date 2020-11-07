@@ -1,6 +1,6 @@
 import { Registry } from '../../Registry';
 import { INodeExecutor } from '../../services/node/INodeExecutor';
-import { IObj, ObjFactory, ObjJson } from './IObj';
+import { IObj, ObjJson } from './IObj';
 import { NodeConnectionObj } from './NodeConnectionObj';
 
 export const NodeObjType = 'node-obj';
@@ -8,22 +8,6 @@ export const NodeObjType = 'node-obj';
 export interface NodeObjJson extends ObjJson {
     type: string;
     params: NodeParamJson[];
-}
-
-export class NodeObjFactory implements ObjFactory {
-    private registry: Registry;
-
-    objType = NodeObjType;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
-    newInstance() {
-        return this.registry.services.node.createNodeObj();
-    }
-
-    
 }
 
 export enum NodeCategory {

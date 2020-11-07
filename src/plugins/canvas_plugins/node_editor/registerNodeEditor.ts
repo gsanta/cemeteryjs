@@ -13,7 +13,7 @@ import { Registry } from "../../../core/Registry";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { JoinTool } from "./tools/JoinTool";
 
-export const NodeEditorPluginId = 'node-editor-plugin'; 
+export const NodeEditorPanelId = 'node-editor-panel'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
 export function registerNodeEditor(registry: Registry) {
@@ -23,7 +23,7 @@ export function registerNodeEditor(registry: Registry) {
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {
-    const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, NodeEditorPluginId, 'Node editor');
+    const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, NodeEditorPanelId, 'Node editor');
 
     const propControllers = [
         new ZoomInController(),

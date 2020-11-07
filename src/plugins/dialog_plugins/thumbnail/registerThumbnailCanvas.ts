@@ -39,6 +39,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const engine = new Bab_EngineFacade(this.registry);
+    canvas.engine = engine;
     canvas.setController(new FormController(canvas, registry, propControllers));
     canvas.setCamera(engine.getCamera());
     tools.forEach(tool => canvas.addTool(tool));

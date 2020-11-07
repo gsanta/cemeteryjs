@@ -7,7 +7,7 @@ import { getAllKeys } from "../../../../core/services/input/KeyboardService";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { GameViewerPluginId } from "../../game_viewer/registerGameViewer";
+import { GameViewerPanelId } from "../../game_viewer/registerGameViewer";
 import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
 import { AbstractNode } from "./AbstractNode";
 
@@ -23,7 +23,7 @@ export class KeyboardNode extends AbstractNode {
 
     nodeType = KeyboardNodeType;
     displayName = 'Keyboard';
-category = 'Default';
+    category = 'Default';
 
     getParams(): NodeParam[] {
         return [
@@ -69,7 +69,7 @@ export class KeyboardNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj) {
         const keyParams = this.getKeyParams(nodeObj);
 
-        const gameTool = <GameTool> this.registry.plugins.getPlugin(GameViewerPluginId).getToolController().getToolById(GameToolId);
+        const gameTool = <GameTool> this.registry.ui.canvas.getCanvas(GameViewerPanelId).toolController.getToolById(GameToolId);
         
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../Context';
 import { UI_Builder } from '../../UI_Builder';
-import { UI_Region } from '../../../plugin/UI_Panel';
+import { UI_Panel, UI_Region } from '../../../plugin/UI_Panel';
 
 export interface MainPanelProps {
     region: UI_Region.Canvas1 | UI_Region.Canvas2;
@@ -17,14 +17,14 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
 
     render() {
         const region = this.props.region === UI_Region.Canvas1 ? UI_Region.Canvas1 : UI_Region.Canvas2;
-        const plugins = this.context.registry.plugins.getPluginsByRegion(region);
+        let panel: UI_Panel;
 
-        let component: JSX.Element = null;
-
-        if (plugins.length) {
-            const plugin = plugins[0];
-            component = new UI_Builder(this.context.registry).build(plugin.getPanel(), plugin);
+        if (this.props.region === UI_Region.Canvas1) {
+            panel = this.context.registry.ui.helper.getPanel1();
+        } else {
+            panel = this.context.registry.ui.helper.getPanel2();
         }
+        let component: JSX.Element = new UI_Builder(this.context.registry).build(panel);
 
         return (
             <div id={this.props.region === UI_Region.Canvas1 ? 'canvas1' : 'canvas2'}>

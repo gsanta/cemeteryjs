@@ -2,7 +2,7 @@ import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../core/models/objs/SpriteSheetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../core/plugin/UI_Panel';
-import { SpriteSheetManagerDialogPlugin } from './SpritesheetManagerDialogPlugin';
+import { SpriteSheetManagerDialogRenderer } from './SpriteSheetManagerDialogRenderer';
 
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
 
@@ -17,7 +17,9 @@ export class SpriteSheetJsonPathControl extends PropController<{data: string, pa
 
     change(val: {data: string, path: string}, context: PropContext) {
         const json = atob(val.data.split(',')[1]);
-        (<SpriteSheetManagerDialogPlugin> context.panel).tempSpriteSheetJson = json;
+
+        const renderer = <SpriteSheetManagerDialogRenderer> context.panel.renderer;
+        renderer.tempSpriteSheetJson = json;
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -36,7 +38,8 @@ export class SpriteSheetImgController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        (<SpriteSheetManagerDialogPlugin> context.panel).tempImagePath = context.getTempVal();
+        const renderer = <SpriteSheetManagerDialogRenderer> context.panel.renderer;
+        renderer.tempImagePath = context.getTempVal()
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -46,10 +49,11 @@ export class AddSpriteSheetController extends PropController<string> {
 
     click(context: PropContext) {
         const spriteSheetObj = new SpriteSheetObj();
-        const plugin = (<SpriteSheetManagerDialogPlugin> context.panel);
 
-        const spriteSheetJson = plugin.tempSpriteSheetJson;
-        const imgPath = plugin.tempImagePath;
+        const renderer = <SpriteSheetManagerDialogRenderer> context.panel.renderer;
+
+        const spriteSheetJson = renderer.tempSpriteSheetJson;
+        const imgPath = renderer.tempImagePath;
         
         const imgAsset = new AssetObj({path: imgPath, assetType: AssetType.SpriteSheet});
         const jsonAsset = new AssetObj({data: spriteSheetJson, assetType: AssetType.SpriteSheetJson});
@@ -68,7 +72,7 @@ export class AddSpriteSheetController extends PropController<string> {
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Dialog);
 
-        plugin.tempSpriteSheetJson = undefined;
-        plugin.tempImagePath = undefined;
+        renderer.tempSpriteSheetJson = undefined;
+        renderer.tempImagePath = undefined;
     }
 }

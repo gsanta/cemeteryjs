@@ -2,7 +2,6 @@ import { Registry } from '../../Registry';
 import { UI_Element } from '../../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../../ui_components/elements/UI_ListItem';
 import { UI_Panel } from '../UI_Panel';
-import { UI_Plugin } from '../UI_Plugin';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -25,7 +24,6 @@ export class PropContext<T = any> {
     private tempVal: T;
     registry: Registry;
     panel: UI_Panel;
-    plugin: UI_Plugin;
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -53,15 +51,9 @@ export class FormController {
 
     protected registry: Registry;
     panel: UI_Panel;
-    plugin: UI_Plugin;
 
-    constructor(plugin: UI_Panel | UI_Plugin, registry: Registry, propControls?: PropController<any>[]) {
-        if ((plugin as any).getPanel) {
-            this.plugin = <UI_Plugin> plugin;
-            this.panel = this.plugin.getPanel();
-        } else {
-            this.panel = <UI_Panel> plugin;
-        }
+    constructor(panel: UI_Panel, registry: Registry, propControls?: PropController<any>[]) {
+        this.panel = <UI_Panel> panel;
         this.registry = registry;
 
         this.registerPropControl(new CloseDialogController());
@@ -146,7 +138,6 @@ export class FormController {
         const propContext = new PropContext();
         propContext.registry = this.registry;
         propContext.panel = this.panel;
-        propContext.plugin = this.plugin;
 
         this.propContexts.set(propController, propContext);
         this.propControllers.push(propController);
@@ -157,7 +148,7 @@ class CloseDialogController extends PropController {
     acceptedProps() { return [GlobalControllerProps.CloseDialog]; }
 
     click(context: PropContext) {
-        context.registry.plugins.deactivatePlugin(context.panel.id);
+        context.registry.ui.helper.setDialogPanel(undefined);
         context.registry.services.render.reRenderAll();
     }
 }

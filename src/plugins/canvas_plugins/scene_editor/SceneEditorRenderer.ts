@@ -130,8 +130,8 @@ export class SceneEditorRenderer implements ICanvasRenderer {
 
     private renderViews(canvas: UI_SvgCanvas, views: View[]) {
         views.forEach(view => {
-            this.registry.services.viewService.renderInto(canvas, view, this);
-            view.children.forEach(child => this.registry.services.viewService.renderInto(canvas, child, this));
+            view.renderer.renderInto(canvas, view, canvas.canvasPanel);
+            view.children.forEach(child => child.renderer.renderInto(canvas, view, canvas.canvasPanel));
         });
     }
 

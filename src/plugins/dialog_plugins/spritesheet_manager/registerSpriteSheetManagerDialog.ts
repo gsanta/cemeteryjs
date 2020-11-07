@@ -1,5 +1,5 @@
 import { FormController } from "../../../core/plugin/controller/FormController";
-import { UI_Panel } from "../../../core/plugin/UI_Panel";
+import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { SpriteSheetImgController, AddSpriteSheetController, SpriteSheetJsonPathControl } from "./SpritesheetManagerDialogProps";
 
@@ -18,8 +18,8 @@ function createDialog(registry: Registry): UI_Panel {
         new AddSpriteSheetController()
     ];
 
-    const panel = new UI_Panel(registry, this.region, SpriteSheetManagerDialogId, 'Spritesheet Manager');
-    panel.controller = new FormController(this, registry, propControllers);
+    const panel = new UI_Panel(registry, UI_Region.Dialog, SpriteSheetManagerDialogId, 'Spritesheet Manager');
+    panel.controller = new FormController(undefined, registry, propControllers);
 
     return panel;
 }
