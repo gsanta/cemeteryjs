@@ -1,8 +1,8 @@
-import { IObj, ObjFactory } from "./IObj";
+import { IObj, ObjFactory, ObjJson } from "./IObj";
 
 export const AssetObjType = 'asset-obj';
 
-export interface AssetObjJson {
+export interface AssetObjJson extends ObjJson {
     id: string;
     assetType: string;
     path?: string;
@@ -26,7 +26,7 @@ export class AssetObjFactory implements ObjFactory {
 }
 
 export class AssetObj implements IObj {
-    objType = AssetObjType;
+    readonly objType = AssetObjType;
     id: string;
     assetType: AssetType;
     data: string;
@@ -47,6 +47,7 @@ export class AssetObj implements IObj {
     serialize(): AssetObjJson {
         return {
             id: this.id,
+            objType: this.objType,
             assetType: this.assetType,
             path: this.path,
             data: this.data,

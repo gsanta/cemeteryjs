@@ -1,8 +1,11 @@
+import { AssetObjType } from "../models/objs/AssetObj";
 import { IObj } from "../models/objs/IObj";
 import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
+import { NodeObjJson, NodeObjType } from "../models/objs/NodeObj";
 import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
 import { SpriteSheetObj, SpriteSheetObjType } from "../models/objs/SpriteSheetObj";
 import { Registry } from "../Registry";
+import { AppJson } from "../services/export/ExportService";
 import { IdGenerator } from "./IdGenerator";
 
 export interface ObjStoreHook {
@@ -17,6 +20,36 @@ export class ObjStore {
     private idGenerator: IdGenerator;
     private hooks: ObjStoreHook[] = [];
     id: string;
+
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    exportInto(appjson: Partial<AppJson>) {
+        appjson.objs = this.objs.map(obj => obj.serialize());
+    }
+
+    importFrom(appJson: AppJson) {
+        // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
+        appJson.objs.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
+        appJson.objs.forEach(obj => {
+            if (obj.objType === AssetObjType) {
+                return;
+            }
+
+            let objInstance: IObj;
+            if (obj.objType === NodeObjType) {
+                objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type)
+            } else {
+                objInstance = this.registry.services.objService.createObj(obj.objType);
+            }
+
+            objInstance.deserialize(obj, this.registry);
+            this.registry.stores.objStore.addObj(objInstance);
+        });
+    }
 
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {

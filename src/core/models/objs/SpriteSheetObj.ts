@@ -26,6 +26,7 @@ export class SpriteSheetObj implements IObj {
     serialize(): SpriteSheetObjJson {
         return {
             id: this.id,
+            objType: this.objType,
             spriteAssetId: this.spriteAssetId,
             jsonAssetId: this.jsonAssetId
         }

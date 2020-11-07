@@ -36,6 +36,7 @@ export class NodeConnectionObj implements IObj {
     serialize(): NodeConnectionObjJson {
         return {
             id: this.id,
+            objType: this.objType,
             joinPoint1: this.joinPoint1,
             node1Id: this.node1.id,
             joinPoint2: this.joinPoint2,

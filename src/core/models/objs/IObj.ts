@@ -4,6 +4,7 @@ import { AppJson } from "../../services/export/ExportService";
 
 export interface ObjJson {
     id: string;
+    objType: string;
 }
 
 export interface ObjFactory {
@@ -13,7 +14,7 @@ export interface ObjFactory {
 
 export interface IObj {
     id: string;
-    objType: string;
+    readonly objType: string;
 
     dispose(): void;
     serialize(): ObjJson;

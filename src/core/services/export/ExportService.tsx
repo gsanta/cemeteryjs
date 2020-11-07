@@ -3,7 +3,6 @@ import { Registry } from '../../Registry';
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
 import { IDataExporter } from './IDataExporter';
-import { SpriteSheetExporter } from './SpriteSheetExporter';
 import { AssetObjExporter } from './AssetObjExporter';
 import { ViewJson } from '../../models/views/View';
 
@@ -15,15 +14,13 @@ export interface AppJson {
     plugins: IPluginJson[];
     assets: AssetObjJson[];
 
-    objs: {
-        objType: string;
-        objs: ObjJson[];
-    }[];
-
     viewsByType: {
         viewType: string;
         views: ViewJson[];
     }[];
+
+    canvas: {[id: string]: ViewJson[]}
+    objs: ObjJson[];
 
     [id: string] : any;
 }
@@ -52,26 +49,11 @@ export class ExportService {
     }
 
     private exportViews(appJson: Partial<AppJson>) {
-        this.registry.stores.views.getAllTypes().forEach(viewType => {
-            const viewJsons = this.registry.stores.views.getViewsByType(viewType).map(view => view.toJson());
-
-            if (!appJson.viewsByType) {
-                appJson.viewsByType = [];
-            }
-
-            appJson.viewsByType.push({viewType, views: viewJsons});
-        });
+        this.registry.data.view.node.exportInto(appJson);
+        this.registry.data.view.scene.exportInto(appJson);
     }
 
     private exportObjs(appJson: Partial<AppJson>) {
-        this.registry.stores.objStore.getAllTypes().forEach(objType => {
-            const objJsons = this.registry.stores.objStore.getObjsByType(objType).map(obj => obj.serialize());
-
-            if (!appJson.objs) {
-                appJson.objs = [];
-            }
-
-            appJson.objs.push({objType, objs: objJsons});
-        });
+        this.registry.stores.objStore.exportInto(appJson);
     }
 }

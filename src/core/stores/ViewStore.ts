@@ -9,6 +9,9 @@ import { SpriteViewType } from "../models/views/SpriteView";
 import { MeshViewType } from "../models/views/MeshView";
 import { CanvasAxis } from "../models/misc/CanvasAxis";
 import { ScaleAxisView, ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
+import { AppJson } from "../services/export/ExportService";
+import { NodeObj } from "../models/objs/NodeObj";
+import { NodeViewType } from "../models/views/NodeView";
 
 export const sceneAndGameViewRatio = 10;
 
@@ -46,6 +49,32 @@ export class ViewStore {
     protected idGenerator: IdGenerator;
     private hooks: ViewStoreHook[] = [];
     private viewFactories: Map<string, () => View> = new Map();
+
+    readonly canvasId: string;
+    private registry: Registry;
+
+    constructor(canvasId: string, registry: Registry) {
+        this.canvasId = canvasId;
+        this.registry = registry;
+    }
+
+    exportInto(appjson: Partial<AppJson>) {
+        appjson.canvas[this.canvasId] = this.views.map(view => view.toJson());
+    }
+
+    importFrom(appJson: AppJson) {
+        appJson.canvas[this.canvasId].forEach(viewJson => {
+            let viewInstance: View;
+            if (viewJson.type === NodeViewType) {
+                const nodeType = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId)).type;
+                viewInstance = this.registry.data.helper.node.createView(nodeType)
+            } else {
+                viewInstance = this.createView(viewJson.type);
+            }
+            viewInstance.fromJson(viewJson, this.registry);
+            this.registry.stores.views.addView(viewInstance);
+        });
+    }
 
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {

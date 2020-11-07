@@ -21,7 +21,7 @@ export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.plugin.getToolController().setSelectedTool(element.key);
+        element.canvasPanel.toolController.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
@@ -30,7 +30,7 @@ export class SceneEditorToolController extends PropController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        context.plugin.getToolController().setSelectedTool(element.key);
+        element.canvasPanel.toolController.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
@@ -39,13 +39,13 @@ export class CanvasContextDependentToolController extends PropController<any> {
     acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        const tool = context.plugin.getToolController().getToolById(element.key);
+        const tool = element.canvasPanel.toolController.getToolById(element.key);
         tool.isSelected = !tool.isSelected;
 
         if (tool.id === ScaleAxisToolId) {
-            context.plugin.getToolController().getToolById(MoveAxisToolId).isSelected = false;
+            element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
         } else if (tool.id === MoveAxisToolId) {
-            context.plugin.getToolController().getToolById(ScaleAxisToolId).isSelected = false;
+            element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;
         }
         context.registry.services.render.reRender(element.canvasPanel.region);
     }

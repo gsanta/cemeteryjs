@@ -30,6 +30,7 @@ export class PathObj implements IObj {
 
         return {
             id: this.id,
+            objType: this.objType,
             points: pointsJson
         }
     }

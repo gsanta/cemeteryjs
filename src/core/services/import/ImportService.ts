@@ -1,13 +1,7 @@
 import { Registry } from '../../Registry';
 import { AppJson } from '../export/ExportService';
-import { IDataImporter } from './IDataImporter';
 import { AssetObjImporter } from './AssetObjImporter';
-import { AssetObjType } from '../../models/objs/AssetObj';
-import { SpriteSheetObjType } from '../../models/objs/SpriteSheetObj';
-import { NodeObj, NodeObjJson, NodeObjType } from '../../models/objs/NodeObj';
-import { NodeViewType } from '../../models/views/NodeView';
-import { IObj } from '../../models/objs/IObj';
-import { View } from '../../models/views/View';
+import { IDataImporter } from './IDataImporter';
 
 export class ImportService {
     private registry: Registry;
@@ -49,40 +43,11 @@ export class ImportService {
     }
 
     private importObjs(json: AppJson) {
-        // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
-        json.objs.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
-        json.objs.forEach(objType => {
-            if (objType.objType === AssetObjType) {
-                return;
-            }
-
-            objType.objs.forEach(obj => {
-                let objInstance: IObj;
-                if (objType.objType === NodeObjType) {
-                    objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type)
-                } else {
-                    objInstance = this.registry.services.objService.createObj(objType.objType);
-                }
-
-                objInstance.deserialize(obj, this.registry);
-                this.registry.stores.objStore.addObj(objInstance);
-            });
-        });
+        this.registry.stores.objStore.importFrom(json);
     }
 
     private importViews(json: AppJson) {
-        json.viewsByType.forEach(viewType => {
-            viewType.views.forEach(view => {
-                let viewInstance: View;
-                if (view.type === NodeViewType) {
-                    const nodeType = (<NodeObj> this.registry.stores.objStore.getById(view.objId)).type;
-                    viewInstance = this.registry.data.helper.node.createView(nodeType)
-                } else {
-                    viewInstance = this.registry.services.viewService.createView(viewType.viewType);
-                }
-                viewInstance.fromJson(view, this.registry);
-                this.registry.stores.views.addView(viewInstance);
-            });
-        });    
+        this.registry.data.view.node.importFrom(json);
+        this.registry.data.view.scene.importFrom(json);
     }
 }

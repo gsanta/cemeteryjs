@@ -53,7 +53,7 @@ export interface MeshSphereConfig extends MeshShapeConfig {
 
 
 export class MeshObj implements IObj {
-    objType = MeshObjType;
+    readonly objType = MeshObjType;
 
     private startPos: Point_3;
     private scale: Point;
@@ -131,6 +131,7 @@ export class MeshObj implements IObj {
     serialize(): MeshObjJson {
         return {
             id: this.id,
+            objType: this.objType,
             scaleX: this.getScale().x,
             scaleY: this.getScale().y,
             posX: this.getPosition().x,

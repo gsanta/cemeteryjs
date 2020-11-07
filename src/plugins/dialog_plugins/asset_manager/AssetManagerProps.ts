@@ -1,8 +1,7 @@
-import { AssetObj } from '../../../core/models/objs/AssetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../core/plugin/UI_Panel';
+import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_InputElement } from '../../../core/ui_components/elements/UI_InputElement';
-import { AssetManagerDialogPlugin } from './AssetManagerDialogPlugin';
 
 export enum AssetManagerDialogProps {
     DeleteAsset = 'DeleteAsset',
@@ -58,7 +57,8 @@ export class AssetPathControl extends PropController<any> {
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 
-    blur(context: PropContext) {
+    blur(context: PropContext, element: UI_Element) {
+        element.canvasPanel
         (<AssetManagerDialogPlugin> context.panel).tempAssetPath = context.getTempVal();
     }
 

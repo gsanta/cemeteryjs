@@ -155,6 +155,7 @@ export class NodeObj implements IObj {
 
         return {
             id: this.id,
+            objType: this.objType,
             type: this.type,
             params: params,
         }

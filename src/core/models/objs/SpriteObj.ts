@@ -3,11 +3,11 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
-import { IObj, ObjFactory } from "./IObj";
+import { IObj, ObjFactory, ObjJson } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
 
-export interface SpriteObjJson {
+export interface SpriteObjJson extends ObjJson {
     frameName: string;
     x: number;
     y: number;
@@ -90,6 +90,7 @@ export class SpriteObj implements IObj {
     serialize(): SpriteObjJson {
         return {
             id: this.id,
+            objType: this.objType,
             frameName: this.frameName,
             x: this.startPos && this.startPos.x,
             y: this.startPos && this.startPos.y,
