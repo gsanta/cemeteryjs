@@ -1,12 +1,11 @@
-import { ObjectSettingsPluginId } from '../../plugins/canvas_plugins/scene_editor/controllers/ObjectSettingsPlugin';
-import { NodeEditorSettingsPluginId } from '../../plugins/canvas_plugins/node_editor/NodeListPanelRenderer';
-import { Registry } from '../Registry';
 import Split from 'split.js';
-import { UI_Region } from '../plugin/UI_Panel';
-import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { GameViewerPanelId } from '../../plugins/canvas_plugins/game_viewer/registerGameViewer';
 import { NodeEditorPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeEditor';
+import { ObjectSettingsPanelId } from '../../plugins/canvas_plugins/scene_editor/controllers/registerObjectSettingsPanel';
 import { SceneEditorPanelId } from '../../plugins/canvas_plugins/scene_editor/registerSceneEditor';
+import { FileSettingsPanelId } from '../../plugins/sidepanel_plugins/file_settings/registerFileSettingsPanel';
+import { UI_Region } from '../plugin/UI_Panel';
+import { Registry } from '../Registry';
 
 
 export class LayoutHandler {
@@ -132,7 +131,8 @@ export class UI_PerspectiveService {
             canvas1Plugin: SceneEditorPanelId,
             canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [
-                ObjectSettingsPluginId
+                FileSettingsPanelId,
+                ObjectSettingsPanelId
             ]
         });
 
@@ -142,7 +142,7 @@ export class UI_PerspectiveService {
             canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [
                 // LevelSettingsPluginId,
-                NodeEditorSettingsPluginId
+                NodeEditorPanelId
             ]
         });
     }

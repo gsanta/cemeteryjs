@@ -11,6 +11,7 @@ import { Registry } from "../../../core/Registry";
 import { MoveAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 import { ScaleAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./SceneEditorControllers";
+import { SceneEditorRenderer } from "./SceneEditorRenderer";
 import { CubeTool } from "./tools/CubeTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
@@ -52,6 +53,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SceneEditorPanelId, 'Scene editor');
+    canvas.renderer = new SceneEditorRenderer(registry, canvas);
     canvas.setController(new FormController(undefined, registry, propControllers))
     canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));
     tools.forEach(tool => canvas.addTool(tool));

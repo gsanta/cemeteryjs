@@ -105,43 +105,22 @@ export class UI_Builder {
             const layout = UI_Factory.layout({});
             const accordion = layout.accordion();
             accordion.title = panel.displayName;
-            panel.renderInto(accordion);
+            panel.renderer.renderInto(accordion);
 
             return this.buildElement(accordion);
         } else if (panel.region === UI_Region.Dialog) {
             const dialog = UI_Factory.dialog({});
             dialog.title = panel.displayName;
 
-            panel.renderInto(dialog);
+            panel.renderer.renderInto(dialog);
             
             return this.buildElement(dialog);
         } else {
             const layout = UI_Factory.layout({});
             
-            panel.renderInto(layout);
+            panel.renderer.renderInto(layout);
 
             return this.buildElement(layout);
-        }
-    }
-
-    render(panel: UI_Panel): UI_Container {
-        if (panel.region === UI_Region.Sidepanel) {
-            const layout = UI_Factory.layout({});
-            const accordion = layout.accordion();
-            accordion.title = panel.displayName;
-            panel.renderInto(accordion);
-            return layout;
-        } else if (panel.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog({});
-            dialog.title = panel.displayName;
-            panel.renderInto(dialog);
-            return dialog;
-
-        } else {
-            const layout = UI_Factory.layout({});
-
-            panel.renderInto(layout);
-            return layout;
         }
     }
 

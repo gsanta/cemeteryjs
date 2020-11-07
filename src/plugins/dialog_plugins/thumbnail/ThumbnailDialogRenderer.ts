@@ -31,7 +31,7 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
         canvas.width = '300px';
         canvas.height = '300px';
 
-        this.registry.ui.canvas.getCanvas(ThumbnailCanvasId).renderInto(canvas);
+        this.registry.ui.canvas.getCanvas(ThumbnailCanvasId).renderer.renderInto(canvas);
 
         const column = row.column({ key: 'column1' });
         const button = column.button(ThumbnailMakerControllerProps.ClearThumbnail);

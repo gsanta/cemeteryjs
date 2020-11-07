@@ -31,7 +31,7 @@ export class PanelHelper {
     }
 
     getSidebarPanels(): UI_Panel[] {
-        return this._sidebarPanels;
+        return this._sidebarPanels || [];
     }
 
     setDialogPanel(uiPanel: UI_Panel) {

@@ -24,7 +24,8 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
         } else {
             panel = this.context.registry.ui.helper.getPanel2();
         }
-        let component: JSX.Element = new UI_Builder(this.context.registry).build(panel);
+
+        let component: JSX.Element = panel ? new UI_Builder(this.context.registry).build(panel) : null;
 
         return (
             <div id={this.props.region === UI_Region.Canvas1 ? 'canvas1' : 'canvas2'}>

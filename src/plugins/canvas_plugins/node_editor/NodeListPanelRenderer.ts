@@ -1,19 +1,9 @@
-import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { IRenderer } from '../../../core/plugin/IRenderer';
-import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
 import { AbstractNode } from './nodes/AbstractNode';
 import { NodeEditorPanelId } from './registerNodeEditor';
-
-export const NodeEditorSettingsPluginId = 'node_editor_settings_plugin'; 
-
-export class NodeEditorSettingsPlugin extends UI_Panel {
-    id = NodeEditorSettingsPluginId;
-    displayName = 'Node Editor';
-    region = UI_Region.Sidepanel;
-}
 
 export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
     private registry: Registry;

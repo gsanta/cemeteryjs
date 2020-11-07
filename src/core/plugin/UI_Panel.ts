@@ -58,8 +58,6 @@ export class UI_Panel {
     private onMountedFunc: () => void;
     private onUnmountedFunc: () => void;
 
-    renderInto(layout: UI_Container): void {}
-
     getFormController(controllerId: string): FormController { return undefined; }
     getToolController(): ToolController { return undefined; }
 
