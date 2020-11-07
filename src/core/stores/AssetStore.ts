@@ -1,5 +1,6 @@
 import { AssetObj, AssetType } from "../models/objs/AssetObj";
 import { Registry } from "../Registry";
+import { AppJson } from "../services/export/ExportService";
 import { IdGenerator } from "./IdGenerator";
 
 export class AssetStore {
@@ -15,6 +16,19 @@ export class AssetStore {
 
     constructor(registry: Registry) {
         this.registry = registry;
+    }
+
+    
+    exportInto(appjson: Partial<AppJson>) {
+        appjson.objs.assets = this.objs.map(obj => obj.serialize());
+    }
+
+    async importFrom(appJson: AppJson) {
+        appJson.objs.assets.forEach(obj => {
+            const objInstance = this.registry.services.objService.createObj(obj.objType);
+            objInstance.deserialize(obj, this.registry);
+            this.addObj(objInstance as AssetObj);
+        });
     }
 
     setIdGenerator(idGenerator: IdGenerator) {

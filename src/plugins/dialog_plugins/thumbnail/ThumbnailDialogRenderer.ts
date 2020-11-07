@@ -17,7 +17,7 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
     }
 
     renderInto(dialog: UI_Dialog) {
-        const meshView = this.registry.stores.views.getOneSelectedView() as MeshView;
+        const meshView = this.registry.data.view.scene.getOneSelectedView() as MeshView;
         dialog.width = '560px';
 
         let row = dialog.row({key: '1'});

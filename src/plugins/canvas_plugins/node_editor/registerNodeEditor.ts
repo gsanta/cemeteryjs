@@ -39,7 +39,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     canvas.setController(new FormController(canvas, registry, propControllers));
-    canvas.setCamera(cameraInitializer(NodeEditorPluginId, registry))
+    canvas.setCamera(cameraInitializer(NodeEditorPanelId, registry))
     tools.forEach(tool => canvas.addTool(tool));
 
     return canvas;

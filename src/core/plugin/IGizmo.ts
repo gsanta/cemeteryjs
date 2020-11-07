@@ -9,13 +9,15 @@ export interface IGizmoFactory {
 }
 
 export class GizmoPlugin {
-    private renderer: IRenderer;
     private onMountFunc: () => void = () => undefined;
     private registry: Registry;
-    private width: number;
-    private height: number;
+    readonly width: number;
+    readonly height: number;
 
     private customData: Map<string, any> = new Map();
+
+    renderer: IRenderer;
+    controller: FormController;
 
     constructor(registry: Registry, width: number, height: number) {
         this.registry = registry;
@@ -35,29 +37,11 @@ export class GizmoPlugin {
         this.customData.delete(key);
     }
     
-    setRenderer(renderer: IRenderer) {
-        this.renderer = renderer;
-    }
-
     onMount(onMountFunc: () => void) {
         this.onMountFunc = onMountFunc;
     }
 
     mount() {
         this.onMountFunc();
-    }
-
-    getFormController(controllerId: string): FormController {
-        return null;
-    }
-
-    renderInto(element: UI_Row): void {
-        const box = element.box({});
-        box.width = this.width + 'px' || '100px';
-        box.height = this.height + 'px' || '100px';
-        
-        if (this.renderer) {
-            this.renderer(box, this, this.registry);
-        }
     }
 }

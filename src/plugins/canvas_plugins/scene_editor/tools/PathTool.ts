@@ -88,7 +88,7 @@ export class PathTool extends PointerTool {
         this.viewStore.clearSelection();
 
         const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
-        const pathView: PathView = <PathView> this.registry.services.viewService.createView(PathViewType);
+        const pathView: PathView = <PathView> this.registry.data.view.scene.createView(PathViewType);
         pathView.setObj(pathObj);
 
         const editPoint = new PathPointView(pathView, pointer.down.clone());

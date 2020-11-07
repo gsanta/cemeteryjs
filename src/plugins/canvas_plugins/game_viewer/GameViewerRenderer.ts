@@ -69,6 +69,6 @@ export class GameViewerRenderer implements ICanvasRenderer {
 
         const gizmoLayer = svgCanvas.gizmoLayer();
         
-        this.canvas.getGizmos().forEach(gizmo => gizmo.renderInto(gizmoLayer));
+        this.canvas.getGizmos().forEach(gizmo => gizmo.renderer.renderInto(gizmoLayer));
     }
 }

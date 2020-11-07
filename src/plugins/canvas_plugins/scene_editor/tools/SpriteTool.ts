@@ -20,7 +20,7 @@ export class SpriteTool extends RectangleTool {
         const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
         spriteObj.color = colors.darkorchid;
 
-        const spriteView: SpriteView = <SpriteView> this.registry.services.viewService.createView(SpriteViewType);
+        const spriteView: SpriteView = <SpriteView> this.registry.data.view.scene.createView(SpriteViewType);
         spriteView.setObj(spriteObj);
         spriteView.setBounds(rect);
         spriteObj.spriteAdapter = this.registry.engine.sprites;

@@ -94,7 +94,7 @@ export class MoveNodeExecutor implements INodeExecutor {
     execute(nodeObj: NodeObj) {
         const meshId = nodeObj.getParam('mesh').val;
 
-        const meshView = this.registry.stores.views.getById(meshId) as MeshView;
+        const meshView = this.registry.data.view.node.getById(meshId) as MeshView;
 
         if (nodeObj.getParam('move').val === 'forward') {
             meshView.getObj().move(new Point_3(0, 0, 2));
@@ -114,7 +114,7 @@ export class MeshMoveController extends PropController<string> {
     }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam('move');
+        return (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj().getParam('move');
     }
 
     change(val, context, element) {
@@ -129,7 +129,7 @@ export class MeshSpeedController extends PropController<string> {
     acceptedProps() { return ['speed']; }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam('speed');
+        return (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj().getParam('speed');
     }
 
     change(val, context) {
@@ -138,7 +138,7 @@ export class MeshSpeedController extends PropController<string> {
     }
 
     blur(context: PropContext, element: UI_InputElement) {
-        const nodeObj = (context.registry.stores.views.getById(element.targetId) as NodeView).getObj();
+        const nodeObj = (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj();
         nodeObj.setParam('speed', context.clearTempVal());
         context.registry.services.render.reRenderAll();
     }

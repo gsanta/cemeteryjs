@@ -23,7 +23,7 @@ function createPanel(registry: Registry): UI_Panel {
         new ClearLevelController()
     ];
 
-    panel.controller = new FormController(this, registry, propControllers);
+    panel.controller = new FormController(undefined, registry, propControllers);
 
     return panel;
 }

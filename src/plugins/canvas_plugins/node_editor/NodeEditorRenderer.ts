@@ -82,13 +82,13 @@ export class NodeEditorRenderer implements ICanvasRenderer {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        (<NodeView[]> this.registry.stores.views.getViewsByType(NodeViewType)).forEach(nodeView => {
+        (<NodeView[]> this.registry.data.view.node.getViewsByType(NodeViewType)).forEach(nodeView => {
             nodeView.renderer.renderInto(canvas, nodeView, this.canvas);
         });
     }
 
     private renderConnectionsInto(canvas: UI_SvgCanvas) {
-        this.registry.stores.views.getViewsByType(NodeConnectionViewType).forEach((connection: NodeConnectionView) => {
+        this.registry.data.view.node.getViewsByType(NodeConnectionViewType).forEach((connection: NodeConnectionView) => {
             const line = canvas.line();
             line.x1 = connection.point1.x;
             line.y1 = connection.point1.y;

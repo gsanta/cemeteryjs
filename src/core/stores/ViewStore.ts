@@ -56,6 +56,7 @@ export class ViewStore {
     constructor(canvasId: string, registry: Registry) {
         this.canvasId = canvasId;
         this.registry = registry;
+        this.setIdGenerator(new IdGenerator());
     }
 
     exportInto(appjson: Partial<AppJson>) {
@@ -72,7 +73,7 @@ export class ViewStore {
                 viewInstance = this.createView(viewJson.type);
             }
             viewInstance.fromJson(viewJson, this.registry);
-            this.registry.stores.views.addView(viewInstance);
+            this.addView(viewInstance);
         });
     }
 
@@ -214,8 +215,8 @@ export class ViewStore {
         this.clearSelection();
     }
 
-    static newInstance(): ViewStore {
-        const viewStore = new ViewStore();
+    static newInstance(canvasId: string, registry: Registry): ViewStore {
+        const viewStore = new ViewStore(canvasId, registry);
         const proxy = new Proxy(viewStore, handler);
         return proxy;
     }
@@ -259,32 +260,32 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
-            let axisView: MoveAxisView = <MoveAxisView> this.registry.services.viewService.createView(MoveAxisViewType);
+            let axisView = <MoveAxisView> this.registry.data.view.scene.createView(MoveAxisViewType);
             axisView.axis = CanvasAxis.X;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            axisView = <MoveAxisView> this.registry.services.viewService.createView(MoveAxisViewType);
+            axisView = <MoveAxisView> this.registry.data.view.scene.createView(MoveAxisViewType);
             axisView.axis = CanvasAxis.Y;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            axisView = <MoveAxisView> this.registry.services.viewService.createView(MoveAxisViewType);
+            axisView = <MoveAxisView> this.registry.data.view.scene.createView(MoveAxisViewType);
             axisView.axis = CanvasAxis.Z;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            let scaleView: ScaleAxisView = <ScaleAxisView> this.registry.services.viewService.createView(ScaleAxisViewType);
+            let scaleView = <ScaleAxisView> this.registry.data.view.scene.createView(ScaleAxisViewType);
             scaleView.axis = CanvasAxis.X;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
 
-            scaleView = <ScaleAxisView> this.registry.services.viewService.createView(ScaleAxisViewType);
+            scaleView = <ScaleAxisView> this.registry.data.view.scene.createView(ScaleAxisViewType);
             scaleView.axis = CanvasAxis.Y;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
 
-            scaleView = <ScaleAxisView> this.registry.services.viewService.createView(ScaleAxisViewType);
+            scaleView = <ScaleAxisView> this.registry.data.view.scene.createView(ScaleAxisViewType);
             scaleView.axis = CanvasAxis.Z;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);

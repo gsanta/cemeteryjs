@@ -68,7 +68,7 @@ export class ScaleXController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.ScaleX]; }
 
     defaultVal(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
 
         return spriteView.getObj().getScale().x;
     }
@@ -79,7 +79,7 @@ export class ScaleXController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
 
         const currScale = spriteView.getObj().getScale();
         let scaleX = currScale.x;
@@ -100,7 +100,7 @@ export class ScaleYController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.ScaleY]; }
 
     defaultVal(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
 
         return spriteView.getObj().getScale().y;
     }
@@ -111,7 +111,7 @@ export class ScaleYController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const spriteView = <SpriteView> context.registry.stores.views.getOneSelectedView();
+        const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
 
         const currScale = spriteView.getObj().getScale();
         let scaleY = currScale.y;

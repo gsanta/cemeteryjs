@@ -2,6 +2,7 @@ import { PropContext, PropController } from '../../../core/plugin/controller/For
 import { UI_Region } from '../../../core/plugin/UI_Panel';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_InputElement } from '../../../core/ui_components/elements/UI_InputElement';
+import { AssetManagerDialogRenderer } from './AssetManagerDialogRenderer';
 
 export enum AssetManagerDialogProps {
     DeleteAsset = 'DeleteAsset',
@@ -27,7 +28,9 @@ export class EnterEditModeControl extends PropController<any> {
 
     click(context: PropContext, element) {
         const asset = context.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
-        (<AssetManagerDialogPlugin> context.panel).editedAsset = asset;
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
+        
+        renderer.editedAsset = asset;
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -41,11 +44,15 @@ export class AssetNameControl extends PropController<any> {
     }
 
     blur(context: PropContext) {
-        (<AssetManagerDialogPlugin> context.panel).tempAssetName = context.getTempVal();
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
+        
+        renderer.tempAssetName = context.getTempVal();
     }
 
     defaultVal(context: PropContext) {
-        return (<AssetManagerDialogPlugin> context.panel).editedAsset.name || '';
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
+
+        return renderer.editedAsset.name || '';
     }
 }
 
@@ -58,12 +65,13 @@ export class AssetPathControl extends PropController<any> {
     }
 
     blur(context: PropContext, element: UI_Element) {
-        element.canvasPanel
-        (<AssetManagerDialogPlugin> context.panel).tempAssetPath = context.getTempVal();
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
+        renderer.tempAssetPath = context.getTempVal();
     }
 
     defaultVal(context) {
-        return (<AssetManagerDialogPlugin> context.plugin).editedAsset.path || '';
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
+        return renderer.editedAsset.path || '';
     }
 }
 
@@ -71,14 +79,13 @@ export class SaveEditControl extends PropController<any> {
     acceptedProps() { return [AssetManagerDialogProps.SaveEdit]; }
 
     click(context: PropContext<any>) {
-        const plugin = (<AssetManagerDialogPlugin> context.panel);
-        const editedAsset = (<AssetManagerDialogPlugin> context.panel).editedAsset;
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
 
-        editedAsset.name = plugin.tempAssetName;
-        
-        editedAsset.name = plugin.tempAssetPath;
+        const editedAsset = renderer.editedAsset;
+        editedAsset.name = renderer.tempAssetName;
+        editedAsset.name = renderer.tempAssetPath;
 
-        (<AssetManagerDialogPlugin> context.panel).editedAsset = undefined;
+        renderer.editedAsset = undefined;
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -87,8 +94,8 @@ export class CancelEditControl extends PropController<any> {
     acceptedProps() { return [AssetManagerDialogProps.CancelEdit]; }
 
     click(context: PropContext<any>) {
-
-        (<AssetManagerDialogPlugin> context.panel).editedAsset = undefined;
+        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
+        renderer.editedAsset = undefined;
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }

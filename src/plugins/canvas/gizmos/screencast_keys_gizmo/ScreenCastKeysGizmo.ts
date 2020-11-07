@@ -1,25 +1,38 @@
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { GizmoPlugin, IGizmoFactory } from "../../../../core/plugin/IGizmo";
+import { IRenderer } from "../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
 import { UI_Row } from "../../../../core/ui_components/elements/UI_Row";
 
-export const ScreenCastKeysGizmoFactory: IGizmoFactory = {
-    
-    newInstance(plugin: AbstractCanvasPanel, registry: Registry) {
-        const gizmo = new GizmoPlugin(registry, 100, 100);
-        gizmo.setRenderer(renderer);
+export class ScreenCastKeysGizmoRenderer implements IRenderer {
+    private gizmo: GizmoPlugin;
 
-        plugin.keyboard.onKeyDown((event: IKeyboardEvent) => {
-            onKeyDown(event, gizmo, plugin, registry);
+    constructor(gizmo: GizmoPlugin) {
+        this.gizmo = gizmo;
+    }
 
-        });
-
-        return gizmo;
+    renderInto(row: UI_Row): void {
+        const box = row.box({});
+        box.width = this.gizmo.width + 'px' || '100px';
+        box.height = this.gizmo.height + 'px' || '100px';
+ 
+        if (this.gizmo.getData('lastExecutedKey')) {
+            const text = row.text();
+            text.css = {
+                color: 'black',
+                backgroundColor: 'white',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                padding: '0 5px',
+                height: '25px'
+            }
+            text.text = this.gizmo.getData('lastExecutedKey');
+        }    
     }
 }
 
-function onKeyDown(event: IKeyboardEvent, gizmo: GizmoPlugin, plugin: AbstractCanvasPanel, registry: Registry) {
+export function onScreenCastGizmoKeyDown(event: IKeyboardEvent, gizmo: GizmoPlugin, plugin: AbstractCanvasPanel, registry: Registry) {
     const ctrl = event.isCtrlDown ? 'Ctrl/Cmd' : undefined;
     const shift = event.isShiftDown ? 'Shift' : undefined;
     const alt =  event.isAltDown ? 'Alt' : undefined;
@@ -43,21 +56,4 @@ function onKeyDown(event: IKeyboardEvent, gizmo: GizmoPlugin, plugin: AbstractCa
         registry.services.render.reRender(plugin.region);
     }, 500);
     gizmo.setData('clearTimeoutRef', clearTimeoutRef);
-}
-
-function renderer(element: UI_Row, plugin: GizmoPlugin, registry: Registry) {
-    if (!plugin.getData('lastExecutedKey')) {
-        return;
-    }
-
-    const text = element.text();
-    text.css = {
-        color: 'black',
-        backgroundColor: 'white',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        padding: '0 5px',
-        height: '25px'
-    }
-    text.text = plugin.getData('lastExecutedKey');
 }

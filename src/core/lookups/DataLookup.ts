@@ -10,6 +10,6 @@ export class DataLookup {
     
     constructor(registry: Registry) {
         this.helper = new DataHelperLookup(registry);
-        this.view = new ViewLookup();
+        this.view = new ViewLookup(registry);
     }
 }

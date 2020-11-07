@@ -6,23 +6,6 @@ import { Camera3D } from '../../../../core/models/misc/camera/Camera3D';
 import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
 import { Bab_EngineFacade } from '../../../../core/engine/adapters/babylonjs/Bab_EngineFacade';
 import { Wrap_EngineFacade } from '../../../../core/engine/adapters/wrapper/Wrap_EngineFacade';
-import { GizmoPlugin, IGizmoFactory } from '../../../../core/plugin/IGizmo';
-
-export const AxisGizmoFactory: IGizmoFactory = {
-    
-    newInstance(plugin: AbstractCanvasPanel, registry: Registry) {
-        const gizmo = new GizmoPlugin(registry, 100, 100);
-        
-        // TODO: native gizmo, no html rendering (handle it in a better way)
-        gizmo.setRenderer(() => undefined);
-        gizmo.onMount(() => {
-            const axisGizmo = new AxisGizmo(plugin, registry);
-            axisGizmo.mount();
-        });
-
-        return gizmo;
-    }
-}
 
 export class AxisGizmo {
     private registry: Registry;

@@ -5,6 +5,7 @@ import { CommonToolController, SceneEditorToolController, CanvasContextDependent
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { MoveAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
@@ -50,8 +51,8 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new ScaleAxisTool(this, registry)
     ];
 
-    const canvas = new Canvas2dPanel(registry, this.region, SceneEditorPanelId, 'Scene editor');
-    canvas.setController(new FormController(this, registry, propControllers))
+    const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SceneEditorPanelId, 'Scene editor');
+    canvas.setController(new FormController(undefined, registry, propControllers))
     canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));
     tools.forEach(tool => canvas.addTool(tool));
 

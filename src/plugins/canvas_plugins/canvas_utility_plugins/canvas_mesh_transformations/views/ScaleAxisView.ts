@@ -2,16 +2,10 @@ import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { ChildView } from "../../../../../core/models/views/child_views/ChildView";
-import { ViewJson, View } from "../../../../../core/models/views/View";
-import { UI_Plugin } from "../../../../../core/plugin/UI_Plugin";
-import { ViewPlugin } from "../../../../../core/plugin/ViewPlugin";
+import { View, ViewJson } from "../../../../../core/models/views/View";
 import { Registry } from "../../../../../core/Registry";
-import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
-import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
-import { LineSegment } from "../../../../../utils/geometry/shapes/LineSegment";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { ScaleAxisToolId } from "../tools/ScaleAxisTool";
 
 export interface AxisViewJson extends ViewJson {
     point: string;

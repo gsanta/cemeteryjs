@@ -90,7 +90,7 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 
 export class KeyControl extends PropController {
     acceptedProps(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.stores.views[element.targetId];
+        const nodeView = context.registry.data.view.node[element.targetId];
         return (<NodeObj> nodeView.getObj()).getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
     }
 
@@ -99,12 +99,12 @@ export class KeyControl extends PropController {
     }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.stores.views.getById(element.targetId) as NodeView).getObj().getParam(element.key).val;
+        return (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj().getParam(element.key).val;
     }
 
     change(val, context: PropContext, element: UI_InputElement) {
         context.updateTempVal(val);
-        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
         nodeView.getObj().setParam(element.key, val);
         context.registry.services.history.createSnapshot();
 

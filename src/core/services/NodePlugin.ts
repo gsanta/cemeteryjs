@@ -41,19 +41,19 @@ class RemoveRelatedConnectionHook extends EmptyViewStoreHook {
     private removeRelatedConnections(nodeView: NodeView) {
         nodeView.joinPointViews.forEach(joinPointView => {
             if (joinPointView.connection) {
-                this.registry.stores.views.removeView(joinPointView.connection);
+                this.registry.data.view.node.removeView(joinPointView.connection);
             }
         });
     }
 
     private removeConnectionFromNode(nodeConnectionView: NodeConnectionView) {
         const joinPointView1 = nodeConnectionView.joinPoint1;
-        if (joinPointView1 && this.registry.stores.views.hasView(joinPointView1.parent.id)) {
+        if (joinPointView1 && this.registry.data.view.node.hasView(joinPointView1.parent.id)) {
             joinPointView1.connection = undefined;
         }
 
         const joinPointView2 = nodeConnectionView.joinPoint2;
-        if (joinPointView2 && this.registry.stores.views.hasView(joinPointView2.parent.id)) {
+        if (joinPointView2 && this.registry.data.view.node.hasView(joinPointView2.parent.id)) {
             joinPointView2.connection = undefined;
         }
     }

@@ -3,7 +3,6 @@ import { Registry } from '../../Registry';
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
 import { IDataExporter } from './IDataExporter';
-import { AssetObjExporter } from './AssetObjExporter';
 import { ViewJson } from '../../models/views/View';
 
 export interface ViewExporter {
@@ -20,7 +19,8 @@ export interface AppJson {
     }[];
 
     canvas: {[id: string]: ViewJson[]}
-    objs: ObjJson[];
+
+    objs: {[id: string]: ObjJson[]}
 
     [id: string] : any;
 }
@@ -31,9 +31,6 @@ export class ExportService {
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        this.exporters.push(new AssetObjExporter(registry));
-        // this.exporters.push(new SpriteSheetExporter(registry));
     }
 
     export(): string {
@@ -55,5 +52,6 @@ export class ExportService {
 
     private exportObjs(appJson: Partial<AppJson>) {
         this.registry.stores.objStore.exportInto(appJson);
+        this.registry.stores.assetStore.exportInto(appJson);
     }
 }

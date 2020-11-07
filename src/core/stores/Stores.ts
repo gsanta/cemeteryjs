@@ -16,7 +16,6 @@ export class Stores {
     levelStore: LevelStore;
     assetStore: AssetStore;
     objStore: ObjStore;
-    views: ViewStore;
 
     game: GameStore;
 
@@ -24,17 +23,14 @@ export class Stores {
         this.registry = registry;
         this.levelStore = new LevelStore();
         this.assetStore = new AssetStore(this.registry);
-        this.objStore = new ObjStore();
-        this.views = ViewStore.newInstance();
+        this.objStore = new ObjStore(this.registry);
 
-        this.views.setIdGenerator(new IdGenerator());
         this.assetStore.setIdGenerator(new IdGenerator());
         this.objStore.setIdGenerator(new IdGenerator());
         this.game = new GameStore(this.registry);
     }
 
     clear() {
-        this.views.clear();
         this.objStore.clear();
         this.assetStore.clear();
     }

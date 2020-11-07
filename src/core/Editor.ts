@@ -33,8 +33,10 @@ export class Editor {
 
         // hooks
         this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
-        this.registry.stores.views.addHook(new ViewLifeCycleHook(this.registry));
-        this.registry.stores.views.addHook(new AxisControlHook(this.registry));
+        this.registry.data.view.scene.addHook(new ViewLifeCycleHook(this.registry));
+        this.registry.data.view.node.addHook(new ViewLifeCycleHook(this.registry));
+        
+        this.registry.data.view.scene.addHook(new AxisControlHook(this.registry));
 
         // side panels
         registerAssetManagerPanel(this.registry);

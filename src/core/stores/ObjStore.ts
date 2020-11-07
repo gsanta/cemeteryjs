@@ -28,13 +28,13 @@ export class ObjStore {
     }
 
     exportInto(appjson: Partial<AppJson>) {
-        appjson.objs = this.objs.map(obj => obj.serialize());
+        appjson.objs.general = this.objs.map(obj => obj.serialize());
     }
 
     importFrom(appJson: AppJson) {
         // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
-        appJson.objs.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
-        appJson.objs.forEach(obj => {
+        appJson.objs.general.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
+        appJson.objs.general.forEach(obj => {
             if (obj.objType === AssetObjType) {
                 return;
             }
@@ -47,7 +47,7 @@ export class ObjStore {
             }
 
             objInstance.deserialize(obj, this.registry);
-            this.registry.stores.objStore.addObj(objInstance);
+            this.addObj(objInstance);
         });
     }
 

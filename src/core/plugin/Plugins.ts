@@ -1,10 +1,6 @@
-import * as axisGizmoPlugin from '../../plugins/canvas/gizmos/axis_gizmo/axisGizmoPlugin';
-import * as screenCastKeysGizmoPlugin from '../../plugins/canvas/gizmos/screencast_keys_gizmo/screenCastKeysGizmoPlugin';
 import { EngineHooks } from '../engine/hooks/EngineHooks';
 import { Registry } from '../Registry';
 import { AbstractCanvasPanel } from './AbstractCanvasPanel';
-import { FormController } from './controller/FormController';
-import { ToolController } from './controller/ToolController';
 import { UI_Panel, UI_Region } from './UI_Panel';
 import { UI_PluginFactory } from './UI_PluginFactory';
 
@@ -22,10 +18,6 @@ export class Plugins {
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        axisGizmoPlugin.register(this);
-        screenCastKeysGizmoPlugin.register(this);
-
         this.engineHooks = new EngineHooks();
     }
 

@@ -64,7 +64,7 @@ export class PathController extends PropController<string> {
     }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
+        const nodeView = context.registry.data.view.scene.getById(element.targetId) as NodeView;
         return nodeView.getObj().getParam('path').val;
     }
 

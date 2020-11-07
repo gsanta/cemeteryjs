@@ -24,7 +24,7 @@ export class SphereTool extends RectangleTool {
             diameter: 5,
         }
      
-        const meshView: MeshView = <MeshView> this.registry.services.viewService.createView(MeshViewType);
+        const meshView: MeshView = <MeshView> this.registry.data.view.scene.createView(MeshViewType);
         meshView.setObj(meshObj);
         meshView.setBounds(rect);
         meshObj.meshAdapter = this.registry.engine.meshes;

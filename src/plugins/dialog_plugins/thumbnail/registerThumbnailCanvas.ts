@@ -12,6 +12,7 @@ import { CommonToolController, SceneEditorToolController, CanvasContextDependent
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
+import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
@@ -26,7 +27,7 @@ export function registerThumbnailCanvas(registry: Registry) {
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {
-    const canvas = new Canvas3dPanel(registry, this.region, ThumbnailCanvasId, 'Thumbnail canvas');
+    const canvas = new Canvas3dPanel(registry, UI_Region.Dialog, ThumbnailCanvasId, 'Thumbnail canvas');
     
     const propControllers = [
         new ThumbnailCreateControl(),
@@ -35,10 +36,10 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const tools = [
-        new CameraTool(this, registry)
+        new CameraTool(canvas, registry)
     ];
 
-    const engine = new Bab_EngineFacade(this.registry);
+    const engine = new Bab_EngineFacade(registry);
     canvas.engine = engine;
     canvas.setController(new FormController(canvas, registry, propControllers));
     canvas.setCamera(engine.getCamera());
@@ -46,15 +47,15 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
 
 
     canvas.onMounted(() => {
-        const meshView = this.registry.stores.views.getOneSelectedView() as MeshView;
+        const meshView = registry.data.view.scene.getOneSelectedView() as MeshView;
 
-        engine.setup(this.panel.htmlElement.getElementsByTagName('canvas')[0]);
+        engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]);
 
         setTimeout(() => {
-            this.engine.meshes.createInstance(meshView.getObj())
+            canvas.engine.meshes.createInstance(meshView.getObj())
                 .then(() => {
-                    this.engine.meshes.setRotation(meshView.getObj(), 0);
-                    this.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
+                    canvas.engine.meshes.setRotation(meshView.getObj(), 0);
+                    canvas.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
                 });
         }, 500);
     });

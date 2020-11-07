@@ -21,7 +21,7 @@ export class YAxisHook implements IMeshHook {
 
     hookCreateInstance(meshObj: MeshObj): void {
         const realDimensions = this.registry.engine.meshes.getDimensions(meshObj);
-        const meshView = this.registry.stores.views.getByObjId(meshObj.id);
+        const meshView = this.registry.data.view.scene.getByObjId(meshObj.id);
         const rect = meshView.getBounds().clone();
         rect.setWidth(realDimensions.x);
         rect.setHeight(realDimensions.y);
@@ -42,7 +42,7 @@ export class SpriteYAxisHook implements ISpriteHook {
 }
 
 function setPosition(registry: Registry, meshObj: SpriteObj | MeshObj, newPos: Point) {
-    const meshView = registry.stores.views.getByObjId(meshObj.id);
+    const meshView = registry.data.view.scene.getByObjId(meshObj.id);
 
     if (!meshView) { return; }
 

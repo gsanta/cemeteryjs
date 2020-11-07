@@ -1,14 +1,12 @@
-import { Gizmo } from 'babylonjs';
 import { Point } from '../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
-import { ViewStore } from '../stores/ViewStore';
+import { UI_Element } from '../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
 import { FormController, PropContext, PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
-import { ICanvasRenderer } from './ICanvasRenderer';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
@@ -57,6 +55,7 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
         this.id = id;
         this.displayName = displayName;
 
+        this.toolController = new ToolController(this, registry);
         this.keyboard = new KeyboardService(registry);
     }
 
@@ -80,9 +79,7 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
         return this.gizmos;
     }
 
-    destroy(): void {
-        this.registry.stores.views.clearSelection();
-    }
+    destroy(): void {}
 
     resize(): void {
         const screenSize = getScreenSize(this.id);
@@ -116,8 +113,8 @@ export const ZoomInProp = 'zoom-in';
 export class ZoomInController extends PropController {
     acceptedProps() { return [ZoomInProp]; }
 
-    click(context: PropContext) {
-        const cameraTool = <CameraTool> context.plugin.tool.getToolById(CameraToolId);
+    click(context: PropContext, element: UI_Element) {
+        const cameraTool = <CameraTool> element.canvasPanel.toolController.getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
@@ -126,8 +123,8 @@ export const ZoomOutProp = 'zoom-out';
 export class ZoomOutController extends PropController {
     acceptedProps() { return [ZoomOutProp]; }
 
-    click(context: PropContext) {
-        const cameraTool = <CameraTool> context.plugin.getToolController().getToolById(CameraToolId);
+    click(context: PropContext, element: UI_Element) {
+        const cameraTool = <CameraTool> element.canvasPanel.toolController.getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }

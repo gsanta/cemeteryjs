@@ -46,7 +46,7 @@ export class JoinTool extends PointerTool {
             }
 
             const connectionObj = <NodeConnectionObj> this.registry.services.objService.createObj(NodeConnectionObjType);
-            const connectionView = <NodeConnectionView> this.registry.services.viewService.createView(NodeConnectionViewType);
+            const connectionView = <NodeConnectionView> this.registry.data.view.node.createView(NodeConnectionViewType);
             connectionView.setObj(connectionObj);
             joinPoint1.connection = connectionView;
             joinPoint2.connection = connectionView;
@@ -60,7 +60,7 @@ export class JoinTool extends PointerTool {
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
             connectionView.setPoint2(joinPoint2.getAbsolutePosition());
             this.registry.stores.objStore.addObj(connectionObj);
-            this.registry.stores.views.addView(connectionView);
+            this.registry.data.view.node.addView(connectionView);
 
             this.registry.services.history.createSnapshot();
         }

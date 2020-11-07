@@ -7,7 +7,7 @@ import { NullTool } from "../../../../../core/plugin/tools/NullTool";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { UI_Plugin } from '../../../../../core/plugin/UI_Plugin';
+import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 
 export const MoveAxisToolId = 'move-axis-tool';
 
@@ -16,8 +16,8 @@ export class MoveAxisTool extends NullTool {
     private downView: MoveAxisView;
     private hoveredView: MoveAxisView;
 
-    constructor(plugin: UI_Plugin, registry: Registry) {
-        super(MoveAxisToolId, plugin, registry);
+    constructor(panel: AbstractCanvasPanel, registry: Registry) {
+        super(MoveAxisToolId, panel, registry);
     }
 
     over(view: View) {

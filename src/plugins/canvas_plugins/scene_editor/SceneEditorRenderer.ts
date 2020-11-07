@@ -118,9 +118,9 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tooltip.label = 'Redo';
 
         const views = [
-            ...this.registry.stores.views.getViewsByType(SpriteViewType),
-            ...this.registry.stores.views.getViewsByType(MeshViewType),
-            ...this.registry.stores.views.getViewsByType(PathViewType)
+            ...this.registry.data.view.scene.getViewsByType(SpriteViewType),
+            ...this.registry.data.view.scene.getViewsByType(MeshViewType),
+            ...this.registry.data.view.scene.getViewsByType(PathViewType)
         ];
 
         sortViewsByLayer(views);

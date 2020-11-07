@@ -3,7 +3,7 @@ import { UI_Panel } from "../plugin/UI_Panel";
 
 export class PanelHelper {
     private _dialogPanel: UI_Panel;
-    private _sidebarPanels: UI_Panel[];
+    private _sidebarPanels: UI_Panel[] = [];
     private _panel1: AbstractCanvasPanel;
     private _panel2: AbstractCanvasPanel;
 

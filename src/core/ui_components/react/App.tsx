@@ -13,9 +13,9 @@ import { SidePanelComponent } from './SidePanelComponent';
 import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService';
 import styled from 'styled-components';
-import { GameViewerPluginId } from '../../../plugins/canvas_plugins/game_viewer/GameViewerPlugin';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 import { UI_Region } from '../../plugin/UI_Panel';
+import { GameViewerPanelId } from '../../../plugins/canvas_plugins/game_viewer/registerGameViewer';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -73,7 +73,7 @@ export class App extends React.Component<{}, AppState> {
         });
 
 
-        setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPluginId}`)), 100);
+        setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPanelId}`)), 100);
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
             console.log('body focus')
