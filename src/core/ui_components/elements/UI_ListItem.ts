@@ -14,7 +14,7 @@ export class UI_ListItem extends UI_Element {
     dndStart(registry: Registry) {
         (<AbstractCanvasPanel> this.dropTargetPlugin).dropItem = this;
         // TODO find a better design, this is not ideal at all
-        registry.plugins.setHoveredPlugin(<AbstractCanvasPanel> this.dropTargetPlugin);
+        registry.ui.helper.hoveredPanel = <AbstractCanvasPanel> this.dropTargetPlugin;
         this.controller && this.controller.dndStart(this, this.listItemId);
     }
 

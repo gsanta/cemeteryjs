@@ -63,6 +63,8 @@ export class UI_Factory {
     static row(parent: UI_Container, config: UI_ElementConfig): UI_Row {
         const element = new UI_Row({controller: config.controller || parent.controller, ...config});
 
+        element.canvasPanel = parent.canvasPanel;
+
         parent.children.push(element);
 
         return element;
@@ -71,6 +73,7 @@ export class UI_Factory {
     static column(parent: UI_Container, config: UI_ElementConfig): UI_Column {
         const element = new UI_Column({controller: config.controller || parent.controller, ...config});
 
+        element.canvasPanel = parent.canvasPanel;
         parent.children.push(element);
 
         return element;
@@ -79,21 +82,26 @@ export class UI_Factory {
     static box(parent: UI_Container, config: UI_ElementConfig): UI_Box {
         const element = new UI_Box({controller: config.controller || parent.controller, ...config});
         
+        element.canvasPanel = parent.canvasPanel;
         parent.children.push(element);
 
         return element;
     }
 
-    static htmlCanvas(parent: UI_Container, config: UI_ElementConfig): UI_HtmlCanvas {
+    static htmlCanvas(parent: UI_Container, config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_HtmlCanvas {
         const element = new UI_HtmlCanvas({controller: config.controller || parent.controller, ...config});
         parent.children.push(element);
 
+        element.canvasPanel = config.canvasPanel;
+
         return element;
     }
 
-    static svgCanvas(parent: UI_Container, config: UI_ElementConfig): UI_SvgCanvas {
+    static svgCanvas(parent: UI_Container, config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_SvgCanvas {
         const element = new UI_SvgCanvas({controller: config.controller || parent.controller, ...config});
         parent.children.push(element);
+
+        element.canvasPanel = config.canvasPanel;
 
         return element;
     }
@@ -102,6 +110,7 @@ export class UI_Factory {
         const element = new UI_DropLayer({controller: config.controller || parent.controller, ...config});
 
         parent._dropLayer = element;
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -110,6 +119,7 @@ export class UI_Factory {
         const element = new UI_GizmoLayer({controller: config.controller || parent.controller, ...config});
 
         parent._gizmoLayer = element;
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -119,6 +129,7 @@ export class UI_Factory {
         const element = new UI_Accordion({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -127,6 +138,7 @@ export class UI_Factory {
         const element = new UI_Text({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -135,6 +147,7 @@ export class UI_Factory {
         const element = new UI_Image({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -143,6 +156,7 @@ export class UI_Factory {
         const element = new UI_Icon({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -157,6 +171,8 @@ export class UI_Factory {
         }
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
+
         return element;
     }
 
@@ -164,6 +180,7 @@ export class UI_Factory {
         const element = new UI_Button({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -172,6 +189,7 @@ export class UI_Factory {
         const element = new UI_Select({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -180,6 +198,7 @@ export class UI_Factory {
         const element = new UI_FileUpload({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -189,6 +208,7 @@ export class UI_Factory {
         element.type = 'text';
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -197,6 +217,7 @@ export class UI_Factory {
         const element = new UI_GridSelect({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -211,6 +232,7 @@ Id
         element.data = parent.data;
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
     
         return element;
     }
@@ -222,6 +244,7 @@ Id
         element.data = parent.data;
     
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
     
         return element;
     }
@@ -233,6 +256,7 @@ Id
         element.data = parent.data;
     
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
     
         return element;
     }
@@ -244,6 +268,7 @@ Id
         element.data = parent.data;
     
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
     
         return element;
     }
@@ -255,6 +280,7 @@ Id
         element.data = parent.data;
     
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
     
         return element;
     }
@@ -266,7 +292,8 @@ Id
         element.data = parent.data;
     
         parent.children.push(element);
-    
+        element.canvasPanel = parent.canvasPanel;
+
         return element;
     }
 
@@ -277,6 +304,7 @@ Id
         element.data = parent.data;
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
     
         return element;
     }
@@ -288,6 +316,7 @@ Id
         element.data = parent.data;
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
         
         return element;
     }
@@ -296,6 +325,7 @@ Id
         const element = new UI_SvgDefs({ controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
         
         return element;
     }
@@ -304,6 +334,7 @@ Id
         const element = new UI_SvgMarker({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
         
         return element;
     }
@@ -315,6 +346,7 @@ Id
         element.data = parent.data;
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
         
         return element;
     }
@@ -325,6 +357,7 @@ Id
         const element = new UI_Toolbar({controller: config.controller || parent.controller, ...config});
 
         parent._toolbar = element;
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -333,6 +366,7 @@ Id
         const element = new UI_ToolbarDropdown({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -341,6 +375,7 @@ Id
         const element = new UI_ToolDropdownHeader({controller: config.controller || parent.controller, ...config});
 
         parent._header = element;
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -349,6 +384,7 @@ Id
         const element = new UI_Tool({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -357,6 +393,7 @@ Id
         const element = new UI_ActionIcon({controller: config.controller || parent.controller, ...config });
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -365,6 +402,7 @@ Id
         const element = new UI_IconSeparator({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -375,6 +413,7 @@ Id
         const element = new UI_Table({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -385,6 +424,7 @@ Id
         (config && config.anchorId) && (element.anchorId = config.anchorId);
 
         parent._tooltip = element;
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -393,6 +433,7 @@ Id
         const element = new UI_TableColumn({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -402,6 +443,7 @@ Id
         element.isHeader = config.isHeader;
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }
@@ -410,6 +452,7 @@ Id
         const element = new UI_TableRowGroup({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
 
         return element;
     }

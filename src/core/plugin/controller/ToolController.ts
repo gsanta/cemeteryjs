@@ -166,6 +166,10 @@ export class ToolController {
             this.tools.push(tool);
         }
 
+        if (!this.selectedTool) {
+            this.selectedTool = tool;
+        }
+
         this.toolMap.set(tool.id, tool);
     }
 

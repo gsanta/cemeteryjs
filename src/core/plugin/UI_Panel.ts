@@ -59,7 +59,6 @@ export class UI_Panel {
     private onUnmountedFunc: () => void;
 
     getFormController(controllerId: string): FormController { return undefined; }
-    getToolController(): ToolController { return undefined; }
 
     protected registry: Registry;
 

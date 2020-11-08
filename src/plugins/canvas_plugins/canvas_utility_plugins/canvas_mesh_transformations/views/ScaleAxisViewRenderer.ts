@@ -17,7 +17,7 @@ export class ScaleAxisViewRenderer implements ViewRenderer {
     }
     
     renderInto(canvas: UI_SvgCanvas, scaleView: ScaleAxisView, canvasPanel: AbstractCanvasPanel): void {
-        if (!canvasPanel.getToolController().getToolById(ScaleAxisToolId).isSelected) {
+        if (!canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected) {
             return null;
         }
 

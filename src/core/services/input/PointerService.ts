@@ -42,7 +42,7 @@ export class PointerService {
     }
 
     pointerDown(controller: ToolController, e: IPointerEvent, element: UI_Element): void {
-        if (!this.registry.plugins.getHoveredPlugin()) { return; }
+        if (!this.registry.ui.helper.hoveredPanel) { return; }
         if (e.button !== 'left') { return }
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
@@ -53,7 +53,7 @@ export class PointerService {
     }
 
     pointerMove(controller: ToolController, e: IPointerEvent, element: UI_Element): void {
-        if (!this.registry.plugins.getHoveredPlugin()) { return; }
+        if (!this.registry.ui.helper.hoveredPanel) { return; }
 
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
@@ -91,15 +91,15 @@ export class PointerService {
     }
 
     pointerLeave(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element): void {
-        if (!this.registry.plugins.getHoveredPlugin()) { return; }
+        if (!this.registry.ui.helper.hoveredPanel) { return; }
             this.determineTool(controller, element).out(data);
 
-            this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
+            this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
             this.hoveredView = undefined;
     }
 
     pointerEnter(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element) {
-        if (!this.registry.plugins.getHoveredPlugin()) { return; }
+        if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.hoveredView = data;
 
         this.registry.services.hotkey.executeHotkey({
@@ -109,7 +109,7 @@ export class PointerService {
         const view = controller.controlledView || data;
         this.determineTool(controller, element).over(view);
 
-        this.registry.services.render.reRender(this.registry.plugins.getHoveredPlugin().region);
+        this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
     }
 
     pointerWheel(controller: ToolController, e: IPointerEvent): void {
@@ -145,12 +145,12 @@ export class PointerService {
     }
     
     private getScreenPoint(point: Point): Point {
-        const offset = this.registry.plugins.getHoveredPlugin().getOffset();
+        const offset = this.registry.ui.helper.hoveredPanel.getOffset();
         return new Point(point.x - offset.x, point.y - offset.y);
     }
     
     private getCanvasPoint(point: Point): Point {
-        const offset = this.registry.plugins.getHoveredPlugin().getOffset();
-        return this.registry.plugins.getHoveredPlugin().getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+        const offset = this.registry.ui.helper.hoveredPanel.getOffset();
+        return this.registry.ui.helper.hoveredPanel.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
     }
 }

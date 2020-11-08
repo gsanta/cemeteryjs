@@ -6,6 +6,7 @@ import { View, ViewJson } from "../../../../../core/models/views/View";
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { ScaleAxisViewRenderer } from "./ScaleAxisViewRenderer";
 
 export interface AxisViewJson extends ViewJson {
     point: string;
@@ -24,9 +25,11 @@ export class ScaleAxisView extends ChildView {
     axis: CanvasAxis;
     readonly parent: View;
 
-    constructor() {
+    constructor(registry: Registry) {
         super();
         this.bounds = new Rectangle(new Point(0, 0), new Point(0, 0));
+
+        this.renderer = new ScaleAxisViewRenderer(registry);
     }
 
     getObj(): IObj {

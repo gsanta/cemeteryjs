@@ -50,7 +50,7 @@ export class HotkeyService {
     executeHotkey(hotkeyEvent: IHotkeyEvent): boolean {
         const executedHotkeys = this.hotkeys.filter(h => h.hotkey(hotkeyEvent));
 
-        if (this.registry.plugins.getHoveredPlugin()) {
+        if (this.registry.ui.helper.hoveredPanel) {
             // TODO it should also return with the executed hotkeys
             this.registry.ui.helper.hoveredPanel.toolController.getAll().filter(tool => tool.hotkey(hotkeyEvent));
         }

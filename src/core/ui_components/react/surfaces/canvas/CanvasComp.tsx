@@ -48,7 +48,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
             <div 
                 ref={this.ref} id={this.props.element.canvasPanel.id}
                 style={{
-                    cursor: this.props.element.canvasPanel.getToolController().getActiveTool().getCursor(),
+                    cursor: this.props.element.canvasPanel.toolController.getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
                     height: this.props.element.height ? this.props.element.height :'100%',
                     position: 'relative'

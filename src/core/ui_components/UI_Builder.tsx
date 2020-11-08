@@ -84,6 +84,7 @@ import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
 import { ButtonToolbar } from 'react-bootstrap';
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 
 export class UI_Builder {
 
@@ -115,6 +116,20 @@ export class UI_Builder {
             panel.renderer.renderInto(dialog);
             
             return this.buildElement(dialog);
+        } else if (panel.region === UI_Region.Canvas1) {
+            const layout = UI_Factory.layout({});
+            const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel });
+            
+            panel.renderer.renderInto(canvas);
+
+            return this.buildElement(layout);
+        } else if (panel.region === UI_Region.Canvas2) {
+            const layout = UI_Factory.layout({});
+            const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel });
+            
+            panel.renderer && panel.renderer.renderInto(canvas);
+
+            return this.buildElement(layout);
         } else {
             const layout = UI_Factory.layout({});
             

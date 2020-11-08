@@ -35,7 +35,7 @@ export class JoinTool extends PointerTool {
     }
 
     draggedUp() {
-        this.panel.getToolController().removePriorityTool(this.id);
+        this.panel.toolController.removePriorityTool(this.id);
 
 
         if (this.checkConnectionValidity()) {
@@ -84,7 +84,7 @@ export class JoinTool extends PointerTool {
     out(view: View) {
         super.out(view);
         if (!this.registry.services.pointer.isDown) {
-            this.panel.getToolController().removePriorityTool(this.id);
+            this.panel.toolController.removePriorityTool(this.id);
         }
     }
 

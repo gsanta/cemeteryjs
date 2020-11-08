@@ -87,9 +87,9 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
         this.renderFunc && this.renderFunc();
     }
 
-    over(): void { this.registry.plugins.setHoveredPlugin(this) }
+    over(): void { this.registry.ui.helper.hoveredPanel = this }
     out(): void {
-        this.registry.plugins.removeHoveredPlugin(this);
+        this.registry.ui.helper.hoveredPanel = undefined;
         this.registry.services.pointer.hoveredView = undefined;
     }
 

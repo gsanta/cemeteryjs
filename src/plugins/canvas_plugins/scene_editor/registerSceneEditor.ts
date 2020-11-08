@@ -1,3 +1,4 @@
+import { MeshView, MeshViewType } from "../../../core/models/views/MeshView";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2DPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
@@ -10,6 +11,8 @@ import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { MoveAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 import { ScaleAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
+import { MoveAxisView, MoveAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
+import { ScaleAxisView, ScaleAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./SceneEditorControllers";
 import { SceneEditorRenderer } from "./SceneEditorRenderer";
 import { CubeTool } from "./tools/CubeTool";
@@ -57,6 +60,10 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     canvas.setController(new FormController(undefined, registry, propControllers))
     canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));
     tools.forEach(tool => canvas.addTool(tool));
+
+    registry.data.view.scene.registerViewType(MeshViewType, () => new MeshView());
+    registry.data.view.scene.registerViewType(MoveAxisViewType, () => new MoveAxisView(registry));
+    registry.data.view.scene.registerViewType(ScaleAxisViewType, () => new ScaleAxisView(registry));
 
     return canvas;
 }

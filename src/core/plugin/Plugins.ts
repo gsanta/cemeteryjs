@@ -21,22 +21,6 @@ export class Plugins {
         this.engineHooks = new EngineHooks();
     }
 
-    private hoveredView: AbstractCanvasPanel;
-    
-    setHoveredPlugin(view: AbstractCanvasPanel) {
-        this.hoveredView = view;
-    }
-
-    removeHoveredPlugin(view: AbstractCanvasPanel) {
-        if (this.hoveredView === view) {
-            this.hoveredView = undefined;
-        }
-    }
-
-    getHoveredPlugin(): AbstractCanvasPanel {
-        return this.hoveredView;
-    }
-
     getActivePlugins(region?: UI_Region): UI_Panel[] {
         if (region) {
             return this.activePanels.filter(activePlugin => activePlugin.region === region);

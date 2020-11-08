@@ -6,6 +6,7 @@ import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 import { Registry } from '../../Registry';
 import { UI_GizmoLayer } from './gizmo/UI_GizmoLayer';
+import { FormController } from '../../plugin/controller/FormController';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
@@ -16,6 +17,11 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     width: string;
     height: string;
 
+    constructor(config: {controller: FormController, canvasPanel: AbstractCanvasPanel, key?: string, target?: string, uniqueId?: string}) {
+        super(config);
+
+        this.canvasPanel = this.canvasPanel;
+    }
     mouseOver(registry: Registry, e: MouseEvent) {
         // super.mouseOver(e);
         this.canvasPanel.over();

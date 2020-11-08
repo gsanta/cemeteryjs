@@ -18,7 +18,7 @@ export class DeleteTool extends PointerTool {
 
     drag() {
         this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
-        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
+        this.registry.services.render.scheduleRendering(this.registry.ui.helper.hoveredPanel.region);
     }
 
     click() {
@@ -53,7 +53,7 @@ export class DeleteTool extends PointerTool {
 
     leave() {
         this.rectangleSelection = undefined;
-        this.registry.services.render.scheduleRendering(this.registry.plugins.getHoveredPlugin().region);
+        this.registry.services.render.scheduleRendering(this.registry.ui.helper.hoveredPanel.region);
     }
 
     eraseAll() {
@@ -68,7 +68,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.panel.getToolController().setSelectedTool(this.id)
+            this.panel.toolController.setSelectedTool(this.id)
             
             return true;
         }

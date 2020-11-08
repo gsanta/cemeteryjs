@@ -22,13 +22,13 @@ export class MoveAxisTool extends NullTool {
 
     over(view: View) {
         this.hoveredView = <MoveAxisView> view;
-        this.panel.getToolController().setScopedTool(this.id);
+        this.panel.toolController.setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     out(view: View) {
         if (!this.downView) {
-            this.panel.getToolController().removeScopedTool(this.id);
+            this.panel.toolController.removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.panel.region);
         }
     }
@@ -68,7 +68,7 @@ export class MoveAxisTool extends NullTool {
 
     up() {
         if (this.registry.services.pointer.hoveredView !== this.downView) {
-            this.panel.getToolController().removeScopedTool(this.id);
+            this.panel.toolController.removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.panel.region);
         }
         this.downView = undefined;

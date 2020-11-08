@@ -17,7 +17,7 @@ export class GameViewerToolController extends PropController<any> {
     acceptedProps() { return [GameToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        element.canvasPanel.getToolController().setSelectedTool(element.key);
+        element.canvasPanel.toolController.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }

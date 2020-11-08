@@ -5,7 +5,7 @@ import { UI_SvgCanvas } from './UI_SvgCanvas';
 import { UI_Factory } from '../UI_Factory';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_ElementConfig } from "./UI_Element";
-import { UI_GizmoLayer } from "./gizmo/UI_GizmoLayer";
+import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 
 const elementType = UI_ElementType.Layout;
 
@@ -20,11 +20,11 @@ export class UI_Layout extends UI_Container {
         return UI_Factory.accordion(this, {});
     }
 
-    svgCanvas(config: UI_ElementConfig): UI_SvgCanvas {
+    svgCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_SvgCanvas {
         return UI_Factory.svgCanvas(this, config);
     }
 
-    htmlCanvas(): UI_HtmlCanvas {
-        return UI_Factory.htmlCanvas(this, {});
+    htmlCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_HtmlCanvas {
+        return UI_Factory.htmlCanvas(this, config);
     }
 }
