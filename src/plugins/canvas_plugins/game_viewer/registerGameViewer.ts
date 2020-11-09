@@ -13,6 +13,7 @@ import { AxisGizmo } from "../../canvas/gizmos/axis_gizmo/AxisGizmo";
 import { onScreenCastGizmoKeyDown, ScreenCastKeysGizmoRenderer } from "../../canvas/gizmos/screencast_keys_gizmo/ScreenCastKeysGizmo";
 import { GameViewerToolController, StopController } from "./GameViewerControllers";
 import { PlayController } from "./GameViewerProps";
+import { GameViewerRenderer } from "./GameViewerRenderer";
 import { GameTool } from "./tools/GameTool";
 (<any> window).earcut = require('earcut');
 
@@ -21,7 +22,7 @@ export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
 export function registerGameViewer(registry: Registry) {
     const canvas = createCanvas(registry);
-    registerGizmos(canvas, registry);
+    // registerGizmos(canvas, registry);
 
     registry.ui.canvas.registerCanvas(canvas);
 }
@@ -65,6 +66,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     
     canvas.setController(new FormController(canvas, registry, propControllers));
     canvas.setCamera(registry.engine.getCamera());
+    canvas.renderer = new GameViewerRenderer(registry, canvas);
     tools.forEach(tool => canvas.addTool(tool));
 
     canvas.onMounted(() => {

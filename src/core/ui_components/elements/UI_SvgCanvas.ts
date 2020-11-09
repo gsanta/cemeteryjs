@@ -7,6 +7,7 @@ import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 import { Registry } from '../../Registry';
 import { UI_GizmoLayer } from './gizmo/UI_GizmoLayer';
 import { FormController } from '../../plugin/controller/FormController';
+import { UI_ElementConfig } from './UI_Element';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
@@ -44,7 +45,7 @@ export class UI_SvgCanvas extends UI_SvgGroup {
         return UI_Factory.toolbar(this, {});
     }
 
-    dropLayer(config?: { key: string}): UI_DropLayer {
+    dropLayer(config: UI_ElementConfig): UI_DropLayer {
         return UI_Factory.dropLayer(this, config);
     }
 

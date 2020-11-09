@@ -1,11 +1,18 @@
 import { IRenderer } from "../../../core/plugin/IRenderer";
+import { UI_Panel } from "../../../core/plugin/UI_Panel";
 import { UI_Container } from "../../../core/ui_components/elements/UI_Container";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { LayoutSettingsProps } from "./LayoutSettingsProps";
 
 export class LayoutSettingsRenderer implements IRenderer<UI_Layout> {
+    private panel: UI_Panel;
+
+    constructor(panel: UI_Panel) {
+        this.panel = panel;
+    }
+
     renderInto(layout: UI_Layout): void {
-        let row = layout.row({ key: LayoutSettingsProps.Layout });
+        let row = layout.row({ key: LayoutSettingsProps.Layout, controller: this.panel.controller });
 
         const layoutSelect = row.select({key: LayoutSettingsProps.Layout});
         layoutSelect.layout = 'horizontal';

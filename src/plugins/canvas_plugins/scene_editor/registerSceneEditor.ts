@@ -30,6 +30,8 @@ export function registerSceneEditor(registry: Registry) {
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {
+    const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SceneEditorPanelId, 'Scene editor');
+
     const propControllers = [
         new ZoomInController(),
         new ZoomOutController(),
@@ -43,19 +45,18 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const tools = [
-        new MeshTool(this, registry.data.view.scene, registry),
-        new SpriteTool(this, registry.data.view.scene, registry),
-        new PathTool(this, registry.data.view.scene, registry),
-        new SelectTool(this, registry.data.view.scene, registry),
-        new DeleteTool(this, registry.data.view.scene, registry),
-        new CameraTool(this, registry),
-        new MoveAxisTool(this, registry),
-        new CubeTool(this, registry.data.view.scene, registry),
-        new SphereTool(this, registry.data.view.scene, registry),
-        new ScaleAxisTool(this, registry)
+        new MeshTool(canvas, registry.data.view.scene, registry),
+        new SpriteTool(canvas, registry.data.view.scene, registry),
+        new PathTool(canvas, registry.data.view.scene, registry),
+        new SelectTool(canvas, registry.data.view.scene, registry),
+        new DeleteTool(canvas, registry.data.view.scene, registry),
+        new CameraTool(canvas, registry),
+        new MoveAxisTool(canvas, registry),
+        new CubeTool(canvas, registry.data.view.scene, registry),
+        new SphereTool(canvas, registry.data.view.scene, registry),
+        new ScaleAxisTool(canvas, registry)
     ];
 
-    const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SceneEditorPanelId, 'Scene editor');
     canvas.renderer = new SceneEditorRenderer(registry, canvas);
     canvas.setController(new FormController(undefined, registry, propControllers))
     canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));

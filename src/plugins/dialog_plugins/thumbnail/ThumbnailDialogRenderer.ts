@@ -27,7 +27,7 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
         row = dialog.row({key: '2'});
         row.vAlign = 'center';
 
-        const canvas = row.htmlCanvas();
+        const canvas = row.htmlCanvas({canvasPanel: this.canvas});
         canvas.width = '300px';
         canvas.height = '300px';
 

@@ -2,7 +2,7 @@ import { AbstractCanvasPanel, ZoomInProp, ZoomOutProp } from "../../../core/plug
 import { ICanvasRenderer } from "../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../core/plugin/tools/CameraTool";
 import { Registry } from "../../../core/Registry";
-import { UI_SvgCanvas } from "../../../core/ui_components/elements/UI_SvgCanvas";
+import { UI_HtmlCanvas } from "../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps } from "./GameViewerProps";
 import { GameToolId } from "./tools/GameTool";
 
@@ -15,10 +15,10 @@ export class GameViewerRenderer implements ICanvasRenderer {
         this.registry = registry;
     }
 
-    renderInto(svgCanvas: UI_SvgCanvas): void {  
+    renderInto(htmlCanvas: UI_HtmlCanvas): void { 
         const selectedTool = this.canvas.toolController.getSelectedTool();
 
-        const toolbar = svgCanvas.toolbar();
+        const toolbar = htmlCanvas.toolbar();
 
         let tool = toolbar.tool({key: CameraToolId});
         tool.isActive = selectedTool.id === CameraToolId;
@@ -67,8 +67,8 @@ export class GameViewerRenderer implements ICanvasRenderer {
         tooltip.label = 'Stop';
 
 
-        const gizmoLayer = svgCanvas.gizmoLayer();
+        const gizmoLayer = htmlCanvas.gizmoLayer({});
         
-        this.canvas.getGizmos().forEach(gizmo => gizmo.renderer.renderInto(gizmoLayer));
+        // this.canvas.getGizmos().forEach(gizmo => gizmo.renderer.renderInto(gizmoLayer));
     }
 }

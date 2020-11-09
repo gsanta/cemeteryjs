@@ -11,6 +11,7 @@ import { SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { NodeEditorRenderer } from "./NodeEditorRenderer";
 import { JoinTool } from "./tools/JoinTool";
 
 export const NodeEditorPanelId = 'node-editor-panel'; 
@@ -39,7 +40,8 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     canvas.setController(new FormController(canvas, registry, propControllers));
-    canvas.setCamera(cameraInitializer(NodeEditorPanelId, registry))
+    canvas.setCamera(cameraInitializer(NodeEditorPanelId, registry));
+    canvas.renderer = new NodeEditorRenderer(registry, canvas);
     tools.forEach(tool => canvas.addTool(tool));
 
     return canvas;

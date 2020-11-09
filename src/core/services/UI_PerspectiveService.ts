@@ -1,9 +1,11 @@
 import Split from 'split.js';
 import { GameViewerPanelId } from '../../plugins/canvas_plugins/game_viewer/registerGameViewer';
 import { NodeEditorPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeEditor';
+import { NodeListPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeListPanel';
 import { ObjectSettingsPanelId } from '../../plugins/canvas_plugins/scene_editor/controllers/registerObjectSettingsPanel';
 import { SceneEditorPanelId } from '../../plugins/canvas_plugins/scene_editor/registerSceneEditor';
 import { FileSettingsPanelId } from '../../plugins/sidepanel_plugins/file_settings/registerFileSettingsPanel';
+import { LayoutSettingsPanelId } from '../../plugins/sidepanel_plugins/layout_settings/registerLayoutSettingsPanel';
 import { UI_Region } from '../plugin/UI_Panel';
 import { Registry } from '../Registry';
 
@@ -132,7 +134,8 @@ export class UI_PerspectiveService {
             canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [
                 FileSettingsPanelId,
-                ObjectSettingsPanelId
+                LayoutSettingsPanelId,
+                ObjectSettingsPanelId,
             ]
         });
 
@@ -142,7 +145,7 @@ export class UI_PerspectiveService {
             canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [
                 // LevelSettingsPluginId,
-                NodeEditorPanelId
+                NodeListPanelId
             ]
         });
     }

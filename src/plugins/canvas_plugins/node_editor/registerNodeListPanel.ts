@@ -17,7 +17,7 @@ export function registerNodeListPanel(registry: Registry) {
 function createPanel(registry: Registry): UI_Panel {
 
     const panel = new UI_Panel(registry, UI_Region.Sidepanel, NodeListPanelId, 'Node List');
-    panel.renderer = new NodeListPanelRenderer(registry);
+    panel.renderer = new NodeListPanelRenderer(registry, panel);
 
     const propControllers = [
         new DragNodeController()

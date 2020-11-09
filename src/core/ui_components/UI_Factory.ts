@@ -64,6 +64,7 @@ export class UI_Factory {
         const element = new UI_Row({controller: config.controller || parent.controller, ...config});
 
         element.canvasPanel = parent.canvasPanel;
+        element.panel = parent.panel;
 
         parent.children.push(element);
 
@@ -74,6 +75,7 @@ export class UI_Factory {
         const element = new UI_Column({controller: config.controller || parent.controller, ...config});
 
         element.canvasPanel = parent.canvasPanel;
+        element.panel = parent.panel;
         parent.children.push(element);
 
         return element;
@@ -83,6 +85,7 @@ export class UI_Factory {
         const element = new UI_Box({controller: config.controller || parent.controller, ...config});
         
         element.canvasPanel = parent.canvasPanel;
+        element.panel = parent.panel;
         parent.children.push(element);
 
         return element;
@@ -120,6 +123,7 @@ export class UI_Factory {
 
         parent._gizmoLayer = element;
         element.canvasPanel = parent.canvasPanel;
+        element.panel = parent.panel;
 
         return element;
     }

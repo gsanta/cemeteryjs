@@ -104,7 +104,7 @@ export class UI_Builder {
     build(panel: UI_Panel): JSX.Element {
         if (panel.region === UI_Region.Sidepanel) {
             const layout = UI_Factory.layout({});
-            const accordion = layout.accordion();
+            const accordion = layout.accordion({ controller: panel.controller });
             accordion.title = panel.displayName;
             panel.renderer.renderInto(accordion);
 
@@ -118,14 +118,14 @@ export class UI_Builder {
             return this.buildElement(dialog);
         } else if (panel.region === UI_Region.Canvas1) {
             const layout = UI_Factory.layout({});
-            const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel });
+            const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer.renderInto(canvas);
 
             return this.buildElement(layout);
         } else if (panel.region === UI_Region.Canvas2) {
             const layout = UI_Factory.layout({});
-            const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel });
+            const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer && panel.renderer.renderInto(canvas);
 
@@ -183,6 +183,7 @@ export class UI_Builder {
                 this.isDefsSection = false;
                 return defComp;
             case UI_ElementType.SvgCanvas:
+            case UI_ElementType.HtmlCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas);
             case UI_ElementType.Box:
                 const box = element as UI_Box;

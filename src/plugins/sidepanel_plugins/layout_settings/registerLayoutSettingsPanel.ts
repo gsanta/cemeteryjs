@@ -16,9 +16,10 @@ export function registerLayoutSettingsPanel(registry: Registry) {
 function createPanel(registry: Registry): UI_Panel {
 
     const panel = new UI_Panel(registry, UI_Region.Sidepanel, LayoutSettingsPanelId, 'Layout Settings');
-    panel.renderer = new LayoutSettingsRenderer();
+    panel.renderer = new LayoutSettingsRenderer(panel);
 
     const propControllers = [
+
         new LayoutControl()
     ];
 

@@ -35,7 +35,7 @@ export abstract class UI_Element {
     readonly key: string;
 
     canvasPanel: AbstractCanvasPanel;
-    readonly panel: UI_Panel;
+    panel: UI_Panel;
     
     isBold: boolean;
     data: any;

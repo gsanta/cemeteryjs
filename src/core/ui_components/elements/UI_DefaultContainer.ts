@@ -61,8 +61,8 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.accordion(this, {});
     }
 
-    htmlCanvas(): UI_HtmlCanvas {
-        return UI_Factory.htmlCanvas(this, {});
+    htmlCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_HtmlCanvas {
+        return UI_Factory.htmlCanvas(this, config);
     }
 
     image(config: UI_ElementConfig): UI_Image {

@@ -4,6 +4,7 @@ import { UI_GizmoLayer } from "./gizmo/UI_GizmoLayer";
 import { UI_DropLayer } from "./surfaces/canvases/UI_DropLayer";
 import { UI_Toolbar } from "./toolbar/UI_Toolbar";
 import { UI_Container } from "./UI_Container";
+import { UI_ElementConfig } from "./UI_Element";
 import { UI_ElementType } from "./UI_ElementType";
 
 
@@ -42,7 +43,7 @@ export class UI_HtmlCanvas extends UI_Container {
         return UI_Factory.dropLayer(this, config);
     }
 
-    gizmoLayer(config?: { key: string}): UI_GizmoLayer {
+    gizmoLayer(config: UI_ElementConfig): UI_GizmoLayer {
         return UI_Factory.gizmoLayer(this, config);
     }
 }

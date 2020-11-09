@@ -46,11 +46,13 @@ export class ExportService {
     }
 
     private exportViews(appJson: Partial<AppJson>) {
+        appJson.canvas = {};
         this.registry.data.view.node.exportInto(appJson);
         this.registry.data.view.scene.exportInto(appJson);
     }
 
     private exportObjs(appJson: Partial<AppJson>) {
+        appJson.objs = {};
         this.registry.stores.objStore.exportInto(appJson);
         this.registry.stores.assetStore.exportInto(appJson);
     }

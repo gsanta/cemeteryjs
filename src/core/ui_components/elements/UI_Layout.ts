@@ -16,8 +16,8 @@ export class UI_Layout extends UI_Container {
         return UI_Factory.row(this, config);
     }
 
-    accordion() {
-        return UI_Factory.accordion(this, {});
+    accordion(config: UI_ElementConfig) {
+        return UI_Factory.accordion(this, config);
     }
 
     svgCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_SvgCanvas {
