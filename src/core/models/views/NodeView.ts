@@ -1,5 +1,7 @@
+import { NodeRenderer } from "../../../plugins/canvas_plugins/node_editor/NodeRenderer";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { FormController, PropController } from "../../plugin/controller/FormController";
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
@@ -31,10 +33,17 @@ export class NodeView extends View {
 
     private paramsYPosStart: number;
 
-    constructor() {
+    // TODO pass registry from the ui in every event handling method for FormController, so we don't need to pass it here
+    constructor(registry: Registry) {
         super();
         
+        this.controller = new FormController(undefined, registry);
+        this.renderer = new NodeRenderer(this);
         this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
+    }
+
+    addParamController(...paramControllers: PropController[]) {
+        paramControllers.forEach(paramController => this.controller.registerPropControl(paramController));
     }
 
     setup() {

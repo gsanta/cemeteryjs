@@ -1,7 +1,7 @@
 import { NullTool } from "../../../../core/plugin/tools/NullTool";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
 import { Registry } from "../../../../core/Registry";
-import { KeyboardNodeType } from "../../node_editor/nodes/KeyboardNodeObj";
+import { KeyboardNodeType } from "../../node_editor/nodes/KeyboardNode";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 
 export const GameToolId = 'game-tool';

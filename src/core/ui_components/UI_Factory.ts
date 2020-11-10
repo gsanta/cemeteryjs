@@ -42,6 +42,7 @@ import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
+import { GlobalControllerProps } from '../plugin/controller/FormController';
 
 export class UI_Factory {
 
@@ -54,7 +55,8 @@ export class UI_Factory {
     }
 
     static dialog(config: UI_ElementConfig): UI_Dialog {
-        const dialog = new UI_Dialog({controller: config.controller, ...config});
+        // TODO closing dialog should be handled more clearly
+        const dialog = new UI_Dialog({controller: config.controller, ...config, key: GlobalControllerProps.CloseDialog});
 
         return dialog;
     }

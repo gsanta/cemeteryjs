@@ -7,6 +7,7 @@ import { UI_Container } from "../../ui_components/elements/UI_Container";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IControlledModel } from "../../plugin/IControlledModel";
+import { FormController } from "../../plugin/controller/FormController";
 
 export interface ViewJson {
     id: string;
@@ -41,7 +42,7 @@ export abstract class View implements IControlledModel {
     parent: View;
     children: View[] = [];
 
-    controller = undefined;
+    controller: FormController = undefined;
     renderer: ViewRenderer;
 
     protected obj: IObj;

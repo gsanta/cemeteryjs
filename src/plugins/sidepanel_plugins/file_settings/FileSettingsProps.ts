@@ -33,6 +33,7 @@ export class NewProjectController extends PropController {
 
     click(context: PropContext) {
         context.registry.stores.clear();
+        context.registry.data.clearData();
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRenderAll();
     }

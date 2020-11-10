@@ -16,6 +16,7 @@ import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
+import { ThumbnailCanvasRenderer } from "./ThumbnailCanvasRenderer";
 import { ThumbnailCreateControl, ThumbnailUploadControl, ClearThumbnailControl } from "./ThumbnailDialogProps";
 
 export const ThumbnailCanvasId = 'thumbnail-canvas';
@@ -43,6 +44,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     canvas.engine = engine;
     canvas.setController(new FormController(canvas, registry, propControllers));
     canvas.setCamera(engine.getCamera());
+    canvas.renderer = new ThumbnailCanvasRenderer(registry);
     tools.forEach(tool => canvas.addTool(tool));
 
 

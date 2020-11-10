@@ -183,6 +183,7 @@ export class ThumbnailController extends PropController {
     click(context: PropContext) {
         const dialog = context.registry.ui.panel.getPanel(ThumbnailDialogPanelId);
         context.registry.ui.helper.setDialogPanel(dialog);
+        context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 

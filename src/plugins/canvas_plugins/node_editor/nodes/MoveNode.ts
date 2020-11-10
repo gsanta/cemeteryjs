@@ -9,7 +9,7 @@ import { UI_InputElement } from "../../../../core/ui_components/elements/UI_Inpu
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { NodeRenderer } from "../NodeRenderer";
 import { AbstractNode } from "./AbstractNode";
-import { MeshController } from "./MeshNodeObj";
+import { MeshController } from "./MeshNode";
 
 export const MoveNodeType = 'move-node-obj';
 
@@ -26,9 +26,8 @@ export class MoveNode extends AbstractNode {
     category = 'Default';
 
     createView(): NodeView {
-        const nodeView = new NodeView();
-        nodeView.controller = new FormController(undefined, this.registry, [new MeshController(nodeView), new MeshMoveController(nodeView), new MeshSpeedController(nodeView)]);
-        nodeView.renderer = new NodeRenderer(nodeView);
+        const nodeView = new NodeView(this.registry);
+        nodeView.addParamController(new MeshController(nodeView), new MeshMoveController(nodeView), new MeshSpeedController(nodeView));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;

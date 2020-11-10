@@ -1,10 +1,10 @@
 import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/registerGameViewer';
-import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
-import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNodeObj';
-import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNodeObj';
-import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/MoveNodeObj';
-import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNodeObj';
-import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
+import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
+import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNode';
+import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
+import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/MoveNode';
+import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
+import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
 import { registerNodeListPanel } from '../plugins/canvas_plugins/node_editor/registerNodeListPanel';
 import { registerObjectSettingsPanel } from '../plugins/canvas_plugins/scene_editor/controllers/registerObjectSettingsPanel';

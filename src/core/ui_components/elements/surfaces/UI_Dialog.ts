@@ -15,6 +15,5 @@ export class UI_Dialog extends UI_Layout {
 
     close(registry: Registry): void {
         this.controller.click(this);
-        this.canvasPanel.unmounted();
     }
 }

@@ -12,4 +12,9 @@ export class DataLookup {
         this.helper = new DataHelperLookup(registry);
         this.view = new ViewLookup(registry);
     }
+
+    clearData() {
+        this.view.scene.clear();
+        this.view.node.clear();
+    }
 }

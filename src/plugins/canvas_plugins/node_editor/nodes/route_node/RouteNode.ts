@@ -2,12 +2,11 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { CustomNodeParamSerializer, NodeLink, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { FormController, PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
+import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
-import { NodeRenderer } from "../../NodeRenderer";
 import { AbstractNode } from "../AbstractNode";
 import { RouteWalker } from "./RouteWalker";
 
@@ -26,9 +25,8 @@ export class RouteNode extends AbstractNode {
     category = 'Default';
 
     createView(): NodeView {
-        const nodeView = new NodeView();
-        nodeView.controller = new FormController(undefined, this.registry, [new SpeedControl(nodeView)]);
-        nodeView.renderer = new NodeRenderer(nodeView);
+        const nodeView = new NodeView(this.registry);
+        nodeView.addParamController(new SpeedControl(nodeView))
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;

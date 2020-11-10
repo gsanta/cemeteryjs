@@ -8,11 +8,9 @@ import { ThumbnailMakerControllerProps } from "./ThumbnailDialogProps";
 
 
 export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
-    private canvas: AbstractCanvasPanel;
     private registry: Registry;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
-        this.canvas = canvas;
+    constructor(registry: Registry) {
         this.registry = registry;
     }
 
@@ -27,7 +25,7 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
         row = dialog.row({key: '2'});
         row.vAlign = 'center';
 
-        const canvas = row.htmlCanvas({canvasPanel: this.canvas});
+        const canvas = row.htmlCanvas({canvasPanel:  this.registry.ui.canvas.getCanvas(ThumbnailCanvasId)});
         canvas.width = '300px';
         canvas.height = '300px';
 

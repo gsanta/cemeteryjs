@@ -27,9 +27,8 @@ export class AnimationNode extends AbstractNode {
 
     
     createView(): NodeView {
-        const nodeView = new NodeView();
-        nodeView.controller = new FormController(undefined, this.registry, [new AnimationMeshController(nodeView), new StartFrameController(nodeView), new EndFrameController(nodeView)]);
-        nodeView.renderer = new NodeRenderer(nodeView);
+        const nodeView = new NodeView(this.registry);
+        nodeView.addParamController(new AnimationMeshController(nodeView), new StartFrameController(nodeView), new EndFrameController(nodeView));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;

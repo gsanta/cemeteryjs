@@ -1,5 +1,5 @@
-import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNodeObj';
-import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNodeObj';
+import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
+import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { NodeObj } from '../models/objs/NodeObj';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';

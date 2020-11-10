@@ -27,10 +27,8 @@ export class KeyboardNode extends AbstractNode {
     category = 'Default';
 
     createView(): NodeView {
-
-        const nodeView = new NodeView();
-        nodeView.controller = new FormController(undefined, this.registry, [new KeyControl(nodeView)]);
-        nodeView.renderer = new NodeRenderer(nodeView);
+        const nodeView = new NodeView(this.registry);
+        nodeView.addParamController(new KeyControl(nodeView));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;

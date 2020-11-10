@@ -2,6 +2,7 @@ import { FormController } from "../../../core/plugin/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { ClearThumbnailControl, ThumbnailCreateControl, ThumbnailUploadControl } from "./ThumbnailDialogProps";
+import { ThumbnailDialogRenderer } from "./ThumbnailDialogRenderer";
 
 export const ThumbnailDialogPanelId = 'thumbnail-dialog-panel';
 
@@ -18,8 +19,9 @@ function createDialog(registry: Registry): UI_Panel {
         new ClearThumbnailControl()
     ];
 
-    const panel = new UI_Panel(registry, UI_Region.Sidepanel, ThumbnailDialogPanelId, 'Thumbnail Dialog');
+    const panel = new UI_Panel(registry, UI_Region.Dialog, ThumbnailDialogPanelId, 'Thumbnail Dialog');
     panel.controller = new FormController(undefined, registry, propControllers);
+    panel.renderer = new ThumbnailDialogRenderer(registry, )
 
     return panel;
 }

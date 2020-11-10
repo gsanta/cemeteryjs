@@ -86,9 +86,9 @@ export class ObjStore {
         this.objs.splice(this.objs.indexOf(obj), 1);
         this.objById.delete(obj.id);
 
-        const thisObjTypes = this.objsByType.get(obj.objType);
+        const thisObjTypes = this.objsByType.get(obj.objType) || [];
         thisObjTypes.splice(thisObjTypes.indexOf(obj), 1);
-        if (this.objsByType.get(obj.objType).length === 0) {
+        if (thisObjTypes.length === 0) {
             this.objsByType.delete(obj.objType);
         }
 

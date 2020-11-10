@@ -1,17 +1,14 @@
 import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
-import { MeshViewType } from "../../../../core/models/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { PathViewType } from "../../../../core/models/views/PathView";
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { NodeRenderer } from "../NodeRenderer";
 import { AbstractNode } from "./AbstractNode";
 
-export const MeshNodeType = 'mesh-node-obj';
+export const PathNodeType = 'path-node-obj';
 
-export class MeshNode extends AbstractNode {
+export class PathNode extends AbstractNode {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -19,15 +16,14 @@ export class MeshNode extends AbstractNode {
         this.registry = registry;
     }
 
-    nodeType = MeshNodeType;
-    displayName = 'Mesh';
+    nodeType = PathNodeType;
+    displayName = 'Path';
     category = 'Default';
 
     createView(): NodeView {
-        const nodeView = new NodeView();
-        nodeView.controller = new FormController(undefined, this.registry, [new MeshController(nodeView)]);
-        nodeView.renderer = new NodeRenderer(nodeView);
+        const nodeView = new NodeView(this.registry);
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.addParamController(new PathController(nodeView));
 
         return nodeView;
     }
@@ -44,10 +40,10 @@ export class MeshNode extends AbstractNode {
     }
 
 
-    getParams(): NodeParam[] {
+    private getParams(): NodeParam[] {
         return [
             {
-                name: 'mesh',
+                name: 'path',
                 val: '',
                 uiOptions: {
                     inputType: 'list',
@@ -57,20 +53,20 @@ export class MeshNode extends AbstractNode {
         ];
     }
 
-    getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodeLink[] {
         return [
             {
                 name: 'action'
             }
-        ];
+        ]
     }
 
-    getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodeLink[] {
         return [];
     }
 }
 
-export class MeshController extends PropController<string> {
+export class PathController extends PropController<string> {
     private nodeView: NodeView;
 
     constructor(nodeView: NodeView) {
@@ -78,18 +74,18 @@ export class MeshController extends PropController<string> {
         this.nodeView = nodeView;
     }
 
-    acceptedProps() { return ['mesh']; }
+    acceptedProps() { return ['path']; }
 
     values(context: PropContext) {
-        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
+        return context.registry.data.view.scene.getViewsByType(PathViewType).map(pathView => pathView.id);
     }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('mesh').val;
+        return this.nodeView.getObj().getParam('path').val;
     }
 
     change(val, context: PropContext) {
-        this.nodeView.getObj().setParam('mesh', val);
+        this.nodeView.getObj().setParam('path', val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
