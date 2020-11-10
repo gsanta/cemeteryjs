@@ -8,6 +8,7 @@ import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
+import { NodeRenderer } from "../NodeRenderer";
 import { AbstractNode } from "./AbstractNode";
 
 export const AnimationNodeType = 'animation-node-obj';
@@ -24,7 +25,29 @@ export class AnimationNode extends AbstractNode {
     displayName = 'Animation';
     category = 'Default';
 
-    getParams(): NodeParam[] {
+    
+    createView(): NodeView {
+        const nodeView = new NodeView();
+        nodeView.controller = new FormController(undefined, this.registry, [new AnimationMeshController(nodeView), new StartFrameController(nodeView), new EndFrameController(nodeView)]);
+        nodeView.renderer = new NodeRenderer(nodeView);
+        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+
+        return nodeView;
+    }
+
+    createObj(): NodeObj {
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        
+        obj.addAllParams(this.getParams());
+        obj.inputs = this.getInputLinks();
+        obj.outputs = this.getOutputLinks();
+        obj.executor = new AnimationNodeExecutor(this.registry);
+        obj.id = this.registry.stores.objStore.generateId(obj);
+
+        return obj;
+    }
+
+    private getParams(): NodeParam[] {
         return [
             {
                 name: 'mesh',
@@ -53,30 +76,16 @@ export class AnimationNode extends AbstractNode {
         ];
     }
 
-    getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodeLink[] {
         return [];
     }
 
-    getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodeLink[] {
         return [
             {
                 name: 'action'
             }
         ];
-    }
-
-    getController(): FormController {
-        const propControllers = [
-            new AnimationMeshController(),
-            new StartFrameController(),
-            new EndFrameController()
-        ];
-
-        return new FormController(undefined, this.registry, propControllers);
-    }
-
-    getExecutor(): INodeExecutor {
-        return new AnimationNodeExecutor(this.registry);
     }
 }
 
@@ -104,44 +113,53 @@ export class AnimationNodeExecutor implements INodeExecutor {
 }
 
 export class AnimationMeshController extends PropController<string> {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
     acceptedProps() { return ['mesh']; }
 
-    values(context) {
-        return context.registry.stores.views.getViewsByType(MeshViewType).map(meshView => meshView.id);
+    values(context: PropContext) {
+        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id);
     }
     
-    defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-        const meshParam = nodeView.getObj().getParam('mesh').val;
+    defaultVal(context: PropContext) {
+        const meshParam = this.nodeView.getObj().getParam('mesh').val;
         return context.registry.data.view.node.getById(meshParam)?.id;
     }
 
-    change(val: string, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
-        nodeView.getObj().setParam('mesh', val);
+    change(val: string, context: PropContext) {
+        this.nodeView.getObj().setParam('mesh', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
 export class StartFrameController extends PropController<string> {
-    acceptedProps() { return ['startFrame']; }
+    private nodeView: NodeView;
 
-    defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-        return nodeView.getObj().getParam('startFrame').val;
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
     }
 
-    change(val, context) {
+    acceptedProps() { return ['startFrame']; }
+
+    defaultVal() {
+        return this.nodeView.getObj().getParam('startFrame').val;
+    }
+
+    change(val, context: PropContext) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Canvas1);        
     }
 
-    blur(context: PropContext, element) {
-        const nodeView = context.registry.data.view.node.getById(element.target) as NodeView;
-
+    blur(context: PropContext) {
         try {
             const val = parseFloat(context.getTempVal());
-            nodeView.getObj().setParam('startFrame', val);
+            this.nodeView.getObj().setParam('startFrame', val);
         } catch (e) {
             console.log(e);
         }
@@ -152,11 +170,17 @@ export class StartFrameController extends PropController<string> {
 }
 
 export class EndFrameController extends PropController<string> {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
     acceptedProps() { return ['endFrame']; }
 
-    defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-        return nodeView.getObj().getParam('endFrame').val;
+    defaultVal() {
+        return this.nodeView.getObj().getParam('endFrame').val;
     }
 
     change(val, context: PropContext) {
@@ -164,12 +188,10 @@ export class EndFrameController extends PropController<string> {
         context.registry.services.render.reRender(UI_Region.Canvas1);        
     }
 
-    blur(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-
+    blur(context: PropContext) {
         try {
             const val = parseFloat(context.getTempVal());
-            nodeView.getObj().setParam('endFrame', val);
+            this.nodeView.getObj().setParam('endFrame', val);
         } catch (e) {
             console.log(e);
         }

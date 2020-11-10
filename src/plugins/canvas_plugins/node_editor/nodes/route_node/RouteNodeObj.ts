@@ -7,6 +7,7 @@ import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
+import { NodeRenderer } from "../../NodeRenderer";
 import { AbstractNode } from "../AbstractNode";
 import { RouteWalker } from "./RouteWalker";
 
@@ -24,7 +25,28 @@ export class RouteNode extends AbstractNode {
     displayName = 'Route';
     category = 'Default';
 
-    getParams(): NodeParam[] {
+    createView(): NodeView {
+        const nodeView = new NodeView();
+        nodeView.controller = new FormController(undefined, this.registry, [new SpeedControl(nodeView)]);
+        nodeView.renderer = new NodeRenderer(nodeView);
+        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+
+        return nodeView;
+    }
+
+    createObj(): NodeObj {
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        
+        obj.addAllParams(this.getParams());
+        obj.inputs = this.getInputLinks();
+        obj.outputs = this.getOutputLinks();
+        obj.executor = new RouteNodeExecutor(this.registry);
+        obj.id = this.registry.stores.objStore.generateId(obj);
+
+        return obj;
+    }
+
+    private getParams(): NodeParam[] {
         return [
             {
                 name: 'speed',
@@ -41,7 +63,7 @@ export class RouteNode extends AbstractNode {
         ];
     }
 
-    getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodeLink[] {
         return [
             {
                 name: 'onStart'
@@ -58,7 +80,7 @@ export class RouteNode extends AbstractNode {
         ]
     }
 
-    getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodeLink[] {
         return [
             {
                 name: 'mesh'
@@ -67,14 +89,6 @@ export class RouteNode extends AbstractNode {
                 name: 'path'
             }
         ];
-    }
-
-    getController(): FormController {
-        return new FormController(undefined, this.registry, [new SpeedControl()]);
-    }
-
-    getExecutor(): INodeExecutor {
-        return new RouteNodeExecutor(this.registry);
     }
 }
 
@@ -95,11 +109,17 @@ class RouteNodeSerializer implements CustomNodeParamSerializer {
 }
 
 export class SpeedControl extends PropController<string> {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
     acceptedProps() { return ['speed']; }
 
     defaultVal(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-        return nodeView.getObj().getParam('speed').val;
+        return this.nodeView.getObj().getParam('speed').val;
     }
     
     change(val, context) {
@@ -111,20 +131,18 @@ export class SpeedControl extends PropController<string> {
         const speed = context.getTempVal();
         context.clearTempVal();
 
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-
         try {
             if (speed) {
                 const speedNum = parseFloat(speed);
-                nodeView.getObj().setParam('speed', speedNum);
+                this.nodeView.getObj().setParam('speed', speedNum);
             }
         } catch (e) {
             console.log(e);
         }
 
-        const routeWalker = nodeView.getObj().getParam('routeWalker').val as RouteWalker;
+        const routeWalker = this.nodeView.getObj().getParam('routeWalker').val as RouteWalker;
         if (routeWalker) {
-            routeWalker.setSpeed(nodeView.getObj().getParam('speed').val);
+            routeWalker.setSpeed(this.nodeView.getObj().getParam('speed').val);
         }
 
         context.registry.services.history.createSnapshot();

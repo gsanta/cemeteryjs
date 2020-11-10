@@ -107,31 +107,32 @@ export class UI_Builder {
             const accordion = layout.accordion({ controller: panel.controller });
             accordion.title = panel.displayName;
             panel.renderer.renderInto(accordion);
+            
 
             return this.buildElement(accordion);
         } else if (panel.region === UI_Region.Dialog) {
-            const dialog = UI_Factory.dialog({});
+            const dialog = UI_Factory.dialog({ controller: panel.controller });
             dialog.title = panel.displayName;
 
             panel.renderer.renderInto(dialog);
             
             return this.buildElement(dialog);
         } else if (panel.region === UI_Region.Canvas1) {
-            const layout = UI_Factory.layout({});
+            const layout = UI_Factory.layout({ controller: panel.controller });
             const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer.renderInto(canvas);
 
             return this.buildElement(layout);
         } else if (panel.region === UI_Region.Canvas2) {
-            const layout = UI_Factory.layout({});
+            const layout = UI_Factory.layout({ controller: panel.controller });
             const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer && panel.renderer.renderInto(canvas);
 
             return this.buildElement(layout);
         } else {
-            const layout = UI_Factory.layout({});
+            const layout = UI_Factory.layout({ controller: panel.controller });
             
             panel.renderer.renderInto(layout);
 

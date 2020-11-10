@@ -4,8 +4,7 @@ import { PathViewType } from "../../../../core/models/views/PathView";
 import { PropController, PropContext, FormController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
+import { NodeRenderer } from "../NodeRenderer";
 import { AbstractNode } from "./AbstractNode";
 
 export const PathNodeType = 'path-node-obj';
@@ -22,7 +21,28 @@ export class PathNode extends AbstractNode {
     displayName = 'Path';
     category = 'Default';
 
-    getParams(): NodeParam[] {
+    createView(): NodeView {
+        const nodeView = new NodeView();
+        nodeView.controller = new FormController(undefined, this.registry, [new PathController(nodeView)]);
+        nodeView.renderer = new NodeRenderer(nodeView);
+        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+
+        return nodeView;
+    }
+
+    createObj(): NodeObj {
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        
+        obj.addAllParams(this.getParams());
+        obj.inputs = this.getInputLinks();
+        obj.outputs = this.getOutputLinks();
+        obj.id = this.registry.stores.objStore.generateId(obj);
+
+        return obj;
+    }
+
+
+    private getParams(): NodeParam[] {
         return [
             {
                 name: 'path',
@@ -35,7 +55,7 @@ export class PathNode extends AbstractNode {
         ];
     }
 
-    getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodeLink[] {
         return [
             {
                 name: 'action'
@@ -43,34 +63,31 @@ export class PathNode extends AbstractNode {
         ]
     }
 
-    getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodeLink[] {
         return [];
-    }
-
-    getController(): FormController {
-        return new FormController(undefined, this.registry, [new PathController()]);
-    }
-
-    getExecutor(): INodeExecutor {
-        return undefined;
     }
 }
 
 export class PathController extends PropController<string> {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
     acceptedProps() { return ['path']; }
 
-    values(context) {
-        return context.registry.stores.views.getViewsByType(PathViewType).map(pathView => pathView.id);
+    values(context: PropContext) {
+        return context.registry.data.view.scene.getViewsByType(PathViewType).map(pathView => pathView.id);
     }
 
-    defaultVal(context: PropContext, element: UI_InputElement) {
-        const nodeView = context.registry.data.view.scene.getById(element.targetId) as NodeView;
-        return nodeView.getObj().getParam('path').val;
+    defaultVal() {
+        return this.nodeView.getObj().getParam('path').val;
     }
 
-    change(val, context, element: UI_InputElement) {
-        const nodeView = context.registry.stores.views.getById(element.targetId) as NodeView;
-        nodeView.getObj().setParam('path', val);
+    change(val, context: PropContext) {
+        this.nodeView.getObj().setParam('path', val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

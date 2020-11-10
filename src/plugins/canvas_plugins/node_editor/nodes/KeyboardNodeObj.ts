@@ -9,6 +9,7 @@ import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPanelId } from "../../game_viewer/registerGameViewer";
 import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
+import { NodeRenderer } from "../NodeRenderer";
 import { AbstractNode } from "./AbstractNode";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
@@ -25,7 +26,29 @@ export class KeyboardNode extends AbstractNode {
     displayName = 'Keyboard';
     category = 'Default';
 
-    getParams(): NodeParam[] {
+    createView(): NodeView {
+
+        const nodeView = new NodeView();
+        nodeView.controller = new FormController(undefined, this.registry, [new KeyControl(nodeView)]);
+        nodeView.renderer = new NodeRenderer(nodeView);
+        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+
+        return nodeView;
+    }
+
+    createObj(): NodeObj {
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        
+        obj.addAllParams(this.getParams());
+        obj.inputs = this.getInputLinks();
+        obj.outputs = this.getOutputLinks();
+        obj.executor = new KeyboardNodeExecutor(this.registry);
+        obj.id = this.registry.stores.objStore.generateId(obj);
+
+        return obj;
+    }
+
+    private getParams(): NodeParam[] {
         return [
             {
                 name: 'key1',
@@ -39,21 +62,12 @@ export class KeyboardNode extends AbstractNode {
         ];
     }
 
-    getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodeLink[] {
         return [];
     }
 
-    getInputLinks(): NodeLink[] {
+private getInputLinks(): NodeLink[] {
         return [];
-    }
-
-    
-    getController(): FormController {
-        return new FormController(undefined, this.registry, [new KeyControl()]);
-    }
-
-    getExecutor(): INodeExecutor {
-        return new KeyboardNodeExecutor(this.registry);
     }
 }
 
@@ -89,9 +103,15 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 }
 
 export class KeyControl extends PropController {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
     acceptedProps(context: PropContext, element: UI_Element) {
-        const nodeView = context.registry.data.view.node[element.targetId];
-        return (<NodeObj> nodeView.getObj()).getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
+        return this.nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
     }
 
     values() {
@@ -99,16 +119,15 @@ export class KeyControl extends PropController {
     }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj().getParam(element.key).val;
+        return this.nodeView.getObj().getParam(element.key).val;
     }
 
     change(val, context: PropContext, element: UI_InputElement) {
         context.updateTempVal(val);
-        const nodeView = context.registry.data.view.node.getById(element.targetId) as NodeView;
-        nodeView.getObj().setParam(element.key, val);
+        this.nodeView.getObj().setParam(element.key, val);
         context.registry.services.history.createSnapshot();
 
-        const keys = nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX));
+        const keys = this.nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX));
         let newIndex = 2;
 
         const keyIndexes = keys.map(key => parseInt(key.name.match(KEY_REGEX)[1], 10));
@@ -118,7 +137,7 @@ export class KeyControl extends PropController {
             newIndex = keyIndexes[0] + 1;
         }
         
-        nodeView.getObj().addParam({
+        this.nodeView.getObj().addParam({
             name: `key${newIndex}`,
             val: '',
             uiOptions: {
@@ -128,7 +147,7 @@ export class KeyControl extends PropController {
             isLink: 'output'
         });
         context.clearTempVal();
-        nodeView.setup();
+        this.nodeView.setup();
 
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);

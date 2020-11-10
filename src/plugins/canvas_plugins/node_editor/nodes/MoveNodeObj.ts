@@ -7,6 +7,7 @@ import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { NodeRenderer } from "../NodeRenderer";
 import { AbstractNode } from "./AbstractNode";
 import { MeshController } from "./MeshNodeObj";
 
@@ -24,7 +25,28 @@ export class MoveNode extends AbstractNode {
     displayName = 'Move';
     category = 'Default';
 
-    getParams(): NodeParam[] {
+    createView(): NodeView {
+        const nodeView = new NodeView();
+        nodeView.controller = new FormController(undefined, this.registry, [new MeshController(nodeView), new MeshMoveController(nodeView), new MeshSpeedController(nodeView)]);
+        nodeView.renderer = new NodeRenderer(nodeView);
+        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+
+        return nodeView;
+    }
+
+    createObj(): NodeObj {
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        
+        obj.addAllParams(this.getParams());
+        obj.inputs = this.getInputLinks();
+        obj.outputs = this.getOutputLinks();
+        obj.executor = new MoveNodeExecutor(this.registry);
+        obj.id = this.registry.stores.objStore.generateId(obj);
+
+        return obj;
+    }
+
+    private getParams(): NodeParam[] {
         return [
             {
                 name: 'mesh',
@@ -53,7 +75,7 @@ export class MoveNode extends AbstractNode {
         ];
     }
 
-    getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodeLink[] {
         return [
             {
                 name: 'animation'
@@ -61,26 +83,12 @@ export class MoveNode extends AbstractNode {
         ]
     }
 
-    getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodeLink[] {
         return [
             {
                 name: 'input'
             }
         ];
-    }
-
-    getController(): FormController {
-        const propControllers = [
-            new MeshController(),
-            new MeshMoveController(),
-            new MeshSpeedController()
-        ];
-
-        return new FormController(undefined, this.registry, propControllers);
-    }
-    
-    getExecutor(): INodeExecutor {
-        return new MoveNodeExecutor(this.registry);
     }
 }
 
@@ -107,38 +115,51 @@ export class MoveNodeExecutor implements INodeExecutor {
 }
 
 export class MeshMoveController extends PropController<string> {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
     acceptedProps() { return ['move']; }
 
-    values(context) {
+    values() {
         return ['forward', 'backward'];
     }
 
-    defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj().getParam('move');
+    defaultVal() {
+        return this.nodeView.getObj().getParam('move');
     }
 
-    change(val, context, element) {
+    change(val, context) {
         context.updateTempVal(val);
-        const nodeView = context.registry.stores.views.getById(element.target) as NodeView;
-        nodeView.getObj().setParam('move', val);
+        this.nodeView.getObj().setParam('move', val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
 export class MeshSpeedController extends PropController<string> {
-    acceptedProps() { return ['speed']; }
+    private nodeView: NodeView;
 
-    defaultVal(context: PropContext, element: UI_InputElement) {
-        return (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj().getParam('speed');
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
     }
 
-    change(val, context) {
+    acceptedProps() { return ['speed']; }
+
+    defaultVal() {
+        return this.nodeView.getObj().getParam('speed');
+    }
+
+    change(val, context: PropContext) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 
-    blur(context: PropContext, element: UI_InputElement) {
-        const nodeObj = (context.registry.data.view.node.getById(element.targetId) as NodeView).getObj();
+    blur(context: PropContext) {
+        const nodeObj = this.nodeView.getObj();
         nodeObj.setParam('speed', context.clearTempVal());
         context.registry.services.render.reRenderAll();
     }

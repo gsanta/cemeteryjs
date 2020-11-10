@@ -124,7 +124,7 @@ export class ToolController {
         this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
 
         if (this.plugin.dropItem) {
-            element.canvasPanel.controller.dndEnd(this.plugin.dropItem);
+            this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem)
             this.plugin.dropItem = undefined;
         }
 

@@ -114,10 +114,13 @@ export class FormController {
 
     val(element: UI_Element): any {
         const controller = this.findController(element);
-        const context = this.propContexts.get(controller);
-        const tmpVal = context.getTempVal();
-
-        return tmpVal !== undefined ? tmpVal : controller?.defaultVal(this.propContexts.get(controller), element);
+        if (controller) {
+            const context = this.propContexts.get(controller);
+            
+            const tmpVal = context.getTempVal();
+    
+            return tmpVal !== undefined ? tmpVal : controller?.defaultVal(this.propContexts.get(controller), element);
+        }
     }
 
     values(element: UI_Element): any[] {

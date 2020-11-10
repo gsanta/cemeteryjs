@@ -67,7 +67,7 @@ export class NodeRenderer implements ViewRenderer {
     }
 
     private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
-        const foreignObject = group.foreignObject({key: nodeView.id});
+        const foreignObject = group.foreignObject({key: nodeView.id, controller: nodeView.controller});
         foreignObject.width = nodeView.getBounds().getWidth();
         foreignObject.height = nodeView.getBounds().getHeight();
         foreignObject.css = {

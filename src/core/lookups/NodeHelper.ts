@@ -25,30 +25,16 @@ export class NodeHelper {
 
     createView(nodeType: string) {
         const node: AbstractNode = this.nodes.get(nodeType);
-
-        const nodeView = new NodeView();
-        nodeView.controller = node.getController();
-        nodeView.renderer = new NodeRenderer(nodeView);
-
-        return nodeView;
+        return node.createView();
     }
 
     createObj(nodeType: string) {
         const node: AbstractNode = this.nodes.get(nodeType);
-
-        const obj = new NodeObj(nodeType, {displayName: node.displayName});
-        
-        obj.addAllParams(node.getParams());
-        obj.inputs = node.getInputLinks();
-        obj.outputs = node.getOutputLinks();
-        obj.executor = node.getExecutor();
-        obj.id = this.registry.stores.objStore.generateId(obj);
-
-        return obj;
+        return node.createObj();
     }
 
     getRegisteredNodeTypes(): string[] {
-        return Array.from(this.nodes.keys());
+    return Array.from(this.nodes.keys());
     }
 
     getNode(nodeType: string): AbstractNode {
