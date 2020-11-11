@@ -1,4 +1,5 @@
 import { MeshView, MeshViewType } from "../../../core/models/views/MeshView";
+import { PathView, PathViewType } from "../../../core/models/views/PathView";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2DPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
@@ -65,6 +66,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     registry.data.view.scene.registerViewType(MeshViewType, () => new MeshView());
     registry.data.view.scene.registerViewType(MoveAxisViewType, () => new MoveAxisView(registry));
     registry.data.view.scene.registerViewType(ScaleAxisViewType, () => new ScaleAxisView(registry));
+    registry.data.view.scene.registerViewType(PathViewType, () => new PathView());
 
     return canvas;
 }

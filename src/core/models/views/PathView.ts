@@ -1,4 +1,4 @@
-import { View, ViewJson, ViewFactory } from "./View";
+import { View, ViewJson, ViewFactory, ViewRenderer } from "./View";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
@@ -25,67 +25,7 @@ export interface PathViewJson extends ViewJson {
     editPoints: EditPointViewJson[];
 }
 
-export class PathViewPlugin implements ViewPlugin {
-    id: string = PathViewType;
-
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
-    createView(): View {
-        return new PathView();
-    }
-
-    getController(): FormController { return undefined; }
-
-    renderInto(canvas: UI_SvgCanvas, pathView: PathView): void {
-        const group = canvas.group(pathView.id);
-        group.isInteractive = false;
-
-        if (pathView.children.length > 1) {
-            const highlightPath = group.path();
-            highlightPath.d = pathView.serializePath();
-            highlightPath.data = pathView;
-
-            highlightPath.css = {
-                fill: 'none',
-                stroke: 'blue',
-                strokeOpacity: pathView.isHovered() || pathView.isSelected() ? 0.5 : 0,
-                strokeWidth: "4"
-            }
-
-            const path = group.path();
-            path.d = pathView.serializePath();
-
-            path.css = {
-                fill: 'none',
-                stroke: 'black',
-                strokeWidth: "2",
-                pointerEvents: 'none'
-            }
-        }
-
-        pathView.children.forEach(editPoint => {
-            const circle = group.circle();
-
-            circle.cx = editPoint.point.x;
-            circle.cy = editPoint.point.y;
-            circle.r = pathView.radius;
-            circle.data = editPoint;
-
-            circle.css = {
-                fill: pathView.getActiveChild() === editPoint ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
-            }
-        });
-    }
-}
-
-export class PathViewFactory implements ViewFactory {
-    viewType = PathViewType;
-    newInstance() { return new PathView(); }
-
+export class PathRenderer implements ViewRenderer {
     renderInto(canvas: UI_SvgCanvas, pathView: PathView) {
         const group = canvas.group(pathView.id);
         group.isInteractive = false;
@@ -136,6 +76,11 @@ export class PathView extends View {
     id: string;
     radius = 5;
     str: string;
+
+    constructor() {
+        super();
+        this.renderer = new PathRenderer();
+    }
 
     getObj(): PathObj {
         return this.obj;

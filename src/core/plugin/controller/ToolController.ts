@@ -168,6 +168,7 @@ export class ToolController {
 
         if (!this.selectedTool) {
             this.selectedTool = tool;
+            tool.isSelected = true;
         }
 
         this.toolMap.set(tool.id, tool);

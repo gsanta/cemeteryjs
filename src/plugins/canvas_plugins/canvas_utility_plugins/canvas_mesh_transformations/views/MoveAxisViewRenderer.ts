@@ -60,7 +60,7 @@ export class MoveAxisViewRenderer implements ViewRenderer {
         const center = axisView.parent.getBounds().getBoundingCenter();
         
         const line = group.line();
-        line.markerEnd = `url(#${axisView.axis})`;
+        line.markerEnd = `url(#${MoveAxisToolId}-${axisView.axis})`;
         line.css = {
             stroke: getAxisColor(axisView.axis, this.registry),
             strokeWidth: "3"

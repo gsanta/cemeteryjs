@@ -10,7 +10,7 @@ export const SvgPathComp = (props: UI_ComponentProps<UI_SvgPath>) => {
             key: props.element.key,
             d: props.element.d,
             style: props.element.css,
-            onMouseEnter: e => {debugger; props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data)},
+            onMouseEnter: e => props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data),
             onMouseLeave: e =>props.element.mouseLeave(props.registry, e.nativeEvent, props.element.data)
         }
     );

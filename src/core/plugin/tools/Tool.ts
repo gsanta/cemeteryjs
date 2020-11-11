@@ -18,24 +18,6 @@ export enum ToolType {
     Sprite = 'Sprite'
 }
 
-export class ToolReturnType {
-    _lookDirty: boolean = false;
-    _contentDirty?: boolean = false;
-    _dirty?: boolean = false
-
-    lookDirty() {
-        this._lookDirty = true;
-        this._dirty = true;
-        return this;
-    }
-
-    contentDirty() {
-        this._contentDirty = true;
-        this._dirty = true;
-        return this;
-    }
-}
-
 export enum Cursor {
     Default = 'default',
     Pointer = 'pointer',
