@@ -26,7 +26,8 @@ const cubeIcon = require('../../../../../../assets/images/icons/cube.png');
 const sphereIcon = require('../../../../../../assets/images/icons/sphere.png');
 const scaleIcon = require('../../../../../../assets/images/icons/scale.png');
 const moveIcon = require('../../../../../../assets/images/icons/move.svg');
-const expandMore = require('../../../../../../assets/images/icons/expand_more.svg');
+const expandMoreIcon = require('../../../../../../assets/images/icons/expand_more.svg');
+const lightIcon = require('../../../../../../assets/images/icons/light.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -153,7 +154,7 @@ const ToolbarStyled = styled.div`
         }
 
         &.expand-more-icon {
-            background-image: url(${expandMore});
+            background-image: url(${expandMoreIcon});
         }
 
         &.scale-icon {
@@ -162,6 +163,10 @@ const ToolbarStyled = styled.div`
 
         &.move-icon {
             background-image: url(${moveIcon});
+        }
+
+        &.light-icon {
+            background-image: url(${lightIcon});
         }
     }
 
@@ -177,7 +182,7 @@ const ToolbarStyled = styled.div`
                 width: 20px;
                 height: 100%;
                 background-position: center;
-                background-image: url(${expandMore});
+                background-image: url(${expandMoreIcon});
             }
         }
 

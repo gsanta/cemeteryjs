@@ -115,7 +115,7 @@ export class ViewStore {
 
         this.views.push(view);
         this.idMap.set(view.id, view);
-        this.byObjIdMap.set(view.getObj().id, view);
+        view.getObj() && this.byObjIdMap.set(view.getObj().id, view);
 
         if (!this.viewsByType.get(view.viewType)) {
             this.viewsByType.set(view.viewType, []);
@@ -246,7 +246,7 @@ export class ViewLifeCycleHook extends EmptyViewStoreHook {
     }
 
     removeViewHook(view: View) {
-        this.registry.stores.objStore.removeObj(view.getObj());
+        view.getObj() && this.registry.stores.objStore.removeObj(view.getObj());
     }
 }
 

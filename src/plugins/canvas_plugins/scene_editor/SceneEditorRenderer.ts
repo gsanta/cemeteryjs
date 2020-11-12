@@ -14,6 +14,7 @@ import { MoveAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transforma
 import { ScaleAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { SceneEditorToolbarProps } from "./SceneEditorControllers";
 import { CubeToolId } from "./tools/CubeTool";
+import { LightToolId } from "./tools/LightTool";
 import { MeshToolId } from "./tools/MeshTool";
 import { PathToolId } from "./tools/PathTool";
 import { SphereToolId } from "./tools/SphereTool";
@@ -46,6 +47,12 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tool.isActive = this.canvas.toolController.getToolById(SpriteToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
+
+        tool = toolbar.tool({key: LightToolId});
+        tool.icon = 'light';
+        tool.isActive = this.canvas.toolController.getToolById(LightToolId).isSelected;
+        tooltip = tool.tooltip();
+        tooltip.label = 'Add Light';
 
         this.renderShapeDropdown(toolbar);
         
@@ -117,11 +124,7 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Redo';
 
-        const views = [
-            ...this.registry.data.view.scene.getViewsByType(SpriteViewType),
-            ...this.registry.data.view.scene.getViewsByType(MeshViewType),
-            ...this.registry.data.view.scene.getViewsByType(PathViewType)
-        ];
+        const views = this.registry.data.view.scene.getAllViews();
 
         sortViewsByLayer(views);
 

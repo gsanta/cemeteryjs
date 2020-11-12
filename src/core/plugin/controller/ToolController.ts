@@ -16,6 +16,7 @@ import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/C
 import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SphereTool";
 import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { MoveAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
+import { LightToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/LightTool";
 
 export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -27,7 +28,7 @@ export class CommonToolController extends PropController<any> {
 }
 
 export class SceneEditorToolController extends PropController<any> {
-    acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId]; }
+    acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId, LightToolId]; }
 
     click(context: PropContext, element: UI_Element) {
         element.canvasPanel.toolController.setSelectedTool(element.key);

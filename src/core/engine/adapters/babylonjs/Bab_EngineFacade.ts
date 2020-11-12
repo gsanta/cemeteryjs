@@ -1,6 +1,7 @@
 import { Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
 import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
+import { Bab_LightAdapter } from "../../Bab_LightAdapter";
 import { IEngineFacade } from "../../IEngineFacade";
 import { Bab_Meshes } from "./Bab_Meshes";
 import { Bab_MeshFactory } from "./Bab_MeshFactory";
@@ -20,6 +21,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     meshLoader: Bab_MeshLoader;
     meshes: Bab_Meshes;
     meshFactory: Bab_MeshFactory;
+    lights: Bab_LightAdapter;
 
     private renderLoops: (() => void)[] = [];
 
@@ -32,6 +34,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.meshLoader = new Bab_MeshLoader(this.registry, this);
         this.meshes = new Bab_Meshes(this.registry, this);
         this.meshFactory = new Bab_MeshFactory(this.registry, this);
+        this.lights = new Bab_LightAdapter(this.registry, this);
     }
 
     getCamera(): Camera3D {

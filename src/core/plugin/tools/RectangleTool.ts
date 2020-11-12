@@ -11,6 +11,7 @@ export abstract class RectangleTool extends NullTool {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
     protected viewStore: ViewStore;
+    protected rectRadius = 50;
 
     constructor(type: string, panel: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
         super(type, panel, registry);
@@ -19,7 +20,7 @@ export abstract class RectangleTool extends NullTool {
 
     click() {
         const pointer = this.registry.services.pointer.pointer;
-        const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, 50);
+        const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, this.rectRadius);
 
         const view = this.createView(rect);
 

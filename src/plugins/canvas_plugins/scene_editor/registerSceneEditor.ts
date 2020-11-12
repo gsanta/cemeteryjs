@@ -1,3 +1,4 @@
+import { LightView, LightViewType } from "../../../core/models/views/LightView";
 import { MeshView, MeshViewType } from "../../../core/models/views/MeshView";
 import { PathView, PathViewType } from "../../../core/models/views/PathView";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
@@ -17,6 +18,7 @@ import { ScaleAxisView, ScaleAxisViewType } from "../canvas_utility_plugins/canv
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./SceneEditorControllers";
 import { SceneEditorRenderer } from "./SceneEditorRenderer";
 import { CubeTool } from "./tools/CubeTool";
+import { LightTool } from "./tools/LightTool";
 import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SphereTool } from "./tools/SphereTool";
@@ -48,6 +50,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     const tools = [
         new MeshTool(canvas, registry.data.view.scene, registry),
         new SpriteTool(canvas, registry.data.view.scene, registry),
+        new LightTool(canvas,  registry.data.view.scene, registry),
         new PathTool(canvas, registry.data.view.scene, registry),
         new SelectTool(canvas, registry.data.view.scene, registry),
         new DeleteTool(canvas, registry.data.view.scene, registry),
@@ -64,6 +67,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     tools.forEach(tool => canvas.addTool(tool));
 
     registry.data.view.scene.registerViewType(MeshViewType, () => new MeshView());
+    registry.data.view.scene.registerViewType(LightViewType, () => new LightView());
     registry.data.view.scene.registerViewType(MoveAxisViewType, () => new MoveAxisView(registry));
     registry.data.view.scene.registerViewType(ScaleAxisViewType, () => new ScaleAxisView(registry));
     registry.data.view.scene.registerViewType(PathViewType, () => new PathView());
