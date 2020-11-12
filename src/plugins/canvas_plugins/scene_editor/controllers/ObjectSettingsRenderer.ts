@@ -1,10 +1,11 @@
-import { MeshViewType, MeshView } from "../../../../core/models/views/MeshView";
-import { PathViewType, PathView } from "../../../../core/models/views/PathView";
+import { LightViewType } from "../../../../core/models/views/LightView";
+import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
+import { PathView, PathViewType } from "../../../../core/models/views/PathView";
 import { SpriteViewType } from "../../../../core/models/views/SpriteView";
 import { IRenderer } from "../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../core/Registry";
-import { UI_Container } from "../../../../core/ui_components/elements/UI_Container";
 import { UI_Layout } from "../../../../core/ui_components/elements/UI_Layout";
+import { LightSettingsProps } from "./LightSettingsController";
 import { MeshSettingsProps } from "./MeshSettingsController";
 import { SpriteSettingsProps } from "./SpriteSettingsController";
 
@@ -29,6 +30,8 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
                 break;
                 case SpriteViewType:
                     this.renderSpriteObjectSettings(layout);
+                case LightViewType:
+                    this.renderLightObjectSettings(layout);
             }
         }
     }
@@ -148,5 +151,14 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         const button = row.button(SpriteSettingsProps.ManageSpriteSheets);
         button.label = 'Manage spritesheets';
         button.width = '200px';
+    }
+
+    private renderLightObjectSettings(layout: UI_Layout) {
+        let row = layout.row({ key: LightSettingsProps.LightYPos });
+
+        let textField = row.textField({key: LightSettingsProps.LightYPos });
+        textField.layout = 'horizontal';
+        textField.label = 'YPos';
+        textField.type = 'number';
     }
 }

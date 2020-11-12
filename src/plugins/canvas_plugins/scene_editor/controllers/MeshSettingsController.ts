@@ -133,7 +133,7 @@ export class YPosController extends PropController<string> {
 
         let yPos = meshView.yPos;
         try {
-            context.releaseTempVal(val => parseFloat(val))
+            context.releaseTempVal(val => yPos = parseFloat(val))
         } catch(e) {
             console.log(e);
         }

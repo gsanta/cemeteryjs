@@ -8,6 +8,8 @@ import { colors } from "../../../../core/ui_components/react/styles";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ViewStore } from "../../../../core/stores/ViewStore";
 import { LightView, LightViewType } from "../../../../core/models/views/LightView";
+import { LightObj, LightObjType } from "../../../../core/models/objs/LightObj";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 
 export const LightToolId = 'light-tool';
 
@@ -18,9 +20,15 @@ export class LightTool extends RectangleTool {
     }
 
     protected createView(rect: Rectangle): View {
+        const lightObj = <LightObj> this.registry.services.objService.createObj(LightObjType);
+        lightObj.lightAdapter = this.registry.engine.lights;
+
         const lightView: LightView = <LightView> this.registry.data.view.scene.createView(LightViewType);
         lightView.setBounds(rect);
+        lightView.setObj(lightObj);
+        lightObj.startPos = new Point_3(lightView.getBounds().div(10).getBoundingCenter().x, 5, -lightView.getBounds().div(10).getBoundingCenter().y);
 
+        this.registry.stores.objStore.addObj(lightObj);
         this.viewStore.addView(lightView);
 
         return lightView;

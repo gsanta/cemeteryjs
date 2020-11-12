@@ -1,5 +1,6 @@
 import { AssetObjType } from "../models/objs/AssetObj";
 import { IObj } from "../models/objs/IObj";
+import { LightObj, LightObjType } from "../models/objs/LightObj";
 import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
 import { NodeObjJson, NodeObjType } from "../models/objs/NodeObj";
 import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
@@ -149,6 +150,9 @@ export class ObjLifeCycleHook implements ObjStoreHook {
                 break;
             case SpriteSheetObjType:
                 this.registry.engine.spriteLoader.loadSpriteSheet(<SpriteSheetObj> obj);
+                break;
+            case LightObjType:
+                this.registry.engine.lights.createInstance(<LightObj> obj);
                 break;
         }
     }

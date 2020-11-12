@@ -1,20 +1,18 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
+import { ILightAdapter } from "../../engine/ILightAdapter";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
 import { IObj, ObjFactory, ObjJson } from "./IObj";
 
 export const LightObjType = 'light-obj';
 
-export interface SpriteObjJson extends ObjJson {
-    frameName: string;
+export interface LightObjJson extends ObjJson {
     x: number;
     y: number;
-    scaleX: number;
-    scaleY: number;
+    z: number;
     id: string;
-    spriteSheetId: string;
 }
 
 export class LigthObjFactory implements ObjFactory {
@@ -36,56 +34,52 @@ export class LightObj implements IObj {
     id: string;
     objType = LightObjType;
 
+    lightAdapter: ILightAdapter;
 
-    color: string;
-    sprite: Sprite;
-    startPos: Point;
+    startPos: Point_3;
     startScale: Point = new Point(1, 1);
 
-    spriteSheetId: string;
-    frameName: string;
-
     move(point: Point) {
-        this.startPos.add(point);
+        this.startPos.add(new Point_3(point.x, 5, point.y));
+
+        if (this.lightAdapter) {
+            this.lightAdapter.setPosition(this, this.lightAdapter.getPosition(this).add(point));
+        }
     }
 
-    setPosition(pos: Point) {
+    setPosition(pos: Point_3) {
         this.startPos = pos;
+
+        this.lightAdapter && this.lightAdapter.setPosition(this, pos);
     }
 
     getPosition(): Point_3 {
-        return undefined;
-    }
+        let pos = this.lightAdapter && this.lightAdapter.getPosition(this);
 
-    setScale(scale: Point) {
-    }
+        if (!pos) {
+            pos = this.startPos;
+        }
 
-    getScale(): Point {
-        return undefined;
+        return <Point_3> pos;
     }
 
     dispose() {
+        this.lightAdapter && this.lightAdapter.deleteInstance(this);
     }
 
-    serialize(): SpriteObjJson {
+    serialize(): LightObjJson {
         return {
             id: this.id,
             objType: this.objType,
-            frameName: this.frameName,
             x: this.startPos && this.startPos.x,
             y: this.startPos && this.startPos.y,
-            scaleX: this.getScale().x,
-            scaleY: this.getScale().y,
-            spriteSheetId: this.spriteSheetId
+            z: this.startPos && this.startPos.z,
         }
     }
 
-    deserialize(json: SpriteObjJson) {
-        this.frameName = json.frameName;
+    deserialize(json: LightObjJson) {
         if (json.x !== undefined && json.y !== undefined) {
-            this.setPosition(new Point(json.x, json.y));
+            this.setPosition(new Point_3(json.x, json.y, json.z));
         }
-        this.setScale(new Point(json.scaleX, json.scaleY));
-        this.spriteSheetId = json.spriteSheetId;
     }
 }

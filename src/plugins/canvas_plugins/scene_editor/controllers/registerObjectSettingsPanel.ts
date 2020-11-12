@@ -1,6 +1,7 @@
 import { FormController } from "../../../../core/plugin/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
+import { LightYPosController } from "./LightSettingsController";
 import { MeshIdController, LayerController, RotationController, ScaleController, YPosController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController } from "./MeshSettingsController";
 import { ObjectSettigsRenderer } from "./ObjectSettingsRenderer";
 import { PathIdController } from "./PathObjectSettings";
@@ -20,28 +21,31 @@ function createPanel(registry: Registry): UI_Panel {
     panel.renderer = new ObjectSettigsRenderer(registry);
 
     const propControllers = [
-           // mesh
-           new MeshIdController(),
-           new LayerController(),
-           new RotationController(),
-           new ScaleController(),
-           new YPosController(),
-           new TextureController(),
-           new ModelController(),
-           new ThumbnailController(),
-           new WidthController(),
-           new DepthController(),
-           new HeightController(),
+            // mesh
+            new MeshIdController(),
+            new LayerController(),
+            new RotationController(),
+            new ScaleController(),
+            new YPosController(),
+            new TextureController(),
+            new ModelController(),
+            new ThumbnailController(),
+            new WidthController(),
+            new DepthController(),
+            new HeightController(),
 
-           // path
-           new PathIdController(),
+            // path
+            new PathIdController(),
 
-           // sprite
-           new FrameName(),
-           new SelectSpriteSheetController(),
-           new ManageSpriteSheetsController(),
-           new ScaleXController(),
-           new ScaleYController()
+            // sprite
+            new FrameName(),
+            new SelectSpriteSheetController(),
+            new ManageSpriteSheetsController(),
+            new ScaleXController(),
+            new ScaleYController(),
+
+            // light
+            new LightYPosController()
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

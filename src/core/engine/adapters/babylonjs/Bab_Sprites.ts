@@ -75,7 +75,6 @@ export class Bab_Sprites implements ISpriteAdapter {
 
         sprite.position = new Vector3(spriteObj.startPos.x, 0, spriteObj.startPos.y);
         
-        spriteObj.sprite = sprite;
         this.sprites.set(spriteObj.id, sprite);
     }
 

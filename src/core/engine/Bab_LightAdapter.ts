@@ -22,7 +22,7 @@ export class Bab_LightAdapter implements ILightAdapter {
         const light = this.lights.get(lightObj.id);
         if (!light) { return; }
 
-        light.position = new Vector3(pos.x, 0, pos.y);
+        light.position = new Vector3(pos.x, 5, pos.y);
     }
 
     getPosition(lightObj: LightObj): Point {
@@ -38,8 +38,9 @@ export class Bab_LightAdapter implements ILightAdapter {
     }
 
     createInstance(lightObj: LightObj) {
-        const light = new SpotLight(lightObj.id, new Vector3(0, 30, -10), new Vector3(0, -1, 0), Math.PI / 3, 2, this.engineFacade.scene);
-    
+        const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), new Vector3(0, -1, 0), Math.PI / 3, 2, this.engineFacade.scene);
+        light.position = new Vector3(lightObj.startPos.x, 5, lightObj.startPos.y);
+   
         this.lights.set(lightObj.id, light);
 
     }

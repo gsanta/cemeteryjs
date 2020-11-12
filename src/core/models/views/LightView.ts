@@ -4,7 +4,7 @@ import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
-import { SpriteObj } from "../objs/SpriteObj";
+import { LightObj } from "../objs/LightObj";
 import { View, ViewJson, ViewRenderer, ViewTag } from "./View";
 const LightSvg = require('../../../../assets/images/icons/light.svg');
 
@@ -43,18 +43,18 @@ export class LightRenderer implements ViewRenderer {
 export class LightView extends View {
     viewType = LightViewType;
 
-    protected obj: SpriteObj;
+    protected obj: LightObj;
 
     constructor() {
         super();
         this.renderer = new LightRenderer();
     }
 
-    getObj(): SpriteObj {
+    getObj(): LightObj {
         return this.obj;
     }
 
-    setObj(obj: SpriteObj) {
+    setObj(obj: LightObj) {
         this.obj = obj;
     }
 

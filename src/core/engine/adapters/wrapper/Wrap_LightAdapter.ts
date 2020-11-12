@@ -1,10 +1,9 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { SpriteObj } from "../../../models/objs/SpriteObj";
+import { LightObj } from "../../../models/objs/LightObj";
 import { Registry } from "../../../Registry";
 import { ILightAdapter } from "../../ILightAdapter";
-import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
 
 export class Wrap_LightAdapter implements ILightAdapter {
@@ -17,24 +16,23 @@ export class Wrap_LightAdapter implements ILightAdapter {
         this.engineFacade = engineFacade;
     }
 
-    setPosition(spriteObj: SpriteObj, pos: Point_3): void {
-        this.registry.plugins.engineHooks.getSpriteHooks().forEach(spriteHook => spriteHook.setPositionHook(spriteObj, pos));
-        this.engineFacade.realEngine.sprites.setPosition(spriteObj, pos);
+    setPosition(lightObj: LightObj, pos: Point_3): void {
+        this.engineFacade.realEngine.lights.setPosition(lightObj, pos);
     }
 
-    getPosition(spriteObj: SpriteObj): Point {
-        return this.engineFacade.realEngine.sprites.getPosition(spriteObj);
+    getPosition(lightObj: LightObj): Point {
+        return this.engineFacade.realEngine.lights.getPosition(lightObj);
     }
 
-    updateInstance(spriteObj: SpriteObj): void {
-        this.engineFacade.realEngine.sprites.updateInstance(spriteObj);
+    updateInstance(lightObj: LightObj): void {
+        this.engineFacade.realEngine.lights.updateInstance(lightObj);
     }
 
-    createInstance(spriteObj: SpriteObj) {
-        this.engineFacade.realEngine.sprites.createInstance(spriteObj);
+    createInstance(lightObj: LightObj) {
+        this.engineFacade.realEngine.lights.createInstance(lightObj);
     }
 
-    deleteInstance(spriteObj: SpriteObj): void {
-        this.engineFacade.realEngine.sprites.deleteInstance(spriteObj);
+    deleteInstance(lightObj: LightObj): void {
+        this.engineFacade.realEngine.lights.deleteInstance(lightObj);
     }
 }
