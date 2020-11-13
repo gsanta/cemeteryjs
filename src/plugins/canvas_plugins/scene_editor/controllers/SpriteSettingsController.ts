@@ -16,17 +16,17 @@ export enum SpriteSettingsProps {
 export class FrameName extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.FrameName]; }
 
-    defaultVal(context) {
-        return (<SpriteView> context.registry.stores.views.getOneSelectedView()).getObj().frameName || '';
+    defaultVal(context: PropContext) {
+        return (<SpriteView> context.registry.data.view.scene.getOneSelectedView()).getObj().frameName || '';
     }
 
-    change(val, context) {
+    change(val, context: PropContext) {
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    blur(context) {
-        const spriteView = (<SpriteView> context.registry.stores.views.getOneSelectedView());
+    blur(context: PropContext) {
+        const spriteView = (<SpriteView> context.registry.data.view.scene.getOneSelectedView());
         context.releaseTempVal((val) => spriteView.getObj().frameName = val);
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());
@@ -37,19 +37,19 @@ export class FrameName extends PropController<string> {
 export class SelectSpriteSheetController extends PropController<string> {
     acceptedProps() { return [SpriteSettingsProps.SelectSpriteSheet]; }
 
-    defaultVal(context) {
-        return (<SpriteView> context.registry.stores.views.getOneSelectedView()).getObj().spriteSheetId;
+    defaultVal(context: PropContext) {
+        return (<SpriteView> context.registry.data.view.scene.getOneSelectedView()).getObj().spriteSheetId;
     }
 
-    change(val, context) {
-        const spriteView = (<SpriteView> context.registry.stores.views.getOneSelectedView());
+    change(val, context: PropContext) {
+        const spriteView = (<SpriteView> context.registry.data.view.scene.getOneSelectedView());
         spriteView.getObj().spriteSheetId = val;
         context.registry.services.history.createSnapshot();
         context.registry.engine.sprites.updateInstance(spriteView.getObj());
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    values(context) {
+    values(context: PropContext) {
         return context.registry.stores.objStore.getObjsByType(SpriteSheetObjType).map(asset => asset.id);
     }
 }

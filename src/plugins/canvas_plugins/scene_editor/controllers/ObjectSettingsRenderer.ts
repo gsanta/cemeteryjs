@@ -160,5 +160,12 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         textField.layout = 'horizontal';
         textField.label = 'YPos';
         textField.type = 'number';
+        
+        row = layout.row({ key: SpriteSettingsProps.ScaleY });
+
+        textField = row.textField({key: LightSettingsProps.LightAngle });
+        textField.layout = 'horizontal';
+        textField.label = 'Angle';
+        textField.type = 'number';
     }
 }

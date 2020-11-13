@@ -1,5 +1,4 @@
 import { Sprite } from "babylonjs";
-import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../../../models/objs/LightObj";
 import { Registry } from "../../../Registry";
@@ -20,8 +19,16 @@ export class Wrap_LightAdapter implements ILightAdapter {
         this.engineFacade.realEngine.lights.setPosition(lightObj, pos);
     }
 
-    getPosition(lightObj: LightObj): Point {
+    getPosition(lightObj: LightObj): Point_3 {
         return this.engineFacade.realEngine.lights.getPosition(lightObj);
+    }
+
+    setAngle(lightObj: LightObj, angleRad: number): void {
+        this.engineFacade.realEngine.lights.setAngle(lightObj, angleRad);
+    }
+    
+    getAngle(lightObj: LightObj): number {
+        return this.engineFacade.realEngine.lights.getAngle(lightObj);
     }
 
     updateInstance(lightObj: LightObj): void {

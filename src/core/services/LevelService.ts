@@ -9,7 +9,7 @@ export class LevelService {
     }
     
     changeLevel(level: number): Promise<void> {
-        this.clearStores();
+        this.registry.data.clearData();
 
         if (this.registry.stores.levelStore.hasLevel(level)) {
             return this.registry.services.localStore.loadLevel(level)
@@ -32,12 +32,8 @@ export class LevelService {
         return this.registry.services.localStore
             .removeLevel(this.registry.stores.levelStore.currentLevel.index)
             .then(() => {
-                this.clearStores();
+                this.registry.data.clearData();
                 this.registry.stores.levelStore.currentLevel.isEmpty = true;
             });
-    }
-
-    private clearStores() {
-        this.registry.stores.clear();
     }
 }

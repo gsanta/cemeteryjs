@@ -25,7 +25,6 @@ export class MeshTool extends RectangleTool {
         meshObj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
         meshView.setScale(1);
-        meshView.color = colors.lightPink;
     
         this.registry.stores.objStore.addObj(meshObj);
         this.viewStore.addView(meshView);

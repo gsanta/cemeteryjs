@@ -21,7 +21,7 @@ export class ImportFileController extends PropController<{ data: string }> {
     acceptedProps() { return [FileSettingsProps.Import]; }
 
     change(val: {data: string}, context: PropContext) {
-        context.registry.stores.clear();
+        context.registry.data.clearData();
         context.registry.services.import.import(val.data);
 
         context.registry.services.render.reRenderAll();
@@ -32,7 +32,6 @@ export class NewProjectController extends PropController {
     acceptedProps() { return [FileSettingsProps.NewProject]; }
 
     click(context: PropContext) {
-        context.registry.stores.clear();
         context.registry.data.clearData();
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRenderAll();

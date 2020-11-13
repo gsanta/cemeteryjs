@@ -36,7 +36,8 @@ export class MeshRenderer implements ViewRenderer {
         rect.height = meshView.getBounds().getHeight();
 
         rect.css = {
-            strokeWidth: meshView.isSelected() ? '2' : '1'
+            strokeWidth: meshView.isSelected() ? '2' : '1',
+            fill: meshView.color
         }    
 
         rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
@@ -66,7 +67,7 @@ export class MeshView extends View {
     
     thumbnailData: string;
 
-    color: string = 'grey';
+    color: string = colors.pastelBlue;
     yPos: number = 0;
     speed = 0.5;
 

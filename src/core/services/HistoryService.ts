@@ -16,7 +16,7 @@ export class HistoryService {
     undo() {
         if (this.hasUndoHistory()) {
             this.index = this.index - 1;
-            this.registry.stores.clear();
+            this.registry.data.clearData();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
             this.registry.services.render.reRenderAll();
@@ -26,7 +26,7 @@ export class HistoryService {
     redo() {
         if (this.hasRedoHistory()) {
             this.index = this.index + 1;
-            this.registry.stores.clear();
+            this.registry.data.clearData();
             this.registry.services.import.import(this.history[this.index]);
             this.registry.services.level.updateCurrentLevel();
             this.registry.services.render.reRenderAll();

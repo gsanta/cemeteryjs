@@ -1,4 +1,5 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
@@ -60,7 +61,7 @@ export class LightView extends View {
 
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
-        this.obj && this.obj.move(point.div(10).negateY());
+        this.obj && this.obj.move(new Point_3(point.x, 0, point.y).div(10).negateZ());
     }
 
     getBounds(): Rectangle {

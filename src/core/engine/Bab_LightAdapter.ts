@@ -1,5 +1,6 @@
 import { Light, SpotLight, SpriteManager, Vector3 } from "babylonjs";
 import { Point } from "../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../models/objs/LightObj";
 import { Registry } from "../Registry";
 import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
@@ -11,26 +12,35 @@ export class Bab_LightAdapter implements ILightAdapter {
     private engineFacade: Bab_EngineFacade;
     lights: Map<string, SpotLight> = new Map();
     
-    private placeholderSpriteManager: SpriteManager;
-
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
     }
 
-    setPosition(lightObj: LightObj, pos: Point): void {
+    setPosition(lightObj: LightObj, pos: Point_3): void {
         const light = this.lights.get(lightObj.id);
         if (!light) { return; }
 
-        light.position = new Vector3(pos.x, 5, pos.y);
+        light.position = new Vector3(pos.x, pos.y, pos.z);
     }
 
-    getPosition(lightObj: LightObj): Point {
+    getPosition(lightObj: LightObj): Point_3 {
         const light = this.lights.get(lightObj.id);
 
-        return  new Point(light.position.x, light.position.z);
+        return  new Point_3(light.position.x, light.position.y, light.position.z);
     }
 
+    setAngle(lightObj: LightObj, angleRad: number): void {
+        const light = this.lights.get(lightObj.id);
+        
+        light.angle = angleRad;
+    }
+
+    getAngle(lightObj: LightObj): number {
+        const light = this.lights.get(lightObj.id);
+
+        return light.angle;
+    }
 
     updateInstance(lightObj: LightObj): void {
         this.lights.get(lightObj.id).dispose();

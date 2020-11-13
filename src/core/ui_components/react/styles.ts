@@ -21,6 +21,9 @@ export const colors = {
 
     green: '#86C35E',
 
+    pastelBlue: '#A2D2FF',
+    pastelGreen: '#B8DDAE',
+
     views: {
         highlight: '#5e5ad1',
         stroke: 'black',

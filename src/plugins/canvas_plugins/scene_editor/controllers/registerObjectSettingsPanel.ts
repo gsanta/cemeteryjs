@@ -1,7 +1,7 @@
 import { FormController } from "../../../../core/plugin/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { LightYPosController } from "./LightSettingsController";
+import { LightAngleController, LightYPosController } from "./LightSettingsController";
 import { MeshIdController, LayerController, RotationController, ScaleController, YPosController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController } from "./MeshSettingsController";
 import { ObjectSettigsRenderer } from "./ObjectSettingsRenderer";
 import { PathIdController } from "./PathObjectSettings";
@@ -45,7 +45,8 @@ function createPanel(registry: Registry): UI_Panel {
             new ScaleYController(),
 
             // light
-            new LightYPosController()
+            new LightYPosController(),
+            new LightAngleController()
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

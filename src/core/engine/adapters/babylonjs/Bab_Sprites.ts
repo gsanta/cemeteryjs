@@ -5,7 +5,7 @@ import { Registry } from "../../../Registry";
 import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 
-const placeholderSpriteSheet = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAA9UlEQVR4nO3RQQHAIBDAsGO6EIJFVA4bfSQWsvY9/5DxqWgREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiMkRkiMkBghMUJihMQIiRESIyRGSIyQGCExQmKExAiJERIjJEZIjJAYITFCYoTECIkREiOkZGYe3KcDBIuxwCIAAAAASUVORK5CYII='
+const placeholderSpriteSheet = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAFklEQVR42mKYaXQGDxqVxooAAQAA//81fp79VaAEvgAAAABJRU5ErkJggg=='
 
 export class Bab_Sprites implements ISpriteAdapter {
     private registry: Registry;

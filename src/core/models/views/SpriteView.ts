@@ -19,14 +19,14 @@ export interface SpriteViewJson extends ViewJson {
 export class SpriteRenderer implements ViewRenderer {
     id: string = SpriteViewType;
 
-    renderInto(canvas: UI_SvgCanvas, view: View, panel: AbstractCanvasPanel): void {
+    renderInto(canvas: UI_SvgCanvas, view: SpriteView, panel: AbstractCanvasPanel): void {
         const group = canvas.group(view.id);
         group.data = view;
         group.transform = `translate(${view.getBounds().topLeft.x} ${view.getBounds().topLeft.y})`;
         const rect = group.rect();
         rect.width = view.getBounds().getWidth();
         rect.height = view.getBounds().getHeight();
-        rect.fillColor = 'grey';
+        rect.fillColor = view.color;
 
         rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
@@ -37,7 +37,7 @@ export class SpriteRenderer implements ViewRenderer {
 export class SpriteView extends View {
     viewType = SpriteViewType;
 
-    color: string;
+    color: string = colors.pastelGreen;
     thumbnailData: string;
     protected obj: SpriteObj;
 

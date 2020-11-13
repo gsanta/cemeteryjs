@@ -29,9 +29,4 @@ export class Stores {
         this.objStore.setIdGenerator(new IdGenerator());
         this.game = new GameStore(this.registry);
     }
-
-    clear() {
-        this.objStore.clear();
-        this.assetStore.clear();
-    }
 }

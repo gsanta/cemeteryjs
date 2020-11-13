@@ -39,8 +39,8 @@ export class LightObj implements IObj {
     startPos: Point_3;
     startScale: Point = new Point(1, 1);
 
-    move(point: Point) {
-        this.startPos.add(new Point_3(point.x, 5, point.y));
+    move(point: Point_3) {
+        this.startPos.add(point);
 
         if (this.lightAdapter) {
             this.lightAdapter.setPosition(this, this.lightAdapter.getPosition(this).add(point));
@@ -61,6 +61,14 @@ export class LightObj implements IObj {
         }
 
         return <Point_3> pos;
+    }
+
+    getAngle() {
+        return this.lightAdapter ? this.lightAdapter.getAngle(this) : 0;
+    }
+
+    setAngle(angleRad: number) {
+        this.lightAdapter && this.lightAdapter.setAngle(this, angleRad);
     }
 
     dispose() {
