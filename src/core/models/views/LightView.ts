@@ -7,7 +7,6 @@ import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
 import { LightObj } from "../objs/LightObj";
 import { View, ViewJson, ViewRenderer, ViewTag } from "./View";
-const LightSvg = require('../../../../assets/images/icons/light.svg');
 
 export const LightViewType = 'light-view';
 
@@ -32,7 +31,6 @@ export class LightRenderer implements ViewRenderer {
         rect.strokeColor = lightView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'transparent';
 
         const image = group.image(lightView.id);
-        image.href = LightSvg;
         image.transform = `translate(${lightView.getBounds().topLeft.x} ${lightView.getBounds().topLeft.y})`;
         image.width = lightView.getBounds().getWidth();
         image.height = lightView.getBounds().getHeight();

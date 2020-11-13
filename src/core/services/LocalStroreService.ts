@@ -9,6 +9,9 @@ export class LocalStoreService {
 
     constructor(registry: Registry) {
         this.registry = registry;
+    }
+
+    setup() {
         const request = window.indexedDB.open(this.name, this.version);
         request.onupgradeneeded = () => this.upgradeDb(request);
     }

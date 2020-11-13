@@ -73,7 +73,7 @@ export class App extends React.Component<{}, AppState> {
         });
 
 
-        setTimeout(() => this.context.controllers.setup(document.querySelector(`#${GameViewerPanelId}`)), 100);
+        setTimeout(() => this.context.controllers.setup(), 100);
 
         document.getElementsByTagName('body')[0].addEventListener('onfocus', () => {
             console.log('body focus')

@@ -25,7 +25,7 @@ function getScreenSize(canvasId: string): Point {
 }
 
 export function calcOffsetFromDom(element: HTMLElement): Point {
-    if (typeof document !== 'undefined') {
+    if (element && typeof document !== 'undefined') {
         const rect: ClientRect = element.getBoundingClientRect();
         return new Point(rect.left - element.scrollLeft, rect.top - element.scrollTop);
     }
@@ -35,7 +35,6 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
 
 export abstract class AbstractCanvasPanel extends UI_Panel {
     dropItem: UI_ListItem;
-    bounds: Rectangle;
 
     readonly displayName: string;
 
@@ -91,13 +90,6 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
     out(): void {
         this.registry.ui.helper.hoveredPanel = undefined;
         this.registry.services.pointer.hoveredView = undefined;
-    }
-
-    mounted(htmlElement: HTMLElement) {
-        super.mounted(htmlElement);
-
-        const boundingRect = htmlElement.getBoundingClientRect();
-        this.bounds = new Rectangle(new Point(boundingRect.left, boundingRect.top), new Point(boundingRect.width, boundingRect.height));
     }
 
     getOffset() {

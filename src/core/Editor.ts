@@ -65,7 +65,8 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new RouteNode(this.registry));
     }
 
-    setup(canvas: HTMLCanvasElement) {
+    setup() {
+        this.registry.services.localStore.setup();
         this.registry.services.render.reRenderAll();
         setTimeout(() => {
             this.registry.services.localStore.loadLevelIndexes()

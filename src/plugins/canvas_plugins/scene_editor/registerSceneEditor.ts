@@ -25,7 +25,7 @@ import { PathTool } from "./tools/PathTool";
 import { SphereTool } from "./tools/SphereTool";
 import { SpriteTool } from "./tools/SpriteTool";
 
-export const SceneEditorPanelId = 'scene-editor-panel';
+export const SceneEditorPanelId = 'scene-editor';
 
 export function registerSceneEditor(registry: Registry) {
     const canvas = createCanvas(registry);

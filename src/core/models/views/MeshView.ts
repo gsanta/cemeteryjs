@@ -42,8 +42,6 @@ export class MeshRenderer implements ViewRenderer {
 
         rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
-        let thumbnail: JSX.Element = null;
-
         if (meshView.thumbnailData) {
             const image = group.image();
             image.href = meshView.thumbnailData;
@@ -51,8 +49,6 @@ export class MeshRenderer implements ViewRenderer {
             image.height = meshView.getBounds().getHeight();
             image.preservAspectRatio = "xMidYMid slice";
         }
-
-        return thumbnail;
     }
 }
 
