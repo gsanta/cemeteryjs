@@ -1,4 +1,6 @@
 import { Editor } from "../../../src/core/Editor";
+import { Test_EngineFacade } from "../../../src/core/engine/adapters/test/Test_EngineFacade";
+import { Wrap_EngineFacade } from "../../../src/core/engine/adapters/wrapper/Wrap_EngineFacade";
 import { UI_Region } from "../../../src/core/plugin/UI_Panel";
 import { SceneEditorPanelId } from "../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor";
 
@@ -35,5 +37,8 @@ export class EditorExt extends Editor {
         this.registry.services.render.setRenderer(UI_Region.Canvas2, () => this.fakeRenderer.renderPanel2());
         this.registry.services.render.setRenderer(UI_Region.Sidepanel, () => this.fakeRenderer.renderSidePanel());
         this.registry.services.render.setRenderer(UI_Region.Dialog, () => this.fakeRenderer.renderDialog());
+        const wrapEngine = new Wrap_EngineFacade(this.registry);
+        wrapEngine.realEngine = new Test_EngineFacade(this.registry);
+        this.registry.engine = wrapEngine;
     }
 }

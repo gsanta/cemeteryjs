@@ -1,7 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { FormController } from '../../plugin/controller/FormController';
-import { ToolController } from '../../plugin/controller/ToolController';
 import { UI_Panel } from '../../plugin/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
@@ -42,18 +41,14 @@ export abstract class UI_Element {
     //TODO: consider restrict it only to svg elements
     scopedToolId: string;
     isInteractive: boolean = true;
-    targetId: string;
 
     readonly uniqueId: string;
-    readonly toolController: ToolController;
     readonly controller: FormController;
 
     css?: UI_Element_Css = {};
 
-    constructor(config: {controller: FormController, key?: string, target?: string, uniqueId?: string, toolController?: ToolController}) {
-        this.targetId = config.target;
+    constructor(config: {controller: FormController, key?: string, uniqueId?: string}) {
         this.uniqueId = config.uniqueId;
-        this.toolController = config.toolController;
         this.controller = config.controller;
         this.key = config.key;
     }

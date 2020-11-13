@@ -68,6 +68,11 @@ export class Editor {
     setup() {
         this.registry.services.localStore.setup();
         this.registry.services.render.reRenderAll();
+            
+        setTimeout(() => {
+            this.registry.engine.registerRenderLoop(() => this.registry.services.game.renderLoop())
+        }, 0);
+        
         setTimeout(() => {
             this.registry.services.localStore.loadLevelIndexes()
                 .then((indexes: number[]) => {

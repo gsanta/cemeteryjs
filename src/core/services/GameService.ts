@@ -10,14 +10,9 @@ export class GameService {
 
     constructor(registry: Registry) {
         this.registry = registry;
-
-        // TODO register elsewhere without settimeout
-        setTimeout(() => {
-            this.registry.engine.registerRenderLoop(() => this.renderLoop())
-        }, 0);
     }
 
-    private renderLoop() {
+    renderLoop() {
         const animationNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
         animationNodes.forEach(animationNode => animationNode.getObj().execute());
 

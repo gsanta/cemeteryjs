@@ -1,6 +1,3 @@
-import { MeshViewType } from "../../../core/models/views/MeshView";
-import { PathViewType } from "../../../core/models/views/PathView";
-import { SpriteViewType } from "../../../core/models/views/SpriteView";
 import { sortViewsByLayer, View } from "../../../core/models/views/View";
 import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../core/plugin/ICanvasRenderer";
@@ -153,15 +150,13 @@ export class SceneEditorRenderer implements ICanvasRenderer {
 
         if (this.isShapeDropdownOpen) {
             tool = toolController.getToolById(CubeToolId);
-            shapeTool = toolbarDropdown.tool({key: SceneEditorToolbarProps.SelectPrimitiveShape});
-            shapeTool.targetId = CubeToolId;
+            shapeTool = toolbarDropdown.tool({key: CubeToolId});
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;
 
             tool = toolController.getToolById(SphereToolId);
-            shapeTool = toolbarDropdown.tool({key: SceneEditorToolbarProps.SelectPrimitiveShape});
-            shapeTool.targetId = SphereToolId;
+            shapeTool = toolbarDropdown.tool({key: SphereToolId});
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;
