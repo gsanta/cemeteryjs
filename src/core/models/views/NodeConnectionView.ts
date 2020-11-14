@@ -5,7 +5,7 @@ import { Registry } from "../../Registry";
 import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
 import { JoinPointView } from "./child_views/JoinPointView";
 import { NodeView } from "./NodeView";
-import { View, ViewJson, ViewFactory } from './View';
+import { View, ViewFactoryAdapter, ViewJson } from './View';
 
 export const NodeConnectionViewType = 'node-connection-view';
 
@@ -39,14 +39,9 @@ export class NodeConnectionViewPlugin implements ViewPlugin {
     }
 }
 
-export class NodeConnectionFactory implements ViewFactory {
-
+export class NodeConnectionViewFactory extends ViewFactoryAdapter {
     instantiate() {
         return new NodeConnectionView();
-    }
-
-    instantiateOnCanvas() {
-
     }
 }
 

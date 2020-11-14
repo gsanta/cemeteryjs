@@ -1,7 +1,7 @@
 
 
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
-import { NodeConnectionView, NodeConnectionViewType } from "../../../core/models/views/NodeConnectionView";
+import { NodeConnectionViewFactory, NodeConnectionView, NodeConnectionViewType } from "../../../core/models/views/NodeConnectionView";
 import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
@@ -46,7 +46,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     canvas.renderer = new NodeEditorRenderer(registry, canvas);
     tools.forEach(tool => canvas.addTool(tool));
 
-    registry.data.view.node.registerViewType(NodeConnectionViewType, () => new NodeConnectionView());
+    registry.data.view.node.registerViewType(NodeConnectionViewType, new NodeConnectionViewFactory());
     // registry.data.view.scene.registerViewType(MoveAxisViewType, () => new MoveAxisView(registry));
     // registry.data.view.scene.registerViewType(ScaleAxisViewType, () => new ScaleAxisView(registry));
 

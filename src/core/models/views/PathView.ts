@@ -1,11 +1,12 @@
 import { maxBy, minBy } from "../../../utils/geometry/Functions";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
-import { PathObj } from "../objs/PathObj";
+import { PathObj, PathObjType } from "../objs/PathObj";
 import { EditPointViewJson, PathPointView } from './child_views/PathPointView';
-import { View, ViewJson, ViewRenderer } from "./View";
+import { View, ViewFactoryAdapter, ViewJson, ViewRenderer } from "./View";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
@@ -17,6 +18,35 @@ export interface PathProps {
         parent: number;
         point: string;
     }[];
+}
+
+export class PathViewFactory extends ViewFactoryAdapter {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    instantiate() {
+        return new PathView();
+    }
+
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+        const pointer = this.registry.services.pointer.pointer;
+
+        const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
+        const pathView: PathView = <PathView> this.instantiate();
+        pathView.setObj(pathObj);
+
+        const editPoint = new PathPointView(pathView, pointer.down.clone());
+        pathView.addPathPoint(editPoint);
+        panel.getViewStore().addView(pathView);
+        this.registry.stores.objStore.addObj(pathObj);
+        panel.getViewStore().addSelectedView(pathView);
+
+        return pathView;
+    }
 }
 
 export interface PathViewJson extends ViewJson {

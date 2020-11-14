@@ -1,11 +1,11 @@
-import { LightView, LightViewType } from "../../../core/models/views/LightView";
-import { MeshView, MeshViewType } from "../../../core/models/views/MeshView";
-import { PathView, PathViewType } from "../../../core/models/views/PathView";
-import { SpriteView, SpriteViewType } from "../../../core/models/views/SpriteView";
+import { LightViewFactory, LightViewType } from "../../../core/models/views/LightView";
+import { MeshViewFactory, MeshViewType } from "../../../core/models/views/MeshView";
+import { PathViewFactory, PathViewType } from "../../../core/models/views/PathView";
+import { SpriteViewFactory, SpriteViewType } from "../../../core/models/views/SpriteView";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
-import { CommonToolController, SceneEditorToolController, CanvasContextDependentToolController } from "../../../core/plugin/controller/ToolController";
+import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/plugin/controller/ToolController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
@@ -14,8 +14,8 @@ import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { MoveAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 import { ScaleAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
-import { MoveAxisView, MoveAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
-import { ScaleAxisView, ScaleAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
+import { MoveAxisViewFactory, MoveAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
+import { ScaleAxisViewFactory, ScaleAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./SceneEditorControllers";
 import { SceneEditorRenderer } from "./SceneEditorRenderer";
 import { CubeTool } from "./tools/CubeTool";
@@ -68,12 +68,12 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     canvas.setViewStore(registry.data.view.scene);
     tools.forEach(tool => canvas.addTool(tool));
 
-    registry.data.view.scene.registerViewType(MeshViewType, () => new MeshView());
-    registry.data.view.scene.registerViewType(SpriteViewType, () => new SpriteView());
-    registry.data.view.scene.registerViewType(LightViewType, () => new LightView());
-    registry.data.view.scene.registerViewType(MoveAxisViewType, () => new MoveAxisView(registry));
-    registry.data.view.scene.registerViewType(ScaleAxisViewType, () => new ScaleAxisView(registry));
-    registry.data.view.scene.registerViewType(PathViewType, () => new PathView());
+    registry.data.view.scene.registerViewType(MeshViewType, new MeshViewFactory(registry));
+    registry.data.view.scene.registerViewType(SpriteViewType, new SpriteViewFactory(registry));
+    registry.data.view.scene.registerViewType(LightViewType, new LightViewFactory(registry));
+    registry.data.view.scene.registerViewType(MoveAxisViewType, new MoveAxisViewFactory(registry));
+    registry.data.view.scene.registerViewType(ScaleAxisViewType, new ScaleAxisViewFactory(registry));
+    registry.data.view.scene.registerViewType(PathViewType, new PathViewFactory(registry));
 
     return canvas;
 }

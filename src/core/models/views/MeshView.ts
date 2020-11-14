@@ -2,14 +2,13 @@ import { toDegree } from '../../../utils/geometry/shapes/Angle';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { FormController } from '../../plugin/controller/FormController';
-import { ViewPlugin } from '../../plugin/ViewPlugin';
+import { Canvas2dPanel } from '../../plugin/Canvas2dPanel';
 import { Registry } from '../../Registry';
 import { sceneAndGameViewRatio } from '../../stores/ViewStore';
 import { UI_SvgCanvas } from '../../ui_components/elements/UI_SvgCanvas';
 import { colors } from '../../ui_components/react/styles';
-import { MeshObj } from '../objs/MeshObj';
-import { View, ViewJson, ViewRenderer, ViewTag } from './View';
+import { MeshObj, MeshObjType } from '../objs/MeshObj';
+import { View, ViewFactory, ViewFactoryAdapter, ViewJson, ViewRenderer, ViewTag } from './View';
 
 export const MeshViewType = 'mesh-view';
 
@@ -49,6 +48,36 @@ export class MeshRenderer implements ViewRenderer {
             image.height = meshView.getBounds().getHeight();
             image.preservAspectRatio = "xMidYMid slice";
         }
+    }
+}
+
+export class MeshViewFactory extends ViewFactoryAdapter {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    instantiate() {
+        return new MeshView();
+    }
+
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+        const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
+        meshObj.color = colors.darkorchid;
+
+        const meshView: MeshView = <MeshView> this.instantiate();
+        meshView.setObj(meshObj);
+        meshView.setBounds(dimensions);
+        meshObj.meshAdapter = this.registry.engine.meshes;
+        meshView.setRotation(0);
+        meshView.setScale(1);
+    
+        this.registry.stores.objStore.addObj(meshObj);
+        panel.getViewStore().addView(meshView);
+    
+        return meshView;
     }
 }
 

@@ -8,14 +8,14 @@ import { UI_Region } from '../UI_Panel';
 import { NullTool } from "./NullTool";
 import { ToolType } from "./Tool";
 
-export abstract class PointerTool extends NullTool {
+export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> extends NullTool<P> {
     acceptedViews: string[] = [];
 
     protected movingItem: View = undefined;
     private isDragStart = true;
     protected viewStore: ViewStore;
 
-    constructor(type: string, panel: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
+    constructor(type: string, panel: P, store: ViewStore, registry: Registry) {
         super(type, panel, registry);
         this.viewStore = store;
     }

@@ -103,7 +103,7 @@ export class Rectangle implements Shape {
     }
 
     toString() {
-        return `${this.topLeft.toString()} ${this.bottomRight.toString()}`
+        return `${this.topLeft.toString()},${this.bottomRight.toString()}`
     }
 
     static fromTwoPoints(point1: Point, point2: Point) {
@@ -116,7 +116,7 @@ export class Rectangle implements Shape {
     }
 
     static fromString(str: string): Rectangle {
-        const points = str.split(' ');
+        const points = str.split(',');
         return new Rectangle(Point.fromString(points[0]), Point.fromString(points[1]));
     }
 }

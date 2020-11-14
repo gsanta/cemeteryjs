@@ -19,17 +19,17 @@ export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
     return rect;
 }
 
-export class NullTool implements Tool {
+export class NullTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> implements Tool {
     rectangleSelection: Rectangle;
     id: string;
     isSelected = false;
 
     getCursor() { return Cursor.Default; }
     
-    protected panel: AbstractCanvasPanel;
+    protected panel: P;
     protected registry: Registry;
 
-    constructor(type: string, panel: AbstractCanvasPanel, registry: Registry) {
+    constructor(type: string, panel: P, registry: Registry) {
         this.id = type;
         this.panel = panel;
         this.registry = registry;

@@ -105,6 +105,9 @@ export class ViewStore {
     }
 
     addView(view: View) {
+        if (!view.id) {
+            view.id = this.generateId(view);
+        }
         this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
         // if (view.id) {
         // } else {
@@ -258,35 +261,8 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
-            let axisView = <MoveAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
-            axisView.axis = CanvasAxis.X;
-            axisView.setParent(views[0]);
-            views[0].addChild(axisView);
-
-            axisView = <MoveAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
-            axisView.axis = CanvasAxis.Y;
-            axisView.setParent(views[0]);
-            views[0].addChild(axisView);
-
-            axisView = <MoveAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
-            axisView.axis = CanvasAxis.Z;
-            axisView.setParent(views[0]);
-            views[0].addChild(axisView);
-
-            let scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-            scaleView.axis = CanvasAxis.X;
-            scaleView.setParent(views[0]);
-            views[0].addChild(scaleView);
-
-            scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-            scaleView.axis = CanvasAxis.Y;
-            scaleView.setParent(views[0]);
-            views[0].addChild(scaleView);
-
-            scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-            scaleView.axis = CanvasAxis.Z;
-            scaleView.setParent(views[0]);
-            views[0].addChild(scaleView);
+            this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiateOnSelection(views[0])
+            this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiateOnSelection(views[0])
         }
     }
 

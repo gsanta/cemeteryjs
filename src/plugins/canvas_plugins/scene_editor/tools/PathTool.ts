@@ -1,4 +1,3 @@
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { PathPointView, PathPointViewType } from "../../../../core/models/views/child_views/PathPointView";
 import { PathView, PathViewType } from "../../../../core/models/views/PathView";
@@ -8,14 +7,14 @@ import { IHotkeyEvent } from "../../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../../core/services/input/KeyboardService";
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
-import { PathObj, PathObjType } from "../../../../core/models/objs/PathObj";
 import { ViewStore } from "../../../../core/stores/ViewStore";
+import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 
 export const PathToolId = 'path-tool';
-export class PathTool extends PointerTool {
+export class PathTool extends PointerTool<Canvas2dPanel> {
     acceptedViews = [PathViewType, PathPointViewType]
 
-    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel, viewStore: ViewStore, registry: Registry) {
         super(PathToolId, panel, viewStore, registry);
     }
 
@@ -84,18 +83,7 @@ export class PathTool extends PointerTool {
     }
 
     private startNewPath() {
-        const pointer = this.registry.services.pointer.pointer;
-        this.viewStore.clearSelection();
-
-        const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
-        const pathView: PathView = <PathView> this.registry.data.view.scene.createView(PathViewType);
-        pathView.setObj(pathObj);
-
-        const editPoint = new PathPointView(pathView, pointer.down.clone());
-        pathView.addPathPoint(editPoint);
-        this.viewStore.addView(pathView);
-        this.registry.stores.objStore.addObj(pathObj);
-        this.viewStore.addSelectedView(pathView);
+        return this.panel.getViewStore().getViewFactory(PathViewType).instantiateOnCanvas(this.panel, undefined);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

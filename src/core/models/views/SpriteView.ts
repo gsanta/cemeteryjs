@@ -1,11 +1,12 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
-import { SpriteObj, SpriteObjJson } from "../objs/SpriteObj";
-import { View, ViewJson, ViewRenderer, ViewTag } from "./View";
+import { SpriteObj, SpriteObjJson, SpriteObjType } from "../objs/SpriteObj";
+import { View, ViewFactory, ViewFactoryAdapter, ViewJson, ViewRenderer, ViewTag } from "./View";
 
 export const SpriteViewType = 'sprite-view';
 
@@ -31,6 +32,37 @@ export class SpriteRenderer implements ViewRenderer {
         rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
         view.children.forEach(child => child.renderer.renderInto(canvas, child, panel));
+    }
+}
+
+export class SpriteViewFactory extends ViewFactoryAdapter {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    instantiate() {
+        return new SpriteView();
+    }
+
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+        const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
+        spriteObj.color = colors.darkorchid;
+
+        const spriteView: SpriteView = <SpriteView> this.instantiate();
+        spriteView.setObj(spriteObj);
+        spriteView.setBounds(dimensions);
+        spriteObj.spriteAdapter = this.registry.engine.sprites;
+        spriteObj.setScale(new Point(3, 3));
+        spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y);
+
+        panel.getViewStore().addView(spriteView);
+        this.registry.stores.objStore.addObj(spriteObj);
+
+        return spriteView;
+
     }
 }
 

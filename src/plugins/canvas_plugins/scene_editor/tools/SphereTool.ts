@@ -6,36 +6,26 @@ import { MeshObj, MeshObjType, MeshSphereConfig } from "../../../../core/models/
 import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { ViewStore } from "../../../../core/stores/ViewStore";
+import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 
 export const SphereToolId = 'sphere-tool';
-export class SphereTool extends RectangleTool {
+export class SphereTool extends RectangleTool<Canvas2dPanel> {
     icon = 'sphere';
     displayName = 'Sphere';
 
-    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel, viewStore: ViewStore, registry: Registry) {
         super(SphereToolId, panel, viewStore, registry);
     }
 
     protected createView(rect: Rectangle): View {
-        const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
-     
-        meshObj.shapeConfig = <MeshSphereConfig> {
+        const sphere = this.panel.getViewStore().getViewFactory(MeshViewType).instantiateOnCanvas(this.panel, rect);
+
+        (sphere.getObj() as MeshObj).shapeConfig = <MeshSphereConfig> {
             shapeType: 'Sphere',
             diameter: 5,
         }
      
-        const meshView: MeshView = <MeshView> this.registry.data.view.scene.createView(MeshViewType);
-        meshView.setObj(meshObj);
-        meshView.setBounds(rect);
-        meshObj.meshAdapter = this.registry.engine.meshes;
-        meshView.setRotation(0);
-        meshView.setScale(1);
-        meshView.color = 'black';
-    
-        this.registry.stores.objStore.addObj(meshObj);
-        this.viewStore.addView(meshView);
-    
-        return meshView;
+        return sphere;
     }
     
     protected removeTmpView() {

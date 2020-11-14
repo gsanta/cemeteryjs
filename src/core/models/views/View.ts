@@ -24,7 +24,14 @@ export enum ViewTag {
 
 export interface ViewFactory {
     instantiate(): View;
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle): void;
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle): View;
+    instantiateOnSelection(parentView: View): void;
+}
+
+export abstract class ViewFactoryAdapter implements ViewFactory {
+    instantiate() { return undefined; }
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle): View { return undefined; }
+    instantiateOnSelection(parentView: View): void {  }
 }
 
 export interface ViewRenderer {

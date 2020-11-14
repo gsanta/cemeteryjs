@@ -7,13 +7,13 @@ import { View } from '../../models/views/View';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { ViewStore } from '../../stores/ViewStore';
 
-export abstract class RectangleTool extends NullTool {
+export abstract class RectangleTool<P extends AbstractCanvasPanel> extends NullTool<P> {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
     protected viewStore: ViewStore;
     protected rectRadius = 50;
 
-    constructor(type: string, panel: AbstractCanvasPanel, store: ViewStore, registry: Registry) {
+    constructor(type: string, panel: P, store: ViewStore, registry: Registry) {
         super(type, panel, registry);
         this.viewStore = store;
     }

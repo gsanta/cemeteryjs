@@ -108,11 +108,11 @@ export class Point {
     }
 
     toString(): string {
-        return `(${this.x}:${this.y})`;
+        return `${this.x}:${this.y}`;
     }
 
     static fromString(str: string): Point {
-        const matcher = /\(([-\d\.]+):([-\d\.]+)\)/;
+        const matcher = /([-\d\.]+):([-\d\.]+)/;
         const match = str.match(matcher);
         return new Point(parseFloat(match[1]), parseFloat(match[2]));
     }

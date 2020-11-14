@@ -2,7 +2,7 @@ import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { ChildView } from "../../../../../core/models/views/child_views/ChildView";
-import { View, ViewJson } from "../../../../../core/models/views/View";
+import { View, ViewFactoryAdapter, ViewJson } from "../../../../../core/models/views/View";
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
@@ -14,6 +14,37 @@ export interface AxisViewJson extends ViewJson {
 }
 
 export const ScaleAxisViewType = 'scale-axis-view';
+
+export class ScaleAxisViewFactory extends ViewFactoryAdapter {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    instantiate() {
+        return new ScaleAxisView(this.registry);
+    }
+
+    instantiateOnSelection(parentView: View) {
+        let axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
+        axisView.axis = CanvasAxis.X;
+        axisView.setParent(parentView);
+        parentView.addChild(axisView);
+
+        axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
+        axisView.axis = CanvasAxis.Y;
+        axisView.setParent(parentView);
+        parentView.addChild(axisView);
+
+        axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
+        axisView.axis = CanvasAxis.Z;
+        axisView.setParent(parentView);
+        parentView.addChild(axisView);
+    }
+}
+
 
 export interface ArrowBounds {
     [axis: string]: Rectangle;

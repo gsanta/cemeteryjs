@@ -7,7 +7,7 @@ import { sceneAndGameViewRatio, ViewStore } from '../../stores/ViewStore';
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
 import { LightObj, LightObjType } from "../objs/LightObj";
-import { View, ViewJson, ViewRenderer, ViewTag, ViewFactory } from './View';
+import { View, ViewJson, ViewRenderer, ViewTag, ViewFactory, ViewFactoryAdapter } from './View';
 import { Canvas2dPanel } from '../../plugin/Canvas2dPanel';
 
 export const LightViewType = 'light-view';
@@ -43,10 +43,11 @@ export class LightRenderer implements ViewRenderer {
     }
 }
 
-export class LightViewFactory implements ViewFactory {
+export class LightViewFactory extends ViewFactoryAdapter {
     private registry: Registry;
 
     constructor(registry: Registry) {
+        super();
         this.registry = registry;
     }
 
@@ -64,7 +65,7 @@ export class LightViewFactory implements ViewFactory {
         lightObj.startPos = new Point_3(lightView.getBounds().div(10).getBoundingCenter().x, 5, -lightView.getBounds().div(10).getBoundingCenter().y);
 
         this.registry.stores.objStore.addObj(lightObj);
-        viewStore.addView(lightView);
+        panel.getViewStore().addView(lightView);
 
         return lightView;
     }
