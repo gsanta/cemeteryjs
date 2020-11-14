@@ -4,20 +4,15 @@
 
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { MeshView } from "../../../core/models/views/MeshView";
-import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../../core/plugin/Canvas2DPanel";
+import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
-import { CommonToolController, SceneEditorToolController, CanvasContextDependentToolController } from "../../../core/plugin/controller/ToolController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
-import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
-import { SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
-import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ThumbnailCanvasRenderer } from "./ThumbnailCanvasRenderer";
-import { ThumbnailCreateControl, ThumbnailUploadControl, ClearThumbnailControl } from "./ThumbnailDialogProps";
+import { ClearThumbnailControl, ThumbnailCreateControl, ThumbnailUploadControl } from "./ThumbnailDialogProps";
 
 export const ThumbnailCanvasId = 'thumbnail-canvas';
 

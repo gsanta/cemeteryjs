@@ -3,7 +3,7 @@
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
 import { NodeConnectionView, NodeConnectionViewType } from "../../../core/models/views/NodeConnectionView";
 import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../../core/plugin/Canvas2DPanel";
+import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
 import { CommonToolController } from "../../../core/plugin/controller/ToolController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
@@ -42,6 +42,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
 
     canvas.setController(new FormController(canvas, registry, propControllers));
     canvas.setCamera(cameraInitializer(NodeEditorPanelId, registry));
+    canvas.setViewStore(registry.data.view.node);
     canvas.renderer = new NodeEditorRenderer(registry, canvas);
     tools.forEach(tool => canvas.addTool(tool));
 

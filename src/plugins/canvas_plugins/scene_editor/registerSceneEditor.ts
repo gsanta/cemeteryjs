@@ -3,7 +3,7 @@ import { MeshView, MeshViewType } from "../../../core/models/views/MeshView";
 import { PathView, PathViewType } from "../../../core/models/views/PathView";
 import { SpriteView, SpriteViewType } from "../../../core/models/views/SpriteView";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../../core/plugin/Canvas2DPanel";
+import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
 import { CommonToolController, SceneEditorToolController, CanvasContextDependentToolController } from "../../../core/plugin/controller/ToolController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
@@ -65,6 +65,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     canvas.renderer = new SceneEditorRenderer(registry, canvas);
     canvas.setController(new FormController(undefined, registry, propControllers))
     canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));
+    canvas.setViewStore(registry.data.view.scene);
     tools.forEach(tool => canvas.addTool(tool));
 
     registry.data.view.scene.registerViewType(MeshViewType, () => new MeshView());

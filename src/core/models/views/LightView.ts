@@ -1,13 +1,14 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
-import { sceneAndGameViewRatio } from "../../stores/ViewStore";
+import { sceneAndGameViewRatio, ViewStore } from '../../stores/ViewStore';
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
-import { LightObj } from "../objs/LightObj";
-import { View, ViewJson, ViewRenderer, ViewTag } from "./View";
+import { LightObj, LightObjType } from "../objs/LightObj";
+import { View, ViewJson, ViewRenderer, ViewTag, ViewFactory } from './View';
+import { Canvas2dPanel } from '../../plugin/Canvas2dPanel';
 
 export const LightViewType = 'light-view';
 
@@ -39,6 +40,33 @@ export class LightRenderer implements ViewRenderer {
         image.height = lightView.getBounds().getHeight();
 
         lightView.children.forEach(child => child.renderer.renderInto(canvas, child, panel));
+    }
+}
+
+export class LightViewFactory implements ViewFactory {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    instantiate() {
+        return new LightView();
+    }
+
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+        const lightObj = <LightObj> this.registry.services.objService.createObj(LightObjType);
+        lightObj.lightAdapter = this.registry.engine.lights;
+
+        const lightView: LightView = <LightView> this.instantiate();
+        lightView.setBounds(dimensions);
+        lightView.setObj(lightObj);
+        lightObj.startPos = new Point_3(lightView.getBounds().div(10).getBoundingCenter().x, 5, -lightView.getBounds().div(10).getBoundingCenter().y);
+
+        this.registry.stores.objStore.addObj(lightObj);
+        viewStore.addView(lightView);
+
+        return lightView;
     }
 }
 

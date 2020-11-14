@@ -1,4 +1,4 @@
-import { View, ViewTag } from "../models/views/View";
+import { View, ViewTag, ViewFactory } from '../models/views/View';
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
@@ -48,7 +48,7 @@ export class ViewStore {
     private viewsByType: Map<string, View[]> = new Map();
     protected idGenerator: IdGenerator;
     private hooks: ViewStoreHook[] = [];
-    private viewFactories: Map<string, () => View> = new Map();
+    private viewFactories: Map<string, ViewFactory> = new Map();
 
     readonly canvasId: string;
     private registry: Registry;
@@ -70,7 +70,7 @@ export class ViewStore {
                 const nodeType = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId)).type;
                 viewInstance = this.registry.data.helper.node.createView(nodeType)
             } else {
-                viewInstance = this.createView(viewJson.type);
+                viewInstance = this.getViewFactory(viewJson.type).instantiate();
             }
             viewInstance.fromJson(viewJson, this.registry);
             this.addView(viewInstance);
@@ -96,14 +96,12 @@ export class ViewStore {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
-    registerViewType(viewType: string, createView: () => View) {
-        this.viewFactories.set(viewType, createView);
+    registerViewType(viewType: string, viewFactory: ViewFactory) {
+        this.viewFactories.set(viewType, viewFactory);
     }
 
-    createView(viewType: string): View {
-        const view = this.viewFactories.get(viewType)();
-        view.id = this.generateId(view);
-        return view;
+    getViewFactory(viewType: string): ViewFactory {
+        return this.viewFactories.get(viewType);
     }
 
     addView(view: View) {
@@ -260,32 +258,32 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     addSelectionHook(views: View[]) {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
-            let axisView = <MoveAxisView> this.registry.data.view.scene.createView(MoveAxisViewType);
+            let axisView = <MoveAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
             axisView.axis = CanvasAxis.X;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            axisView = <MoveAxisView> this.registry.data.view.scene.createView(MoveAxisViewType);
+            axisView = <MoveAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
             axisView.axis = CanvasAxis.Y;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            axisView = <MoveAxisView> this.registry.data.view.scene.createView(MoveAxisViewType);
+            axisView = <MoveAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
             axisView.axis = CanvasAxis.Z;
             axisView.setParent(views[0]);
             views[0].addChild(axisView);
 
-            let scaleView = <ScaleAxisView> this.registry.data.view.scene.createView(ScaleAxisViewType);
+            let scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
             scaleView.axis = CanvasAxis.X;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
 
-            scaleView = <ScaleAxisView> this.registry.data.view.scene.createView(ScaleAxisViewType);
+            scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
             scaleView.axis = CanvasAxis.Y;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);
 
-            scaleView = <ScaleAxisView> this.registry.data.view.scene.createView(ScaleAxisViewType);
+            scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
             scaleView.axis = CanvasAxis.Z;
             scaleView.setParent(views[0]);
             views[0].addChild(scaleView);

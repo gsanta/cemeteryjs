@@ -8,6 +8,7 @@ import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IControlledModel } from "../../plugin/IControlledModel";
 import { FormController } from "../../plugin/controller/FormController";
+import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
 
 export interface ViewJson {
     id: string;
@@ -22,11 +23,8 @@ export enum ViewTag {
 }
 
 export interface ViewFactory {
-    viewType: string;
-    newInstance(): View;
-
-    renderInto?(container: UI_Container, view: View, plugin: AbstractCanvasPanel);
-    createRenderer?(registry: Registry): ViewRenderer;
+    instantiate(): View;
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle): void;
 }
 
 export interface ViewRenderer {

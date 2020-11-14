@@ -1,13 +1,11 @@
-import { View, ViewJson, ViewFactory, ViewRenderer } from "./View";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
+import { maxBy, minBy } from "../../../utils/geometry/Functions";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { PathPointView, EditPointViewJson } from './child_views/PathPointView';
-import { PathObj } from "../objs/PathObj";
-import { minBy, maxBy } from "../../../utils/geometry/Functions";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
-import { FormController } from "../../plugin/controller/FormController";
-import { ViewPlugin } from "../../plugin/ViewPlugin";
+import { PathObj } from "../objs/PathObj";
+import { EditPointViewJson, PathPointView } from './child_views/PathPointView';
+import { View, ViewJson, ViewRenderer } from "./View";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 

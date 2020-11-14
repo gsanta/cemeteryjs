@@ -20,21 +20,25 @@ export class LightTool extends RectangleTool {
     }
 
     protected createView(rect: Rectangle): View {
-        const lightObj = <LightObj> this.registry.services.objService.createObj(LightObjType);
-        lightObj.lightAdapter = this.registry.engine.lights;
-
-        const lightView: LightView = <LightView> this.registry.data.view.scene.createView(LightViewType);
-        lightView.setBounds(rect);
-        lightView.setObj(lightObj);
-        lightObj.startPos = new Point_3(lightView.getBounds().div(10).getBoundingCenter().x, 5, -lightView.getBounds().div(10).getBoundingCenter().y);
-
-        this.registry.stores.objStore.addObj(lightObj);
-        this.viewStore.addView(lightView);
-
-        return lightView;
+        return LightTool.createView(this.registry, this.viewStore, rect);
     }
     
     protected removeTmpView() {
         this.viewStore.removeView(this.tmpView);
+    }
+
+    static createView(registry: Registry, viewStore: ViewStore, rect: Rectangle): View {
+        const lightObj = <LightObj> registry.services.objService.createObj(LightObjType);
+        lightObj.lightAdapter = registry.engine.lights;
+
+        const lightView: LightView = <LightView> registry.data.view.scene.createView(LightViewType);
+        lightView.setBounds(rect);
+        lightView.setObj(lightObj);
+        lightObj.startPos = new Point_3(lightView.getBounds().div(10).getBoundingCenter().x, 5, -lightView.getBounds().div(10).getBoundingCenter().y);
+
+        registry.stores.objStore.addObj(lightObj);
+        viewStore.addView(lightView);
+
+        return lightView;
     }
 }
