@@ -22,6 +22,15 @@ export class Test_LightAdapter implements ILightAdapter {
         return undefined;
     }
 
+    
+    setDirection(lightObj: LightObj, pos: Point_3): void {
+    }
+
+    getDirection(lightObj: LightObj): Point_3 {
+        return undefined;
+    }
+
+
     setAngle(lightObj: LightObj, angleRad: number): void {
     }
     

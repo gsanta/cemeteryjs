@@ -7,7 +7,7 @@ export class IdGenerator {
         this.addPrefixIfMissing(prefix);
 
         const maxId = this.prefixIndexCounter.get(prefix) || 0;
-        const name = `${prefix}${maxId + 1}`.toLocaleLowerCase();
+        const name = `${prefix}-${maxId + 1}`.toLocaleLowerCase();
         this.prefixIndexCounter.set(prefix, maxId + 1);
         return name;
     }
@@ -44,7 +44,7 @@ export class IdGenerator {
     }
 
     private createPattern(prefix: string) {
-        return new RegExp(`${prefix}(\\d+)`, 'i');
+        return new RegExp(`${prefix}-(\\d+)`, 'i');
     }
 
     private addPrefixIfMissing(prefix: string) {

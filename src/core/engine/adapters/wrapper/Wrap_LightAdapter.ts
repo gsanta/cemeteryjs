@@ -23,6 +23,14 @@ export class Wrap_LightAdapter implements ILightAdapter {
         return this.engineFacade.realEngine.lights.getPosition(lightObj);
     }
 
+    setDirection(lightObj: LightObj, pos: Point_3): void {
+        this.engineFacade.realEngine.lights.setDirection(lightObj, pos);
+    }
+
+    getDirection(lightObj: LightObj): Point_3 {
+        return this.engineFacade.realEngine.lights.getDirection(lightObj);
+    }
+
     setAngle(lightObj: LightObj, angleRad: number): void {
         this.engineFacade.realEngine.lights.setAngle(lightObj, angleRad);
     }

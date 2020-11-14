@@ -5,7 +5,7 @@ import { SpriteViewType } from "../../../../core/models/views/SpriteView";
 import { IRenderer } from "../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { UI_Layout } from "../../../../core/ui_components/elements/UI_Layout";
-import { LightSettingsProps } from "./LightSettingsController";
+import { LightSettingsProp } from "./LightSettingsController";
 import { MeshSettingsProps } from "./MeshSettingsController";
 import { SpriteSettingsProps } from "./SpriteSettingsController";
 
@@ -154,18 +154,39 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
     }
 
     private renderLightObjectSettings(layout: UI_Layout) {
-        let row = layout.row({ key: LightSettingsProps.LightYPos });
+        let row = layout.row({ key: LightSettingsProp.LightYPos });
 
-        let textField = row.textField({key: LightSettingsProps.LightYPos });
+        let textField = row.textField({key: LightSettingsProp.LightYPos });
         textField.layout = 'horizontal';
         textField.label = 'YPos';
         textField.type = 'number';
         
-        row = layout.row({ key: SpriteSettingsProps.ScaleY });
+        row = layout.row({ key: LightSettingsProp.LightAngle });
 
-        textField = row.textField({key: LightSettingsProps.LightAngle });
+        textField = row.textField({key: LightSettingsProp.LightAngle });
         textField.layout = 'horizontal';
         textField.label = 'Angle';
+        textField.type = 'number';
+
+        row = layout.row({ key: LightSettingsProp.LightDirX });
+
+        textField = row.textField({key: LightSettingsProp.LightDirX });
+        textField.layout = 'horizontal';
+        textField.label = 'X dir';
+        textField.type = 'number';
+
+        row = layout.row({ key: LightSettingsProp.LightDirY });
+
+        textField = row.textField({key: LightSettingsProp.LightDirY });
+        textField.layout = 'horizontal';
+        textField.label = 'Y dir';
+        textField.type = 'number';
+
+        row = layout.row({ key: LightSettingsProp.LightDirZ });
+
+        textField = row.textField({key: LightSettingsProp.LightDirZ });
+        textField.layout = 'horizontal';
+        textField.label = 'Z dir';
         textField.type = 'number';
     }
 }

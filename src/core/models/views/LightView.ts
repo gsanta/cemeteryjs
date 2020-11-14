@@ -3,6 +3,7 @@ import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
+import { sceneAndGameViewRatio } from "../../stores/ViewStore";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../ui_components/react/styles";
 import { LightObj } from "../objs/LightObj";
@@ -31,6 +32,8 @@ export class LightRenderer implements ViewRenderer {
         rect.strokeColor = lightView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'transparent';
 
         const image = group.image(lightView.id);
+        // TODO cucumber tests fail when requiring static asstes, so it is put here
+        image.href = require('../../../../assets/images/icons/light.svg');
         image.transform = `translate(${lightView.getBounds().topLeft.x} ${lightView.getBounds().topLeft.y})`;
         image.width = lightView.getBounds().getWidth();
         image.height = lightView.getBounds().getHeight();
@@ -55,6 +58,11 @@ export class LightView extends View {
 
     setObj(obj: LightObj) {
         this.obj = obj;
+
+        if (this.bounds) { 
+            const pos2 = this.bounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
+            this.obj.setPosition(new Point_3(pos2.x, this.obj.getPosition().y, pos2.y - this.bounds.getHeight() / 2));
+        }
     }
 
     move(point: Point) {

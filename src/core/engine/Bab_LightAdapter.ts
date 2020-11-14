@@ -26,8 +26,22 @@ export class Bab_LightAdapter implements ILightAdapter {
 
     getPosition(lightObj: LightObj): Point_3 {
         const light = this.lights.get(lightObj.id);
+        if (!light) { return; }
 
         return  new Point_3(light.position.x, light.position.y, light.position.z);
+    }
+
+    setDirection(lightObj: LightObj, dir: Point_3): void {
+        const light = this.lights.get(lightObj.id);
+        if (!light) { return; }
+
+        light.direction = new Vector3(dir.x, dir.y, dir.z);
+    }
+
+    getDirection(lightObj: LightObj): Point_3 {
+        const light = this.lights.get(lightObj.id);
+
+        return  new Point_3(light.direction.x, light.direction.y, light.direction.z);
     }
 
     setAngle(lightObj: LightObj, angleRad: number): void {

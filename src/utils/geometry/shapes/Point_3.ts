@@ -27,4 +27,8 @@ export class Point_3 extends Point {
     negateZ(): Point_3 {
         return new Point_3(this.x, this.y, -this.z);
     }
+
+    toString(): string {
+        return `${this.x}:${this.y}:${this.z}`;
+    }
 }
