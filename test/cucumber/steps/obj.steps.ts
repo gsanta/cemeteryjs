@@ -1,17 +1,8 @@
 import { TableDefinition, Then, World } from "cucumber";
-import { IObj } from "../../../src/core/models/objs/IObj";
 import expect from 'expect';
-import { Light } from "babylonjs";
-import { LightObj, LightObjJson, LightObjType } from "../../../src/core/models/objs/LightObj";
-
-export enum ViewTableProp {
-    Id = 'Id',
-    Type = 'Type',
-    Obj = 'Obj',
-
-    Pos = 'Pos',
-    PosY = 'PosY'
-}
+import { IObj } from "../../../src/core/models/objs/IObj";
+import { LightObj, LightObjType } from "../../../src/core/models/objs/LightObj";
+import { ViewTableProp } from "./common/viewTestUtils";
 
 Then('obj properties are:', function (tableDef: TableDefinition) {
     objPropertiesAre(this, tableDef);
