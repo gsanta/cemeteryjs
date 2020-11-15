@@ -2,6 +2,7 @@ import { Sprite } from "babylonjs";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../../../models/objs/LightObj";
 import { Registry } from "../../../Registry";
+import { defaultLightDirection } from "../../Bab_LightAdapter";
 import { ILightAdapter } from "../../ILightAdapter";
 import { Test_EngineFacade } from "./Test_EngineFacade";
 
@@ -9,6 +10,8 @@ export class Test_LightAdapter implements ILightAdapter {
     private registry: Registry;
     private engineFacade: Test_EngineFacade;
     sprites: Map<string, Sprite> = new Map();
+
+    directionMap: Map<string, Point_3> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -22,14 +25,13 @@ export class Test_LightAdapter implements ILightAdapter {
         return undefined;
     }
 
-    
-    setDirection(lightObj: LightObj, pos: Point_3): void {
+    setDirection(lightObj: LightObj, dir: Point_3): void {
+        this.directionMap.set(lightObj.id, dir);
     }
 
     getDirection(lightObj: LightObj): Point_3 {
-        return undefined;
+        return this.directionMap.get(lightObj.id) || defaultLightDirection;
     }
-
 
     setAngle(lightObj: LightObj, angleRad: number): void {
     }

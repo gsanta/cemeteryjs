@@ -1,11 +1,11 @@
 import { SpriteSheetObjType } from '../../../../core/models/objs/SpriteSheetObj';
-import { SpriteView } from '../../../../core/models/views/SpriteView';
+import { SpriteView } from './SpriteView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { SpriteSheetManagerDialogId } from '../../../dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
 
-export enum SpriteSettingsProps {
+export enum SpriteViewControllerParam {
     FrameName = 'FrameName',
     SelectSpriteSheet = 'SpriteSheet',
     ManageSpriteSheets = 'EditSpriteSheets',
@@ -14,7 +14,7 @@ export enum SpriteSettingsProps {
 }
 
 export class FrameName extends PropController<string> {
-    acceptedProps() { return [SpriteSettingsProps.FrameName]; }
+    acceptedProps() { return [SpriteViewControllerParam.FrameName]; }
 
     defaultVal(context: PropContext) {
         return (<SpriteView> context.registry.data.view.scene.getOneSelectedView()).getObj().frameName || '';
@@ -35,7 +35,7 @@ export class FrameName extends PropController<string> {
 }
 
 export class SelectSpriteSheetController extends PropController<string> {
-    acceptedProps() { return [SpriteSettingsProps.SelectSpriteSheet]; }
+    acceptedProps() { return [SpriteViewControllerParam.SelectSpriteSheet]; }
 
     defaultVal(context: PropContext) {
         return (<SpriteView> context.registry.data.view.scene.getOneSelectedView()).getObj().spriteSheetId;
@@ -55,7 +55,7 @@ export class SelectSpriteSheetController extends PropController<string> {
 }
 
 export class ManageSpriteSheetsController extends PropController<string> {
-    acceptedProps() { return [SpriteSettingsProps.ManageSpriteSheets]; }
+    acceptedProps() { return [SpriteViewControllerParam.ManageSpriteSheets]; }
 
     click(context: PropContext) {
         const dialog = context.registry.ui.panel.getPanel(SpriteSheetManagerDialogId);
@@ -65,7 +65,7 @@ export class ManageSpriteSheetsController extends PropController<string> {
 }
 
 export class ScaleXController extends PropController<string> {
-    acceptedProps() { return [SpriteSettingsProps.ScaleX]; }
+    acceptedProps() { return [SpriteViewControllerParam.ScaleX]; }
 
     defaultVal(context: PropContext) {
         const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
@@ -97,7 +97,7 @@ export class ScaleXController extends PropController<string> {
 
 
 export class ScaleYController extends PropController<string> {
-    acceptedProps() { return [SpriteSettingsProps.ScaleY]; }
+    acceptedProps() { return [SpriteViewControllerParam.ScaleY]; }
 
     defaultVal(context: PropContext) {
         const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();

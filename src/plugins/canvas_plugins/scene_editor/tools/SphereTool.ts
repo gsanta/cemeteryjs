@@ -3,7 +3,7 @@ import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel
 import { Registry } from "../../../../core/Registry";
 import { View } from "../../../../core/models/views/View";
 import { MeshObj, MeshObjType, MeshSphereConfig } from "../../../../core/models/objs/MeshObj";
-import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
+import { MeshView, MeshViewType } from "../views/MeshView";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { ViewStore } from "../../../../core/stores/ViewStore";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";

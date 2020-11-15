@@ -1,4 +1,4 @@
-import { MeshViewType } from "../../../../core/models/views/MeshView";
+import { MeshViewType } from "../views/MeshView";
 import { View } from "../../../../core/models/views/View";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";

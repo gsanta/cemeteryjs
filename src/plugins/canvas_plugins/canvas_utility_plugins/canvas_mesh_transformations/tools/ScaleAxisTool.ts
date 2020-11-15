@@ -1,5 +1,5 @@
 import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
-import { MeshView } from "../../../../../core/models/views/MeshView";
+import { MeshView } from "../../../scene_editor/views/MeshView";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { NullTool } from "../../../../../core/plugin/tools/NullTool";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";

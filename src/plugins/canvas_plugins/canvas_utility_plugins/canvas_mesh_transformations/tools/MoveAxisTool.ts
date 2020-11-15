@@ -1,7 +1,7 @@
 import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { MoveAxisView, MoveAxisViewType } from "../views/MoveAxisView";
-import { MeshView } from "../../../../../core/models/views/MeshView";
-import { SpriteView } from "../../../../../core/models/views/SpriteView";
+import { MeshView } from "../../../scene_editor/views/MeshView";
+import { SpriteView } from "../../../scene_editor/views/SpriteView";
 import { View } from "../../../../../core/models/views/View";
 import { NullTool } from "../../../../../core/plugin/tools/NullTool";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";

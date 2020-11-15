@@ -1,12 +1,12 @@
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { MeshBoxConfig } from '../../../../core/models/objs/MeshObj';
-import { MeshView } from '../../../../core/models/views/MeshView';
+import { MeshView } from './MeshView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
 
-export enum MeshSettingsProps {
+export enum MeshViewControllerParam {
     MeshId = 'MeshId',
     Layer = 'Layer',
     Rotation = 'Rotation',
@@ -21,7 +21,7 @@ export enum MeshSettingsProps {
 }
 
 export class MeshIdController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.MeshId]; }
+    acceptedProps() { return [MeshViewControllerParam.MeshId]; }
 
     defaultVal(context) {
         return (<MeshView> context.registry.data.view.scene.getOneSelectedView()).id;
@@ -40,7 +40,7 @@ export class MeshIdController extends PropController<string> {
 }
 
 export class LayerController extends PropController<number> {
-    acceptedProps() { return [MeshSettingsProps.Layer]; }
+    acceptedProps() { return [MeshViewControllerParam.Layer]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -57,7 +57,7 @@ export class LayerController extends PropController<number> {
 }
 
 export class RotationController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Rotation]; }
+    acceptedProps() { return [MeshViewControllerParam.Rotation]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -87,7 +87,7 @@ export class RotationController extends PropController<string> {
 
 
 export class ScaleController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Scale]; }
+    acceptedProps() { return [MeshViewControllerParam.Scale]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -115,7 +115,7 @@ export class ScaleController extends PropController<string> {
 }
 
 export class YPosController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.YPos]; }
+    acceptedProps() { return [MeshViewControllerParam.YPos]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -144,7 +144,7 @@ export class YPosController extends PropController<string> {
 }
 
 export class TextureController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Texture]; }
+    acceptedProps() { return [MeshViewControllerParam.Texture]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -178,7 +178,7 @@ export class TextureController extends PropController<string> {
 }
 
 export class ThumbnailController extends PropController {
-    acceptedProps() { return [MeshSettingsProps.Thumbnail]; }
+    acceptedProps() { return [MeshViewControllerParam.Thumbnail]; }
 
     click(context: PropContext) {
         const dialog = context.registry.ui.panel.getPanel(ThumbnailDialogPanelId);
@@ -188,7 +188,7 @@ export class ThumbnailController extends PropController {
 }
 
 export class ModelController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Model]; }
+    acceptedProps() { return [MeshViewControllerParam.Model]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -226,7 +226,7 @@ export class ModelController extends PropController<string> {
 }
 
 export class WidthController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Width]; }
+    acceptedProps() { return [MeshViewControllerParam.Width]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -258,7 +258,7 @@ export class WidthController extends PropController<string> {
 }
 
 export class HeightController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Height]; }
+    acceptedProps() { return [MeshViewControllerParam.Height]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
@@ -290,7 +290,7 @@ export class HeightController extends PropController<string> {
 }
 
 export class DepthController extends PropController<string> {
-    acceptedProps() { return [MeshSettingsProps.Depth]; }
+    acceptedProps() { return [MeshViewControllerParam.Depth]; }
 
     defaultVal(context) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();

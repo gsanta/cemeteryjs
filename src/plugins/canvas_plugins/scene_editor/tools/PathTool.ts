@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { PathPointView, PathPointViewType } from "../../../../core/models/views/child_views/PathPointView";
-import { PathView, PathViewType } from "../../../../core/models/views/PathView";
+import { PathView, PathViewType } from "../views/PathView";
 import { View } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
 import { IHotkeyEvent } from "../../../../core/services/input/HotkeyService";

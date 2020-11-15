@@ -1,6 +1,6 @@
 import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PathViewType } from "../../../../core/models/views/PathView";
+import { PathViewType } from "../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";

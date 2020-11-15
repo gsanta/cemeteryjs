@@ -7,7 +7,7 @@ import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
 import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
 import { registerNodeListPanel } from '../plugins/canvas_plugins/node_editor/registerNodeListPanel';
-import { registerObjectSettingsPanel } from '../plugins/canvas_plugins/scene_editor/controllers/registerObjectSettingsPanel';
+import { registerObjectSettingsPanel } from '../plugins/canvas_plugins/scene_editor/registerObjectSettingsPanel';
 import { registerSceneEditor } from '../plugins/canvas_plugins/scene_editor/registerSceneEditor';
 import { registerSpriteSheetManagerDialog } from '../plugins/dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
 import { registerThumbnailCanvas } from '../plugins/dialog_plugins/thumbnail/registerThumbnailCanvas';

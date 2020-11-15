@@ -1,15 +1,15 @@
-import { PathView } from '../../../../core/models/views/PathView';
+import { PathView } from './PathView';
 import { PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 
-export enum PathSettingsProps {
+export enum PathViewControllerParam {
     PathId = 'PathId',
 }
 
 export const PathSettingsControllerId = 'path-settings-controller';
 
 export class PathIdController extends PropController<any> {
-    acceptedProps() { return [PathSettingsProps.PathId]; }
+    acceptedProps() { return [PathViewControllerParam.PathId]; }
 
     change(val, context) {
         context.updateTempVal(val);

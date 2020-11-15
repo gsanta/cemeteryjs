@@ -1,5 +1,5 @@
 import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
-import { MeshViewType } from "../../../../core/models/views/MeshView";
+import { MeshViewType } from "../../scene_editor/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";

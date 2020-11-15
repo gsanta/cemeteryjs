@@ -1,12 +1,12 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
-import { LightView } from '../../../../core/models/views/LightView';
+import { LightView } from './LightView';
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 
-export enum LightSettingsProp {
-    LightYPos = 'light-y-pos',
+export enum LightViewControllerParam {
+    LightYPos = 'light-pos-y',
     LightAngle = 'LightAngle',
 
     LightDirX = 'light-dir-x',
@@ -15,7 +15,7 @@ export enum LightSettingsProp {
 }
 
 export class LightYPosController extends PropController<string> {
-    acceptedProps() { return [LightSettingsProp.LightYPos]; }
+    acceptedProps() { return [LightViewControllerParam.LightYPos]; }
 
     defaultVal(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
@@ -45,20 +45,20 @@ export class LightYPosController extends PropController<string> {
 }
 
 export class LightDirController extends PropController<string> {
-    private prop: LightSettingsProp;
+    private prop: LightViewControllerParam;
     acceptedProps() { return [this.prop]; }
 
     constructor(axis: CanvasAxis) {
         super();
         switch(axis) {
             case CanvasAxis.X:
-                this.prop = LightSettingsProp.LightDirX;
+                this.prop = LightViewControllerParam.LightDirX;
                 break;
             case CanvasAxis.Y:
-                this.prop = LightSettingsProp.LightDirY;
+                this.prop = LightViewControllerParam.LightDirY;
                 break;
             case CanvasAxis.Z:
-                this.prop = LightSettingsProp.LightDirZ;
+                this.prop = LightViewControllerParam.LightDirZ;
                 break;
         }
     }
@@ -83,7 +83,7 @@ export class LightDirController extends PropController<string> {
     }
 
     private setVal(view: LightView, val: string) {
-        const currPos = view.getObj().getDirection();
+        const currDir = view.getObj().getDirection();
 
         let valNum;
         try {
@@ -93,29 +93,29 @@ export class LightDirController extends PropController<string> {
         }
 
         switch(this.prop) {
-            case LightSettingsProp.LightDirX:
-                return view.getObj().setDirection(new Point_3(valNum, currPos.y, currPos.z));
-            case LightSettingsProp.LightDirY:
-                return view.getObj().setDirection(new Point_3(currPos.x, valNum, currPos.z));
-            case LightSettingsProp.LightDirY:
-                return view.getObj().setDirection(new Point_3(currPos.x, currPos.y, valNum));    
+            case LightViewControllerParam.LightDirX:
+                return view.getObj().setDirection(new Point_3(valNum, currDir.y, currDir.z));
+            case LightViewControllerParam.LightDirY:
+                return view.getObj().setDirection(new Point_3(currDir.x, valNum, currDir.z));
+            case LightViewControllerParam.LightDirY:
+                return view.getObj().setDirection(new Point_3(currDir.x, currDir.y, valNum));    
         }
     }
 
     private getVal(view: LightView) {
         switch(this.prop) {
-            case LightSettingsProp.LightDirX:
+            case LightViewControllerParam.LightDirX:
                 return view.getObj().getDirection().x;
-            case LightSettingsProp.LightDirY:
+            case LightViewControllerParam.LightDirY:
                 return view.getObj().getDirection().y;
-            case LightSettingsProp.LightDirY:
+            case LightViewControllerParam.LightDirY:
                 return view.getObj().getDirection().z;    
         }
     }
 }
 
 export class LightAngleController extends PropController<string> {
-    acceptedProps() { return [LightSettingsProp.LightAngle]; }
+    acceptedProps() { return [LightViewControllerParam.LightAngle]; }
 
     defaultVal(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();

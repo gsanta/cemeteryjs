@@ -1,11 +1,13 @@
-import { Light, SpotLight, SpriteManager, Vector3 } from "babylonjs";
-import { Point } from "../../utils/geometry/shapes/Point";
+import { SpotLight, Vector3 } from "babylonjs";
 import { Point_3 } from "../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../models/objs/LightObj";
 import { Registry } from "../Registry";
 import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
+import { toVector3 } from "./adapters/babylonjs/Bab_Utils";
 import { ILightAdapter } from "./ILightAdapter";
 
+
+export const defaultLightDirection = new Point_3(0, -1, 0);
 
 export class Bab_LightAdapter implements ILightAdapter {
     private registry: Registry;
@@ -62,7 +64,7 @@ export class Bab_LightAdapter implements ILightAdapter {
     }
 
     createInstance(lightObj: LightObj) {
-        const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), new Vector3(0, -1, 0), Math.PI / 3, 2, this.engineFacade.scene);
+        const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), toVector3(defaultLightDirection), Math.PI / 3, 2, this.engineFacade.scene);
         light.position = new Vector3(lightObj.startPos.x, 5, lightObj.startPos.y);
    
         this.lights.set(lightObj.id, light);

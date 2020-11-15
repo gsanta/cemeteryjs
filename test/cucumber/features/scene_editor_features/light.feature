@@ -8,7 +8,7 @@ Feature: Light
         Then canvas contains:
             | Id             | Type       | Obj         |
             | light-view-1   | light-view | light-obj-1 |
-        And change param 'light-y-pos' to '8' in panel 'object-settings-panel'
+        And change param 'light-pos-y' to '8' in panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | PosY |
             | light-obj-1   | light-obj  | 8    |
@@ -66,5 +66,14 @@ Feature: Light
     Scenario: Changing light direction
         Given empty editor
         And views on canvas 'scene-editor':
-            | Type       | Dimensions      |
-            | light-view | 50:50,60:60     |
+            | Type       | Dimensions      | Selected |
+            | light-view | 50:50,60:60     | true     |
+        When hover over canvas 'scene-editor'
+        And change param 'light-dir-x' to '1' in panel 'object-settings-panel'
+        Then obj properties are:
+            | Id            | Type       | DirX | DirY | DirZ |
+            | light-obj-1   | light-obj  | 1    | -1   | 0    |
+        When change param 'light-dir-y' to '-2' in panel 'object-settings-panel'
+        Then obj properties are:
+            | Id            | Type       | DirX | DirY | DirZ |
+            | light-obj-1   | light-obj  | 1    | -2   | 0    |

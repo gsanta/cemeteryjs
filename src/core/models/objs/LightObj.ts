@@ -1,6 +1,7 @@
 import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
+import { Wrap_LightAdapter } from "../../engine/adapters/wrapper/Wrap_LightAdapter";
 import { ILightAdapter } from "../../engine/ILightAdapter";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";

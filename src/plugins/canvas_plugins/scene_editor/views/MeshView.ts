@@ -1,14 +1,12 @@
-import { toDegree } from '../../../utils/geometry/shapes/Angle';
-import { Point } from '../../../utils/geometry/shapes/Point';
-import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
-import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { Canvas2dPanel } from '../../plugin/Canvas2dPanel';
-import { Registry } from '../../Registry';
-import { sceneAndGameViewRatio } from '../../stores/ViewStore';
-import { UI_SvgCanvas } from '../../ui_components/elements/UI_SvgCanvas';
-import { colors } from '../../ui_components/react/styles';
-import { MeshObj, MeshObjType } from '../objs/MeshObj';
-import { View, ViewFactory, ViewFactoryAdapter, ViewJson, ViewRenderer, ViewTag } from './View';
+import { MeshObj } from '../../../../core/models/objs/MeshObj';
+import { View, ViewJson } from '../../../../core/models/views/View';
+import { Registry } from '../../../../core/Registry';
+import { sceneAndGameViewRatio } from '../../../../core/stores/ViewStore';
+import { colors } from '../../../../core/ui_components/react/styles';
+import { Point } from '../../../../utils/geometry/shapes/Point';
+import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
+import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
+import { MeshViewRenderer } from './MeshViewRenderer';
 
 export const MeshViewType = 'mesh-view';
 
@@ -21,65 +19,6 @@ export interface MeshViewJson extends ViewJson {
 }
 
 const MIN_VIEW_SIZE = 20;
-
-export class MeshRenderer implements ViewRenderer {
-    renderInto(canvas: UI_SvgCanvas, meshView: MeshView) {
-        const group = canvas.group(meshView.id);
-        group.data = meshView;
-
-        const translation = `${meshView.getBounds().topLeft.x} ${meshView.getBounds().topLeft.y}`;
-        const rotation = `${toDegree(meshView.getRotation())} ${meshView.getBounds().getWidth() / 2} ${meshView.getBounds().getHeight() / 2}`;
-        group.transform = `translate(${translation}) rotate(${rotation})`;
-        const rect = group.rect();
-        rect.width = meshView.getBounds().getWidth();
-        rect.height = meshView.getBounds().getHeight();
-
-        rect.css = {
-            strokeWidth: meshView.isSelected() ? '2' : '1',
-            fill: meshView.color
-        }    
-
-        rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
-
-        if (meshView.thumbnailData) {
-            const image = group.image();
-            image.href = meshView.thumbnailData;
-            image.width = meshView.getBounds().getWidth();
-            image.height = meshView.getBounds().getHeight();
-            image.preservAspectRatio = "xMidYMid slice";
-        }
-    }
-}
-
-export class MeshViewFactory extends ViewFactoryAdapter {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        super();
-        this.registry = registry;
-    }
-
-    instantiate() {
-        return new MeshView();
-    }
-
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
-        const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
-        meshObj.color = colors.darkorchid;
-
-        const meshView: MeshView = <MeshView> this.instantiate();
-        meshView.setObj(meshObj);
-        meshView.setBounds(dimensions);
-        meshObj.meshAdapter = this.registry.engine.meshes;
-        meshView.setRotation(0);
-        meshView.setScale(1);
-    
-        this.registry.stores.objStore.addObj(meshObj);
-        panel.getViewStore().addView(meshView);
-    
-        return meshView;
-    }
-}
 
 export class MeshView extends View {
     viewType = MeshViewType;
@@ -98,7 +37,7 @@ export class MeshView extends View {
 
     constructor() {
         super();
-        this.renderer = new MeshRenderer();
+        this.renderer = new MeshViewRenderer();
     }
 
     getObj(): MeshObj {

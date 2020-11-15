@@ -53,6 +53,12 @@ function getLightObjProperty(obj: LightObj, prop: ViewTableProp) {
             return obj.getPosition().toString();
         case ViewTableProp.PosY:
             return obj.getPosition().y.toString();
+        case ViewTableProp.DirX:
+            return obj.getDirection().x.toString();
+        case ViewTableProp.DirY:
+            return obj.getDirection().y.toString();
+        case ViewTableProp.DirZ:
+            return obj.getDirection().z.toString();
     }
 }
 

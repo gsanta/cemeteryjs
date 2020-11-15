@@ -5,8 +5,8 @@ import { IdGenerator } from "./IdGenerator";
 import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
 import { MoveAxisView, MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
-import { SpriteViewType } from "../models/views/SpriteView";
-import { MeshViewType } from "../models/views/MeshView";
+import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/views/SpriteView";
+import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
 import { CanvasAxis } from "../models/misc/CanvasAxis";
 import { ScaleAxisView, ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
 import { AppJson } from "../services/export/ExportService";
@@ -108,6 +108,7 @@ export class ViewStore {
         if (!view.id) {
             view.id = this.generateId(view);
         }
+        view.store = this;
         this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
         // if (view.id) {
         // } else {
@@ -128,9 +129,13 @@ export class ViewStore {
     }
 
     removeView(view: View) {
+        if (view.store !== this) { return; }
+
         if (view.isSelected()) {
             this.removeSelectedView(view);
         }
+
+        view.store = undefined;
 
         this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
 

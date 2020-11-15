@@ -3,7 +3,7 @@
 
 
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
-import { MeshView } from "../../../core/models/views/MeshView";
+import { MeshView } from "../../canvas_plugins/scene_editor/views/MeshView";
 import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";

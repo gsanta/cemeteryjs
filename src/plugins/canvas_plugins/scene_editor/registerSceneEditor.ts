@@ -1,7 +1,7 @@
-import { LightViewFactory, LightViewType } from "../../../core/models/views/LightView";
-import { MeshViewFactory, MeshViewType } from "../../../core/models/views/MeshView";
-import { PathViewFactory, PathViewType } from "../../../core/models/views/PathView";
-import { SpriteViewFactory, SpriteViewType } from "../../../core/models/views/SpriteView";
+import { LightViewType } from "./views/LightView";
+import { MeshViewType } from "./views/MeshView";
+import { PathViewType } from "./views/PathView";
+import { SpriteViewType } from "./views/SpriteView";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
@@ -24,6 +24,10 @@ import { MeshTool } from "./tools/MeshTool";
 import { PathTool } from "./tools/PathTool";
 import { SphereTool } from "./tools/SphereTool";
 import { SpriteTool } from "./tools/SpriteTool";
+import { MeshViewFactory } from "./views/MeshViewFactory";
+import { LightViewFactory } from "./views/LightViewFactory";
+import { SpriteViewFactory } from "./views/SpriteViewFactory";
+import { PathViewFactory } from "./views/PathViewFactory";
 
 export const SceneEditorPanelId = 'scene-editor';
 

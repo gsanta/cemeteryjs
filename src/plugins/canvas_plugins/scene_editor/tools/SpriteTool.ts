@@ -1,11 +1,10 @@
-import { SpriteViewFactory, SpriteViewType } from "../../../../core/models/views/SpriteView";
 import { View } from "../../../../core/models/views/View";
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../core/Registry";
 import { ViewStore } from "../../../../core/stores/ViewStore";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { SpriteViewType } from "../views/SpriteView";
 
 export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool<Canvas2dPanel> {

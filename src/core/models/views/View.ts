@@ -9,6 +9,7 @@ import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IControlledModel } from "../../plugin/IControlledModel";
 import { FormController } from "../../plugin/controller/FormController";
 import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
+import { ViewStore } from "../../stores/ViewStore";
 
 export interface ViewJson {
     id: string;
@@ -49,6 +50,7 @@ export abstract class View implements IControlledModel {
 
     controller: FormController = undefined;
     renderer: ViewRenderer;
+    store: ViewStore;
 
     protected obj: IObj;
 

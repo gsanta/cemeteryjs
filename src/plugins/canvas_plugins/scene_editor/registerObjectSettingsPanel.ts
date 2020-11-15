@@ -1,12 +1,12 @@
-import { CanvasAxis } from "../../../../core/models/misc/CanvasAxis";
-import { FormController } from "../../../../core/plugin/controller/FormController";
-import { UI_Panel, UI_Region } from "../../../../core/plugin/UI_Panel";
-import { Registry } from "../../../../core/Registry";
-import { LightAngleController, LightDirController, LightYPosController } from "./LightSettingsController";
-import { MeshIdController, LayerController, RotationController, ScaleController, YPosController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController } from "./MeshSettingsController";
+import { CanvasAxis } from "../../../core/models/misc/CanvasAxis";
+import { FormController } from "../../../core/plugin/controller/FormController";
+import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
+import { Registry } from "../../../core/Registry";
+import { LightAngleController, LightDirController, LightYPosController } from "./views/LightViewControllers";
+import { MeshIdController, LayerController, RotationController, ScaleController, YPosController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController } from "./views/MeshViewControllers";
 import { ObjectSettigsRenderer } from "./ObjectSettingsRenderer";
-import { PathIdController } from "./PathObjectSettings";
-import { FrameName, SelectSpriteSheetController, ManageSpriteSheetsController, ScaleXController, ScaleYController } from "./SpriteSettingsController";
+import { PathIdController } from "./views/PathViewControllers";
+import { FrameName, SelectSpriteSheetController, ManageSpriteSheetsController, ScaleXController, ScaleYController } from "./views/SpriteViewControllers";
 
 export const ObjectSettingsPanelId = 'object-settings-panel'; 
 

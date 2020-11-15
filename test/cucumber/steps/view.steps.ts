@@ -4,7 +4,7 @@ import expect from 'expect';
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { Rectangle } from "../../../src/utils/geometry/shapes/Rectangle";
 import { Point } from "../../../src/utils/geometry/shapes/Point";
-import { getViewProperty, ViewTableProp } from "./common/viewTestUtils";
+import { getViewProperty, setViewProperty, ViewTableProp } from "./common/viewTestUtils";
 import { ViewDumper } from "./common/ViewDumper";
 
 Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: TableDefinition) {
@@ -19,7 +19,9 @@ Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: Table
     tableDef.rows().forEach((row: string[]) => {
         const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Dimensions);
         let dimensions: Rectangle = dimensionsIndex !== -1 ? Rectangle.fromString(row[dimensionsIndex]) : new Rectangle(new Point(100, 100), new Point(110, 110));
-        canvasPanel.getViewStore().getViewFactory(row[0]).instantiateOnCanvas(canvasPanel, dimensions);
+        const view = canvasPanel.getViewStore().getViewFactory(row[0]).instantiateOnCanvas(canvasPanel, dimensions);
+
+        row.forEach(((prop, index) => setViewProperty(view, viewTableProps[index], prop)))
     });
 });
 

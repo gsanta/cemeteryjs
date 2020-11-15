@@ -1,13 +1,13 @@
-import { LightViewType } from "../../../../core/models/views/LightView";
-import { MeshView, MeshViewType } from "../../../../core/models/views/MeshView";
-import { PathView, PathViewType } from "../../../../core/models/views/PathView";
-import { SpriteViewType } from "../../../../core/models/views/SpriteView";
-import { IRenderer } from "../../../../core/plugin/IRenderer";
-import { Registry } from "../../../../core/Registry";
-import { UI_Layout } from "../../../../core/ui_components/elements/UI_Layout";
-import { LightSettingsProp } from "./LightSettingsController";
-import { MeshSettingsProps } from "./MeshSettingsController";
-import { SpriteSettingsProps } from "./SpriteSettingsController";
+import { LightViewType } from "./views/LightView";
+import { MeshView, MeshViewType } from "./views/MeshView";
+import { PathView, PathViewType } from "./views/PathView";
+import { SpriteViewType } from "./views/SpriteView";
+import { IRenderer } from "../../../core/plugin/IRenderer";
+import { Registry } from "../../../core/Registry";
+import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
+import { LightViewControllerParam } from "./views/LightViewControllers";
+import { MeshViewControllerParam } from "./views/MeshViewControllers";
+import { SpriteViewControllerParam } from "./views/SpriteViewControllers";
 
 
 export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
@@ -46,51 +46,51 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
     }
 
     private renderMeshObjectSettings(layout: UI_Layout, meshView: MeshView) {
-        let row = layout.row({ key: MeshSettingsProps.MeshId });
+        let row = layout.row({ key: MeshViewControllerParam.MeshId });
 
-        const textField = row.textField({key: MeshSettingsProps.MeshId});
+        const textField = row.textField({key: MeshViewControllerParam.MeshId});
         textField.layout = 'horizontal';
         textField.label = 'Id';
 
-        row = layout.row({ key: MeshSettingsProps.Layer });
-        const grid = row.grid({key: MeshSettingsProps.Layer});
+        row = layout.row({ key: MeshViewControllerParam.Layer });
+        const grid = row.grid({key: MeshViewControllerParam.Layer});
         grid.label = 'Layer';
         const filledIndexes = new Set<number>();
         this.registry.data.view.scene.getAllViews().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
-        row = layout.row({ key: MeshSettingsProps.Rotation });
-        const rotationTextField = row.textField({key: MeshSettingsProps.Rotation});
+        row = layout.row({ key: MeshViewControllerParam.Rotation });
+        const rotationTextField = row.textField({key: MeshViewControllerParam.Rotation});
         rotationTextField.layout = 'horizontal';
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
-        row = layout.row({ key: MeshSettingsProps.Scale });
-        const scaleTextField = row.textField({key: MeshSettingsProps.Scale});
+        row = layout.row({ key: MeshViewControllerParam.Scale });
+        const scaleTextField = row.textField({key: MeshViewControllerParam.Scale});
         scaleTextField.layout = 'horizontal';
         scaleTextField.label = 'Scale';
         scaleTextField.type = 'number';
 
-        row = layout.row({ key: MeshSettingsProps.YPos });
-        const yPosTextField = row.textField({key: MeshSettingsProps.YPos});
+        row = layout.row({ key: MeshViewControllerParam.YPos });
+        const yPosTextField = row.textField({key: MeshViewControllerParam.YPos});
         yPosTextField.layout = 'horizontal';
         yPosTextField.label = 'YPos';
         yPosTextField.type = 'number';
 
-        row = layout.row({ key: MeshSettingsProps.Model });
-        const modelTextField = row.textField({key: MeshSettingsProps.Model});
+        row = layout.row({ key: MeshViewControllerParam.Model });
+        const modelTextField = row.textField({key: MeshViewControllerParam.Model});
         modelTextField.layout = 'horizontal';
         modelTextField.label = 'Model path';
         modelTextField.type = 'text';
 
-        row = layout.row({ key: MeshSettingsProps.Texture });
-        const textureTextField = row.textField({key: MeshSettingsProps.Texture});
+        row = layout.row({ key: MeshViewControllerParam.Texture });
+        const textureTextField = row.textField({key: MeshViewControllerParam.Texture});
         textureTextField.layout = 'horizontal';
         textureTextField.label = 'Texture path';
         textureTextField.type = 'text';
 
-        row = layout.row({ key: MeshSettingsProps.Thumbnail });
-        const changeThumbnailButton = row.button(MeshSettingsProps.Thumbnail);
+        row = layout.row({ key: MeshViewControllerParam.Thumbnail });
+        const changeThumbnailButton = row.button(MeshViewControllerParam.Thumbnail);
         changeThumbnailButton.label = 'Change thumbnail';
         changeThumbnailButton.width = '200px';
 
@@ -102,89 +102,89 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
     }
 
     private renderBoxSettings(layout: UI_Layout, meshView: MeshView) {
-        let row = layout.row({ key: MeshSettingsProps.Width });
-        const widthField = row.textField({key: MeshSettingsProps.Width});
+        let row = layout.row({ key: MeshViewControllerParam.Width });
+        const widthField = row.textField({key: MeshViewControllerParam.Width});
         widthField.layout = 'horizontal';
         widthField.label = 'Width';
         widthField.type = 'number';
 
-        row = layout.row({ key: MeshSettingsProps.Height });
-        const heightField = row.textField({key: MeshSettingsProps.Height});
+        row = layout.row({ key: MeshViewControllerParam.Height });
+        const heightField = row.textField({key: MeshViewControllerParam.Height});
         heightField.layout = 'horizontal';
         heightField.label = 'Height';
         heightField.type = 'number';
 
-        row = layout.row({ key: MeshSettingsProps.Depth });
-        const depthField = row.textField({key: MeshSettingsProps.Depth});
+        row = layout.row({ key: MeshViewControllerParam.Depth });
+        const depthField = row.textField({key: MeshViewControllerParam.Depth});
         depthField.layout = 'horizontal';
         depthField.label = 'Depth';
         depthField.type = 'number';
     }   
 
     private renderSpriteObjectSettings(layout: UI_Layout) {
-        let row = layout.row({ key: SpriteSettingsProps.FrameName });
+        let row = layout.row({ key: SpriteViewControllerParam.FrameName });
 
-        let textField = row.textField({key: SpriteSettingsProps.FrameName});
+        let textField = row.textField({key: SpriteViewControllerParam.FrameName});
         textField.layout = 'horizontal';
         textField.label = 'FrameName';
 
-        row = layout.row({ key: SpriteSettingsProps.SelectSpriteSheet });
+        row = layout.row({ key: SpriteViewControllerParam.SelectSpriteSheet });
 
-        const layoutSelect = row.select({key: SpriteSettingsProps.SelectSpriteSheet});
+        const layoutSelect = row.select({key: SpriteViewControllerParam.SelectSpriteSheet});
         layoutSelect.layout = 'horizontal';
         layoutSelect.label = 'SpriteSheet';
         layoutSelect.placeholder = 'Select SpriteSheet';
 
-        row = layout.row({ key: SpriteSettingsProps.ScaleX });
+        row = layout.row({ key: SpriteViewControllerParam.ScaleX });
 
-        textField = row.textField({key: SpriteSettingsProps.ScaleX});
+        textField = row.textField({key: SpriteViewControllerParam.ScaleX});
         textField.layout = 'horizontal';
         textField.label = 'Scale X';
 
-        row = layout.row({ key: SpriteSettingsProps.ScaleY });
+        row = layout.row({ key: SpriteViewControllerParam.ScaleY });
 
-        textField = row.textField({key: SpriteSettingsProps.ScaleY});
+        textField = row.textField({key: SpriteViewControllerParam.ScaleY});
         textField.layout = 'horizontal';
         textField.label = 'Scale Y';
 
-        row = layout.row({ key: SpriteSettingsProps.ManageSpriteSheets });
-        const button = row.button(SpriteSettingsProps.ManageSpriteSheets);
+        row = layout.row({ key: SpriteViewControllerParam.ManageSpriteSheets });
+        const button = row.button(SpriteViewControllerParam.ManageSpriteSheets);
         button.label = 'Manage spritesheets';
         button.width = '200px';
     }
 
     private renderLightObjectSettings(layout: UI_Layout) {
-        let row = layout.row({ key: LightSettingsProp.LightYPos });
+        let row = layout.row({ key: LightViewControllerParam.LightYPos });
 
-        let textField = row.textField({key: LightSettingsProp.LightYPos });
+        let textField = row.textField({key: LightViewControllerParam.LightYPos });
         textField.layout = 'horizontal';
         textField.label = 'YPos';
         textField.type = 'number';
         
-        row = layout.row({ key: LightSettingsProp.LightAngle });
+        row = layout.row({ key: LightViewControllerParam.LightAngle });
 
-        textField = row.textField({key: LightSettingsProp.LightAngle });
+        textField = row.textField({key: LightViewControllerParam.LightAngle });
         textField.layout = 'horizontal';
         textField.label = 'Angle';
         textField.type = 'number';
 
-        row = layout.row({ key: LightSettingsProp.LightDirX });
+        row = layout.row({ key: LightViewControllerParam.LightDirX });
 
-        textField = row.textField({key: LightSettingsProp.LightDirX });
+        textField = row.textField({key: LightViewControllerParam.LightDirX });
         textField.layout = 'horizontal';
         textField.label = 'X dir';
         textField.type = 'number';
 
-        row = layout.row({ key: LightSettingsProp.LightDirY });
+        row = layout.row({ key: LightViewControllerParam.LightDirY });
 
-        textField = row.textField({key: LightSettingsProp.LightDirY });
+        textField = row.textField({key: LightViewControllerParam.LightDirY });
         textField.layout = 'horizontal';
         textField.label = 'Y dir';
         textField.type = 'number';
 
-        row = layout.row({ key: LightSettingsProp.LightDirZ });
+        row = layout.row({ key: LightViewControllerParam.LightDirZ });
 
-        textField = row.textField({key: LightSettingsProp.LightDirZ });
+        textField = row.textField({key: LightViewControllerParam.LightDirZ });
         textField.layout = 'horizontal';
         textField.label = 'Z dir';
         textField.type = 'number';
