@@ -9,6 +9,8 @@ export interface ILightAdapter {
     getDirection(lightObj: LightObj): Point_3;
     setAngle(lightObj: LightObj, angleRad: number): void;
     getAngle(lightObj: LightObj): number;
+    setDiffuseColor(lightObj: LightObj, diffuseColor: string): void;
+    getDiffuseColor(lightObj: LightObj): string;
     createInstance(lightObj: LightObj): void;
     updateInstance(lightObj: LightObj): void;
     deleteInstance(lightObj: LightObj): void;

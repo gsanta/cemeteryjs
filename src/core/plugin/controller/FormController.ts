@@ -145,6 +145,14 @@ export class FormController {
         this.propContexts.set(propController, propContext);
         this.propControllers.push(propController);
     }
+
+    static parseFloat(floatVal: string): number {
+        try {
+            return parseFloat(floatVal);
+        } catch(e) {
+            console.log(e);
+        }
+    }
 }
 
 class CloseDialogController extends PropController {

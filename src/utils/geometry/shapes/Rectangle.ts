@@ -14,6 +14,10 @@ export class Rectangle implements Shape {
         this.recalc();
     }
 
+    containsPoint(point: Point) {
+        return point.x >= this.topLeft.x && point.y >= this.topLeft.y && point.x <= this.bottomRight.x && point.y <= this.bottomRight.y;
+    }
+
     translate(point: Point): Rectangle {
         const topLeft = this.topLeft.addX(point.x).addY(point.y);
         const bottomRight = this.bottomRight.addX(point.x).addY(point.y);

@@ -1,4 +1,4 @@
-import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
+import { MeshObj, MeshObjType, MeshShapeConfig, MeshSphereConfig } from "../../../../core/models/objs/MeshObj";
 import { ViewFactoryAdapter } from "../../../../core/models/views/View";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../core/Registry";
@@ -18,9 +18,10 @@ export class MeshViewFactory extends ViewFactoryAdapter {
         return new MeshView();
     }
 
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config: MeshShapeConfig) {
         const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
         meshObj.color = colors.darkorchid;
+        meshObj.shapeConfig = config;
 
         const meshView: MeshView = <MeshView> this.instantiate();
         meshView.setObj(meshObj);

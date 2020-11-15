@@ -59,6 +59,8 @@ function getLightObjProperty(obj: LightObj, prop: ViewTableProp) {
             return obj.getDirection().y.toString();
         case ViewTableProp.DirZ:
             return obj.getDirection().z.toString();
+        case ViewTableProp.DiffuseColor:
+            return obj.getDiffuseColor();
     }
 }
 

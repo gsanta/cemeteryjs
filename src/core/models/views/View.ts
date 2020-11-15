@@ -25,13 +25,13 @@ export enum ViewTag {
 
 export interface ViewFactory {
     instantiate(): View;
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle): View;
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): View;
     instantiateOnSelection(parentView: View): void;
 }
 
 export abstract class ViewFactoryAdapter implements ViewFactory {
     instantiate() { return undefined; }
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle): View { return undefined; }
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): View { return undefined; }
     instantiateOnSelection(parentView: View): void {  }
 }
 

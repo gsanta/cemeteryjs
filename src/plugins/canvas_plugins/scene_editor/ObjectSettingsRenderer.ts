@@ -188,5 +188,13 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         textField.layout = 'horizontal';
         textField.label = 'Z dir';
         textField.type = 'number';
+
+        row = layout.row({ key: LightViewControllerParam.LightDirZ });
+
+        textField = row.textField({key: LightViewControllerParam.LightColorDiffuse });
+        textField.layout = 'horizontal';
+        textField.label = 'Diffuse color';
+        textField.type = 'text';
+
     }
 }

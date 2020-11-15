@@ -12,6 +12,8 @@ export class Test_LightAdapter implements ILightAdapter {
     sprites: Map<string, Sprite> = new Map();
 
     directionMap: Map<string, Point_3> = new Map();
+    positionMap: Map<string, Point_3> = new Map();
+    diffuseColorMap: Map<string, string> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -19,10 +21,11 @@ export class Test_LightAdapter implements ILightAdapter {
     }
 
     setPosition(lightObj: LightObj, pos: Point_3): void {
+        this.positionMap.set(lightObj.id, pos);
     }
 
     getPosition(lightObj: LightObj): Point_3 {
-        return undefined;
+        return this.positionMap.get(lightObj.id) || lightObj.startPos;
     }
 
     setDirection(lightObj: LightObj, dir: Point_3): void {
@@ -31,6 +34,14 @@ export class Test_LightAdapter implements ILightAdapter {
 
     getDirection(lightObj: LightObj): Point_3 {
         return this.directionMap.get(lightObj.id) || defaultLightDirection;
+    }
+
+    setDiffuseColor(lightObj: LightObj, diffuseColor: string): void {
+        this.diffuseColorMap.set(lightObj.id, diffuseColor);
+    }
+
+    getDiffuseColor(lightObj: LightObj): string {
+        return this.diffuseColorMap.get(lightObj.id);
     }
 
     setAngle(lightObj: LightObj, angleRad: number): void {

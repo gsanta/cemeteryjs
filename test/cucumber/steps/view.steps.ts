@@ -17,7 +17,7 @@ Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: Table
     const canvasPanel = (this.registry.ui.canvas.getCanvas(canvasId) as Canvas2dPanel);
 
     tableDef.rows().forEach((row: string[]) => {
-        const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Dimensions);
+        const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Bounds);
         let dimensions: Rectangle = dimensionsIndex !== -1 ? Rectangle.fromString(row[dimensionsIndex]) : new Rectangle(new Point(100, 100), new Point(110, 110));
         const view = canvasPanel.getViewStore().getViewFactory(row[0]).instantiateOnCanvas(canvasPanel, dimensions);
 

@@ -1,16 +1,18 @@
 import { View } from "../../../../src/core/models/views/View";
+import { LightView, LightViewType } from "../../../../src/plugins/canvas_plugins/scene_editor/views/LightView";
 
 export enum ViewTableProp {
     Id = 'Id',
     Type = 'Type',
     Obj = 'Obj',
-    Dimensions = 'Dimensions',
+    Bounds = 'Bounds',
     Pos = 'Pos',
     PosY = 'PosY',
     Selected = 'Selected',
     DirX = 'DirX',
     DirY = 'DirY',
-    DirZ = 'DirZ'
+    DirZ = 'DirZ',
+    DiffuseColor = 'DiffuseColor'
 }
 
 export function getViewProperty(view: View, prop: ViewTableProp) {
@@ -21,11 +23,14 @@ export function getViewProperty(view: View, prop: ViewTableProp) {
             return view.viewType;
         case ViewTableProp.Obj:
             return view.getObj() && view.getObj().id;
+        case ViewTableProp.Bounds:
+            return view.getBounds().toString();
+        case ViewTableProp.Selected:
+            return view.isSelected() ? "true" : "false";
         default:
             return '';
     }
 }
-
 export function setViewProperty(view: View, prop: ViewTableProp, val: string) {
     switch(prop) {
         case ViewTableProp.Selected:

@@ -79,6 +79,14 @@ export class LightObj implements IObj {
         this.lightAdapter && this.lightAdapter.setAngle(this, angleRad);
     }
 
+    setDiffuseColor(color: string) {
+        this.lightAdapter && this.lightAdapter.setDiffuseColor(this, color);
+    }
+
+    getDiffuseColor(): string {
+        return this.lightAdapter && this.lightAdapter.getDiffuseColor(this);
+    }
+
     dispose() {
         this.lightAdapter && this.lightAdapter.deleteInstance(this);
     }

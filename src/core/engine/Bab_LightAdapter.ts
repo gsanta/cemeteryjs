@@ -1,4 +1,4 @@
-import { SpotLight, Vector3 } from "babylonjs";
+import { Color3, SpotLight, Vector3 } from "babylonjs";
 import { Point_3 } from "../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../models/objs/LightObj";
 import { Registry } from "../Registry";
@@ -58,6 +58,18 @@ export class Bab_LightAdapter implements ILightAdapter {
         return light.angle;
     }
 
+    setDiffuseColor(lightObj: LightObj, diffuseColor: string): void {
+        const light = this.lights.get(lightObj.id);
+
+        light && (light.diffuse = Color3.FromHexString(diffuseColor));
+    }
+
+    getDiffuseColor(lightObj: LightObj): string {
+        const light = this.lights.get(lightObj.id);
+    
+        return light && light.diffuse.toHexString();
+    }
+
     updateInstance(lightObj: LightObj): void {
         this.lights.get(lightObj.id).dispose();
         this.createInstance(lightObj);
@@ -65,7 +77,7 @@ export class Bab_LightAdapter implements ILightAdapter {
 
     createInstance(lightObj: LightObj) {
         const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), toVector3(defaultLightDirection), Math.PI / 3, 2, this.engineFacade.scene);
-        light.position = new Vector3(lightObj.startPos.x, 5, lightObj.startPos.y);
+        light.position = new Vector3(lightObj.startPos.x, lightObj.startPos.y, lightObj.startPos.z);
    
         this.lights.set(lightObj.id, light);
 

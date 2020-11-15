@@ -19,14 +19,14 @@ export class CubeTool extends RectangleTool<Canvas2dPanel> {
 
     protected createView(rect: Rectangle): View {
 
-        const cube = this.panel.getViewStore().getViewFactory(MeshViewType).instantiateOnCanvas(this.panel, rect);
-
-        (cube.getObj() as MeshObj).shapeConfig = <MeshBoxConfig> {
+        const config = <MeshBoxConfig> {
             shapeType: 'Box',
             width: 5,
             height: 5,
             depth: 5
-        }
+        };
+
+        const cube = this.panel.getViewStore().getViewFactory(MeshViewType).instantiateOnCanvas(this.panel, rect, config);
 
         return cube;
     }

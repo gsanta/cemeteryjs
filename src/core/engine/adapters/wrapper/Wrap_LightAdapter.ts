@@ -39,6 +39,14 @@ export class Wrap_LightAdapter implements ILightAdapter {
         return this.engineFacade.realEngine.lights.getAngle(lightObj);
     }
 
+    setDiffuseColor(lightObj: LightObj, diffuseColor: string): void {
+        this.engineFacade.realEngine.lights.setDiffuseColor(lightObj, diffuseColor);
+    }
+
+    getDiffuseColor(lightObj: LightObj): string {
+        return this.engineFacade.realEngine.lights.getDiffuseColor(lightObj);
+    }
+
     updateInstance(lightObj: LightObj): void {
         this.engineFacade.realEngine.lights.updateInstance(lightObj);
     }
