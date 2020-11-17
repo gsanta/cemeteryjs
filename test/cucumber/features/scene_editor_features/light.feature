@@ -112,3 +112,147 @@ Feature: Light
             | Id           | Bounds          |
             | light-view-1 | 215:215,225:225 |
             | light-view-2 | 520:520,530:530 |
+
+    Scenario: Export lights
+        Given empty editor
+        And views on canvas 'scene-editor':
+            | Type       | Bounds              |
+            | light-view | 50:50,60:60         |
+            | light-view | 500:500,510:510     |
+        Then json is:
+        """
+        {
+            "objs": {
+                "general": [
+                    {
+                        "id": "light-obj-1",
+                        "objType": "light-obj",
+                        "position": {
+                            "x": 5.5,
+                            "y": 5,
+                            "z": -5.5
+                        },
+                        "direction": {
+                            "x": 0,
+                            "y": -1,
+                            "z": 0
+                        },
+                        "diffuseColor": "#FFFFFF"
+                    },
+                    {
+                        "id": "light-obj-2",
+                        "objType": "light-obj",
+                        "position": {
+                            "x": 50.5,
+                            "y": 5,
+                            "z": -50.5
+                        },
+                        "direction": {
+                            "x": 0,
+                            "y": -1,
+                            "z": 0
+                        },
+                        "diffuseColor": "#FFFFFF"
+                    }
+                ],
+                "assets": []
+            },
+            "canvas": {
+                "node-editor-panel": [],
+                "scene-editor": [
+                    {
+                        "id": "light-view-1",
+                        "type": "light-view",
+                        "dimensions": "50:50,60:60",
+                        "objId": "light-obj-1"
+                    },
+                    {
+                        "id": "light-view-2",
+                        "type": "light-view",
+                        "dimensions": "500:500,510:510",
+                        "objId": "light-obj-2"
+                    }
+                ]
+            }
+        }
+        """
+
+    Scenario: Import lights
+        Given empty editor
+        When import json:
+        """
+        {
+            "objs": {
+                "general": [
+                    {
+                        "id": "light-obj-1",
+                        "objType": "light-obj",
+                        "position": {
+                            "x": 5.5,
+                            "y": 5,
+                            "z": -5.5
+                        },
+                        "direction": {
+                            "x": 0,
+                            "y": -1,
+                            "z": 0
+                        },
+                        "diffuseColor": "#FF0000"
+                    },
+                    {
+                        "id": "light-obj-2",
+                        "objType": "light-obj",
+                        "position": {
+                            "x": 50.5,
+                            "y": 5,
+                            "z": -50.5
+                        },
+                        "direction": {
+                            "x": 1,
+                            "y": -1,
+                            "z": 0.5
+                        },
+                        "diffuseColor": "#FFFFFF"
+                    }
+                ],
+                "assets": []
+            },
+            "canvas": {
+                "node-editor-panel": [],
+                "scene-editor": [
+                    {
+                        "id": "light-view-1",
+                        "type": "light-view",
+                        "dimensions": "50:50,60:60",
+                        "objId": "light-obj-1"
+                    },
+                    {
+                        "id": "light-view-2",
+                        "type": "light-view",
+                        "dimensions": "500:500,510:510",
+                        "objId": "light-obj-2"
+                    }
+                ]
+            }
+        }
+        """
+        And hover over canvas 'scene-editor'
+        Then canvas contains:
+            | Id             | Type       | Obj         | Bounds          |
+            | light-view-1   | light-view | light-obj-1 | 50:50,60:60     |
+            | light-view-2   | light-view | light-obj-2 | 500:500,510:510 |
+        Then obj properties are:
+            | Id            | Type       | DiffuseColor | Dir      | Pos           |
+            | light-obj-1   | light-obj  | #FF0000      | 0:-1:0   | 5.5:5:-10.5   |
+            | light-obj-2   | light-obj  | #FFFFFF      | 1:-1:0.5 | 50.5:5:-55.5  |
+
+    Scenario: Changing light's parent on sidepanel
+        Given empty editor
+        And views on canvas 'scene-editor':
+            | Type       | Bounds          | Selected |
+            | light-view | 50:50,60:60     | true     |
+            | mesh-view  | 20:20,30:30     | false    |
+        And change param 'light-parent-mesh' to 'mesh-obj-1' in panel 'object-settings-panel'
+        Then obj properties are:
+            | Id            | Type       | Parent     |
+            | light-obj-1   | light-obj  | mesh-obj-1 |

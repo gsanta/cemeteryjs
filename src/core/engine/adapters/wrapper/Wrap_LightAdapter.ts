@@ -49,6 +49,7 @@ export class Wrap_LightAdapter implements ILightAdapter {
     }
 
     setParent(lightObj: LightObj, parent: MeshObj): void {
+        this.registry.plugins.engineHooks.getLightHooks().forEach(lightHook => lightHook.hook_setParent(lightObj, parent));
         this.engineFacade.realEngine.lights.setParent(lightObj, parent);
     }
 

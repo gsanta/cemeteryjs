@@ -2,21 +2,21 @@ import { TableDefinition, Then, World } from "cucumber";
 import expect from 'expect';
 import { IObj } from "../../../src/core/models/objs/IObj";
 import { LightObj, LightObjType } from "../../../src/core/models/objs/LightObj";
-import { ViewTableProp } from "./common/viewTestUtils";
+import { getObjProperty, ObjTableProp } from "./common/objTestUtils";
 
 Then('obj properties are:', function (tableDef: TableDefinition) {
     objPropertiesAre(this, tableDef);
 });
 
-function collectObjTablePropsToCheck(tableDef: TableDefinition): ViewTableProp[] {
-    return <ViewTableProp[]> tableDef.raw()[0];
+function collectObjTablePropsToCheck(tableDef: TableDefinition): ObjTableProp[] {
+    return <ObjTableProp[]> tableDef.raw()[0];
 }
 
 function objPropertiesAre(world: World, tableDef: TableDefinition) {
     const objs = world.registry.stores.objStore.getAll();
-    const viewTableProps = collectObjTablePropsToCheck(tableDef);
+    const objTableProps = collectObjTablePropsToCheck(tableDef);
 
-    if (viewTableProps[0] !== ViewTableProp.Id) {
+    if (objTableProps[0] !== ObjTableProp.Id) {
         throw new Error('To check the properties of a specific obj, the first column of the table has to be the \'Id\' column.');
     }
 
@@ -28,39 +28,8 @@ function objPropertiesAre(world: World, tableDef: TableDefinition) {
         }
 
         row.forEach((expectedPropValue: string, propIdx: number) => {
-            const prop: ViewTableProp = viewTableProps[propIdx];
+            const prop: ObjTableProp = objTableProps[propIdx];
             expect(getObjProperty(objToCheck, prop)).toEqual(expectedPropValue);
         })
     });
 }
-
-function getObjProperty(obj: IObj, prop: ViewTableProp) {
-    switch(prop) {
-        case ViewTableProp.Id:
-            return obj.id;
-        case ViewTableProp.Type:
-            return obj.objType;
-    }
-
-    if (obj.objType === LightObjType) {
-        return getLightObjProperty(<LightObj> obj, prop);
-    }
-}
-
-function getLightObjProperty(obj: LightObj, prop: ViewTableProp) {
-    switch(prop) {
-        case ViewTableProp.Pos:
-            return obj.getPosition().toString();
-        case ViewTableProp.PosY:
-            return obj.getPosition().y.toString();
-        case ViewTableProp.DirX:
-            return obj.getDirection().x.toString();
-        case ViewTableProp.DirY:
-            return obj.getDirection().y.toString();
-        case ViewTableProp.DirZ:
-            return obj.getDirection().z.toString();
-        case ViewTableProp.DiffuseColor:
-            return obj.getDiffuseColor();
-    }
-}
-

@@ -5,7 +5,7 @@ import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 import { MeshViewType } from './MeshView';
-import { MeshObj } from '../../../../core/models/objs/MeshObj';
+import { MeshObj, MeshObjType } from '../../../../core/models/objs/MeshObj';
 
 export enum LightViewControllerParam {
     LightYPos = 'light-pos-y',
@@ -172,7 +172,7 @@ export class LightParentMeshController extends PropController<string> {
     acceptedProps() { return [LightViewControllerParam.LightParentMesh]; }
 
     values(context: PropContext) {
-        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
+        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(obj => obj.id)
     }
 
     defaultVal(context: PropContext) {
@@ -188,7 +188,7 @@ export class LightParentMeshController extends PropController<string> {
         if (mesh) {
             lightView.getObj().setParent(mesh);
             context.registry.services.history.createSnapshot();
-            context.registry.services.render.reRender(UI_Region.Canvas1);
+            context.registry.services.render.reRender(UI_Region.Sidepanel);
         }
     }
 }

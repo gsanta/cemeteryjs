@@ -1,9 +1,11 @@
+import { ILightHook } from "./ILightHook";
 import { IMeshHook } from "./IMeshHook";
 import { ISpriteHook } from "./ISpriteHook";
 
 export class EngineHooks {
     private meshHooks: IMeshHook[] = [];
     private spriteHooks: ISpriteHook[] = [];
+    private lightHooks: ILightHook[] = [];
 
     registerMeshHook(meshHook: IMeshHook) {
         this.meshHooks.push(meshHook);
@@ -27,5 +29,17 @@ export class EngineHooks {
 
     getSpriteHooks(): ISpriteHook[] {
         return this.spriteHooks;
+    }
+
+    registerLightHook(lightHook: ILightHook) {
+        this.lightHooks.push(lightHook);
+    }
+
+    unregisterLightHook(lightHook: ILightHook) {
+        this.lightHooks.splice(this.lightHooks.indexOf(lightHook), 1);
+    }
+
+    getLightHooks(): ILightHook[] {
+        return this.lightHooks;
     }
 }

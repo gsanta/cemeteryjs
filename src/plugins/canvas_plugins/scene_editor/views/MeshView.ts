@@ -35,6 +35,8 @@ export class MeshView extends View {
     yPos: number = 0;
     speed = 0.5;
 
+    boundViews: View[] = [];
+
     constructor() {
         super();
         this.renderer = new MeshViewRenderer();
@@ -95,6 +97,7 @@ export class MeshView extends View {
         const point2 = point.div(sceneAndGameViewRatio).negateY();
         this.obj.move(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
         this.children.forEach(child => child.calcBounds());
+        this.boundViews.forEach(boundView => boundView.move(point));
     }
 
     getBounds(): Rectangle {

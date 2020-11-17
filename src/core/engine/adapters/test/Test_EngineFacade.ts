@@ -8,6 +8,7 @@ import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
 import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { ISpriteLoaderAdapter } from "../../ISpriteLoaderAdapter";
 import { Test_LightAdapter } from "./Test_LightAdapter";
+import { Test_MeshAdapter } from "./Test_MeshAdapter";
 
 export class Test_EngineFacade implements IEngineFacade {
     private registry: Registry;
@@ -25,6 +26,7 @@ export class Test_EngineFacade implements IEngineFacade {
         this.registry = registry;
 
         this.lights = new Test_LightAdapter(this.registry, this);
+        this.meshes = new Test_MeshAdapter(this.registry, this);
     }
 
     getCamera(): Camera3D {

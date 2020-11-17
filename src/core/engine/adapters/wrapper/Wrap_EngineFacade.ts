@@ -2,7 +2,7 @@ import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
 import { IEngineFacade } from "../../IEngineFacade";
 import { Wrap_LightAdapter } from "./Wrap_LightAdapter";
-import { Wrap_Meshes } from "./Wrap_Meshes";
+import { Wrap_Meshes } from "./Wrap_MeshAdapter";
 import { Wrap_MeshFactory } from "./Wrap_MeshFactory";
 import { Wrap_MeshLoader } from "./Wrap_MeshLoader";
 import { Wrap_SpriteLoader } from "./Wrap_SpriteLoader";

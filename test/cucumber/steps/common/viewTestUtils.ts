@@ -1,5 +1,4 @@
 import { View } from "../../../../src/core/models/views/View";
-import { LightView, LightViewType } from "../../../../src/plugins/canvas_plugins/scene_editor/views/LightView";
 
 export enum ViewTableProp {
     Id = 'Id',

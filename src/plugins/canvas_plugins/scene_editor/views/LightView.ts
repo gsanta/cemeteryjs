@@ -1,4 +1,6 @@
+import { ILightHook } from "../../../../core/engine/hooks/ILightHook";
 import { LightObj } from "../../../../core/models/objs/LightObj";
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { View, ViewJson } from '../../../../core/models/views/View';
 import { Registry } from "../../../../core/Registry";
 import { sceneAndGameViewRatio } from '../../../../core/stores/ViewStore';
@@ -6,6 +8,7 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { LightViewRenderer } from "./LightViewRenderer";
+import { MeshView } from "./MeshView";
 
 export const LightViewType = 'light-view';
 
@@ -60,5 +63,20 @@ export class LightView extends View {
 
     fromJson(json: ViewJson, registry: Registry) {
         super.fromJson(json, registry);
+    }
+}
+
+export class LightHook implements ILightHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+    
+    hook_setParent(lightObj: LightObj, meshObj: MeshObj) {
+        const lightView = this.registry.data.view.scene.getByObjId(lightObj.id);
+        const meshView = <MeshView> this.registry.data.view.scene.getByObjId(meshObj.id);
+
+        meshView.boundViews.push(lightView);
     }
 }
