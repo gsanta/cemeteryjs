@@ -2,7 +2,7 @@ import { CanvasAxis } from "../../../core/models/misc/CanvasAxis";
 import { FormController } from "../../../core/plugin/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
-import { LightAngleController, LightDiffuseColorController, LightDirController, LightYPosController } from "./views/LightViewControllers";
+import { LightAngleController, LightDiffuseColorController, LightDirController, LightParentMeshController, LightYPosController } from "./views/LightViewControllers";
 import { MeshIdController, LayerController, RotationController, ScaleController, YPosController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController } from "./views/MeshViewControllers";
 import { ObjectSettigsRenderer } from "./ObjectSettingsRenderer";
 import { PathIdController } from "./views/PathViewControllers";
@@ -51,7 +51,8 @@ function createPanel(registry: Registry): UI_Panel {
             new LightDirController(CanvasAxis.X),
             new LightDirController(CanvasAxis.Y),
             new LightDirController(CanvasAxis.Z),
-            new LightDiffuseColorController()
+            new LightDiffuseColorController(),
+            new LightParentMeshController()
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

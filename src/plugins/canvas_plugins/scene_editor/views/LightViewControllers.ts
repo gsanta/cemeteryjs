@@ -4,6 +4,8 @@ import { FormController, PropContext, PropController } from '../../../../core/pl
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
+import { MeshViewType } from './MeshView';
+import { MeshObj } from '../../../../core/models/objs/MeshObj';
 
 export enum LightViewControllerParam {
     LightYPos = 'light-pos-y',
@@ -12,7 +14,8 @@ export enum LightViewControllerParam {
     LightDirX = 'light-dir-x',
     LightDirY = 'light-dir-y',
     LightDirZ = 'light-dir-z',
-    LightColorDiffuse = 'light-color-diffuse'
+    LightColorDiffuse = 'light-color-diffuse',
+    LightParentMesh = 'light-parent-mesh'
 }
 
 export class LightYPosController extends PropController<string> {
@@ -162,5 +165,30 @@ export class LightDiffuseColorController extends PropController<string> {
 
         lightView.getObj().setDiffuseColor(color);
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+    }
+}
+
+export class LightParentMeshController extends PropController<string> {
+    acceptedProps() { return [LightViewControllerParam.LightParentMesh]; }
+
+    values(context: PropContext) {
+        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
+    }
+
+    defaultVal(context: PropContext) {
+        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
+
+        return lightView.getObj().getParent() && lightView.getObj().getParent().id;
+    }
+
+    change(val, context: PropContext) {
+        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
+        const mesh = <MeshObj> context.registry.stores.objStore.getById(val);
+
+        if (mesh) {
+            lightView.getObj().setParent(mesh);
+            context.registry.services.history.createSnapshot();
+            context.registry.services.render.reRender(UI_Region.Canvas1);
+        }
     }
 }

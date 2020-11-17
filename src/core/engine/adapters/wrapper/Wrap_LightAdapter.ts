@@ -1,6 +1,7 @@
 import { Sprite } from "babylonjs";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../../../models/objs/LightObj";
+import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { ILightAdapter } from "../../ILightAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
@@ -45,6 +46,10 @@ export class Wrap_LightAdapter implements ILightAdapter {
 
     getDiffuseColor(lightObj: LightObj): string {
         return this.engineFacade.realEngine.lights.getDiffuseColor(lightObj);
+    }
+
+    setParent(lightObj: LightObj, parent: MeshObj): void {
+        this.engineFacade.realEngine.lights.setParent(lightObj, parent);
     }
 
     updateInstance(lightObj: LightObj): void {

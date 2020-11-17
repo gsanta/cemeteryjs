@@ -20,7 +20,7 @@ export class LightViewFactory extends ViewFactoryAdapter {
 
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
         const lightObj = <LightObj> this.registry.services.objService.createObj(LightObjType);
-        lightObj.lightAdapter = this.registry.engine.lights;
+        lightObj.setLightAdapter(this.registry.engine.lights);
 
         const lightView: LightView = <LightView> this.instantiate();
         lightView.setBounds(dimensions);

@@ -1,17 +1,17 @@
+import { LightObj } from "../../../../core/models/objs/LightObj";
+import { View, ViewJson } from '../../../../core/models/views/View';
+import { Registry } from "../../../../core/Registry";
+import { sceneAndGameViewRatio } from '../../../../core/stores/ViewStore';
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
-import { Registry } from "../../../../core/Registry";
-import { sceneAndGameViewRatio, ViewStore } from '../../../../core/stores/ViewStore';
-import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
-import { colors } from "../../../../core/ui_components/react/styles";
-import { LightObj, LightObjType } from "../../../../core/models/objs/LightObj";
-import { View, ViewJson, ViewRenderer, ViewTag, ViewFactory, ViewFactoryAdapter } from '../../../../core/models/views/View';
-import { Canvas2dPanel } from '../../../../core/plugin/Canvas2dPanel';
 import { LightViewRenderer } from "./LightViewRenderer";
 
 export const LightViewType = 'light-view';
+
+export interface LightViewJson extends ViewJson {
+
+}
 
 export class LightView extends View {
     viewType = LightViewType;
@@ -52,7 +52,7 @@ export class LightView extends View {
     dispose() {
     }
 
-    toJson(): ViewJson {
+    toJson(): LightViewJson {
         return {
             ...super.toJson(),
         }

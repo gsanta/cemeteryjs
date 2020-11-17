@@ -196,5 +196,12 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         textField.label = 'Diffuse color';
         textField.type = 'text';
 
+        row = layout.row({ key: LightViewControllerParam.LightParentMesh });
+
+        const select = row.select({key: LightViewControllerParam.LightParentMesh});
+        select.layout = 'horizontal';
+        select.label = 'Parent';
+        select.placeholder = 'Select parent';
+        select.isBold = true;
     }
 }

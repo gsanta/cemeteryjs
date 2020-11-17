@@ -1,6 +1,7 @@
 import { Color3, SpotLight, Vector3 } from "babylonjs";
 import { Point_3 } from "../../utils/geometry/shapes/Point_3";
 import { LightObj } from "../models/objs/LightObj";
+import { MeshObj } from "../models/objs/MeshObj";
 import { Registry } from "../Registry";
 import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
 import { toVector3 } from "./adapters/babylonjs/Bab_Utils";
@@ -28,9 +29,8 @@ export class Bab_LightAdapter implements ILightAdapter {
 
     getPosition(lightObj: LightObj): Point_3 {
         const light = this.lights.get(lightObj.id);
-        if (!light) { return; }
 
-        return  new Point_3(light.position.x, light.position.y, light.position.z);
+        return light && new Point_3(light.position.x, light.position.y, light.position.z);
     }
 
     setDirection(lightObj: LightObj, dir: Point_3): void {
@@ -43,7 +43,7 @@ export class Bab_LightAdapter implements ILightAdapter {
     getDirection(lightObj: LightObj): Point_3 {
         const light = this.lights.get(lightObj.id);
 
-        return  new Point_3(light.direction.x, light.direction.y, light.direction.z);
+        return light && new Point_3(light.direction.x, light.direction.y, light.direction.z);
     }
 
     setAngle(lightObj: LightObj, angleRad: number): void {
@@ -70,17 +70,35 @@ export class Bab_LightAdapter implements ILightAdapter {
         return light && light.diffuse.toHexString();
     }
 
+    setParent(lightObj: LightObj, parent: MeshObj): void {
+        const light = this.lights.get(lightObj.id);
+        
+        if (!light) { return; }
+
+        const meshData = this.engineFacade.meshes.meshes.get(parent.id)
+
+        if (meshData) {
+            light.parent = meshData.mainMesh;
+        }
+    }
+
     updateInstance(lightObj: LightObj): void {
         this.lights.get(lightObj.id).dispose();
         this.createInstance(lightObj);
     }
 
     createInstance(lightObj: LightObj) {
+        const diffuseColor = lightObj.getDiffuseColor();
+        const direction = lightObj.getDirection();
+        const position = lightObj.getPosition();
+
         const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), toVector3(defaultLightDirection), Math.PI / 3, 2, this.engineFacade.scene);
-        light.position = new Vector3(lightObj.startPos.x, lightObj.startPos.y, lightObj.startPos.z);
-   
+
         this.lights.set(lightObj.id, light);
 
+        this.setPosition(lightObj, position);
+        this.setDirection(lightObj, direction);
+        this.setDiffuseColor(lightObj, diffuseColor);
     }
 
     deleteInstance(lightObj: LightObj): void {
