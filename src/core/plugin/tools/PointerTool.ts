@@ -24,12 +24,12 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         const hoveredItem = this.registry.services.pointer.hoveredView;
         if (!hoveredItem) { return; }
 
-        if (hoveredItem.isChildView()) {
-            if (!hoveredItem.parent.isSelected()) {
+        if (hoveredItem.isContainedView()) {
+            if (!hoveredItem.containerView.isSelected()) {
                 this.viewStore.clearSelection();
-                this.viewStore.addSelectedView(hoveredItem.parent);
+                this.viewStore.addSelectedView(hoveredItem.containerView);
             }
-            hoveredItem.parent.setActiveChild(hoveredItem);
+            hoveredItem.containerView.setActiveContainedView(hoveredItem);
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         } else {
             this.viewStore.clearSelection();
@@ -78,7 +78,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         }
         
         view.tags.add(ViewTag.Hovered);
-        view.parent?.tags.add(ViewTag.Hovered);
+        view.containerView?.tags.add(ViewTag.Hovered);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
@@ -89,7 +89,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         } 
         
         view.tags.delete(ViewTag.Hovered);
-        view.parent?.tags.delete(ViewTag.Hovered);
+        view.containerView?.tags.delete(ViewTag.Hovered);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
@@ -104,7 +104,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
     }
 
     private moveItems() {
-        if (this.movingItem.isChildView()) {
+        if (this.movingItem.isContainedView()) {
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else {
             const views = this.viewStore.getSelectedViews();

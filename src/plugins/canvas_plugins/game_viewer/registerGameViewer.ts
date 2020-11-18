@@ -1,5 +1,6 @@
 
 
+import { MeshHook } from "../../../core/models/objs/MeshObj";
 import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
@@ -25,6 +26,8 @@ export function registerGameViewer(registry: Registry) {
     // registerGizmos(canvas, registry);
 
     registry.ui.canvas.registerCanvas(canvas);
+
+    registry.plugins.engineHooks.registerMeshHook(new MeshHook(this.registry));
 }
 
 function registerGizmos(canvas: AbstractCanvasPanel, registry: Registry) {

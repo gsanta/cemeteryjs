@@ -1,8 +1,10 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
+import { IMeshHook } from '../../engine/hooks/IMeshHook';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
-import { IObj, ObjFactory, ObjJson } from './IObj';
+import { IGameObj } from './IGameObj';
+import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from './IObj';
 
 export const MeshObjType = 'mesh-obj';
 
@@ -21,12 +23,11 @@ export interface MeshObjJson extends ObjJson {
     shapeConfig: MeshShapeConfig;
 }
 
-export class MeshObjFactory implements ObjFactory {
+export class MeshObjFactory extends ObjFactoryAdapter {
     private registry: Registry;
 
-    objType = MeshObjType;
-
     constructor(registry: Registry) {
+        super(MeshObjType);
         this.registry = registry;
     }
 
@@ -52,13 +53,18 @@ export interface MeshSphereConfig extends MeshShapeConfig {
 }
 
 
-export class MeshObj implements IObj {
+export class MeshObj implements IObj, IGameObj {
     readonly objType = MeshObjType;
 
-    private startPos: Point_3;
-    private scale: Point;
-    private tempRotation: number = 0;
+    // private scale: Point;
+    // private tempRotation: number = 0;
     id: string;
+
+    private initialJson: Partial<MeshObjJson> = <Partial<MeshObjJson>> {
+        posX: 0,
+        posY: 0,
+        posZ: 0
+    }
 
     shapeConfig: MeshShapeConfig;
     color: string;
@@ -69,63 +75,61 @@ export class MeshObj implements IObj {
     yPos: number = 0;
 
     meshAdapter: IMeshAdapter;
+    private isReady = false;
 
     move(point: Point_3) {
-        this.startPos.add(point);
-
-        if (this.meshAdapter) {
-            this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
-        }
+        this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
     }
 
     setPosition(pos: Point_3) {
-        this.startPos = pos;
-
-        this.meshAdapter && this.meshAdapter.setPosition(this, pos);
+        if (!this.isReady) {
+            this.initialJson.posX = pos.x;
+            this.initialJson.posY = pos.y;
+            this.initialJson.posZ = pos.z;
+        }
+        this.meshAdapter.setPosition(this, pos);
     }
 
     getPosition(): Point_3 {
-        let pos = this.meshAdapter && this.meshAdapter.getPosition(this);
-
-        if (!pos) {
-            pos = this.startPos;
-        }
-
-        return pos;
+        return this.isReady ? this.meshAdapter.getPosition(this) : new Point_3(this.initialJson.posX, this.initialJson.posY, this.initialJson.posZ);
     }
 
     rotate(angle: number) {
-        if (this.meshAdapter) {
-            this.meshAdapter.rotate(this, angle)
-        }
-        
-        this.tempRotation += angle;
+        this.meshAdapter.rotate(this, angle)
     }
 
     setRotation(angle: number): void {
-        this.meshAdapter && this.meshAdapter.setRotation(this, angle);
-        this.tempRotation = angle;
+        this.meshAdapter.setRotation(this, angle)
     }
 
     getRotation(): number {
-        const rotation = this.meshAdapter && this.meshAdapter.getRotation(this);
-        return rotation || this.tempRotation;
+        return this.isReady ? this.meshAdapter.getRotation(this) : this.initialJson.rotation;
     }
 
     setScale(scale: Point) {
-        this.scale = scale;
-        if (this.meshAdapter) {
-            return this.meshAdapter.setScale(this, scale);
-        }
+        this.meshAdapter.setScale(this, scale);
     }
 
     getScale(): Point {
-        const scale = this.meshAdapter && this.meshAdapter.getScale(this);
-        return scale || this.scale;
+        return this.isReady ? this.meshAdapter.getScale(this) : new Point(this.initialJson.scaleX, this.initialJson.scaleY);
     }
 
     dispose() {
         this.meshAdapter && this.meshAdapter.deleteInstance(this);
+    }
+
+    ready() {
+        if (this.isReady) {
+            throw new Error('Ready state can be set only once');
+        }
+        this.isReady = true;
+    }
+
+    setParent(parentObj: IObj & IGameObj) {
+    }
+
+    getParent(): IObj & IGameObj {
+        return undefined;
     }
 
     serialize(): MeshObjJson {
@@ -148,15 +152,31 @@ export class MeshObj implements IObj {
     }
     
     deserialize(json: MeshObjJson) {
+        this.initialJson = json;
         this.id = json.id;
-        this.setScale(new Point(json.scaleX, json.scaleY));
-        this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
-        this.rotate(json.rotation);
+        // this.setScale(new Point(json.scaleX, json.scaleY));
+        // this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
+        // this.rotate(json.rotation);
         this.yPos = json.y;
         this.modelId = json.modelId;
         this.textureId = json.textureId;
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;
+    }
+}
+
+
+export class MeshHook implements IMeshHook {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
+
+    setPositionHook(meshObj: MeshObj, newPos: Point): void {}
+
+    hook_createInstance(meshObj: MeshObj): void {
+        meshObj.ready();
     }
 }

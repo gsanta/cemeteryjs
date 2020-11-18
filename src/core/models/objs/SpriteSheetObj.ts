@@ -1,4 +1,4 @@
-import { IObj, ObjFactory, ObjJson } from "./IObj";
+import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const SpriteSheetObjType = 'sprite-sheet-obj';
 
@@ -7,8 +7,11 @@ export interface SpriteSheetObjJson extends ObjJson {
     jsonAssetId: string;
 }
 
-export class SpriteSheetObjFactory implements ObjFactory {
-    objType = SpriteSheetObjType;
+export class SpriteSheetObjFactory extends ObjFactoryAdapter {
+    constructor() {
+        super(SpriteSheetObjType);
+    }
+
     newInstance() {
         return new SpriteSheetObj();
     }

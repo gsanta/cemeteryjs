@@ -1,4 +1,4 @@
-import { IObj, ObjFactory, ObjJson } from "./IObj";
+import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const AssetObjType = 'asset-obj';
 
@@ -18,8 +18,11 @@ export enum AssetType {
     SpriteSheetJson = 'SpriteSheetJson'
 }
 
-export class AssetObjFactory implements ObjFactory {
-    objType = AssetObjType;
+export class AssetObjFactory extends ObjFactoryAdapter {
+    constructor() {
+        super(AssetObjType);
+    }
+
     newInstance() {
         return new AssetObj();
     }

@@ -1,4 +1,6 @@
 import { ILightHook } from "../../../../core/engine/hooks/ILightHook";
+import { IGameObj } from "../../../../core/models/objs/IGameObj";
+import { IObj } from "../../../../core/models/objs/IObj";
 import { LightObj } from "../../../../core/models/objs/LightObj";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { View, ViewJson } from '../../../../core/models/views/View';
@@ -32,11 +34,6 @@ export class LightView extends View {
 
     setObj(obj: LightObj) {
         this.obj = obj;
-
-        if (this.bounds) { 
-            const pos2 = this.bounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
-            this.obj.setPosition(new Point_3(pos2.x, this.obj.getPosition().y, pos2.y - this.bounds.getHeight() / 2));
-        }
     }
 
     move(point: Point) {
@@ -61,6 +58,11 @@ export class LightView extends View {
         }
     }
 
+    setParent(view: View) {
+        super.setParent(view);
+        this.obj.setParent(view.getObj() as (IObj & IGameObj))
+    }
+
     fromJson(json: ViewJson, registry: Registry) {
         super.fromJson(json, registry);
     }
@@ -77,6 +79,6 @@ export class LightHook implements ILightHook {
         const lightView = this.registry.data.view.scene.getByObjId(lightObj.id);
         const meshView = <MeshView> this.registry.data.view.scene.getByObjId(meshObj.id);
 
-        meshView.boundViews.push(lightView);
+        meshView.addChildView(lightView);
     }
 }

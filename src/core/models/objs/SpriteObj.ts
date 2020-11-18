@@ -3,7 +3,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
-import { IObj, ObjFactory, ObjJson } from "./IObj";
+import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
 
@@ -17,12 +17,11 @@ export interface SpriteObjJson extends ObjJson {
     spriteSheetId: string;
 }
 
-export class SpriteObjFactory implements ObjFactory {
+export class SpriteObjFactory extends ObjFactoryAdapter {
     private registry: Registry;
 
-    objType = SpriteObjType;
-
     constructor(registry: Registry) {
+        super(SpriteObjType);
         this.registry = registry;
     }
 

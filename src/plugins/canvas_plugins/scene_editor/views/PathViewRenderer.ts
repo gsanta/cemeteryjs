@@ -7,7 +7,7 @@ export class PathViewRenderer implements ViewRenderer {
         const group = canvas.group(pathView.id);
         group.isInteractive = false;
 
-        if (pathView.children.length > 1) {
+        if (pathView.containedViews.length > 1) {
             const highlightPath = group.path();
             highlightPath.d = pathView.serializePath();
             highlightPath.data = pathView;
@@ -30,7 +30,7 @@ export class PathViewRenderer implements ViewRenderer {
             }
         }
 
-        pathView.children.forEach(editPoint => {
+        pathView.containedViews.forEach(editPoint => {
             const circle = group.circle();
 
             circle.cx = editPoint.point.x;
@@ -39,7 +39,7 @@ export class PathViewRenderer implements ViewRenderer {
             circle.data = editPoint;
 
             circle.css = {
-                fill: pathView.getActiveChild() === editPoint ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
+                fill: pathView.getActiveContainedView() === editPoint ? 'orange' : (pathView.isHovered() || pathView.isSelected()) ? 'blue' : 'black'
             }
         });
     }

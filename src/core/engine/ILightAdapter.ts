@@ -1,7 +1,7 @@
-import { Point } from "../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../utils/geometry/shapes/Point_3";
+import { IGameObj } from "../models/objs/IGameObj";
+import { IObj } from "../models/objs/IObj";
 import { LightObj } from "../models/objs/LightObj";
-import { MeshObj } from "../models/objs/MeshObj";
 
 export interface ILightAdapter {
     setPosition(lightObj: LightObj, pos: Point_3): void;
@@ -10,7 +10,7 @@ export interface ILightAdapter {
     getDirection(lightObj: LightObj): Point_3;
     setAngle(lightObj: LightObj, angleRad: number): void;
     getAngle(lightObj: LightObj): number;
-    setParent(lightObj: LightObj, parent: MeshObj): void;
+    setParent(lightObj: LightObj, parent: IObj & IGameObj): void;
     setDiffuseColor(lightObj: LightObj, diffuseColor: string): void;
     getDiffuseColor(lightObj: LightObj): string;
     createInstance(lightObj: LightObj): void;

@@ -31,6 +31,6 @@ export class LightViewRenderer implements ViewRenderer {
         image.width = lightView.getBounds().getWidth();
         image.height = lightView.getBounds().getHeight();
 
-        lightView.children.forEach(child => child.renderer.renderInto(canvas, child, panel));
+        lightView.containedViews.forEach(child => child.renderer.renderInto(canvas, child, panel));
     }
 }

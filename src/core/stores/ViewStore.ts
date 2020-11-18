@@ -1,4 +1,4 @@
-import { View, ViewTag, ViewFactory } from '../models/views/View';
+import { View, ViewTag, ViewFactory, AfterAllViewsDeserialized } from '../models/views/View';
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { IdGenerator } from "./IdGenerator";
@@ -6,7 +6,7 @@ import { without } from "../../utils/geometry/Functions";
 import { Registry } from "../Registry";
 import { MoveAxisView, MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
 import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/views/SpriteView";
-import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
+import { MeshView, MeshViewJson, MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
 import { CanvasAxis } from "../models/misc/CanvasAxis";
 import { ScaleAxisView, ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
 import { AppJson } from "../services/export/ExportService";
@@ -64,17 +64,27 @@ export class ViewStore {
     }
 
     importFrom(appJson: AppJson) {
+        const afterAllViewsDeserializedFuncs: AfterAllViewsDeserialized[] = [];
+
         appJson.canvas[this.canvasId].forEach(viewJson => {
             let viewInstance: View;
+            let afterAllViewsDeserialized: AfterAllViewsDeserialized;
+        
             if (viewJson.type === NodeViewType) {
                 const nodeType = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId)).type;
                 viewInstance = this.registry.data.helper.node.createView(nodeType)
+                viewInstance.fromJson(viewJson, this.registry);
+            } else if (viewJson.type === MeshViewType) {
+                [viewInstance, afterAllViewsDeserialized] = this.getViewFactory(viewJson.type).instantiateFromJson(viewJson);
+                afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
             } else {
                 viewInstance = this.getViewFactory(viewJson.type).instantiate();
+                viewInstance.fromJson(viewJson, this.registry);
             }
-            viewInstance.fromJson(viewJson, this.registry);
             this.addView(viewInstance);
         });
+
+        afterAllViewsDeserializedFuncs.forEach(func => func());
     }
 
     setIdGenerator(idGenerator: IdGenerator) {
@@ -273,8 +283,8 @@ export class AxisControlHook extends EmptyViewStoreHook {
 
     removeSelectionHook(views: View[]) {
         views.forEach(view => {
-            view.children.filter(view => view.viewType === MoveAxisViewType).forEach(child => view.deleteChild(child));
-            view.children.filter(view => view.viewType === ScaleAxisViewType).forEach(child => view.deleteChild(child));
+            view.containedViews.filter(view => view.viewType === MoveAxisViewType).forEach(child => view.deleteContainedView(child));
+            view.containedViews.filter(view => view.viewType === ScaleAxisViewType).forEach(child => view.deleteContainedView(child));
         });
     }
 }

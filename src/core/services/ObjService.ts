@@ -1,7 +1,7 @@
 import { AssetObjFactory } from "../models/objs/AssetObj";
 import { IObj, ObjFactory } from "../models/objs/IObj";
 import { LigthObjFactory } from "../models/objs/LightObj";
-import { MeshObjFactory } from "../models/objs/MeshObj";
+import { MeshHook, MeshObjFactory } from "../models/objs/MeshObj";
 import { NodeConnectionObjFactory } from "../models/objs/NodeConnectionObj";
 import { PathObjFactory } from "../models/objs/PathObj";
 import { SpriteObjFactory } from "../models/objs/SpriteObj";
@@ -33,6 +33,10 @@ export class ObjService {
 
     registerObj(objFactory: ObjFactory) {
         this.factoriesByType.set(objFactory.objType, objFactory);
+    }
+
+    getObjFactory(objType: string): ObjFactory {
+        return this.factoriesByType.get(objType);
     }
 
     createObj(objType: string): IObj {

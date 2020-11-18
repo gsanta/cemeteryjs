@@ -1,9 +1,9 @@
 import { View } from "../View";
 
-export abstract class ChildView extends View {
-    parent: View;
+export abstract class ContainedView extends View {
+    containerView: View;
 
     isSelected() {
-        return this.parent.isSelected();
+        return this.containerView.isSelected();
     }
 }

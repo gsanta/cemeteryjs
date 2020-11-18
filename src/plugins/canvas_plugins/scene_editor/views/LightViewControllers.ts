@@ -4,7 +4,7 @@ import { FormController, PropContext, PropController } from '../../../../core/pl
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
-import { MeshViewType } from './MeshView';
+import { MeshView, MeshViewJson, MeshViewType } from './MeshView';
 import { MeshObj, MeshObjType } from '../../../../core/models/objs/MeshObj';
 
 export enum LightViewControllerParam {
@@ -172,21 +172,21 @@ export class LightParentMeshController extends PropController<string> {
     acceptedProps() { return [LightViewControllerParam.LightParentMesh]; }
 
     values(context: PropContext) {
-        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(obj => obj.id)
+        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(obj => obj.id)
     }
 
     defaultVal(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
 
-        return lightView.getObj().getParent() && lightView.getObj().getParent().id;
+        return lightView.getParent() && lightView.getParent().id;
     }
 
     change(val, context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-        const mesh = <MeshObj> context.registry.stores.objStore.getById(val);
+        const meshView = <MeshView> context.registry.data.view.scene.getById(val);
 
-        if (mesh) {
-            lightView.getObj().setParent(mesh);
+        if (meshView) {
+            lightView.setParent(meshView);
             context.registry.services.history.createSnapshot();
             context.registry.services.render.reRender(UI_Region.Sidepanel);
         }

@@ -43,7 +43,7 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
         }
 
         if (item.viewType === PathPointViewType) {
-            if (item.parent.viewType === PathViewType) {
+            if (item.containerView.viewType === PathViewType) {
                 hover = true;
             }
         }
@@ -66,7 +66,7 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
 
         const path = pathes.length > 0 ? pathes[0] : undefined;
         
-        if (path && path.getActiveChild()) {
+        if (path && path.getActiveContainedView()) {
             this.continuePath(path);
         } else {
             this.startNewPath();

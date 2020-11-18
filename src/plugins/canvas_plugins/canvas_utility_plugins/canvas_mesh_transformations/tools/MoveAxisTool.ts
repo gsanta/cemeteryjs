@@ -44,7 +44,7 @@ export class MoveAxisTool extends NullTool {
 
         if (this.downView) {
             let delta: Point_3 = new Point_3(0, 0, 0);
-            const parent = <MeshView | SpriteView> this.downView.parent;
+            const parent = <MeshView | SpriteView> this.downView.containerView;
 
             switch(this.downView.axis) {
                 case CanvasAxis.X:
@@ -60,7 +60,7 @@ export class MoveAxisTool extends NullTool {
                 break;
             }
 
-            this.downView.parent.move(delta);
+            this.downView.containerView.move(delta);
         }
 
         this.registry.services.render.scheduleRendering(this.panel.region);

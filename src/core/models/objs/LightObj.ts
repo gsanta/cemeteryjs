@@ -1,12 +1,8 @@
-import { Sprite } from "babylonjs";
-import { dir } from "console";
-import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
-import { Wrap_LightAdapter } from "../../engine/adapters/wrapper/Wrap_LightAdapter";
 import { ILightAdapter } from "../../engine/ILightAdapter";
-import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
-import { IObj, ObjFactory, ObjJson } from "./IObj";
+import { IGameObj } from "./IGameObj";
+import { AfterAllObjsDeserialized, IObj, ObjFactoryAdapter, ObjJson } from "./IObj";
 import { MeshObj } from "./MeshObj";
 
 export const LightObjType = 'light-obj';
@@ -24,14 +20,14 @@ export interface LightObjJson extends ObjJson {
     }
     diffuseColor: string;
     id: string;
+    parentId: string;
 }
 
-export class LigthObjFactory implements ObjFactory {
+export class LigthObjFactory extends ObjFactoryAdapter {
     private registry: Registry;
 
-    objType = LightObjType;
-
     constructor(registry: Registry) {
+        super(LightObjType);
         this.registry = registry;
     }
 
@@ -40,9 +36,13 @@ export class LigthObjFactory implements ObjFactory {
         obj.setLightAdapter(this.registry.engine.lights);
         return obj;
     }
+
+    insantiateFromJson(json: LightObjJson): [IObj, AfterAllObjsDeserialized] {
+        return LightObj.deserialize(json, this.registry);
+    }
 }
 
-export class LightObj implements IObj {
+export class LightObj implements IObj, IGameObj {
     id: string;
     objType = LightObjType;
 
@@ -53,7 +53,7 @@ export class LightObj implements IObj {
     private startDiffuseColor: string = "#FFFFFF";
     private startParentMeshId: string;
 
-    private parent: MeshObj;
+    private parent: IObj & IGameObj;
 
     move(point: Point_3) {
         this.startPos.add(point);
@@ -110,18 +110,20 @@ export class LightObj implements IObj {
         return this.lightAdapter;
     }
 
-    setParent(parentObj: MeshObj) {
+    setParent(parentObj: IObj & IGameObj) {
         this.parent = parentObj;
         this.lightAdapter.setParent(this, parentObj);
     }
 
-    getParent(): MeshObj {
+    getParent(): IObj & IGameObj {
         return this.parent;
     }
 
     dispose() {
         this.lightAdapter && this.lightAdapter.deleteInstance(this);
     }
+    
+    ready() {}
 
     serialize(): LightObjJson {
         const direction = this.getDirection();
@@ -138,13 +140,27 @@ export class LightObj implements IObj {
                 y: direction.y,
                 z: direction.z
             },
-            diffuseColor: this.getDiffuseColor()
+            diffuseColor: this.getDiffuseColor(),
+            parentId: this.parent && this.parent.id
         }
     }
 
-    deserialize(json: LightObjJson) {        
-        this.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
-        this.setDirection(new Point_3(json.direction.x, json.direction.y, json.direction.z));
-        this.setDiffuseColor(json.diffuseColor);
+    deserialize() {}
+
+    static deserialize(json: LightObjJson, registry: Registry): [IObj, AfterAllObjsDeserialized] {     
+        const obj = new LightObj();
+        obj.setLightAdapter(registry.engine.lights);
+        
+        obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
+        obj.setDirection(new Point_3(json.direction.x, json.direction.y, json.direction.z));
+        obj.setDiffuseColor(json.diffuseColor);
+
+        const afterAllObjsDeserialized = () => {
+            if (json.parentId) {
+                obj.setParent(<MeshObj> registry.stores.objStore.getById(json.parentId));
+            }
+        }
+
+        return [obj, afterAllObjsDeserialized];   
     }
 }

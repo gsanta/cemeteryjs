@@ -18,6 +18,6 @@ export class SpriteViewRenderer implements ViewRenderer {
 
         rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
 
-        view.children.forEach(child => child.renderer.renderInto(canvas, child, panel));
+        view.containedViews.forEach(child => child.renderer.renderInto(canvas, child, panel));
     }
 }

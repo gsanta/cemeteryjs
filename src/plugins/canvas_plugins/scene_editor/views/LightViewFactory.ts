@@ -2,6 +2,7 @@ import { LightObj, LightObjType } from "../../../../core/models/objs/LightObj";
 import { ViewFactoryAdapter } from "../../../../core/models/views/View";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../core/Registry";
+import { sceneAndGameViewRatio } from "../../../../core/stores/ViewStore";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { LightView } from "./LightView";
@@ -25,7 +26,10 @@ export class LightViewFactory extends ViewFactoryAdapter {
         const lightView: LightView = <LightView> this.instantiate();
         lightView.setBounds(dimensions);
         lightView.setObj(lightObj);
-        lightObj.startPos = new Point_3(lightView.getBounds().div(10).getBoundingCenter().x, 5, -lightView.getBounds().div(10).getBoundingCenter().y);
+
+        const lightViewBounds = lightView.getBounds(); 
+        const objPos = lightViewBounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
+        lightObj.setPosition(new Point_3(objPos.x, lightObj.getPosition().y, objPos.y));
 
         this.registry.stores.objStore.addObj(lightObj);
         panel.getViewStore().addView(lightView);

@@ -4,5 +4,5 @@ import { MeshObj } from "../../models/objs/MeshObj";
 
 export interface IMeshHook {
     setPositionHook(meshObj: MeshObj, pos: Point): void;
-    hookCreateInstance(meshObj: MeshObj);
+    hook_createInstance(meshObj: MeshObj);
 }

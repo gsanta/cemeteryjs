@@ -7,9 +7,26 @@ export interface ObjJson {
     objType: string;
 }
 
+export interface AfterAllObjsDeserialized {
+    (): void;
+}
+
 export interface ObjFactory {
     objType: string;
     newInstance(): IObj;
+    insantiateFromJson(objJson: ObjJson): [IObj, AfterAllObjsDeserialized]
+}
+
+export abstract class ObjFactoryAdapter implements ObjFactory {
+    objType: string;
+
+    constructor(objType: string) {
+        this.objType = objType;
+    }
+
+    newInstance(): IObj { return undefined; }
+    insantiateFromJson(objJson: ObjJson): [IObj, AfterAllObjsDeserialized] { return undefined; }
+
 }
 
 export interface IObj {
@@ -20,17 +37,3 @@ export interface IObj {
     serialize(): ObjJson;
     deserialize(json: ObjJson, registry: Registry);
 }
-
-// export class ObjImporter {
-//     private registry: Registry;
-
-//     constructor(registry: Registry) {
-//         this.registry = registry;
-//     }
-
-//     import(json: AppJson) {
-//         json.objs.forEach(obj => {
-//             const type = obj.
-//         });
-//     }
-// }

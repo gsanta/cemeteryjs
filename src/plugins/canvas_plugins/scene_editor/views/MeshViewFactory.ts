@@ -1,10 +1,10 @@
 import { MeshObj, MeshObjType, MeshShapeConfig, MeshSphereConfig } from "../../../../core/models/objs/MeshObj";
-import { ViewFactoryAdapter } from "../../../../core/models/views/View";
+import { AfterAllViewsDeserialized, View, ViewFactoryAdapter } from "../../../../core/models/views/View";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../core/Registry";
 import { colors } from "../../../../core/ui_components/react/styles";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { MeshView } from "./MeshView";
+import { MeshView, MeshViewJson } from "./MeshView";
 
 export class MeshViewFactory extends ViewFactoryAdapter {
     private registry: Registry;
@@ -34,5 +34,9 @@ export class MeshViewFactory extends ViewFactoryAdapter {
         panel.getViewStore().addView(meshView);
     
         return meshView;
+    }
+
+    instantiateFromJson(json: MeshViewJson): [View, AfterAllViewsDeserialized] {
+        return MeshView.fromJson(json, this.registry);
     }
 }

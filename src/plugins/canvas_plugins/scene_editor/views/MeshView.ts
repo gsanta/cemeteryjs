@@ -1,5 +1,5 @@
 import { MeshObj } from '../../../../core/models/objs/MeshObj';
-import { View, ViewJson } from '../../../../core/models/views/View';
+import { AfterAllViewsDeserialized, View, ViewJson } from '../../../../core/models/views/View';
 import { Registry } from '../../../../core/Registry';
 import { sceneAndGameViewRatio } from '../../../../core/stores/ViewStore';
 import { colors } from '../../../../core/ui_components/react/styles';
@@ -16,6 +16,7 @@ export interface MeshViewJson extends ViewJson {
     scale: number;
     yPos: number;
     color: string;
+    childViewIds: string[];
 }
 
 const MIN_VIEW_SIZE = 20;
@@ -34,8 +35,6 @@ export class MeshView extends View {
     color: string = colors.pastelBlue;
     yPos: number = 0;
     speed = 0.5;
-
-    boundViews: View[] = [];
 
     constructor() {
         super();
@@ -74,7 +73,7 @@ export class MeshView extends View {
         if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
             this.bounds = savedBounds;
         } else {
-            this.children.forEach(child => child.calcBounds());
+            this.containedViews.forEach(child => child.calcBounds());
             this.scale = scale;
         }
         
@@ -96,8 +95,8 @@ export class MeshView extends View {
 
         const point2 = point.div(sceneAndGameViewRatio).negateY();
         this.obj.move(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
-        this.children.forEach(child => child.calcBounds());
-        this.boundViews.forEach(boundView => boundView.move(point));
+        this.containedViews.forEach(child => child.calcBounds());
+        this.childViews.forEach(boundView => boundView.calcBounds());
     }
 
     getBounds(): Rectangle {
@@ -115,7 +114,7 @@ export class MeshView extends View {
         if (!this.bounds.getBoundingCenter().equalTo(center)) {
             this.obj.setPosition(new Point_3(pos2.x, objPos ? objPos.y : 0, pos2.y));
         }
-        this.children.forEach(child => child.calcBounds());
+        this.containedViews.forEach(child => child.calcBounds());
     }
 
 
@@ -130,7 +129,8 @@ export class MeshView extends View {
             thumbnailData: this.thumbnailData,
             scale: this.scale,
             yPos: this.yPos,
-            color: this.color
+            color: this.color,
+            childViewIds: this.childViews.map(view => view.id)
         }
     }
 
@@ -143,6 +143,29 @@ export class MeshView extends View {
         this.yPos = json.yPos;
         this.thumbnailData = json.thumbnailData;
         this.color = json.color;
+    }
+
+    static fromJson(json: MeshViewJson, registry: Registry): [MeshView, AfterAllViewsDeserialized] {
+        const meshView = new MeshView();
+        meshView.id = json.id;
+        meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
+
+        const obj = <MeshObj> registry.stores.objStore.getById(json.objId);
+        meshView.setObj(obj);
+        const point2 = meshView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
+        obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
+        
+        meshView.rotation = json.rotation;
+        meshView.scale = json.scale;
+        meshView.yPos = json.yPos;
+        meshView.thumbnailData = json.thumbnailData;
+        meshView.color = json.color;
+
+        const afterAllViewsDeserialized = () => {
+             json.childViewIds.map(id => meshView.addChildView(registry.data.view.scene.getById(id)));
+        }
+
+        return [meshView, afterAllViewsDeserialized];
     }
 }
 

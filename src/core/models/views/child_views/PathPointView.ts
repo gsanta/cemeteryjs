@@ -4,7 +4,7 @@ import { Registry } from "../../../Registry";
 import { PathObj } from "../../objs/PathObj";
 import { PathView } from "../../../../plugins/canvas_plugins/scene_editor/views/PathView";
 import { View, ViewJson } from "../View";
-import { ChildView } from "./ChildView";
+import { ContainedView } from "./ChildView";
 
 export interface EditPointViewJson extends ViewJson {
     point: string;
@@ -12,30 +12,30 @@ export interface EditPointViewJson extends ViewJson {
 }
 
 export const PathPointViewType = 'PathPointViewType';
-export class PathPointView extends ChildView {
+export class PathPointView extends ContainedView {
     id: string;
     viewType = PathPointViewType;
     point: Point;
-    readonly parent: PathView;
+    readonly containerView: PathView;
 
     constructor(parent: PathView, point?: Point) {
         super();
         this.point = point;
-        this.parent = parent;
+        this.containerView = parent;
     }
 
     getObj(): PathObj {
-        return this.parent.getObj();
+        return this.containerView.getObj();
     }
 
     setObj(obj: PathObj) {
-        this.parent.setObj(obj);
+        this.containerView.setObj(obj);
     }
 
     move(delta: Point) {
         this.point.add(delta);
-        this.parent.str = undefined;
-        this.parent.update();
+        this.containerView.str = undefined;
+        this.containerView.update();
     }
 
     getBounds(): Rectangle {
@@ -49,14 +49,14 @@ export class PathPointView extends ChildView {
     dispose() {}
 
     toString() {
-        return `EditPoint: ${this.parent.id} ${this.point.toString()}`
+        return `EditPoint: ${this.containerView.id} ${this.point.toString()}`
     }
 
     toJson(): EditPointViewJson {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            parentId: this.parent.id,
+            parentId: this.containerView.id,
         }
     }
 

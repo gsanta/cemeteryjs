@@ -1,5 +1,5 @@
 import { AssetObjType } from "../models/objs/AssetObj";
-import { IObj } from "../models/objs/IObj";
+import { AfterAllObjsDeserialized, IObj } from "../models/objs/IObj";
 import { LightObj, LightObjType } from "../models/objs/LightObj";
 import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
 import { NodeObjJson, NodeObjType } from "../models/objs/NodeObj";
@@ -33,6 +33,8 @@ export class ObjStore {
     }
 
     importFrom(appJson: AppJson) {
+        const afterAllObjsDeserializedFuncs: AfterAllObjsDeserialized[] = [];
+        
         // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
         appJson.objs.general.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
         appJson.objs.general.forEach(obj => {
@@ -41,15 +43,22 @@ export class ObjStore {
             }
 
             let objInstance: IObj;
+            let afterAllObjsDeserialized: AfterAllObjsDeserialized;
             if (obj.objType === NodeObjType) {
-                objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type)
+                objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type);
+                objInstance.deserialize(obj, this.registry);
+            } else if (obj.objType === LightObjType) {
+                [objInstance, afterAllObjsDeserialized] = this.registry.services.objService.getObjFactory(LightObjType).insantiateFromJson(obj); 
+                afterAllObjsDeserializedFuncs.push(afterAllObjsDeserialized);
             } else {
                 objInstance = this.registry.services.objService.createObj(obj.objType);
+                objInstance.deserialize(obj, this.registry);
             }
 
-            objInstance.deserialize(obj, this.registry);
             this.addObj(objInstance);
         });
+
+        // afterAllObjsDeserializedFuncs.forEach(func => func());
     }
 
     setIdGenerator(idGenerator: IdGenerator) {

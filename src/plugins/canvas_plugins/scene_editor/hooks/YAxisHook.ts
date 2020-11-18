@@ -19,7 +19,7 @@ export class YAxisHook implements IMeshHook {
         setPosition(this.registry, meshObj, newPos);
     }
 
-    hookCreateInstance(meshObj: MeshObj): void {
+    hook_createInstance(meshObj: MeshObj): void {
         const realDimensions = this.registry.engine.meshes.getDimensions(meshObj);
         const meshView = this.registry.data.view.scene.getByObjId(meshObj.id);
         const rect = meshView.getBounds().clone();

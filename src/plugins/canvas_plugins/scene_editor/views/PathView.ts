@@ -29,7 +29,7 @@ export class PathView extends View {
     viewType = PathViewType;
 
     protected obj: PathObj;
-    children: PathPointView[];
+    containedViews: PathPointView[];
     id: string;
     radius = 5;
     str: string;
@@ -49,30 +49,30 @@ export class PathView extends View {
 
     addPathPoint(pathPoint: PathPointView) {
         pathPoint.id = `${this.id}-path-point-this.children.length`;
-        this.children.push(pathPoint);
+        this.containedViews.push(pathPoint);
         this.bounds = this.calcBoundingBox();
-        this.setActiveChild(pathPoint);
+        this.setActiveContainedView(pathPoint);
         this.update();
     }
 
     update() {
-        this.obj.points = this.children.map(point => point.point.clone().divX(9.3).divY(10).negateY());
+        this.obj.points = this.containedViews.map(point => point.point.clone().divX(9.3).divY(10).negateY());
         this.str = undefined;
     }
 
     private calcBoundingBox() {
-        if (this.children.length === 0) { return NULL_BOUNDING_BOX; }
+        if (this.containedViews.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
-        const maxX = maxBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
-        const minY = minBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
-        const maxY = maxBy<PathPointView>(this.children as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
+        const minX = minBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
+        const maxX = maxBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
+        const minY = minBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
+        const maxY = maxBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 
-    deleteChild(editPoint: PathPointView): void {
-        super.deleteChild(editPoint);
+    deleteContainedView(editPoint: PathPointView): void {
+        super.deleteContainedView(editPoint);
         this.str = undefined;
     }
 
@@ -81,11 +81,11 @@ export class PathView extends View {
 
         this.str = '';
         
-        let pathPoint = <PathPointView> this.children[0];
+        let pathPoint = <PathPointView> this.containedViews[0];
         this.str += `M ${pathPoint.point.x} ${pathPoint.point.y}`;
 
-        for (let i = 1; i < this.children.length; i++) {
-            pathPoint = <PathPointView> this.children[i];
+        for (let i = 1; i < this.containedViews.length; i++) {
+            pathPoint = <PathPointView> this.containedViews[i];
             this.str += `L ${pathPoint.point.x} ${pathPoint.point.y}`;
         }
 
@@ -93,7 +93,7 @@ export class PathView extends View {
     }
 
     move(point: Point) {
-        this.children.forEach((p: PathPointView) => p.point.add(point));
+        this.containedViews.forEach((p: PathPointView) => p.point.add(point));
 
         this.str = undefined;
     }
@@ -111,7 +111,7 @@ export class PathView extends View {
     toJson(): PathViewJson {
         return {
             ...super.toJson(),
-            editPoints: this.children.map(ep => ep.toJson()),
+            editPoints: this.containedViews.map(ep => ep.toJson()),
         }
     }
 

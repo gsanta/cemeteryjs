@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { NodeView } from "../NodeView";
-import { ChildView } from "./ChildView";
+import { ContainedView } from "./ChildView";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
@@ -19,11 +19,11 @@ export interface JoinPointViewJson extends ViewJson {
 }
 
 export const JoinPointViewType = 'JoinPointViewType';
-export class JoinPointView extends ChildView {
+export class JoinPointView extends ContainedView {
     viewType = JoinPointViewType;
     id: string;
     point: Point;
-    parent: NodeView;
+    containerView: NodeView;
     connection: NodeConnectionView;
     slotName: string;
     isInput: boolean;
@@ -31,7 +31,7 @@ export class JoinPointView extends ChildView {
 
     constructor(parent: NodeView, config?: {slotName: string, isInput: boolean}) {
         super();
-        this.parent = parent;
+        this.containerView = parent;
 
         if (config) {
             this.slotName = config.slotName;
@@ -40,15 +40,15 @@ export class JoinPointView extends ChildView {
     }
 
     getObj(): NodeObj {
-        return this.parent.getObj();
+        return this.containerView.getObj();
     }
 
     setObj(obj: NodeObj) {
-        this.parent.setObj(obj);
+        this.containerView.setObj(obj);
     }
 
     getAbsolutePosition() {
-        return new Point(this.parent.getBounds().topLeft.x + this.point.x, this.parent.getBounds().topLeft.y + this.point.y); 
+        return new Point(this.containerView.getBounds().topLeft.x + this.point.x, this.containerView.getBounds().topLeft.y + this.point.y); 
     }
 
     move(delta: Point) {
@@ -68,7 +68,7 @@ export class JoinPointView extends ChildView {
     dispose() {}
 
     toString() {
-        return `${this.viewType}: ${this.parent.id} ${this.point.toString()}`;
+        return `${this.viewType}: ${this.containerView.id} ${this.point.toString()}`;
     }
 
     toJson(): JoinPointViewJson {

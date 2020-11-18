@@ -53,9 +53,9 @@ export class JoinTool extends PointerTool {
             connectionView.joinPoint1 = joinPoint1;
             connectionView.joinPoint2 = joinPoint2;
             connectionObj.joinPoint1 = joinPoint1.slotName;
-            connectionObj.node1 = joinPoint1.parent.getObj();
+            connectionObj.node1 = joinPoint1.containerView.getObj();
             connectionObj.joinPoint2 = joinPoint2.slotName;
-            connectionObj.node2 = joinPoint2.parent.getObj();
+            connectionObj.node2 = joinPoint2.containerView.getObj();
 
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
             connectionView.setPoint2(joinPoint2.getAbsolutePosition());

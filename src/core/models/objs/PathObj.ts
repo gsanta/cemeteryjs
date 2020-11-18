@@ -1,5 +1,5 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { IObj, ObjFactory, ObjJson } from "./IObj";
+import { IObj, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const PathObjType = 'path-obj';
 
@@ -10,8 +10,11 @@ export interface PathObjJson extends ObjJson {
     }[];
 }
 
-export class PathObjFactory implements ObjFactory {
-    objType = PathObjType;
+export class PathObjFactory extends ObjFactoryAdapter {
+    constructor() {
+        super(PathObjType);
+    }
+
     newInstance() {
         return new PathObj();
     }

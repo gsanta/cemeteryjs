@@ -1,7 +1,7 @@
 import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
-import { ChildView } from "../../../../../core/models/views/child_views/ChildView";
+import { ContainedView } from "../../../../../core/models/views/child_views/ChildView";
 import { View, ViewFactoryAdapter, ViewJson } from "../../../../../core/models/views/View";
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
@@ -30,18 +30,18 @@ export class ScaleAxisViewFactory extends ViewFactoryAdapter {
     instantiateOnSelection(parentView: View) {
         let axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
         axisView.axis = CanvasAxis.X;
-        axisView.setParent(parentView);
-        parentView.addChild(axisView);
+        axisView.setContainerView(parentView);
+        parentView.addContainedView(axisView);
 
         axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
         axisView.axis = CanvasAxis.Y;
-        axisView.setParent(parentView);
-        parentView.addChild(axisView);
+        axisView.setContainerView(parentView);
+        parentView.addContainedView(axisView);
 
         axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
         axisView.axis = CanvasAxis.Z;
-        axisView.setParent(parentView);
-        parentView.addChild(axisView);
+        axisView.setContainerView(parentView);
+        parentView.addContainedView(axisView);
     }
 }
 
@@ -49,12 +49,12 @@ export class ScaleAxisViewFactory extends ViewFactoryAdapter {
 export interface ArrowBounds {
     [axis: string]: Rectangle;
 }
-export class ScaleAxisView extends ChildView {
+export class ScaleAxisView extends ContainedView {
     id: string;
     viewType = ScaleAxisViewType;
     point: Point;
     axis: CanvasAxis;
-    readonly parent: View;
+    readonly containerView: View;
 
     constructor(registry: Registry) {
         super();
@@ -64,11 +64,11 @@ export class ScaleAxisView extends ChildView {
     }
 
     getObj(): IObj {
-        return this.parent.getObj();
+        return this.containerView.getObj();
     }
 
     setObj(obj: PathObj) {
-        this.parent.setObj(obj);
+        this.containerView.setObj(obj);
     }
 
     move(delta: Point) {
@@ -84,7 +84,7 @@ export class ScaleAxisView extends ChildView {
     }
 
     calcBounds() {
-        const center = this.parent.getBounds().getBoundingCenter();
+        const center = this.containerView.getBounds().getBoundingCenter();
         this.setBounds(new Rectangle(new Point(center.x - 8, center.y - 60), new Point(center.x + 8, center.y)));
     }
 
@@ -98,7 +98,7 @@ export class ScaleAxisView extends ChildView {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            parentId: this.parent.id,
+            parentId: this.containerView.id,
         }
     }
 

@@ -32,7 +32,7 @@ export class MoveAxisViewRenderer implements ViewRenderer {
     }
 
     private renderHighlightLine(group: UI_SvgGroup, axisView: MoveAxisView) {
-        const center = axisView.parent.getBounds().getBoundingCenter();
+        const center = axisView.containerView.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.css = {
@@ -57,7 +57,7 @@ export class MoveAxisViewRenderer implements ViewRenderer {
     }
 
     private renderArrowLine(group: UI_SvgGroup, axisView: ScaleAxisView) {
-        const center = axisView.parent.getBounds().getBoundingCenter();
+        const center = axisView.containerView.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.markerEnd = `url(#${MoveAxisToolId}-${axisView.axis})`;

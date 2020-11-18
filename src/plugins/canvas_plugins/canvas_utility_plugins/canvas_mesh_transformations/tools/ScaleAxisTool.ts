@@ -41,7 +41,7 @@ export class ScaleAxisTool extends NullTool {
 
         if (this.downView) {
             let delta: number = 1;
-            const parent = <MeshView> this.downView.parent;
+            const parent = <MeshView> this.downView.containerView;
 
             switch(this.downView.axis) {
                 case CanvasAxis.X:
