@@ -58,7 +58,7 @@ export class ObjStore {
             this.addObj(objInstance);
         });
 
-        // afterAllObjsDeserializedFuncs.forEach(func => func());
+        afterAllObjsDeserializedFuncs.forEach(func => func());
     }
 
     setIdGenerator(idGenerator: IdGenerator) {

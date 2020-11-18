@@ -1,10 +1,9 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
-import { IMeshHook } from '../../engine/hooks/IMeshHook';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
 import { IGameObj } from './IGameObj';
-import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from './IObj';
+import { IObj, ObjFactoryAdapter, ObjJson } from './IObj';
 
 export const MeshObjType = 'mesh-obj';
 
@@ -67,7 +66,6 @@ export class MeshObj implements IObj, IGameObj {
     yPos: number = 0;
 
     meshAdapter: IMeshAdapter;
-    private isReady = false;
 
     move(point: Point_3) {
         this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
@@ -103,13 +101,6 @@ export class MeshObj implements IObj, IGameObj {
 
     dispose() {
         this.meshAdapter.deleteInstance(this);
-    }
-
-    ready() {
-        if (this.isReady) {
-            throw new Error('Ready state can be set only once');
-        }
-        this.isReady = true;
     }
 
     setParent(parentObj: IObj & IGameObj) {
@@ -149,20 +140,5 @@ export class MeshObj implements IObj, IGameObj {
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;
-    }
-}
-
-
-export class MeshHook implements IMeshHook {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
-    setPositionHook(meshObj: MeshObj, newPos: Point): void {}
-
-    hook_createInstance(meshObj: MeshObj): void {
-        meshObj.ready();
     }
 }

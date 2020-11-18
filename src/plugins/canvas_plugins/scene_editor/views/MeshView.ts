@@ -16,7 +16,6 @@ export interface MeshViewJson extends ViewJson {
     scale: number;
     yPos: number;
     color: string;
-    childViewIds: string[];
 }
 
 const MIN_VIEW_SIZE = 20;
@@ -130,19 +129,7 @@ export class MeshView extends View {
             scale: this.scale,
             yPos: this.yPos,
             color: this.color,
-            childViewIds: this.childViews.map(view => view.id)
         }
-    }
-
-    fromJson(json: MeshViewJson, registry: Registry) {
-        super.fromJson(json, registry);
-        const point2 = this.bounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY()
-        this.obj.setPosition(new Point_3(point2.x, this.obj.getPosition().y, point2.y));
-        this.rotation = json.rotation;
-        this.scale = json.scale;
-        this.yPos = json.yPos;
-        this.thumbnailData = json.thumbnailData;
-        this.color = json.color;
     }
 
     static fromJson(json: MeshViewJson, registry: Registry): [MeshView, AfterAllViewsDeserialized] {
@@ -162,7 +149,9 @@ export class MeshView extends View {
         meshView.color = json.color;
 
         const afterAllViewsDeserialized = () => {
-             json.childViewIds.map(id => meshView.addChildView(registry.data.view.scene.getById(id)));
+            json.childViewIds.map(id => meshView.addChildView(registry.data.view.scene.getById(id)));
+            json.parentId && meshView.setParent(registry.data.view.scene.getById(json.parentId));
+    
         }
 
         return [meshView, afterAllViewsDeserialized];

@@ -97,8 +97,10 @@ export class LightObj implements IObj, IGameObj {
     }
 
     setParent(parentObj: IObj & IGameObj) {
-        this.parent = parentObj;
-        this.lightAdapter.setParent(this, parentObj);
+        if (this.parent !== parentObj) {
+            this.parent = parentObj;
+            this.lightAdapter.setParent(this, parentObj);
+        }
     }
 
     getParent(): IObj & IGameObj {

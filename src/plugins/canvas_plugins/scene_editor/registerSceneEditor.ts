@@ -1,4 +1,4 @@
-import { LightHook, LightViewType } from "./views/LightView";
+import { LightViewType } from "./views/LightView";
 import { MeshViewType } from "./views/MeshView";
 import { PathViewType } from "./views/PathView";
 import { SpriteViewType } from "./views/SpriteView";
@@ -75,7 +75,6 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     registry.data.view.scene.registerViewType(MeshViewType, new MeshViewFactory(registry));
     registry.data.view.scene.registerViewType(SpriteViewType, new SpriteViewFactory(registry));
     registry.data.view.scene.registerViewType(LightViewType, new LightViewFactory(registry));
-    registry.plugins.engineHooks.registerLightHook(new LightHook(registry));
 
     registry.data.view.scene.registerViewType(MoveAxisViewType, new MoveAxisViewFactory(registry));
     registry.data.view.scene.registerViewType(ScaleAxisViewType, new ScaleAxisViewFactory(registry));

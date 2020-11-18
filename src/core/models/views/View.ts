@@ -1,22 +1,22 @@
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { IObj } from "../objs/IObj";
-import { Registry } from "../../Registry";
-import { ContainedView } from "./child_views/ChildView";
-import { UI_Container } from "../../ui_components/elements/UI_Container";
+import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
-import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
-import { IControlledModel } from "../../plugin/IControlledModel";
-import { FormController } from "../../plugin/controller/FormController";
 import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
+import { FormController } from "../../plugin/controller/FormController";
+import { IControlledModel } from "../../plugin/IControlledModel";
+import { Registry } from "../../Registry";
 import { ViewStore } from "../../stores/ViewStore";
-import { IGameObj } from "../objs/IGameObj";
+import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
+import { IObj } from "../objs/IObj";
+import { ContainedView } from "./child_views/ChildView";
 
 export interface ViewJson {
     id: string;
     type: string;
     dimensions: string;
     objId: string;
+    parentId: string;
+    childViewIds: string[];
 }
 
 export enum ViewTag {
@@ -111,7 +111,10 @@ export abstract class View implements IControlledModel {
     }
 
     addChildView(view: View) {
-        this.childViews.push(view);
+        this.childViews = Array.from(new Set([...this.childViews, view]));
+        if (view.parentView !== this) {
+            view.setParent(this);
+        }
     }
 
     removeChildView(view: View) {
@@ -124,6 +127,9 @@ export abstract class View implements IControlledModel {
 
     setParent(view: View) {
         this.parentView = view;
+        if (view.getChildViews().indexOf(this) === -1) {
+            view.addChildView(this);
+        }
     }
 
     removeParent() {
@@ -145,7 +151,9 @@ export abstract class View implements IControlledModel {
             id: this.id,
             type: this.viewType,
             dimensions: this.bounds ? this.bounds.toString() : undefined,
-            objId: this.obj ? this.obj.id : (this.containerView && this.containerView.obj) ? this.containerView.obj.id : undefined
+            objId: this.obj ? this.obj.id : (this.containerView && this.containerView.obj) ? this.containerView.obj.id : undefined,
+            parentId: this.parentView && this.parentView.id,
+            childViewIds: this.childViews.map(view => view.id)
         };
     }
 

@@ -12,6 +12,7 @@ import { ScaleAxisView, ScaleAxisViewType } from "../../plugins/canvas_plugins/c
 import { AppJson } from "../services/export/ExportService";
 import { NodeObj } from "../models/objs/NodeObj";
 import { NodeViewType } from "../models/views/NodeView";
+import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/views/LightView';
 
 export const sceneAndGameViewRatio = 10;
 
@@ -74,7 +75,7 @@ export class ViewStore {
                 const nodeType = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId)).type;
                 viewInstance = this.registry.data.helper.node.createView(nodeType)
                 viewInstance.fromJson(viewJson, this.registry);
-            } else if (viewJson.type === MeshViewType) {
+            } else if (viewJson.type === MeshViewType || viewJson.type === LightViewType) {
                 [viewInstance, afterAllViewsDeserialized] = this.getViewFactory(viewJson.type).instantiateFromJson(viewJson);
                 afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
             } else {

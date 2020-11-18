@@ -1,16 +1,13 @@
-import { ILightHook } from "../../../../core/engine/hooks/ILightHook";
 import { IGameObj } from "../../../../core/models/objs/IGameObj";
 import { IObj } from "../../../../core/models/objs/IObj";
 import { LightObj } from "../../../../core/models/objs/LightObj";
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { View, ViewJson } from '../../../../core/models/views/View';
+import { AfterAllViewsDeserialized, View, ViewJson } from '../../../../core/models/views/View';
 import { Registry } from "../../../../core/Registry";
 import { sceneAndGameViewRatio } from '../../../../core/stores/ViewStore';
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { LightViewRenderer } from "./LightViewRenderer";
-import { MeshView } from "./MeshView";
 
 export const LightViewType = 'light-view';
 
@@ -75,26 +72,25 @@ export class LightView extends View {
         this.calcRelativePos();
     }
 
-    fromJson(json: ViewJson, registry: Registry) {
-        super.fromJson(json, registry);
+    static fromJson(json: ViewJson, registry: Registry): [View, AfterAllViewsDeserialized] {
+        const lightView = new LightView();
+        lightView.id = json.id;
+        lightView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
+
+        const obj = <LightObj> registry.stores.objStore.getById(json.objId);
+        lightView.setObj(obj);
+        const point2 = lightView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
+        obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
+        
+        const afterAllViewsDeserialized: AfterAllViewsDeserialized = () => {
+            json.childViewIds.map(id => lightView.addChildView(registry.data.view.scene.getById(id)));
+            json.parentId && lightView.setParent(registry.data.view.scene.getById(json.parentId));
+        }
+
+        return [lightView, afterAllViewsDeserialized];
     }
 
     private calcRelativePos() {
         this.relativeParentPos = this.getBounds().getBoundingCenter().subtract(this.parentView.getBounds().getBoundingCenter());
-    }
-}
-
-export class LightHook implements ILightHook {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-    
-    hook_setParent(lightObj: LightObj, meshObj: MeshObj) {
-        const lightView = this.registry.data.view.scene.getByObjId(lightObj.id);
-        const meshView = <MeshView> this.registry.data.view.scene.getByObjId(meshObj.id);
-
-        meshView.addChildView(lightView);
     }
 }
