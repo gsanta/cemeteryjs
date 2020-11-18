@@ -1,5 +1,6 @@
 import { Sprite } from "babylonjs";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { IObj } from "../../../models/objs/IObj";
 import { LightObj } from "../../../models/objs/LightObj";
 import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
@@ -15,7 +16,7 @@ export class Test_LightAdapter implements ILightAdapter {
     directionMap: Map<string, Point_3> = new Map();
     positionMap: Map<string, Point_3> = new Map();
     diffuseColorMap: Map<string, string> = new Map();
-
+    angleMap: Map<string, number> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -27,7 +28,7 @@ export class Test_LightAdapter implements ILightAdapter {
     }
 
     getPosition(lightObj: LightObj): Point_3 {
-        return this.positionMap.get(lightObj.id) || lightObj.startPos;
+        return this.positionMap.get(lightObj.id);
     }
 
     setDirection(lightObj: LightObj, dir: Point_3): void {
@@ -47,14 +48,14 @@ export class Test_LightAdapter implements ILightAdapter {
     }
 
     setAngle(lightObj: LightObj, angleRad: number): void {
+        this.angleMap.set(lightObj.id, angleRad);
     }
     
     getAngle(lightObj: LightObj): number {
-        return undefined;
+        return this.angleMap.get(lightObj.id);
     }
 
-    setParent(lightObj: LightObj, parent: MeshObj): void {
-    }
+    setParent(lightObj: LightObj, parent: MeshObj): void {}
 
     updateInstance(lightObj: LightObj): void {
     }

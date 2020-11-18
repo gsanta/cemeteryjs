@@ -29,8 +29,7 @@ export class Registry {
         this.data = new DataLookup(this);
         this.ui = new UI_Lookup();
         
-        const wrapEngine = new Wrap_EngineFacade(this);
-        wrapEngine.realEngine = new Bab_EngineFacade(this);
+        const wrapEngine = new Wrap_EngineFacade(this, new Bab_EngineFacade(this));
 
         this.engine = wrapEngine;
     }

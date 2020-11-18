@@ -32,9 +32,7 @@ export class LigthObjFactory extends ObjFactoryAdapter {
     }
 
     newInstance() {
-        const obj = new LightObj();
-        obj.setLightAdapter(this.registry.engine.lights);
-        return obj;
+        return new LightObj(this.registry.stores.objStore.generateId(this.objType), this.registry.engine.lights);
     }
 
     insantiateFromJson(json: LightObjJson): [IObj, AfterAllObjsDeserialized] {
@@ -48,62 +46,50 @@ export class LightObj implements IObj, IGameObj {
 
     private lightAdapter: ILightAdapter;
 
-    startPos: Point_3 = new Point_3(0, 5, 0);
-    private startDirection: Point_3 = new Point_3(0, -1, 0);
-    private startDiffuseColor: string = "#FFFFFF";
-    private startParentMeshId: string;
+    constructor(id: string, lightAdapter: ILightAdapter) {
+        this.lightAdapter = lightAdapter;
+        this.id = id;
+
+        this.lightAdapter.setDiffuseColor(this, "#FFFFFF");
+        this.lightAdapter.setPosition(this, new Point_3(0, 5, 0));
+    }
 
     private parent: IObj & IGameObj;
 
     move(point: Point_3) {
-        this.startPos.add(point);
-
-        if (this.lightAdapter) {
-            this.lightAdapter.setPosition(this, this.lightAdapter.getPosition(this).add(point));
-        }
+        this.lightAdapter.setPosition(this, this.lightAdapter.getPosition(this).add(point));
     }
 
     setPosition(pos: Point_3) {
-        this.startPos = pos;
-
-        this.lightAdapter && this.lightAdapter.setPosition(this, pos);
+        this.lightAdapter.setPosition(this, pos);
     }
 
     getPosition(): Point_3 {
-        return this.lightAdapter.getPosition(this) || this.startPos;
+        return this.lightAdapter.getPosition(this);
     }
 
     setDirection(dir: Point_3) {
-        this.startDirection = dir;
-        this.lightAdapter && this.lightAdapter.setDirection(this, dir);
+        this.lightAdapter.setDirection(this, dir);
     }
 
     getDirection(): Point_3 {
-        return this.lightAdapter.getDirection(this) || this.startDirection;
+        return this.lightAdapter.getDirection(this);
     }
 
     getAngle() {
-        return this.lightAdapter ? this.lightAdapter.getAngle(this) : 0;
+        return this.lightAdapter.getAngle(this);
     }
 
     setAngle(angleRad: number) {
-        this.lightAdapter && this.lightAdapter.setAngle(this, angleRad);
+        this.lightAdapter.setAngle(this, angleRad);
     }
 
     setDiffuseColor(color: string) {
-        this.startDiffuseColor = color;
-        this.lightAdapter && this.lightAdapter.setDiffuseColor(this, color);
+        this.lightAdapter.setDiffuseColor(this, color);
     }
 
     getDiffuseColor(): string {
-        return this.lightAdapter.getDiffuseColor(this) || this.startDiffuseColor;
-    }
-
-    setLightAdapter(lightAdapter: ILightAdapter) {
-        this.lightAdapter = lightAdapter;
-        this.lightAdapter.setDiffuseColor(this, this.startDiffuseColor);
-        this.lightAdapter.setPosition(this, this.startPos);
-        this.lightAdapter.setDiffuseColor(this, this.startDiffuseColor);
+        return this.lightAdapter.getDiffuseColor(this);
     }
 
     getLightAdapter(): ILightAdapter {
@@ -127,13 +113,14 @@ export class LightObj implements IObj, IGameObj {
 
     serialize(): LightObjJson {
         const direction = this.getDirection();
+        const pos = this.getPosition();
         return {
             id: this.id,
             objType: this.objType,
             position: {
-                x: this.startPos && this.startPos.x,
-                y: this.startPos && this.startPos.y,
-                z: this.startPos && this.startPos.z,
+                x: pos.x,
+                y: pos.y,
+                z: pos.z,
             },
             direction: {
                 x: direction.x,
@@ -148,8 +135,7 @@ export class LightObj implements IObj, IGameObj {
     deserialize() {}
 
     static deserialize(json: LightObjJson, registry: Registry): [IObj, AfterAllObjsDeserialized] {     
-        const obj = new LightObj();
-        obj.setLightAdapter(registry.engine.lights);
+        const obj = new LightObj(json.id, registry.engine.lights);
         
         obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
         obj.setDirection(new Point_3(json.direction.x, json.direction.y, json.direction.z));

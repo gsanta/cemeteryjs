@@ -38,7 +38,7 @@ export class EditorExt extends Editor {
         this.registry.services.render.setRenderer(UI_Region.Sidepanel, () => this.fakeRenderer.renderSidePanel());
         this.registry.services.render.setRenderer(UI_Region.Dialog, () => this.fakeRenderer.renderDialog());
         this.registry.services.render.setRootRenderer(() => this.fakeRenderer.renderDialog());
-        const wrapEngine = new Wrap_EngineFacade(this.registry);
+        const wrapEngine = new Wrap_EngineFacade(this.registry, undefined);
         wrapEngine.realEngine = new Test_EngineFacade(this.registry);
         this.registry.engine = wrapEngine;
     }

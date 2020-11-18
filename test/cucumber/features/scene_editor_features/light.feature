@@ -243,8 +243,8 @@ Feature: Light
             | light-view-2   | light-view | light-obj-2 | 500:500,510:510 |
         Then obj properties are:
             | Id            | Type       | DiffuseColor | Dir      | Pos           |
-            | light-obj-1   | light-obj  | #FF0000      | 0:-1:0   | 5.5:5:-10.5   |
-            | light-obj-2   | light-obj  | #FFFFFF      | 1:-1:0.5 | 50.5:5:-55.5  |
+            | light-obj-1   | light-obj  | #FF0000      | 0:-1:0   | 5.5:5:-5.5    |
+            | light-obj-2   | light-obj  | #FFFFFF      | 1:-1:0.5 | 50.5:5:-50.5  |
 
     Scenario: Changing light's parent on sidepanel
         Given empty editor
@@ -252,7 +252,9 @@ Feature: Light
             | Type       | Bounds          | Selected |
             | light-view | 50:50,60:60     | true     |
             | mesh-view  | 20:20,30:30     | false    |
-        And change param 'light-parent-mesh' to 'mesh-obj-1' in panel 'object-settings-panel'
-        Then obj properties are:
-            | Id            | Type       | Parent     |
-            | light-obj-1   | light-obj  | mesh-obj-1 |
+        When hover over canvas 'scene-editor'
+        And change param 'light-parent-mesh' to 'mesh-view-1' in panel 'object-settings-panel'
+        Then canvas contains:
+            | Id           | Type       | Bounds          | Selected | Parent      |
+            | light-view-1 | light-view | 50:50,60:60     | true     | mesh-view-1 |
+            | mesh-view-1  | mesh-view  | 20:20,30:30     | false    |             |

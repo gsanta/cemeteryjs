@@ -40,7 +40,7 @@ export class MoveNode extends AbstractNode {
         obj.inputs = this.getInputLinks();
         obj.outputs = this.getOutputLinks();
         obj.executor = new MoveNodeExecutor(this.registry);
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.stores.objStore.generateId(obj.type);
 
         return obj;
     }

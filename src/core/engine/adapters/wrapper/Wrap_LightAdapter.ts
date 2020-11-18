@@ -17,51 +17,60 @@ export class Wrap_LightAdapter implements ILightAdapter {
     }
 
     setPosition(lightObj: LightObj, pos: Point_3): void {
-        this.engineFacade.realEngine.lights.setPosition(lightObj, pos);
+        this.engineFacade.engines.forEach(engine => engine.lights.setPosition(lightObj, pos));
     }
 
     getPosition(lightObj: LightObj): Point_3 {
-        return this.engineFacade.realEngine.lights.getPosition(lightObj);
+        return this.getVal((index: number) => this.engineFacade.engines[index].lights.getPosition(lightObj));
     }
 
     setDirection(lightObj: LightObj, pos: Point_3): void {
-        this.engineFacade.realEngine.lights.setDirection(lightObj, pos);
+        this.engineFacade.engines.forEach(engine => engine.lights.setDirection(lightObj, pos));
     }
 
     getDirection(lightObj: LightObj): Point_3 {
-        return this.engineFacade.realEngine.lights.getDirection(lightObj);
+        return this.getVal((index: number) => this.engineFacade.engines[index].lights.getDirection(lightObj));
     }
 
     setAngle(lightObj: LightObj, angleRad: number): void {
-        this.engineFacade.realEngine.lights.setAngle(lightObj, angleRad);
+        this.engineFacade.engines.forEach(engine => engine.lights.setAngle(lightObj, angleRad));
     }
     
     getAngle(lightObj: LightObj): number {
-        return this.engineFacade.realEngine.lights.getAngle(lightObj);
+        return this.getVal((index: number) => this.engineFacade.engines[index].lights.getAngle(lightObj));
     }
 
     setDiffuseColor(lightObj: LightObj, diffuseColor: string): void {
-        this.engineFacade.realEngine.lights.setDiffuseColor(lightObj, diffuseColor);
+        this.engineFacade.engines.forEach(engine => engine.lights.setDiffuseColor(lightObj, diffuseColor));
     }
 
     getDiffuseColor(lightObj: LightObj): string {
-        return this.engineFacade.realEngine.lights.getDiffuseColor(lightObj);
+        return this.getVal((index: number) => this.engineFacade.engines[index].lights.getDiffuseColor(lightObj));
     }
 
     setParent(lightObj: LightObj, parent: MeshObj): void {
         this.registry.plugins.engineHooks.getLightHooks().forEach(lightHook => lightHook.hook_setParent(lightObj, parent));
-        this.engineFacade.realEngine.lights.setParent(lightObj, parent);
+        this.engineFacade.engines.forEach(engine => engine.lights.setParent(lightObj, parent));
     }
 
     updateInstance(lightObj: LightObj): void {
-        this.engineFacade.realEngine.lights.updateInstance(lightObj);
+        this.engineFacade.engines.forEach(engine => engine.lights.updateInstance(lightObj));
     }
 
     createInstance(lightObj: LightObj) {
-        this.engineFacade.realEngine.lights.createInstance(lightObj);
+        this.engineFacade.engines.forEach(engine => engine.lights.createInstance(lightObj));
     }
 
     deleteInstance(lightObj: LightObj): void {
-        this.engineFacade.realEngine.lights.deleteInstance(lightObj);
+        this.engineFacade.engines.forEach(engine => engine.lights.deleteInstance(lightObj));
+    }
+
+    private getVal<T>(callback: (index: number) => T): T {
+        for (let i = 0; i < this.engineFacade.engines.length; i++) {
+            const val = <T> callback(i);
+            if (val) {
+                return val;
+            }
+        }
     }
 }

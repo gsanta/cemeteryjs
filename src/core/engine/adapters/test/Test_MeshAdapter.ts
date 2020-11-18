@@ -28,7 +28,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     } 
 
     getScale(meshObj: MeshObj): Point {
-        return undefined;
+        return new Point(1, 1);
     } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {

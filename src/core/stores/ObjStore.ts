@@ -68,8 +68,8 @@ export class ObjStore {
         this.idGenerator = idGenerator;
     }
 
-    generateId(obj: IObj): string {
-        return this.idGenerator.generateId(obj.objType);
+    generateId(objType: string): string {
+        return this.idGenerator.generateId(objType);
     }
 
     addObj(obj: IObj) {

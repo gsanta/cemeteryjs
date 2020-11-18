@@ -78,6 +78,11 @@ export class Bab_LightAdapter implements ILightAdapter {
         const meshData = this.engineFacade.meshes.meshes.get(parent.id)
 
         if (meshData) {
+            const lightPos = light.position.clone();
+            const meshPos = meshData.mainMesh.position.clone();
+
+            const diff = lightPos.subtract(meshPos);
+            light.position = diff;
             light.parent = meshData.mainMesh;
         }
     }

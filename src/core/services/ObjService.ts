@@ -45,7 +45,9 @@ export class ObjService {
         }
 
         const obj = this.factoriesByType.get(objType).newInstance();
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        if (!obj.id) {
+            obj.id = this.registry.stores.objStore.generateId(objType);
+        }
         return obj;
     }
 }

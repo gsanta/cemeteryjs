@@ -1,6 +1,7 @@
 import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
 import { IEngineFacade } from "../../IEngineFacade";
+import { Test_EngineFacade } from "../test/Test_EngineFacade";
 import { Wrap_LightAdapter } from "./Wrap_LightAdapter";
 import { Wrap_Meshes } from "./Wrap_MeshAdapter";
 import { Wrap_MeshFactory } from "./Wrap_MeshFactory";
@@ -20,8 +21,17 @@ export class Wrap_EngineFacade implements IEngineFacade {
     meshFactory: Wrap_MeshFactory;
     lights: Wrap_LightAdapter;
 
-    constructor(registry: Registry) {
+    engines: IEngineFacade[] = [];
+
+    constructor(registry: Registry, realEngine: IEngineFacade) {
         this.registry = registry;
+
+        this.engines.push(new Test_EngineFacade(registry));
+
+        if (realEngine) {
+            this.realEngine = realEngine;
+            this.engines.unshift(this.realEngine);
+        }
 
         this.spriteLoader = new Wrap_SpriteLoader(this.registry, this);
         this.sprites = new Wrap_Sprites(this.registry, this);
@@ -32,7 +42,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     }
 
     getCamera(): Camera3D {
-        return this.realEngine.getCamera();
+        return this.realEngine.getCamera(); 
     }
 
     setup(canvas: HTMLCanvasElement) {

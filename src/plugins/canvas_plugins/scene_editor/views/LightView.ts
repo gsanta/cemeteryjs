@@ -22,6 +22,7 @@ export class LightView extends View {
     viewType = LightViewType;
 
     protected obj: LightObj;
+    private relativeParentPos: Point;
 
     constructor() {
         super();
@@ -39,6 +40,10 @@ export class LightView extends View {
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
         this.obj && this.obj.move(new Point_3(point.x, 0, point.y).div(10).negateZ());
+
+        if (this.parentView) {
+            this.calcRelativePos();
+        }
     }
 
     getBounds(): Rectangle {
@@ -52,19 +57,30 @@ export class LightView extends View {
     dispose() {
     }
 
+    calcBounds(): void {
+        if (this.parentView) {
+            this.bounds.moveCenterTo(this.parentView.getBounds().getBoundingCenter().clone().add(this.relativeParentPos));
+        }
+    }
+
     toJson(): LightViewJson {
         return {
             ...super.toJson(),
         }
     }
 
-    setParent(view: View) {
-        super.setParent(view);
-        this.obj.setParent(view.getObj() as (IObj & IGameObj))
+    setParent(parent: View) {
+        super.setParent(parent);
+        this.obj.setParent(parent.getObj() as (IObj & IGameObj));
+        this.calcRelativePos();
     }
 
     fromJson(json: ViewJson, registry: Registry) {
         super.fromJson(json, registry);
+    }
+
+    private calcRelativePos() {
+        this.relativeParentPos = this.getBounds().getBoundingCenter().subtract(this.parentView.getBounds().getBoundingCenter());
     }
 }
 

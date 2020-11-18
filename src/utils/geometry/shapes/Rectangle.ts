@@ -80,11 +80,10 @@ export class Rectangle implements Shape {
     }
 
     moveCenterTo(pos: Point) {
-        const center = this.getBoundingCenter();
-        const diff = pos.subtract(center);
-        const topLeft = this.topLeft.add(diff);
-        const bottomRight = this.bottomRight.add(diff);
-        return new Rectangle(topLeft, bottomRight);
+        const w = this.getWidth();
+        const h = this.getHeight();
+        this.topLeft = this.topLeft.setX(pos.x - h / 2).setY(pos.y - w / 2);
+        this.bottomRight = this.bottomRight.setX(this.topLeft.x + w).setY(this.topLeft.y + h);
     }
 
     div(num: number): Rectangle {

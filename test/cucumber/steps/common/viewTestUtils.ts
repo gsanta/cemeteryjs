@@ -11,7 +11,8 @@ export enum ViewTableProp {
     DirX = 'DirX',
     DirY = 'DirY',
     DirZ = 'DirZ',
-    DiffuseColor = 'DiffuseColor'
+    DiffuseColor = 'DiffuseColor',
+    Parent = 'Parent'
 }
 
 export function getViewProperty(view: View, prop: ViewTableProp) {
@@ -26,6 +27,8 @@ export function getViewProperty(view: View, prop: ViewTableProp) {
             return view.getBounds().toString();
         case ViewTableProp.Selected:
             return view.isSelected() ? "true" : "false";
+        case ViewTableProp.Parent:
+            return view.getParent() ? view.getParent().id : "";    
         default:
             return '';
     }

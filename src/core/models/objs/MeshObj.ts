@@ -56,15 +56,7 @@ export interface MeshSphereConfig extends MeshShapeConfig {
 export class MeshObj implements IObj, IGameObj {
     readonly objType = MeshObjType;
 
-    // private scale: Point;
-    // private tempRotation: number = 0;
     id: string;
-
-    private initialJson: Partial<MeshObjJson> = <Partial<MeshObjJson>> {
-        posX: 0,
-        posY: 0,
-        posZ: 0
-    }
 
     shapeConfig: MeshShapeConfig;
     color: string;
@@ -82,16 +74,11 @@ export class MeshObj implements IObj, IGameObj {
     }
 
     setPosition(pos: Point_3) {
-        if (!this.isReady) {
-            this.initialJson.posX = pos.x;
-            this.initialJson.posY = pos.y;
-            this.initialJson.posZ = pos.z;
-        }
         this.meshAdapter.setPosition(this, pos);
     }
 
     getPosition(): Point_3 {
-        return this.isReady ? this.meshAdapter.getPosition(this) : new Point_3(this.initialJson.posX, this.initialJson.posY, this.initialJson.posZ);
+        return this.meshAdapter.getPosition(this);
     }
 
     rotate(angle: number) {
@@ -103,7 +90,7 @@ export class MeshObj implements IObj, IGameObj {
     }
 
     getRotation(): number {
-        return this.isReady ? this.meshAdapter.getRotation(this) : this.initialJson.rotation;
+        return this.meshAdapter.getRotation(this);
     }
 
     setScale(scale: Point) {
@@ -111,11 +98,11 @@ export class MeshObj implements IObj, IGameObj {
     }
 
     getScale(): Point {
-        return this.isReady ? this.meshAdapter.getScale(this) : new Point(this.initialJson.scaleX, this.initialJson.scaleY);
+        return this.meshAdapter.getScale(this);
     }
 
     dispose() {
-        this.meshAdapter && this.meshAdapter.deleteInstance(this);
+        this.meshAdapter.deleteInstance(this);
     }
 
     ready() {
@@ -152,11 +139,10 @@ export class MeshObj implements IObj, IGameObj {
     }
     
     deserialize(json: MeshObjJson) {
-        this.initialJson = json;
         this.id = json.id;
-        // this.setScale(new Point(json.scaleX, json.scaleY));
-        // this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
-        // this.rotate(json.rotation);
+        this.setScale(new Point(json.scaleX, json.scaleY));
+        this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
+        this.rotate(json.rotation);
         this.yPos = json.y;
         this.modelId = json.modelId;
         this.textureId = json.textureId;
