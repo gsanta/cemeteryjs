@@ -108,7 +108,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else {
             const views = this.viewStore.getSelectedViews();
-            views.forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
+            views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
         this.registry.services.render.scheduleRendering(this.panel.region);
     }

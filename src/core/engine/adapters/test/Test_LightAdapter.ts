@@ -17,6 +17,8 @@ export class Test_LightAdapter implements ILightAdapter {
     positionMap: Map<string, Point_3> = new Map();
     diffuseColorMap: Map<string, string> = new Map();
     angleMap: Map<string, number> = new Map();
+    relativePositionMap: Map<string, Point_3> = new Map();
+
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;

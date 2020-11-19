@@ -119,6 +119,7 @@ Feature: Light
             | Type       | Bounds              |
             | light-view | 50:50,60:60         |
             | light-view | 500:500,510:510     |
+        Then dump json
         Then json is:
         """
         {
@@ -164,13 +165,15 @@ Feature: Light
                         "id": "light-view-1",
                         "type": "light-view",
                         "dimensions": "50:50,60:60",
-                        "objId": "light-obj-1"
+                        "objId": "light-obj-1",
+                        "childViewIds": []
                     },
                     {
                         "id": "light-view-2",
                         "type": "light-view",
                         "dimensions": "500:500,510:510",
-                        "objId": "light-obj-2"
+                        "objId": "light-obj-2",
+                        "childViewIds": []
                     }
                 ]
             }

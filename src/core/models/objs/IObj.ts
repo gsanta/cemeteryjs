@@ -1,6 +1,4 @@
 import { Registry } from "../../Registry";
-import { AppJson } from "../../services/export/ExportService";
-
 
 export interface ObjJson {
     id: string;

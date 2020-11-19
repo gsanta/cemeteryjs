@@ -79,8 +79,6 @@ export class LightView extends View {
 
         const obj = <LightObj> registry.stores.objStore.getById(json.objId);
         lightView.setObj(obj);
-        const point2 = lightView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
-        obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
         
         const afterAllViewsDeserialized: AfterAllViewsDeserialized = () => {
             json.childViewIds.map(id => lightView.addChildView(registry.data.view.scene.getById(id)));

@@ -116,7 +116,7 @@ export class LightObj implements IObj, IGameObj {
     serialize(): LightObjJson {
         const direction = this.getDirection();
         const pos = this.getPosition();
-        return {
+        const json = <LightObjJson> {
             id: this.id,
             objType: this.objType,
             position: {
@@ -132,20 +132,27 @@ export class LightObj implements IObj, IGameObj {
             diffuseColor: this.getDiffuseColor(),
             parentId: this.parent && this.parent.id
         }
+
+        return json;
     }
 
     deserialize() {}
 
-    static deserialize(json: LightObjJson, registry: Registry): [IObj, AfterAllObjsDeserialized] {     
+    static deserialize(json: LightObjJson, registry: Registry): [IObj, AfterAllObjsDeserialized] {
         const obj = new LightObj(json.id, registry.engine.lights);
         
-        obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
         obj.setDirection(new Point_3(json.direction.x, json.direction.y, json.direction.z));
         obj.setDiffuseColor(json.diffuseColor);
 
         const afterAllObjsDeserialized = () => {
             if (json.parentId) {
+                const parentPos =  (<MeshObj> registry.stores.objStore.getById(json.parentId)).getPosition();
+                const pos = new Point_3(json.position.x, json.position.y, json.position.z).add(parentPos);
+                obj.setPosition(pos);
                 obj.setParent(<MeshObj> registry.stores.objStore.getById(json.parentId));
+                
+            } else {
+                obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
             }
         }
 
