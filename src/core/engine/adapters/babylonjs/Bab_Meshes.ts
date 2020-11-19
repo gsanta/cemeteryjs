@@ -51,7 +51,7 @@ export  class Bab_Meshes implements IMeshAdapter {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
 
-        return new Point(meshData.mainMesh.scaling.x, meshData.mainMesh.scaling.y);
+        return new Point(meshData.mainMesh.scaling.x, meshData.mainMesh.scaling.z);
     } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {

@@ -79,6 +79,10 @@ export class Rectangle implements Shape {
         return new Rectangle(topLeft, bottomRight);
     }
 
+    diff(otherRectangle: Rectangle) {
+        return new Point(this.getWidth() - otherRectangle.getWidth(), this.getHeight() - otherRectangle.getHeight());
+    }
+
     moveCenterTo(pos: Point) {
         const w = this.getWidth();
         const h = this.getHeight();

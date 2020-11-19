@@ -60,8 +60,8 @@ export class Point {
         return new Point(this.x * x, this.y * y);
     }
 
-    div(amount: number): Point {
-        return new Point(this.x / amount, this.y / amount);
+    div(x: number, y?: number): Point {
+        return new Point(this.x / x, this.y / (y === undefined ? x : y));
     }
 
     divX(amount: number): Point {

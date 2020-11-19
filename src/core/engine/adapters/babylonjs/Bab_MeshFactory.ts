@@ -15,6 +15,7 @@ export class Bab_MeshFactory implements IMeshFactory {
 
     box(obj: MeshObj): void {
         const config = <MeshBoxConfig> obj.shapeConfig;
+        console.log(config);
         const mesh = MeshBuilder.CreateBox(obj.id, config, this.engineFacade.scene);
         this.createMaterial(obj, mesh);
 

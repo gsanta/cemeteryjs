@@ -52,7 +52,7 @@ export interface MeshSphereConfig extends MeshShapeConfig {
 }
 
 
-export class MeshObj implements IObj, IGameObj {
+export class MeshObj implements IGameObj {
     readonly objType = MeshObjType;
 
     id: string;

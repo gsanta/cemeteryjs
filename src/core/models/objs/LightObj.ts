@@ -1,3 +1,4 @@
+import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ILightAdapter } from "../../engine/ILightAdapter";
 import { Registry } from "../../Registry";
@@ -40,7 +41,7 @@ export class LigthObjFactory extends ObjFactoryAdapter {
     }
 }
 
-export class LightObj implements IObj, IGameObj {
+export class LightObj implements IGameObj {
     id: string;
     objType = LightObjType;
 
@@ -75,6 +76,9 @@ export class LightObj implements IObj, IGameObj {
     getDirection(): Point_3 {
         return this.lightAdapter.getDirection(this);
     }
+
+    setScale() {}
+    getScale() { return new Point(1, 1); }
 
     getAngle() {
         return this.lightAdapter.getAngle(this);
