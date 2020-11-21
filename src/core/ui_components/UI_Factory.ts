@@ -167,13 +167,11 @@ export class UI_Factory {
         return element;
     }
 
-    static listItem(parent: UI_Container, config: UI_ElementConfig & {dropTargetPlugin: AbstractCanvasPanel, dropId: string}): UI_ListItem {
+    static listItem(parent: UI_Container, config: UI_ElementConfig & {dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
         const element = new UI_ListItem({controller: config.controller || parent.controller, ...config});
 
         if (config) {
-            element.listItemId = config.dropId;
             element.dropTargetPlugin = config.dropTargetPlugin;
-    
         }
 
         parent.children.push(element);

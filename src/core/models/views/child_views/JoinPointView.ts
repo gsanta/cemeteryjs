@@ -29,14 +29,16 @@ export class JoinPointView extends ContainedView {
     isInput: boolean;
     bounds: Rectangle;
 
-    constructor(parent: NodeView, config?: {slotName: string, isInput: boolean}) {
+    constructor(parent: NodeView, config: {slotName: string, isInput: boolean}) {
         super();
         this.containerView = parent;
 
+        
         if (config) {
             this.slotName = config.slotName;
             this.isInput = config.isInput;
         }
+        this.id = `${parent.id}.${this.slotName}`;
     }
 
     getObj(): NodeObj {

@@ -102,8 +102,8 @@ export class NodeRenderer implements ViewRenderer {
         let outputs: number = 0;
     
         let rowHeight = 20;
-        nodeView.joinPointViews
-        .forEach(joinPointView => {
+        nodeView.containedViews
+        .forEach((joinPointView: JoinPointView) => {
             if (!nodeView.getObj().hasParam(joinPointView.slotName)) {
                 joinPointView.isInput ? (inputs++) : (outputs++);
             }

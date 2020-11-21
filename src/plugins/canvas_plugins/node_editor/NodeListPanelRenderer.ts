@@ -33,7 +33,7 @@ export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
             accordion.title = nodes[0].category;
 
             nodes.forEach((node) => {
-                const listItem = accordion.listItem({key: node.nodeType, dropTargetPlugin: nodeEditorPlugin, dropId: node.nodeType})
+                const listItem = accordion.listItem({key: node.nodeType, dropTargetPlugin: nodeEditorPlugin})
                 listItem.label = node.displayName;
                 listItem.droppable = true; 
                 listItem.listItemId = node.nodeType;

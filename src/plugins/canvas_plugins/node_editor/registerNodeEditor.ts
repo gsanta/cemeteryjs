@@ -15,7 +15,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { NodeEditorRenderer } from "./NodeEditorRenderer";
 import { JoinTool } from "./tools/JoinTool";
 
-export const NodeEditorPanelId = 'node-editor-panel'; 
+export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
 
 export function registerNodeEditor(registry: Registry) {

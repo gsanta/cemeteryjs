@@ -1,3 +1,4 @@
+import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../src/core/Registry";
 import { getViewProperty, ViewTableProp } from "./viewTestUtils";
 
@@ -5,8 +6,10 @@ export class ViewDumper {
     dump(registry: Registry, viewTableProps: ViewTableProp[]) {
         const columns: string[][] = [];
 
-        viewTableProps.forEach(prop => columns.push([prop]))
-        registry.data.view.scene.getAllViews().forEach(view => viewTableProps.forEach((prop, index) => columns[index].push(getViewProperty(view, prop))));
+        viewTableProps.forEach(prop => columns.push([prop]));
+        const canvasPanel = registry.ui.helper.hoveredPanel as Canvas2dPanel;
+
+        canvasPanel.getViewStore().getAllViews().forEach(view => viewTableProps.forEach((prop, index) => columns[index].push(getViewProperty(view, prop))));
 
     
         const maxColumnLengths = this.getMaxColumnLengths(columns);

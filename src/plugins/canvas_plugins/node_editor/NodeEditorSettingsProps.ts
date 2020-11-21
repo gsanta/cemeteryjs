@@ -26,7 +26,7 @@ export class DragNodeController extends PropController {
     }
 
     onDndEnd(context: PropContext, element: UI_Element) {
-        const nodeType = (element as UI_ListItem).listItemId;
+        const nodeType = element.key;
         const nodeObj = context.registry.data.helper.node.createObj(nodeType);
         const nodeView: NodeView = context.registry.data.helper.node.createView(nodeType);
         nodeView.setObj(nodeObj);

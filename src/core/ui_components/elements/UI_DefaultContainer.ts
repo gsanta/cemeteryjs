@@ -13,7 +13,7 @@ import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ElementConfig } from './UI_Element';
 
 export class UI_DefaultContainer extends UI_Container {
-    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel, dropId: string}): UI_ListItem {
+    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
         return UI_Factory.listItem(this, config);
     }
 
