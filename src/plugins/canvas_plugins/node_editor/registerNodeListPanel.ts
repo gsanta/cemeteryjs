@@ -20,7 +20,7 @@ function createPanel(registry: Registry): UI_Panel {
     panel.renderer = new NodeListPanelRenderer(registry, panel);
 
     const propControllers = [
-        new DragNodeController()
+        new DragNodeController(registry)
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

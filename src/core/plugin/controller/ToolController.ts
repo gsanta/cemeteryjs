@@ -150,11 +150,8 @@ export class ToolController {
         this.registry.services.pointer.pointerWheelEnd(this);
     }
 
-    dndStart(element: UI_Element, listItem: string): void {}
-
-    // dndDrop is not always called only if the item was dropped to the 'droppable area', but this method
-    // runs even if the drop happens at an illegal position, so it can be used for some cleanup work
-    // not nice but react dnd is not easy to work with
+    // // dndDrop is not always called only if the item was dropped to the 'droppable area', but this method
+    // // runs even if the drop happens at an illegal position, so it can be used for some cleanup work
     dndEnd() {
         if (this.plugin.dropItem) {
             this.plugin.dropItem = undefined;

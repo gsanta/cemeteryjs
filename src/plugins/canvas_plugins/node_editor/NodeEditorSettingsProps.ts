@@ -2,6 +2,7 @@ import { NodeObj, NodeObjType } from "../../../core/models/objs/NodeObj";
 import { NodeView, NodeViewType } from "../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
+import { Registry } from "../../../core/Registry";
 import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 import { UI_ListItem } from "../../../core/ui_components/elements/UI_ListItem";
 
@@ -10,7 +11,14 @@ export enum NodeEditorSettingsProps {
 }
 
 export class DragNodeController extends PropController {
-    acceptedProps() { return [NodeEditorSettingsProps.DragNode]; }
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    acceptedProps() { return this.registry.data.helper.node.getRegisteredNodeTypes() }
 
     onDndStart(context: PropContext) {
         context.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
