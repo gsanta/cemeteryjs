@@ -39,7 +39,7 @@ export class MoveNode extends AbstractNode {
         obj.addAllParams(this.getParams());
         obj.inputs = this.getInputLinks();
         obj.outputs = this.getOutputLinks();
-        obj.executor = new MoveNodeExecutor(this.registry);
+        obj.executor = new MoveNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
 
         return obj;
@@ -93,19 +93,21 @@ export class MoveNode extends AbstractNode {
 
 export class MoveNodeExecutor implements INodeExecutor {
     private registry: Registry;
+    private nodeObj: NodeObj;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, nodeObj: NodeObj) {
         this.registry = registry;
+        this.nodeObj = nodeObj;
     }
 
-    execute(nodeObj: NodeObj) {
-        const meshId = nodeObj.getParam('mesh').val;
+    execute() {
+        const meshId = this.nodeObj.getParam('mesh').val;
 
-        const meshView = this.registry.data.view.node.getById(meshId) as MeshView;
+        const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
 
-        if (nodeObj.getParam('move').val === 'forward') {
+        if (this.nodeObj.getParam('move').val === 'forward') {
             meshView.getObj().move(new Point_3(0, 0, 2));
-        } else if (nodeObj.getParam('move').val === 'backward') {
+        } else if (this.nodeObj.getParam('move').val === 'backward') {
             meshView.getObj().move(new Point_3(0, 0, -2));
         }
     }

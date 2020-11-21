@@ -1,12 +1,9 @@
 import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
-import { MeshViewType } from "../../scene_editor/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { NodeRenderer } from "../NodeRenderer";
+import { MeshViewType } from "../../scene_editor/views/MeshView";
 import { AbstractNode } from "./AbstractNode";
 
 export const MeshNodeType = 'mesh-node-obj';

@@ -17,6 +17,7 @@ import { registerFileSettingsPanel } from '../plugins/sidepanel_plugins/file_set
 import { registerLayoutSettingsPanel } from '../plugins/sidepanel_plugins/layout_settings/registerLayoutSettingsPanel';
 import { registerLevelSettingsPanel } from '../plugins/sidepanel_plugins/level_settings/registerLevelSettingsPlugin';
 import { Registry } from './Registry';
+import { NodeGraphHook } from './services/NodePlugin';
 import { ObjLifeCycleHook } from './stores/ObjStore';
 import { AxisControlHook, ViewLifeCycleHook } from './stores/ViewStore';
 
@@ -35,6 +36,7 @@ export class Editor {
         this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
         this.registry.data.view.scene.addHook(new ViewLifeCycleHook(this.registry));
         this.registry.data.view.node.addHook(new ViewLifeCycleHook(this.registry));
+        this.registry.data.view.node.addHook(new NodeGraphHook(this.registry));
         
         this.registry.data.view.scene.addHook(new AxisControlHook(this.registry));
 

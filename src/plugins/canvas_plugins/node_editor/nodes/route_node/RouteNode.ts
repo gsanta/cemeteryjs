@@ -38,7 +38,7 @@ export class RouteNode extends AbstractNode {
         obj.addAllParams(this.getParams());
         obj.inputs = this.getInputLinks();
         obj.outputs = this.getOutputLinks();
-        obj.executor = new RouteNodeExecutor(this.registry);
+        obj.executor = new RouteNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
 
         return obj;
@@ -151,27 +151,29 @@ export class SpeedControl extends PropController<string> {
 
 export class RouteNodeExecutor implements INodeExecutor {
     private registry: Registry;
+    private nodeObj: NodeObj;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, nodeObj: NodeObj) {
         this.registry = registry;
+        this.nodeObj = nodeObj;
     }
 
-    execute(nodeObj: NodeObj) {
-        const meshObj = this.getMeshObj(nodeObj, this.registry);
-        const pathObj = this.getPathObj(nodeObj, this.registry);
+    execute() {
+        const meshObj = this.getMeshObj(this.nodeObj, this.registry);
+        const pathObj = this.getPathObj(this.nodeObj, this.registry);
 
         if (!meshObj || !pathObj) { return; }
 
-        if (!nodeObj.getParam('routeWalker').val) {
-            nodeObj.setParam('routeWalker', new RouteWalker(meshObj, pathObj));
+        if (!this.nodeObj.getParam('routeWalker').val) {
+            this.nodeObj.setParam('routeWalker', new RouteWalker(meshObj, pathObj));
         }
 
-        const routeWalker = <RouteWalker> nodeObj.getParam('routeWalker').val;
+        const routeWalker = <RouteWalker> this.nodeObj.getParam('routeWalker').val;
         routeWalker.step();
     }
 
-    executeStart(nodeObj: NodeObj) {
-        const routeWalker = <RouteWalker> nodeObj.getParam('routeWalker').val;
+    executeStart() {
+        const routeWalker = <RouteWalker> this.nodeObj.getParam('routeWalker').val;
         routeWalker && routeWalker.start();
     }
 

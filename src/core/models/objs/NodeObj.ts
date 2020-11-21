@@ -97,15 +97,15 @@ export class NodeObj implements IObj {
     }
 
     execute() {
-        this.executor && this.executor.execute(this);
+        this.executor && this.executor.execute();
     }
 
     startExecution() {
-        this.executor && this.executor.executeStart && this.executor.executeStart(this);
+        this.executor && this.executor.executeStart && this.executor.executeStart();
     }
 
     stopExecution() {
-        this.executor && this.executor.executeStart && this.executor.executeStop(this);
+        this.executor && this.executor.executeStart && this.executor.executeStop();
     }
 
     getParam(name: string): NodeParam {

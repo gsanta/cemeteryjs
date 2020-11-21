@@ -1,7 +1,4 @@
-import { NodeRenderer } from "../../plugins/canvas_plugins/node_editor/NodeRenderer";
 import { AbstractNode } from "../../plugins/canvas_plugins/node_editor/nodes/AbstractNode";
-import { NodeObj } from "../models/objs/NodeObj";
-import { NodeView } from "../models/views/NodeView";
 import { Registry } from "../Registry";
 import { NodeGraph } from "../services/node/NodeGraph";
 

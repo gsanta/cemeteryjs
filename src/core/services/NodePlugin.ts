@@ -59,7 +59,7 @@ class RemoveRelatedConnectionHook extends EmptyViewStoreHook {
     }
 }
 
-class NodeGraphHook extends EmptyViewStoreHook {
+export class NodeGraphHook extends EmptyViewStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {

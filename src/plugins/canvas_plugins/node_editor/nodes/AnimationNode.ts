@@ -40,7 +40,7 @@ export class AnimationNode extends AbstractNode {
         obj.addAllParams(this.getParams());
         obj.inputs = this.getInputLinks();
         obj.outputs = this.getOutputLinks();
-        obj.executor = new AnimationNodeExecutor(this.registry);
+        obj.executor = new AnimationNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
 
         return obj;
@@ -90,14 +90,16 @@ export class AnimationNode extends AbstractNode {
 
 export class AnimationNodeExecutor implements INodeExecutor {
     private registry: Registry;
+    private nodeObj: NodeObj;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, nodeObj: NodeObj) {
         this.registry = registry;
+        this.nodeObj = nodeObj;
     }
 
-    execute(nodeObj: NodeObj) {
-        if (nodeObj.getParam('startFrame').val !== 0 && nodeObj.getParam('endFrame').val !== 0) {
-            const meshView = <MeshView> this.registry.data.view.node.getById(nodeObj.getParam('mesh').val);
+    execute() {
+        if (this.nodeObj.getParam('startFrame').val !== 0 && this.nodeObj.getParam('endFrame').val !== 0) {
+            const meshView = <MeshView> this.registry.data.view.node.getById(this.nodeObj.getParam('mesh').val);
             
             // if (!this.isAnimationPlaying) {
             //     const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), nodeObj.getParam('startFrame').val, nodeObj.getParam('endFrame').val, true);

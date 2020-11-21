@@ -59,11 +59,13 @@ export class NodeGraph {
         nodeConnectionObj.node2.connections.delete(nodeConnectionObj.joinPoint2);
 
         const group = this.findGroup(nodeConnectionObj.node1);
-        const nodes = Array.from(group);
-        const splittedGroups = this.buildGroups(nodes);
-
-        this.nodeGroups = this.nodeGroups.filter(g => g !== group);
-        this.nodeGroups.push(...splittedGroups);
+        if (group) {
+            const nodes = Array.from(group);
+            const splittedGroups = this.buildGroups(nodes);
+    
+            this.nodeGroups = this.nodeGroups.filter(g => g !== group);
+            this.nodeGroups.push(...splittedGroups);
+        }
     }
 
     buildGroups(nodes: NodeObj[]): Set<NodeObj>[] {
