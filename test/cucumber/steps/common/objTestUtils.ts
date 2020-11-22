@@ -12,7 +12,8 @@ export enum ObjTableProp {
     DirZ = 'DirZ',
     DiffuseColor = 'DiffuseColor',
     Dir = 'Dir',
-    Parent = 'Parent'
+    Parent = 'Parent',
+    Rotation = 'Rotation'
 }
 
 export function getObjProperty(obj: IObj, prop: ObjTableProp) {
@@ -61,6 +62,16 @@ function getMeshObjProperty(obj: MeshObj, prop: ObjTableProp) {
             return obj.getPosition().y.toString();
         case ObjTableProp.Parent:
             return obj.getParent() && obj.getParent().id;
+        case ObjTableProp.Rotation:
+            return roundNumber(obj.getRotation());
     }
 }
 
+function roundNumber(num: number): string {
+    const decimalIndex = num.toString().indexOf('.');
+
+    if (decimalIndex === -1) { return num.toString(); }
+    
+    const [integer, fraction] = num.toString().split('.');
+    return [integer, fraction.substr(0, 2)].join('.');
+}

@@ -10,6 +10,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     private engineFacade: Test_EngineFacade;
 
     posMap: Map<string, Point_3> = new Map();
+    rotationMap: Map<string, number> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -35,13 +36,15 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     }
 
     rotate(meshObj: MeshObj, angle: number): void {
+        this.rotationMap.set(meshObj.id, this.getRotation(meshObj) + angle);
     }
 
     setRotation(meshObj: MeshObj, angle: number): void {
+        this.rotationMap.set(meshObj.id, angle);
     }
 
     getRotation(meshObj: MeshObj): number {
-        return undefined;
+        return this.rotationMap.get(meshObj.id) || 0;
     }
 
     getDimensions(meshObj: MeshObj): Point {

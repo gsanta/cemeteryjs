@@ -85,7 +85,6 @@ export class RotateNodeExecutor implements INodeExecutor {
         const meshId = this.nodeObj.getParam('mesh').val;
 
         const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
-
         if (this.nodeObj.getParam('rotate').val === 'left') {
             meshView.getObj().rotate(- Math.PI / 30);
         } else if (this.nodeObj.getParam('rotate').val === 'right') {
