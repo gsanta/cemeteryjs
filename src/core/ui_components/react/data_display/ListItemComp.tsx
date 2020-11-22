@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDrag, DragElementWrapper, DragSourceOptions } from 'react-dnd';
 import styled from 'styled-components';
+import { Canvas2dPanel } from '../../../plugin/Canvas2dPanel';
 import { UI_ListItem } from '../../../ui_components/elements/UI_ListItem';
 import { colors } from '../../../ui_components/react/styles';
 import { UI_ComponentProps } from '../../../ui_components/react/UI_ComponentProps';
@@ -29,7 +30,7 @@ export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
-            end: (dropResult, monitor) => props.element.canvasPanel.toolController.dndEnd()
+            end: (dropResult, monitor) => (props.element.dropTargetPlugin as Canvas2dPanel).toolController.dndEnd()
         });
     }
 

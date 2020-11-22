@@ -10,6 +10,11 @@ Feature: Move node
         And drop node 'keyboard-node-obj' at '100:100'
         And drop node 'move-node-obj' at '400:100'
         And mouse drags from view 'node-view-1.key1' to view 'node-view-2.input'
-        And dump views:
-            | Id | Type | Bounds |
-        
+        And change param 'key1' to 'w' in view 'node-view-1'
+        And change param 'mesh' to 'mesh-view-1' in view 'node-view-2'
+        Then node params for 'keyboard-node-obj-1' are:
+            | key1 |
+            | w    |
+        Then node params for 'move-node-obj-1' are:
+            | mesh           |
+            | mesh-view-1    |

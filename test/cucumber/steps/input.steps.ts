@@ -1,4 +1,5 @@
 import { When } from "cucumber";
+import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { createFakeUIElement } from "./common/uiTestHelpers";
 
 
@@ -10,4 +11,15 @@ When('change param \'{word}\' to \'{word}\' in panel \'{word}\'', function(param
     panel.controller.focus(fakeUIElement);
     panel.controller.change(newVal, fakeUIElement);
     panel.controller.blur(fakeUIElement);
+});
+
+When('change param \'{word}\' to \'{word}\' in view \'{word}\'', function(paramName: string, newVal: string, viewId: string) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const view = canvasPanel.getViewStore().getById(viewId);
+    
+    const fakeUIElement = createFakeUIElement({ controller: view.controller, key: paramName });
+
+    view.controller.focus(fakeUIElement);
+    view.controller.change(newVal, fakeUIElement);
+    view.controller.blur(fakeUIElement);
 });

@@ -5,7 +5,7 @@ import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { Rectangle } from "../../../src/utils/geometry/shapes/Rectangle";
 import { Point } from "../../../src/utils/geometry/shapes/Point";
 import { getViewProperty, setViewProperty, ViewTableProp } from "./common/viewTestUtils";
-import { ViewDumper } from "./common/ViewDumper";
+import { ModelDumper } from "./common/ModelDumper";
 
 Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: TableDefinition) {
     const viewTableProps = collectViewTableProps(tableDef);
@@ -61,9 +61,8 @@ Then('view properties are:', function (tableDef: TableDefinition) {
 
 Then('dump views:', function(tableDef: TableDefinition) {
     const viewTableProps = collectViewTableProps(tableDef);
-    new ViewDumper().dump(this.registry, viewTableProps);
+    new ModelDumper().dumpViews(this.registry, viewTableProps);
 });
-
 
 function viewPropertiesAre(world: World, tableDef: TableDefinition) {
     const views = world.registry.data.view.scene.getAllViews();

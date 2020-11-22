@@ -1,11 +1,16 @@
 import { TableDefinition, Then, World } from "cucumber";
 import expect from 'expect';
 import { IObj } from "../../../src/core/models/objs/IObj";
-import { LightObj, LightObjType } from "../../../src/core/models/objs/LightObj";
 import { getObjProperty, ObjTableProp } from "./common/objTestUtils";
+import { ModelDumper } from "./common/ModelDumper";
 
 Then('obj properties are:', function (tableDef: TableDefinition) {
     objPropertiesAre(this, tableDef);
+});
+
+Then('dump objs:', function(tableDef: TableDefinition) {
+    const viewTableProps = collectObjTablePropsToCheck(tableDef);
+    new ModelDumper().dumpObjs(this.registry, viewTableProps);
 });
 
 function collectObjTablePropsToCheck(tableDef: TableDefinition): ObjTableProp[] {
