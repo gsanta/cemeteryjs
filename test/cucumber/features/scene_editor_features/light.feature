@@ -159,7 +159,7 @@ Feature: Light
                 "assets": []
             },
             "canvas": {
-                "node-editor-panel": [],
+                "node-editor": [],
                 "scene-editor": [
                     {
                         "id": "light-view-1",
@@ -221,7 +221,7 @@ Feature: Light
                 "assets": []
             },
             "canvas": {
-                "node-editor-panel": [],
+                "node-editor": [],
                 "scene-editor": [
                     {
                         "id": "light-view-1",

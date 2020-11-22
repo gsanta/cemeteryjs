@@ -17,7 +17,7 @@ import { GameViewerRenderer } from "./GameViewerRenderer";
 import { GameTool } from "./tools/GameTool";
 (<any> window).earcut = require('earcut');
 
-export const GameViewerPanelId = 'game-viewer-panel'; 
+export const GameViewerPanelId = 'game-viewer'; 
 export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
 export function registerGameViewer(registry: Registry) {

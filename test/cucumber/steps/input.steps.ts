@@ -1,5 +1,6 @@
 import { When } from "cucumber";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
+import { createFakeKeyboardEventFromString } from "./common/inputTestUtils";
 import { createFakeUIElement } from "./common/uiTestHelpers";
 
 
@@ -22,4 +23,8 @@ When('change param \'{word}\' to \'{word}\' in view \'{word}\'', function(paramN
     view.controller.focus(fakeUIElement);
     view.controller.change(newVal, fakeUIElement);
     view.controller.blur(fakeUIElement);
+});
+
+When('press key \'{word}\'', function(key: string) {
+    this.registry.services.keyboard.keyDown(createFakeKeyboardEventFromString(key));
 });

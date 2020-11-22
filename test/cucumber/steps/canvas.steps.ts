@@ -2,6 +2,7 @@
 import { When } from 'cucumber';
 import { Canvas2dPanel } from '../../../src/core/plugin/Canvas2dPanel';
 import { Point } from '../../../src/utils/geometry/shapes/Point';
+import { createFakeMouseEvent } from './common/inputTestUtils';
 import { createFakeUIElement } from './common/uiTestHelpers';
 import { findViewOrChildView } from './common/viewTestUtils';
 
@@ -81,11 +82,3 @@ When('mouse drags from view \'{word}\' to view \'{word}\'', function(startViewPa
     canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view2, createFakeUIElement({ canvasPanel })); 
     canvasPanel.toolController.mouseUp(createFakeMouseEvent(view1Pos.x, view1Pos.y), createFakeUIElement({ canvasPanel })); 
 });
-
-function createFakeMouseEvent(x: number, y: number): MouseEvent {
-    return <MouseEvent> {
-        x,
-        y,
-        button: 1
-    }
-}

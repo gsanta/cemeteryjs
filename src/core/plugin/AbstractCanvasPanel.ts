@@ -83,7 +83,8 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
     resize(): void {
         const screenSize = getScreenSize(this.id);
         screenSize && this.getCamera().resize(screenSize);
-        this.renderFunc && this.renderFunc();
+
+        this.registry.services.render.reRender(this.region);
     }
 
     over(): void { this.registry.ui.helper.hoveredPanel = this }

@@ -1,5 +1,6 @@
 import { IObj } from "../../../../src/core/models/objs/IObj";
 import { LightObjType, LightObj } from "../../../../src/core/models/objs/LightObj";
+import { MeshObj, MeshObjType } from "../../../../src/core/models/objs/MeshObj";
 
 export enum ObjTableProp {
     Id = 'Id',
@@ -24,7 +25,11 @@ export function getObjProperty(obj: IObj, prop: ObjTableProp) {
 
     if (obj.objType === LightObjType) {
         return getLightObjProperty(<LightObj> obj, prop);
+    } else if (obj.objType === MeshObjType) {
+        return getMeshObjProperty(<MeshObj> obj, prop);
     }
+
+    return "";
 }
 
 function getLightObjProperty(obj: LightObj, prop: ObjTableProp) {
@@ -43,6 +48,17 @@ function getLightObjProperty(obj: LightObj, prop: ObjTableProp) {
             return obj.getDirection().z.toString();
         case ObjTableProp.DiffuseColor:
             return obj.getDiffuseColor();
+        case ObjTableProp.Parent:
+            return obj.getParent() && obj.getParent().id;
+    }
+}
+
+function getMeshObjProperty(obj: MeshObj, prop: ObjTableProp) {
+    switch(prop) {
+        case ObjTableProp.Pos:
+            return obj.getPosition().toString();
+        case ObjTableProp.PosY:
+            return obj.getPosition().y.toString();
         case ObjTableProp.Parent:
             return obj.getParent() && obj.getParent().id;
     }

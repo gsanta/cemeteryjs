@@ -105,10 +105,12 @@ export class MoveNodeExecutor implements INodeExecutor {
 
         const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
 
+        const speed = parseFloat(this.nodeObj.getParam('speed').val); 
+
         if (this.nodeObj.getParam('move').val === 'forward') {
-            meshView.getObj().move(new Point_3(0, 0, 2));
+            meshView.getObj().move(new Point_3(0, 0, speed));
         } else if (this.nodeObj.getParam('move').val === 'backward') {
-            meshView.getObj().move(new Point_3(0, 0, -2));
+            meshView.getObj().move(new Point_3(0, 0, -speed));
         }
     }
 
@@ -130,7 +132,7 @@ export class MeshMoveController extends PropController<string> {
     }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('move');
+        return this.nodeView.getObj().getParam('move').val;
     }
 
     change(val, context) {
@@ -151,7 +153,7 @@ export class MeshSpeedController extends PropController<string> {
     acceptedProps() { return ['speed']; }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('speed');
+        return this.nodeView.getObj().getParam('speed').val;
     }
 
     change(val, context: PropContext) {

@@ -40,7 +40,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
         // setTimeout(() => {
             this.props.element.canvasPanel.mounted(this.ref.current);
             this.props.element.canvasPanel.resize();
-        // }, 0);
+        // }, 2000);
     }
 
     render(): JSX.Element {
