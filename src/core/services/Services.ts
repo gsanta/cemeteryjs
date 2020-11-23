@@ -1,4 +1,5 @@
 import { Registry } from "../Registry";
+import { ErrorService } from "./ErrorService";
 import { ExportService } from "./export/ExportService";
 import { GamepadService } from './GamepadService';
 import { GameService } from "./GameService";
@@ -28,6 +29,7 @@ export class Services {
     gamepad: GamepadService;
     uiPerspective: UI_PerspectiveService;
     objService: ObjService;
+    error: ErrorService;
 
     ui: UI_Service;
 
@@ -52,6 +54,7 @@ export class Services {
         this.ui = new UI_Service();
         this.uiPerspective = new UI_PerspectiveService(this.registry);
         this.objService = new ObjService(this.registry);
+        this.error = new ErrorService();
 
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);

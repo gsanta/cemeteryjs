@@ -51,9 +51,15 @@ export  class Wrap_Meshes implements IMeshAdapter {
         return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getDimensions(meshObj));
     }
 
-    async createInstance(meshObj: MeshObj): Promise<void> {
-        this.engineFacade.engines.forEach(engine => engine.meshes.createInstance(meshObj));
-        this.registry.plugins.engineHooks.getMeshHooks().forEach(meshHook => meshHook.hook_createInstance(meshObj)); 
+    async createInstance(meshObj: MeshObj): Promise<boolean> {
+        for (let i = 0; i < this.engineFacade.engines.length; i++) {
+            const ret = await this.engineFacade.engines[i].meshes.createInstance(meshObj);
+            if (ret) { break; }
+        }
+        // this.engineFacade.engines.forEach(engine => engine.meshes.createInstance(meshObj));
+        this.registry.plugins.engineHooks.getMeshHooks().forEach(meshHook => meshHook.hook_createInstance(meshObj));
+
+        return true;
     }
 
     deleteInstance(meshObj: MeshObj) {

@@ -27,9 +27,12 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
         this.loadedIds.add(assetObj.id);
 
-        await this.loadMesh(assetObj)
-
-        this.setupInstance(meshObj);
+        try {
+            await this.loadMesh(assetObj)
+            this.setupInstance(meshObj);
+        } catch(e) {
+            throw new Error('Mesh loading failed');
+        }
     }
 
     clear() {
@@ -72,15 +75,15 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     }
 
     private loadMesh(asset: AssetObj): Promise<Mesh> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             SceneLoader.ImportMesh(
                 '',
                 asset.path,
                 undefined,
                 this.engineFacade.scene,
                 (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], animGroups) => resolve(this.createModelData(asset, meshes, skeletons)),
-                () => { },
-                (scene: Scene, message: string) => { throw new Error(message); }
+                () => {},
+                (scene: Scene, message: string) => { reject(message); }
             );
         });
     }

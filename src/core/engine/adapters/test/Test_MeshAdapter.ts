@@ -51,7 +51,8 @@ export  class Test_MeshAdapter implements IMeshAdapter {
         return new Point(5, 5);
     }
 
-    async createInstance(meshObj: MeshObj): Promise<void> {
+    async createInstance(meshObj: MeshObj): Promise<boolean> {
+        return false;
     }
 
     deleteInstance(meshObj: MeshObj) {

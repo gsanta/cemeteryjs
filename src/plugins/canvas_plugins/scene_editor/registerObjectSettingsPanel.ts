@@ -25,15 +25,15 @@ function createPanel(registry: Registry): UI_Panel {
             // mesh
             new MeshIdController(),
             new LayerController(),
-            new RotationController(),
-            new ScaleController(),
-            new YPosController(),
+            new RotationController(registry),
+            new ScaleController(registry),
+            new YPosController(registry),
             new TextureController(),
-            new ModelController(),
+            new ModelController(registry),
             new ThumbnailController(),
-            new WidthController(),
-            new DepthController(),
-            new HeightController(),
+            new WidthController(registry),
+            new DepthController(registry),
+            new HeightController(registry),
 
             // path
             new PathIdController(),

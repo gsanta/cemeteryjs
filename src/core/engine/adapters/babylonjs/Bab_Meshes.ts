@@ -100,20 +100,50 @@ export  class Bab_Meshes implements IMeshAdapter {
         return dimensions;
     }
 
-    async createInstance(meshObj: MeshObj): Promise<void> {
+    async createInstance(meshObj: MeshObj): Promise<boolean> {
         if (meshObj.shapeConfig) {
-            if (meshObj.shapeConfig.shapeType === 'Box') {
-                this.registry.engine.meshFactory.box(meshObj);
-            } else if (meshObj.shapeConfig.shapeType === 'Sphere') {
-                this.registry.engine.meshFactory.sphere(meshObj);
-            }
+            await this.createPrimitiveMeshInstance(meshObj);
         } else if(meshObj.modelId) {
-            await this.engineFacade.meshLoader.load(meshObj);
+            await this.createModeledMeshInstance(meshObj);
         } else {
-            const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
-            this.meshes.set(meshObj.id, {mainMesh: mesh, skeletons: []});
+            await this.createPlaceHolderMeshInstance(meshObj);
         }
 
+        return true;
+    }
+
+    private async createPrimitiveMeshInstance(meshObj: MeshObj) {
+        switch(meshObj.shapeConfig.shapeType) {
+            case 'Box':
+                this.registry.engine.meshFactory.box(meshObj);
+                break;
+            case 'Sphere':
+                this.registry.engine.meshFactory.sphere(meshObj);
+                break;
+        }
+    }
+
+    private async createModeledMeshInstance(meshObj: MeshObj) {
+        const meshData = this.meshes.get(meshObj.id);
+        this.meshes.delete(meshObj.id);
+        try {
+            await this.engineFacade.meshLoader.load(meshObj);
+            if (meshData) {
+                meshData.mainMesh.dispose();
+                meshData.skeletons.forEach(skeleton => skeleton.dispose());
+            }
+        } catch(e) {
+            if (meshData) {
+                meshData.mainMesh.dispose();
+            }
+
+            this.createPlaceHolderMeshInstance(meshObj);
+        }
+    }
+
+    private createPlaceHolderMeshInstance(meshObj: MeshObj) {
+        const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
+        this.meshes.set(meshObj.id, {mainMesh: mesh, skeletons: []});
     }
 
     deleteInstance(meshObj: MeshObj) {

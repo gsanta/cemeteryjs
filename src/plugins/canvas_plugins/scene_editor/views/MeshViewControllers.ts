@@ -5,6 +5,8 @@ import { PropContext, PropController } from '../../../../core/plugin/controller/
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
+import { Registry } from '../../../../core/Registry';
+import { ApplicationError } from '../../../../core/services/ErrorService';
 
 export enum MeshViewControllerParam {
     MeshId = 'MeshId',
@@ -57,6 +59,13 @@ export class LayerController extends PropController<number> {
 }
 
 export class RotationController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.Rotation]; }
 
     defaultVal(context: PropContext) {
@@ -73,20 +82,30 @@ export class RotationController extends PropController<string> {
     blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
 
-        let rotation = meshView.getRotation();
         try {
-            context.releaseTempVal((val) => rotation = toRadian(parseFloat(val)));
-        } catch (e) {
-            console.log(e);
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                meshView.setRotation(parseFloat(context.getTempVal()));
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
         }
-        meshView.setRotation(rotation);
-        context.registry.services.history.createSnapshot();
+
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 
 export class ScaleController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.Scale]; }
 
     defaultVal(context: PropContext) {
@@ -102,19 +121,30 @@ export class ScaleController extends PropController<string> {
 
     blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-
-        let scale = meshView.getScale();
+        
         try {
-            context.releaseTempVal(val => scale = parseFloat(val));
-        } catch (e) {
-            console.log(e);
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                meshView.setScale(parseFloat(context.getTempVal()));
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
         }
-        meshView.setScale(scale);
+
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 export class YPosController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.YPos]; }
 
     defaultVal(context: PropContext) {
@@ -131,14 +161,17 @@ export class YPosController extends PropController<string> {
     blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
 
-        let yPos = meshView.yPos;
         try {
-            context.releaseTempVal(val => yPos = parseFloat(val))
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                meshView.yPos = parseFloat(context.getTempVal());
+                context.registry.services.history.createSnapshot();
+            }
         } catch(e) {
-            console.log(e);
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
         }
 
-        meshView.yPos = yPos;
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
@@ -188,6 +221,13 @@ export class ThumbnailController extends PropController {
 }
 
 export class ModelController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.Model]; }
 
     defaultVal(context) {
@@ -215,17 +255,27 @@ export class ModelController extends PropController<string> {
         const asset = new AssetObj({path: val, assetType: AssetType.Model});
         meshView.getObj().modelId = context.registry.stores.assetStore.addObj(asset);
         context.registry.services.localStore.saveAsset(asset);
-        context.registry.engine.meshes.deleteInstance(meshView.getObj());
-        await context.registry.engine.meshes.createInstance(meshView.getObj())
-        const realDimensions = context.registry.engine.meshes.getDimensions(meshView.getObj())
-        meshView.getBounds().setWidth(realDimensions.x);
-        meshView.getBounds().setHeight(realDimensions.y);
-        context.registry.services.history.createSnapshot();
+        try {
+            await context.registry.engine.meshes.createInstance(meshView.getObj())
+            const realDimensions = context.registry.engine.meshes.getDimensions(meshView.getObj())
+            meshView.getBounds().setWidth(realDimensions.x);
+            meshView.getBounds().setHeight(realDimensions.y);
+            context.registry.services.history.createSnapshot();
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        }
         context.registry.services.render.reRenderAll();
     }
 }
 
 export class WidthController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.Width]; }
 
     defaultVal(context) {
@@ -241,23 +291,32 @@ export class WidthController extends PropController<string> {
 
     async blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-        try {
-            const val = parseFloat(context.getTempVal());
-            (<MeshBoxConfig> meshView.getObj().shapeConfig).width = val;
-            context.registry.engine.meshes.deleteInstance(meshView.getObj());
-            await context.registry.engine.meshes.createInstance(meshView.getObj());
-        } catch (e) {
-            console.log(e);
-        }
-        
-        context.clearTempVal();
 
-        context.registry.services.history.createSnapshot();
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                (<MeshBoxConfig> meshView.getObj().shapeConfig).width = parseFloat(context.getTempVal());
+                context.registry.engine.meshes.deleteInstance(meshView.getObj());
+                await context.registry.engine.meshes.createInstance(meshView.getObj());
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+        }
+
         context.registry.services.render.reRenderAll();
     }
 }
 
 export class HeightController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.Height]; }
 
     defaultVal(context) {
@@ -273,23 +332,32 @@ export class HeightController extends PropController<string> {
 
     async blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-        try {
-            const val = parseFloat(context.getTempVal());
-            (<MeshBoxConfig> meshView.getObj().shapeConfig).height = val;
-            context.registry.engine.meshes.deleteInstance(meshView.getObj());
-            await context.registry.engine.meshes.createInstance(meshView.getObj())
-        } catch (e) {
-            console.log(e);
-        }
-        
-        context.clearTempVal();
 
-        context.registry.services.history.createSnapshot();
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                (<MeshBoxConfig> meshView.getObj().shapeConfig).height = parseFloat(context.getTempVal());
+                context.registry.engine.meshes.deleteInstance(meshView.getObj());
+                await context.registry.engine.meshes.createInstance(meshView.getObj())
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+        }
+
         context.registry.services.render.reRenderAll();
     }
 }
 
 export class DepthController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [MeshViewControllerParam.Depth]; }
 
     defaultVal(context) {
@@ -305,19 +373,21 @@ export class DepthController extends PropController<string> {
 
     async blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-        try {
-            const val = parseFloat(context.getTempVal());
-            (<MeshBoxConfig> meshView.getObj().shapeConfig).depth = val;
-            context.registry.engine.meshes.deleteInstance(meshView.getObj());
-            await context.registry.engine.meshes.createInstance(meshView.getObj());
 
-        } catch (e) {
-            console.log(e);
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                (<MeshBoxConfig> meshView.getObj().shapeConfig).depth = parseFloat(context.getTempVal());
+                context.registry.engine.meshes.deleteInstance(meshView.getObj());
+                await context.registry.engine.meshes.createInstance(meshView.getObj())
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
         }
         
-        context.clearTempVal();
 
-        context.registry.services.history.createSnapshot();
         context.registry.services.render.reRenderAll();
     }
 }

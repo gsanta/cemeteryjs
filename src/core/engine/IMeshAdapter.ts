@@ -13,7 +13,7 @@ export interface IMeshAdapter {
     getScale(meshObj: MeshObj): Point; 
 
     getDimensions(meshObj: MeshObj): Point;
-    createInstance(meshObj: MeshObj): Promise<void>;
+    createInstance(meshObj: MeshObj): Promise<boolean>;
     deleteInstance(meshObj: MeshObj): void;
 
     createMaterial(meshObj: MeshObj);
