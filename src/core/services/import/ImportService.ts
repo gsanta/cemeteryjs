@@ -30,8 +30,8 @@ export class ImportService {
     }
 
     private importObjs(json: AppJson) {
-        this.registry.stores.objStore.importFrom(json);
         this.registry.stores.assetStore.importFrom(json);
+        this.registry.stores.objStore.importFrom(json);
     }
 
     private importViews(json: AppJson) {

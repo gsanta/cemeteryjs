@@ -4,6 +4,8 @@ import { PropContext, PropController } from '../../../../core/plugin/controller/
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { SpriteSheetManagerDialogId } from '../../../dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
+import { ApplicationError } from '../../../../core/services/ErrorService';
+import { Registry } from '../../../../core/Registry';
 
 export enum SpriteViewControllerParam {
     FrameName = 'FrameName',
@@ -65,6 +67,13 @@ export class ManageSpriteSheetsController extends PropController<string> {
 }
 
 export class ScaleXController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [SpriteViewControllerParam.ScaleX]; }
 
     defaultVal(context: PropContext) {
@@ -81,22 +90,34 @@ export class ScaleXController extends PropController<string> {
     blur(context: PropContext) {
         const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
 
-        const currScale = spriteView.getObj().getScale();
-        let scaleX = currScale.x;
         try {
-            context.releaseTempVal(val => scaleX = parseFloat(val));
-        } catch (e) {
-            console.log(e);
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const scaleX = parseFloat(context.getTempVal());
+                
+                const currScale = spriteView.getObj().getScale();
+                spriteView.getObj().setScale(new Point(scaleX, currScale.y))
+                context.registry.engine.sprites.updateInstance(spriteView.getObj());
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
         }
-        spriteView.getObj().setScale(new Point(scaleX, currScale.y));
-        context.registry.engine.sprites.updateInstance(spriteView.getObj());
-        context.registry.services.history.createSnapshot();
+        
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 
 export class ScaleYController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [SpriteViewControllerParam.ScaleY]; }
 
     defaultVal(context: PropContext) {
@@ -113,16 +134,21 @@ export class ScaleYController extends PropController<string> {
     blur(context: PropContext) {
         const spriteView = <SpriteView> context.registry.data.view.scene.getOneSelectedView();
 
-        const currScale = spriteView.getObj().getScale();
-        let scaleY = currScale.y;
         try {
-            context.releaseTempVal(val => scaleY = parseFloat(val));
-        } catch (e) {
-            console.log(e);
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const scaleY = parseFloat(context.getTempVal());
+                
+                const currScale = spriteView.getObj().getScale();
+                spriteView.getObj().setScale(new Point(currScale.x, scaleY))
+                context.registry.engine.sprites.updateInstance(spriteView.getObj());
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
         }
-        spriteView.getObj().setScale(new Point(currScale.x, scaleY));
-        context.registry.engine.sprites.updateInstance(spriteView.getObj());
-        context.registry.services.history.createSnapshot();
+
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }

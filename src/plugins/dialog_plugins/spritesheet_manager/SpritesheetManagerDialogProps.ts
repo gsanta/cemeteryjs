@@ -1,7 +1,8 @@
 import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../core/models/objs/SpriteSheetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
-import { UI_Region } from '../../../core/plugin/UI_Panel';
+import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
+import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { SpriteSheetManagerDialogRenderer } from './SpriteSheetManagerDialogRenderer';
 
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
@@ -12,19 +13,37 @@ export enum SpritesheetManagerDialogProps {
     AddSpriteSheet = 'AddSpriteSheet'
 }
 
+enum DataKeys {
+    SpriteSheetJson = 'SpriteSheetJson',
+    SpriteSheetImgUrl = 'SpriteSheetImgUrl'
+}
+
 export class SpriteSheetJsonPathControl extends PropController<{data: string, path: string}> {
+    private uiPanel: UI_Panel;
+
+    constructor(uiPanel: UI_Panel) {
+        super();
+        this.uiPanel = uiPanel;
+    }
+
     acceptedProps() { return [SpritesheetManagerDialogProps.SpriteSheetJson]; }
 
-    change(val: {data: string, path: string}, context: PropContext) {
+    change(val: {data: string, path: string}, context: PropContext, element: UI_Element) {
         const json = atob(val.data.split(',')[1]);
 
-        const renderer = <SpriteSheetManagerDialogRenderer> context.panel.renderer;
-        renderer.tempSpriteSheetJson = json;
+        this.uiPanel.data.set(DataKeys.SpriteSheetJson, json);
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
 export class SpriteSheetImgController extends PropController<string> {
+    private uiPanel: UI_Panel;
+
+    constructor(uiPanel: UI_Panel) {
+        super();
+        this.uiPanel = uiPanel;
+    }
+
     acceptedProps() { return [SpritesheetManagerDialogProps.SpriteSheetImg]; }
 
     defaultVal(context: PropContext) {
@@ -33,27 +52,31 @@ export class SpriteSheetImgController extends PropController<string> {
 
     change(val: string, context) {
         context.updateTempVal(val);
-        
+        1
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 
-    blur(context: PropContext) {
-        const renderer = <SpriteSheetManagerDialogRenderer> context.panel.renderer;
-        renderer.tempImagePath = context.getTempVal()
+    blur(context: PropContext, element: UI_Element) {
+        this.uiPanel.data.set(DataKeys.SpriteSheetImgUrl, context.getTempVal());
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
 export class AddSpriteSheetController extends PropController<string> {
+    private uiPanel: UI_Panel;
+
+    constructor(uiPanel: UI_Panel) {
+        super();
+        this.uiPanel = uiPanel;
+    }
+
     acceptedProps() { return [SpritesheetManagerDialogProps.AddSpriteSheet]; }
 
     click(context: PropContext) {
         const spriteSheetObj = new SpriteSheetObj();
 
-        const renderer = <SpriteSheetManagerDialogRenderer> context.panel.renderer;
-
-        const spriteSheetJson = renderer.tempSpriteSheetJson;
-        const imgPath = renderer.tempImagePath;
+        const spriteSheetJson = this.uiPanel.data.get(DataKeys.SpriteSheetJson);
+        const imgPath = this.uiPanel.data.get(DataKeys.SpriteSheetImgUrl);
         
         const imgAsset = new AssetObj({path: imgPath, assetType: AssetType.SpriteSheet});
         const jsonAsset = new AssetObj({data: spriteSheetJson, assetType: AssetType.SpriteSheetJson});
@@ -72,7 +95,7 @@ export class AddSpriteSheetController extends PropController<string> {
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Dialog);
 
-        renderer.tempSpriteSheetJson = undefined;
-        renderer.tempImagePath = undefined;
+        this.uiPanel.data.delete(DataKeys.SpriteSheetJson);
+        this.uiPanel.data.delete(DataKeys.SpriteSheetImgUrl);
     }
 }

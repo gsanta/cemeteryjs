@@ -42,16 +42,16 @@ function createPanel(registry: Registry): UI_Panel {
             new FrameName(),
             new SelectSpriteSheetController(),
             new ManageSpriteSheetsController(),
-            new ScaleXController(),
-            new ScaleYController(),
+            new ScaleXController(registry),
+            new ScaleYController(registry),
 
             // light
-            new LightYPosController(),
-            new LightAngleController(),
-            new LightDirController(CanvasAxis.X),
-            new LightDirController(CanvasAxis.Y),
-            new LightDirController(CanvasAxis.Z),
-            new LightDiffuseColorController(),
+            new LightYPosController(registry),
+            new LightAngleController(registry),
+            new LightDirController(registry, CanvasAxis.X),
+            new LightDirController(registry, CanvasAxis.Y),
+            new LightDirController(registry, CanvasAxis.Z),
+            new LightDiffuseColorController(registry),
             new LightParentMeshController()
     ];
 

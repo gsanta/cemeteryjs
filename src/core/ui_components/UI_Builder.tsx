@@ -113,6 +113,7 @@ export class UI_Builder {
         } else if (panel.region === UI_Region.Dialog) {
             const dialog = UI_Factory.dialog({ controller: panel.controller });
             dialog.title = panel.displayName;
+            dialog.panel = panel;
 
             panel.renderer.renderInto(dialog);
             

@@ -1,11 +1,12 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
-import { LightView } from './LightView';
 import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
+import { Registry } from '../../../../core/Registry';
+import { ApplicationError } from '../../../../core/services/ErrorService';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
-import { MeshView, MeshViewJson, MeshViewType } from './MeshView';
-import { MeshObj, MeshObjType } from '../../../../core/models/objs/MeshObj';
+import { LightView } from './LightView';
+import { MeshView, MeshViewType } from './MeshView';
 
 export enum LightViewControllerParam {
     LightYPos = 'light-pos-y',
@@ -19,6 +20,13 @@ export enum LightViewControllerParam {
 }
 
 export class LightYPosController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+    
     acceptedProps() { return [LightViewControllerParam.LightYPos]; }
 
     defaultVal(context: PropContext) {
@@ -34,26 +42,32 @@ export class LightYPosController extends PropController<string> {
 
     blur(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-
-        const pos = lightView.getObj().getPosition();
-        let yPos = pos.y;
+        
         try {
-            context.releaseTempVal(val => yPos = parseFloat(val))
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const pos = lightView.getObj().getPosition();
+                const yPos = parseFloat(context.getTempVal());                
+                lightView.getObj().setPosition(new Point_3(pos.x, yPos, pos.z));
+                context.registry.services.history.createSnapshot();
+            }
         } catch(e) {
-            console.log(e);
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
-
-        lightView.getObj().setPosition(new Point_3(pos.x, yPos, pos.z));
-        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 export class LightDirController extends PropController<string> {
     private prop: LightViewControllerParam;
+    private registry: Registry;
+
     acceptedProps() { return [this.prop]; }
 
-    constructor(axis: CanvasAxis) {
+    constructor(registry: Registry, axis: CanvasAxis) {
         super();
+        this.registry = registry;
         switch(axis) {
             case CanvasAxis.X:
                 this.prop = LightViewControllerParam.LightDirX;
@@ -81,10 +95,18 @@ export class LightDirController extends PropController<string> {
     blur(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
 
-        const val = context.getTempVal() || this.defaultVal(context);
-        this.setVal(lightView, val);
-        context.clearTempVal();
-        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const val = context.getTempVal() || this.defaultVal(context);
+                this.setVal(lightView, val);
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+        }
+
     }
 
     private setVal(view: LightView, val: string) {
@@ -115,6 +137,13 @@ export class LightDirController extends PropController<string> {
 }
 
 export class LightAngleController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+    
     acceptedProps() { return [LightViewControllerParam.LightAngle]; }
 
     defaultVal(context: PropContext) {
@@ -131,19 +160,28 @@ export class LightAngleController extends PropController<string> {
     blur(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
 
-        let angle = lightView.getObj().getAngle();
         try {
-            context.releaseTempVal(val => angle = toRadian(parseFloat(val)))
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const angle = context.getTempVal() || this.defaultVal(context);
+                lightView.getObj().setAngle(angle);
+            }
         } catch(e) {
-            console.log(e);
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
-
-        lightView.getObj().setAngle(angle);
-        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 
 export class LightDiffuseColorController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
     acceptedProps() { return [LightViewControllerParam.LightColorDiffuse]; }
 
     defaultVal(context: PropContext) {
@@ -160,11 +198,18 @@ export class LightDiffuseColorController extends PropController<string> {
     blur(context: PropContext) {
         const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
 
-        let color: string;
-        context.releaseTempVal(val => color = val || lightView.getObj().getDiffuseColor())
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const color = context.getTempVal() || this.defaultVal(context);
+                lightView.getObj().setDiffuseColor(color);
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+        }
 
-        lightView.getObj().setDiffuseColor(color);
-        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
 

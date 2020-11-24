@@ -169,15 +169,13 @@ export  class Bab_Meshes implements IMeshAdapter {
 
         const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.textureId);
 
-        if (!textureObj) {
-            return;
+        if (textureObj && textureObj.path) {
+            // TODO detect mesh with material in a safer way
+            mesh = <Mesh> (mesh.getChildMeshes().length > 0 ? mesh.getChildMeshes()[0] : mesh);
+            
+            (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+            (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
         }
-
-        // TODO detect mesh with material in a safer way
-        mesh = <Mesh> (mesh.getChildMeshes().length > 0 ? mesh.getChildMeshes()[0] : mesh);
-        
-        (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
-        (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
     }
 
     playAnimation(meshObj: MeshObj, startFrame: number, endFrame: number, repeat: boolean): boolean {

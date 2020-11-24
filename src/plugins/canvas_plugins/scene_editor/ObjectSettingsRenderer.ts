@@ -30,8 +30,10 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
                 break;
                 case SpriteViewType:
                     this.renderSpriteObjectSettings(layout);
+                break;
                 case LightViewType:
                     this.renderLightObjectSettings(layout);
+                break;
             }
         }
     }

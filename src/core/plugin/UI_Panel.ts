@@ -54,6 +54,7 @@ export class UI_Panel {
 
     renderer: IRenderer;
     controller: FormController;
+    data: Map<string, any> = new Map();
 
     private onMountedFunc: () => void;
     private onUnmountedFunc: () => void;
