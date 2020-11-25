@@ -12,7 +12,7 @@ export enum MeshViewControllerParam {
     MeshId = 'MeshId',
     Layer = 'Layer',
     Rotation = 'Rotation',
-    Scale = 'Scale',
+    Scale = 'scale',
     YPos = 'YPos',
     Model = 'Model',
     Texture = 'Texture',
@@ -115,6 +115,7 @@ export class ScaleController extends PropController<string> {
     }
 
     change(val, context: PropContext) {
+        console.log('change scale')
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     }

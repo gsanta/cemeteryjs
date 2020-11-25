@@ -13,7 +13,8 @@ export enum ObjTableProp {
     DiffuseColor = 'DiffuseColor',
     Dir = 'Dir',
     Parent = 'Parent',
-    Rotation = 'Rotation'
+    Rotation = 'Rotation',
+    Scale = 'Scale'
 }
 
 export function getObjProperty(obj: IObj, prop: ObjTableProp) {
@@ -64,6 +65,9 @@ function getMeshObjProperty(obj: MeshObj, prop: ObjTableProp) {
             return obj.getParent() && obj.getParent().id;
         case ObjTableProp.Rotation:
             return roundNumber(obj.getRotation());
+        case ObjTableProp.Scale:
+            return obj.getScale().toString();
+    
     }
 }
 
