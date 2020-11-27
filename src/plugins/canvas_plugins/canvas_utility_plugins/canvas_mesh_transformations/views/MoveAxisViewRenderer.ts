@@ -26,13 +26,13 @@ export class MoveAxisViewRenderer implements ViewRenderer {
         const group = canvas.group(axisView.id);
         group.isInteractive = false;
 
+        this.renderBoundingRect(group, axisView);
         this.renderArrowLine(group, axisView);
         this.renderArrowHead(group, axisView);
-        this.renderHighlightLine(group, axisView);
     }
 
-    private renderHighlightLine(group: UI_SvgGroup, axisView: MoveAxisView) {
-        const center = axisView.containerView.getBounds().getBoundingCenter();
+    private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleAxisView) {
+        const center = scaleView.containerView.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.css = {
@@ -40,27 +40,28 @@ export class MoveAxisViewRenderer implements ViewRenderer {
             strokeWidth: "6"
         }
 
-        // line.controller = () => plugin.toolController(axisView, AxisToolId)
+        line.data = scaleView;
+        // line.controller = () => plugin.toolController(scaleView, ScaleToolId)
         line.scopedToolId = MoveAxisToolId;
         line.isInteractive = true;
 
-        const x1 = center.x + axisLineBounds[axisView.axis].point1.x;
-        const y1 = center.y + axisLineBounds[axisView.axis].point1.y;
-        const x2 = center.x + axisLineBounds[axisView.axis].point2.x;
-        const y2 = center.y + axisLineBounds[axisView.axis].point2.y;
+        const x1 = center.x + axisLineBounds[scaleView.axis].point1.x;
+        const y1 = center.y + axisLineBounds[scaleView.axis].point1.y;
+        const x2 = center.x + axisLineBounds[scaleView.axis].point2.x;
+        const y2 = center.y + axisLineBounds[scaleView.axis].point2.y;
 
         line.x1 = x1;
         line.y1 = y1;
         line.x2 = x2;
         line.y2 = y2;
     }
-
     private renderArrowLine(group: UI_SvgGroup, axisView: ScaleAxisView) {
         const center = axisView.containerView.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.markerEnd = `url(#${MoveAxisToolId}-${axisView.axis})`;
         line.css = {
+            pointerEvents: 'none',
             stroke: getAxisColor(axisView.axis, this.registry),
             strokeWidth: "3"
         }

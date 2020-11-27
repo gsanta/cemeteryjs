@@ -48,7 +48,7 @@ export interface ArrowBounds {
     [axis: string]: Rectangle;
 }
 export class ScaleAxisView extends ContainedView {
-    id: string;
+    readonly id: string;
     viewType = ScaleAxisViewType;
     point: Point;
     readonly axis: CanvasAxis;

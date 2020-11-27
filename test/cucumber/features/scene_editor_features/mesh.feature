@@ -9,7 +9,7 @@ Feature: Mesh
         And change param 'scale' to '2' in panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Scale   |
-            | mesh-obj-1    | mesh-obj   | 2:2     |
+            | mesh-obj-1    | mesh-obj   | 2:2:2   |
 
     Scenario: 2. Change mesh rotation on sidepanel
         Given empty editor

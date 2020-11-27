@@ -1,104 +1,35 @@
-import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
-import { MeshView } from "../../../scene_editor/views/MeshView";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
-import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
-import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { ScaleAxisView, ScaleAxisViewType } from "../views/ScaleAxisView";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { ScaleAxisView, ScaleAxisViewType } from "../views/ScaleAxisView";
+import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const ScaleAxisToolId = 'scale-axis-tool';
 
-export class ScaleAxisTool extends ToolAdapter {
-    private downView: ScaleAxisView;
-    private meshView: MeshView;
+export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     private initialScale: Point_3;
     private initialBounds: Rectangle;
-    private hoveredView: ScaleAxisView;
 
     constructor(panel: AbstractCanvasPanel, registry: Registry) {
-        super(ScaleAxisToolId, panel, registry);
-    }
-
-    over(view: ScaleAxisView) {
-        this.hoveredView = view;
-        this.panel.toolController.setScopedTool(this.id);
-        this.registry.services.render.scheduleRendering(this.panel.region);
-    }
-
-    out() {
-        if (!this.downView) {
-            this.panel.toolController.removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.panel.region);
-        }
+        super(ScaleAxisToolId, panel, registry, ScaleAxisViewType);
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === ScaleAxisViewType) {
-            this.downView = <ScaleAxisView> this.registry.services.pointer.hoveredView;
-            this.meshView = <MeshView> this.downView.containerView;
+        super.down();
+        if (this.meshView) {
             this.initialScale = this.meshView.getObj().getScale();
             this.initialBounds = this.meshView.getBounds().clone();
         }
     }
 
-    drag() {
-        if (!this.downView) { return; }
-
-        if (this.downView) {
-            let moveDelta = 0;
-            let scaleDelta = 1;
-            const parent = <MeshView> this.downView.containerView;
-
-            const size = parent.getBounds();
-
-            switch(this.downView.axis) {
-                case CanvasAxis.X:
-                    this.updateScaleX();
-                break;
-                case CanvasAxis.Y:
-                    this.updateScaleY();
-                break;
-                case CanvasAxis.Z:
-                    this.updateScaleZ();
-                break;
-            }
-
-        }
-        this.registry.services.render.scheduleRendering(this.panel.region);
-    }
-
     up() {
-        if (this.registry.services.pointer.hoveredView !== this.downView) {
-            this.panel.toolController.removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.panel.region);
-        }
-        this.downView = undefined;
+        super.up();
         this.initialScale = undefined;
         this.initialBounds = undefined;
     }
 
-    getCursor() {
-        const scaleAxisView = this.downView ? this.downView : this.hoveredView;
-
-        if (!scaleAxisView) {
-            return Cursor.Default;
-        }
-
-        switch(scaleAxisView.axis) {
-            case CanvasAxis.X:
-                return Cursor.W_Resize;
-            case CanvasAxis.Y:
-                return Cursor.NE_Resize;
-            case CanvasAxis.Z:
-                return Cursor.N_Resize;
-            default:
-                return Cursor.Default;
-        }
-    }
-
-    private updateScaleX() {
+    protected updateX() {
         const scale = this.meshView.getObj().getScale();
         scale.x = this.initialScale.x * this.getDiffRatio().x;
 
@@ -108,7 +39,7 @@ export class ScaleAxisTool extends ToolAdapter {
         this.meshView.getBounds().setWidth(realDimensions.x);
     }
 
-    private updateScaleZ() {
+    protected updateZ() {
         const scale = this.meshView.getObj().getScale();
 
         scale.z = this.initialScale.z * this.getDiffRatio().y;
@@ -119,7 +50,7 @@ export class ScaleAxisTool extends ToolAdapter {
         this.meshView.getBounds().setHeight(realDimensions.y);
     }
 
-    private updateScaleY() {
+    protected updateY() {
         const scale = this.meshView.getObj().getScale();
 
         scale.y = this.initialScale.y * this.getDiffRatio().len();
