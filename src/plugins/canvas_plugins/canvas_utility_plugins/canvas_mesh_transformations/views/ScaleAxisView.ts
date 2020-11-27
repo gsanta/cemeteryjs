@@ -24,22 +24,20 @@ export class ScaleAxisViewFactory extends ViewFactoryAdapter {
     }
 
     instantiate() {
-        return new ScaleAxisView(this.registry);
+        // TODO: does not make sense to create only one of the axis
+        return new ScaleAxisView(this.registry, CanvasAxis.X);
     }
 
     instantiateOnSelection(parentView: View) {
-        let axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-        axisView.axis = CanvasAxis.X;
+        let axisView = new ScaleAxisView(this.registry, CanvasAxis.X);
         axisView.setContainerView(parentView);
         parentView.addContainedView(axisView);
 
-        axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-        axisView.axis = CanvasAxis.Y;
+        axisView = new ScaleAxisView(this.registry, CanvasAxis.Y);
         axisView.setContainerView(parentView);
         parentView.addContainedView(axisView);
 
-        axisView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-        axisView.axis = CanvasAxis.Z;
+        axisView = new ScaleAxisView(this.registry, CanvasAxis.Z);
         axisView.setContainerView(parentView);
         parentView.addContainedView(axisView);
     }
@@ -53,14 +51,15 @@ export class ScaleAxisView extends ContainedView {
     id: string;
     viewType = ScaleAxisViewType;
     point: Point;
-    axis: CanvasAxis;
+    readonly axis: CanvasAxis;
     readonly containerView: View;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, axis: CanvasAxis) {
         super();
+        this.axis = axis;
         this.bounds = new Rectangle(new Point(0, 0), new Point(0, 0));
-
         this.renderer = new ScaleAxisViewRenderer(registry);
+        this.id = `${ScaleAxisViewType}-${this.axis}`.toLowerCase();
     }
 
     getObj(): IObj {

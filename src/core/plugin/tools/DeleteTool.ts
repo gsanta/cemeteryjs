@@ -4,7 +4,7 @@ import { Keyboard } from '../../services/input/KeyboardService';
 import { getIntersectingViews, ViewStore } from '../../stores/ViewStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
-import { createRectFromMousePointer } from './NullTool';
+import { createRectFromMousePointer } from './ToolAdapter';
 import { PointerTool } from './PointerTool';
 import { Cursor } from './Tool';
 

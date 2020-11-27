@@ -7,7 +7,7 @@ import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { MoveAxisViewRenderer } from "./MoveAxisViewRenderer";
-import { ScaleAxisView, ScaleAxisViewType } from "./ScaleAxisView";
+import { ScaleAxisView } from "./ScaleAxisView";
 
 export interface AxisViewJson extends ViewJson {
     point: string;
@@ -29,18 +29,15 @@ export class MoveAxisViewFactory extends ViewFactoryAdapter {
     }
 
     instantiateOnSelection(parentView: View) {
-        let scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-        scaleView.axis = CanvasAxis.X;
+        let scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
 
-        scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-        scaleView.axis = CanvasAxis.Y;
+        scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
 
-        scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiate();
-        scaleView.axis = CanvasAxis.Z;
+        scaleView = <ScaleAxisView> this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiate();
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
     }

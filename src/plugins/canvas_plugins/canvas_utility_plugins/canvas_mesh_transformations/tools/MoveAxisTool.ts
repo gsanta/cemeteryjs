@@ -3,7 +3,7 @@ import { MoveAxisView, MoveAxisViewType } from "../views/MoveAxisView";
 import { MeshView } from "../../../scene_editor/views/MeshView";
 import { SpriteView } from "../../../scene_editor/views/SpriteView";
 import { View } from "../../../../../core/models/views/View";
-import { NullTool } from "../../../../../core/plugin/tools/NullTool";
+import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
@@ -12,7 +12,7 @@ import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPa
 export const MoveAxisToolId = 'move-axis-tool';
 
 // TODO: merge together the duplicate code with ScaleAxisTool
-export class MoveAxisTool extends NullTool {
+export class MoveAxisTool extends ToolAdapter {
     private downView: MoveAxisView;
     private hoveredView: MoveAxisView;
 

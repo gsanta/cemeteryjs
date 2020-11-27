@@ -19,7 +19,7 @@ export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
     return rect;
 }
 
-export class NullTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> implements Tool {
+export class ToolAdapter<P extends AbstractCanvasPanel = AbstractCanvasPanel> implements Tool {
     rectangleSelection: Rectangle;
     id: string;
     isSelected = false;

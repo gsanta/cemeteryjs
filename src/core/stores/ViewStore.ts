@@ -1,18 +1,17 @@
-import { View, ViewTag, ViewFactory, AfterAllViewsDeserialized } from '../models/views/View';
-import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
-import { Polygon } from "../../utils/geometry/shapes/Polygon";
-import { IdGenerator } from "./IdGenerator";
-import { without } from "../../utils/geometry/Functions";
-import { Registry } from "../Registry";
-import { MoveAxisView, MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
+import { MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
+import { ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
+import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/views/LightView';
+import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
 import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/views/SpriteView";
-import { MeshView, MeshViewJson, MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
-import { CanvasAxis } from "../models/misc/CanvasAxis";
-import { ScaleAxisView, ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
-import { AppJson } from "../services/export/ExportService";
+import { without } from "../../utils/geometry/Functions";
+import { Polygon } from "../../utils/geometry/shapes/Polygon";
+import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { NodeObj } from "../models/objs/NodeObj";
 import { NodeViewType } from "../models/views/NodeView";
-import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/views/LightView';
+import { AfterAllViewsDeserialized, View, ViewFactory, ViewTag } from '../models/views/View';
+import { Registry } from "../Registry";
+import { AppJson } from "../services/export/ExportService";
+import { IdGenerator } from "./IdGenerator";
 
 export const sceneAndGameViewRatio = 10;
 

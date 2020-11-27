@@ -55,13 +55,51 @@ Then('canvas selection contains some of:', function (tableDef: TableDefinition) 
     canvasContains(tableDef, canvasPanel.getViewStore().getSelectedViews(), true);
 });
 
+Then('contained views of \'{word}\' are:', function(viewId: string, tableDef: TableDefinition) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    
+    const view = canvasPanel.getViewStore().getById(viewId);
+
+    if (!view) {
+        throw new Error(`View with id '${viewId}' not found on canvas '${canvasPanel.id}'`);1
+    }
+
+    canvasContains(tableDef, view.containedViews, true);
+});
+
+Then('contained views of \'{word}\' partially are:', function(viewId: string, tableDef: TableDefinition) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    
+    const view = canvasPanel.getViewStore().getById(viewId);
+
+    if (!view) {
+        throw new Error(`View with id '${viewId}' not found on canvas '${canvasPanel.id}'`);1
+    }
+
+    canvasContains(tableDef, view.containedViews, false);
+});
+
+Then('dump contained views of \'{word}\':', function(viewId: string, tableDef: TableDefinition) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const view = canvasPanel.getViewStore().getById(viewId);
+    
+    if (!view) {
+        throw new Error(`View with id '${viewId}' not found on canvas '${canvasPanel.id}'`);
+    }
+    
+    const viewTableProps = collectViewTableProps(tableDef);
+    
+    new ModelDumper().dumpViews(viewTableProps, view.containedViews);
+});
+
 Then('view properties are:', function (tableDef: TableDefinition) {
     viewPropertiesAre(this, tableDef);
 });
 
 Then('dump views:', function(tableDef: TableDefinition) {
     const viewTableProps = collectViewTableProps(tableDef);
-    new ModelDumper().dumpViews(this.registry, viewTableProps);
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    new ModelDumper().dumpViews(viewTableProps, canvasPanel.getViewStore().getAllViews());
 });
 
 function viewPropertiesAre(world: World, tableDef: TableDefinition) {

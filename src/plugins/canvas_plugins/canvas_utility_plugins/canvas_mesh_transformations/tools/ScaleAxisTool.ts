@@ -1,7 +1,7 @@
 import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { MeshView } from "../../../scene_editor/views/MeshView";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
-import { NullTool } from "../../../../../core/plugin/tools/NullTool";
+import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
@@ -10,11 +10,11 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 
 export const ScaleAxisToolId = 'scale-axis-tool';
 
-export class ScaleAxisTool extends NullTool {
+export class ScaleAxisTool extends ToolAdapter {
     private downView: ScaleAxisView;
     private meshView: MeshView;
-    private startScale: Point_3;
-    private startMeshBounds: Rectangle;
+    private initialScale: Point_3;
+    private initialBounds: Rectangle;
     private hoveredView: ScaleAxisView;
 
     constructor(panel: AbstractCanvasPanel, registry: Registry) {
@@ -38,8 +38,8 @@ export class ScaleAxisTool extends NullTool {
         if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === ScaleAxisViewType) {
             this.downView = <ScaleAxisView> this.registry.services.pointer.hoveredView;
             this.meshView = <MeshView> this.downView.containerView;
-            this.startScale = this.meshView.getObj().getScale();
-            this.startMeshBounds = this.meshView.getBounds().clone();
+            this.initialScale = this.meshView.getObj().getScale();
+            this.initialBounds = this.meshView.getBounds().clone();
         }
     }
 
@@ -58,10 +58,10 @@ export class ScaleAxisTool extends NullTool {
                     this.updateScaleX();
                 break;
                 case CanvasAxis.Y:
+                    this.updateScaleY();
                 break;
                 case CanvasAxis.Z:
                     this.updateScaleZ();
-                    // delta = this.registry.services.pointer.pointer.getDiff().x / 10;
                 break;
             }
 
@@ -75,17 +75,32 @@ export class ScaleAxisTool extends NullTool {
             this.registry.services.render.scheduleRendering(this.panel.region);
         }
         this.downView = undefined;
+        this.initialScale = undefined;
+        this.initialBounds = undefined;
     }
 
     getCursor() {
-        if (this.hoveredView) {
-            return this.hoveredView.axis === CanvasAxis.X ? Cursor.W_Resize : this.hoveredView.axis === CanvasAxis.Y ? Cursor.NE_Resize : Cursor.N_Resize;
-        }    
+        const scaleAxisView = this.downView ? this.downView : this.hoveredView;
+
+        if (!scaleAxisView) {
+            return Cursor.Default;
+        }
+
+        switch(scaleAxisView.axis) {
+            case CanvasAxis.X:
+                return Cursor.W_Resize;
+            case CanvasAxis.Y:
+                return Cursor.NE_Resize;
+            case CanvasAxis.Z:
+                return Cursor.N_Resize;
+            default:
+                return Cursor.Default;
+        }
     }
 
     private updateScaleX() {
         const scale = this.meshView.getObj().getScale();
-        scale.x = this.startScale.x * this.getDiffRatio().x;
+        scale.x = this.initialScale.x * this.getDiffRatio().x;
 
         const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
         
@@ -96,7 +111,7 @@ export class ScaleAxisTool extends NullTool {
     private updateScaleZ() {
         const scale = this.meshView.getObj().getScale();
 
-        scale.z = this.startScale.z * this.getDiffRatio().y;
+        scale.z = this.initialScale.z * this.getDiffRatio().y;
 
         const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
 
@@ -104,9 +119,19 @@ export class ScaleAxisTool extends NullTool {
         this.meshView.getBounds().setHeight(realDimensions.y);
     }
 
+    private updateScaleY() {
+        const scale = this.meshView.getObj().getScale();
+
+        scale.y = this.initialScale.y * this.getDiffRatio().len();
+
+        const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
+
+        this.meshView.getObj().setScale(scale);
+    }
+
     private getDiffRatio() {
-        const downDiff =  this.registry.services.pointer.pointer.down.clone().subtract(this.startMeshBounds.getBoundingCenter());
-        const currdiff = this.registry.services.pointer.pointer.curr.clone().subtract(this.startMeshBounds.getBoundingCenter());
+        const downDiff =  this.registry.services.pointer.pointer.down.clone().subtract(this.initialBounds.getBoundingCenter());
+        const currdiff = this.registry.services.pointer.pointer.curr.clone().subtract(this.initialBounds.getBoundingCenter());
         
         return currdiff.div(downDiff.x, downDiff.y).negateY();
     }

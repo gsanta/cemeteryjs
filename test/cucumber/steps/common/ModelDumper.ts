@@ -1,17 +1,17 @@
 import { NodeObj } from "../../../../src/core/models/objs/NodeObj";
-import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
+import { View } from "../../../../src/core/models/views/View";
 import { Registry } from "../../../../src/core/Registry";
 import { getObjProperty, ObjTableProp } from "./objTestUtils";
 import { getViewProperty, ViewTableProp } from "./viewTestUtils";
 
 export class ModelDumper {
-    dumpViews(registry: Registry, viewTableProps: ViewTableProp[]) {
+    dumpViews(viewTableProps: ViewTableProp[], views: View[]) {
+        console.log(viewTableProps.join(', '))
         const columns: string[][] = [];
 
         viewTableProps.forEach(prop => columns.push([prop]));
-        const canvasPanel = registry.ui.helper.hoveredPanel as Canvas2dPanel;
 
-        canvasPanel.getViewStore().getAllViews().forEach(view => viewTableProps.forEach((prop, index) => columns[index].push(getViewProperty(view, prop))));
+        views.forEach(view => viewTableProps.forEach((prop, index) => columns[index].push(getViewProperty(view, prop))));
     
         const maxColumnLengths = this.getMaxColumnLengths(columns);
         this.printTable(columns, maxColumnLengths);
@@ -43,7 +43,7 @@ export class ModelDumper {
 
     private getMaxColumnLengths(columns: string[][]): number[] {
         return columns.map(column => {
-            const columDataLengths = column.map(col => col.length);
+            const columDataLengths = column.map(col => col ? col.length : 1);
             columDataLengths.sort((a, b) => b - a);
     
             return columDataLengths[0];
@@ -65,7 +65,7 @@ export class ModelDumper {
     }
 
     private padString(str: string, len: number) {
-        const pad = len - str.length;
+        const pad = len - (str ? str.length : 1);
 
         for (let i = 0; i < pad; i++) {
             str += ' ';

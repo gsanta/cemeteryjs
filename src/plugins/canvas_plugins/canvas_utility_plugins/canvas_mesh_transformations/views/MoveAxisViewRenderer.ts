@@ -40,7 +40,6 @@ export class MoveAxisViewRenderer implements ViewRenderer {
             strokeWidth: "6"
         }
 
-        line.data = axisView;
         // line.controller = () => plugin.toolController(axisView, AxisToolId)
         line.scopedToolId = MoveAxisToolId;
         line.isInteractive = true;

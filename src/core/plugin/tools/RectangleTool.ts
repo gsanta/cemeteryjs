@@ -1,13 +1,13 @@
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { NullTool, createRectFromMousePointer } from './NullTool';
+import { ToolAdapter, createRectFromMousePointer } from './ToolAdapter';
 import { UI_Region } from '../UI_Panel';
 import { View } from '../../models/views/View';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { ViewStore } from '../../stores/ViewStore';
 
-export abstract class RectangleTool<P extends AbstractCanvasPanel> extends NullTool<P> {
+export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolAdapter<P> {
     protected rectangleFeedback: Rectangle;
     protected tmpView: View;
     protected viewStore: ViewStore;

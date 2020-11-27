@@ -5,10 +5,10 @@ import { IPointerEvent } from '../../services/input/PointerService';
 import { ViewStore } from '../../stores/ViewStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
-import { NullTool } from "./NullTool";
+import { ToolAdapter } from "./ToolAdapter";
 import { ToolType } from "./Tool";
 
-export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> extends NullTool<P> {
+export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> extends ToolAdapter<P> {
     acceptedViews: string[] = [];
 
     protected movingItem: View = undefined;

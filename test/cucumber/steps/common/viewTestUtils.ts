@@ -51,7 +51,7 @@ function isViewPropTrue(val: string) {
     return val.toLowerCase() === 'true'
 }
 
-export function findViewOrChildView(viewStore: ViewStore, viewId: string): View {
+export function findViewOrContainedView(viewStore: ViewStore, viewId: string): View {
     const invalidPathMessage = `View for id ${viewId} could not be found.`;
     
     let view: View;

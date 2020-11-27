@@ -2,12 +2,12 @@ import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, Hotkey, HotkeyTrigger, IHotkeyEvent } from "../../services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from '../../services/input/KeyboardService';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { NullTool } from './NullTool';
+import { ToolAdapter } from './ToolAdapter';
 import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 
 export const CameraToolId = 'camera-tool';
-export class CameraTool extends NullTool {
+export class CameraTool extends ToolAdapter {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
     private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
     private zoomHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, wheel: true, worksDuringMouseDown: true};
