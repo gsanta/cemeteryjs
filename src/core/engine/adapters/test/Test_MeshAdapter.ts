@@ -12,6 +12,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     posMap: Map<string, Point_3> = new Map();
     rotationMap: Map<string, number> = new Map();
     scaleMap: Map<string, Point_3> = new Map();
+    colorMap: Map<string, string> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -51,6 +52,14 @@ export  class Test_MeshAdapter implements IMeshAdapter {
 
     getDimensions(meshObj: MeshObj): Point {
         return new Point(5, 5);
+    }
+
+    setColor(meshObj: MeshObj, color: string): void {
+        this.colorMap.set(meshObj.id, color);
+    }
+
+    getColor(meshObj: MeshObj): string {
+        return this.colorMap.get(meshObj.id) || '#FFFFFF';
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

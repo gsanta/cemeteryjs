@@ -96,6 +96,12 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         changeThumbnailButton.label = 'Change thumbnail';
         changeThumbnailButton.width = '200px';
 
+        row = layout.row({ key: MeshViewControllerParam.Color });
+        const colorTextField = row.textField({key: MeshViewControllerParam.Color});
+        colorTextField.layout = 'horizontal';
+        colorTextField.label = 'Color';
+        colorTextField.type = 'text';
+
         if (meshView.getObj().shapeConfig) {
             if (meshView.getObj().shapeConfig.shapeType === 'Box') {
                 this.renderBoxSettings(layout, meshView);

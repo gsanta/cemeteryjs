@@ -31,6 +31,14 @@ export  class Wrap_Meshes implements IMeshAdapter {
         return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getScale(meshObj));
     } 
 
+    setColor(meshObj: MeshObj, color: string): void {
+        this.engineFacade.engines.forEach(engine => engine.meshes.setColor(meshObj, color));
+    }
+
+    getColor(meshObj: MeshObj): string {
+        return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getColor(meshObj));
+    }
+
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
         this.engineFacade.engines.forEach(engine => engine.meshes.translate(meshObj, axis, amount, space));
     }

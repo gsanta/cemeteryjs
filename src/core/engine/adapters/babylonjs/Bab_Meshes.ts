@@ -1,5 +1,5 @@
 import { Mesh } from "babylonjs/Meshes/mesh";
-import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton } from "babylonjs";
+import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton, Color3 } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IMeshAdapter } from "../../IMeshAdapter";
 import { BasicShapeType, MeshObj } from "../../../models/objs/MeshObj";
@@ -7,6 +7,7 @@ import { Registry } from "../../../Registry";
 import { RectangleFactory } from "../../../stores/RectangleFactory";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { toHexString } from "../../../ui_components/react/colorUtils";
 
 export interface MeshData {
     mainMesh: Mesh;
@@ -98,6 +99,24 @@ export  class Bab_Meshes implements IMeshAdapter {
         dimensions.x  = dimensions.x < 10 ? 10 : dimensions.x;
         dimensions.y  = dimensions.y < 10 ? 10 : dimensions.y;
         return dimensions;
+    }
+
+    setColor(meshObj: MeshObj, color: string) {
+        const meshData = this.meshes.get(meshObj.id);
+        if (!meshData) { return; }
+
+        meshData.mainMesh.material = new StandardMaterial(`${meshObj.id}-mat`, this.engineFacade.scene);
+        (<StandardMaterial> meshData.mainMesh.material).diffuseColor  = Color3.FromHexString(toHexString(color));
+        (<StandardMaterial> meshData.mainMesh.material).specularColor  = Color3.FromHexString(toHexString(color));
+    }
+
+    getColor(meshObj: MeshObj): string {
+        const meshData = this.meshes.get(meshObj.id);
+        
+        if (!meshData) { return; }
+        if (!meshData.mainMesh.material) { return; }
+
+        return (<StandardMaterial> meshData.mainMesh.material).diffuseColor.toHexString();
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

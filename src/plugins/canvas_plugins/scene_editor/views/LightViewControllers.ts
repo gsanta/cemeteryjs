@@ -202,6 +202,7 @@ export class LightDiffuseColorController extends PropController<string> {
             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
                 const color = context.getTempVal() || this.defaultVal(context);
                 lightView.getObj().setDiffuseColor(color);
+                context.registry.services.history.createSnapshot();
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));

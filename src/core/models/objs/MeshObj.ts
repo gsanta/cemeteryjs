@@ -92,6 +92,14 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.getPosition(this);
     }
 
+    setColor(color: string) {
+        this.meshAdapter.setColor(this, color);
+    }
+
+    getColor(): string {
+        return this.meshAdapter.getColor(this);
+    }
+
     rotate(angle: number) {
         this.meshAdapter.rotate(this, angle)
     }

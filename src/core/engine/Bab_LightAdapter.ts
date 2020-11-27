@@ -61,7 +61,10 @@ export class Bab_LightAdapter implements ILightAdapter {
     setDiffuseColor(lightObj: LightObj, diffuseColor: string): void {
         const light = this.lights.get(lightObj.id);
 
-        light && (light.diffuse = Color3.FromHexString(diffuseColor));
+        if (light) {
+            light.diffuse = Color3.FromHexString(diffuseColor);
+            light.specular = Color3.FromHexString(diffuseColor);
+        }
     }
 
     getDiffuseColor(lightObj: LightObj): string {
@@ -97,7 +100,7 @@ export class Bab_LightAdapter implements ILightAdapter {
         const direction = lightObj.getDirection();
         const position = lightObj.getPosition();
 
-        const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), toVector3(defaultLightDirection), Math.PI / 3, 2, this.engineFacade.scene);
+        const light = new SpotLight(lightObj.id, new Vector3(0, 5, 0), toVector3(defaultLightDirection), Math.PI / 2, 10, this.engineFacade.scene);
 
         this.lights.set(lightObj.id, light);
 

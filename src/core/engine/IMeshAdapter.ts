@@ -10,7 +10,9 @@ export interface IMeshAdapter {
     setPosition(meshObj: MeshObj, pos: Point_3): void;
     getPosition(meshObj: MeshObj): Point_3;
     setScale(meshObj: MeshObj, point: Point); 
-    getScale(meshObj: MeshObj): Point_3; 
+    getScale(meshObj: MeshObj): Point_3;
+    setColor(meshObj: MeshObj, color: string): void;
+    getColor(meshObj: MeshObj): string;
 
     getDimensions(meshObj: MeshObj): Point;
     createInstance(meshObj: MeshObj): Promise<boolean>;

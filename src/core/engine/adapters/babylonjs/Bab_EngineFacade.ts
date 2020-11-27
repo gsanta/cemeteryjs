@@ -49,7 +49,8 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);
 
         this.light.diffuse = new Color3(1, 1, 1);
-        this.light.specular = new Color3(0, 0, 0);
+        // this.light.specular = new Color3(0, 0, 0);
+        this.light.intensity = 0.2;
 
         this.engine.runRenderLoop(() => {
             this.scene.render();
