@@ -2,7 +2,7 @@ import { Mesh } from "babylonjs/Meshes/mesh";
 import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IMeshAdapter } from "../../IMeshAdapter";
-import { MeshObj } from "../../../models/objs/MeshObj";
+import { BasicShapeType, MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { RectangleFactory } from "../../../stores/RectangleFactory";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
@@ -119,6 +119,9 @@ export  class Bab_Meshes implements IMeshAdapter {
                 break;
             case 'Sphere':
                 this.registry.engine.meshFactory.sphere(meshObj);
+                break;
+            case BasicShapeType.Ground:
+                this.registry.engine.meshFactory.ground(meshObj);
                 break;
         }
     }

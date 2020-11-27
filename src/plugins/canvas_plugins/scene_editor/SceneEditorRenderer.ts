@@ -11,6 +11,7 @@ import { MoveAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transforma
 import { ScaleAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { SceneEditorToolbarProps } from "./SceneEditorControllers";
 import { CubeToolId } from "./tools/CubeTool";
+import { GroundToolId } from "./tools/GroundTool";
 import { LightToolId } from "./tools/LightTool";
 import { MeshToolId } from "./tools/MeshTool";
 import { PathToolId } from "./tools/PathTool";
@@ -157,6 +158,12 @@ export class SceneEditorRenderer implements ICanvasRenderer {
 
             tool = toolController.getToolById(SphereToolId);
             shapeTool = toolbarDropdown.tool({key: SphereToolId});
+            shapeTool.icon = tool.icon;
+            tooltip = shapeTool.tooltip();
+            tooltip.label = `${tool.displayName} tool`;
+
+            tool = toolController.getToolById(GroundToolId);
+            shapeTool = toolbarDropdown.tool({key: GroundToolId});
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;

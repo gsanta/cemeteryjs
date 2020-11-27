@@ -1,4 +1,4 @@
-import { MeshBoxConfig, MeshObj, MeshSphereConfig } from "../../../../core/models/objs/MeshObj";
+import { BasicShapeType, MeshBoxConfig } from "../../../../core/models/objs/MeshObj";
 import { View } from "../../../../core/models/views/View";
 import { Canvas2dPanel } from "../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../core/plugin/tools/RectangleTool";
@@ -7,25 +7,25 @@ import { sceneAndGameViewRatio, ViewStore } from "../../../../core/stores/ViewSt
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { MeshViewType } from "../views/MeshView";
 
-export const SphereToolId = 'sphere-tool';
-export class SphereTool extends RectangleTool<Canvas2dPanel> {
-    icon = 'sphere';
-    displayName = 'Sphere';
+export const GroundToolId = 'ground-tool';
+export class GroundTool extends RectangleTool<Canvas2dPanel> {
+    icon = 'grid';
+    displayName = 'Ground';
 
     constructor(panel: Canvas2dPanel, viewStore: ViewStore, registry: Registry) {
-        super(SphereToolId, panel, viewStore, registry);
+        super(GroundToolId, panel, viewStore, registry);
     }
 
     protected createView(rect: Rectangle): View {
-        const config = <MeshSphereConfig> {
-            shapeType: 'Sphere',
-            diameter: 5
+        const config = <MeshBoxConfig> {
+            shapeType: BasicShapeType.Ground,
+            width: rect.getWidth() / sceneAndGameViewRatio,
+            height: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const sphere = this.panel.getViewStore().getViewFactory(MeshViewType).instantiateOnCanvas(this.panel, rect, config);
+        const ground = this.panel.getViewStore().getViewFactory(MeshViewType).instantiateOnCanvas(this.panel, rect, config);
 
-
-        return sphere;
+        return ground;
     }
     
     protected removeTmpView() {

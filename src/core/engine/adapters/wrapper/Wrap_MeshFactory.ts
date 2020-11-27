@@ -23,4 +23,8 @@ export class Wrap_MeshFactory implements IMeshFactory {
     sphere(obj: MeshObj) {
         this.engineFacade.realEngine.meshFactory.sphere(obj);
     }
+
+    ground(obj: MeshObj) {
+        this.engineFacade.realEngine.meshFactory.ground(obj);
+    }
 }

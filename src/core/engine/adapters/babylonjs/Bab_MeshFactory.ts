@@ -1,5 +1,5 @@
 import { IMeshFactory } from "../../IMeshFactory";
-import { MeshBoxConfig, MeshObj, MeshSphereConfig } from "../../../models/objs/MeshObj";
+import { GroundConfig, MeshBoxConfig, MeshObj, MeshSphereConfig } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { Color3, Mesh, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
@@ -31,6 +31,15 @@ export class Bab_MeshFactory implements IMeshFactory {
         this.createMaterial(obj, mesh);
         const point = obj.getPosition();
         mesh.translate(new Vector3(point.x + config.diameter / 2, 0, point.z - config.diameter / 2), 1, Space.WORLD);
+        this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
+    }
+
+    ground(obj: MeshObj) {
+        const config = <GroundConfig> obj.shapeConfig;
+        const mesh = MeshBuilder.CreateGround(obj.id, config, this.engineFacade.scene);
+
+        const point = obj.getPosition();
+        mesh.translate(new Vector3(point.x, 0, point.z), 1, Space.WORLD);
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 

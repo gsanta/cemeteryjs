@@ -3,6 +3,9 @@ import { PropController, PropContext } from "../../../core/plugin/controller/For
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 import { SceneEditorRenderer } from "./SceneEditorRenderer";
+import { CubeToolId } from "./tools/CubeTool";
+import { GroundToolId } from "./tools/GroundTool";
+import { SphereToolId } from "./tools/SphereTool";
 
 export enum SceneEditorToolbarProps {
     SelectPrimitiveShape = 'select-primitive-shape',
@@ -20,7 +23,7 @@ export class PrimitiveShapeDropdownMenuOpenControl extends PropController<any> {
 }
 
 export class PrimitiveShapeDropdownControl extends PropController<any> {
-    acceptedProps() { return [SceneEditorToolbarProps.SelectPrimitiveShape]; }
+    acceptedProps() { return [CubeToolId, SphereToolId, GroundToolId]; }
 
     click(context: PropContext, element: UI_Element) {
         const renderer = element.canvasPanel.renderer as SceneEditorRenderer;

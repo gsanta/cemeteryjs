@@ -12,4 +12,5 @@ export type BoxConfig = {
 export interface IMeshFactory {
     box(meshObj: MeshObj);
     sphere(meshObj: MeshObj);
+    ground(meshObj: MeshObj);
 }

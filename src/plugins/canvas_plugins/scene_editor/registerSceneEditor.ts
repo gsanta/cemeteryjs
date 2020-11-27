@@ -28,6 +28,7 @@ import { MeshViewFactory } from "./views/MeshViewFactory";
 import { LightViewFactory } from "./views/LightViewFactory";
 import { SpriteViewFactory } from "./views/SpriteViewFactory";
 import { PathViewFactory } from "./views/PathViewFactory";
+import { GroundTool } from "./tools/GroundTool";
 
 export const SceneEditorPanelId = 'scene-editor';
 
@@ -63,6 +64,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new MoveAxisTool(canvas, registry),
         new CubeTool(canvas, registry.data.view.scene, registry),
         new SphereTool(canvas, registry.data.view.scene, registry),
+        new GroundTool(canvas, registry.data.view.scene, registry),
         new ScaleAxisTool(canvas, registry)
     ];
 

@@ -40,6 +40,12 @@ export class MeshObjFactory extends ObjFactoryAdapter {
     }
 }
 
+export enum BasicShapeType {
+    Cube = 'Cube',
+    Sphere = 'Sphere',
+    Ground = 'Ground'
+}
+
 export interface MeshShapeConfig {
     shapeType: string;
 }
@@ -51,9 +57,13 @@ export interface MeshBoxConfig extends MeshShapeConfig {
 }
 
 export interface MeshSphereConfig extends MeshShapeConfig {
-    diameter?: number;
+    diameter: number;
 }
 
+export interface GroundConfig extends MeshShapeConfig {
+    width: number;
+    height: number;
+}
 
 export class MeshObj implements IGameObj {
     readonly objType = MeshObjType;
