@@ -7,15 +7,16 @@ import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
+import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 
 export enum MeshViewControllerParam {
     MeshId = 'MeshId',
     Layer = 'Layer',
-    Rotation = 'Rotation',
+    Rotation = 'rotation',
     Scale = 'scale',
     YPos = 'YPos',
-    Model = 'Model',
-    Texture = 'Texture',
+    Model = 'model',
+    Texture = 'texture',
     Thumbnail = 'Thumbnail',
     Width = 'Width',
     Height = 'Height',
@@ -84,7 +85,7 @@ export class RotationController extends PropController<string> {
 
         try {
             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                meshView.setRotation(parseFloat(context.getTempVal()));
+                meshView.setRotation(toRadian(parseFloat(context.getTempVal())));
                 context.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -115,7 +116,6 @@ export class ScaleController extends PropController<string> {
     }
 
     change(val, context: PropContext) {
-        console.log('change scale')
         context.updateTempVal(val);
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     }
@@ -125,7 +125,8 @@ export class ScaleController extends PropController<string> {
         
         try {
             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                meshView.setScale(parseFloat(context.getTempVal()));
+                const scale = parseFloat(context.getTempVal());
+                meshView.setScale(new Point_3(scale, scale, scale));
                 context.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -196,9 +197,8 @@ export class TextureController extends PropController<string> {
         context.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    async blur(context) {
+    async blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-
         const val = context.getTempVal();
         context.clearTempVal();
 

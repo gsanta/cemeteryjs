@@ -34,7 +34,7 @@ function objPropertiesAre(world: World, tableDef: TableDefinition) {
 
         row.forEach((expectedPropValue: string, propIdx: number) => {
             const prop: ObjTableProp = objTableProps[propIdx];
-            expect(getObjProperty(objToCheck, prop)).toEqual(expectedPropValue);
+            expect(getObjProperty(world.registry, objToCheck, prop)).toEqual(expectedPropValue);
         })
     });
 }

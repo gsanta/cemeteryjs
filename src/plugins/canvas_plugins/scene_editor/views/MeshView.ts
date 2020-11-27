@@ -62,21 +62,21 @@ export class MeshView extends View {
         this.obj.setRotation(angle);
     }
 
-    setScale(scale: number) {
+    setScale(point: Point_3) {
         const savedBounds = this.bounds.clone();
 
-        const currentScale = this.getScale();
-        this.bounds.scale(new Point(1 / currentScale, 1 / currentScale));
-        this.bounds.scale(new Point(scale, scale));
+        // const currentScale = this.getScale();
+        // this.bounds.scale(new Point(1 / currentScale, 1 / currentScale));
+        // this.bounds.scale(new Point(scale, scale));
 
-        if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
-            this.bounds = savedBounds;
-        } else {
-            this.containedViews.forEach(child => child.calcBounds());
-            this.scale = scale;
-        }
+        // if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
+        //     this.bounds = savedBounds;
+        // } else {
+        //     this.containedViews.forEach(child => child.calcBounds());
+        //     this.scale = scale;
+        // }
         
-        this.obj.setScale(new Point(scale, scale));
+        this.obj.setScale(point);
     }
 
     getScale(): number {

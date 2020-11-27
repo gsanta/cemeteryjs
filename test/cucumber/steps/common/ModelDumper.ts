@@ -22,7 +22,7 @@ export class ModelDumper {
 
         objTableProps.forEach(prop => columns.push([prop]));
 
-        registry.stores.objStore.getAll().forEach(obj => objTableProps.forEach((prop, index) => columns[index].push(getObjProperty(obj, prop))));
+        registry.stores.objStore.getAll().forEach(obj => objTableProps.forEach((prop, index) => columns[index].push(getObjProperty(registry, obj, prop))));
     
         const maxColumnLengths = this.getMaxColumnLengths(columns);
         this.printTable(columns, maxColumnLengths);

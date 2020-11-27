@@ -11,7 +11,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
 
     posMap: Map<string, Point_3> = new Map();
     rotationMap: Map<string, number> = new Map();
-    scaleMap: Map<string, Point> = new Map();
+    scaleMap: Map<string, Point_3> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -26,12 +26,12 @@ export  class Test_MeshAdapter implements IMeshAdapter {
         return this.posMap.get(meshObj.id);
     }
 
-    setScale(meshObj: MeshObj, scale: Point) {
+    setScale(meshObj: MeshObj, scale: Point_3) {
         this.scaleMap.set(meshObj.id, scale);
     } 
 
-    getScale(meshObj: MeshObj): Point {
-        return this.scaleMap.get(meshObj.id) || new Point(1, 1);
+    getScale(meshObj: MeshObj): Point_3 {
+        return this.scaleMap.get(meshObj.id) || new Point_3(1, 1, 1);
     } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {

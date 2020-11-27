@@ -40,18 +40,18 @@ export  class Bab_Meshes implements IMeshAdapter {
         return new Point_3(meshData.mainMesh.position.x, meshData.mainMesh.position.y, meshData.mainMesh.position.z);
     }
 
-    setScale(meshObj: MeshObj, point: Point) {
+    setScale(meshObj: MeshObj, point: Point_3) {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
 
-        meshData.mainMesh.scaling = new Vector3(point.x, meshData.mainMesh.scaling.y, point.y);
+        meshData.mainMesh.scaling = new Vector3(point.x, point.y, point.z);
     } 
 
-    getScale(meshObj: MeshObj): Point {
+    getScale(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj.id);
         if (!meshData) { return; }
 
-        return new Point(meshData.mainMesh.scaling.x, meshData.mainMesh.scaling.z);
+        return new Point_3(meshData.mainMesh.scaling.x, meshData.mainMesh.scaling.y, meshData.mainMesh.scaling.z);
     } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {

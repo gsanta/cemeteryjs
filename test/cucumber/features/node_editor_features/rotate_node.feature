@@ -30,10 +30,10 @@ Feature: Rotate node
         And press key 'a'
         Then obj properties are:
             | Id          | Rotation  |
-            | mesh-obj-1  | -0.10     |
+            | mesh-obj-1  | -6        |
         And press key 'd'
         And press key 'd'
         Then obj properties are:
             | Id          | Rotation  |
-            | mesh-obj-1  | 0.10      |
+            | mesh-obj-1  | 6         |
         

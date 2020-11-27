@@ -8,8 +8,11 @@ import { IObj, ObjFactoryAdapter, ObjJson } from './IObj';
 export const MeshObjType = 'mesh-obj';
 
 export interface MeshObjJson extends ObjJson {
-    scaleX: number;
-    scaleY: number;
+    scale: {
+        x: number;
+        y: number;
+        z: number;
+    }
     posX: number;
     posY: number;
     posZ: number;
@@ -91,11 +94,11 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.getRotation(this);
     }
 
-    setScale(scale: Point) {
+    setScale(scale: Point_3) {
         this.meshAdapter.setScale(this, scale);
     }
 
-    getScale(): Point {
+    getScale(): Point_3 {
         return this.meshAdapter.getScale(this);
     }
 
@@ -111,11 +114,15 @@ export class MeshObj implements IGameObj {
     }
 
     serialize(): MeshObjJson {
+        const scale = this.getScale();
         return {
             id: this.id,
             objType: this.objType,
-            scaleX: this.getScale().x,
-            scaleY: this.getScale().y,
+            scale: {
+                x: scale.x,
+                y: scale.y,
+                z: scale.z
+            },
             posX: this.getPosition().x,
             posY: this.getPosition().y,
             posZ: this.getPosition().z,
@@ -131,7 +138,7 @@ export class MeshObj implements IGameObj {
     
     deserialize(json: MeshObjJson) {
         this.id = json.id;
-        this.setScale(new Point(json.scaleX, json.scaleY));
+        this.setScale(new Point_3(json.scale.x, json.scale.y, json.scale.z));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
         this.rotate(json.rotation);
         this.yPos = json.y;

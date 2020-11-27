@@ -23,11 +23,11 @@ export  class Wrap_Meshes implements IMeshAdapter {
         return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getPosition(meshObj));
     }
 
-    setScale(meshObj: MeshObj, point: Point) {
+    setScale(meshObj: MeshObj, point: Point_3) {
         this.engineFacade.engines.forEach(engine => engine.meshes.setScale(meshObj, point));
     } 
 
-    getScale(meshObj: MeshObj): Point {
+    getScale(meshObj: MeshObj): Point_3 {
         return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getScale(meshObj));
     } 
 
