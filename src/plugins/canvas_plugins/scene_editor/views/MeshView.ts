@@ -13,7 +13,6 @@ export const MeshViewType = 'mesh-view';
 export interface MeshViewJson extends ViewJson {
     rotation: number;
     thumbnailData: string;
-    scale: number;
     yPos: number;
     color: string;
 }
@@ -27,7 +26,6 @@ export class MeshView extends View {
 
     id: string;
     private rotation: number;
-    private scale: number = 1;
     
     thumbnailData: string;
 
@@ -60,27 +58,6 @@ export class MeshView extends View {
     setRotation(angle: number) {
         this.rotation = angle;
         this.obj.setRotation(angle);
-    }
-
-    setScale(point: Point_3) {
-        const savedBounds = this.bounds.clone();
-
-        // const currentScale = this.getScale();
-        // this.bounds.scale(new Point(1 / currentScale, 1 / currentScale));
-        // this.bounds.scale(new Point(scale, scale));
-
-        // if (this.bounds.getWidth() < MIN_VIEW_SIZE || this.bounds.getHeight() < MIN_VIEW_SIZE) {
-        //     this.bounds = savedBounds;
-        // } else {
-        //     this.containedViews.forEach(child => child.calcBounds());
-        //     this.scale = scale;
-        // }
-        
-        this.obj.setScale(point);
-    }
-
-    getScale(): number {
-        return this.scale;
     }
 
     getYPos() {
@@ -126,7 +103,6 @@ export class MeshView extends View {
             ...super.toJson(),
             rotation: this.rotation,
             thumbnailData: this.thumbnailData,
-            scale: this.scale,
             yPos: this.yPos,
             color: this.color,
         }
@@ -143,7 +119,6 @@ export class MeshView extends View {
         obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
         
         meshView.rotation = json.rotation;
-        meshView.scale = json.scale;
         meshView.yPos = json.yPos;
         meshView.thumbnailData = json.thumbnailData;
         meshView.color = json.color;

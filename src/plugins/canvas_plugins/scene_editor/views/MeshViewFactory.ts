@@ -29,7 +29,6 @@ export class MeshViewFactory extends ViewFactoryAdapter {
         meshView.setBounds(dimensions);
         meshObj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
-        meshView.setScale(new Point_3(1, 1, 1));
     
         this.registry.stores.objStore.addObj(meshObj);
         panel.getViewStore().addView(meshView);

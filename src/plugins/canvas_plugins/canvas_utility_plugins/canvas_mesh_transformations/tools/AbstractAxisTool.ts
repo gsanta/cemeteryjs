@@ -2,6 +2,7 @@ import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
+import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshView } from "../../../scene_editor/views/MeshView";
 import { MoveAxisView } from "../views/MoveAxisView";
@@ -65,6 +66,8 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView> e
         }
         this.downView = undefined;
         this.meshView = undefined;
+        this.registry.services.history.createSnapshot();
+        this.registry.services.render.scheduleRendering(UI_Region.Sidepanel);
     }
 
 

@@ -8,12 +8,15 @@ import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/regist
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
+import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
 
 export enum MeshViewControllerParam {
     MeshId = 'MeshId',
     Layer = 'Layer',
     Rotation = 'rotation',
-    Scale = 'scale',
+    ScaleX = 'scale-x',
+    ScaleY = 'scale-y',
+    ScaleZ = 'scale-z',
     YPos = 'YPos',
     Model = 'model',
     Texture = 'texture',
@@ -102,18 +105,22 @@ export class RotationController extends PropController<string> {
 
 export class ScaleController extends PropController<string> {
     private registry: Registry;
+    private axis: CanvasAxis;
+    private param: MeshViewControllerParam;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, axis: CanvasAxis, param: MeshViewControllerParam) {
         super();
         this.registry = registry;
+        this.axis = axis;
+        this.param = param;
     }
 
-    acceptedProps() { return [MeshViewControllerParam.Scale]; }
+    acceptedProps() { return [this.param]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
 
-        return meshView.getScale();
+        return CanvasAxis.getAxisVal(meshView.getObj().getScale(), this.axis);
     }
 
     change(val, context: PropContext) {
@@ -126,8 +133,10 @@ export class ScaleController extends PropController<string> {
         
         try {
             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                const scale = parseFloat(context.getTempVal());
-                meshView.setScale(new Point_3(scale, scale, scale));
+                const scale = meshView.getObj().getScale();
+                const axisScale = parseFloat(context.getTempVal());
+                CanvasAxis.setAxisVal(scale, this.axis, axisScale);
+                meshView.getObj().setScale(scale);
                 context.registry.services.history.createSnapshot();
             }
         } catch(e) {

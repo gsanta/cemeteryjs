@@ -36,6 +36,7 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
         const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
         
         this.meshView.getObj().setScale(scale);
+        console.log(this.meshView.getObj().getScale());
         this.meshView.getBounds().setWidth(realDimensions.x);
     }
 

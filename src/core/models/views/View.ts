@@ -136,8 +136,6 @@ export abstract class View implements IControlledModel {
         this.parentView = undefined;
     }
 
-    getScale() { return 1; }
-
     abstract getBounds(): Rectangle;
     abstract setBounds(rectangle: Rectangle): void;
     calcBounds(): void {}

@@ -5,7 +5,7 @@ import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { MeshData } from "./Bab_Meshes";
-
+// require('babylonjs-loaders');
 
 export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     

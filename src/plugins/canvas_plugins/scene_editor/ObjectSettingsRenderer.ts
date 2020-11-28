@@ -67,11 +67,23 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
 
-        row = layout.row({ key: MeshViewControllerParam.Scale });
-        const scaleTextField = row.textField({key: MeshViewControllerParam.Scale});
+        row = layout.row({ key: MeshViewControllerParam.ScaleX });
+
+        let scaleTextField = row.textField({key: MeshViewControllerParam.ScaleX});
         scaleTextField.layout = 'horizontal';
-        scaleTextField.label = 'Scale';
-        scaleTextField.type = 'number';
+        scaleTextField.label = 'Scale X';
+
+        row = layout.row({ key: MeshViewControllerParam.ScaleY });
+
+        scaleTextField = row.textField({key: MeshViewControllerParam.ScaleY});
+        scaleTextField.layout = 'horizontal';
+        scaleTextField.label = 'Scale Y';
+
+        row = layout.row({ key: MeshViewControllerParam.ScaleZ });
+
+        scaleTextField = row.textField({key: MeshViewControllerParam.ScaleZ});
+        scaleTextField.layout = 'horizontal';
+        scaleTextField.label = 'Scale Z';
 
         row = layout.row({ key: MeshViewControllerParam.YPos });
         const yPosTextField = row.textField({key: MeshViewControllerParam.YPos});

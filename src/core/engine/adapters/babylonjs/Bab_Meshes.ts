@@ -8,6 +8,7 @@ import { RectangleFactory } from "../../../stores/RectangleFactory";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { toHexString } from "../../../ui_components/react/colorUtils";
+import { toVector3 } from "./Bab_Utils";
 
 export interface MeshData {
     mainMesh: Mesh;
@@ -120,12 +121,19 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {
+        const scaling = meshObj.getScale();
+
         if (meshObj.shapeConfig) {
             await this.createPrimitiveMeshInstance(meshObj);
         } else if(meshObj.modelId) {
             await this.createModeledMeshInstance(meshObj);
         } else {
             await this.createPlaceHolderMeshInstance(meshObj);
+        }
+
+        const meshData = this.meshes.get(meshObj.id);
+        if (meshData && meshData.mainMesh) {
+            meshData.mainMesh.scaling = toVector3(scaling);
         }
 
         return true;
@@ -146,7 +154,7 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     private async createModeledMeshInstance(meshObj: MeshObj) {
-        const meshData = this.meshes.get(meshObj.id);
+        let meshData = this.meshes.get(meshObj.id);
         this.meshes.delete(meshObj.id);
         try {
             await this.engineFacade.meshLoader.load(meshObj);
@@ -154,6 +162,7 @@ export  class Bab_Meshes implements IMeshAdapter {
                 meshData.mainMesh.dispose();
                 meshData.skeletons.forEach(skeleton => skeleton.dispose());
             }
+            meshData = this.meshes.get(meshObj.id);
         } catch(e) {
             if (meshData) {
                 meshData.mainMesh.dispose();
@@ -161,6 +170,8 @@ export  class Bab_Meshes implements IMeshAdapter {
 
             this.createPlaceHolderMeshInstance(meshObj);
         }
+
+
     }
 
     private createPlaceHolderMeshInstance(meshObj: MeshObj) {
