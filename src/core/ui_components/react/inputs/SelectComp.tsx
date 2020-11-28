@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { UI_Select } from '../../elements/UI_Select';
 import { ClearIconComponent } from '../icons/ClearIconComponent';
+import { colors } from '../styles';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 import './DropdownComponent.scss';
 import { Focusable } from "./Focusable";
@@ -15,15 +16,6 @@ export interface DropdownProps extends Focusable {
     clear?: () => void;
 }
 
-const SelectStyled = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const LabelStyled = styled.div`
-    font-size: 12px;
-`;
-
 export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     const values: string[] = props.element.values(props.registry) || [];
 
@@ -35,7 +27,9 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
     const selectStyle: React.CSSProperties = {
         minWidth: '100px',
         height: '25px',
-        borderRadius: 0
+        borderRadius: 0,
+        background: colors.grey3,
+        color: colors.textColor
     };
 
     props.element.inputWidth && (selectStyle.width = props.element.inputWidth);

@@ -17,6 +17,8 @@ const CardBodyStyled = styled(Card.Body)`
     table {
         color: ${colors.textColor};
     }
+
+    
 `;
 
 const CardHeaderStyled = styled(Card.Header)`
@@ -25,6 +27,10 @@ const CardHeaderStyled = styled(Card.Header)`
 
     button, button:active, button:hover {
         color: ${(props: {level: 'primary' | 'secondary'}) => props.level === 'primary' ? colors.textColor : colors.textColorDark};
+    }
+
+    button {
+        border-bottom: 1px solid ${colors.panelBackground}; 
     }
 
     .btn {

@@ -20,8 +20,10 @@ const FormControlStyled = styled(Form.Control)`
 export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
     const inputStyle: React.CSSProperties = {
         minWidth: '100px',
-        height: '25px',
-        borderRadius: 0
+        height: '20px',
+        borderRadius: 0,
+        background: colors.grey3,
+        color: colors.textColor
     };
 
     props.element.inputWidth && (inputStyle.width = props.element.inputWidth);

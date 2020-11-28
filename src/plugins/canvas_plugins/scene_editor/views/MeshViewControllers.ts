@@ -102,7 +102,6 @@ export class RotationController extends PropController<string> {
     }
 }
 
-
 export class ScaleController extends PropController<string> {
     private registry: Registry;
     private axis: CanvasAxis;

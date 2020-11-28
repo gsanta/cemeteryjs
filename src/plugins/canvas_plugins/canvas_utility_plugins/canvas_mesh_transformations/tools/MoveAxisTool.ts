@@ -13,17 +13,18 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
  
     protected updateX() {
         let delta = new Point_3(this.registry.services.pointer.pointer.getDiff().x, 0, 0);    
-        this.downView.containerView.move(delta);
+        this.meshView.move(delta);
     }
 
     protected updateY() {
-        const objPos = this.meshView.getObj().getPosition();
         const deltaY = this.registry.services.pointer.pointer.getDiff().y / 10;
-        this.meshView.getObj().setPosition(new Point_3(objPos.x, objPos.y + deltaY, objPos.z));
+        let delta = new Point_3(0, deltaY, 0);    
+        
+        this.meshView.getObj().move(delta);
     }
 
     protected updateZ() {
         let delta = new Point_3(0, this.registry.services.pointer.pointer.getDiff().y, 0);
-        this.downView.containerView.move(delta);
+        this.meshView.move(delta);
     }
 }

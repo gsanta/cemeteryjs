@@ -21,6 +21,7 @@ export const ButtonStyled = styled.a`
     text-align: center;
     position: relative;
     cursor: pointer;
+    height: 25px;
 `;
 
 export const ButtonComp = (props: UI_ComponentProps<UI_Button>) => {
