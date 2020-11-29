@@ -154,7 +154,8 @@ export class MeshObj implements IGameObj {
         this.id = json.id;
         this.setScale(new Point_3(json.scale.x, json.scale.y, json.scale.z));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
-        this.rotate(json.rotation);
+        this.setRotation(json.rotation);
+
         this.modelId = json.modelId;
         this.textureId = json.textureId;
         this.routeId = json.routeId;

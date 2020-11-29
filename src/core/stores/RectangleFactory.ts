@@ -45,6 +45,7 @@ export class RectangleFactory  {
         mesh.scaling = new Vector3(scale.x, scale.x, scale.y);
         // mesh.translate(new Vector3(point.x + width / 2, 0, point.z - depth / 2), 1, Space.WORLD);
         mesh.translate(new Vector3(point.x, 0, point.z), 1, Space.WORLD);
+        mesh.rotation.y = obj.getRotation();
 
         mesh.material = this.createSimpleMaterial(scene, obj);
 

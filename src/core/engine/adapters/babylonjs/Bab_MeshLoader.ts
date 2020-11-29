@@ -46,6 +46,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         const model = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
         const meshData = this.templatesById.get(model.id);
         const templateMesh = meshData.mainMesh;
+        const rotation = meshObj.getRotation();
 
         let clone: Mesh;
 
@@ -69,7 +70,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
         clone.setAbsolutePosition(new Vector3(position.x, 0, position.z));
 
-        clone.rotation.y = meshObj.getRotation();
+        clone.rotation.y = rotation;
         
         this.engineFacade.meshes.createMaterial(meshObj);
     }

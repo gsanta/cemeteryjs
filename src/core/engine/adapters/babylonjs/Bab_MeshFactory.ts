@@ -20,7 +20,9 @@ export class Bab_MeshFactory implements IMeshFactory {
         this.createMaterial(obj, mesh);
 
         const pos = obj.getPosition();
+        const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
+        mesh.rotation.y = rotation;
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 
@@ -30,7 +32,9 @@ export class Bab_MeshFactory implements IMeshFactory {
 
         this.createMaterial(obj, mesh);
         const pos = obj.getPosition();
+        const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x + config.diameter / 2, pos.y, pos.z - config.diameter / 2), 1, Space.WORLD);
+        mesh.rotation.y = rotation;
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 
@@ -39,7 +43,9 @@ export class Bab_MeshFactory implements IMeshFactory {
         const mesh = MeshBuilder.CreateGround(obj.id, config, this.engineFacade.scene);
 
         const pos = obj.getPosition();
+        const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
+        mesh.rotation.y = rotation;
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 
