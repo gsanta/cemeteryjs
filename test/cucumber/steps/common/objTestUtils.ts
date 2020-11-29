@@ -17,6 +17,7 @@ export enum ObjTableProp {
     Parent = 'Parent',
     Rotation = 'Rotation',
     Scale = 'Scale',
+    Size = 'Size',
     Model = 'Model',
     Texture = 'Texture'
 }

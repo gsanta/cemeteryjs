@@ -21,9 +21,9 @@ export enum MeshViewControllerParam {
     Model = 'model',
     Texture = 'texture',
     Thumbnail = 'Thumbnail',
-    Width = 'Width',
-    Height = 'Height',
-    Depth = 'Depth',
+    Width = 'width',
+    Height = 'height',
+    Depth = 'depth',
     Color = 'Color'
 }
 

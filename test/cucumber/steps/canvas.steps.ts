@@ -1,10 +1,11 @@
 
-import { When } from 'cucumber';
+import { Then, When } from 'cucumber';
 import { Canvas2dPanel } from '../../../src/core/plugin/Canvas2dPanel';
 import { Point } from '../../../src/utils/geometry/shapes/Point';
 import { createFakeMouseEvent } from './common/inputTestUtils';
-import { createFakeUIElement } from './common/uiTestHelpers';
+import { createFakeUIElement, createFakeUIElementForView } from './common/uiTestHelpers';
 import { findViewOrContainedView } from './common/viewTestUtils';
+import expect from 'expect';
 
 When('hover over canvas \'{word}\'', function(panelId: string) {
     this.registry.ui.helper.hoveredPanel = this.registry.ui.canvas.getCanvas(panelId); 
@@ -96,3 +97,46 @@ When('mouse drags from view \'{word}\' to \'{int}:{int}\'', function(startViewPa
     canvasPanel.toolController.mouseMove(createFakeMouseEvent(xEnd, yEnd), createFakeUIElement({ canvasPanel })); 
     canvasPanel.toolController.mouseUp(createFakeMouseEvent(xEnd, yEnd), createFakeUIElement({ canvasPanel })); 
 });
+
+When('mouse move to view \'{word}\'', function(viewPath: string) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+
+    const view = findViewOrContainedView(canvasPanel.getViewStore(), viewPath);
+    const view1Pos = view.getBounds().getBoundingCenter();
+
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view, createFakeUIElementForView(view, canvasPanel, { canvasPanel })); 
+});
+
+When('mouse move to view \'{word}\'', function(viewPath: string) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+
+    const view = findViewOrContainedView(canvasPanel.getViewStore(), viewPath);
+    const view1Pos = view.getBounds().getBoundingCenter();
+
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view, createFakeUIElementForView(view, canvasPanel, { canvasPanel })); 
+});
+
+When('mouse move to \'{int}:{int}\'', function(x: number, y: number) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const hoveredView = findViewAtPoint(new Point(x, y));
+
+    if (hoveredView) {
+        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(x, y), hoveredView, createFakeUIElement({ canvasPanel })); 
+    } else {
+        this.registry.services.pointer.hoveredView = undefined;
+    }
+});
+
+Then('active tool is \'{word}\'', function(toolId: string) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+
+    expect(canvasPanel.toolController.getActiveTool().id).toEqual(toolId);
+});
+
+function findViewAtPoint(point: Point) {
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+
+    const viewAtPoint = canvasPanel.getViewStore().getAllViews().find(view => view.getBounds().containsPoint(point));
+
+    return viewAtPoint;
+}

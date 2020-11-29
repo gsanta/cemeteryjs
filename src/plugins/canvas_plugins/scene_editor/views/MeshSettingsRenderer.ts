@@ -29,15 +29,16 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         this.registry.data.view.scene.getAllViews().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
-        row = layout.row({ key: MeshViewControllerParam.Rotation });
+        
+        let accordion = layout.accordion({key: 'transforms'});
+        accordion.title = 'Transforms'
+
+        row = accordion.row({ key: MeshViewControllerParam.Rotation });
         const rotationTextField = row.textField({key: MeshViewControllerParam.Rotation});
         rotationTextField.layout = 'horizontal';
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
-
-        let accordion = layout.accordion({key: 'transforms'});
-        accordion.title = 'Transforms'
-
+        
         row = accordion.row({ key: MeshViewControllerParam.ScaleX });
 
         let scaleTextField = row.textField({key: MeshViewControllerParam.ScaleX});
