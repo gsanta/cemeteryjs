@@ -7,7 +7,6 @@ import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
-import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
 
 export enum MeshViewControllerParam {
@@ -17,7 +16,9 @@ export enum MeshViewControllerParam {
     ScaleX = 'scale-x',
     ScaleY = 'scale-y',
     ScaleZ = 'scale-z',
-    YPos = 'YPos',
+    PosX = 'pos-x',
+    PosY = 'pos-y',
+    PosZ = 'pos-z',
     Model = 'model',
     Texture = 'texture',
     Thumbnail = 'Thumbnail',
@@ -148,20 +149,24 @@ export class ScaleController extends PropController<string> {
     }
 }
 
-export class YPosController extends PropController<string> {
+export class PositionController extends PropController<string> {
     private registry: Registry;
+    private axis: CanvasAxis;
+    private param: MeshViewControllerParam;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, axis: CanvasAxis) {
         super();
         this.registry = registry;
+        this.axis = axis;
+        this.param = axis === CanvasAxis.X ? MeshViewControllerParam.PosX : axis === CanvasAxis.Y ? MeshViewControllerParam.PosY : MeshViewControllerParam.PosZ;
     }
 
-    acceptedProps() { return [MeshViewControllerParam.YPos]; }
+    acceptedProps() { return [this.param]; }
 
     defaultVal(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
 
-        return meshView.yPos.toString();
+        return CanvasAxis.getAxisVal(meshView.getObj().getPosition(), this.axis);
     }
 
     change(val, context: PropContext) {
@@ -171,10 +176,14 @@ export class YPosController extends PropController<string> {
 
     blur(context: PropContext) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-
+        
         try {
             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                meshView.yPos = parseFloat(context.getTempVal());
+                const position = meshView.getObj().getPosition();
+                const axisPosition = parseFloat(context.getTempVal());
+                CanvasAxis.setAxisVal(position, this.axis, axisPosition);
+                console.log('newPos: ' + position.toString())
+                meshView.getObj().setPosition(position);
                 context.registry.services.history.createSnapshot();
             }
         } catch(e) {

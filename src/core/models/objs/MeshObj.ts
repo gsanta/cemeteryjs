@@ -20,7 +20,6 @@ export interface MeshObjJson extends ObjJson {
     modelId: string;
     textureId: string;
     routeId: string;
-    y: number;
     color: string;
     shapeConfig: MeshShapeConfig;
 }
@@ -75,8 +74,6 @@ export class MeshObj implements IGameObj {
     modelId: string;
     textureId: string;
     routeId: string;
-    // TODO: when switching the app to 3D coordinates it should be removed
-    yPos: number = 0;
 
     meshAdapter: IMeshAdapter;
 
@@ -144,7 +141,6 @@ export class MeshObj implements IGameObj {
             posX: this.getPosition().x,
             posY: this.getPosition().y,
             posZ: this.getPosition().z,
-            y: this.yPos,
             rotation: this.getRotation(),
             modelId: this.modelId,
             textureId: this.textureId,
@@ -159,7 +155,6 @@ export class MeshObj implements IGameObj {
         this.setScale(new Point_3(json.scale.x, json.scale.y, json.scale.z));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
         this.rotate(json.rotation);
-        this.yPos = json.y;
         this.modelId = json.modelId;
         this.textureId = json.textureId;
         this.routeId = json.routeId;

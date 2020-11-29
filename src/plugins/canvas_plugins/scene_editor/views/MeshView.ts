@@ -13,7 +13,6 @@ export const MeshViewType = 'mesh-view';
 export interface MeshViewJson extends ViewJson {
     rotation: number;
     thumbnailData: string;
-    yPos: number;
     color: string;
 }
 
@@ -30,7 +29,6 @@ export class MeshView extends View {
     thumbnailData: string;
 
     color: string = colors.pastelBlue;
-    yPos: number = 0;
     speed = 0.5;
 
     constructor() {
@@ -59,11 +57,7 @@ export class MeshView extends View {
         this.rotation = angle;
         this.obj.setRotation(angle);
     }
-
-    getYPos() {
-        return this.yPos;
-    }
-
+    
     selectHoveredSubview() {}
 
     move(point: Point) {
@@ -103,7 +97,6 @@ export class MeshView extends View {
             ...super.toJson(),
             rotation: this.rotation,
             thumbnailData: this.thumbnailData,
-            yPos: this.yPos,
             color: this.color,
         }
     }
@@ -119,7 +112,6 @@ export class MeshView extends View {
         obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
         
         meshView.rotation = json.rotation;
-        meshView.yPos = json.yPos;
         meshView.thumbnailData = json.thumbnailData;
         meshView.color = json.color;
 

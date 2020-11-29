@@ -64,7 +64,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
         const scale = meshObj.getScale();
         clone.scaling = new Vector3(scale.x, scale.x, scale.x);
-        clone.position.y = meshObj.yPos;
+        clone.position.y = position.y;
         clone.rotationQuaternion = undefined;
 
         clone.setAbsolutePosition(new Vector3(position.x, 0, position.z));

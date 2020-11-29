@@ -38,7 +38,7 @@ export class JoinPointView extends ContainedView {
             this.slotName = config.slotName;
             this.isInput = config.isInput;
         }
-        this.id = `${parent.id}.${this.slotName}`;
+        this.id = this.slotName;
     }
 
     getObj(): NodeObj {

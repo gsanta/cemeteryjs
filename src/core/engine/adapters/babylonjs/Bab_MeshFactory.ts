@@ -19,8 +19,8 @@ export class Bab_MeshFactory implements IMeshFactory {
         const mesh = MeshBuilder.CreateBox(obj.id, config, this.engineFacade.scene);
         this.createMaterial(obj, mesh);
 
-        const point = obj.getPosition();
-        mesh.translate(new Vector3(point.x, 0, point.z), 1, Space.WORLD);
+        const pos = obj.getPosition();
+        mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 
@@ -29,8 +29,8 @@ export class Bab_MeshFactory implements IMeshFactory {
         const mesh = MeshBuilder.CreateSphere(obj.id, config, this.engineFacade.scene);
 
         this.createMaterial(obj, mesh);
-        const point = obj.getPosition();
-        mesh.translate(new Vector3(point.x + config.diameter / 2, 0, point.z - config.diameter / 2), 1, Space.WORLD);
+        const pos = obj.getPosition();
+        mesh.translate(new Vector3(pos.x + config.diameter / 2, pos.y, pos.z - config.diameter / 2), 1, Space.WORLD);
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 
@@ -38,8 +38,8 @@ export class Bab_MeshFactory implements IMeshFactory {
         const config = <GroundConfig> obj.shapeConfig;
         const mesh = MeshBuilder.CreateGround(obj.id, config, this.engineFacade.scene);
 
-        const point = obj.getPosition();
-        mesh.translate(new Vector3(point.x, 0, point.z), 1, Space.WORLD);
+        const pos = obj.getPosition();
+        mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
         this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
     }
 

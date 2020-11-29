@@ -38,6 +38,24 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         rotationTextField.layout = 'horizontal';
         rotationTextField.label = 'Rotation';
         rotationTextField.type = 'number';
+
+        row = accordion.row({ key: MeshViewControllerParam.PosX });
+
+        let positionTextField = row.textField({key: MeshViewControllerParam.PosX});
+        positionTextField.layout = 'horizontal';
+        positionTextField.label = 'Pos X';
+
+        row = accordion.row({ key: MeshViewControllerParam.PosY });
+
+        positionTextField = row.textField({key: MeshViewControllerParam.PosY});
+        positionTextField.layout = 'horizontal';
+        positionTextField.label = 'Pos Y';
+
+        row = accordion.row({ key: MeshViewControllerParam.PosZ });
+
+        positionTextField = row.textField({key: MeshViewControllerParam.PosZ});
+        positionTextField.layout = 'horizontal';
+        positionTextField.label = 'Pos Z';
         
         row = accordion.row({ key: MeshViewControllerParam.ScaleX });
 
@@ -62,12 +80,6 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
                 this.renderBoxSettings(accordion);
             }
         }
-
-        row = accordion.row({ key: MeshViewControllerParam.YPos });
-        const yPosTextField = row.textField({key: MeshViewControllerParam.YPos});
-        yPosTextField.layout = 'horizontal';
-        yPosTextField.label = 'YPos';
-        yPosTextField.type = 'number';
 
         accordion = layout.accordion({key: 'appearance'});
         accordion.title = 'Appearance';

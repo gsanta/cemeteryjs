@@ -54,7 +54,7 @@ export class MoveAxisView extends ContainedView {
     constructor(registry: Registry, axis: CanvasAxis) {
         super();
         this.axis = axis;
-        this.bounds = new Rectangle(new Point(0, 0), new Point(0, 0));
+        this.bounds = new Rectangle(new Point(0, 0), new Point(40, 5));
         this.renderer = new MoveAxisViewRenderer(registry);
         this.id = `${MoveAxisViewType}-${this.axis}`.toLowerCase();
     }
