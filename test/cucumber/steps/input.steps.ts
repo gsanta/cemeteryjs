@@ -25,6 +25,14 @@ When('change param \'{word}\' to \'{word}\' in view \'{word}\'', function(paramN
     view.controller.blur(fakeUIElement);
 });
 
+When('click button \'{word}\' in panel \'{word}\'', function(paramName: string, panelId: string) {
+    const panel = this.registry.ui.panel.getPanel(panelId);
+    
+    const fakeUIElement = createFakeUIElement({ controller: panel.controller, key: paramName });
+    
+    panel.controller.click(fakeUIElement);
+});
+
 When('press key \'{word}\'', function(key: string) {
     this.registry.services.keyboard.keyDown(createFakeKeyboardEventFromString(key));
 });

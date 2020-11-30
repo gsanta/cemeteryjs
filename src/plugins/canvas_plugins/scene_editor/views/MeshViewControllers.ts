@@ -247,6 +247,7 @@ export class CloneController extends PropController {
     acceptedProps() { return [MeshViewControllerParam.Clone]; }
 
     click(context: PropContext, element: UI_Element) {
+        console.log('cloning')
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
         meshView.deepClone(context.registry);
 

@@ -75,8 +75,10 @@ export class FormController {
 
     click(element: UI_Element): void {
         const controller = this.findController(element); 
-
+        console.log('clicking: ' + element.key)
         if (controller) {
+            console.log('has contorller')
+
             this.findController(element).click(this.propContexts.get(controller), element);
         }
     }
