@@ -36,6 +36,10 @@ export class NodeConnectionObj implements IObj {
 
     dispose() {}
 
+    clone(): NodeConnectionObj {
+        throw new Error('not implemented');
+    }
+
     serialize(): NodeConnectionObjJson {
         return {
             id: this.id,

@@ -23,7 +23,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
         mesh.rotation.y = rotation;
-        this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
+        this.engineFacade.meshes.meshes.set(obj, {mainMesh: mesh, skeletons: []});
     }
 
     sphere(obj: MeshObj) {
@@ -35,7 +35,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x + config.diameter / 2, pos.y, pos.z - config.diameter / 2), 1, Space.WORLD);
         mesh.rotation.y = rotation;
-        this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
+        this.engineFacade.meshes.meshes.set(obj, {mainMesh: mesh, skeletons: []});
     }
 
     ground(obj: MeshObj) {
@@ -46,7 +46,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
         mesh.rotation.y = rotation;
-        this.engineFacade.meshes.meshes.set(obj.id, {mainMesh: mesh, skeletons: []});
+        this.engineFacade.meshes.meshes.set(obj, {mainMesh: mesh, skeletons: []});
     }
 
     private createMaterial(obj: MeshObj, mesh: Mesh) {

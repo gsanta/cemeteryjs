@@ -9,10 +9,10 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     private registry: Registry;
     private engineFacade: Test_EngineFacade;
 
-    posMap: Map<string, Point_3> = new Map();
-    rotationMap: Map<string, number> = new Map();
-    scaleMap: Map<string, Point_3> = new Map();
-    colorMap: Map<string, string> = new Map();
+    posMap: Map<MeshObj, Point_3> = new Map();
+    rotationMap: Map<MeshObj, number> = new Map();
+    scaleMap: Map<MeshObj, Point_3> = new Map();
+    colorMap: Map<MeshObj, string> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -20,34 +20,34 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     }
 
     setPosition(meshObj: MeshObj, pos: Point_3): void {
-        this.posMap.set(meshObj.id, pos);
+        this.posMap.set(meshObj, pos);
     }
 
     getPosition(meshObj: MeshObj): Point_3 {
-        return this.posMap.get(meshObj.id);
+        return this.posMap.get(meshObj);
     }
 
     setScale(meshObj: MeshObj, scale: Point_3) {
-        this.scaleMap.set(meshObj.id, scale);
+        this.scaleMap.set(meshObj, scale);
     } 
 
     getScale(meshObj: MeshObj): Point_3 {
-        return this.scaleMap.get(meshObj.id) || new Point_3(1, 1, 1);
+        return this.scaleMap.get(meshObj) || new Point_3(1, 1, 1);
     } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
     }
 
     rotate(meshObj: MeshObj, angle: number): void {
-        this.rotationMap.set(meshObj.id, this.getRotation(meshObj) + angle);
+        this.rotationMap.set(meshObj, this.getRotation(meshObj) + angle);
     }
 
     setRotation(meshObj: MeshObj, angle: number): void {
-        this.rotationMap.set(meshObj.id, angle);
+        this.rotationMap.set(meshObj, angle);
     }
 
     getRotation(meshObj: MeshObj): number {
-        return this.rotationMap.get(meshObj.id) || 0;
+        return this.rotationMap.get(meshObj) || 0;
     }
 
     getDimensions(meshObj: MeshObj): Point {
@@ -55,11 +55,11 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     }
 
     setColor(meshObj: MeshObj, color: string): void {
-        this.colorMap.set(meshObj.id, color);
+        this.colorMap.set(meshObj, color);
     }
 
     getColor(meshObj: MeshObj): string {
-        return this.colorMap.get(meshObj.id) || '#FFFFFF';
+        return this.colorMap.get(meshObj) || '#FFFFFF';
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

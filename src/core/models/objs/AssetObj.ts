@@ -47,6 +47,10 @@ export class AssetObj implements IObj {
 
     dispose() {}
 
+    clone(): AssetObj {
+        return new AssetObj({data: this.data, path: this.path, name: this.name, assetType: this.assetType});
+    }
+
     serialize(): AssetObjJson {
         return {
             id: this.id,

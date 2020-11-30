@@ -150,6 +150,10 @@ export class NodeObj implements IObj {
 
     dispose() {}
 
+    clone(): NodeObj {
+        throw new Error('not implemented');
+    }
+
     serialize(): NodeObjJson {
         const params = this.params.map(param => this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param));
 

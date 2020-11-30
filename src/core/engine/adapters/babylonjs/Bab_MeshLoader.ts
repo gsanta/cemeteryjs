@@ -50,13 +50,13 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
 
         let clone: Mesh;
 
-        if (!this.engineFacade.meshes.meshes.has(meshObj.id)) {
+        if (!this.engineFacade.meshes.meshes.has(meshObj)) {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
             clone.name = meshObj.id;
         }
-        this.engineFacade.meshes.meshes.set(meshObj.id, {mainMesh: clone, skeletons: meshData.skeletons});
+        this.engineFacade.meshes.meshes.set(meshObj, {mainMesh: clone, skeletons: meshData.skeletons});
 
         
         clone.setAbsolutePosition(new Vector3(0, 0, 0));

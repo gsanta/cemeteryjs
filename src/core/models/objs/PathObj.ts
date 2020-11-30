@@ -28,6 +28,10 @@ export class PathObj implements IObj {
 
     dispose() {}
 
+    clone(): PathObj {
+        throw new Error('not implemented');
+    }
+
     serialize(): PathObjJson {
         const pointsJson = this.points.map(point => ({x: point.x, y: point.y}));
 

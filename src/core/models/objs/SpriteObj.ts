@@ -89,6 +89,10 @@ export class SpriteObj implements IObj {
         this.spriteAdapter && this.spriteAdapter.deleteInstance(this);
     }
 
+    clone(): SpriteObj {
+        throw new Error('not implemented');
+    }
+
     serialize(): SpriteObjJson {
         return {
             id: this.id,

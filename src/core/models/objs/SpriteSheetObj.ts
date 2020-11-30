@@ -26,6 +26,10 @@ export class SpriteSheetObj implements IObj {
 
     dispose() {}
 
+    clone(): SpriteSheetObj {
+        throw new Error('not implemented');
+    }
+
     serialize(): SpriteSheetObjJson {
         return {
             id: this.id,

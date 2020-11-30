@@ -1,3 +1,4 @@
+import { MeshView } from '../../../plugins/canvas_plugins/scene_editor/views/MeshView';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
@@ -133,6 +134,8 @@ export class MeshObj implements IGameObj {
         clone.meshAdapter = this.meshAdapter;
         clone.deserialize(this.serialize());
         clone.id = undefined;
+        clone.textureId = undefined;
+        clone.modelId = undefined;
 
         return clone;
     }

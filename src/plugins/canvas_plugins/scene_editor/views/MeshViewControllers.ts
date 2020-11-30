@@ -248,15 +248,7 @@ export class CloneController extends PropController {
 
     click(context: PropContext, element: UI_Element) {
         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-        
-        const meshClone = meshView.clone(context.registry);
-        const meshObjClone = meshView.getObj().clone();
-        meshView.setBounds(meshView.getBounds());
-        meshClone.setObj(meshObjClone);
-        meshClone.move(new Point(50, 0));
-
-        context.registry.stores.objStore.addObj(meshObjClone);
-        context.registry.data.view.scene.addView(meshView);
+        meshView.deepClone(context.registry);
 
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRenderAll();

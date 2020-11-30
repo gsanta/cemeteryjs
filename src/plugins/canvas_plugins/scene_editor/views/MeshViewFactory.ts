@@ -27,7 +27,6 @@ export class MeshViewFactory extends ViewFactoryAdapter {
         const meshView: MeshView = <MeshView> this.instantiate();
         meshView.setObj(meshObj);
         meshView.setBounds(dimensions);
-        meshObj.meshAdapter = this.registry.engine.meshes;
         meshView.setRotation(0);
     
         this.registry.stores.objStore.addObj(meshObj);

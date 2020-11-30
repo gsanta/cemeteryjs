@@ -16,8 +16,6 @@ export interface MeshViewJson extends ViewJson {
     color: string;
 }
 
-const MIN_VIEW_SIZE = 20;
-
 export class MeshView extends View {
     viewType = MeshViewType;
 
@@ -96,7 +94,40 @@ export class MeshView extends View {
         const [clone] = MeshView.fromJson(this.toJson(), registry);
         clone.obj = undefined;
         clone.id = undefined;
+        clone.bounds = undefined;
         return clone;
+    }
+
+    deepClone(registry: Registry) {
+        const meshView = <MeshView> registry.data.view.scene.getOneSelectedView();
+        const meshObj = meshView.getObj();
+        let bounds = meshView.getBounds().clone();
+        bounds = bounds.moveTo(bounds.getBoundingCenter());
+
+        const meshObjClone = meshObj.clone();
+        meshObjClone.meshAdapter = registry.engine.meshes;
+        const meshClone = meshView.clone(registry);
+
+        const textureAsset = registry.stores.assetStore.getAssetById(meshObj.textureId);
+        const modelAsset = registry.stores.assetStore.getAssetById(meshObj.modelId);
+
+        if (textureAsset) {
+            const textureAssetClone = textureAsset.clone();
+            registry.stores.assetStore.addObj(textureAssetClone);
+            meshObjClone.textureId = textureAssetClone.id;
+        }
+
+        if (modelAsset) {
+            const modelAssetClone = modelAsset.clone();
+            registry.stores.assetStore.addObj(modelAssetClone);
+            meshObjClone.modelId = modelAssetClone.id;
+        }
+
+        meshClone.setObj(meshObjClone);
+        meshClone.setBounds(bounds);
+
+        registry.stores.objStore.addObj(meshObjClone);
+        registry.data.view.scene.addView(meshClone);
     }
 
     toJson(): MeshViewJson {

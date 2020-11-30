@@ -34,4 +34,5 @@ export interface IObj {
     dispose(): void;
     serialize(): ObjJson;
     deserialize(json: ObjJson, registry: Registry);
+    clone(): IObj;
 }
