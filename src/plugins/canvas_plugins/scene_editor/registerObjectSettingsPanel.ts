@@ -3,7 +3,7 @@ import { FormController } from "../../../core/plugin/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { LightAngleController, LightDiffuseColorController, LightDirController, LightParentMeshController, LightYPosController } from "./views/LightViewControllers";
-import { MeshIdController, LayerController, RotationController, ScaleController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController, ColorController, MeshViewControllerParam, PositionController } from "./views/MeshViewControllers";
+import { MeshIdController, LayerController, RotationController, ScaleController, TextureController, ModelController, ThumbnailController, WidthController, DepthController, HeightController, ColorController, MeshViewControllerParam, PositionController, CloneController } from "./views/MeshViewControllers";
 import { ObjectSettigsRenderer } from "./ObjectSettingsRenderer";
 import { PathIdController } from "./views/PathViewControllers";
 import { FrameName, SelectSpriteSheetController, ManageSpriteSheetsController, ScaleXController, ScaleYController } from "./views/SpriteViewControllers";
@@ -39,7 +39,8 @@ function createPanel(registry: Registry): UI_Panel {
             new DepthController(registry),
             new HeightController(registry),
             new ColorController(registry),
-
+            new CloneController(),
+            
             // path
             new PathIdController(),
 

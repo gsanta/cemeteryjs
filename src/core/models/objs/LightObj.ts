@@ -141,6 +141,7 @@ export class LightObj implements IGameObj {
     }
 
     deserialize() {}
+    clone(): LightObj { throw new Error('Not implemented'); }
 
     static deserialize(json: LightObjJson, registry: Registry): [IObj, AfterAllObjsDeserialized] {
         const obj = new LightObj(json.id, registry.engine.lights);

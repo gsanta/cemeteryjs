@@ -92,6 +92,13 @@ export class MeshView extends View {
         // TODO: later when ObjStores are correctly introduced, dispose obj only when removing from obj store.
     }
 
+    clone(registry: Registry): View {
+        const [clone] = MeshView.fromJson(this.toJson(), registry);
+        clone.obj = undefined;
+        clone.id = undefined;
+        return clone;
+    }
+
     toJson(): MeshViewJson {
         return {
             ...super.toJson(),
@@ -118,7 +125,6 @@ export class MeshView extends View {
         const afterAllViewsDeserialized = () => {
             json.childViewIds.map(id => meshView.addChildView(registry.data.view.scene.getById(id)));
             json.parentId && meshView.setParent(registry.data.view.scene.getById(json.parentId));
-    
         }
 
         return [meshView, afterAllViewsDeserialized];

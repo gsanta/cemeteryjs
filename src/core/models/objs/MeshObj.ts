@@ -128,6 +128,15 @@ export class MeshObj implements IGameObj {
         return undefined;
     }
 
+    clone(): MeshObj {
+        const clone = new MeshObj();
+        clone.meshAdapter = this.meshAdapter;
+        clone.deserialize(this.serialize());
+        clone.id = undefined;
+
+        return clone;
+    }
+
     serialize(): MeshObjJson {
         const scale = this.getScale();
         return {

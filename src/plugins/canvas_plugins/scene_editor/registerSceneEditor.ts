@@ -50,7 +50,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new PrimitiveShapeDropdownMenuOpenControl(),
         new CommonToolController(),
         new SceneEditorToolController(),
-        new CanvasContextDependentToolController()
+        new CanvasContextDependentToolController(),
     ];
 
     const tools = [

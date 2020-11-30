@@ -29,6 +29,10 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         this.registry.data.view.scene.getAllViews().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
+        row = layout.row({ key: MeshViewControllerParam.Clone });
+        const cloneMeshButton = row.button(MeshViewControllerParam.Clone);
+        cloneMeshButton.label = 'Clone Mesh';
+        cloneMeshButton.width = '200px';
         
         let accordion = layout.accordion({key: 'transforms'});
         accordion.title = 'Transforms'

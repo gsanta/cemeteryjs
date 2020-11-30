@@ -143,6 +143,7 @@ export abstract class View implements IControlledModel {
     getYPos() { return undefined; }
 
     abstract dispose(): void;
+    clone(registry: Registry): View { throw new Error('Not implemented'); }
 
     toJson(): ViewJson {
         return {

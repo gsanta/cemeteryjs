@@ -8,6 +8,9 @@ import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/regist
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
+import { UI_Element } from '../../../../core/ui_components/elements/UI_Element';
+import { Canvas2dPanel } from '../../../../core/plugin/Canvas2dPanel';
+import { Point } from '../../../../utils/geometry/shapes/Point';
 
 export enum MeshViewControllerParam {
     MeshId = 'MeshId',
@@ -25,7 +28,8 @@ export enum MeshViewControllerParam {
     Width = 'width',
     Height = 'height',
     Depth = 'depth',
-    Color = 'Color'
+    Color = 'Color',
+    Clone = 'clone'
 }
 
 export class MeshIdController extends PropController<string> {
@@ -236,6 +240,26 @@ export class ThumbnailController extends PropController {
         const dialog = context.registry.ui.panel.getPanel(ThumbnailDialogPanelId);
         context.registry.ui.helper.setDialogPanel(dialog);
         context.registry.services.render.reRender(UI_Region.Dialog);
+    }
+}
+
+export class CloneController extends PropController {
+    acceptedProps() { return [MeshViewControllerParam.Clone]; }
+
+    click(context: PropContext, element: UI_Element) {
+        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+        
+        const meshClone = meshView.clone(context.registry);
+        const meshObjClone = meshView.getObj().clone();
+        meshView.setBounds(meshView.getBounds());
+        meshClone.setObj(meshObjClone);
+        meshClone.move(new Point(50, 0));
+
+        context.registry.stores.objStore.addObj(meshObjClone);
+        context.registry.data.view.scene.addView(meshView);
+
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRenderAll();
     }
 }
 

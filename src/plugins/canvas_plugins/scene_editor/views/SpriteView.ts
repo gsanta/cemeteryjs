@@ -54,6 +54,10 @@ export class SpriteView extends View {
     dispose() {
     }
 
+    clone(): SpriteView {
+        throw new Error('not implemented')
+    }
+
     toJson(): SpriteViewJson {
         return {
             ...super.toJson(),

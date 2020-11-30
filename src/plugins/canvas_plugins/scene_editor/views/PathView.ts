@@ -108,6 +108,10 @@ export class PathView extends View {
 
     dispose() {}
 
+    clone(): PathView {
+        throw new Error('not implemented')
+    }
+
     toJson(): PathViewJson {
         return {
             ...super.toJson(),

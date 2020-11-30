@@ -48,6 +48,10 @@ export class PathPointView extends ContainedView {
 
     dispose() {}
 
+    clone(): PathPointView {
+        throw new Error('not implemented')
+    }
+
     toString() {
         return `EditPoint: ${this.containerView.id} ${this.point.toString()}`
     }
