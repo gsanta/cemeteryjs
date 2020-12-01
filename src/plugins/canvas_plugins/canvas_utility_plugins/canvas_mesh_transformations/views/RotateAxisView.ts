@@ -6,16 +6,16 @@ import { View, ViewFactoryAdapter, ViewJson } from "../../../../../core/models/v
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { MoveAxisViewRenderer } from "./MoveAxisViewRenderer";
+import { RotateAxisViewRenderer } from "./RotateAxisViewRenderer";
 
 export interface AxisViewJson extends ViewJson {
     point: string;
     parentId: string; 
 }
 
-export const MoveAxisViewType = 'move-axis-view';
+export const RotateAxisViewType = 'rotate-axis-view';
 
-export class MoveAxisViewFactory extends ViewFactoryAdapter {
+export class RotateAxisViewFactory extends ViewFactoryAdapter {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -25,28 +25,28 @@ export class MoveAxisViewFactory extends ViewFactoryAdapter {
 
     instantiate() {
         // TODO: does not make sense to create only one of the axis
-        return new MoveAxisView(this.registry, CanvasAxis.X);
+        return new RotateAxisView(this.registry, CanvasAxis.X);
     }
 
     instantiateOnSelection(parentView: View) {
-        let scaleView = new MoveAxisView(this.registry, CanvasAxis.X);
+        let scaleView = new RotateAxisView(this.registry, CanvasAxis.X);
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
 
-        scaleView = new MoveAxisView(this.registry, CanvasAxis.Y);
+        scaleView = new RotateAxisView(this.registry, CanvasAxis.Y);
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
 
-        scaleView = new MoveAxisView(this.registry, CanvasAxis.Z);
+        scaleView = new RotateAxisView(this.registry, CanvasAxis.Z);
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
     }
 }
 
-export class MoveAxisView extends ContainedView {
+export class RotateAxisView extends ContainedView {
     readonly id: string;
     readonly axis: CanvasAxis;
-    readonly viewType = MoveAxisViewType;
+    readonly viewType = RotateAxisViewType;
     point: Point;
     readonly containerView: View;
 
@@ -54,8 +54,8 @@ export class MoveAxisView extends ContainedView {
         super();
         this.axis = axis;
         this.bounds = new Rectangle(new Point(0, 0), new Point(40, 5));
-        this.renderer = new MoveAxisViewRenderer(registry);
-        this.id = `${MoveAxisViewType}-${this.axis}`.toLowerCase();
+        this.renderer = new RotateAxisViewRenderer(registry);
+        this.id = `${RotateAxisViewType}-${this.axis}`.toLowerCase();
     }
 
     getObj(): IObj {

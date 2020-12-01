@@ -17,6 +17,7 @@ import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools
 import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { MoveAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
 import { LightToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/LightTool";
+import { RotateAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/RotateAxisTool";
 
 export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -37,17 +38,27 @@ export class SceneEditorToolController extends PropController<any> {
 }
 
 export class CanvasContextDependentToolController extends PropController<any> {
-    acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId]; }
+    acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId, RotateAxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {
         const tool = element.canvasPanel.toolController.getToolById(element.key);
         tool.isSelected = !tool.isSelected;
 
-        if (tool.id === ScaleAxisToolId) {
-            element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
-        } else if (tool.id === MoveAxisToolId) {
-            element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;
+        switch(tool.id) {
+            case ScaleAxisToolId:
+                element.canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected = false;
+                element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
+                break;
+            case RotateAxisToolId:
+                element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;
+                element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
+                break;
+            case MoveAxisToolId:
+                element.canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected = false;
+                element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;        
+                break;
         }
+
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }

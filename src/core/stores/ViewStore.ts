@@ -1,4 +1,5 @@
 import { MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
+import { RotateAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/RotateAxisView";
 import { ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
 import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/views/LightView';
 import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
@@ -278,6 +279,7 @@ export class AxisControlHook extends EmptyViewStoreHook {
         if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
             this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiateOnSelection(views[0])
             this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiateOnSelection(views[0])
+            this.registry.data.view.scene.getViewFactory(RotateAxisViewType).instantiateOnSelection(views[0])
         }
     }
 
@@ -285,6 +287,7 @@ export class AxisControlHook extends EmptyViewStoreHook {
         views.forEach(view => {
             view.containedViews.filter(view => view.viewType === MoveAxisViewType).forEach(child => view.deleteContainedView(child));
             view.containedViews.filter(view => view.viewType === ScaleAxisViewType).forEach(child => view.deleteContainedView(child));
+            view.containedViews.filter(view => view.viewType === RotateAxisViewType).forEach(child => view.deleteContainedView(child));
         });
     }
 }

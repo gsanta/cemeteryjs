@@ -8,6 +8,7 @@ import { Registry } from "../../../core/Registry";
 import { UI_Toolbar } from "../../../core/ui_components/elements/toolbar/UI_Toolbar";
 import { UI_SvgCanvas } from "../../../core/ui_components/elements/UI_SvgCanvas";
 import { MoveAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
+import { RotateAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/RotateAxisTool";
 import { ScaleAxisToolId } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { SceneEditorToolbarProps } from "./SceneEditorControllers";
 import { CubeToolId } from "./tools/CubeTool";
@@ -97,17 +98,23 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        actionIcon = toolbar.actionIcon({key: ScaleAxisToolId, uniqueId: `${ScaleAxisToolId}-${this.canvas.id}`});
-        actionIcon.icon = 'scale';
-        actionIcon.isActivated = this.canvas.toolController.getToolById(ScaleAxisToolId).isSelected;
-        tooltip = actionIcon.tooltip();
-        tooltip.label = 'Scale';
-
         actionIcon = toolbar.actionIcon({key: MoveAxisToolId, uniqueId: `${MoveAxisToolId}-${this.canvas.id}`});
         actionIcon.icon = 'move';
         actionIcon.isActivated = this.canvas.toolController.getToolById(MoveAxisToolId).isSelected;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Move';
+
+        actionIcon = toolbar.actionIcon({key: RotateAxisToolId, uniqueId: `${RotateAxisToolId}-${this.canvas.id}`});
+        actionIcon.icon = 'rotate';
+        actionIcon.isActivated = this.canvas.toolController.getToolById(RotateAxisToolId).isSelected;
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Rotate';
+
+        actionIcon = toolbar.actionIcon({key: ScaleAxisToolId, uniqueId: `${ScaleAxisToolId}-${this.canvas.id}`});
+        actionIcon.icon = 'scale';
+        actionIcon.isActivated = this.canvas.toolController.getToolById(ScaleAxisToolId).isSelected;
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Scale';
 
         separator = toolbar.iconSeparator();
         separator.placement = 'left';

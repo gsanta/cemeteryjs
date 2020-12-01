@@ -29,6 +29,8 @@ import { LightViewFactory } from "./views/LightViewFactory";
 import { SpriteViewFactory } from "./views/SpriteViewFactory";
 import { PathViewFactory } from "./views/PathViewFactory";
 import { GroundTool } from "./tools/GroundTool";
+import { RotateAxisViewFactory, RotateAxisViewType } from "../canvas_utility_plugins/canvas_mesh_transformations/views/RotateAxisView";
+import { RotateAxisTool } from "../canvas_utility_plugins/canvas_mesh_transformations/tools/RotateAxisTool";
 
 export const SceneEditorPanelId = 'scene-editor';
 
@@ -65,7 +67,8 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new CubeTool(canvas, registry.data.view.scene, registry),
         new SphereTool(canvas, registry.data.view.scene, registry),
         new GroundTool(canvas, registry.data.view.scene, registry),
-        new ScaleAxisTool(canvas, registry)
+        new ScaleAxisTool(canvas, registry),
+        new RotateAxisTool(canvas, registry)
     ];
 
     canvas.renderer = new SceneEditorRenderer(registry, canvas);
@@ -80,6 +83,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
 
     registry.data.view.scene.registerViewType(MoveAxisViewType, new MoveAxisViewFactory(registry));
     registry.data.view.scene.registerViewType(ScaleAxisViewType, new ScaleAxisViewFactory(registry));
+    registry.data.view.scene.registerViewType(RotateAxisViewType, new RotateAxisViewFactory(registry));
     registry.data.view.scene.registerViewType(PathViewType, new PathViewFactory(registry));
 
     return canvas;
