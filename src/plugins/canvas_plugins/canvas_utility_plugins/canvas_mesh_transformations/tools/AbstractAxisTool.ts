@@ -6,9 +6,10 @@ import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshView } from "../../../scene_editor/views/MeshView";
 import { MoveAxisView } from "../views/MoveAxisView";
+import { RotateAxisView } from "../views/RotateAxisView";
 import { ScaleAxisView } from "../views/ScaleAxisView";
 
-export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView> extends ToolAdapter {
+export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter {
     protected downView: T;
     protected meshView: MeshView;
     protected hoveredView: T;
