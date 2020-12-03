@@ -26,10 +26,10 @@ Feature: Mesh
             | Type       | Bounds          | Selected |
             | mesh-view  | 50:50,60:60     | true     |
         When hover over canvas 'scene-editor'
-        And change param 'rotation' to '30' in panel 'object-settings-panel'
+        And change param 'rot-y' to '30' in panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Rotation   |
-            | mesh-obj-1    | mesh-obj   | 30         |
+            | mesh-obj-1    | mesh-obj   | 0:30:0     |
 
     Scenario: Change mesh position on sidepanel
         Given empty editor

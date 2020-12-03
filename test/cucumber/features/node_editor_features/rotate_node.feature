@@ -25,15 +25,15 @@ Feature: Rotate node
             | node-connection-view-2 | 300:157.5,400:440 |
         Then obj properties are:
             | Id          | Rotation  |
-            | mesh-obj-1  | 0         |
+            | mesh-obj-1  | 0:0:0     |
         When hover over canvas 'game-viewer'
         And press key 'a'
         Then obj properties are:
             | Id          | Rotation  |
-            | mesh-obj-1  | -6        |
+            | mesh-obj-1  | 0:-6:0    |
         And press key 'd'
         And press key 'd'
         Then obj properties are:
             | Id          | Rotation  |
-            | mesh-obj-1  | 6         |
+            | mesh-obj-1  | 0:6:0     |
         

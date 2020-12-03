@@ -72,8 +72,8 @@ function getMeshObjProperty(registry: Registry, obj: MeshObj, prop: ObjTableProp
         case ObjTableProp.Rotation:
             const rot = obj.getRotation();
             const rotX = roundNumber(toDegree(rot.x), 0);
-            const rotY = roundNumber(toDegree(rot.x), 0);
-            const rotZ = roundNumber(toDegree(rot.x), 0);
+            const rotY = roundNumber(toDegree(rot.y), 0);
+            const rotZ = roundNumber(toDegree(rot.z), 0);
             return `${rotX}:${rotY}:${rotZ}`;
         case ObjTableProp.Scale:
             return obj.getScale().toString();

@@ -15,7 +15,9 @@ import { Point } from '../../../../utils/geometry/shapes/Point';
 export enum MeshViewControllerParam {
     MeshId = 'MeshId',
     Layer = 'Layer',
-    Rotation = 'rotation',
+    RotX = 'rot-x',
+    RotY = 'rot-y',
+    RotZ = 'rot-z',
     ScaleX = 'scale-x',
     ScaleY = 'scale-y',
     ScaleZ = 'scale-z',
@@ -68,55 +70,55 @@ export class LayerController extends PropController<number> {
     }
 }
 
-export class RotationController extends PropController<string> {
-    private registry: Registry;
+// export class RotationController extends PropController<string> {
+//     private registry: Registry;
 
-    constructor(registry: Registry) {
-        super();
-        this.registry = registry;
-    }
+//     constructor(registry: Registry) {
+//         super();
+//         this.registry = registry;
+//     }
 
-    acceptedProps() { return [MeshViewControllerParam.Rotation]; }
+//     acceptedProps() { return [MeshViewControllerParam.Rotation]; }
 
-    defaultVal(context: PropContext) {
-        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+//     defaultVal(context: PropContext) {
+//         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
 
-        return Math.round(toDegree(meshView.getRotation())).toString();
-    }
+//         return Math.round(toDegree(meshView.getRotation())).toString();
+//     }
     
-    change(val, context) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Sidepanel);
-    }
+//     change(val, context) {
+//         context.updateTempVal(val);
+//         context.registry.services.render.reRender(UI_Region.Sidepanel);
+//     }
 
-    blur(context: PropContext) {
-        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+//     blur(context: PropContext) {
+//         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
 
-        try {
-            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                meshView.setRotation(toRadian(parseFloat(context.getTempVal())));
-                context.registry.services.history.createSnapshot();
-            }
-        } catch(e) {
-            this.registry.services.error.setError(new ApplicationError(e));
-        } finally {
-            context.clearTempVal();
-        }
+//         try {
+//             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+//                 meshView.setRotation(toRadian(parseFloat(context.getTempVal())));
+//                 context.registry.services.history.createSnapshot();
+//             }
+//         } catch(e) {
+//             this.registry.services.error.setError(new ApplicationError(e));
+//         } finally {
+//             context.clearTempVal();
+//         }
 
-        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
-    }
-}
+//         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+//     }
+// }
 
 export class ScaleController extends PropController<string> {
     private registry: Registry;
     private axis: CanvasAxis;
     private param: MeshViewControllerParam;
 
-    constructor(registry: Registry, axis: CanvasAxis, param: MeshViewControllerParam) {
+    constructor(registry: Registry, axis: CanvasAxis) {
         super();
         this.registry = registry;
         this.axis = axis;
-        this.param = param;
+        this.param = axis === CanvasAxis.X ? MeshViewControllerParam.ScaleX : axis === CanvasAxis.Y ? MeshViewControllerParam.ScaleY : MeshViewControllerParam.ScaleZ;
     }
 
     acceptedProps() { return [this.param]; }
@@ -141,6 +143,60 @@ export class ScaleController extends PropController<string> {
                 const axisScale = parseFloat(context.getTempVal());
                 CanvasAxis.setAxisVal(scale, this.axis, axisScale);
                 meshView.getObj().setScale(scale);
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+        }
+
+        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+    }
+}
+
+export class RotationController extends PropController<string> {
+    private registry: Registry;
+    private axis: CanvasAxis;
+    private param: MeshViewControllerParam;
+
+    constructor(registry: Registry, axis: CanvasAxis) {
+        super();
+        this.registry = registry;
+        this.axis = axis;
+        this.param = axis === CanvasAxis.X ? MeshViewControllerParam.RotX : axis === CanvasAxis.Y ? MeshViewControllerParam.RotY : MeshViewControllerParam.RotZ;
+    }
+
+    acceptedProps() { return [this.param]; }
+
+    defaultVal(context: PropContext) {
+        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+
+        const rotRad = CanvasAxis.getAxisVal(meshView.getObj().getRotation(), this.axis);
+        return Math.round(toDegree(rotRad));
+    }
+
+    change(val, context: PropContext) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    }
+
+    blur(context: PropContext) {
+        console.log('rot controller')
+        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                const rotation = meshView.getObj().getRotation();
+                const rot = toRadian(parseFloat(context.getTempVal()));
+                
+                if (this.axis === CanvasAxis.Y) {
+                    meshView.setRotation(rot);
+                } else {
+                    CanvasAxis.setAxisVal(rotation, this.axis, rot);
+                    meshView.getObj().setRotation(rotation)
+                }
+
                 context.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -186,7 +242,6 @@ export class PositionController extends PropController<string> {
                 const position = meshView.getObj().getPosition();
                 const axisPosition = parseFloat(context.getTempVal());
                 CanvasAxis.setAxisVal(position, this.axis, axisPosition);
-                console.log('newPos: ' + position.toString())
                 meshView.getObj().setPosition(position);
                 context.registry.services.history.createSnapshot();
             }

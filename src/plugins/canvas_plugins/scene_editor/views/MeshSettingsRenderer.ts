@@ -37,10 +37,22 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         let accordion = layout.accordion({key: 'transforms'});
         accordion.title = 'Transforms'
 
-        row = accordion.row({ key: MeshViewControllerParam.Rotation });
-        const rotationTextField = row.textField({key: MeshViewControllerParam.Rotation});
+        row = accordion.row({ key: MeshViewControllerParam.RotX });
+        let rotationTextField = row.textField({key: MeshViewControllerParam.RotX});
         rotationTextField.layout = 'horizontal';
-        rotationTextField.label = 'Rotation';
+        rotationTextField.label = 'Rot X';
+        rotationTextField.type = 'number';
+
+        row = accordion.row({ key: MeshViewControllerParam.RotY });
+        rotationTextField = row.textField({key: MeshViewControllerParam.RotY});
+        rotationTextField.layout = 'horizontal';
+        rotationTextField.label = 'Rot Y';
+        rotationTextField.type = 'number';
+
+        row = accordion.row({ key: MeshViewControllerParam.RotZ });
+        rotationTextField = row.textField({key: MeshViewControllerParam.RotZ});
+        rotationTextField.layout = 'horizontal';
+        rotationTextField.label = 'Rot Z';
         rotationTextField.type = 'number';
 
         row = accordion.row({ key: MeshViewControllerParam.PosX });
