@@ -13,11 +13,15 @@ export interface MeshObjJson extends ObjJson {
         x: number;
         y: number;
         z: number;
-    }
+    },
+    rotation: {
+        x: number;
+        y: number;
+        z: number;
+    },
     posX: number;
     posY: number;
     posZ: number;
-    rotation: number;
     modelId: string;
     textureId: string;
     routeId: string;
@@ -98,15 +102,11 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.getColor(this);
     }
 
-    rotate(angle: number) {
-        this.meshAdapter.rotate(this, angle)
+    setRotation(rot: Point_3): void {
+        this.meshAdapter.setRotation(this, rot)
     }
 
-    setRotation(angle: number): void {
-        this.meshAdapter.setRotation(this, angle)
-    }
-
-    getRotation(): number {
+    getRotation(): Point_3 {
         return this.meshAdapter.getRotation(this);
     }
 
@@ -166,7 +166,7 @@ export class MeshObj implements IGameObj {
         this.id = json.id;
         this.setScale(new Point_3(json.scale.x, json.scale.y, json.scale.z));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
-        this.setRotation(json.rotation);
+        this.setRotation(new Point_3(json.rotation.x, json.rotation.y, json.rotation.z));
 
         this.modelId = json.modelId;
         this.textureId = json.textureId;

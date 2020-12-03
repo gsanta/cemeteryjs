@@ -3,6 +3,7 @@ import { LightObjType, LightObj } from "../../../../src/core/models/objs/LightOb
 import { MeshObj, MeshObjType } from "../../../../src/core/models/objs/MeshObj";
 import { Registry } from "../../../../src/core/Registry";
 import { toDegree } from "../../../../src/utils/geometry/Measurements";
+import { Point_3 } from "../../../../src/utils/geometry/shapes/Point_3";
 
 export enum ObjTableProp {
     Id = 'Id',
@@ -69,7 +70,11 @@ function getMeshObjProperty(registry: Registry, obj: MeshObj, prop: ObjTableProp
         case ObjTableProp.Parent:
             return obj.getParent() && obj.getParent().id;
         case ObjTableProp.Rotation:
-            return roundNumber(toDegree(obj.getRotation()), 0);
+            const rot = obj.getRotation();
+            const rotX = roundNumber(toDegree(rot.x), 0);
+            const rotY = roundNumber(toDegree(rot.x), 0);
+            const rotZ = roundNumber(toDegree(rot.x), 0);
+            return `${rotX}:${rotY}:${rotZ}`;
         case ObjTableProp.Scale:
             return obj.getScale().toString();
         case ObjTableProp.Model:

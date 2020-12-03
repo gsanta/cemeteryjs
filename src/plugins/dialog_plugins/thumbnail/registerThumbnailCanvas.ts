@@ -51,7 +51,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         setTimeout(() => {
             canvas.engine.meshes.createInstance(meshView.getObj())
                 .then(() => {
-                    canvas.engine.meshes.setRotation(meshView.getObj(), 0);
+                    canvas.engine.meshes.setRotation(meshView.getObj(), new Point_3(0, 0, 0));
                     canvas.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
                 });
         }, 500);

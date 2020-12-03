@@ -63,25 +63,18 @@ export  class Bab_Meshes implements IMeshAdapter {
         meshData.mainMesh.translate(axis === 'x' ? Axis.X : axis === 'y' ? Axis.Y : Axis.Z, amount, space === 'local' ? Space.LOCAL : Space.WORLD);
     }
 
-    rotate(meshObj: MeshObj, angle: number): void {
+    setRotation(meshObj: MeshObj, rot: Point_3): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.rotation.y += angle;
+        meshData.mainMesh.rotation = toVector3(rot);
     }
 
-    setRotation(meshObj: MeshObj, angle: number): void {
+    getRotation(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.rotation.y = angle;
-    }
-
-    getRotation(meshObj: MeshObj): number {
-        const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return; }
-
-        return meshData.mainMesh.rotation.y;
+        return new Point_3(meshData.mainMesh.rotation.x, meshData.mainMesh.rotation.y, meshData.mainMesh.rotation.z);
     }
 
     getDimensions(meshObj: MeshObj): Point {

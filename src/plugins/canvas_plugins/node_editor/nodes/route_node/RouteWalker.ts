@@ -36,7 +36,8 @@ export class RouteWalker {
         } else {
             this.updateRoute(deltaTime);
 
-            this.meshObj.setRotation(this.currentDirection.angleToOrigin());
+            const rot = this.meshObj.getRotation();
+            this.meshObj.setRotation(new Point_3(rot.x, this.currentDirection.angleToOrigin(), rot.z));
             this.meshObj.setPosition(new Point_3(this.currentPosition.x, this.meshObj.getPosition().y, this.currentPosition.y));
         }
     }

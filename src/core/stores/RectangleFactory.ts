@@ -1,4 +1,5 @@
 import { Color3, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3, Texture } from 'babylonjs';
+import { toVector3 } from '../engine/adapters/babylonjs/Bab_Utils';
 import { MeshObj } from '../models/objs/MeshObj';
 import { SpriteObj } from '../models/objs/SpriteObj';
 
@@ -45,7 +46,7 @@ export class RectangleFactory  {
         mesh.scaling = new Vector3(scale.x, scale.x, scale.y);
         // mesh.translate(new Vector3(point.x + width / 2, 0, point.z - depth / 2), 1, Space.WORLD);
         mesh.translate(new Vector3(point.x, 0, point.z), 1, Space.WORLD);
-        mesh.rotation.y = obj.getRotation();
+        mesh.rotation = toVector3(obj.getRotation());
 
         mesh.material = this.createSimpleMaterial(scene, obj);
 

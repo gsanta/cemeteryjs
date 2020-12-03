@@ -5,6 +5,7 @@ import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { MeshData } from "./Bab_Meshes";
+import { toVector3 } from "./Bab_Utils";
 // require('babylonjs-loaders');
 
 export  class Bab_MeshLoader implements IMeshLoaderAdapter {
@@ -69,8 +70,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         clone.rotationQuaternion = undefined;
 
         clone.setAbsolutePosition(new Vector3(position.x, 0, position.z));
-
-        clone.rotation.y = rotation;
+        clone.rotation = toVector3(rotation);
         
         this.engineFacade.meshes.createMaterial(meshObj);
     }

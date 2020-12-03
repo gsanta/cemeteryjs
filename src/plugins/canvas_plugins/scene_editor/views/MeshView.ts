@@ -53,7 +53,8 @@ export class MeshView extends View {
 
     setRotation(angle: number) {
         this.rotation = angle;
-        this.obj.setRotation(angle);
+        const objRot = this.obj.getRotation();
+        this.obj.setRotation(new Point_3(objRot.x, angle, objRot.z));
     }
     
     selectHoveredSubview() {}

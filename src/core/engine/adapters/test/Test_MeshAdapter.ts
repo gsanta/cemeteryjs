@@ -10,7 +10,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     private engineFacade: Test_EngineFacade;
 
     posMap: Map<MeshObj, Point_3> = new Map();
-    rotationMap: Map<MeshObj, number> = new Map();
+    rotationMap: Map<MeshObj, Point_3> = new Map();
     scaleMap: Map<MeshObj, Point_3> = new Map();
     colorMap: Map<MeshObj, string> = new Map();
 
@@ -38,16 +38,12 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
     }
 
-    rotate(meshObj: MeshObj, angle: number): void {
-        this.rotationMap.set(meshObj, this.getRotation(meshObj) + angle);
+    setRotation(meshObj: MeshObj, rot: Point_3): void {
+        this.rotationMap.set(meshObj, rot);
     }
 
-    setRotation(meshObj: MeshObj, angle: number): void {
-        this.rotationMap.set(meshObj, angle);
-    }
-
-    getRotation(meshObj: MeshObj): number {
-        return this.rotationMap.get(meshObj) || 0;
+    getRotation(meshObj: MeshObj): Point_3 {
+        return this.rotationMap.get(meshObj) || new Point_3(0, 0, 0);
     }
 
     getDimensions(meshObj: MeshObj): Point {

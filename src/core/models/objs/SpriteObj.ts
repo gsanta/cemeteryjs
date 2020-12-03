@@ -81,7 +81,7 @@ export class SpriteObj implements IObj {
         return scale || this.startScale;
     }
 
-    getRotation(): number {
+    getRotation(): Point_3 {
         throw new Error('unimplemented');
     }
 

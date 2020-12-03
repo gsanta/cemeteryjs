@@ -43,15 +43,11 @@ export  class Wrap_Meshes implements IMeshAdapter {
         this.engineFacade.engines.forEach(engine => engine.meshes.translate(meshObj, axis, amount, space));
     }
 
-    rotate(meshObj: MeshObj, angle: number): void {
-        this.engineFacade.engines.forEach(engine => engine.meshes.rotate(meshObj, angle));
+    setRotation(meshObj: MeshObj, rot: Point_3): void {
+        this.engineFacade.engines.forEach(engine => engine.meshes.setRotation(meshObj, rot));
     }
 
-    setRotation(meshObj: MeshObj, angle: number): void {
-        this.engineFacade.engines.forEach(engine => engine.meshes.setRotation(meshObj, angle));
-    }
-
-    getRotation(meshObj: MeshObj): number {
+    getRotation(meshObj: MeshObj): Point_3 {
         return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getRotation(meshObj));
     }
 
