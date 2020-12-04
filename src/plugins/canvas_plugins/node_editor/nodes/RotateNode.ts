@@ -1,4 +1,4 @@
-import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -6,12 +6,12 @@ import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { MeshView } from "../../scene_editor/views/MeshView";
-import { AbstractNode } from "./AbstractNode";
+import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
 
 export const RotateNodeType = 'rotate-node-obj';
 
-export class RotateNode extends AbstractNode {
+export class RotateNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -39,6 +39,7 @@ export class RotateNode extends AbstractNode {
         obj.outputs = [];
         obj.executor = new RotateNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
     }
@@ -64,7 +65,7 @@ export class RotateNode extends AbstractNode {
         ];
     }
 
-    private getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodePort[] {
         return [
             {
                 name: 'input'

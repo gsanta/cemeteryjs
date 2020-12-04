@@ -71,24 +71,8 @@ export class NodeGraphHook extends EmptyViewStoreHook {
     addViewHook(view: View) {
         const graph = this.registry.data.helper.node.graph;
         switch(view.viewType) {
-            case NodeConnectionViewType:
-                graph.addConnection((<NodeConnectionView> view).getObj());
-            break;
             case NodeViewType:
                 graph.addNode((<NodeView> view).getObj());
-            break;
-        }
-    }
-
-    removeViewHook(view: View) {
-        const graph = this.registry.data.helper.node.graph;
-
-        switch(view.viewType) {
-            case NodeConnectionViewType:
-                graph.removeConnection((<NodeConnectionView> view).getObj());
-            break;
-            case NodeViewType:
-                graph.removeNode((<NodeView> view).getObj());
             break;
         }
     }

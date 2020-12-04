@@ -1,14 +1,14 @@
-import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { AbstractNode } from "./AbstractNode";
+import { AbstractNodeFactory } from "./AbstractNode";
 
 export const PathNodeType = 'path-node-obj';
 
-export class PathNode extends AbstractNode {
+export class PathNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -35,6 +35,7 @@ export class PathNode extends AbstractNode {
         obj.inputs = this.getInputLinks();
         obj.outputs = this.getOutputLinks();
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
     }
@@ -53,7 +54,7 @@ export class PathNode extends AbstractNode {
         ];
     }
 
-    private getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodePort[] {
         return [
             {
                 name: 'action'
@@ -61,7 +62,7 @@ export class PathNode extends AbstractNode {
         ]
     }
 
-    private getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodePort[] {
         return [];
     }
 }

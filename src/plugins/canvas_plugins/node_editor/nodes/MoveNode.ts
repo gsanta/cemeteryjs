@@ -1,19 +1,17 @@
-import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
-import { MeshView } from "../../scene_editor/views/MeshView";
+import { NodeObj, NodeParam, NodePort } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { NodeRenderer } from "../NodeRenderer";
-import { AbstractNode } from "./AbstractNode";
+import { MeshView } from "../../scene_editor/views/MeshView";
+import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
 
 export const MoveNodeType = 'move-node-obj';
 
-export class MoveNode extends AbstractNode {
+export class MoveNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -41,6 +39,7 @@ export class MoveNode extends AbstractNode {
         obj.outputs = this.getOutputLinks();
         obj.executor = new MoveNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
     }
@@ -74,7 +73,7 @@ export class MoveNode extends AbstractNode {
         ];
     }
 
-    private getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodePort[] {
         return [
             {
                 name: 'animation'
@@ -82,7 +81,7 @@ export class MoveNode extends AbstractNode {
         ]
     }
 
-    private getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodePort[] {
         return [
             {
                 name: 'input'

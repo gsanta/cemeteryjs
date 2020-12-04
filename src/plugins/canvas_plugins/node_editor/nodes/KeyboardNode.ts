@@ -1,4 +1,4 @@
-import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -9,11 +9,11 @@ import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPanelId } from "../../game_viewer/registerGameViewer";
 import { GameTool, GameToolId } from "../../game_viewer/tools/GameTool";
-import { AbstractNode } from "./AbstractNode";
+import { AbstractNodeFactory } from "./AbstractNode";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
-export class KeyboardNode extends AbstractNode {
+export class KeyboardNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -41,6 +41,7 @@ export class KeyboardNode extends AbstractNode {
         obj.outputs = this.getOutputLinks();
         obj.executor = new KeyboardNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
     }
@@ -59,11 +60,11 @@ export class KeyboardNode extends AbstractNode {
         ];
     }
 
-    private getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodePort[] {
         return [];
     }
 
-private getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodePort[] {
         return [];
     }
 }
@@ -81,16 +82,11 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 
     execute() {
         const keyParams = this.getKeyParams(this.nodeObj);
-
         const gameTool = <GameTool> this.registry.ui.canvas.getCanvas(GameViewerPanelId).toolController.getToolById(GameToolId);
-        
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
 
         if (param) {
-            const connection = this.nodeObj.connections.get(param.name);
-            if (connection) {
-                connection.getOtherNode(this.nodeObj).executor.execute();
-            }
+            this.registry.services.node.executePort(this.nodeObj, param.name);
         }
     }
 

@@ -1,4 +1,4 @@
-import { NodeLink, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { MeshView, MeshViewType } from "../../scene_editor/views/MeshView";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -9,11 +9,11 @@ import { NodeFactory } from "../../../../core/services/NodePlugin";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { NodeRenderer } from "../NodeRenderer";
-import { AbstractNode } from "./AbstractNode";
+import { AbstractNodeFactory } from "./AbstractNode";
 
 export const AnimationNodeType = 'animation-node-obj';
 
-export class AnimationNode extends AbstractNode {
+export class AnimationNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -42,6 +42,7 @@ export class AnimationNode extends AbstractNode {
         obj.outputs = this.getOutputLinks();
         obj.executor = new AnimationNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
     }
@@ -75,11 +76,11 @@ export class AnimationNode extends AbstractNode {
         ];
     }
 
-    private getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodePort[] {
         return [];
     }
 
-    private getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodePort[] {
         return [
             {
                 name: 'action'

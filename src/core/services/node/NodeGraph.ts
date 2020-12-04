@@ -1,4 +1,4 @@
-import { NodeObj } from '../../models/objs/NodeObj';
+ import { NodeObj } from '../../models/objs/NodeObj';
 import { NodeConnectionObj } from '../../models/objs/NodeConnectionObj';
 import { Registry } from '../../Registry';
 import { NodeView, NodeViewType } from '../../models/views/NodeView';
@@ -39,32 +39,26 @@ export class NodeGraph {
         }
     }
 
-    addConnection(nodeConnectionObj: NodeConnectionObj) {
-        nodeConnectionObj.node1.connections.set(nodeConnectionObj.joinPoint1, nodeConnectionObj);
-        nodeConnectionObj.node2.connections.set(nodeConnectionObj.joinPoint2, nodeConnectionObj);
-
-        const group1 = this.findGroup(nodeConnectionObj.node1);
-        const group2 = this.findGroup(nodeConnectionObj.node2);
-
-        if (group1 !== group2) {
-            this.nodeGroups = this.nodeGroups.filter(group => group !== group1 && group !== group2);
-
-            const newGroup: Set<NodeObj> = new Set([...group1, ...group2]);
-            this.nodeGroups.push(newGroup);
-        }
-    }
-
-    removeConnection(nodeConnectionObj: NodeConnectionObj) {
-        nodeConnectionObj.node1.connections.delete(nodeConnectionObj.joinPoint1);
-        nodeConnectionObj.node2.connections.delete(nodeConnectionObj.joinPoint2);
-
-        const group = this.findGroup(nodeConnectionObj.node1);
+    onDisconnect(node1: [NodeObj, string], node2: [NodeObj, string]) {
+        const group = this.findGroup(node1[0]);
         if (group) {
             const nodes = Array.from(group);
             const splittedGroups = this.buildGroups(nodes);
     
             this.nodeGroups = this.nodeGroups.filter(g => g !== group);
             this.nodeGroups.push(...splittedGroups);
+        }
+    }
+
+    onConnect(node1: [NodeObj, string], node2: [NodeObj, string]) {
+        const group1 = this.findGroup(node1[0]);
+        const group2 = this.findGroup(node2[0]);
+
+        if (group1 !== group2) {
+            this.nodeGroups = this.nodeGroups.filter(group => group !== group1 && group !== group2);
+
+            const newGroup: Set<NodeObj> = new Set([...group1, ...group2]);
+            this.nodeGroups.push(newGroup);
         }
     }
 
@@ -98,7 +92,7 @@ export class NodeGraph {
 
     }
 
-    private getAdjacentNodes(node: NodeObj): NodeObj[] {
-        return Array.from(node.connections.values()).map(connection => connection.getOtherNode(node));
+    private getAdjacentNodes(nodeObj: NodeObj): NodeObj[] {
+        return nodeObj.getConnections().map(([otherNodeObj, string]) => otherNodeObj);
     }
 }

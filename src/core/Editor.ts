@@ -4,6 +4,8 @@ import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/Keyboa
 import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
 import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/MoveNode';
 import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
+import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/RayCasterNode';
+import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/nodes/RayHelperNode';
 import { RotateNode } from '../plugins/canvas_plugins/node_editor/nodes/RotateNode';
 import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
@@ -67,6 +69,8 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new RotateNode(this.registry));
         this.registry.data.helper.node.registerNode(new PathNode(this.registry));
         this.registry.data.helper.node.registerNode(new RouteNode(this.registry));
+        this.registry.data.helper.node.registerNode(new RayCasterNode(this.registry));
+        this.registry.data.helper.node.registerNode(new RayHelperNode(this.registry));
     }
 
     setup() {

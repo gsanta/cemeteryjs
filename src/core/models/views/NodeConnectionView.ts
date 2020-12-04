@@ -2,7 +2,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { ViewPlugin } from "../../plugin/ViewPlugin";
 import { Registry } from "../../Registry";
-import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
+import { IObj } from "../objs/IObj";
 import { JoinPointView } from "./child_views/JoinPointView";
 import { NodeView } from "./NodeView";
 import { View, ViewFactoryAdapter, ViewJson } from './View';
@@ -14,7 +14,6 @@ export interface NodeConnectionViewJson extends ViewJson {
     point1Y: number;
     point2X: number;
     point2Y: number;
-    obj: NodeConnectionObjJson;
     joinPoint1: {
         nodeId: string;
         joinPointName: string;
@@ -22,20 +21,6 @@ export interface NodeConnectionViewJson extends ViewJson {
     joinPoint2: {
         nodeId: string;
         joinPointName: string;
-    }
-}
-
-export class NodeConnectionViewPlugin implements ViewPlugin {
-    id = NodeConnectionViewType;
-
-    createView() { return new NodeConnectionView(); }
-
-    getController() {
-        return undefined;
-    }
-
-    renderInto() {
-        
     }
 }
 
@@ -50,7 +35,6 @@ export class NodeConnectionView extends View {
 
     point1: Point;
     point2: Point;
-    protected obj: NodeConnectionObj;
     joinPoint1: JoinPointView;
     joinPoint2: JoinPointView;
 
@@ -60,13 +44,9 @@ export class NodeConnectionView extends View {
         }
     }
 
-    getObj(): NodeConnectionObj {
-        return this.obj;
-    }
+    getObj(): IObj { return undefined;}
 
-    setObj(obj: NodeConnectionObj) {
-        this.obj = obj;
-    }
+    setObj() { throw new Error('This view does not need any objs'); }
 
     move() {}
 
@@ -88,7 +68,10 @@ export class NodeConnectionView extends View {
         this.bounds = rectangle;
     }
 
-    dispose() {}
+    dispose() {
+        this.joinPoint1.containerView.getObj().deleteConnection(this.joinPoint1.slotName);
+        this.joinPoint2.containerView.getObj().deleteConnection(this.joinPoint2.slotName);
+    }
 
     toJson(): NodeConnectionViewJson {
         return {
@@ -97,7 +80,6 @@ export class NodeConnectionView extends View {
             point1Y: this.point1.y,
             point2X: this.point2.x,
             point2Y: this.point2.y,
-            obj: this.obj.serialize(),
             joinPoint1: {
                 nodeId: this.joinPoint1.containerView.id,
                 joinPointName: this.joinPoint1.slotName

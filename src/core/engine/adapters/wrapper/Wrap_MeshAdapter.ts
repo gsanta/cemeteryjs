@@ -21,7 +21,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     getPosition(meshObj: MeshObj): Point_3 {
-        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getPosition(meshObj));
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getPosition(meshObj));
     }
 
     setScale(meshObj: MeshObj, point: Point_3) {
@@ -29,7 +29,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     } 
 
     getScale(meshObj: MeshObj): Point_3 {
-        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getScale(meshObj));
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getScale(meshObj));
     } 
 
     setColor(meshObj: MeshObj, color: string): void {
@@ -37,7 +37,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     getColor(meshObj: MeshObj): string {
-        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getColor(meshObj));
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getColor(meshObj));
     }
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
@@ -49,11 +49,11 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     getRotation(meshObj: MeshObj): Point_3 {
-        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getRotation(meshObj));
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getRotation(meshObj));
     }
 
     getDimensions(meshObj: MeshObj): Point {
-        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getDimensions(meshObj));
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getDimensions(meshObj));
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

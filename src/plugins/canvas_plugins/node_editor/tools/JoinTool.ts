@@ -45,21 +45,19 @@ export class JoinTool extends PointerTool {
                 [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
             }
 
-            const connectionObj = <NodeConnectionObj> this.registry.services.objService.createObj(NodeConnectionObjType);
             const connectionView = <NodeConnectionView> this.registry.data.view.node.getViewFactory(NodeConnectionViewType).instantiate();
-            connectionView.setObj(connectionObj);
             joinPoint1.connection = connectionView;
             joinPoint2.connection = connectionView;
             connectionView.joinPoint1 = joinPoint1;
             connectionView.joinPoint2 = joinPoint2;
-            connectionObj.joinPoint1 = joinPoint1.slotName;
-            connectionObj.node1 = joinPoint1.containerView.getObj();
-            connectionObj.joinPoint2 = joinPoint2.slotName;
-            connectionObj.node2 = joinPoint2.containerView.getObj();
+
+            const nodeObj1 = joinPoint1.containerView.getObj();
+            const nodeObj2 = joinPoint2.containerView.getObj(); 
+            nodeObj1.addConnection(joinPoint1.slotName, nodeObj2, joinPoint2.slotName);
+            nodeObj2.addConnection(joinPoint2.slotName, nodeObj1, joinPoint1.slotName);
 
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
             connectionView.setPoint2(joinPoint2.getAbsolutePosition());
-            this.registry.stores.objStore.addObj(connectionObj);
             this.registry.data.view.node.addView(connectionView);
 
             this.registry.services.history.createSnapshot();

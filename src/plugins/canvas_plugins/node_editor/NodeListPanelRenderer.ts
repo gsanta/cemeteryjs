@@ -3,7 +3,7 @@ import { UI_Panel } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
 import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
-import { AbstractNode } from './nodes/AbstractNode';
+import { AbstractNodeFactory } from './nodes/AbstractNode';
 import { NodeEditorPanelId } from './registerNodeEditor';
 
 export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
@@ -16,7 +16,7 @@ export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
     }
 
     renderInto(container: UI_Layout): void {
-        const nodeTypesByCategory: Map<string, AbstractNode[]> = new Map();
+        const nodeTypesByCategory: Map<string, AbstractNodeFactory[]> = new Map();
 
         this.registry.data.helper.node.getRegisteredNodeTypes().forEach(nodeType => {
             const node = this.registry.data.helper.node.getNode(nodeType);
@@ -28,7 +28,7 @@ export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
 
         const nodeEditorPlugin = this.registry.ui.canvas.getCanvas(NodeEditorPanelId);
 
-        Array.from(nodeTypesByCategory.values()).forEach((nodes: AbstractNode[]) => {
+        Array.from(nodeTypesByCategory.values()).forEach((nodes: AbstractNodeFactory[]) => {
             const accordion = container.accordion({});
             accordion.title = nodes[0].category;
 

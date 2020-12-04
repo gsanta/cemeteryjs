@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { CustomNodeParamSerializer, NodeLink, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
+import { CustomNodeParamSerializer, NodePort, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
@@ -7,12 +7,12 @@ import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { INodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
-import { AbstractNode } from "../AbstractNode";
+import { AbstractNodeFactory } from "../AbstractNode";
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeObjType = 'route-node-obj';
 
-export class RouteNode extends AbstractNode {
+export class RouteNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -40,6 +40,7 @@ export class RouteNode extends AbstractNode {
         obj.outputs = this.getOutputLinks();
         obj.executor = new RouteNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
     }
@@ -61,7 +62,7 @@ export class RouteNode extends AbstractNode {
         ];
     }
 
-    private getOutputLinks(): NodeLink[] {
+    private getOutputLinks(): NodePort[] {
         return [
             {
                 name: 'onStart'
@@ -78,7 +79,7 @@ export class RouteNode extends AbstractNode {
         ]
     }
 
-    private getInputLinks(): NodeLink[] {
+    private getInputLinks(): NodePort[] {
         return [
             {
                 name: 'mesh'
@@ -178,7 +179,7 @@ export class RouteNodeExecutor implements INodeExecutor {
     }
 
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
-        let meshParam = nodeObj.connections.get('mesh') && nodeObj.connections.get('mesh').getOtherNode(nodeObj).getParam('mesh');
+        let meshParam = nodeObj.getConnection('mesh') && nodeObj.getConnection('mesh')[0].getParam('mesh');
 
         if (meshParam) {
             return <MeshObj> registry.data.view.node.getById(meshParam.val)?.getObj();
@@ -186,7 +187,7 @@ export class RouteNodeExecutor implements INodeExecutor {
     }
 
     private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
-        let pathParam = nodeObj.connections.get('path') && nodeObj.connections.get('path').getOtherNode(nodeObj).getParam('path');
+        let pathParam = nodeObj.getConnection('path') && nodeObj.getConnection('path')[0].getParam('path');
 
         if (pathParam) {
             return <PathObj> registry.data.view.node.getById(pathParam.val)?.getObj();

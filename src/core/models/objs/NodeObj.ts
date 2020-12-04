@@ -1,5 +1,6 @@
 import { Registry } from '../../Registry';
 import { INodeExecutor } from '../../services/node/INodeExecutor';
+import { NodeGraph } from '../../services/node/NodeGraph';
 import { IObj, ObjJson } from './IObj';
 import { NodeConnectionObj } from './NodeConnectionObj';
 
@@ -16,7 +17,7 @@ export enum NodeCategory {
     Default = 'Default'
 }
 
-export interface NodeLink {
+export interface NodePort {
     name: string;
 }
 
@@ -77,14 +78,17 @@ export class NodeObj implements IObj {
     category: string;
     color: string;
 
-    inputs: NodeLink[] = [];
-    outputs: NodeLink[] = [];
-    connections: Map<string, NodeConnectionObj> = new Map();
+    inputs: NodePort[] = [];
+    outputs: NodePort[] = [];
+    private connections: Map<string, [NodeObj, string]> = new Map();
     isExecutionStopped = true;
     executor: INodeExecutor;
-    
-    private cachedParams: Map<string, NodeParam> = new Map();
-    private params: NodeParam[] = [];
+
+    params: {[key: string]: NodeParam} = {};
+
+    graph: NodeGraph;
+
+    private paramList: NodeParam[] = [];
     private customParamSerializer: CustomNodeParamSerializer;
 
     constructor(nodeType: string, config?: NodeObjConfig) {
@@ -109,35 +113,47 @@ export class NodeObj implements IObj {
     }
 
     getParam(name: string): NodeParam {
-        return this.cachedParams.get(name);
+        return this.params[name];
     }
 
     getParams(): NodeParam[] {
-        this.checkParam(name);
-        return this.params;
+        return this.paramList;
     }
 
     hasParam(name: string): boolean {
-        return this.cachedParams.get(name) !== undefined;
-    }
-
-    private checkParam(name: string) {
-        if (this.cachedParams.get(name) === undefined) {
-            const param = this.params.find(param => param.name === name);
-
-            if (param) {
-                this.cachedParams.set(param.name, param);
-            }
-        }
+        return this.params[name] !== undefined; 
     }
 
     setParam(name: string, value: any) {
-        this.getParam(name).val = value;
+        this.params[name].val = value;
     }
 
     addParam(param: NodeParam) {
-        this.params.push(param);
-        this.cachedParams.set(param.name, param);
+        this.params[param.name] = param;
+        this.paramList.push(param);
+    }
+
+    getConnection(portName: string): [NodeObj, string] {
+        return this.connections.get(portName);
+    }
+
+    getConnections(): [NodeObj, string][] {
+        return Array.from(this.connections.values());
+    }
+
+    deleteConnection(port: string) {
+        const connection = this.connections.get(port);
+
+        if (connection) {
+            this.connections.delete(port);
+            connection[0].deleteConnection(connection[1]);
+            this.graph.onDisconnect([this, port], connection);
+        }
+    }
+
+    addConnection(port: string, otherNode: NodeObj, otherPort: string) {
+        this.connections.set(port, [otherNode, otherPort]);
+        this.graph.onConnect([this, port], [otherNode, otherPort]);
     }
 
     addAllParams(params: NodeParam[]) {
@@ -148,14 +164,16 @@ export class NodeObj implements IObj {
         return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
     }
 
-    dispose() {}
+    dispose() {
+        this.getConnections().forEach(([NodeObj, portName]) => this.deleteConnection(portName));
+    }
 
     clone(): NodeObj {
         throw new Error('not implemented');
     }
 
     serialize(): NodeObjJson {
-        const params = this.params.map(param => this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param));
+        const params = this.paramList.map(param => this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param));
 
         return {
             id: this.id,
@@ -169,8 +187,8 @@ export class NodeObj implements IObj {
 
         this.id = json.id;
         this.type = json.type;
-        this.params = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
-        this.params.forEach(param => this.cachedParams.set(param.name, param));
+        this.paramList = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
+        this.paramList.forEach(param => this.params[param.name] = param);
     }
 }
 

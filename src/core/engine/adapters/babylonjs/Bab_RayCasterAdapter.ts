@@ -1,7 +1,7 @@
 import { Ray, RayHelper, Vector3 } from "babylonjs";
 import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
-import { IRayCasterAdapter } from "../../IRayCasterAdapter";
+import { IRayCasterAdapter, RayCasterConfig } from "../../IRayCasterAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { vecToLocal } from "./Bab_Utils";
 
@@ -14,7 +14,7 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
         this.engineFacade = engineFacade;
     }
 
-    castRay(meshObj: MeshObj): MeshObj {
+    castRay(meshObj: MeshObj, config: RayCasterConfig): MeshObj {
         const meshData = this.engineFacade.meshes.meshes.get(meshObj);
 
         if (!meshData) { return; }
@@ -32,13 +32,14 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
 	
         const ray = new Ray(origin, direction, length);
 
-		let rayHelper = new RayHelper(ray);		
-		rayHelper.show(this.engineFacade.scene);		
+        if (config.helper) {
+            let rayHelper = new RayHelper(ray);		
+            rayHelper.show(this.engineFacade.scene);		
+        }
 
         var hit = this.engineFacade.scene.pickWithRay(ray);
 
         if (hit.pickedMesh){
-            alert('mesh picked!')
         }
     }
 }
