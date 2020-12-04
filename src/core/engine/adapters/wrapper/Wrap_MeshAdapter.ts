@@ -4,6 +4,7 @@ import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { IMeshAdapter } from "../../IMeshAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
+import { executeEnginesUntilValReturned } from "./Wrap_Utils";
 
 export  class Wrap_Meshes implements IMeshAdapter {
     private registry: Registry;
@@ -20,7 +21,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     getPosition(meshObj: MeshObj): Point_3 {
-        return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getPosition(meshObj));
+        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getPosition(meshObj));
     }
 
     setScale(meshObj: MeshObj, point: Point_3) {
@@ -28,7 +29,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     } 
 
     getScale(meshObj: MeshObj): Point_3 {
-        return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getScale(meshObj));
+        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getScale(meshObj));
     } 
 
     setColor(meshObj: MeshObj, color: string): void {
@@ -36,7 +37,7 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     getColor(meshObj: MeshObj): string {
-        return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getColor(meshObj));
+        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getColor(meshObj));
     }
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
@@ -48,11 +49,11 @@ export  class Wrap_Meshes implements IMeshAdapter {
     }
 
     getRotation(meshObj: MeshObj): Point_3 {
-        return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getRotation(meshObj));
+        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getRotation(meshObj));
     }
 
     getDimensions(meshObj: MeshObj): Point {
-        return this.getVal((index: number) => this.engineFacade.engines[index].meshes.getDimensions(meshObj));
+        return executeEnginesUntilValReturned((index: number) => this.engineFacade.engines[index].meshes.getDimensions(meshObj));
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {
@@ -76,14 +77,5 @@ export  class Wrap_Meshes implements IMeshAdapter {
 
     playAnimation(meshObj: MeshObj, startFrame: number, endFrame: number, repeat: boolean): boolean {
         return this.engineFacade.realEngine.meshes.playAnimation(meshObj, startFrame, endFrame, repeat);
-    }
-
-    private getVal<T>(callback: (index: number) => T): T {
-        for (let i = 0; i < this.engineFacade.engines.length; i++) {
-            const val = <T> callback(i);
-            if (val !== undefined) {
-                return val;
-            }
-        }
     }
 }

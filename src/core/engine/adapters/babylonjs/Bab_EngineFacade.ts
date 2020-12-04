@@ -6,6 +6,7 @@ import { IEngineFacade } from "../../IEngineFacade";
 import { Bab_Meshes } from "./Bab_Meshes";
 import { Bab_MeshFactory } from "./Bab_MeshFactory";
 import { Bab_MeshLoader } from "./Bab_MeshLoader";
+import { Bab_RayCasterAdapter } from "./Bab_RayCasterAdapter";
 import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
 import { Bab_Sprites } from "./Bab_Sprites";
 
@@ -22,6 +23,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     meshes: Bab_Meshes;
     meshFactory: Bab_MeshFactory;
     lights: Bab_LightAdapter;
+    rayCaster: Bab_RayCasterAdapter;
 
     private renderLoops: (() => void)[] = [];
 
@@ -35,6 +37,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.meshes = new Bab_Meshes(this.registry, this);
         this.meshFactory = new Bab_MeshFactory(this.registry, this);
         this.lights = new Bab_LightAdapter(this.registry, this);
+        this.rayCaster = new Bab_RayCasterAdapter(this.registry, this);
     }
 
     getCamera(): Camera3D {

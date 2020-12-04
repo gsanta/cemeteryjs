@@ -5,6 +5,7 @@ import { Camera3D } from "../models/misc/camera/Camera3D";
 import { IMeshAdapter } from "./IMeshAdapter";
 import { IMeshFactory } from "./IMeshFactory";
 import { ILightAdapter } from "./ILightAdapter";
+import { IRayCasterAdapter } from "./IRayCasterAdapter";
 
 export interface IEngineFacade {
     spriteLoader: ISpriteLoaderAdapter;
@@ -13,6 +14,7 @@ export interface IEngineFacade {
     lights: ILightAdapter;
     meshLoader: IMeshLoader;
     meshFactory: IMeshFactory;
+    rayCaster: IRayCasterAdapter;
     
     setup(canvas: HTMLCanvasElement): void;
     getCamera(): Camera3D;

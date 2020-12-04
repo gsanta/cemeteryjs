@@ -5,10 +5,12 @@ import { ILightAdapter } from "../../ILightAdapter";
 import { IMeshAdapter } from "../../IMeshAdapter";
 import { IMeshFactory } from "../../IMeshFactory";
 import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
+import { IRayCasterAdapter } from "../../IRayCasterAdapter";
 import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { ISpriteLoaderAdapter } from "../../ISpriteLoaderAdapter";
 import { Test_LightAdapter } from "./Test_LightAdapter";
 import { Test_MeshAdapter } from "./Test_MeshAdapter";
+import { Test_RayCasterAdapter } from "./Test_RayCasterAdapter";
 
 export class Test_EngineFacade implements IEngineFacade {
     private registry: Registry;
@@ -21,12 +23,14 @@ export class Test_EngineFacade implements IEngineFacade {
     meshes: IMeshAdapter;
     meshFactory: IMeshFactory;
     lights: ILightAdapter;
+    rayCaster: IRayCasterAdapter;
 
     constructor(registry: Registry) {
         this.registry = registry;
 
         this.lights = new Test_LightAdapter(this.registry, this);
         this.meshes = new Test_MeshAdapter(this.registry, this);
+        this.rayCaster = new Test_RayCasterAdapter();
     }
 
     getCamera(): Camera3D {

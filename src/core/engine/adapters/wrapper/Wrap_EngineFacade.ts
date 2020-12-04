@@ -6,6 +6,7 @@ import { Wrap_LightAdapter } from "./Wrap_LightAdapter";
 import { Wrap_Meshes } from "./Wrap_MeshAdapter";
 import { Wrap_MeshFactory } from "./Wrap_MeshFactory";
 import { Wrap_MeshLoader } from "./Wrap_MeshLoader";
+import { Wrap_RayCasterAdapter } from "./Wrap_RayCasterAdapter";
 import { Wrap_SpriteLoader } from "./Wrap_SpriteLoader";
 import { Wrap_Sprites } from "./Wrap_Sprites";
 
@@ -20,6 +21,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     meshes: Wrap_Meshes;
     meshFactory: Wrap_MeshFactory;
     lights: Wrap_LightAdapter;
+    rayCaster: Wrap_RayCasterAdapter;
 
     engines: IEngineFacade[] = [];
 
@@ -39,6 +41,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
         this.meshes = new Wrap_Meshes(this.registry, this);
         this.meshFactory = new Wrap_MeshFactory(this.registry, this);
         this.lights = new Wrap_LightAdapter(this.registry, this);
+        this.rayCaster = new Wrap_RayCasterAdapter(this.registry, this);
     }
 
     getCamera(): Camera3D {
