@@ -1,7 +1,7 @@
 import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
 import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { NodeObj } from '../models/objs/NodeObj';
-import { JoinPointView } from '../models/views/child_views/JoinPointView';
+import { NodePortView } from '../models/views/child_views/NodePortView';
 import { NodeConnectionView, NodeConnectionViewType } from '../models/views/NodeConnectionView';
 import { NodeView, NodeViewType } from '../models/views/NodeView';
 import { View } from '../models/views/View';
@@ -40,7 +40,7 @@ class RemoveRelatedConnectionHook extends EmptyViewStoreHook {
     }
 
     private removeRelatedConnections(nodeView: NodeView) {
-        nodeView.containedViews.forEach((joinPointView: JoinPointView) => {
+        nodeView.containedViews.forEach((joinPointView: NodePortView) => {
             if (joinPointView.connection) {
                 this.registry.data.view.node.removeView(joinPointView.connection);
             }

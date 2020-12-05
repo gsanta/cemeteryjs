@@ -1,4 +1,4 @@
-import { JoinPointViewType } from '../../models/views/child_views/JoinPointView';
+import { NodePortViewType } from '../../models/views/child_views/NodePortView';
 import { View, ViewTag } from '../../models/views/View';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
@@ -73,7 +73,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
     }
 
     over(view: View) {
-        if (view.viewType === JoinPointViewType) {
+        if (view.viewType === NodePortViewType) {
             this.panel.toolController.setPriorityTool(ToolType.Join);
         }
         
@@ -83,7 +83,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
     }
 
     out(view: View) {
-        if (!this.registry.services.pointer.isDown && view.viewType === JoinPointViewType) {
+        if (!this.registry.services.pointer.isDown && view.viewType === NodePortViewType) {
             this.panel.toolController.removePriorityTool(ToolType.Join);
 
         } 

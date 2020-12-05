@@ -6,7 +6,7 @@ import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
 import { NodeObj } from '../objs/NodeObj';
-import { JoinPointView } from "./child_views/JoinPointView";
+import { NodePortView, NodePortViewType } from "./child_views/NodePortView";
 import { View, ViewJson } from "./View";
 
 export const NodeViewType = 'node-view';
@@ -47,13 +47,13 @@ export class NodeView extends View {
 
     setup() {
         const standaloneJoinPointViews = [
-            ...this.obj.inputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: true})),
-            ...this.obj.outputs.map(slot => new JoinPointView(this, {slotName: slot.name, isInput: false}))
+            ...this.obj.inputs.map(slot => new NodePortView(this, {slotName: slot.name, isInput: true})),
+            ...this.obj.outputs.map(slot => new NodePortView(this, {slotName: slot.name, isInput: false}))
         ];
         
         const paramRelatedJoinPointViews = this.obj.getParams()
             .filter(param => param.isLink && param.isLink !== 'none')
-            .map(param => new JoinPointView(this, {slotName: param.name, isInput: false}));
+            .map(param => new NodePortView(this, {slotName: param.name, isInput: false}));
         
         [...standaloneJoinPointViews, ...paramRelatedJoinPointViews].forEach(joinPointView => this.addContainedView(joinPointView));
         this.updateDimensions();
@@ -63,7 +63,7 @@ export class NodeView extends View {
         this.obj.getParams().filter(param => param.isLink && param.isLink !== 'none')
             .forEach(param => {
                 if (!this.findJoinPointView(param.name)) {
-                    this.addContainedView( new JoinPointView(this, {slotName: param.name, isInput: false}));
+                    this.addContainedView( new NodePortView(this, {slotName: param.name, isInput: false}));
                 }
             });
 
@@ -83,10 +83,10 @@ export class NodeView extends View {
 
     private initStandaloneJoinPointPositions() {
         this.containedViews
-            .filter((joinPointView: JoinPointView) => !this.obj.hasParam(joinPointView.slotName))
-            .forEach((joinPointView: JoinPointView) => {
+            .filter((joinPointView: NodePortView) => !this.obj.hasParam(joinPointView.port))
+            .forEach((joinPointView: NodePortView) => {
                 const x = joinPointView.isInput ? 0 : this.bounds.getWidth();
-                const slotIndex = joinPointView.isInput ? this.obj.inputs.findIndex(slot => slot.name === joinPointView.slotName) : this.obj.outputs.findIndex(slot => slot.name === joinPointView.slotName);
+                const slotIndex = joinPointView.isInput ? this.obj.inputs.findIndex(slot => slot.name === joinPointView.port) : this.obj.outputs.findIndex(slot => slot.name === joinPointView.port);
                 const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + sizes.nodes.headerHeight;
                 joinPointView.point = new Point(x, y);
                 joinPointView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
@@ -95,10 +95,10 @@ export class NodeView extends View {
 
     private initParamRelatedJoinPointPositions() {
         this.containedViews
-            .filter((joinPointView: JoinPointView) => this.obj.hasParam(joinPointView.slotName))
-            .forEach((joinPointView: JoinPointView) => {
+            .filter((joinPointView: NodePortView) => this.obj.hasParam(joinPointView.port))
+            .forEach((joinPointView: NodePortView) => {
                 const x = joinPointView.isInput ? 0 : this.bounds.getWidth();
-                const paramIndex = this.obj.getParams().findIndex(param => param.name === joinPointView.slotName);
+                const paramIndex = this.obj.getParams().findIndex(param => param.name === joinPointView.port);
                 const y = paramIndex * INPUT_HEIGHT + this.paramsYPosStart + INPUT_HEIGHT / 2;
                 joinPointView.point = new Point(x, y);
                 joinPointView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
@@ -129,10 +129,15 @@ export class NodeView extends View {
 
     dispose(): void {
         this.obj.dispose();
+        this.getJoinPointViews().forEach(joinPointView => joinPointView.dispose());
     }
 
     findJoinPointView(name: string) {
-        return this.containedViews.find((joinPointView: JoinPointView) => joinPointView.slotName === name);
+        return this.containedViews.find((joinPointView: NodePortView) => joinPointView.port === name);
+    }
+
+    getDeleteOnCascadeViews(): View[] {
+        return [];
     }
     
     toJson(): NodeViewJson  {
@@ -143,5 +148,9 @@ export class NodeView extends View {
 
     fromJson(json: NodeViewJson, registry: Registry) {
         super.fromJson(json, registry);
+    }
+
+    private getJoinPointViews(): NodePortView[] {
+        return <NodePortView[]> this.containedViews.filter(v => v.viewType === NodePortViewType);
     }
 }

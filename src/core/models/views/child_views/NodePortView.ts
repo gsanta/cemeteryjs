@@ -8,7 +8,7 @@ import { Registry } from "../../../Registry";
 import { NodeObj } from "../../objs/NodeObj";
 
 export function isJoinPointView(view: View) {
-    return view && view.viewType === JoinPointViewType;
+    return view && view.viewType === NodePortViewType;
 }
 
 export interface JoinPointViewJson extends ViewJson {
@@ -18,14 +18,14 @@ export interface JoinPointViewJson extends ViewJson {
     connectionId: string;
 }
 
-export const JoinPointViewType = 'JoinPointViewType';
-export class JoinPointView extends ContainedView {
-    viewType = JoinPointViewType;
+export const NodePortViewType = 'NodePortViewType';
+export class NodePortView extends ContainedView {
+    viewType = NodePortViewType;
     id: string;
     point: Point;
     containerView: NodeView;
     connection: NodeConnectionView;
-    slotName: string;
+    port: string;
     isInput: boolean;
     bounds: Rectangle;
 
@@ -35,10 +35,10 @@ export class JoinPointView extends ContainedView {
 
         
         if (config) {
-            this.slotName = config.slotName;
+            this.port = config.slotName;
             this.isInput = config.isInput;
         }
-        this.id = this.slotName;
+        this.id = this.port;
     }
 
     getObj(): NodeObj {
@@ -77,7 +77,7 @@ export class JoinPointView extends ContainedView {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            slotName: this.slotName,
+            slotName: this.port,
             isInput: this.isInput,
             connectionId: this.connection.id
         }
@@ -86,7 +86,7 @@ export class JoinPointView extends ContainedView {
     fromJson(json: JoinPointViewJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
-        this.slotName = json.slotName;
+        this.port = json.slotName;
         this.isInput = json.isInput;
     }
 }
