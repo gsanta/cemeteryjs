@@ -1,4 +1,4 @@
-import { JoinPointView } from '../../../core/models/views/child_views/JoinPointView';
+import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
@@ -103,8 +103,8 @@ export class NodeRenderer implements ViewRenderer {
     
         let rowHeight = 20;
         nodeView.containedViews
-        .forEach((joinPointView: JoinPointView) => {
-            if (!nodeView.getObj().hasParam(joinPointView.slotName)) {
+        .forEach((joinPointView: NodePortView) => {
+            if (!nodeView.getObj().hasParam(joinPointView.port)) {
                 joinPointView.isInput ? (inputs++) : (outputs++);
             }
             this.renderJoinPointInto(svgGroup, nodeView, joinPointView);
@@ -113,7 +113,7 @@ export class NodeRenderer implements ViewRenderer {
         this.joinPointsHeight = inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
     }
     
-    private renderJoinPointInto(svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: JoinPointView) {
+    private renderJoinPointInto(svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: NodePortView) {
         const circle = svgGroup.circle();
         svgGroup.data = nodeView;
     
@@ -127,9 +127,9 @@ export class NodeRenderer implements ViewRenderer {
             strokeWidth: joinPointView.isHovered() ? '2' : '1'
         }
 
-        if (!nodeView.getObj().hasParam(joinPointView.slotName)) {
-            const text = svgGroup.svgText({key: joinPointView.slotName});
-            text.text = joinPointView.slotName;
+        if (!nodeView.getObj().hasParam(joinPointView.port)) {
+            const text = svgGroup.svgText({key: joinPointView.port});
+            text.text = joinPointView.port;
             const textOffsetX = joinPointView.isInput ? 10 : -10;
             text.x = joinPointView.point.x + textOffsetX;
             text.y = joinPointView.point.y + 5;

@@ -3,7 +3,7 @@ import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { ViewPlugin } from "../../plugin/ViewPlugin";
 import { Registry } from "../../Registry";
 import { NodeConnectionObj, NodeConnectionObjJson } from "../objs/NodeConnectionObj";
-import { JoinPointView } from "./child_views/JoinPointView";
+import { NodePortView } from "./child_views/NodePortView";
 import { NodeView } from "./NodeView";
 import { View, ViewFactoryAdapter, ViewJson } from './View';
 
@@ -51,8 +51,8 @@ export class NodeConnectionView extends View {
     point1: Point;
     point2: Point;
     protected obj: NodeConnectionObj;
-    joinPoint1: JoinPointView;
-    joinPoint2: JoinPointView;
+    private joinPoint1: NodePortView;
+    private joinPoint2: NodePortView;
 
     updateDimensions() {
         if (this.point1 && this.point2) {
@@ -80,6 +80,22 @@ export class NodeConnectionView extends View {
         this.updateDimensions();
     }
 
+    setNodePortView1(nodePortView: NodePortView) {
+        this.joinPoint1 = nodePortView;
+    }
+
+    getNodePortView1(): NodePortView {
+        return this.joinPoint1;
+    }
+
+    setNodePortView2(nodePortView: NodePortView) {
+        this.joinPoint2 = nodePortView;
+    }
+
+    getNodePortView2(): NodePortView {
+        return this.joinPoint2;
+    }
+
     getBounds(): Rectangle {
         return this.bounds;
     }
@@ -100,11 +116,11 @@ export class NodeConnectionView extends View {
             obj: this.obj.serialize(),
             joinPoint1: {
                 nodeId: this.joinPoint1.containerView.id,
-                joinPointName: this.joinPoint1.slotName
+                joinPointName: this.joinPoint1.port
             },
             joinPoint2: {
                 nodeId: this.joinPoint2.containerView.id,
-                joinPointName: this.joinPoint2.slotName
+                joinPointName: this.joinPoint2.port
             }
         };
     }
@@ -113,8 +129,8 @@ export class NodeConnectionView extends View {
         super.fromJson(json, registry);
         const nodeView1 = (<NodeView> registry.data.view.node.getById(json.joinPoint1.nodeId));
         const nodeView2 = (<NodeView> registry.data.view.node.getById(json.joinPoint2.nodeId))
-        this.joinPoint1 = <JoinPointView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName);
-        this.joinPoint2 = <JoinPointView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName);
+        this.joinPoint1 = <NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName);
+        this.joinPoint2 = <NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName);
         this.joinPoint1.connection = this;
         this.joinPoint2.connection = this;
         this.point1 = new Point(json.point1X, json.point1Y);

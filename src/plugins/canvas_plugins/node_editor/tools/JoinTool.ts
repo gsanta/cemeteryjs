@@ -1,5 +1,5 @@
 import { NodeConnectionObj, NodeConnectionObjType } from "../../../../core/models/objs/NodeConnectionObj";
-import { JoinPointView, JoinPointViewType } from "../../../../core/models/views/child_views/JoinPointView";
+import { NodePortView, NodePortViewType } from "../../../../core/models/views/child_views/NodePortView";
 import { NodeConnectionView, NodeConnectionViewType } from "../../../../core/models/views/NodeConnectionView";
 import { View } from "../../../../core/models/views/View";
 import { PointerTool } from "../../../../core/plugin/tools/PointerTool";
@@ -12,7 +12,7 @@ import { ViewStore } from "../../../../core/stores/ViewStore";
 export class JoinTool extends PointerTool {
     startPoint: Point;
     endPoint: Point;
-    joinPoint1: JoinPointView;
+    joinPoint1: NodePortView;
 
     constructor(plugin: AbstractCanvasPanel, viewStore: ViewStore,  registry: Registry) {
         super(ToolType.Join, plugin, viewStore, registry);
@@ -20,7 +20,7 @@ export class JoinTool extends PointerTool {
 
     down() {
         this.startPoint = this.registry.services.pointer.pointer.curr;
-        this.joinPoint1 = <JoinPointView> this.registry.services.pointer.hoveredView;
+        this.joinPoint1 = <NodePortView> this.registry.services.pointer.hoveredView;
         this.endPoint = this.registry.services.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
@@ -40,7 +40,7 @@ export class JoinTool extends PointerTool {
 
         if (this.checkConnectionValidity()) {
             let joinPoint1 = this.joinPoint1;
-            let joinPoint2 = <JoinPointView> this.registry.services.pointer.hoveredView;
+            let joinPoint2 = <NodePortView> this.registry.services.pointer.hoveredView;
             if (joinPoint2.isInput) {
                 [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
             }
@@ -52,9 +52,9 @@ export class JoinTool extends PointerTool {
             joinPoint2.connection = connectionView;
             connectionView.joinPoint1 = joinPoint1;
             connectionView.joinPoint2 = joinPoint2;
-            connectionObj.joinPoint1 = joinPoint1.slotName;
+            connectionObj.joinPoint1 = joinPoint1.port;
             connectionObj.node1 = joinPoint1.containerView.getObj();
-            connectionObj.joinPoint2 = joinPoint2.slotName;
+            connectionObj.joinPoint2 = joinPoint2.port;
             connectionObj.node2 = joinPoint2.containerView.getObj();
 
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
@@ -72,10 +72,10 @@ export class JoinTool extends PointerTool {
 
     private checkConnectionValidity() {
         const start = this.joinPoint1;
-        const end = <JoinPointView> this.registry.services.pointer.hoveredView;
+        const end = <NodePortView> this.registry.services.pointer.hoveredView;
 
         if (!end || !start) { return false; }
-        if (start.viewType !== JoinPointViewType || end.viewType !== JoinPointViewType) { return false; }
+        if (start.viewType !== NodePortViewType || end.viewType !== NodePortViewType) { return false; }
         if (start.isInput === end.isInput) { return false }
 
         return true;

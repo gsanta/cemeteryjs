@@ -8,6 +8,7 @@ import { Registry } from "../../Registry";
 import { ViewStore } from "../../stores/ViewStore";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../objs/IObj";
+import { ChildViewContext } from "./ChildViewContext";
 import { ContainedView } from "./child_views/ChildView";
 
 export interface ViewJson {
@@ -62,6 +63,8 @@ export abstract class View implements IControlledModel {
     renderer: ViewRenderer;
     store: ViewStore;
 
+    deleteConstraiedViews: ChildViewContext = new ChildViewContext();
+
     protected obj: IObj;
 
     protected bounds: Rectangle;
@@ -108,6 +111,10 @@ export abstract class View implements IControlledModel {
 
     getChildViews(): View[] {
         return this.childViews;
+    }
+
+    getDeleteOnCascadeViews(): View[] {
+        return [];
     }
 
     addChildView(view: View) {
