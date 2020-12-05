@@ -1,4 +1,4 @@
-import { Ray, RayHelper, Vector3 } from "babylonjs";
+import { Mesh, Ray, RayHelper, Vector3 } from "babylonjs";
 import { MeshObj } from "../../../models/objs/MeshObj";
 import { RayObj } from "../../../models/objs/RayObj";
 import { Registry } from "../../../Registry";
@@ -43,6 +43,12 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
     }
 
     createHelper(rayObj: RayObj) {
+        const meshObj = rayObj.meshObj;
+        const meshData = this.engineFacade.meshes.meshes.get(meshObj);
+
+        if (!meshData) { return; }
+        const mesh = meshData.mainMesh;
+
         if (!this.rays.has(rayObj)) {
             this.createInstance(rayObj);
         }
@@ -57,7 +63,14 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
 
         this.helpers.set(rayObj, rayHelper);
 
-        var hit = this.engineFacade.scene.pickWithRay(ray);
+        var hit = this.engineFacade.scene.pickWithRay(ray, (m) => m !== mesh && m.id !== 'ray');
+
+        if (hit.pickedMesh) {
+            const meshObj = this.engineFacade.meshes.meshToObj.get(<Mesh> hit.pickedMesh);
+            if (meshObj) {
+                rayObj.pickedMeshObj = meshObj;
+            }
+        }
     }
 
     removeHelper(rayObj: RayObj) {

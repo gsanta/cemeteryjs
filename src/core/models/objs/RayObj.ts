@@ -13,6 +13,8 @@ export class RayObj implements IObj {
     origin: Point_3;
     direction: Point_3;
 
+    pickedMeshObj: MeshObj;
+
     createHelper() {
 
     }

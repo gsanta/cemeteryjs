@@ -142,8 +142,10 @@ export class ViewStore {
         view.deleteConstraiedViews.getViews().forEach(v => this.removeView(v));
 
         this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
-        this.hooks.forEach(hook => hook.removeViewHook(view));
         this.idMap.delete(view.id);
+        if (view.getObj()) {
+            this.byObjIdMap.delete(view.getObj().id);
+        }
 
         const thisViewTypes = this.viewsByType.get(view.viewType);
         thisViewTypes.splice(thisViewTypes.indexOf(view), 1);
@@ -154,6 +156,8 @@ export class ViewStore {
         this.views.splice(this.views.indexOf(view), 1);
         this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
         view.dispose();
+
+        this.hooks.forEach(hook => hook.removeViewHook(view));
     }
 
     hasView(id: string): boolean {

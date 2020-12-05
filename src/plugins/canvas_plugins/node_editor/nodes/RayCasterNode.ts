@@ -1,6 +1,8 @@
 import { NodeObj, NodeParam, NodePort } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
+import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { MeshView } from "../../scene_editor/views/MeshView";
@@ -23,7 +25,7 @@ export class RayCasterNode extends AbstractNodeFactory {
 
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
-        nodeView.addParamController(new MeshController(nodeView));
+        nodeView.addParamController(new MeshController(nodeView), new RayLengthController(nodeView));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -53,6 +55,14 @@ export class RayCasterNode extends AbstractNodeFactory {
                 }
             },
             {
+                name: 'length',
+                val: 100,
+                uiOptions: {
+                    inputType: 'textField',
+                    valueType: 'number'
+                }
+            },
+            {
                 name: 'ray',
                 val: new RayObj
             }
@@ -60,7 +70,11 @@ export class RayCasterNode extends AbstractNodeFactory {
     }
 
     private getOutputLinks(): NodePort[] {
-        return [];
+        return [
+            {
+                name: 'pickedMesh'
+            }
+        ];
     }
 
     private getInputPorts(): NodePort[] {
@@ -91,10 +105,41 @@ export class RayCasterNodeExecutor implements INodeExecutor {
         if (meshView) {
             const rayObj = this.nodeObj.getParam('ray').val as RayObj;
             rayObj.meshObj = meshView.getObj();
+            rayObj.rayLength = this.nodeObj.getParam('length').val;
             this.registry.engine.rays.createInstance(rayObj);
             this.registry.services.node.executePort(this.nodeObj, 'helper');
+
+            if (rayObj.pickedMeshObj) {
+                this.registry.services.node.executePort(this.nodeObj, 'pickedMesh');
+            }
         }
     }
 
     executeStop() {}
+}
+
+class RayLengthController extends PropController<string> {
+    private nodeView: NodeView;
+
+    constructor(nodeView: NodeView) {
+        super();
+        this.nodeView = nodeView;
+    }
+
+    acceptedProps() { return ['length']; }
+
+    defaultVal() {
+        return this.nodeView.getObj().getParam('length').val;
+    }
+
+    change(val, context: PropContext) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Canvas1);
+    }
+
+    blur(context: PropContext) {
+        const nodeObj = this.nodeView.getObj();
+        nodeObj.setParam('length', context.clearTempVal());
+        context.registry.services.render.reRenderAll();
+    }
 }

@@ -18,6 +18,7 @@ export interface MeshData {
 export  class Bab_Meshes implements IMeshAdapter {
     
     meshes: Map<MeshObj, MeshData> = new Map();
+    meshToObj: Map<Mesh, MeshObj> = new Map();
 
     private registry: Registry;
     private engineFacade: Bab_EngineFacade;
@@ -127,6 +128,7 @@ export  class Bab_Meshes implements IMeshAdapter {
         const meshData = this.meshes.get(meshObj);
         if (meshData && meshData.mainMesh) {
             meshData.mainMesh.scaling = toVector3(scaling);
+            this.meshToObj.set(meshData.mainMesh, meshObj);
         }
 
         return true;

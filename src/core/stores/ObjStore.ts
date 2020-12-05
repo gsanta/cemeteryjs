@@ -171,13 +171,9 @@ export class ObjLifeCycleHook implements ObjStoreHook {
     }
 
     removeObjHook(obj: IObj) {
-        switch(obj.objType) {
-            case MeshObjType:
-                this.registry.engine.meshes.deleteInstance(<MeshObj> obj);
-                break;
-            case SpriteObjType:
-                this.registry.engine.sprites.deleteInstance(<SpriteObj> obj);
-                break;
+        const view = this.registry.data.view.scene.getByObjId(obj.id);
+        if (view) {
+            this.registry.data.view.scene.removeView(view);
         }
     }
 }
