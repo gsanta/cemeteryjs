@@ -1,20 +1,25 @@
 import { Ray, RayHelper, Vector3 } from "babylonjs";
 import { MeshObj } from "../../../models/objs/MeshObj";
+import { RayObj } from "../../../models/objs/RayObj";
 import { Registry } from "../../../Registry";
-import { IRayCasterAdapter, RayCasterConfig } from "../../IRayCasterAdapter";
+import { IRayCasterAdapter } from "../../IRayCasterAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
-import { vecToLocal } from "./Bab_Utils";
+import { toPoint3, toVector3, vecToLocal } from "./Bab_Utils";
 
 export class Bab_RayCasterAdapter implements IRayCasterAdapter {
     private registry: Registry;
     private engineFacade: Bab_EngineFacade;
+
+    private helpers: Map<RayObj, RayHelper> = new Map();
+    private rays: Map<RayObj, Ray> = new Map();
 
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
     }
 
-    castRay(meshObj: MeshObj, config: RayCasterConfig): MeshObj {
+    createInstance(rayObj: RayObj): void {
+        const meshObj = rayObj.meshObj;
         const meshData = this.engineFacade.meshes.meshes.get(meshObj);
 
         if (!meshData) { return; }
@@ -27,19 +32,37 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
 	
         let direction = forward.subtract(origin);
         direction = Vector3.Normalize(direction);
-	
-        const length = 100;
-	
-        const ray = new Ray(origin, direction, length);
 
-        if (config.helper) {
-            let rayHelper = new RayHelper(ray);		
-            rayHelper.show(this.engineFacade.scene);		
+        rayObj.origin = toPoint3(origin);
+        rayObj.direction = toPoint3(direction);
+	
+        const length = rayObj.rayLength;
+    
+        const ray = new Ray(origin, direction, length);
+        this.rays.set(rayObj, ray);
+    }
+
+    createHelper(rayObj: RayObj) {
+        if (!this.rays.has(rayObj)) {
+            this.createInstance(rayObj);
         }
 
-        var hit = this.engineFacade.scene.pickWithRay(ray);
+        const origin = toVector3(rayObj.origin);
+        const direction = toVector3(rayObj.direction);
 
-        if (hit.pickedMesh){
+        const ray = new Ray(origin, direction, rayObj.rayLength);
+
+        let rayHelper = new RayHelper(ray);		
+        rayHelper.show(this.engineFacade.scene);
+
+        this.helpers.set(rayObj, rayHelper);
+
+        var hit = this.engineFacade.scene.pickWithRay(ray);
+    }
+
+    removeHelper(rayObj: RayObj) {
+        if (this.helpers.get(rayObj)) {
+            this.helpers.get(rayObj).hide();
         }
     }
 }

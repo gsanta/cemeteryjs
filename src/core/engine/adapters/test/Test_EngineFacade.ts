@@ -23,14 +23,14 @@ export class Test_EngineFacade implements IEngineFacade {
     meshes: IMeshAdapter;
     meshFactory: IMeshFactory;
     lights: ILightAdapter;
-    rayCaster: IRayCasterAdapter;
+    rays: IRayCasterAdapter;
 
     constructor(registry: Registry) {
         this.registry = registry;
 
         this.lights = new Test_LightAdapter(this.registry, this);
         this.meshes = new Test_MeshAdapter(this.registry, this);
-        this.rayCaster = new Test_RayCasterAdapter();
+        this.rays = new Test_RayCasterAdapter();
     }
 
     getCamera(): Camera3D {

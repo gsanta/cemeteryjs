@@ -11,7 +11,7 @@ export function isJoinPointView(view: View) {
     return view && view.viewType === NodePortViewType;
 }
 
-export interface JoinPointViewJson extends ViewJson {
+export interface NoePortViewJson extends ViewJson {
     point: string;
     slotName: string;
     isInput: boolean;
@@ -24,7 +24,7 @@ export class NodePortView extends ContainedView {
     id: string;
     point: Point;
     containerView: NodeView;
-    connection: NodeConnectionView;
+    private connection: NodeConnectionView;
     port: string;
     isInput: boolean;
     bounds: Rectangle;
@@ -69,11 +69,26 @@ export class NodePortView extends ContainedView {
 
     dispose() {}
 
+    removeConnection() {
+        this.containerView.getObj().deleteConnection(this.port);
+        this.containerView.deleteConstraiedViews.removeView(this.connection);
+        this.connection = undefined;
+    }
+
+    setConnection(connection: NodeConnectionView) {
+        this.connection = connection;
+        this.containerView.deleteConstraiedViews.addView(connection);
+    }
+
+    getConnection(): NodeConnectionView {
+        return this.connection;
+    }
+
     toString() {
         return `${this.viewType}: ${this.containerView.id} ${this.point.toString()}`;
     }
 
-    toJson(): JoinPointViewJson {
+    toJson(): NoePortViewJson {
         return {
             ...super.toJson(),
             point: this.point.toString(),
@@ -83,7 +98,7 @@ export class NodePortView extends ContainedView {
         }
     }
 
-    fromJson(json: JoinPointViewJson, registry: Registry) {
+    fromJson(json: NoePortViewJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
         this.port = json.slotName;

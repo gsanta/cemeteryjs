@@ -1,8 +1,8 @@
-import { MeshObj } from "../../../models/objs/MeshObj";
-import { IRayCasterAdapter, RayCasterConfig } from "../../IRayCasterAdapter";
+import { RayObj } from "../../../models/objs/RayObj";
+import { IRayCasterAdapter } from "../../IRayCasterAdapter";
 
 export class Test_RayCasterAdapter implements IRayCasterAdapter {
-    castRay(meshObj: MeshObj, config: RayCasterConfig): MeshObj {
-        return undefined;
-    }
+    createInstance(rayObj: RayObj): void {}
+    createHelper(rayObj: RayObj): void {}
+    removeHelper(rayObj: RayObj): void {}
 }

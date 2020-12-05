@@ -1,6 +1,6 @@
-import { MeshObj } from "../../../models/objs/MeshObj";
+import { RayObj } from "../../../models/objs/RayObj";
 import { Registry } from "../../../Registry";
-import { IRayCasterAdapter, RayCasterConfig } from "../../IRayCasterAdapter";
+import { IRayCasterAdapter } from "../../IRayCasterAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
 import { executeEnginesUntilValReturned } from "./Wrap_Utils";
 
@@ -13,7 +13,15 @@ export class Wrap_RayCasterAdapter implements IRayCasterAdapter {
         this.engineFacade = engineFacade;
     }
 
-    castRay(meshObj: MeshObj, config: RayCasterConfig): MeshObj {
-        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].rayCaster.castRay(meshObj, config));
+    createInstance(rayObj: RayObj): void {
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].rays.createInstance(rayObj));
+    }
+
+    createHelper(rayObj: RayObj): void {
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].rays.createHelper(rayObj));
+    }
+
+    removeHelper(rayObj: RayObj): void {
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].rays.removeHelper(rayObj));
     }
 }

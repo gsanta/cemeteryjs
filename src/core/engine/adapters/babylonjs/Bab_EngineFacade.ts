@@ -23,7 +23,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     meshes: Bab_Meshes;
     meshFactory: Bab_MeshFactory;
     lights: Bab_LightAdapter;
-    rayCaster: Bab_RayCasterAdapter;
+    rays: Bab_RayCasterAdapter;
 
     private renderLoops: (() => void)[] = [];
 
@@ -37,7 +37,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.meshes = new Bab_Meshes(this.registry, this);
         this.meshFactory = new Bab_MeshFactory(this.registry, this);
         this.lights = new Bab_LightAdapter(this.registry, this);
-        this.rayCaster = new Bab_RayCasterAdapter(this.registry, this);
+        this.rays = new Bab_RayCasterAdapter(this.registry, this);
     }
 
     getCamera(): Camera3D {

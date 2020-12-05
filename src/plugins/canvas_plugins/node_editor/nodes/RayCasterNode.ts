@@ -1,5 +1,5 @@
-import { RayCasterConfig } from "../../../../core/engine/IRayCasterAdapter";
 import { NodeObj, NodeParam, NodePort } from "../../../../core/models/objs/NodeObj";
+import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
@@ -53,8 +53,8 @@ export class RayCasterNode extends AbstractNodeFactory {
                 }
             },
             {
-                name: 'rayCasterConfig',
-                val: { helper: false } as RayCasterConfig
+                name: 'ray',
+                val: new RayObj
             }
         ];
     }
@@ -88,10 +88,11 @@ export class RayCasterNodeExecutor implements INodeExecutor {
         const meshId = this.nodeObj.getParam('mesh').val;
         const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
 
-        this.registry.services.node.executePort(this.nodeObj, 'helper');
-
         if (meshView) {
-            this.registry.engine.rayCaster.castRay(meshView.getObj(), this.nodeObj.getParam('rayCasterConfig').val);
+            const rayObj = this.nodeObj.getParam('ray').val as RayObj;
+            rayObj.meshObj = meshView.getObj();
+            this.registry.engine.rays.createInstance(rayObj);
+            this.registry.services.node.executePort(this.nodeObj, 'helper');
         }
     }
 

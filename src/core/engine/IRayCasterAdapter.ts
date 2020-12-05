@@ -1,9 +1,8 @@
 import { MeshObj } from "../models/objs/MeshObj";
-
-export interface RayCasterConfig {
-    helper: boolean;
-}
+import { RayObj } from "../models/objs/RayObj";
 
 export interface IRayCasterAdapter {
-    castRay(meshObj: MeshObj, config: RayCasterConfig): MeshObj;
+createInstance(rayObj: RayObj): void;
+createHelper(rayObj: RayObj): void;
+removeHelper(rayObj: RayObj): void;
 }

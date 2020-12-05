@@ -14,7 +14,7 @@ export interface IEngineFacade {
     lights: ILightAdapter;
     meshLoader: IMeshLoader;
     meshFactory: IMeshFactory;
-    rayCaster: IRayCasterAdapter;
+    rays: IRayCasterAdapter;
     
     setup(canvas: HTMLCanvasElement): void;
     getCamera(): Camera3D;

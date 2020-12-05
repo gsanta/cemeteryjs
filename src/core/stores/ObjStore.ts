@@ -3,6 +3,7 @@ import { AfterAllObjsDeserialized, IObj } from "../models/objs/IObj";
 import { LightObj, LightObjType } from "../models/objs/LightObj";
 import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
 import { NodeObjJson, NodeObjType } from "../models/objs/NodeObj";
+import { RayObj, RayObjType } from "../models/objs/RayObj";
 import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
 import { SpriteSheetObj, SpriteSheetObjType } from "../models/objs/SpriteSheetObj";
 import { Registry } from "../Registry";
@@ -162,6 +163,9 @@ export class ObjLifeCycleHook implements ObjStoreHook {
                 break;
             case LightObjType:
                 this.registry.engine.lights.createInstance(<LightObj> obj);
+                break;
+            case RayObjType:
+                this.registry.engine.rays.createInstance(<RayObj> obj);
                 break;
         }
     }

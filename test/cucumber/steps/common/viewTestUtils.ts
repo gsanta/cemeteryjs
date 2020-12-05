@@ -1,4 +1,5 @@
 import { View } from "../../../../src/core/models/views/View";
+import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../src/core/Registry";
 import { ViewStore } from "../../../../src/core/stores/ViewStore";
 
@@ -35,13 +36,13 @@ export function getViewProperty(view: View, prop: ViewTableProp) {
             return '';
     }
 }
-export function setViewProperty(view: View, prop: ViewTableProp, val: string) {
+export function setViewProperty(canvasPanel: Canvas2dPanel, view: View, prop: ViewTableProp, val: string) {
     switch(prop) {
         case ViewTableProp.Selected:
             if (isViewPropTrue(val)) {
-                view.store.addSelectedView(view);
+                canvasPanel.getViewStore().addSelectedView(view);
             } else {
-                view.store.removeSelectedView(view);
+                canvasPanel.getViewStore().removeSelectedView(view);
             }
         break;
     }

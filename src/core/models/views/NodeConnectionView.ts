@@ -85,8 +85,8 @@ export class NodeConnectionView extends View {
     }
 
     dispose() {
-        this.joinPoint1.containerView.getObj().deleteConnection(this.joinPoint1.port);
-        this.joinPoint2.containerView.getObj().deleteConnection(this.joinPoint2.port);
+        this.joinPoint1.removeConnection();
+        this.joinPoint2.removeConnection();
     }
 
     toJson(): NodeConnectionViewJson {
@@ -113,8 +113,8 @@ export class NodeConnectionView extends View {
         const nodeView2 = (<NodeView> registry.data.view.node.getById(json.joinPoint2.nodeId))
         this.joinPoint1 = <NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName);
         this.joinPoint2 = <NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName);
-        this.joinPoint1.connection = this;
-        this.joinPoint2.connection = this;
+        this.joinPoint1.setConnection(this);
+        this.joinPoint2.setConnection(this);
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 

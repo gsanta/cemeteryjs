@@ -1,5 +1,5 @@
-import { RayCasterConfig } from "../../../../core/engine/IRayCasterAdapter";
 import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -46,7 +46,7 @@ export class RayHelperNode extends AbstractNodeFactory {
         return [
             {
                 name: 'remove',
-                val: '',
+                val: -1,
                 uiOptions: {
                     inputType: 'textField',
                     valueType: 'number'
@@ -83,8 +83,15 @@ export class RayHelperNodeExecutor implements INodeExecutor {
         const connection = this.nodeObj.getConnection('rayCaster');
         if (connection) {
             const rayCasterNode = connection[0];
-            (rayCasterNode.getParam('rayCasterConfig').val as RayCasterConfig).helper = true;
+            const rayObj = rayCasterNode.getParam('ray').val as RayObj;
+
+            this.registry.engine.rays.createHelper(rayObj);
+            
+            if (this.nodeObj.getParam('remove').val && this.nodeObj.getParam('remove').val !== -1) {
+                setTimeout(() => this.registry.engine.rays.removeHelper(rayObj), this.nodeObj.getParam('remove').val * 1000);
+            }
         }
+
     }
 
     executeStop() {}

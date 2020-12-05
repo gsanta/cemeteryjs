@@ -1,5 +1,3 @@
-import { MeshView } from '../../../plugins/canvas_plugins/scene_editor/views/MeshView';
-import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';

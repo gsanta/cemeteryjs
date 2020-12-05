@@ -119,12 +119,7 @@ export class ViewStore {
         if (!view.id) {
             view.id = this.generateId(view);
         }
-        view.store = this;
         this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
-        // if (view.id) {
-        // } else {
-        //     view.id = this.idGenerator.generateId(view.viewType);
-        // }
 
         this.views.push(view);
         this.idMap.set(view.id, view);
@@ -140,18 +135,14 @@ export class ViewStore {
     }
 
     removeView(view: View) {
-        if (view.store !== this) { return; }
-
         if (view.isSelected()) {
             this.removeSelectedView(view);
         }
 
-        view.store = undefined;
+        view.deleteConstraiedViews.getViews().forEach(v => this.removeView(v));
 
         this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
-
         this.hooks.forEach(hook => hook.removeViewHook(view));
-
         this.idMap.delete(view.id);
 
         const thisViewTypes = this.viewsByType.get(view.viewType);
@@ -159,7 +150,6 @@ export class ViewStore {
         if (this.viewsByType.get(view.viewType).length === 0) {
             this.viewsByType.delete(view.viewType);
         }
-
 
         this.views.splice(this.views.indexOf(view), 1);
         this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
