@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodePort } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParams } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
@@ -37,8 +37,8 @@ export class RayCasterNode extends AbstractNodeFactory {
         obj.addAllParams(this.getParams());
         obj.inputs = this.getInputPorts();
         obj.outputs = this.getOutputLinks();
-        obj.executor = new RayCasterNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.executor = new RayCasterNodeExecutor(this.registry, obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
@@ -69,15 +69,15 @@ export class RayCasterNode extends AbstractNodeFactory {
         ];
     }
 
-    private getOutputLinks(): NodePort[] {
+    private getOutputLinks(): NodeParam[] {
         return [
             {
-                name: 'pickedMesh'
+                name: 'pickedMesh',
             }
         ];
     }
 
-    private getInputPorts(): NodePort[] {
+    private getInputPorts(): NodeParam[] {
         return [
             {
                 name: 'when'
@@ -88,6 +88,21 @@ export class RayCasterNode extends AbstractNodeFactory {
         ];
     }
 }
+
+// export class RayCasterNodeParams implements NodeParams {
+//     getParam(name: string): NodeParam<undefined> {
+        
+//     }
+//     getParams(): NodeParam<undefined>[] {
+        
+//     }
+//     hasParam(name: string): boolean {
+        
+//     }
+//     setParam(name: string, value: any) {
+        
+//     }
+// }
 
 export class RayCasterNodeExecutor implements INodeExecutor {
     private registry: Registry;

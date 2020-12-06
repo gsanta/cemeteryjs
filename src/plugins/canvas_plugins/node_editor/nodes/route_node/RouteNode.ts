@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { CustomNodeParamSerializer, NodePort, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
+import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamJson } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
@@ -36,8 +36,6 @@ export class RouteNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = this.getOutputLinks();
         obj.executor = new RouteNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -58,34 +56,30 @@ export class RouteNode extends AbstractNodeFactory {
             {
                 name: 'routeWalker',
                 val: undefined
-            }
-        ];
-    }
-
-    private getOutputLinks(): NodePort[] {
-        return [
-            {
-                name: 'onStart'
             },
             {
-                name: 'onTurnStart'
+                name: 'onStart',
+                port: 'output'
             },
             {
-                name: 'onTurnEnd'
+                name: 'onTurnStart',
+                port: 'output'
             },
             {
-                name: 'onFinish'
-            }
-        ]
-    }
-
-    private getInputLinks(): NodePort[] {
-        return [
-            {
-                name: 'mesh'
+                name: 'onTurnEnd',
+                port: 'output'
             },
             {
-                name: 'path'
+                name: 'onFinish',
+                port: 'output'
+            },
+            {
+                name: 'mesh',
+                port: 'input'
+            },
+            {
+                name: 'path',
+                port: 'input'
             }
         ];
     }
@@ -96,8 +90,7 @@ class RouteNodeSerializer implements CustomNodeParamSerializer {
         if (param.name === 'routeWalker') {
             return {
                 name: 'routeWalker',
-                val: undefined,
-                isLink: 'none'
+                val: undefined
             }
         }
     }

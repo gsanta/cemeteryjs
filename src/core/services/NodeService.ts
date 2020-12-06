@@ -15,4 +15,12 @@ export class NodeService {
             connection[0].executor.execute();
         }
     }
+
+    pullData(nodeObj: NodeObj, port: string): any {
+        // TODO check that port is input port
+        const connection = nodeObj.getConnection(port);
+        if (connection) {
+            return connection[0].getParam(connection[1]).val;
+        }
+    }
 }

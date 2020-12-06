@@ -40,7 +40,7 @@ export class JoinTool extends PointerTool {
         if (this.checkConnectionValidity()) {
             let joinPoint1 = this.joinPoint1;
             let joinPoint2 = <NodePortView> this.registry.services.pointer.hoveredView;
-            if (joinPoint2.isInput) {
+            if (joinPoint2.portDirection === 'input') {
                 [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
             }
 
@@ -73,7 +73,7 @@ export class JoinTool extends PointerTool {
 
         if (!end || !start) { return false; }
         if (start.viewType !== NodePortViewType || end.viewType !== NodePortViewType) { return false; }
-        if (start.isInput === end.isInput) { return false }
+        if (start.portDirection === end.portDirection) { return false }
 
         return true;
     }

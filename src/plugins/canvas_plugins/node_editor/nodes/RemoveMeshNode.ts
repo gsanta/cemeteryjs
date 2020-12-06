@@ -1,5 +1,4 @@
-import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
-import { RayObj } from "../../../../core/models/objs/RayObj";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -52,12 +51,13 @@ export class RemoveMeshNode extends AbstractNodeFactory {
                 uiOptions: {
                     inputType: 'list',
                     valueType: 'string'
-                }
+                },
+                port: 'output'
             }
         ];
     }
 
-    getOutputLinks(): NodePort[] {
+    getOutputLinks(): NodeParam[] {
         return [
             {
                 name: 'action'
@@ -65,7 +65,7 @@ export class RemoveMeshNode extends AbstractNodeFactory {
         ];
     }
 
-    getInputLinks(): NodePort[] {
+    getInputLinks(): NodeParam[] {
         return [
             {
                 name: 'signal'

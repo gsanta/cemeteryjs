@@ -1,4 +1,4 @@
-import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -35,8 +35,6 @@ export class RotateNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = [];
         obj.executor = new RotateNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -61,14 +59,10 @@ export class RotateNode extends AbstractNodeFactory {
                     inputType: 'list',
                     valueType: 'string'
                 }
-            }
-        ];
-    }
-
-    private getInputLinks(): NodePort[] {
-        return [
+            },
             {
-                name: 'input'
+                name: 'input',
+                port: 'input'
             }
         ];
     }

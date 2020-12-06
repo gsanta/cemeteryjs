@@ -1,14 +1,10 @@
-import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
-import { MeshView, MeshViewType } from "../../scene_editor/views/MeshView";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { NodeFactory } from "../../../../core/services/NodePlugin";
-import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
-import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
-import { NodeRenderer } from "../NodeRenderer";
+import { MeshView, MeshViewType } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 
 export const AnimationNodeType = 'animation-node-obj';
@@ -38,8 +34,6 @@ export class AnimationNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = this.getOutputLinks();
         obj.executor = new AnimationNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -72,18 +66,10 @@ export class AnimationNode extends AbstractNodeFactory {
                     inputType: 'textField',
                     valueType: 'number'
                 }
-            }
-        ];
-    }
-
-    private getOutputLinks(): NodePort[] {
-        return [];
-    }
-
-    private getInputLinks(): NodePort[] {
-        return [
+            },
             {
-                name: 'action'
+                name: 'action',
+                port: 'input'
             }
         ];
     }

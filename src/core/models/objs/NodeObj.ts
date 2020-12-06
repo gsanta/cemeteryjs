@@ -2,7 +2,6 @@ import { Registry } from '../../Registry';
 import { INodeExecutor } from '../../services/node/INodeExecutor';
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { IObj, ObjJson } from './IObj';
-import { NodeConnectionObj } from './NodeConnectionObj';
 
 export const NodeObjType = 'node-obj';
 
@@ -17,10 +16,6 @@ export enum NodeCategory {
     Default = 'Default'
 }
 
-export interface NodePort {
-    name: string;
-}
-
 export interface NodeParamJson {
     name: string;
     val: any;
@@ -29,20 +24,30 @@ export interface NodeParamJson {
         valueType: 'string' | 'number';
     }
     [otherData: string]: any;
-    isLink: 'input' | 'output' | 'both' | 'none';
+    port?: 'input' | 'output';
 }
 
-export interface NodeParam {
+export interface NodeParam<T = undefined> {
     name: string;
-    val: any;
+    val?: any;
     uiOptions?: {
         inputType: 'textField' | 'list';
         valueType: 'string' | 'number';
     }
-    isLink?: 'input' | 'output' | 'both' | 'none';
+    port?: 'input' | 'output';
+
+    getVal?();
+    setVal?(val: string);
 
     toJson?(): NodeParamJson;
     fromJson?(json: NodeObjJson);
+}
+
+export interface NodeParams {
+    getParam(name: string): NodeParam;
+    getParams(): NodeParam[];
+    hasParam(name: string): boolean;
+    setParam(name: string, value: any);
 }
 
 /**
@@ -78,8 +83,10 @@ export class NodeObj implements IObj {
     category: string;
     color: string;
 
-    inputs: NodePort[] = [];
-    outputs: NodePort[] = [];
+    // params: P;
+
+    // inputs: NodeParam[] = [];
+    // outputs: NodeParam[] = [];
     private connections: Map<string, [NodeObj, string]> = new Map();
     isExecutionStopped = true;
     executor: INodeExecutor;
@@ -161,7 +168,15 @@ export class NodeObj implements IObj {
     }
 
     findSlotByName(name: string) {
-        return this.inputs.find(slot => slot.name === name) || this.outputs.find(slot => slot.name === name);
+        return this.getInputPorts().find(slot => slot.name === name) || this.getOutputPorts().find(slot => slot.name === name);
+    }
+
+    private getInputPorts() {
+        return this.paramList.filter(param => param.port === 'input');
+    }
+
+    private getOutputPorts() {
+        return this.paramList.filter(param => param.port === 'output');
     }
 
     dispose() {
@@ -198,7 +213,7 @@ function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
         name: param.name,
         val: param.val,
         uiOptions: uiOptions,
-        isLink: param.isLink
+        port: param.port
     }
 }
 
@@ -207,6 +222,6 @@ function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
         name: json.name,
         val: json.val,
         uiOptions: json.uiOptions,
-        isLink: json.isLink
+        port: json.port
     }
 }

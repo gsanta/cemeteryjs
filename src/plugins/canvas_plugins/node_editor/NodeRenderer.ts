@@ -75,7 +75,7 @@ export class NodeRenderer implements ViewRenderer {
         }
     
         this.renderTitle(foreignObject, nodeView);
-        this.renderLinks(group, nodeView);
+        this.renderPortsInto(group, nodeView);
     
         let column = foreignObject.column({ key: 'data-row' });
         column.margin = `${this.joinPointsHeight}px 0 0 0`;
@@ -97,7 +97,7 @@ export class NodeRenderer implements ViewRenderer {
         title.color = colors.textColor;
     }
     
-    private renderLinks(svgGroup: UI_SvgGroup, nodeView: NodeView) {
+    private renderPortsInto(svgGroup: UI_SvgGroup, nodeView: NodeView) {
         let inputs: number = 0;
         let outputs: number = 0;
     
@@ -105,37 +105,37 @@ export class NodeRenderer implements ViewRenderer {
         nodeView.containedViews
         .forEach((joinPointView: NodePortView) => {
             if (!nodeView.getObj().hasParam(joinPointView.port)) {
-                joinPointView.isInput ? (inputs++) : (outputs++);
+                joinPointView.portDirection === 'input' ? (inputs++) : (outputs++);
             }
-            this.renderJoinPointInto(svgGroup, nodeView, joinPointView);
+            this.renderPortInto(svgGroup, nodeView, joinPointView);
         });
     
         this.joinPointsHeight = inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
     }
     
-    private renderJoinPointInto(svgGroup: UI_SvgGroup, nodeView: NodeView, joinPointView: NodePortView) {
+    private renderPortInto(svgGroup: UI_SvgGroup, nodeView: NodeView, portView: NodePortView) {
         const circle = svgGroup.circle();
         svgGroup.data = nodeView;
     
-        circle.cx = joinPointView.point.x;
-        circle.cy = joinPointView.point.y;
-        circle.r =  joinPointView.isHovered() ? 7 : 5;
+        circle.cx = portView.point.x;
+        circle.cy = portView.point.y;
+        circle.r =  portView.isHovered() ? 7 : 5;
         circle.fillColor = colors.grey1
-        circle.data = joinPointView;
-        circle.strokeColor = joinPointView.isHovered() ? 'blue' : colors.panelBackground;
+        circle.data = portView;
+        circle.strokeColor = portView.isHovered() ? 'blue' : colors.panelBackground;
         circle.css = {
-            strokeWidth: joinPointView.isHovered() ? '2' : '1'
+            strokeWidth: portView.isHovered() ? '2' : '1'
         }
 
-        if (!nodeView.getObj().hasParam(joinPointView.port)) {
-            const text = svgGroup.svgText({key: joinPointView.port});
-            text.text = joinPointView.port;
-            const textOffsetX = joinPointView.isInput ? 10 : -10;
-            text.x = joinPointView.point.x + textOffsetX;
-            text.y = joinPointView.point.y + 5;
+        if (!nodeView.getObj().hasParam(portView.port)) {
+            const text = svgGroup.svgText({key: portView.port});
+            text.text = portView.port;
+            const textOffsetX = portView.portDirection === 'input' ? 10 : -10;
+            text.x = portView.point.x + textOffsetX;
+            text.y = portView.point.y + 5;
             text.fontSize = '12px';
             text.isBold = true;
-            joinPointView.isInput === false && (text.anchor = 'end');
+            portView.portDirection === 'output' && (text.anchor = 'end');
         }
 
     }

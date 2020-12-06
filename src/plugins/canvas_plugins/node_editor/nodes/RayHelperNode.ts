@@ -1,4 +1,4 @@
-import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
@@ -33,8 +33,6 @@ export class RayHelperNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputPorts();
-        obj.outputs = this.getOutputLinks();
         obj.executor = new RayHelperNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -51,21 +49,11 @@ export class RayHelperNode extends AbstractNodeFactory {
                     inputType: 'textField',
                     valueType: 'number'
                 }
-            }
-        ];
-    }
-
-    private getOutputLinks(): NodePort[] {
-        return [
+            },
             {
-                name: 'rayCaster'
+                name: 'rayCaster',
+                port: 'output'
             }
-        ];
-    }
-
-    private getInputPorts(): NodePort[] {
-        return [
-
         ];
     }
 }

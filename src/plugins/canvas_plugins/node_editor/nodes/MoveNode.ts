@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodePort } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -35,8 +35,6 @@ export class MoveNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = this.getOutputLinks();
         obj.executor = new MoveNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -69,22 +67,14 @@ export class MoveNode extends AbstractNodeFactory {
                     inputType: 'textField',
                     valueType: 'number'
                 }
-            }
-        ];
-    }
-
-    private getOutputLinks(): NodePort[] {
-        return [
+            },
             {
-                name: 'animation'
-            }
-        ]
-    }
-
-    private getInputLinks(): NodePort[] {
-        return [
+                name: 'animation',
+                port: 'output'
+            },
             {
-                name: 'input'
+                name: 'input',
+                port: 'input'
             }
         ];
     }

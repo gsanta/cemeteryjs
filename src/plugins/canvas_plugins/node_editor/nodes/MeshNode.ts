@@ -1,4 +1,4 @@
-import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -32,8 +32,6 @@ export class MeshNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = this.getOutputLinks();
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 
@@ -50,20 +48,12 @@ export class MeshNode extends AbstractNodeFactory {
                     inputType: 'list',
                     valueType: 'string'
                 }
-            }
-        ];
-    }
-
-    getOutputLinks(): NodePort[] {
-        return [
+            },
             {
-                name: 'action'
+                name: 'action',
+                port: 'input'
             }
         ];
-    }
-
-    getInputLinks(): NodePort[] {
-        return [];
     }
 }
 

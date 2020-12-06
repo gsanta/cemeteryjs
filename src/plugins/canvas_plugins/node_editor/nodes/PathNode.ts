@@ -1,4 +1,4 @@
-import { NodePort, NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -32,8 +32,6 @@ export class PathNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = this.getOutputLinks();
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 
@@ -50,20 +48,12 @@ export class PathNode extends AbstractNodeFactory {
                     inputType: 'list',
                     valueType: 'string'
                 }
+            },
+            {
+                name: 'action',
+                port: 'output'
             }
         ];
-    }
-
-    private getOutputLinks(): NodePort[] {
-        return [
-            {
-                name: 'action'
-            }
-        ]
-    }
-
-    private getInputLinks(): NodePort[] {
-        return [];
     }
 }
 

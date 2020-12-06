@@ -14,7 +14,7 @@ export function isJoinPointView(view: View) {
 export interface NoePortViewJson extends ViewJson {
     point: string;
     slotName: string;
-    isInput: boolean;
+    portDirection: 'input' | 'output';
     connectionId: string;
 }
 
@@ -26,17 +26,17 @@ export class NodePortView extends ContainedView {
     containerView: NodeView;
     private connection: NodeConnectionView;
     port: string;
-    isInput: boolean;
+    portDirection: 'input' | 'output';
     bounds: Rectangle;
 
-    constructor(parent: NodeView, config: {slotName: string, isInput: boolean}) {
+    constructor(parent: NodeView, config: {portName: string, portDirection: 'input' | 'output'}) {
         super();
         this.containerView = parent;
 
         
         if (config) {
-            this.port = config.slotName;
-            this.isInput = config.isInput;
+            this.port = config.portName;
+            this.portDirection = config.portDirection;
         }
         this.id = this.port;
     }
@@ -55,7 +55,7 @@ export class NodePortView extends ContainedView {
 
     move(delta: Point) {
         if (this.connection) {
-            this.isInput ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
+            this.portDirection ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
         }
     }
 
@@ -93,7 +93,7 @@ export class NodePortView extends ContainedView {
             ...super.toJson(),
             point: this.point.toString(),
             slotName: this.port,
-            isInput: this.isInput,
+            portDirection: this.portDirection,
             connectionId: this.connection.id
         }
     }
@@ -102,6 +102,6 @@ export class NodePortView extends ContainedView {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
         this.port = json.slotName;
-        this.isInput = json.isInput;
+        this.portDirection = json.portDirection;
     }
 }
