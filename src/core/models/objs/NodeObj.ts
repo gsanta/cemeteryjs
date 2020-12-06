@@ -171,12 +171,16 @@ export class NodeObj implements IObj {
         return this.getInputPorts().find(slot => slot.name === name) || this.getOutputPorts().find(slot => slot.name === name);
     }
 
-    private getInputPorts() {
+    getInputPorts() {
         return this.paramList.filter(param => param.port === 'input');
     }
 
-    private getOutputPorts() {
+    getOutputPorts() {
         return this.paramList.filter(param => param.port === 'output');
+    }
+
+    getUIParams() {
+        return this.paramList.filter(param => param.uiOptions);
     }
 
     dispose() {

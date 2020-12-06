@@ -33,8 +33,6 @@ export class RemoveMeshNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputLinks();
-        obj.outputs = this.getOutputLinks();
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
         obj.executor = new RemoveMeshNodeExecutor(this.registry, obj);
@@ -53,22 +51,14 @@ export class RemoveMeshNode extends AbstractNodeFactory {
                     valueType: 'string'
                 },
                 port: 'output'
-            }
-        ];
-    }
-
-    getOutputLinks(): NodeParam[] {
-        return [
+            },
             {
-                name: 'action'
-            }
-        ];
-    }
-
-    getInputLinks(): NodeParam[] {
-        return [
+                name: 'action',
+                port: 'output'
+            },
             {
-                name: 'signal'
+                name: 'signal',
+                port: 'input'
             }
         ];
     }

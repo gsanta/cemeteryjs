@@ -35,8 +35,6 @@ export class RayCasterNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
         obj.addAllParams(this.getParams());
-        obj.inputs = this.getInputPorts();
-        obj.outputs = this.getOutputLinks();
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.executor = new RayCasterNodeExecutor(this.registry, obj);
         obj.graph = this.registry.data.helper.node.graph;
@@ -65,25 +63,18 @@ export class RayCasterNode extends AbstractNodeFactory {
             {
                 name: 'ray',
                 val: new RayObj
-            }
-        ];
-    }
-
-    private getOutputLinks(): NodeParam[] {
-        return [
-            {
-                name: 'pickedMesh',
-            }
-        ];
-    }
-
-    private getInputPorts(): NodeParam[] {
-        return [
-            {
-                name: 'when'
             },
             {
-                name: 'helper'
+                name: 'when',
+                port: 'input'
+            },
+            {
+                name: 'helper',
+                port: 'input'
+            },
+            {
+                name: 'pickedMesh',
+                port: 'output'
             }
         ];
     }

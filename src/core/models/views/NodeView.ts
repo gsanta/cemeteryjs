@@ -20,7 +20,7 @@ export interface NodeViewJson extends ViewJson {
 }
 
 const HEADER_HIGHT = 30;
-const SLOT_HEIGHT = 20;
+const PORT_HEIGHT = 20;
 const INPUT_HEIGHT = 35;
 const NODE_PADDING = 10;
 
@@ -46,35 +46,20 @@ export class NodeView extends View {
     }
 
     setup() {
-        const standaloneJoinPointViews = [
-            ...this.obj.inputs.map(slot => new NodePortView(this, {portName: slot.name, portDirection: 'input'})),
-            ...this.obj.outputs.map(slot => new NodePortView(this, {portName: slot.name, portDirection: 'output'}))
-        ];
-        
-        const paramRelatedJoinPointViews = this.obj.getParams()
+        this.obj.getParams()
             .filter(param => param.port)
-            .map(param => new NodePortView(this, {portName: param.name, portDirection: 'output'}));
-        
-        [...standaloneJoinPointViews, ...paramRelatedJoinPointViews].forEach(joinPointView => this.addContainedView(joinPointView));
+            .map(param => new NodePortView(this, {portName: param.name, portDirection: param.port}))
+            .forEach(portView => this.addContainedView(portView))
         this.updateDimensions();
     }
 
-    updateJoinPoints() {
-        this.obj.getParams().filter(param => param.port)
-            .forEach(param => {
-                if (!this.findJoinPointView(param.name)) {
-                    this.addContainedView( new NodePortView(this, {portName: param.name, portDirection: 'output'}));
-                }
-            });
-
-        this.updateDimensions();
-    }
-
-    updateDimensions() {
-        const SLOTS_HEIGHT = this.obj.inputs.length > this.obj.outputs.length ? this.obj.inputs.length * SLOT_HEIGHT : this.obj.outputs.length * SLOT_HEIGHT;
-        this.paramsYPosStart = HEADER_HIGHT + SLOTS_HEIGHT + NODE_PADDING;
-        const uiParams = this.obj.getParams().filter(param => param.uiOptions);
-        const height = HEADER_HIGHT + SLOTS_HEIGHT + INPUT_HEIGHT * (uiParams.length ? uiParams.length : 1) + NODE_PADDING * 2;
+    private updateDimensions() {
+        const inputPortLen = this.obj.getInputPorts().filter(port => !port.uiOptions).length;
+        const outputPortLen = this.obj.getOutputPorts().filter(port => !port.uiOptions).length;
+        const PORTS_HEIGHT = inputPortLen > outputPortLen ? inputPortLen * PORT_HEIGHT : outputPortLen * PORT_HEIGHT;
+        this.paramsYPosStart = HEADER_HIGHT + PORTS_HEIGHT + NODE_PADDING;
+        const uiParams = this.obj.getUIParams().filter(param => param.uiOptions);
+        const height = HEADER_HIGHT + PORTS_HEIGHT + INPUT_HEIGHT * (uiParams.length ? uiParams.length : 1) + NODE_PADDING * 2;
         this.bounds.setHeight(height);
 
         this.initStandaloneJoinPointPositions();
@@ -82,26 +67,30 @@ export class NodeView extends View {
     }
 
     private initStandaloneJoinPointPositions() {
+        const inputPorts = this.obj.getInputPorts();
+        const outputPorts = this.obj.getOutputPorts();
+        
         this.containedViews
-            .filter((joinPointView: NodePortView) => !this.obj.hasParam(joinPointView.port))
-            .forEach((joinPointView: NodePortView) => {
-                const x = joinPointView.portDirection === 'input' ? 0 : this.bounds.getWidth();
-                const slotIndex = joinPointView.portDirection === 'input' ? this.obj.inputs.findIndex(slot => slot.name === joinPointView.port) : this.obj.outputs.findIndex(slot => slot.name === joinPointView.port);
+            .filter((portView: NodePortView) => !this.obj.getParam(portView.port).uiOptions)
+            .forEach((portView: NodePortView) => {
+                const x = portView.portDirection === 'input' ? 0 : this.bounds.getWidth();
+
+                const slotIndex = portView.portDirection === 'input' ? inputPorts.findIndex(slot => slot.name === portView.port) : outputPorts.findIndex(slot => slot.name === portView.port);
                 const y = slotIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + sizes.nodes.headerHeight;
-                joinPointView.point = new Point(x, y);
-                joinPointView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
+                portView.point = new Point(x, y);
+                portView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
             });
     }
 
     private initParamRelatedJoinPointPositions() {
         this.containedViews
-            .filter((joinPointView: NodePortView) => this.obj.hasParam(joinPointView.port))
-            .forEach((joinPointView: NodePortView) => {
-                const x = joinPointView.portDirection === 'input' ? 0 : this.bounds.getWidth();
-                const paramIndex = this.obj.getParams().findIndex(param => param.name === joinPointView.port);
+            .filter((portView: NodePortView) => this.obj.getParam(portView.port).uiOptions)
+            .forEach((portView: NodePortView) => {
+                const x = portView.portDirection === 'input' ? 0 : this.bounds.getWidth();
+                const paramIndex = this.obj.getUIParams().findIndex(param => param.name === portView.port);
                 const y = paramIndex * INPUT_HEIGHT + this.paramsYPosStart + INPUT_HEIGHT / 2;
-                joinPointView.point = new Point(x, y);
-                joinPointView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
+                portView.point = new Point(x, y);
+                portView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
             });
     }
 

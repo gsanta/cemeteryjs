@@ -104,7 +104,7 @@ export class NodeRenderer implements ViewRenderer {
         let rowHeight = 20;
         nodeView.containedViews
         .forEach((joinPointView: NodePortView) => {
-            if (!nodeView.getObj().hasParam(joinPointView.port)) {
+            if (!nodeView.getObj().getParam(joinPointView.port).uiOptions) {
                 joinPointView.portDirection === 'input' ? (inputs++) : (outputs++);
             }
             this.renderPortInto(svgGroup, nodeView, joinPointView);
@@ -127,7 +127,7 @@ export class NodeRenderer implements ViewRenderer {
             strokeWidth: portView.isHovered() ? '2' : '1'
         }
 
-        if (!nodeView.getObj().hasParam(portView.port)) {
+        if (!nodeView.getObj().getParam(portView.port).uiOptions) {
             const text = svgGroup.svgText({key: portView.port});
             text.text = portView.port;
             const textOffsetX = portView.portDirection === 'input' ? 10 : -10;
