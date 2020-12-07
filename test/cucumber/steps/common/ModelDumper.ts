@@ -35,7 +35,7 @@ export class ModelDumper {
         const paramNames = nodeObj.getParams().map(param => param.name);
 
         paramNames.forEach(prop => columns.push([prop]));
-        paramNames.forEach((prop, index) => columns[index].push(nodeObj.getParam(paramNames[index]).val));
+        paramNames.forEach((prop, index) => columns[index].push(nodeObj.param[paramNames[index]].val));
     
         const maxColumnLengths = this.getMaxColumnLengths(columns);
         this.printTable(columns, maxColumnLengths);

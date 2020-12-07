@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -29,32 +29,30 @@ export class MeshNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj<MeshNodeParams>(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-
+        obj.param = new MeshNodeParams();
+        
         return obj;
     }
+}
 
-
-    getParams(): NodeParam[] {
-        return [
-            {
-                name: 'mesh',
-                val: '',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string'
-                }
-            },
-            {
-                name: 'action',
-                port: 'input'
-            }
-        ];
+export class MeshNodeParams implements NodeParams {
+    mesh = {
+        name: 'mesh',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.List,
+        val: '',
     }
+    
+    action = {
+        name: 'action',
+        type: NodeParamType.Port,
+        port: 'input'
+    }
+
 }
 
 export class MeshController extends PropController<string> {
@@ -72,7 +70,7 @@ export class MeshController extends PropController<string> {
     }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('mesh').val;
+        return this.nodeView.getObj().param.mesh.val;
     }
 
     change(val, context: PropContext) {

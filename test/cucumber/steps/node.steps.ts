@@ -39,10 +39,10 @@ function nodeParamsAre(world: World, nodeObj: NodeObj, tableDef: TableDefinition
  
     tableDef.rows()[0].forEach((expectedPropValue: string, propIdx: number) => {
         const paramName = paramNames[propIdx];
-        const param = nodeObj.getParam(paramName);
+        const param = nodeObj.param[paramName];
 
         if (!param) { throw new Error(`Param ${paramName} not found.`); }
 
-        expect(nodeObj.getParam(paramName).val).toEqual(expectedPropValue);
+        expect(nodeObj.param[paramName].val).toEqual(expectedPropValue);
     });
 }

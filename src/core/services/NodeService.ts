@@ -20,7 +20,7 @@ export class NodeService {
         // TODO check that port is input port
         const connection = nodeObj.getConnection(port);
         if (connection) {
-            return connection[0].getParam(connection[1]).val;
+            return connection[0].param[connection[1]].val;
         }
     }
 }

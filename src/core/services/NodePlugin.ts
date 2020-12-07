@@ -7,13 +7,13 @@ import { FormController } from '../plugin/controller/FormController';
 import { Registry } from '../Registry';
 import { GameState, GameStoreHook } from '../stores/GameStore';
 import { EmptyViewStoreHook } from '../stores/ViewStore';
-import { INodeExecutor } from './node/INodeExecutor';
+import { AbstractNodeExecutor } from './node/INodeExecutor';
 
 export interface NodeFactory {
     id: string;
     createNodeObj(): NodeObj;
     getController(): FormController;
-    createExecutor(): INodeExecutor;
+    createExecutor(): AbstractNodeExecutor<any>;
 }
 
 export class NodeGraphHook extends EmptyViewStoreHook {

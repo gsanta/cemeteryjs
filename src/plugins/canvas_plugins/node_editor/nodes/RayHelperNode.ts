@@ -1,10 +1,10 @@
-import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
+import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { AbstractNodeFactory } from "./AbstractNode";
 
 export const RayHelperNodeType = 'ray-helper-node-obj';
@@ -23,7 +23,7 @@ export class RayHelperNode extends AbstractNodeFactory {
 
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
-        nodeView.addParamController(new RemoveTimerController(nodeView));
+        nodeView.addParamController(new RemoveTimerController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -32,51 +32,49 @@ export class RayHelperNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.executor = new RayHelperNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
+        obj.param = new RayHelperNodeParams();
 
         return obj;
     }
-
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'remove',
-                val: -1,
-                uiOptions: {
-                    inputType: 'textField',
-                    valueType: 'number'
-                }
-            },
-            {
-                name: 'rayCaster',
-                port: 'output'
-            }
-        ];
-    }
 }
 
-export class RayHelperNodeExecutor implements INodeExecutor {
+export class RayHelperNodeParams implements NodeParams {
+    remove = {
+        name: 'remove',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.NumberField,
+        val: -1
+    }
+    
+    rayCaster = {
+        type: NodeParamType.Port,
+        name: 'rayCaster',
+        port: 'output'
+    }
+
+}
+
+export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodeParams> {
     private registry: Registry;
-    private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
+        super(nodeObj);
         this.registry = registry;
-        this.nodeObj = nodeObj;
     }
 
     execute() {
         const connection = this.nodeObj.getConnection('rayCaster');
         if (connection) {
             const rayCasterNode = connection[0];
-            const rayObj = rayCasterNode.getParam('ray').val as RayObj;
+            const rayObj = rayCasterNode.param.ray.val as RayObj;
 
             this.registry.engine.rays.createHelper(rayObj);
             
-            if (this.nodeObj.getParam('remove').val && this.nodeObj.getParam('remove').val !== -1) {
-                setTimeout(() => this.registry.engine.rays.removeHelper(rayObj), this.nodeObj.getParam('remove').val * 1000);
+            if (this.nodeObj.param.remove.val && this.nodeObj.param.remove.val !== -1) {
+                setTimeout(() => this.registry.engine.rays.removeHelper(rayObj), this.nodeObj.param.remove.val * 1000);
             }
         }
 
@@ -86,17 +84,17 @@ export class RayHelperNodeExecutor implements INodeExecutor {
 }
 
 class RemoveTimerController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj<RayHelperNodeParams>;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['remove']; }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('remove').val;
+        return this.nodeObj.param.remove.val;
     }
 
     change(val, context: PropContext) {
@@ -105,8 +103,7 @@ class RemoveTimerController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const nodeObj = this.nodeView.getObj();
-        nodeObj.setParam('remove', context.clearTempVal());
+        this.nodeObj.param.remove = context.clearTempVal();
         context.registry.services.render.reRenderAll();
     }
 }

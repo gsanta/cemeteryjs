@@ -1,5 +1,5 @@
 import { Registry } from '../../Registry';
-import { INodeExecutor } from '../../services/node/INodeExecutor';
+import { AbstractNodeExecutor } from '../../services/node/INodeExecutor';
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { IObj, ObjJson } from './IObj';
 
@@ -16,26 +16,35 @@ export enum NodeCategory {
     Default = 'Default'
 }
 
+export enum NodeParamType {
+    Port = 'Port',
+    InputField = 'InputField',
+    InputFieldWithPort = 'InputFieldWithPort',
+    Hidden = 'Hidden'
+}
+
+export enum NodeParamFieldType {
+    TextField = 'TextField',
+    NumberField = 'NumberField',
+    List = 'List'
+}
+
+
 export interface NodeParamJson {
     name: string;
+    type: NodeParamType;
     val: any;
-    uiOptions?: {
-        inputType: 'textField' | 'list';
-        valueType: 'string' | 'number';
-    }
-    [otherData: string]: any;
+    fieldType?: NodeParamFieldType;
     port?: 'input' | 'output';
 }
 
-export interface NodeParam<T = undefined> {
+export interface NodeParam {
     name: string;
-    val?: any;
-    uiOptions?: {
-        inputType: 'textField' | 'list';
-        valueType: 'string' | 'number';
-    }
+    type: NodeParamType;
+    fieldType?: NodeParamFieldType;
     port?: 'input' | 'output';
-
+    
+    val?: any;
     getVal?();
     setVal?(val: string);
 
@@ -44,10 +53,6 @@ export interface NodeParam<T = undefined> {
 }
 
 export interface NodeParams {
-    getParam(name: string): NodeParam;
-    getParams(): NodeParam[];
-    hasParam(name: string): boolean;
-    setParam(name: string, value: any);
 }
 
 /**
@@ -75,7 +80,7 @@ export interface NodeObjConfig {
     customParamSerializer?: CustomNodeParamSerializer;
 }
 
-export class NodeObj implements IObj {
+export class NodeObj<P extends NodeParams = any> implements IObj {
     id: string;
     objType = NodeObjType;
     type: string;
@@ -83,19 +88,16 @@ export class NodeObj implements IObj {
     category: string;
     color: string;
 
-    // params: P;
+    param: P;
+    cachedParams: Map<string, NodeParam> = undefined;
+    private paramList: NodeParam[];
 
-    // inputs: NodeParam[] = [];
-    // outputs: NodeParam[] = [];
     private connections: Map<string, [NodeObj, string]> = new Map();
     isExecutionStopped = true;
-    executor: INodeExecutor;
-
-    params: {[key: string]: NodeParam} = {};
+    executor: AbstractNodeExecutor<any>;
 
     graph: NodeGraph;
 
-    private paramList: NodeParam[] = [];
     private customParamSerializer: CustomNodeParamSerializer;
 
     constructor(nodeType: string, config?: NodeObjConfig) {
@@ -119,26 +121,20 @@ export class NodeObj implements IObj {
         this.executor && this.executor.executeStart && this.executor.executeStop();
     }
 
-    getParam(name: string): NodeParam {
-        return this.params[name];
-    }
-
     getParams(): NodeParam[] {
-        return this.paramList;
-    }
+        if (!this.cachedParams) { this.cacheParams(); }
 
-    hasParam(name: string): boolean {
-        return this.params[name] !== undefined; 
+        return Array.from(this.cachedParams.values());;
     }
 
     setParam(name: string, value: any) {
-        this.params[name].val = value;
+        this.param[name].val = value;
     }
 
-    addParam(param: NodeParam) {
-        this.params[param.name] = param;
-        this.paramList.push(param);
-    }
+    // addParam(param: NodeParam) {
+    //     this.params[param.name] = param;
+    //     this.paramList.push(param);
+    // }
 
     getConnection(portName: string): [NodeObj, string] {
         return this.connections.get(portName);
@@ -163,15 +159,13 @@ export class NodeObj implements IObj {
         this.graph.onConnect([this, port], [otherNode, otherPort]);
     }
 
-    addAllParams(params: NodeParam[]) {
-        params.forEach(param => this.addParam(param));
-    }
-
     findSlotByName(name: string) {
         return this.getInputPorts().find(slot => slot.name === name) || this.getOutputPorts().find(slot => slot.name === name);
     }
 
     getInputPorts() {
+        if (!this.cachedParams) { this.cacheParams(); }
+
         return this.paramList.filter(param => param.port === 'input');
     }
 
@@ -180,7 +174,7 @@ export class NodeObj implements IObj {
     }
 
     getUIParams() {
-        return this.paramList.filter(param => param.uiOptions);
+        return this.paramList.filter(param => param.type === NodeParamType.InputField || param.type === NodeParamType.InputFieldWithPort);
     }
 
     dispose() {
@@ -192,7 +186,9 @@ export class NodeObj implements IObj {
     }
 
     serialize(): NodeObjJson {
-        const params = this.paramList.map(param => this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param));
+        const params = Array.from(this.cachedParams.entries()).map(([key, param]) => {
+            return this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param);
+        });
 
         return {
             id: this.id,
@@ -206,26 +202,42 @@ export class NodeObj implements IObj {
 
         this.id = json.id;
         this.type = json.type;
-        this.paramList = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
-        this.paramList.forEach(param => this.params[param.name] = param);
+        const paramList = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
+        paramList.forEach(param => this.param[param.name] = param);
+    }
+
+    private cacheParams() {
+        const map: Map<string, NodeParam> = new Map();
+
+        const paramTypes =  Object.keys(NodeParamType).map(key => NodeParamType[key]).filter(k => !(parseInt(k) >= 0));
+
+        Object.entries(this.param).forEach(entry => {
+            if (entry[1].type && paramTypes.includes(entry[1].type)) {
+                map.set(entry[0], entry[1]);
+            }
+        });
+    
+        this.paramList = Array.from(map.values());
+        this.cachedParams = map;
     }
 }
 
 function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
-    const uiOptions = param.uiOptions ? param.uiOptions : undefined;
     return {
+        type: param.type,
         name: param.name,
         val: param.val,
-        uiOptions: uiOptions,
+        fieldType: param.fieldType,
         port: param.port
     }
 }
 
 function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
     return {
+        type: json.type,
         name: json.name,
         val: json.val,
-        uiOptions: json.uiOptions,
+        fieldType: json.fieldType,
         port: json.port
     }
 }

@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -23,7 +23,7 @@ export class PathNode extends AbstractNodeFactory {
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
-        nodeView.addParamController(new PathController(nodeView));
+        nodeView.addParamController(new PathController(nodeView.getObj()));
 
         return nodeView;
     }
@@ -31,38 +31,35 @@ export class PathNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
+        obj.param = new PathNodeParams();
 
         return obj;
     }
+}
 
-
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'path',
-                val: '',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string'
-                }
-            },
-            {
-                name: 'action',
-                port: 'output'
-            }
-        ];
+export class PathNodeParams implements NodeParams {
+    path = {
+        name: 'path',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.List,
+        val: '',
+    }
+    
+    action = {
+        name: 'action',
+        type: NodeParamType.Port,
+        port: 'output'
     }
 }
 
 export class PathController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['path']; }
@@ -72,11 +69,11 @@ export class PathController extends PropController<string> {
     }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('path').val;
+        return this.nodeObj.param.path.val;
     }
 
     change(val, context: PropContext) {
-        this.nodeView.getObj().setParam('path', val);
+        this.nodeObj.param.path = val;
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

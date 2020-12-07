@@ -1,3 +1,4 @@
+import { NodeParamFieldType, NodeParamType } from '../../../core/models/objs/NodeObj';
 import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
@@ -29,20 +30,21 @@ export class NodeRenderer implements ViewRenderer {
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
         nodeView.getObj().getParams()
-            .filter(obj => obj.uiOptions)
+            .filter(param => param.type === NodeParamType.InputField || param.type === NodeParamType.InputFieldWithPort)
             .map(param => {
                 let row = column.row({key: param.name});
                 row.height = '35px';
 
-                switch(param.uiOptions.inputType) {
-                    case 'textField':
+                switch(param.fieldType) {
+                    case NodeParamFieldType.NumberField:
+                    case NodeParamFieldType.TextField:
                         const textField = row.textField({key: param.name, target: nodeView.id});
                         textField.layout = 'horizontal';
-                        textField.type = 'number';
+                        textField.type = param.fieldType === NodeParamFieldType.TextField ? 'text' : 'number';
                         textField.label = param.name;
                         textField.isBold = true;
                     break;
-                    case 'list':
+                    case NodeParamFieldType.List:
                         const select = row.select({key: param.name, target: nodeView.id});
                         select.layout = 'horizontal';
                         select.label = param.name;
@@ -103,12 +105,12 @@ export class NodeRenderer implements ViewRenderer {
     
         let rowHeight = 20;
         nodeView.containedViews
-        .forEach((joinPointView: NodePortView) => {
-            if (!nodeView.getObj().getParam(joinPointView.port).uiOptions) {
-                joinPointView.portDirection === 'input' ? (inputs++) : (outputs++);
-            }
-            this.renderPortInto(svgGroup, nodeView, joinPointView);
-        });
+            .forEach((portView: NodePortView) => {
+                if (nodeView.getObj().param[portView.port].type === NodeParamType.Port) {
+                    portView.portDirection === 'input' ? (inputs++) : (outputs++);
+                }
+                this.renderPortInto(svgGroup, nodeView, portView);
+            });
     
         this.joinPointsHeight = inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
     }
@@ -127,7 +129,7 @@ export class NodeRenderer implements ViewRenderer {
             strokeWidth: portView.isHovered() ? '2' : '1'
         }
 
-        if (!nodeView.getObj().getParam(portView.port).uiOptions) {
+        if (nodeView.getObj().param[portView.port].type === NodeParamType.Port) {
             const text = svgGroup.svgText({key: portView.port});
             text.text = portView.port;
             const textOffsetX = portView.portDirection === 'input' ? 10 : -10;

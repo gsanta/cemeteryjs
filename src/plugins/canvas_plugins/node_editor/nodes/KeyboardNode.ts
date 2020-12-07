@@ -1,10 +1,10 @@
-import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { getAllKeys } from "../../../../core/services/input/KeyboardService";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
+import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";
 import { GameViewerPanelId } from "../../game_viewer/registerGameViewer";
@@ -27,47 +27,42 @@ export class KeyboardNode extends AbstractNodeFactory {
 
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
-        nodeView.addParamController(new KeyControl(nodeView));
+        nodeView.addParamController(new KeyControl(nodeView.getObj(), nodeView));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.executor = new KeyboardNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
+        obj.param = new KeyboardNodeParams();
 
         return obj;
     }
+}
 
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'key1',
-                val: '',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string',
-                },
-                port: 'output'
-            }
-        ];
+export class KeyboardNodeParams implements NodeParams {
+    key1 = {
+        name: 'key1',
+        type: NodeParamType.InputFieldWithPort,
+        fieldType: NodeParamFieldType.List,
+        val: '',
+        port: 'output'
     }
 }
 
 const KEY_REGEX = /key(\d*)/;
 
-export class KeyboardNodeExecutor implements INodeExecutor {
+export class KeyboardNodeExecutor extends AbstractNodeExecutor<KeyboardNodeParams> {
     private registry: Registry;
-    private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
+        super(nodeObj);
         this.registry = registry;
-        this.nodeObj = nodeObj;
     }
 
     execute() {
@@ -88,15 +83,17 @@ export class KeyboardNodeExecutor implements INodeExecutor {
 }
 
 export class KeyControl extends PropController {
+    private nodeObj: NodeObj<KeyboardNodeParams>;
     private nodeView: NodeView;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj<KeyboardNodeParams>, nodeView: NodeView) {
         super();
+        this.nodeObj = nodeObj;
         this.nodeView = nodeView;
     }
 
     acceptedProps(context: PropContext, element: UI_Element) {
-        return this.nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
+        return this.nodeObj.getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
     }
 
     values() {
@@ -104,15 +101,15 @@ export class KeyControl extends PropController {
     }
 
     defaultVal(context: PropContext, element: UI_InputElement) {
-        return this.nodeView.getObj().getParam(element.key).val;
+        return this.nodeObj.param[element.key].val;
     }
 
     change(val, context: PropContext, element: UI_InputElement) {
         context.updateTempVal(val);
-        this.nodeView.getObj().setParam(element.key, val);
+        this.nodeObj.param[element.key].val = val;
         context.registry.services.history.createSnapshot();
 
-        const keys = this.nodeView.getObj().getParams().filter(param => param.name.match(KEY_REGEX));
+        const keys = this.nodeObj.getParams().filter(param => param.name.match(KEY_REGEX));
         let newIndex = 2;
 
         const keyIndexes = keys.map(key => parseInt(key.name.match(KEY_REGEX)[1], 10));
@@ -122,15 +119,14 @@ export class KeyControl extends PropController {
             newIndex = keyIndexes[0] + 1;
         }
         
-        this.nodeView.getObj().addParam({
+        this.nodeObj.param[`key${newIndex}`] = {
             name: `key${newIndex}`,
+            type: NodeParamType.InputFieldWithPort,
+            fieldType: NodeParamFieldType.List,
             val: '',
-            uiOptions: {
-                inputType: 'list',
-                valueType: 'string',
-            },
             port: 'output'
-        });
+        };
+        this.nodeObj.cachedParams = undefined;
         context.clearTempVal();
         this.nodeView.setup();
 

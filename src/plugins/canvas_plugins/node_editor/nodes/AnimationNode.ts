@@ -1,9 +1,9 @@
-import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
+import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { MeshView, MeshViewType } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 
@@ -24,7 +24,7 @@ export class AnimationNode extends AbstractNodeFactory {
     
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
-        nodeView.addParamController(new AnimationMeshController(nodeView), new StartFrameController(nodeView), new EndFrameController(nodeView));
+        nodeView.addParamController(new AnimationMeshController(nodeView.getObj()), new StartFrameController(nodeView.getObj()), new EndFrameController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -33,60 +33,55 @@ export class AnimationNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.executor = new AnimationNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
+        obj.param = new AnimationNodeParams();
 
         return obj;
     }
+}
 
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'mesh',
-                val: '',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string'
-                }
-            },
-            {
-                name: 'startFrame',
-                val: 0,
-                uiOptions: {
-                    inputType: 'textField',
-                    valueType: 'number'
-                }
-            },
-            {
-                name: 'endFrame',
-                val: 0,
-                uiOptions: {
-                    inputType: 'textField',
-                    valueType: 'number'
-                }
-            },
-            {
-                name: 'action',
-                port: 'input'
-            }
-        ];
+export class AnimationNodeParams implements NodeParams {
+    mesh = {
+        name: 'mesh',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.List,
+        val: '',
+    }
+
+    startFrame = {
+        name: 'startFrame',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.NumberField,
+        val: 0,
+    }
+    
+    endFrame = {
+        name: 'endFrame',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.NumberField,
+        val: 0,
+    }
+    
+    action = {
+        type: NodeParamType.Port,
+        name: 'action',
+        port: 'input'
     }
 }
 
-export class AnimationNodeExecutor implements INodeExecutor {
+export class AnimationNodeExecutor extends AbstractNodeExecutor<AnimationNodeParams> {
     private registry: Registry;
-    private nodeObj: NodeObj;
 
-    constructor(registry: Registry, nodeObj: NodeObj) {
+    constructor(registry: Registry, nodeObj: NodeObj<AnimationNodeParams>) {
+        super(nodeObj);
         this.registry = registry;
-        this.nodeObj = nodeObj;
     }
 
     execute() {
-        if (this.nodeObj.getParam('startFrame').val !== 0 && this.nodeObj.getParam('endFrame').val !== 0) {
-            const meshView = <MeshView> this.registry.data.view.node.getById(this.nodeObj.getParam('mesh').val);
+        if (this.nodeObj.param.startFrame.val !== 0 && this.nodeObj.param.endFrame.val !== 0) {
+            const meshView = <MeshView> this.registry.data.view.node.getById(this.nodeObj.param.mesh.val);
             
             // if (!this.isAnimationPlaying) {
             //     const canPlay = registry.engine.meshes.playAnimation(meshView.getObj(), nodeObj.getParam('startFrame').val, nodeObj.getParam('endFrame').val, true);
@@ -101,11 +96,11 @@ export class AnimationNodeExecutor implements INodeExecutor {
 }
 
 export class AnimationMeshController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj<AnimationNodeParams>;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj<AnimationNodeParams>) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['mesh']; }
@@ -115,28 +110,28 @@ export class AnimationMeshController extends PropController<string> {
     }
     
     defaultVal(context: PropContext) {
-        const meshParam = this.nodeView.getObj().getParam('mesh').val;
+        const meshParam = this.nodeObj.param.mesh.val;
         return context.registry.data.view.node.getById(meshParam)?.id;
     }
 
     change(val: string, context: PropContext) {
-        this.nodeView.getObj().setParam('mesh', val);
+        this.nodeObj.param.mesh.val = val;
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
 export class StartFrameController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj<AnimationNodeParams>;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj<AnimationNodeParams>) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['startFrame']; }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('startFrame').val;
+        return this.nodeObj.param.startFrame.val;
     }
 
     change(val, context: PropContext) {
@@ -147,7 +142,7 @@ export class StartFrameController extends PropController<string> {
     blur(context: PropContext) {
         try {
             const val = parseFloat(context.getTempVal());
-            this.nodeView.getObj().setParam('startFrame', val);
+            this.nodeObj.param.startFrame.val = val;
         } catch (e) {
             console.log(e);
         }
@@ -158,17 +153,17 @@ export class StartFrameController extends PropController<string> {
 }
 
 export class EndFrameController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj<AnimationNodeParams>;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj<AnimationNodeParams>) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['endFrame']; }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('endFrame').val;
+        return this.nodeObj.param.endFrame.val;
     }
 
     change(val, context: PropContext) {
@@ -179,7 +174,7 @@ export class EndFrameController extends PropController<string> {
     blur(context: PropContext) {
         try {
             const val = parseFloat(context.getTempVal());
-            this.nodeView.getObj().setParam('endFrame', val);
+            this.nodeObj.param.endFrame.val = val;
         } catch (e) {
             console.log(e);
         }

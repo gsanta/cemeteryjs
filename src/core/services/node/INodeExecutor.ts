@@ -1,10 +1,18 @@
 import { NodeConnectionObj } from "../../models/objs/NodeConnectionObj";
+import { NodeObj, NodeParams } from "../../models/objs/NodeObj";
 
-export interface INodeExecutor {
-    execute();
-    executeStop?();
-    executeStart?();
+export abstract class AbstractNodeExecutor<P extends NodeParams> {
+    protected nodeObj: NodeObj<P>;
 
-    onConnect?(connection: NodeConnectionObj);
-    onDisconnect?(connection: NodeConnectionObj);
+    constructor(nodeObj: NodeObj) {
+        this.nodeObj = nodeObj;
+    }
+
+    abstract execute();
+    
+    executeStop() {}
+    executeStart() {}
+
+    onConnect(connection: NodeConnectionObj) {}
+    onDisconnect?(connection: NodeConnectionObj) {}
 }

@@ -1,10 +1,10 @@
-import { NodeObj, NodeParam, NodeParams } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
+import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { MeshView } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
@@ -25,93 +25,80 @@ export class RayCasterNode extends AbstractNodeFactory {
 
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
-        nodeView.addParamController(new MeshController(nodeView), new RayLengthController(nodeView));
+        nodeView.addParamController(new MeshController(nodeView), new RayLengthController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
     }
 
-    createObj(): NodeObj {
+    createObj(): NodeObj<RayCasterNodeParams> {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.executor = new RayCasterNodeExecutor(this.registry, obj);
         obj.graph = this.registry.data.helper.node.graph;
-
+        obj.param = new RayCasterNodeParams();
         return obj;
-    }
-
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'mesh',
-                val: '',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string'
-                }
-            },
-            {
-                name: 'length',
-                val: 100,
-                uiOptions: {
-                    inputType: 'textField',
-                    valueType: 'number'
-                }
-            },
-            {
-                name: 'ray',
-                val: new RayObj
-            },
-            {
-                name: 'when',
-                port: 'input'
-            },
-            {
-                name: 'helper',
-                port: 'input'
-            },
-            {
-                name: 'pickedMesh',
-                port: 'output'
-            }
-        ];
     }
 }
 
-// export class RayCasterNodeParams implements NodeParams {
-//     getParam(name: string): NodeParam<undefined> {
-        
-//     }
-//     getParams(): NodeParam<undefined>[] {
-        
-//     }
-//     hasParam(name: string): boolean {
-        
-//     }
-//     setParam(name: string, value: any) {
-        
-//     }
-// }
+export class RayCasterNodeParams implements NodeParams {
+    mesh = {
+        name: 'mesh',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.List,
+        val: '',
 
-export class RayCasterNodeExecutor implements INodeExecutor {
+    }
+    
+    length = {
+        name: 'length',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.NumberField,
+        val: 100,
+    }
+    
+    ray = {
+        type: NodeParamType.Hidden,
+        name: 'ray',
+        val: new RayObj
+    }
+    
+    when = {
+        type: NodeParamType.Port,
+        name: 'when',
+        port: 'input'
+    }
+    
+    helper = {
+        type: NodeParamType.Port,
+        name: 'helper',
+        port: 'input'
+    }
+    
+    pickedMesh = {
+        type: NodeParamType.Port,
+        name: 'pickedMesh',
+        port: 'output'
+    }
+}
+
+export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodeParams> {
     private registry: Registry;
-    private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
+        super(nodeObj);
         this.registry = registry;
-        this.nodeObj = nodeObj;
     }
 
     execute() {
-        const meshId = this.nodeObj.getParam('mesh').val;
+        const meshId = this.nodeObj.param.mesh.val;
         const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
 
         if (meshView) {
-            const rayObj = this.nodeObj.getParam('ray').val as RayObj;
+            const rayObj = this.nodeObj.param.ray.val;
             rayObj.meshObj = meshView.getObj();
-            rayObj.rayLength = this.nodeObj.getParam('length').val;
+            rayObj.rayLength = this.nodeObj.param.length.val;
             this.registry.engine.rays.createInstance(rayObj);
             this.registry.services.node.executePort(this.nodeObj, 'helper');
 
@@ -125,17 +112,17 @@ export class RayCasterNodeExecutor implements INodeExecutor {
 }
 
 class RayLengthController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj<RayCasterNodeParams>;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['length']; }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('length').val;
+        return this.nodeObj.param.length.val;
     }
 
     change(val, context: PropContext) {
@@ -144,8 +131,7 @@ class RayLengthController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const nodeObj = this.nodeView.getObj();
-        nodeObj.setParam('length', context.clearTempVal());
+        this.nodeObj.param.length = context.clearTempVal();
         context.registry.services.render.reRenderAll();
     }
 }

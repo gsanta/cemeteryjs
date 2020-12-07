@@ -1,9 +1,9 @@
-import { NodeObj, NodeParam } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { INodeExecutor } from "../../../../core/services/node/INodeExecutor";
+import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { MeshView } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
@@ -25,7 +25,7 @@ export class MoveNode extends AbstractNodeFactory {
 
     createView(): NodeView {
         const nodeView = new NodeView(this.registry);
-        nodeView.addParamController(new MeshController(nodeView), new MeshMoveController(nodeView), new MeshSpeedController(nodeView));
+        nodeView.addParamController(new MeshController(nodeView), new MeshMoveController(nodeView.getObj()), new MeshSpeedController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -34,71 +34,69 @@ export class MoveNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         
-        obj.addAllParams(this.getParams());
         obj.executor = new MoveNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
+        obj.param = new MoveNodeParams();
 
         return obj;
     }
+}
 
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'mesh',
-                val: '',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string'
-                }
-            },
-            {
-                name: 'move',
-                val: 'forward',
-                uiOptions: {
-                    inputType: 'list',
-                    valueType: 'string'
-                }
-            },
-            {
-                name: 'speed',
-                val: 0.5,
-                uiOptions: {
-                    inputType: 'textField',
-                    valueType: 'number'
-                }
-            },
-            {
-                name: 'animation',
-                port: 'output'
-            },
-            {
-                name: 'input',
-                port: 'input'
-            }
-        ];
+export class MoveNodeParams implements NodeParams {
+    mesh = {
+        name: 'mesh',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.List,
+        val: '',
+    }
+    
+    move = {
+        name: 'move',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.List,
+        val: 'forward',
+    }
+    
+    speed = {
+        name: 'speed',
+        type: NodeParamType.InputField,
+        fieldType: NodeParamFieldType.NumberField,
+        val: 0.5,
+    }
+    
+    animation = {
+        name: 'animation',
+        type: NodeParamType.Port,
+        port: 'output'
+    }
+    
+    input = {
+        name: 'input',
+        type: NodeParamType.Port,
+        port: 'input'
     }
 }
 
-export class MoveNodeExecutor implements INodeExecutor {
+
+export class MoveNodeExecutor extends AbstractNodeExecutor<MoveNodeParams> {
     private registry: Registry;
-    private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
+        super(nodeObj);
         this.registry = registry;
-        this.nodeObj = nodeObj;
     }
 
     execute() {
-        const meshId = this.nodeObj.getParam('mesh').val;
+        const meshId = this.nodeObj.param.mesh.val;
 
         const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
 
-        const speed = parseFloat(this.nodeObj.getParam('speed').val); 
+        const speed = this.nodeObj.param.speed.val; 
 
-        if (this.nodeObj.getParam('move').val === 'forward') {
+        if (this.nodeObj.param.move.val === 'forward') {
             meshView.getObj().move(new Point_3(0, 0, speed));
-        } else if (this.nodeObj.getParam('move').val === 'backward') {
+        } else if (this.nodeObj.param.move.val === 'backward') {
             meshView.getObj().move(new Point_3(0, 0, -speed));
         }
     }
@@ -107,11 +105,11 @@ export class MoveNodeExecutor implements INodeExecutor {
 }
 
 export class MeshMoveController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['move']; }
@@ -121,28 +119,28 @@ export class MeshMoveController extends PropController<string> {
     }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('move').val;
+        return this.nodeObj.param.move.val;
     }
 
     change(val, context) {
         context.updateTempVal(val);
-        this.nodeView.getObj().setParam('move', val);
+        this.nodeObj.param.move = val;
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
 export class MeshSpeedController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj<MoveNodeParams>;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['speed']; }
 
     defaultVal() {
-        return this.nodeView.getObj().getParam('speed').val;
+        return this.nodeObj.param.speed.val;
     }
 
     change(val, context: PropContext) {
@@ -151,8 +149,7 @@ export class MeshSpeedController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        const nodeObj = this.nodeView.getObj();
-        nodeObj.setParam('speed', context.clearTempVal());
+        this.nodeObj.setParam = context.clearTempVal();
         context.registry.services.render.reRenderAll();
     }
 }
