@@ -1,4 +1,4 @@
-import { NodeParamFieldType, NodeParamType } from '../../../core/models/objs/NodeObj';
+import { NodeParamField, NodeParamRole } from '../../../core/models/objs/NodeObj';
 import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
@@ -30,21 +30,21 @@ export class NodeRenderer implements ViewRenderer {
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
         nodeView.getObj().getParams()
-            .filter(param => param.type === NodeParamType.InputField || param.type === NodeParamType.InputFieldWithPort)
+            .filter(param => param.role === NodeParamRole.InputField || param.role === NodeParamRole.InputFieldWithPort)
             .map(param => {
                 let row = column.row({key: param.name});
                 row.height = '35px';
 
-                switch(param.fieldType) {
-                    case NodeParamFieldType.NumberField:
-                    case NodeParamFieldType.TextField:
+                switch(param.field) {
+                    case NodeParamField.NumberField:
+                    case NodeParamField.TextField:
                         const textField = row.textField({key: param.name, target: nodeView.id});
                         textField.layout = 'horizontal';
-                        textField.type = param.fieldType === NodeParamFieldType.TextField ? 'text' : 'number';
+                        textField.type = param.field === NodeParamField.TextField ? 'text' : 'number';
                         textField.label = param.name;
                         textField.isBold = true;
                     break;
-                    case NodeParamFieldType.List:
+                    case NodeParamField.List:
                         const select = row.select({key: param.name, target: nodeView.id});
                         select.layout = 'horizontal';
                         select.label = param.name;
@@ -106,7 +106,7 @@ export class NodeRenderer implements ViewRenderer {
         let rowHeight = 20;
         nodeView.containedViews
             .forEach((portView: NodePortView) => {
-                if (nodeView.getObj().param[portView.port].type === NodeParamType.Port) {
+                if (nodeView.getObj().param[portView.port].type === NodeParamRole.Port) {
                     portView.portDirection === 'input' ? (inputs++) : (outputs++);
                 }
                 this.renderPortInto(svgGroup, nodeView, portView);
@@ -129,7 +129,7 @@ export class NodeRenderer implements ViewRenderer {
             strokeWidth: portView.isHovered() ? '2' : '1'
         }
 
-        if (nodeView.getObj().param[portView.port].type === NodeParamType.Port) {
+        if (nodeView.getObj().param[portView.port].type === NodeParamRole.Port) {
             const text = svgGroup.svgText({key: portView.port});
             text.text = portView.port;
             const textOffsetX = portView.portDirection === 'input' ? 10 : -10;

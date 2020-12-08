@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -47,21 +47,21 @@ export class RotateNode extends AbstractNodeFactory {
 export class RotateNodeParams implements NodeParams {
     mesh = {
         name: 'mesh',
-        type: NodeParamType.InputField,
-        fieldType: NodeParamFieldType.List,
+        type: NodeParamRole.InputField,
+        fieldType: NodeParamField.List,
         val: ''
     }
 
     rotate = {
         name: 'rotate',
-        type: NodeParamType.InputField,
-        fieldType: NodeParamFieldType.List,
+        type: NodeParamRole.InputField,
+        fieldType: NodeParamField.List,
         val: 'left'
     }
 
     input = {
         name: 'input',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'input'
     }
 }

@@ -16,33 +16,38 @@ export enum NodeCategory {
     Default = 'Default'
 }
 
-export enum NodeParamType {
+export enum NodeParamRole {
     Port = 'Port',
     InputField = 'InputField',
     InputFieldWithPort = 'InputFieldWithPort',
     Hidden = 'Hidden'
 }
 
-export enum NodeParamFieldType {
+export enum NodeParamField {
     TextField = 'TextField',
     NumberField = 'NumberField',
     List = 'List'
 }
 
+export enum NodePortType {
+    Mesh = 'Mesh'
+}
 
 export interface NodeParamJson {
     name: string;
-    type: NodeParamType;
+    type: NodeParamRole;
     val: any;
-    fieldType?: NodeParamFieldType;
+    fieldType?: NodeParamField;
     port?: 'input' | 'output';
 }
 
 export interface NodeParam {
     name: string;
-    type: NodeParamType;
-    fieldType?: NodeParamFieldType;
+    type: NodeParam
+    role: NodeParamRole;
+    field?: NodeParamField;
     port?: 'input' | 'output';
+    portType?: NodePortType | string;
     
     val?: any;
     getVal?();
@@ -174,7 +179,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     }
 
     getUIParams(): NodeParam[] {
-        return this.paramList.filter(param => param.type === NodeParamType.InputField || param.type === NodeParamType.InputFieldWithPort);
+        return this.paramList.filter(param => param.role === NodeParamRole.InputField || param.role === NodeParamRole.InputFieldWithPort);
     }
 
     dispose() {
@@ -209,7 +214,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     private cacheParams() {
         const map: Map<string, NodeParam> = new Map();
 
-        const paramTypes =  Object.keys(NodeParamType).map(key => NodeParamType[key]).filter(k => !(parseInt(k) >= 0));
+        const paramTypes =  Object.keys(NodeParamRole).map(key => NodeParamRole[key]).filter(k => !(parseInt(k) >= 0));
 
         Object.entries(this.param).forEach(entry => {
             if (entry[1].type && paramTypes.includes(entry[1].type)) {
@@ -224,20 +229,20 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
 
 function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
     return {
-        type: param.type,
+        type: param.role,
         name: param.name,
         val: param.val,
-        fieldType: param.fieldType,
+        fieldType: param.field,
         port: param.port
     }
 }
 
 function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
     return {
-        type: json.type,
+        role: json.type,
         name: json.name,
         val: json.val,
-        fieldType: json.fieldType,
+        field: json.fieldType,
         port: json.port
     }
 }

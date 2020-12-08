@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -40,51 +40,29 @@ export class RemoveMeshNode extends AbstractNodeFactory {
 
         return obj;
     }
-
-
-    getParams(): NodeParam[] {
-        return [
-            {
-                name: 'mesh',
-                type: NodeParamType.InputFieldWithPort,
-                fieldType: NodeParamFieldType.List,
-                val: '',
-                port: 'output'
-            },
-            {
-                type: NodeParamType.Port,
-                name: 'action',
-                port: 'output'
-            },
-            {
-                type: NodeParamType.Port,
-                name: 'signal',
-                port: 'input'
-            }
-        ];
-    }
 }
 
 export class RemoveMeshNodeParams implements NodeParams {
-    mesh = {
-        name: 'mesh',
-        type: NodeParamType.InputFieldWithPort,
-        fieldType: NodeParamFieldType.List,
-        val: '',
-        port: 'output'
-    }
-    
     action = {
         name: 'action',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'output'
     }
     
     signal = {
         name: 'signal',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'input'
     }
+
+    mesh = {
+        name: 'mesh',
+        type: NodeParamRole.InputFieldWithPort,
+        fieldType: NodeParamField.List,
+        val: '',
+        port: 'input'
+    }
+    
 }
 
 export class MeshController extends PropController<string> {

@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
@@ -46,39 +46,39 @@ export class RayCasterNode extends AbstractNodeFactory {
 export class RayCasterNodeParams implements NodeParams {
     mesh = {
         name: 'mesh',
-        type: NodeParamType.InputField,
-        fieldType: NodeParamFieldType.List,
+        type: NodeParamRole.InputField,
+        fieldType: NodeParamField.List,
         val: '',
 
     }
     
     length = {
         name: 'length',
-        type: NodeParamType.InputField,
-        fieldType: NodeParamFieldType.NumberField,
+        type: NodeParamRole.InputField,
+        fieldType: NodeParamField.NumberField,
         val: 100,
     }
     
     ray = {
-        type: NodeParamType.Hidden,
+        type: NodeParamRole.Hidden,
         name: 'ray',
         val: new RayObj
     }
     
     when = {
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         name: 'when',
         port: 'input'
     }
     
     helper = {
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         name: 'helper',
         port: 'input'
     }
     
     pickedMesh = {
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         name: 'pickedMesh',
         port: 'output'
     }

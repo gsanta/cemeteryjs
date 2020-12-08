@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -43,14 +43,14 @@ export class MeshNode extends AbstractNodeFactory {
 export class MeshNodeParams implements NodeParams {
     mesh = {
         name: 'mesh',
-        type: NodeParamType.InputField,
-        fieldType: NodeParamFieldType.List,
+        type: NodeParamRole.InputField,
+        fieldType: NodeParamField.List,
         val: '',
     }
     
     action = {
         name: 'action',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'input'
     }
 

@@ -5,7 +5,7 @@ import { FormController, PropController } from "../../plugin/controller/FormCont
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
-import { NodeObj, NodeParamType } from '../objs/NodeObj';
+import { NodeObj, NodeParamRole } from '../objs/NodeObj';
 import { NodePortView, NodePortViewType } from "./child_views/NodePortView";
 import { View, ViewJson } from "./View";
 
@@ -54,8 +54,8 @@ nodeGraph: NodeGraph;
     }
 
     private updateDimensions() {
-        const inputPortLen = this.obj.getInputPorts().filter(port => port.type === NodeParamType.Port).length;
-        const outputPortLen = this.obj.getOutputPorts().filter(port => port.type === NodeParamType.Port).length;
+        const inputPortLen = this.obj.getInputPorts().filter(port => port.role === NodeParamRole.Port).length;
+        const outputPortLen = this.obj.getOutputPorts().filter(port => port.role === NodeParamRole.Port).length;
         const PORTS_HEIGHT = inputPortLen > outputPortLen ? inputPortLen * PORT_HEIGHT : outputPortLen * PORT_HEIGHT;
         this.paramsYPosStart = HEADER_HIGHT + PORTS_HEIGHT + NODE_PADDING;
         const uiParams = this.obj.getUIParams();
@@ -67,11 +67,11 @@ nodeGraph: NodeGraph;
     }
 
     private initStandalonePortPositions() {
-        const inputPorts = this.obj.getInputPorts().filter(param => param.type === NodeParamType.Port)
-        const outputPorts = this.obj.getOutputPorts().filter(param => param.type === NodeParamType.Port)
+        const inputPorts = this.obj.getInputPorts().filter(param => param.role === NodeParamRole.Port)
+        const outputPorts = this.obj.getOutputPorts().filter(param => param.role === NodeParamRole.Port)
         
         this.containedViews
-            .filter((portView: NodePortView) => this.obj.param[portView.port].type === NodeParamType.Port)
+            .filter((portView: NodePortView) => this.obj.param[portView.port].type === NodeParamRole.Port)
             .forEach((portView: NodePortView) => {
                 const x = portView.portDirection === 'input' ? 0 : this.bounds.getWidth();
 
@@ -84,7 +84,7 @@ nodeGraph: NodeGraph;
 
     private initParamRelatedJoinPointPositions() {
         this.containedViews
-        .filter((portView: NodePortView) => this.obj.param[portView.port].type === NodeParamType.InputFieldWithPort)
+        .filter((portView: NodePortView) => this.obj.param[portView.port].type === NodeParamRole.InputFieldWithPort)
             .forEach((portView: NodePortView) => {
                 const x = portView.portDirection === 'input' ? 0 : this.bounds.getWidth();
                 const paramIndex = this.obj.getUIParams().findIndex(param => param.name === portView.port);

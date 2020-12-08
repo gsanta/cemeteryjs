@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamFieldType, NodeParamJson, NodeParams, NodeParamType } from "../../../../../core/models/objs/NodeObj";
+import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamField, NodeParamJson, NodeParams, NodeParamRole } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
@@ -48,50 +48,50 @@ export class RouteNode extends AbstractNodeFactory {
 export class RouteNodeParams implements NodeParams {
     speed = {
         name: 'speed',
-        type: NodeParamType.InputField,
-        fieldType: NodeParamFieldType.NumberField,
+        type: NodeParamRole.InputField,
+        fieldType: NodeParamField.NumberField,
         val: 1,
     }
 
     routeWalker = {
         name: 'routeWalker',
-        type: NodeParamType.Hidden,
+        type: NodeParamRole.Hidden,
         val: undefined
     }
     
     onStart = {
         name: 'onStart',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'output'
     }
     
     onTurnStart = {
         name: 'onTurnStart',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'output'
     }
     
     onTurnEnd = {
         name: 'onTurnEnd',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'output'
     }
     
     onFinish = {
         name: 'onFinish',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'output'
     }
     
     mesh = {
         name: 'mesh',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'input'
     }
     
     path = {
         name: 'path',
-        type: NodeParamType.Port,
+        type: NodeParamRole.Port,
         port: 'input'
     }
 }
@@ -100,7 +100,7 @@ class RouteNodeSerializer implements CustomNodeParamSerializer {
     serialize(param: NodeParam): NodeParamJson {
         if (param.name === 'routeWalker') {
             return {
-                type: NodeParamType.Hidden,
+                type: NodeParamRole.Hidden,
                 name: 'routeWalker',
                 val: undefined
             }

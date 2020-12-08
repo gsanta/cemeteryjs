@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamFieldType, NodeParams, NodeParamType } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -49,8 +49,8 @@ export class KeyboardNode extends AbstractNodeFactory {
 export class KeyboardNodeParams implements NodeParams {
     key1 = {
         name: 'key1',
-        type: NodeParamType.InputFieldWithPort,
-        fieldType: NodeParamFieldType.List,
+        type: NodeParamRole.InputFieldWithPort,
+        fieldType: NodeParamField.List,
         val: '',
         port: 'output'
     }
@@ -122,8 +122,8 @@ export class KeyControl extends PropController {
         
         this.nodeObj.param[`key${newIndex}`] = {
             name: `key${newIndex}`,
-            type: NodeParamType.InputFieldWithPort,
-            fieldType: NodeParamFieldType.List,
+            type: NodeParamRole.InputFieldWithPort,
+            fieldType: NodeParamField.List,
             val: '',
             port: 'output'
         };
