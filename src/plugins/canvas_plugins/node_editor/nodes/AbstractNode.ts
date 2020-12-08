@@ -6,6 +6,6 @@ export abstract class AbstractNodeFactory {
     nodeType: string;
     displayName: string;
     category: string;
-    abstract createView(): NodeView;
+    abstract createView(obj: NodeObj): NodeView;
     abstract createObj(): NodeObj;
 }

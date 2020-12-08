@@ -22,8 +22,9 @@ export class AnimationNode extends AbstractNodeFactory {
     category = 'Default';
 
     
-    createView(): NodeView {
+    createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
+        nodeView.setObj(obj);
         nodeView.addParamController(new AnimationMeshController(nodeView.getObj()), new StartFrameController(nodeView.getObj()), new EndFrameController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 

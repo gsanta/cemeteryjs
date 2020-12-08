@@ -72,8 +72,8 @@ export class ViewStore {
             let afterAllViewsDeserialized: AfterAllViewsDeserialized;
         
             if (viewJson.type === NodeViewType) {
-                const nodeType = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId)).type;
-                viewInstance = this.registry.data.helper.node.createView(nodeType)
+                const nodeObj = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId));
+                viewInstance = this.registry.data.helper.node.createView(nodeObj.type, nodeObj)
                 viewInstance.fromJson(viewJson, this.registry);
             } else if (viewJson.type === MeshViewType || viewJson.type === LightViewType) {
                 [viewInstance, afterAllViewsDeserialized] = this.getViewFactory(viewJson.type).instantiateFromJson(viewJson);

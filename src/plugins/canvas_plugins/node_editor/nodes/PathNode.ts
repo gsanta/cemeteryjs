@@ -20,8 +20,9 @@ export class PathNode extends AbstractNodeFactory {
     displayName = 'Path';
     category = 'Default';
 
-    createView(): NodeView {
+    createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
+        nodeView.setObj(obj);
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
         nodeView.addParamController(new PathController(nodeView.getObj()));
 

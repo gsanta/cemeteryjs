@@ -118,7 +118,7 @@ export class NodeRenderer implements ViewRenderer {
     private renderPortInto(svgGroup: UI_SvgGroup, nodeView: NodeView, portView: NodePortView) {
         const circle = svgGroup.circle();
         svgGroup.data = nodeView;
-    
+
         circle.cx = portView.point.x;
         circle.cy = portView.point.y;
         circle.r =  portView.isHovered() ? 7 : 5;

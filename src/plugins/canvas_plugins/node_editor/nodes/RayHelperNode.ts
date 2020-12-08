@@ -21,8 +21,9 @@ export class RayHelperNode extends AbstractNodeFactory {
     displayName = 'RayHelper';
     category = 'Default';
 
-    createView(): NodeView {
+    createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
+        nodeView.setObj(obj);
         nodeView.addParamController(new RemoveTimerController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 

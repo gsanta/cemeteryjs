@@ -1,4 +1,5 @@
 import { AbstractNodeFactory } from "../../plugins/canvas_plugins/node_editor/nodes/AbstractNode";
+import { NodeObj } from "../models/objs/NodeObj";
 import { Registry } from "../Registry";
 import { NodeGraph } from "../services/node/NodeGraph";
 
@@ -20,9 +21,9 @@ export class NodeHelper {
         this.nodes.set(node.nodeType, node);
     }
 
-    createView(nodeType: string) {
+    createView(nodeType: string, obj: NodeObj) {
         const node: AbstractNodeFactory = this.nodes.get(nodeType);
-        return node.createView();
+        return node.createView(obj);
     }
 
     createObj(nodeType: string) {

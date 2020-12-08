@@ -163,17 +163,17 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
         return this.getInputPorts().find(slot => slot.name === name) || this.getOutputPorts().find(slot => slot.name === name);
     }
 
-    getInputPorts() {
+    getInputPorts(): NodeParam[] {
         if (!this.cachedParams) { this.cacheParams(); }
 
         return this.paramList.filter(param => param.port === 'input');
     }
 
-    getOutputPorts() {
+    getOutputPorts(): NodeParam[] {
         return this.paramList.filter(param => param.port === 'output');
     }
 
-    getUIParams() {
+    getUIParams(): NodeParam[] {
         return this.paramList.filter(param => param.type === NodeParamType.InputField || param.type === NodeParamType.InputFieldWithPort);
     }
 

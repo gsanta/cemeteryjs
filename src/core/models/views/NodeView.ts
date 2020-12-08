@@ -67,8 +67,8 @@ nodeGraph: NodeGraph;
     }
 
     private initStandalonePortPositions() {
-        const inputPorts = this.obj.getInputPorts();
-        const outputPorts = this.obj.getOutputPorts();
+        const inputPorts = this.obj.getInputPorts().filter(param => param.type === NodeParamType.Port)
+        const outputPorts = this.obj.getOutputPorts().filter(param => param.type === NodeParamType.Port)
         
         this.containedViews
             .filter((portView: NodePortView) => this.obj.param[portView.port].type === NodeParamType.Port)

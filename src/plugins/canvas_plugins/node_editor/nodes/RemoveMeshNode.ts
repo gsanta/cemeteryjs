@@ -21,8 +21,9 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     displayName = 'Remove Mesh';
     category = 'Default';
 
-    createView(): NodeView {
+    createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
+        nodeView.setObj(obj);
         nodeView.addParamController(new MeshController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 

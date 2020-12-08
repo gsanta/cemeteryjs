@@ -24,8 +24,9 @@ export class RouteNode extends AbstractNodeFactory {
     displayName = 'Route';
     category = 'Default';
 
-    createView(): NodeView {
+    createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
+        nodeView.setObj(obj);
         nodeView.addParamController(new SpeedControl(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
@@ -41,52 +42,6 @@ export class RouteNode extends AbstractNodeFactory {
         obj.param = new RouteNodeParams(); 
 
         return obj;
-    }
-
-    private getParams(): NodeParam[] {
-        return [
-            {
-                name: 'speed',
-                type: NodeParamType.InputField,
-                fieldType: NodeParamFieldType.NumberField,
-                val: 1,
-            },
-            {
-                name: 'routeWalker',
-                type: NodeParamType.Hidden,
-                val: undefined
-            },
-            {
-                name: 'onStart',
-                type: NodeParamType.Port,
-                port: 'output'
-            },
-            {
-                name: 'onTurnStart',
-                type: NodeParamType.Port,
-                port: 'output'
-            },
-            {
-                name: 'onTurnEnd',
-                type: NodeParamType.Port,
-                port: 'output'
-            },
-            {
-                name: 'onFinish',
-                type: NodeParamType.Port,
-                port: 'output'
-            },
-            {
-                name: 'mesh',
-                type: NodeParamType.Port,
-                port: 'input'
-            },
-            {
-                name: 'path',
-                type: NodeParamType.Port,
-                port: 'input'
-            }
-        ];
     }
 }
 

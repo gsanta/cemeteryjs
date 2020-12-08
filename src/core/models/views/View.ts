@@ -166,7 +166,9 @@ export abstract class View implements IControlledModel {
         this.id = json.id;
         this.viewType = json.type;
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
-        this.setObj(registry.stores.objStore.getById(json.objId));
+        if (!this.getObj() && json.objId) {
+            this.setObj(registry.stores.objStore.getById(json.objId));
+        }
     }
 }
 
