@@ -98,11 +98,11 @@ export class NodeConnectionView extends View {
             point2Y: this.point2.y,
             joinPoint1: {
                 nodeId: this.joinPoint1.containerView.id,
-                joinPointName: this.joinPoint1.port
+                joinPointName: this.joinPoint1.param.name
             },
             joinPoint2: {
                 nodeId: this.joinPoint2.containerView.id,
-                joinPointName: this.joinPoint2.port
+                joinPointName: this.joinPoint2.param.name
             }
         };
     }

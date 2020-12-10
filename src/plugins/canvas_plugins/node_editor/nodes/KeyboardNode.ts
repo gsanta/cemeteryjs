@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -46,13 +46,15 @@ export class KeyboardNode extends AbstractNodeFactory {
     }
 }
 
-export class KeyboardNodeParams implements NodeParams {
-    key1 = {
+export class KeyboardNodeParams extends NodeParams {
+    key1: NodeParam = {
         name: 'key1',
-        type: NodeParamRole.InputFieldWithPort,
-        fieldType: NodeParamField.List,
         val: '',
-        port: 'output'
+        field: NodeParamField.List,
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
 }
 
@@ -122,12 +124,14 @@ export class KeyControl extends PropController {
         
         this.nodeObj.param[`key${newIndex}`] = {
             name: `key${newIndex}`,
-            type: NodeParamRole.InputFieldWithPort,
-            fieldType: NodeParamField.List,
             val: '',
-            port: 'output'
+            field: NodeParamField.List,
+            port: {
+                direction: PortDirection.Output,
+                dataFlow: PortDataFlow.Push
+            }
         };
-        this.nodeObj.cachedParams = undefined;
+        this.nodeObj.paramList = undefined;
         context.clearTempVal();
         this.nodeView.setup();
 

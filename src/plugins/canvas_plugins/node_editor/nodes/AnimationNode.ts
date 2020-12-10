@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -43,32 +43,31 @@ export class AnimationNode extends AbstractNodeFactory {
     }
 }
 
-export class AnimationNodeParams implements NodeParams {
-    mesh = {
+export class AnimationNodeParams extends NodeParams {
+    mesh: NodeParam = {
         name: 'mesh',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.List,
+        field: NodeParamField.List,
         val: '',
     }
 
-    startFrame = {
+    startFrame: NodeParam = {
         name: 'startFrame',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.NumberField,
+        field: NodeParamField.NumberField,
         val: 0,
     }
     
-    endFrame = {
+    endFrame: NodeParam = {
         name: 'endFrame',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.NumberField,
+        field: NodeParamField.NumberField,
         val: 0,
     }
     
-    action = {
-        type: NodeParamRole.Port,
+    action: NodeParam = {
         name: 'action',
-        port: 'input'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
 }
 

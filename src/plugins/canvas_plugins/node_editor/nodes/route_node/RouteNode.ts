@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamField, NodeParamJson, NodeParams, NodeParamRole } from "../../../../../core/models/objs/NodeObj";
+import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamField, NodeParamJson, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../../core/models/objs/NodeObj";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
@@ -45,70 +45,64 @@ export class RouteNode extends AbstractNodeFactory {
     }
 }
 
-export class RouteNodeParams implements NodeParams {
-    speed = {
+export class RouteNodeParams extends NodeParams {
+    speed: NodeParam = {
         name: 'speed',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.NumberField,
+        field: NodeParamField.NumberField,
         val: 1,
     }
 
-    routeWalker = {
+    routeWalker: NodeParam = {
         name: 'routeWalker',
-        type: NodeParamRole.Hidden,
         val: undefined
     }
     
-    onStart = {
+    onStart: NodeParam = {
         name: 'onStart',
-        type: NodeParamRole.Port,
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
     onTurnStart = {
         name: 'onTurnStart',
-        type: NodeParamRole.Port,
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
     onTurnEnd = {
         name: 'onTurnEnd',
-        type: NodeParamRole.Port,
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
     onFinish = {
         name: 'onFinish',
-        type: NodeParamRole.Port,
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
     mesh = {
         name: 'mesh',
-        type: NodeParamRole.Port,
-        port: 'input'
+        port: {
+            direction: PortDirection.Input,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
     path = {
         name: 'path',
-        type: NodeParamRole.Port,
-        port: 'input'
-    }
-}
-
-class RouteNodeSerializer implements CustomNodeParamSerializer {
-    serialize(param: NodeParam): NodeParamJson {
-        if (param.name === 'routeWalker') {
-            return {
-                type: NodeParamRole.Hidden,
-                name: 'routeWalker',
-                val: undefined
-            }
+        port: {
+            direction: PortDirection.Input,
+            dataFlow: PortDataFlow.Push
         }
-    }
-    
-    deserialize(json: NodeParamJson): NodeParam {
-        return undefined;
     }
 }
 

@@ -5,7 +5,7 @@ import { NodeConnectionView } from "../NodeConnectionView";
 import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
-import { NodeObj } from "../../objs/NodeObj";
+import { NodeObj, NodeParam, PortDirection } from "../../objs/NodeObj";
 
 export function isJoinPointView(view: View) {
     return view && view.viewType === NodePortViewType;
@@ -13,8 +13,7 @@ export function isJoinPointView(view: View) {
 
 export interface NoePortViewJson extends ViewJson {
     point: string;
-    slotName: string;
-    portDirection: 'input' | 'output';
+    portName: string;
     connectionId: string;
 }
 
@@ -25,20 +24,13 @@ export class NodePortView extends ContainedView {
     point: Point;
     containerView: NodeView;
     private connection: NodeConnectionView;
-    port: string;
-    portDirection: 'input' | 'output';
     bounds: Rectangle;
+    param: NodeParam;
 
-    constructor(parent: NodeView, config: {portName: string, portDirection: 'input' | 'output'}) {
+    constructor(parent: NodeView, param: NodeParam) {
         super();
         this.containerView = parent;
-
-        
-        if (config) {
-            this.port = config.portName;
-            this.portDirection = config.portDirection;
-        }
-        this.id = this.port;
+        this.param = param;
     }
 
     getObj(): NodeObj {
@@ -54,8 +46,9 @@ export class NodePortView extends ContainedView {
     }
 
     move(delta: Point) {
+        const portDirection = this.param.port.direction;
         if (this.connection) {
-            this.portDirection === 'input' ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
+            portDirection === PortDirection.Input ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
         }
     }
 
@@ -70,7 +63,7 @@ export class NodePortView extends ContainedView {
     dispose() {}
 
     removeConnection() {
-        this.containerView.getObj().deleteConnection(this.port);
+        this.containerView.getObj().deleteConnection(this.param.name);
         this.containerView.deleteConstraiedViews.removeView(this.connection);
         this.connection = undefined;
     }
@@ -92,8 +85,7 @@ export class NodePortView extends ContainedView {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            slotName: this.port,
-            portDirection: this.portDirection,
+            portName: this.param.name,
             connectionId: this.connection.id
         }
     }
@@ -101,7 +93,6 @@ export class NodePortView extends ContainedView {
     fromJson(json: NoePortViewJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
-        this.port = json.slotName;
-        this.portDirection = json.portDirection;
+        this.param.name = json.portName;
     }
 }

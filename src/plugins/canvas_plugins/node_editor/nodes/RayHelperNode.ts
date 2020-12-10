@@ -1,4 +1,4 @@
-import { NodeObj, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParamField, NodeParams, NodeParamRole, NodeParam, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
@@ -42,20 +42,20 @@ export class RayHelperNode extends AbstractNodeFactory {
     }
 }
 
-export class RayHelperNodeParams implements NodeParams {
-    remove = {
+export class RayHelperNodeParams extends NodeParams {
+    remove: NodeParam = {
         name: 'remove',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.NumberField,
+        field: NodeParamField.NumberField,
         val: -1
     }
     
-    rayCaster = {
-        type: NodeParamRole.Port,
+    rayCaster: NodeParam = {
         name: 'rayCaster',
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
-
 }
 
 export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodeParams> {

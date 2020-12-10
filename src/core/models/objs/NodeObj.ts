@@ -30,25 +30,36 @@ export enum NodeParamField {
 }
 
 export enum NodePortType {
-    Mesh = 'Mesh'
+    Mesh = 'Mesh',
+    Signal = 'Signal'
+}
+
+export enum PortDirection {
+    Input = 'Input',
+    Output = 'Output'
+}
+export enum PortDataFlow {
+    Pull = 'Pull',
+    Push = 'Push'
+}
+
+export interface PortConfig {
+    direction: PortDirection;
+    dataFlow: PortDataFlow;
 }
 
 export interface NodeParamJson {
     name: string;
-    type: NodeParamRole;
     val: any;
-    fieldType?: NodeParamField;
-    port?: 'input' | 'output';
+    field?: NodeParamField;
+    port?: PortConfig;
 }
 
 export interface NodeParam {
     name: string;
-    type: NodeParam
-    role: NodeParamRole;
     field?: NodeParamField;
-    port?: 'input' | 'output';
-    portType?: NodePortType | string;
-    
+    port?: PortConfig;
+
     val?: any;
     getVal?();
     setVal?(val: string);
@@ -57,8 +68,44 @@ export interface NodeParam {
     fromJson?(json: NodeObjJson);
 }
 
-export interface NodeParams {
+export namespace NodeParam {
+    export function getStandaloneInputPorts(nodeObj: NodeObj): NodeParam[] {
+        return NodeParam.getInputPorts(nodeObj).filter(param => !param.field);
+    }
+    
+    export function getInputPorts(nodeObj: NodeObj): NodeParam[] {
+        return nodeObj.getParams().filter(param => param.port && param.port.direction === PortDirection.Input);
+    }
+
+    export function getStandaloneOutputPorts(nodeObj: NodeObj): NodeParam[] {
+        return NodeParam.getOutputPorts(nodeObj).filter(param => !param.field);
+    }
+    
+    export function getOutputPorts(nodeObj: NodeObj): NodeParam[] {
+        return nodeObj.getParams().filter(param => param.port && param.port.direction === PortDirection.Output);
+    }
+
+    export function getFieldParams(nodeObj: NodeObj): NodeParam[] {
+        return nodeObj.getParams().filter(param => param.field);
+    }
+
+    export function isStandalonePort(param: NodeParam) {
+        return param.port && !param.field;
+    }
+
+    export function isPort(param: NodeParam) {
+        return param.port;
+    }
+
+    export function isFieldParam(param: NodeParam) {
+        return param.field;
+    }
 }
+
+export abstract class NodeParams {
+    [id: string] : NodeParam;
+}
+
 
 /**
  * It should be implemented and passed to a {@link NodeObj} when some of the params of the {@link NodeObj} contains
@@ -94,8 +141,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     color: string;
 
     param: P;
-    cachedParams: Map<string, NodeParam> = undefined;
-    private paramList: NodeParam[];
+    paramList: NodeParam[];
 
     private connections: Map<string, [NodeObj, string]> = new Map();
     isExecutionStopped = true;
@@ -127,9 +173,13 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     }
 
     getParams(): NodeParam[] {
-        if (!this.cachedParams) { this.cacheParams(); }
+        if (!this.paramList) { this.cacheParams(); }
 
-        return Array.from(this.cachedParams.values());;
+        return this.paramList;
+    }
+
+    getParam(name: string): NodeParam {
+        return this.param[name];
     }
 
     setParam(name: string, value: any) {
@@ -164,24 +214,6 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
         this.graph.onConnect([this, port], [otherNode, otherPort]);
     }
 
-    findSlotByName(name: string) {
-        return this.getInputPorts().find(slot => slot.name === name) || this.getOutputPorts().find(slot => slot.name === name);
-    }
-
-    getInputPorts(): NodeParam[] {
-        if (!this.cachedParams) { this.cacheParams(); }
-
-        return this.paramList.filter(param => param.port === 'input');
-    }
-
-    getOutputPorts(): NodeParam[] {
-        return this.paramList.filter(param => param.port === 'output');
-    }
-
-    getUIParams(): NodeParam[] {
-        return this.paramList.filter(param => param.role === NodeParamRole.InputField || param.role === NodeParamRole.InputFieldWithPort);
-    }
-
     dispose() {
         this.getConnections().forEach(([NodeObj, portName]) => this.deleteConnection(portName));
     }
@@ -191,7 +223,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     }
 
     serialize(): NodeObjJson {
-        const params = Array.from(this.cachedParams.entries()).map(([key, param]) => {
+        const params = this.getParams().map(param => {
             return this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param);
         });
 
@@ -208,41 +240,52 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
         this.id = json.id;
         this.type = json.type;
         const paramList = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
-        paramList.forEach(param => this.param[param.name] = param);
+        // paramList.forEach(param => (this.param as Nodeparams[param.name] = param);
     }
 
     private cacheParams() {
-        const map: Map<string, NodeParam> = new Map();
-
-        const paramTypes =  Object.keys(NodeParamRole).map(key => NodeParamRole[key]).filter(k => !(parseInt(k) >= 0));
-
-        Object.entries(this.param).forEach(entry => {
-            if (entry[1].type && paramTypes.includes(entry[1].type)) {
-                map.set(entry[0], entry[1]);
-            }
-        });
-    
-        this.paramList = Array.from(map.values());
-        this.cachedParams = map;
+        this.paramList = [];
+        Object.entries(this.param).forEach(entry => this.paramList.push(entry[1]));
     }
 }
 
 function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
-    return {
-        type: param.role,
+    const json: NodeParamJson = {
         name: param.name,
         val: param.val,
-        fieldType: param.field,
-        port: param.port
+        field: param.field,
     }
+
+    if (param.field) {
+        json.field = param.field;
+    }
+
+    if (param.port) {
+        json.port = {
+            direction: param.port.direction,
+            dataFlow: param.port.dataFlow
+        }
+    }
+
+    return json;
 }
 
 function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
-    return {
-        role: json.type,
+    const param: NodeParam = {
         name: json.name,
         val: json.val,
-        field: json.fieldType,
-        port: json.port
     }
+
+    if (json.field) {
+        param.field = json.field;
+    }
+
+    if (json.port) {
+        param.port = {
+            direction: json.port.direction,
+            dataFlow: json.port.dataFlow
+        }
+    }
+
+    return param;
 }

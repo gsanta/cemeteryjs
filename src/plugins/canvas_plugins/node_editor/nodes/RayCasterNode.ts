@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
@@ -43,44 +43,47 @@ export class RayCasterNode extends AbstractNodeFactory {
     }
 }
 
-export class RayCasterNodeParams implements NodeParams {
-    mesh = {
+export class RayCasterNodeParams extends NodeParams {
+    mesh: NodeParam = {
         name: 'mesh',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.List,
+        field: NodeParamField.List,
         val: '',
 
     }
     
-    length = {
+    length: NodeParam = {
         name: 'length',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.NumberField,
+        field: NodeParamField.NumberField,
         val: 100,
     }
     
-    ray = {
-        type: NodeParamRole.Hidden,
+    ray: NodeParam = {
         name: 'ray',
         val: new RayObj
     }
     
-    when = {
-        type: NodeParamRole.Port,
+    when: NodeParam = {
         name: 'when',
-        port: 'input'
+        port: {
+            direction: PortDirection.Input,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
-    helper = {
-        type: NodeParamRole.Port,
+    helper: NodeParam = {
         name: 'helper',
-        port: 'input'
+        port: {
+            direction: PortDirection.Input,
+            dataFlow: PortDataFlow.Push
+        }
     }
     
-    pickedMesh = {
-        type: NodeParamRole.Port,
+    pickedMesh: NodeParam = {
         name: 'pickedMesh',
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
 }
 

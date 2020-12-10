@@ -7,6 +7,7 @@ import { Registry } from "../../../../core/Registry";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ViewStore } from "../../../../core/stores/ViewStore";
+import { PortDirection } from "../../../../core/models/objs/NodeObj";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
@@ -40,7 +41,7 @@ export class JoinTool extends PointerTool {
         if (this.checkConnectionValidity()) {
             let joinPoint1 = this.joinPoint1;
             let joinPoint2 = <NodePortView> this.registry.services.pointer.hoveredView;
-            if (joinPoint2.portDirection === 'input') {
+            if (joinPoint2.param.port.direction === PortDirection.Input) {
                 [joinPoint1, joinPoint2] = [joinPoint2, joinPoint1];
             }
 
@@ -52,8 +53,8 @@ export class JoinTool extends PointerTool {
 
             const nodeObj1 = joinPoint1.containerView.getObj();
             const nodeObj2 = joinPoint2.containerView.getObj(); 
-            nodeObj1.addConnection(joinPoint1.port, nodeObj2, joinPoint2.port);
-            nodeObj2.addConnection(joinPoint2.port, nodeObj1, joinPoint1.port);
+            nodeObj1.addConnection(joinPoint1.param.name, nodeObj2, joinPoint2.param.name);
+            nodeObj2.addConnection(joinPoint2.param.name, nodeObj1, joinPoint1.param.name);
 
             connectionView.setPoint1(joinPoint1.getAbsolutePosition());
             connectionView.setPoint2(joinPoint2.getAbsolutePosition());
@@ -73,7 +74,7 @@ export class JoinTool extends PointerTool {
 
         if (!end || !start) { return false; }
         if (start.viewType !== NodePortViewType || end.viewType !== NodePortViewType) { return false; }
-        if (start.portDirection === end.portDirection) { return false }
+        if (start.param.port.direction === end.param.port.direction) { return false }
 
         return true;
     }

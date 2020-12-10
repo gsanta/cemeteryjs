@@ -1,4 +1,4 @@
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -40,18 +40,19 @@ export class PathNode extends AbstractNodeFactory {
     }
 }
 
-export class PathNodeParams implements NodeParams {
-    path = {
+export class PathNodeParams extends NodeParams {
+    path: NodeParam = {
         name: 'path',
-        type: NodeParamRole.InputField,
-        fieldType: NodeParamField.List,
+        field: NodeParamField.List,
         val: '',
     }
     
-    action = {
+    action: NodeParam = {
         name: 'action',
-        type: NodeParamRole.Port,
-        port: 'output'
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Push
+        }
     }
 }
 

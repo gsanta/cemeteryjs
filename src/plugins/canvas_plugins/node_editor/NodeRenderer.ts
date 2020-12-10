@@ -1,7 +1,7 @@
-import { NodeParamField, NodeParamRole } from '../../../core/models/objs/NodeObj';
-import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
+import { NodeParam, NodeParamField, NodeParamRole, NodeParams, NodePortType, PortDirection } from '../../../core/models/objs/NodeObj';
+import { NodePortView, NodePortViewType } from '../../../core/models/views/child_views/NodePortView';
 import { NodeView } from '../../../core/models/views/NodeView';
-import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
+import { View, ViewRenderer, ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
@@ -29,8 +29,7 @@ export class NodeRenderer implements ViewRenderer {
     }
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView) {
-        nodeView.getObj().getParams()
-            .filter(param => param.role === NodeParamRole.InputField || param.role === NodeParamRole.InputFieldWithPort)
+        NodeParam.getFieldParams(nodeView.getObj())
             .map(param => {
                 let row = column.row({key: param.name});
                 row.height = '35px';
@@ -105,10 +104,10 @@ export class NodeRenderer implements ViewRenderer {
     
         let rowHeight = 20;
         nodeView.containedViews
+            .filter((view: View) => view.viewType === NodePortViewType)
+            .filter((portView: NodePortView) => NodeParam.isPort(portView.param))
             .forEach((portView: NodePortView) => {
-                if (nodeView.getObj().param[portView.port].type === NodeParamRole.Port) {
-                    portView.portDirection === 'input' ? (inputs++) : (outputs++);
-                }
+                portView.param.port.direction === PortDirection.Input ? (inputs++) : (outputs++);
                 this.renderPortInto(svgGroup, nodeView, portView);
             });
     
@@ -129,15 +128,15 @@ export class NodeRenderer implements ViewRenderer {
             strokeWidth: portView.isHovered() ? '2' : '1'
         }
 
-        if (nodeView.getObj().param[portView.port].type === NodeParamRole.Port) {
-            const text = svgGroup.svgText({key: portView.port});
-            text.text = portView.port;
-            const textOffsetX = portView.portDirection === 'input' ? 10 : -10;
+        if (NodeParam.isStandalonePort(portView.param)) {
+            const text = svgGroup.svgText({key: portView.param.name});
+            text.text = portView.param.name;
+            const textOffsetX = portView.param.port.direction === PortDirection.Input ? 10 : -10;
             text.x = portView.point.x + textOffsetX;
             text.y = portView.point.y + 5;
             text.fontSize = '12px';
             text.isBold = true;
-            portView.portDirection === 'output' && (text.anchor = 'end');
+            portView.param.port.direction === PortDirection.Output && (text.anchor = 'end');
         }
 
     }
