@@ -33,12 +33,11 @@ export class RayCasterNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj<RayCasterNodeParams> {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new RayCasterNodeParams(), {displayName: this.displayName});
         
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.executor = new RayCasterNodeExecutor(this.registry, obj);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.param = new RayCasterNodeParams();
         return obj;
     }
 }
@@ -77,12 +76,21 @@ export class RayCasterNodeParams extends NodeParams {
             dataFlow: PortDataFlow.Push
         }
     }
-    
-    pickedMesh: NodeParam = {
-        name: 'pickedMesh',
+
+    signal: NodeParam = {
+        name: 'signal',
         port: {
             direction: PortDirection.Output,
             dataFlow: PortDataFlow.Push
+        }
+    }
+    
+    pickedMesh: NodeParam = {
+        name: 'pickedMesh',
+        val: undefined,
+        port: {
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Pull
         }
     }
 }
@@ -107,7 +115,8 @@ export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodePar
             this.registry.services.node.executePort(this.nodeObj, 'helper');
 
             if (rayObj.pickedMeshObj) {
-                this.registry.services.node.executePort(this.nodeObj, 'pickedMesh');
+                this.nodeObj.param.pickedMesh.val = rayObj.pickedMeshObj;
+                this.registry.services.node.executePort(this.nodeObj, 'signal');
             }
         }
     }

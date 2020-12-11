@@ -5,7 +5,7 @@ import { FormController, PropController } from "../../plugin/controller/FormCont
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
-import { NodeObj, NodeParam, PortDirection } from '../objs/NodeObj';
+import { NodeObj, NodeParam } from '../objs/NodeObj';
 import { NodePortView, NodePortViewType } from "./child_views/NodePortView";
 import { View, ViewJson } from "./View";
 
@@ -28,7 +28,7 @@ export class NodeView extends View {
     readonly  viewType = NodeViewType;
     id: string;
     protected obj: NodeObj;
-nodeGraph: NodeGraph;
+    nodeGraph: NodeGraph;
 
     private paramsYPosStart: number;
 
@@ -45,10 +45,13 @@ nodeGraph: NodeGraph;
         paramControllers.forEach(paramController => this.controller.registerPropControl(paramController));
     }
 
+    getPortViews(): NodePortView[] {
+        return <NodePortView[]> this.containedViews.filter((view: View) => view.viewType === NodePortViewType)
+    }
+
     setup() {
-        this.obj.getParams()
-            .filter(param => param.port)
-            .map(param => new NodePortView(this, param))
+        this.obj.getPorts()
+            .map(portObj => new NodePortView(this, portObj))
             .forEach(portView => this.addContainedView(portView))
         this.updateDimensions();
     }
@@ -71,15 +74,15 @@ nodeGraph: NodeGraph;
         const outputPorts =  NodeParam.getStandaloneOutputPorts(this.obj);
         
         this.containedViews
-            .filter((portView: NodePortView) => NodeParam.isStandalonePort(portView.param))
+            .filter((portView: NodePortView) => NodeParam.isStandalonePort(portView.getObj().getNodeParam()))
             .forEach((portView: NodePortView) => {
-                const x = portView.param.port.direction === PortDirection.Input ? 0 : this.bounds.getWidth();
+                const x = portView.getObj().isInputPort() ? 0 : this.bounds.getWidth();
 
                 let portIndex: number;
-                if(portView.param.port.direction === PortDirection.Input) {
-                    portIndex = inputPorts.findIndex(param => param.name === portView.param.name);
+                if(portView.getObj().isInputPort()) {
+                    portIndex = inputPorts.findIndex(param => param.name === portView.getObj().getNodeParam().name);
                 } else {
-                    portIndex = outputPorts.findIndex(param => param.name === portView.param.name)
+                    portIndex = outputPorts.findIndex(param => param.name === portView.getObj().getNodeParam().name)
                 }     
                 const y = portIndex * sizes.nodes.slotHeight + sizes.nodes.slotHeight / 2 + sizes.nodes.headerHeight;
                 portView.point = new Point(x, y);
@@ -89,11 +92,11 @@ nodeGraph: NodeGraph;
 
     private initParamRelatedJoinPointPositions() {
         this.containedViews
-            .filter((portView: NodePortView) => NodeParam.isFieldParam(portView.param))
+            .filter((portView: NodePortView) => NodeParam.isFieldParam(portView.getObj().getNodeParam()))
             .forEach((portView: NodePortView) => {
-                const x = portView.param.port.direction === PortDirection.Input ? 0 : this.bounds.getWidth();
+                const x = portView.getObj().isInputPort() ? 0 : this.bounds.getWidth();
                 const fieldParams = NodeParam.getFieldParams(this.obj);
-                const paramIndex = fieldParams.findIndex(param => param.name === portView.param.name);
+                const paramIndex = fieldParams.findIndex(param => param.name === portView.getObj().getNodeParam().name);
                 const y = paramIndex * INPUT_HEIGHT + this.paramsYPosStart + INPUT_HEIGHT / 2;
                 portView.point = new Point(x, y);
                 portView.bounds = new Rectangle(new Point(x, y), new Point(x + 5, y + 5));
@@ -128,7 +131,7 @@ nodeGraph: NodeGraph;
     }
 
     findJoinPointView(name: string) {
-        return this.containedViews.find((joinPointView: NodePortView) => joinPointView.param.name === name);
+        return this.containedViews.find((nodePortview: NodePortView) => nodePortview.getObj().getNodeParam().name === name);
     }
 
     getDeleteOnCascadeViews(): View[] {

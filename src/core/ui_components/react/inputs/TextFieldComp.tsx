@@ -15,6 +15,12 @@ const FormControlStyled = styled(Form.Control)`
     &:focus {
         box-shadow: none;
     }
+
+    &.ce-disabled {
+        // TODO: get rid of !important
+        background-color: ${colors.grey2} !important;
+        color: ${colors.grey1} !important
+    }
 `;
 
 export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
@@ -31,6 +37,7 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
 
     let textFieldComponent = (
         <FormControlStyled
+            className={props.element.isDisabled ? 'ce-disabled' : null}
             style={inputStyle}
             block
             type={props.element.type}
@@ -40,6 +47,7 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
             value={props.element.val(props.registry)}
             onChange={e => props.element.change(e.target.value, props.registry)}
             onBlur={() => props.element.blur(props.registry)}
+            disabled={props.element.isDisabled}
         />
     );
 

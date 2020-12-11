@@ -5,6 +5,7 @@ export abstract class UI_InputElement extends UI_Element {
     listItemId: string;
     layout: 'horizontal' | 'vertical' = 'vertical';
     inputWidth: string;
+    isDisabled: boolean = false;
 
     change(newVal: any, registry: Registry): void {
         this.controller && this.controller.change(newVal, this);

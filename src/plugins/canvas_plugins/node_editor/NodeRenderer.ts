@@ -42,6 +42,9 @@ export class NodeRenderer implements ViewRenderer {
                         textField.type = param.field === NodeParamField.TextField ? 'text' : 'number';
                         textField.label = param.name;
                         textField.isBold = true;
+                        if (param.fieldDisabled) {
+                            textField.isDisabled = true
+                        }
                     break;
                     case NodeParamField.List:
                         const select = row.select({key: param.name, target: nodeView.id});
@@ -49,6 +52,9 @@ export class NodeRenderer implements ViewRenderer {
                         select.label = param.name;
                         select.placeholder = param.name;
                         select.isBold = true;
+                        if (param.fieldDisabled) {
+                            select.isDisabled = true
+                        }
                     break;
                 }
             });
@@ -103,11 +109,12 @@ export class NodeRenderer implements ViewRenderer {
         let outputs: number = 0;
     
         let rowHeight = 20;
-        nodeView.containedViews
-            .filter((view: View) => view.viewType === NodePortViewType)
-            .filter((portView: NodePortView) => NodeParam.isPort(portView.param))
+
+        nodeView.getPortViews()
             .forEach((portView: NodePortView) => {
-                portView.param.port.direction === PortDirection.Input ? (inputs++) : (outputs++);
+                if (NodeParam.isStandalonePort(portView.getObj().getNodeParam())) {
+                    portView.getObj().isInputPort() ? (inputs++) : (outputs++);
+                }
                 this.renderPortInto(svgGroup, nodeView, portView);
             });
     
@@ -128,15 +135,16 @@ export class NodeRenderer implements ViewRenderer {
             strokeWidth: portView.isHovered() ? '2' : '1'
         }
 
-        if (NodeParam.isStandalonePort(portView.param)) {
-            const text = svgGroup.svgText({key: portView.param.name});
-            text.text = portView.param.name;
-            const textOffsetX = portView.param.port.direction === PortDirection.Input ? 10 : -10;
+        const nodeParam = portView.getObj().getNodeParam();
+        if (NodeParam.isStandalonePort(nodeParam)) {
+            const text = svgGroup.svgText({key: nodeParam.name});
+            text.text = nodeParam.name;
+            const textOffsetX = nodeParam.port.direction === PortDirection.Input ? 10 : -10;
             text.x = portView.point.x + textOffsetX;
             text.y = portView.point.y + 5;
             text.fontSize = '12px';
             text.isBold = true;
-            portView.param.port.direction === PortDirection.Output && (text.anchor = 'end');
+            nodeParam.port.direction === PortDirection.Output && (text.anchor = 'end');
         }
 
     }

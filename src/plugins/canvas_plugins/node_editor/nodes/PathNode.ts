@@ -30,11 +30,10 @@ export class PathNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new PathNodeParams(), {displayName: this.displayName});
         
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.param = new PathNodeParams();
 
         return obj;
     }

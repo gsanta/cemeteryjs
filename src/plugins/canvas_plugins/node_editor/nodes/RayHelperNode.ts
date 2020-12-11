@@ -31,25 +31,25 @@ export class RayHelperNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new RayHelperNodeParams(), {displayName: this.displayName});
         
         obj.executor = new RayHelperNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.param = new RayHelperNodeParams();
 
         return obj;
     }
 }
 
 export class RayHelperNodeParams extends NodeParams {
-    remove: NodeParam = {
+    readonly remove: NodeParam = {
         name: 'remove',
         field: NodeParamField.NumberField,
+        fieldDisabled: true,
         val: -1
     }
     
-    rayCaster: NodeParam = {
+    readonly rayCaster: NodeParam = {
         name: 'rayCaster',
         port: {
             direction: PortDirection.Output,
@@ -67,7 +67,8 @@ export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodePar
     }
 
     execute() {
-        const connection = this.nodeObj.getConnection('rayCaster');
+        const connection = this.nodeObj.getPort('rayCaster')
+        ;
         if (connection) {
             const rayCasterNode = connection[0];
             const rayObj = rayCasterNode.param.ray.val as RayObj;
@@ -104,7 +105,7 @@ class RemoveTimerController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        this.nodeObj.param.remove = context.clearTempVal();
+        this.nodeObj.param.remove.val = context.clearTempVal();
         context.registry.services.render.reRenderAll();
     }
 }

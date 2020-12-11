@@ -35,12 +35,11 @@ export class KeyboardNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, new KeyboardNodeParams(), {displayName: this.displayName});
         
         obj.executor = new KeyboardNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.param = new KeyboardNodeParams();
 
         return obj;
     }
@@ -118,7 +117,7 @@ export class KeyControl extends PropController {
         const keyIndexes = keys.map(key => parseInt(key.name.match(KEY_REGEX)[1], 10));
         keyIndexes.sort((a, b) => b - a);
 
-        if (keyIndexes.length > 0) {
+    if (keyIndexes.length > 0) {
             newIndex = keyIndexes[0] + 1;
         }
         

@@ -1,3 +1,4 @@
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -31,12 +32,11 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new RemoveMeshNodeParams(), {displayName: this.displayName});
         
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
         obj.executor = new RemoveMeshNodeExecutor(this.registry, obj);
-        obj.param = new RemoveMeshNodeParams();
 
         return obj;
     }
@@ -65,7 +65,7 @@ export class RemoveMeshNodeParams extends NodeParams {
         val: '',
         port: {
             direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
+            dataFlow: PortDataFlow.Pull
         }
     }
 }
@@ -104,11 +104,26 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
     }
 
     execute() {
-        const meshId = this.nodeObj.param.mesh.val;
-        const meshView = this.registry.data.view.scene.getById(meshId);
+        let meshObj: MeshObj;
+        if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
+            meshObj = this.getMeshObjFromPort();
+        } else {
+            meshObj = this.getMeshObjFromField();
+        }
 
-        if (meshView) {
-            this.registry.stores.objStore.removeObj(meshView.getObj());
+        if (meshObj) {
+            this.registry.stores.objStore.removeObj(meshObj);
+        }
+    }
+
+    private getMeshObjFromPort(): MeshObj {
+        return this.nodeObj.pullData('mesh');
+    }
+
+    private getMeshObjFromField(): MeshObj {
+        const meshId = this.nodeObj.param.mesh.val;
+        if (meshId) {
+            return <MeshObj> this.registry.data.view.scene.getById(meshId).getObj();
         }
     }
 

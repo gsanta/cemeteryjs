@@ -34,12 +34,11 @@ export class RouteNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new RouteNodeParams(), {displayName: this.displayName});
         
         obj.executor = new RouteNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.param = new RouteNodeParams(); 
 
         return obj;
     }
@@ -177,18 +176,16 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     }
 
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
-        let meshParam = nodeObj.getConnection('mesh') && nodeObj.getConnection('mesh')[0].param.mesh;
-
-        if (meshParam) {
-            return <MeshObj> registry.data.view.node.getById(meshParam.val)?.getObj();
+        if (nodeObj.getPort('mesh').hasConnectedPort()) {
+            const nodeParam = nodeObj.getPort('mesh').getConnectedPort().getNodeParam();
+            return <MeshObj> registry.data.view.node.getById(nodeParam.val)?.getObj();
         }
     }
 
     private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
-        let pathParam = nodeObj.getConnection('path') && nodeObj.getConnection('path')[0].param.path;
-
-        if (pathParam) {
-            return <PathObj> registry.data.view.node.getById(pathParam.val)?.getObj();
+        if (nodeObj.getPort('path').hasConnectedPort()) {
+            const nodeParam = nodeObj.getPort('path').getConnectedPort().getNodeParam();
+            return <PathObj> registry.data.view.node.getById(nodeParam.val)?.getObj();
         }
     }
 }

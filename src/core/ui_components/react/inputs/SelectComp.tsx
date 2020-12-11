@@ -36,6 +36,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
 
     let select = (
         <select
+            disabled={props.element.isDisabled}
             className="dropdown-component"
             style={selectStyle}
             onChange={(e) => {

@@ -35,8 +35,8 @@ export class NodeConnectionView extends View {
     point1: Point;
     point2: Point;
 
-    private joinPoint1: NodePortView;
-    private joinPoint2: NodePortView;
+    private nodePortView1: NodePortView;
+    private nodePortview2: NodePortView;
 
     updateDimensions() {
         if (this.point1 && this.point2) {
@@ -61,19 +61,19 @@ export class NodeConnectionView extends View {
     }
 
     setNodePortView1(nodePortView: NodePortView) {
-        this.joinPoint1 = nodePortView;
+        this.nodePortView1 = nodePortView;
     }
 
     getNodePortView1(): NodePortView {
-        return this.joinPoint1;
+        return this.nodePortView1;
     }
 
     setNodePortView2(nodePortView: NodePortView) {
-        this.joinPoint2 = nodePortView;
+        this.nodePortview2 = nodePortView;
     }
 
     getNodePortView2(): NodePortView {
-        return this.joinPoint2;
+        return this.nodePortview2;
     }
 
     getBounds(): Rectangle {
@@ -85,8 +85,8 @@ export class NodeConnectionView extends View {
     }
 
     dispose() {
-        this.joinPoint1.removeConnection();
-        this.joinPoint2.removeConnection();
+        this.nodePortView1.removeConnection();
+        this.nodePortview2.removeConnection();
     }
 
     toJson(): NodeConnectionViewJson {
@@ -97,12 +97,12 @@ export class NodeConnectionView extends View {
             point2X: this.point2.x,
             point2Y: this.point2.y,
             joinPoint1: {
-                nodeId: this.joinPoint1.containerView.id,
-                joinPointName: this.joinPoint1.param.name
+                nodeId: this.nodePortView1.containerView.id,
+                joinPointName: this.nodePortView1.getObj().getNodeParam().name
             },
             joinPoint2: {
-                nodeId: this.joinPoint2.containerView.id,
-                joinPointName: this.joinPoint2.param.name
+                nodeId: this.nodePortview2.containerView.id,
+                joinPointName: this.nodePortview2.getObj().getNodeParam().name
             }
         };
     }
@@ -111,10 +111,10 @@ export class NodeConnectionView extends View {
         super.fromJson(json, registry);
         const nodeView1 = (<NodeView> registry.data.view.node.getById(json.joinPoint1.nodeId));
         const nodeView2 = (<NodeView> registry.data.view.node.getById(json.joinPoint2.nodeId))
-        this.joinPoint1 = <NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName);
-        this.joinPoint2 = <NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName);
-        this.joinPoint1.setConnection(this);
-        this.joinPoint2.setConnection(this);
+        this.nodePortView1 = <NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName);
+        this.nodePortview2 = <NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName);
+        this.nodePortView1.setConnection(this);
+        this.nodePortview2.setConnection(this);
         this.point1 = new Point(json.point1X, json.point1Y);
         this.point2 = new Point(json.point2X, json.point2Y);
 

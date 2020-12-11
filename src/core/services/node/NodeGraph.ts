@@ -93,6 +93,6 @@ export class NodeGraph {
     }
 
     private getAdjacentNodes(nodeObj: NodeObj): NodeObj[] {
-        return nodeObj.getConnections().map(([otherNodeObj, string]) => otherNodeObj);
+        return nodeObj.getPorts().filter(port => port.hasConnectedPort()).map(port => port.getConnectedPort().getNodeObj());
     }
 }

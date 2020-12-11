@@ -33,12 +33,11 @@ export class MoveNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new MoveNodeParams(), {displayName: this.displayName});
         
         obj.executor = new MoveNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.param = new MoveNodeParams();
 
         return obj;
     }
