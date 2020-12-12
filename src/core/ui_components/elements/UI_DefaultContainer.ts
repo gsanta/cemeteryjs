@@ -53,6 +53,10 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.textField(this, config);
     }
 
+    checkbox(config: {key: string, target?: string}) {
+        return UI_Factory.checkbox(this, config);
+    }
+
     grid(config: {key: string, filledIndexProp?: string}) {
         return UI_Factory.grid(this, config);
     }

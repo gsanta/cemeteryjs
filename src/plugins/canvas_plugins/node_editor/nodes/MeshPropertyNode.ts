@@ -8,9 +8,9 @@ import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecut
 import { MeshViewType } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 
-export const RemoveMeshNodeType = 'remove-mesh-node-obj';
+export const MeshPropertyNodeType = 'mesh-property-node-obj';
 
-export class RemoveMeshNode extends AbstractNodeFactory {
+export class MeshPropertyNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -18,39 +18,31 @@ export class RemoveMeshNode extends AbstractNodeFactory {
         this.registry = registry;
     }
 
-    nodeType = RemoveMeshNodeType;
-    displayName = 'Remove Mesh';
-    category = 'Default';
+    nodeType = MeshPropertyNodeType;
+    displayName = 'Mesh Property';
+    category = 'Mesh';
 
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(nodeView.getObj()))
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, new RemoveMeshNodeParams(), {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new MeshPropertyNodeParams(), {displayName: this.displayName});
         
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        obj.executor = new RemoveMeshNodeExecutor(this.registry, obj);
+        obj.executor = new MeshPropertyNodeExecutor(this.registry, obj);
 
         return obj;
     }
 }
 
-export class RemoveMeshNodeParams extends NodeParams {
-    readonly action: NodeParam = {
-        name: 'action',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
-    }
-    
+export class MeshPropertyNodeParams extends NodeParams {    
     readonly signal: NodeParam = {
         name: 'signal',
         port: {
@@ -68,10 +60,16 @@ export class RemoveMeshNodeParams extends NodeParams {
             dataFlow: PortDataFlow.Pull
         }
     }
+
+    readonly visible = {
+        name: 'visible',
+        field: NodeParamField.Checkbox,
+        val: 1,
+    }
 }
 
 export class MeshController extends PropController<string> {
-    private nodeObj: NodeObj<RemoveMeshNodeParams>;
+    private nodeObj: NodeObj<MeshPropertyNodeParams>;
 
     constructor(nodeObj: NodeObj) {
         super();
@@ -95,7 +93,32 @@ export class MeshController extends PropController<string> {
     }
 }
 
-export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeParams> {
+export class MeshVisibilityController extends PropController<string> {
+    private nodeObj: NodeObj<MeshPropertyNodeParams>;
+
+    constructor(nodeObj: NodeObj) {
+        super();
+        this.nodeObj = nodeObj;
+    }
+
+    acceptedProps() { return ['visible']; }
+
+    values(context: PropContext) {
+        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
+    }
+
+    defaultVal() {
+        return this.nodeObj.param.mesh.val;
+    }
+
+    change(val, context: PropContext) {
+        this.nodeObj.param.mesh.val = val;
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Canvas1);
+    }
+}
+
+export class MeshPropertyNodeExecutor extends AbstractNodeExecutor<MeshPropertyNodeParams> {
     private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -104,6 +127,8 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
     }
 
     execute() {
+        const visibility: number = this.nodeObj.param.visible.val;
+
         let meshObj: MeshObj;
         if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
             meshObj = this.getMeshObjFromPort();
@@ -112,7 +137,7 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
         }
 
         if (meshObj) {
-            this.registry.stores.objStore.removeObj(meshObj);
+            meshObj.setVisibility(visibility);
         }
     }
 

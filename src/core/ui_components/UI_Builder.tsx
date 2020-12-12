@@ -85,6 +85,8 @@ import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
 import { ButtonToolbar } from 'react-bootstrap';
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { UI_Checkbox } from './elements/UI_Checkbox';
+import { CheckboxComp } from './react/inputs/CheckboxComp';
 
 export class UI_Builder {
 
@@ -308,6 +310,9 @@ export class UI_Builder {
             case UI_ElementType.TextField:
                 const textField = element as UI_TextField;
                 return <TextFieldComp registry={this.registry} element={textField}/>;
+            case UI_ElementType.Checkbox:
+                const checkbox = element as UI_Checkbox;
+                return <CheckboxComp registry={this.registry} element={checkbox}/>;
             case UI_ElementType.Button:
                 const button = element as UI_Button;
                 return <ButtonComp registry={this.registry} element={button}/>;

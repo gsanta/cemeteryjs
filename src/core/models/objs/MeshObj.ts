@@ -127,6 +127,22 @@ export class MeshObj implements IGameObj {
         return undefined;
     }
 
+    /**
+     * Set the visibility of a mesh
+     * @param visibility number between 0 and 1, 0 means invisible, 1 means fully visible
+     */
+    setVisibility(visibility: number): void {
+        return this.meshAdapter.setVisibility(this, visibility);
+    }
+
+    /**
+     * Get the visibility of a mesh
+     * @returns number between 0 and 1, 0 means invisible, 1 means fully visible
+     */    
+    getVisibility() {
+        return this.meshAdapter.getVisibility(this);
+    }
+
     clone(): MeshObj {
         const clone = new MeshObj();
         clone.meshAdapter = this.meshAdapter;

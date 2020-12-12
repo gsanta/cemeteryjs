@@ -40,13 +40,13 @@ export class PathNode extends AbstractNodeFactory {
 }
 
 export class PathNodeParams extends NodeParams {
-    path: NodeParam = {
+    readonly path: NodeParam = {
         name: 'path',
         field: NodeParamField.List,
         val: '',
     }
     
-    action: NodeParam = {
+    readonly action: NodeParam = {
         name: 'action',
         port: {
             direction: PortDirection.Output,

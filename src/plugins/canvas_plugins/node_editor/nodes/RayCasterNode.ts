@@ -43,25 +43,25 @@ export class RayCasterNode extends AbstractNodeFactory {
 }
 
 export class RayCasterNodeParams extends NodeParams {
-    mesh: NodeParam = {
+    readonly mesh: NodeParam = {
         name: 'mesh',
         field: NodeParamField.List,
         val: '',
 
     }
     
-    length: NodeParam = {
+    readonly length: NodeParam = {
         name: 'length',
         field: NodeParamField.NumberField,
         val: 100,
     }
     
-    ray: NodeParam = {
+    readonly ray: NodeParam = {
         name: 'ray',
         val: new RayObj
     }
     
-    when: NodeParam = {
+    readonly when: NodeParam = {
         name: 'when',
         port: {
             direction: PortDirection.Input,
@@ -69,7 +69,7 @@ export class RayCasterNodeParams extends NodeParams {
         }
     }
     
-    helper: NodeParam = {
+    readonly helper: NodeParam = {
         name: 'helper',
         port: {
             direction: PortDirection.Input,
@@ -77,7 +77,7 @@ export class RayCasterNodeParams extends NodeParams {
         }
     }
 
-    signal: NodeParam = {
+    readonly signal: NodeParam = {
         name: 'signal',
         port: {
             direction: PortDirection.Output,
@@ -85,7 +85,7 @@ export class RayCasterNodeParams extends NodeParams {
         }
     }
     
-    pickedMesh: NodeParam = {
+    readonly pickedMesh: NodeParam = {
         name: 'pickedMesh',
         val: undefined,
         port: {
@@ -144,7 +144,7 @@ class RayLengthController extends PropController<string> {
     }
 
     blur(context: PropContext) {
-        this.nodeObj.param.length = context.clearTempVal();
+        this.nodeObj.param.length.val = context.clearTempVal();
         context.registry.services.render.reRenderAll();
     }
 }

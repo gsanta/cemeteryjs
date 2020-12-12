@@ -13,6 +13,21 @@ export interface IMeshAdapter {
     setColor(meshObj: MeshObj, color: string): void;
     getColor(meshObj: MeshObj): string;
 
+    /**
+     * Set the visibility of a mesh
+     * @param meshObj the MeshObj to set the visibility on
+     * @param visibility number between 0 and 1, 0 means invisible, 1 means fully visible
+     */
+    setVisibility(meshObj: MeshObj, visibility: number): void;
+
+    /**
+     * Get the visibility of a mesh
+     * @param meshObj the MeshObj to get the visibility for
+     * @returns a number between 0 and 1, 0 means invisible, 1 means fully visible
+     */
+    getVisibility(meshObj: MeshObj): number;
+
+
     getDimensions(meshObj: MeshObj): Point;
     createInstance(meshObj: MeshObj): Promise<boolean>;
     deleteInstance(meshObj: MeshObj): void;

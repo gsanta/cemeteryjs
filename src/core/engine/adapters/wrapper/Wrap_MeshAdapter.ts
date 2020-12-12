@@ -40,6 +40,14 @@ export  class Wrap_Meshes implements IMeshAdapter {
         return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getColor(meshObj));
     }
 
+    setVisibility(meshObj: MeshObj, visibility: number): void {
+        this.engineFacade.engines.forEach(engine => engine.meshes.setVisibility(meshObj, visibility));
+    }
+
+    getVisibility(meshObj: MeshObj): number {
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getVisibility(meshObj));
+    }
+
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
         this.engineFacade.engines.forEach(engine => engine.meshes.translate(meshObj, axis, amount, space));
     }

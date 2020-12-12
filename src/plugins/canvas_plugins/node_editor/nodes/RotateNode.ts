@@ -44,19 +44,19 @@ export class RotateNode extends AbstractNodeFactory {
 }
 
 export class RotateNodeParams extends NodeParams {
-    mesh: NodeParam = {
+    readonly mesh: NodeParam = {
         name: 'mesh',
         field: NodeParamField.List,
         val: ''
     }
 
-    rotate: NodeParam = {
+    readonly rotate: NodeParam = {
         name: 'rotate',
         field: NodeParamField.List,
         val: 'left'
     }
 
-    input: NodeParam = {
+    readonly input: NodeParam = {
         name: 'input',
         port: {
             direction: PortDirection.Input,

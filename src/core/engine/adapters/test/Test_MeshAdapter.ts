@@ -13,6 +13,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     rotationMap: Map<MeshObj, Point_3> = new Map();
     scaleMap: Map<MeshObj, Point_3> = new Map();
     colorMap: Map<MeshObj, string> = new Map();
+    visibilityMap: Map<MeshObj, number> = new Map();
 
     constructor(registry: Registry, engineFacade: Test_EngineFacade) {
         this.registry = registry;
@@ -56,6 +57,14 @@ export  class Test_MeshAdapter implements IMeshAdapter {
 
     getColor(meshObj: MeshObj): string {
         return this.colorMap.get(meshObj) || '#FFFFFF';
+    }
+
+    setVisibility(meshObj: MeshObj, visibility: number): void {
+        this.visibilityMap.set(meshObj, visibility);
+    }
+
+    getVisibility(meshObj: MeshObj): number {
+        return this.visibilityMap.get(meshObj) || 1;
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

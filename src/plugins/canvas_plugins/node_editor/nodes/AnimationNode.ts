@@ -43,25 +43,25 @@ export class AnimationNode extends AbstractNodeFactory {
 }
 
 export class AnimationNodeParams extends NodeParams {
-    mesh: NodeParam = {
+    readonly mesh: NodeParam = {
         name: 'mesh',
         field: NodeParamField.List,
         val: '',
     }
 
-    startFrame: NodeParam = {
+    readonly startFrame: NodeParam = {
         name: 'startFrame',
         field: NodeParamField.NumberField,
         val: 0,
     }
     
-    endFrame: NodeParam = {
+    readonly endFrame: NodeParam = {
         name: 'endFrame',
         field: NodeParamField.NumberField,
         val: 0,
     }
     
-    action: NodeParam = {
+    readonly action: NodeParam = {
         name: 'action',
         port: {
             direction: PortDirection.Output,

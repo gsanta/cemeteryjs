@@ -2,6 +2,7 @@ import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/regist
 import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
 import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNode';
 import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
+import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshPropertyNode';
 import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/MoveNode';
 import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
 import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/RayCasterNode';
@@ -73,6 +74,7 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new RayCasterNode(this.registry));
         this.registry.data.helper.node.registerNode(new RayHelperNode(this.registry));
         this.registry.data.helper.node.registerNode(new RemoveMeshNode(this.registry));
+        this.registry.data.helper.node.registerNode(new MeshPropertyNode(this.registry));
     }
 
     setup() {

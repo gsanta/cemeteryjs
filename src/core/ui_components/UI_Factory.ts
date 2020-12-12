@@ -43,6 +43,7 @@ import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader'
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { GlobalControllerProps } from '../plugin/controller/FormController';
+import { UI_Checkbox } from './elements/UI_Checkbox';
 
 export class UI_Factory {
 
@@ -210,6 +211,15 @@ export class UI_Factory {
     static textField(parent: UI_Container, config: UI_ElementConfig & { target?: string}): UI_TextField {
         const element = new UI_TextField({controller: config.controller || parent.controller, ...config});
         element.type = 'text';
+
+        parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
+
+        return element;
+    }
+
+    static checkbox(parent: UI_Container, config: UI_ElementConfig & { target?: string}): UI_Checkbox {
+        const element = new UI_Checkbox({controller: config.controller || parent.controller, ...config});
 
         parent.children.push(element);
         element.canvasPanel = parent.canvasPanel;

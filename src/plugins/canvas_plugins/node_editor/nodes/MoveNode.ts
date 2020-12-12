@@ -44,25 +44,25 @@ export class MoveNode extends AbstractNodeFactory {
 }
 
 export class MoveNodeParams extends NodeParams {
-    mesh: NodeParam = {
+    readonly mesh: NodeParam = {
         name: 'mesh',
         field: NodeParamField.List,
         val: '',
     }
     
-    move: NodeParam = {
+    readonly move: NodeParam = {
         name: 'move',
         field: NodeParamField.List,
         val: 'forward',
     }
     
-    speed: NodeParam = {
+    readonly speed: NodeParam = {
         name: 'speed',
         field: NodeParamField.NumberField,
         val: 0.5,
     }
     
-    animation: NodeParam = {
+    readonly animation: NodeParam = {
         name: 'animation',
         port: {
             direction: PortDirection.Output,
@@ -70,7 +70,7 @@ export class MoveNodeParams extends NodeParams {
         }
     }
     
-    input: NodeParam = {
+    readonly input: NodeParam = {
         name: 'input',
         port: {
             direction: PortDirection.Input,

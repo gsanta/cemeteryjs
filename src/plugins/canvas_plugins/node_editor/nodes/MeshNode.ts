@@ -40,13 +40,13 @@ export class MeshNode extends AbstractNodeFactory {
 }
 
 export class MeshNodeParams extends NodeParams {
-    mesh: NodeParam = {
+    readonly mesh: NodeParam = {
         name: 'mesh',
         field: NodeParamField.List,
         val: '',
     }
     
-    action: NodeParam = {
+    readonly action: NodeParam = {
         name: 'action',
         port: {
             direction: PortDirection.Input,

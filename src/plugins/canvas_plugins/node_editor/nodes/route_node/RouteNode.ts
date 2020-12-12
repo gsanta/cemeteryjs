@@ -45,18 +45,18 @@ export class RouteNode extends AbstractNodeFactory {
 }
 
 export class RouteNodeParams extends NodeParams {
-    speed: NodeParam = {
+    readonly speed: NodeParam = {
         name: 'speed',
         field: NodeParamField.NumberField,
         val: 1,
     }
 
-    routeWalker: NodeParam = {
+    readonly routeWalker: NodeParam = {
         name: 'routeWalker',
         val: undefined
     }
     
-    onStart: NodeParam = {
+    readonly onStart: NodeParam = {
         name: 'onStart',
         port: {
             direction: PortDirection.Output,
@@ -64,7 +64,7 @@ export class RouteNodeParams extends NodeParams {
         }
     }
     
-    onTurnStart = {
+    readonly onTurnStart = {
         name: 'onTurnStart',
         port: {
             direction: PortDirection.Output,
@@ -72,7 +72,7 @@ export class RouteNodeParams extends NodeParams {
         }
     }
     
-    onTurnEnd = {
+    readonly onTurnEnd = {
         name: 'onTurnEnd',
         port: {
             direction: PortDirection.Output,
@@ -80,7 +80,7 @@ export class RouteNodeParams extends NodeParams {
         }
     }
     
-    onFinish = {
+    readonly onFinish = {
         name: 'onFinish',
         port: {
             direction: PortDirection.Output,
@@ -88,7 +88,7 @@ export class RouteNodeParams extends NodeParams {
         }
     }
     
-    mesh = {
+    readonly mesh = {
         name: 'mesh',
         port: {
             direction: PortDirection.Input,
@@ -96,7 +96,7 @@ export class RouteNodeParams extends NodeParams {
         }
     }
     
-    path = {
+    readonly path = {
         name: 'path',
         port: {
             direction: PortDirection.Input,

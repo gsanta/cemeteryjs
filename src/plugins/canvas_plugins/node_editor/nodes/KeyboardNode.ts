@@ -46,7 +46,7 @@ export class KeyboardNode extends AbstractNodeFactory {
 }
 
 export class KeyboardNodeParams extends NodeParams {
-    key1: NodeParam = {
+    readonly key1: NodeParam = {
         name: 'key1',
         val: '',
         field: NodeParamField.List,

@@ -8,6 +8,7 @@ export enum UI_ElementType {
     Column = 'Column',
     Box = 'Box',
     Button = 'Button',
+    Checkbox = 'Checkbox',
     Select = 'Select',
     GridSelect = 'GridSelect',
     TextField = 'TextField',

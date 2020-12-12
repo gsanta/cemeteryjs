@@ -56,6 +56,14 @@ export class NodeRenderer implements ViewRenderer {
                             select.isDisabled = true
                         }
                     break;
+                    case NodeParamField.Checkbox:
+                        const checkbox = row.checkbox({key: param.name, target: nodeView.id});
+                        checkbox.layout = 'horizontal';
+                        checkbox.label = param.name;
+                        if (this.isFieldDisabled(param, nodeView)) {
+                            select.isDisabled = true
+                        }
+                    break;
                 }
             });
     }

@@ -28,7 +28,8 @@ export enum NodeParamRole {
 export enum NodeParamField {
     TextField = 'TextField',
     NumberField = 'NumberField',
-    List = 'List'
+    List = 'List',
+    Checkbox = 'Checkbox'
 }
 
 export enum NodePortType {

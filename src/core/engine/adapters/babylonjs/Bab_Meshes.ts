@@ -114,6 +114,20 @@ export  class Bab_Meshes implements IMeshAdapter {
         return (<StandardMaterial> meshData.mainMesh.material).diffuseColor.toHexString();
     }
 
+    setVisibility(meshObj: MeshObj, visibility: number): void {
+        const meshData = this.meshes.get(meshObj);
+        if (!meshData) { return; }
+
+        meshData.mainMesh.visibility = visibility;
+    }
+
+    getVisibility(meshObj: MeshObj): number {        
+        const meshData = this.meshes.get(meshObj);
+        if (!meshData) { return undefined; }
+
+        return meshData.mainMesh.visibility;
+    }
+
     async createInstance(meshObj: MeshObj): Promise<boolean> {
         const scaling = meshObj.getScale();
 
