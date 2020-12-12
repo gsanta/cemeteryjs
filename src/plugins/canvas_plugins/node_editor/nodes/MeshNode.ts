@@ -18,7 +18,7 @@ export class MeshNode extends AbstractNodeFactory {
 
     nodeType = MeshNodeType;
     displayName = 'Mesh';
-    category = 'Default';
+    category = 'Mesh';
 
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);

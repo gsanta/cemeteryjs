@@ -8,6 +8,7 @@ export function CheckboxComp(props: UI_ComponentProps<UI_Checkbox>) {
         <Form.Check
             required
             name="terms"
+            onChange={e => props.element.change(!props.element.val(props.registry), props.registry)}
             checked={props.element.val(props.registry)}
         />
     );

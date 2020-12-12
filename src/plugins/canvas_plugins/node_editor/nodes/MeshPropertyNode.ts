@@ -25,7 +25,7 @@ export class MeshPropertyNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()))
+        nodeView.addParamController(new MeshController(nodeView.getObj()), new MeshVisibilityController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -103,16 +103,12 @@ export class MeshVisibilityController extends PropController<string> {
 
     acceptedProps() { return ['visible']; }
 
-    values(context: PropContext) {
-        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
-    }
-
     defaultVal() {
-        return this.nodeObj.param.mesh.val;
+        return this.nodeObj.param.visible.val;
     }
 
     change(val, context: PropContext) {
-        this.nodeObj.param.mesh.val = val;
+        this.nodeObj.param.visible.val = val;
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

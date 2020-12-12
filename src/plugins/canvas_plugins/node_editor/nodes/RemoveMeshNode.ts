@@ -20,7 +20,7 @@ export class RemoveMeshNode extends AbstractNodeFactory {
 
     nodeType = RemoveMeshNodeType;
     displayName = 'Remove Mesh';
-    category = 'Default';
+    category = 'Mesh';
 
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);

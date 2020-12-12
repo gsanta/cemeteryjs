@@ -31,7 +31,8 @@ export enum MeshViewControllerParam {
     Height = 'height',
     Depth = 'depth',
     Color = 'Color',
-    Clone = 'clone'
+    Clone = 'clone',
+    Visibility = 'visibility',
 }
 
 export class MeshIdController extends PropController<string> {
@@ -518,6 +519,45 @@ export class ColorController extends PropController<string> {
             context.clearTempVal();
         }
         
+
+        context.registry.services.render.reRenderAll();
+    }
+}
+
+export class MeshVisibilityController extends PropController<string> {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
+        super();
+        this.registry = registry;
+    }
+
+    acceptedProps() { return [MeshViewControllerParam.Visibility]; }
+
+    defaultVal(context) {
+        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+
+        return meshView.getObj().getVisibility();
+    }
+
+    change(val, context) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    }
+
+    async blur(context: PropContext) {
+        const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
+
+        try {
+            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+                meshView.getObj().setVisibility(parseFloat(context.getTempVal()));
+                context.registry.services.history.createSnapshot();
+            }
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        } finally {
+            context.clearTempVal();
+        }
 
         context.registry.services.render.reRenderAll();
     }

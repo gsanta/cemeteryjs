@@ -106,6 +106,12 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         colorTextField.label = 'Color';
         colorTextField.type = 'text';
 
+        row = accordion.row({ key: MeshViewControllerParam.Visibility });
+        const visibilityTextField = row.textField({key: MeshViewControllerParam.Visibility});
+        visibilityTextField.layout = 'horizontal';
+        visibilityTextField.label = 'Visibility';
+        visibilityTextField.type = 'number';
+
         row = accordion.row({ key: MeshViewControllerParam.Model });
         const modelTextField = row.textField({key: MeshViewControllerParam.Model});
         modelTextField.layout = 'horizontal';
