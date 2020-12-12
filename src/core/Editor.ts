@@ -3,6 +3,7 @@ import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/Anima
 import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNode';
 import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
 import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshPropertyNode';
+import { MeshVisibilityNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshVisibilityNode';
 import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/MoveNode';
 import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
 import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/RayCasterNode';
@@ -10,6 +11,7 @@ import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/nodes/RayHe
 import { RemoveMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/RemoveMeshNode';
 import { RotateNode } from '../plugins/canvas_plugins/node_editor/nodes/RotateNode';
 import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
+import { TriggerZoneNode } from '../plugins/canvas_plugins/node_editor/nodes/TriggerZoneNode';
 import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
 import { registerNodeListPanel } from '../plugins/canvas_plugins/node_editor/registerNodeListPanel';
 import { registerObjectSettingsPanel } from '../plugins/canvas_plugins/scene_editor/registerObjectSettingsPanel';
@@ -75,6 +77,8 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new RayHelperNode(this.registry));
         this.registry.data.helper.node.registerNode(new RemoveMeshNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshPropertyNode(this.registry));
+        this.registry.data.helper.node.registerNode(new TriggerZoneNode(this.registry));
+        this.registry.data.helper.node.registerNode(new MeshVisibilityNode(this.registry));
     }
 
     setup() {

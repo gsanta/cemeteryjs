@@ -1,3 +1,4 @@
+import { INodeListener } from '../../../plugins/canvas_plugins/node_editor/node/INodeListener';
 import { Registry } from '../../Registry';
 import { AbstractNodeExecutor } from '../../services/node/INodeExecutor';
 import { NodeGraph } from '../../services/node/NodeGraph';
@@ -49,6 +50,8 @@ export enum PortDataFlow {
 export interface PortConfig {
     direction: PortDirection;
     dataFlow: PortDataFlow;
+    execute?: (nodeObj: NodeObj, registry: Registry) => void;
+    listener?: INodeListener;
 }
 
 export interface NodeParamJson {
@@ -205,30 +208,6 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
             return this.getPort(portName).getConnectedPort().getNodeParam().val;
         }
     }
-
-    // addParam(param: NodeParam) {
-    //     this.params[param.name] = param;
-    //     this.paramList.push(param);
-    // }
-
-    // getConnection(portName: string): [NodeObj, string] {
-    //     return this.connections.get(portName);
-    // }
-
-    // deleteConnection(port: string) {
-    //     const connection = this.connections.get(port);
-
-    //     if (connection) {
-    //         this.connections.delete(port);
-    //         connection[0].deleteConnection(connection[1]);
-    //         this.graph.onDisconnect([this, port], connection);
-    //     }
-    // }
-
-    // addConnection(port: string, otherNode: NodeObj, otherPort: string) {
-    //     this.connections.set(port, [otherNode, otherPort]);
-    //     this.graph.onConnect([this, port], [otherNode, otherPort]);
-    // }
 
     dispose() {
         this.getPorts().forEach(portObj => portObj.dispose());

@@ -1,5 +1,6 @@
 import { AnimationNodeType } from "../../plugins/canvas_plugins/node_editor/nodes/AnimationNode";
 import { RouteNodeObjType } from "../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode";
+import { PortDataFlow } from "../models/objs/NodeObj";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
 
@@ -18,6 +19,17 @@ export class GameService {
 
         const routeNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
         routeNodes.forEach(routeNode => routeNode.getObj().execute());
+
+        const rootNodes = this.registry.data.helper.node.graph.getRootNodes();
+        rootNodes.forEach((node) => {
+            node.getPorts()
+                .filter(port => !port.isInputPort() && port.isPushPort())
+                .forEach(port => {
+                    if (port.hasListener() && port.getListener().onBeforeRender) {
+                        port.getListener().onBeforeRender();
+                    }
+                });
+        })
     }
 
     // setPlaying(isPlaying: boolean) {

@@ -14,7 +14,7 @@ export class MeshNode extends AbstractNodeFactory {
     constructor(registry: Registry) {
         super();
         this.registry = registry;
-    }
+}
 
     nodeType = MeshNodeType;
     displayName = 'Mesh';
@@ -23,7 +23,7 @@ export class MeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView));
+        nodeView.addParamController(new MeshController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -57,11 +57,11 @@ export class MeshNodeParams extends NodeParams {
 }
 
 export class MeshController extends PropController<string> {
-    private nodeView: NodeView;
+    private nodeObj: NodeObj;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeObj: NodeObj) {
         super();
-        this.nodeView = nodeView;
+        this.nodeObj = nodeObj;
     }
 
     acceptedProps() { return ['mesh']; }
@@ -71,11 +71,11 @@ export class MeshController extends PropController<string> {
     }
 
     defaultVal() {
-        return this.nodeView.getObj().param.mesh.val;
+        return this.nodeObj.param.mesh.val;
     }
 
     change(val, context: PropContext) {
-        this.nodeView.getObj().setParam('mesh', val);
+        this.nodeObj.setParam('mesh', val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

@@ -1,4 +1,4 @@
- import { NodeObj } from '../../models/objs/NodeObj';
+ import { NodeObj, NodeParam } from '../../models/objs/NodeObj';
 import { NodeConnectionObj } from '../../models/objs/NodeConnectionObj';
 import { Registry } from '../../Registry';
 import { NodeView, NodeViewType } from '../../models/views/NodeView';
@@ -6,23 +6,33 @@ import { NodeView, NodeViewType } from '../../models/views/NodeView';
 export class NodeGraph {
     nodeGroups: Set<NodeObj>[] = [];
     private registry: Registry;
+    private rootNodes: NodeObj[] = [];
+    private allNodes: Set<NodeObj> = new Set();
 
     constructor(registry: Registry) {
         this.registry = registry;
     }
 
-    addNode(node: NodeObj) {
-        this.nodeGroups.push(new Set([node]));
+    getRootNodes(): NodeObj[] {
+        return this.rootNodes;
     }
 
-    removeNode(node: NodeObj) {
-        const group = this.findGroup(node);
-        group.delete(node);
+    addNode(nodeObj: NodeObj) {
+        this.nodeGroups.push(new Set([nodeObj]));
+        this.allNodes.add(nodeObj);
+        this.calculateRootNodes();
+    }
+
+    removeNode(nodeObj: NodeObj) {
+        const group = this.findGroup(nodeObj);
+        group.delete(nodeObj);
         const nodes = Array.from(group);
         const splittedGroups = this.buildGroups(nodes);
 
         this.nodeGroups = this.nodeGroups.filter(g => g !== group);
         this.nodeGroups.push(...splittedGroups);
+        this.allNodes.delete(nodeObj);
+        this.calculateRootNodes();
     }
 
     getNodesByType(nodeType: string) {
@@ -48,6 +58,7 @@ export class NodeGraph {
             this.nodeGroups = this.nodeGroups.filter(g => g !== group);
             this.nodeGroups.push(...splittedGroups);
         }
+        this.calculateRootNodes();
     }
 
     onConnect(node1: [NodeObj, string], node2: [NodeObj, string]) {
@@ -60,6 +71,7 @@ export class NodeGraph {
             const newGroup: Set<NodeObj> = new Set([...group1, ...group2]);
             this.nodeGroups.push(newGroup);
         }
+        this.calculateRootNodes();
     }
 
     buildGroups(nodes: NodeObj[]): Set<NodeObj>[] {
@@ -94,5 +106,9 @@ export class NodeGraph {
 
     private getAdjacentNodes(nodeObj: NodeObj): NodeObj[] {
         return nodeObj.getPorts().filter(port => port.hasConnectedPort()).map(port => port.getConnectedPort().getNodeObj());
+    }
+
+    private calculateRootNodes() {
+        this.rootNodes = Array.from(this.allNodes).filter(nodeObj =>  nodeObj.getPorts().filter(port => port.isInputPort()).every(port => !port.hasConnectedPort()));
     }
 }

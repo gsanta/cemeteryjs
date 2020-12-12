@@ -1,6 +1,7 @@
 import { Registry } from "../../Registry";
 import { IObj, ObjJson } from "./IObj";
-import { NodeObj, NodeParam, PortDirection } from "./NodeObj";
+import { NodeObj, NodeParam, PortDataFlow, PortDirection } from "./NodeObj";
+import { ObjAdapter } from "./ObjAdapter";
 
 export interface NodePortObjJson {
     name: string;
@@ -10,7 +11,7 @@ export interface NodePortObjJson {
 
 
 export const NodePortObjType = 'node-port-obj';
-export class NodePortObj implements IObj {
+export class NodePortObj extends ObjAdapter {
     id: string;
     objType: string;
 
@@ -19,6 +20,7 @@ export class NodePortObj implements IObj {
     private readonly param: NodeParam;
 
     constructor(nodeObj: NodeObj, param: NodeParam) {
+        super();
         this.id = param.name;
         this.nodeObj = nodeObj;
         this.param = param;
@@ -65,20 +67,23 @@ export class NodePortObj implements IObj {
         return this.param;
     }
 
+    hasListener() {
+        return !!this.param.port.listener;
+    }
+
+    getListener() {
+        return this.param.port.listener;
+    }
+
     isInputPort() {
         return this.param.port.direction === PortDirection.Input;
     }
 
+    isPushPort() {
+        return this.param.port.dataFlow === PortDataFlow.Push;
+    }
+
     dispose(): void {
         this.removeConnectedPort();
-    }
-    serialize(): ObjJson {
-        throw new Error("Method not implemented.");
-    }
-    deserialize(json: ObjJson, registry: Registry) {
-        throw new Error("Method not implemented.");
-    }
-    clone(): IObj {
-        throw new Error("Method not implemented.");
     }
 }

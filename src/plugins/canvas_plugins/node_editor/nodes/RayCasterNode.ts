@@ -26,7 +26,7 @@ export class RayCasterNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView), new RayLengthController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(nodeView.getObj()), new RayLengthController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -120,8 +120,6 @@ export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodePar
             }
         }
     }
-
-    executeStop() {}
 }
 
 class RayLengthController extends PropController<string> {
