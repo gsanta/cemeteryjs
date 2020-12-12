@@ -20,12 +20,13 @@ Feature: Move node
         And press key 'w'
         Then obj properties are:
             | Id          | Pos           |
-            | mesh-obj-1  | 5.5:0:-4.5    |
+            | mesh-obj-1  | 5.5:0:-5      |
         When hover over canvas 'node-editor'
         And change param 'move' to 'backward' in view 'node-view-2'
         And hover over canvas 'game-viewer'
         And press key 'w'
+        And press key 'w'
         Then obj properties are:
             | Id          | Pos           |
-            | mesh-obj-1  | 5.5:0:-5.5    |
+            | mesh-obj-1  | 5.5:0:-6      |
         

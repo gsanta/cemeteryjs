@@ -7,7 +7,7 @@ import { Registry } from "../../../../core/Registry";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ViewStore } from "../../../../core/stores/ViewStore";
-import { PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, PortDirection } from "../../../../core/models/objs/NodeObj";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
@@ -50,7 +50,6 @@ export class JoinTool extends PointerTool {
             nodePortView2.setConnection(connectionView);
             connectionView.setNodePortView1(nodePortView1);
             connectionView.setNodePortView2(nodePortView2);
-
             nodePortView1.getObj().setConnectedPort(nodePortView2.getObj());
 
             connectionView.setPoint1(nodePortView1.getAbsolutePosition());
@@ -58,6 +57,9 @@ export class JoinTool extends PointerTool {
             this.registry.data.view.node.addView(connectionView);
 
             this.registry.services.history.createSnapshot();
+
+            console.log((nodePortView1.containerView.getObj() as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
+
         }
 
         this.startPoint = undefined;

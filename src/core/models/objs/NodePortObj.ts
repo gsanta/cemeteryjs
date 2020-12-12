@@ -2,6 +2,13 @@ import { Registry } from "../../Registry";
 import { IObj, ObjJson } from "./IObj";
 import { NodeObj, NodeParam, PortDirection } from "./NodeObj";
 
+export interface NodePortObjJson {
+    name: string;
+    connectedObjId?: string;
+    connectedPortName?: string;
+} 
+
+
 export const NodePortObjType = 'node-port-obj';
 export class NodePortObj implements IObj {
     id: string;
@@ -21,9 +28,17 @@ export class NodePortObj implements IObj {
         }
     }
 
-    setConnectedPort(nodePortObj: NodePortObj) {        
-        this.connectedPortObj = nodePortObj;
-        this.nodeObj.graph.onConnect([this.nodeObj, this.param.name], [nodePortObj.nodeObj, nodePortObj.param.name]);
+    setConnectedPort(otherPortObj: NodePortObj) {        
+        this.connectedPortObj = otherPortObj;        
+        this.param.fieldDisabled = true;
+        if (otherPortObj.getConnectedPort() !== this) {
+            console.log(otherPortObj.getNodeParam().name)
+            console.log(otherPortObj.getNodeObj().getPorts().indexOf(otherPortObj))
+            otherPortObj.setConnectedPort(this);
+        }
+        console.log((otherPortObj.getNodeObj() as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
+
+        this.nodeObj.graph.onConnect([this.nodeObj, this.param.name], [otherPortObj.nodeObj, otherPortObj.param.name]);
     }
 
     getConnectedPort(): NodePortObj {

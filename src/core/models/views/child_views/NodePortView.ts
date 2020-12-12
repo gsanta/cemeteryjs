@@ -1,12 +1,12 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { NodeView } from "../NodeView";
-import { ContainedView } from "./ChildView";
-import { NodeConnectionView } from "../NodeConnectionView";
-import { View, ViewJson } from "../View";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
-import { NodeObj, NodeParam, PortDirection } from "../../objs/NodeObj";
+import { PortDirection } from "../../objs/NodeObj";
 import { NodePortObj } from "../../objs/NodePortObj";
+import { NodeConnectionView } from "../NodeConnectionView";
+import { NodeView } from "../NodeView";
+import { View, ViewJson } from "../View";
+import { ContainedView } from "./ChildView";
 
 export function isJoinPointView(view: View) {
     return view && view.viewType === NodePortViewType;
@@ -31,6 +31,7 @@ export class NodePortView extends ContainedView {
         super();
         this.containerView = parent;
         this.obj = obj;
+        this.id = obj.id;
     }
 
     getObj(): NodePortObj {

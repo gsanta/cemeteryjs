@@ -106,7 +106,7 @@ export class MoveNodeExecutor extends AbstractNodeExecutor<MoveNodeParams> {
 }
 
 export class MeshMoveController extends PropController<string> {
-    private nodeObj: NodeObj;
+    private nodeObj: NodeObj<MoveNodeParams>;
 
     constructor(nodeObj: NodeObj) {
         super();
@@ -125,7 +125,7 @@ export class MeshMoveController extends PropController<string> {
 
     change(val, context) {
         context.updateTempVal(val);
-        this.nodeObj.param.move = val;
+        this.nodeObj.param.move.val = val;
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

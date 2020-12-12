@@ -2,13 +2,14 @@ import { Registry } from '../../Registry';
 import { AbstractNodeExecutor } from '../../services/node/INodeExecutor';
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { IObj, ObjJson } from './IObj';
-import { NodePortObj } from './NodePortObj';
+import { NodePortObj, NodePortObjJson } from './NodePortObj';
 
 export const NodeObjType = 'node-obj';
 
 export interface NodeObjJson extends ObjJson {
     type: string;
     params: NodeParamJson[];
+    ports: NodePortObjJson[];
 }
 
 export enum NodeCategory {
@@ -241,11 +242,23 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
             return this.customParamSerializer && this.customParamSerializer.serialize(param) || defaultNodeParamSerializer(param);
         });
 
+        const portJsons = this.getPorts().map(port => {
+            let portJson: NodePortObjJson = { name: port.getNodeParam().name };
+
+            if (port.hasConnectedPort()) {
+                portJson.connectedObjId = port.getConnectedPort().getNodeObj().id;
+                portJson.connectedPortName = port.getConnectedPort().getNodeParam().name
+            }
+
+            return portJson;
+        });
+
         return {
             id: this.id,
             objType: this.objType,
             type: this.type,
             params: params,
+            ports: portJsons
         }
     }
 
@@ -253,16 +266,39 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
 
         this.id = json.id;
         this.type = json.type;
-        const paramList = json.params.map(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(jsonParam));
-        // paramList.forEach(param => (this.param as Nodeparams[param.name] = param);
+        json.params.forEach(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(this, jsonParam));
+        this.initParams();
+
+        const portJsonMap: Map<string, NodePortObjJson> = new Map();
+        json.ports.forEach(port => portJsonMap.set(port.name, port));
+
+        this.getPorts().forEach(port => {
+            const portJson = portJsonMap.get(port.getNodeParam().name);
+            if (portJson.connectedObjId) {
+                const connectedObj = <NodeObj> registry.stores.objStore.getById(portJson.connectedObjId);
+                if (connectedObj) {
+                    port.setConnectedPort(connectedObj.getPort(portJson.connectedPortName));
+                }
+            }
+        });
     }
 
-    private initParams() {
+    initParams() {
         this.paramList = [];
         Object.entries(this.param).forEach(entry => this.paramList.push(entry[1]));
 
+        const currentPorts = this.ports;
         this.ports = new Map();
-        this.paramList.filter(param => param.port).forEach(port => this.ports.set(port.name, new NodePortObj(this, port)));
+
+        this.paramList.filter(param => param.port).forEach(port => {
+            if (currentPorts.has(port.name)) {
+                this.ports.set(port.name, currentPorts.get(port.name));
+                currentPorts.delete(port.name);
+            } else {
+                this.ports.set(port.name, new NodePortObj(this, port))
+            }
+        });
+        Array.from(currentPorts.values()).forEach(port => port.dispose());
     }
 }
 
@@ -287,22 +323,19 @@ function defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
     return json;
 }
 
-function defaultNodeParamDeserializer(json: NodeParamJson): NodeParam {
-    const param: NodeParam = {
-        name: json.name,
-        val: json.val,
-    }
+function defaultNodeParamDeserializer(nodeObj: NodeObj, json: NodeParamJson): void {
+    let param: NodeParam;
 
-    if (json.field) {
-        param.field = json.field;
-    }
-
-    if (json.port) {
-        param.port = {
-            direction: json.port.direction,
-            dataFlow: json.port.dataFlow
+    if (nodeObj.param[json.name]) {
+        param = nodeObj.param[json.name];
+        param.val = json.val;
+    } else {
+        param = { 
+            name: json.name,
+            val: json.val,
+            field: json.field,
+            port: json.port
         }
+        nodeObj.param[json.name] = param;
     }
-
-    return param;
 }

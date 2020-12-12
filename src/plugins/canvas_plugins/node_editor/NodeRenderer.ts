@@ -42,7 +42,7 @@ export class NodeRenderer implements ViewRenderer {
                         textField.type = param.field === NodeParamField.TextField ? 'text' : 'number';
                         textField.label = param.name;
                         textField.isBold = true;
-                        if (param.fieldDisabled) {
+                        if (this.isFieldDisabled(param, nodeView)) {
                             textField.isDisabled = true
                         }
                     break;
@@ -52,12 +52,16 @@ export class NodeRenderer implements ViewRenderer {
                         select.label = param.name;
                         select.placeholder = param.name;
                         select.isBold = true;
-                        if (param.fieldDisabled) {
+                        if (this.isFieldDisabled(param, nodeView)) {
                             select.isDisabled = true
                         }
                     break;
                 }
             });
+    }
+
+    private isFieldDisabled(param: NodeParam, nodeView: NodeView) {
+        return param.port && param.port.direction === PortDirection.Input && nodeView.getObj().getPort(param.name).hasConnectedPort()
     }
 
     private renderRect(group: UI_SvgGroup, nodeView: NodeView) {

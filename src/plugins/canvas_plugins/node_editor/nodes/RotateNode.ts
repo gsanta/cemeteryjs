@@ -108,7 +108,7 @@ export class MeshRotateController extends PropController<string> {
 
     change(val, context) {
         context.updateTempVal(val);
-        this.nodeObj.param.rotate = val;
+        this.nodeObj.param.rotate.val = val;
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

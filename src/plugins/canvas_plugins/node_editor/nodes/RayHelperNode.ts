@@ -6,6 +6,7 @@ import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { AbstractNodeFactory } from "./AbstractNode";
+import { RayCasterNodeParams } from "./RayCasterNode";
 
 export const RayHelperNodeType = 'ray-helper-node-obj';
 
@@ -45,8 +46,7 @@ export class RayHelperNodeParams extends NodeParams {
     readonly remove: NodeParam = {
         name: 'remove',
         field: NodeParamField.NumberField,
-        fieldDisabled: true,
-        val: -1
+    val: -1
     }
     
     readonly rayCaster: NodeParam = {
@@ -67,11 +67,9 @@ export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodePar
     }
 
     execute() {
-        const connection = this.nodeObj.getPort('rayCaster')
-        ;
-        if (connection) {
-            const rayCasterNode = connection[0];
-            const rayObj = rayCasterNode.param.ray.val as RayObj;
+        if (this.nodeObj.getPort('rayCaster').hasConnectedPort()) {
+            const rayCasterNodeParams = this.nodeObj.getPort('rayCaster').getConnectedPort().getNodeObj().param as RayCasterNodeParams;
+            const rayObj = <RayObj> rayCasterNodeParams.ray.val;
 
             this.registry.engine.rays.createHelper(rayObj);
             

@@ -89,7 +89,7 @@ export class MeshController extends PropController<string> {
     }
 
     change(val, context: PropContext) {
-        this.nodeObj.param.mesh = val;
+        this.nodeObj.param.mesh.val = val;
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }
