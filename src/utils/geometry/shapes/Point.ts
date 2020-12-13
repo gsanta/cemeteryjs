@@ -112,6 +112,7 @@ export class Point {
     }
 
     static fromString(str: string): Point {
+        console.log(str)
         const matcher = /([-\d\.]+):([-\d\.]+)/;
         const match = str.match(matcher);
         return new Point(parseFloat(match[1]), parseFloat(match[2]));

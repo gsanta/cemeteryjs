@@ -26,7 +26,7 @@ export class GameService {
                 .filter(port => !port.isInputPort() && port.isPushPort())
                 .forEach(port => {
                     if (port.hasListener() && port.getListener().onBeforeRender) {
-                        port.getListener().onBeforeRender();
+                        port.getListener().onBeforeRender(port.getNodeObj(), this.registry);
                     }
                 });
         })

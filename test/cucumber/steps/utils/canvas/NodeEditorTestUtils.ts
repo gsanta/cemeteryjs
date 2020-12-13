@@ -1,0 +1,37 @@
+import { TableDefinition } from "cucumber";
+import { NodeView } from "../../../../../src/core/models/views/NodeView";
+import { Registry } from "../../../../../src/core/Registry";
+import { Point } from "../../../../../src/utils/geometry/shapes/Point";
+import { collectViewTableProps, ViewTableProp } from "../../common/viewTestUtils";
+
+export class NodeEditorTestUtils {
+    static createViewsFromTable(registry: Registry, tableDef: TableDefinition) {
+        const viewTableProps = collectViewTableProps(tableDef);
+        
+        let typeColumnIndex = viewTableProps.indexOf(ViewTableProp.Type);
+        if (typeColumnIndex === -1) {
+            throw new Error('To register views the the table must contain a \'Type\' column');
+        }
+
+        let posColumnIndex = viewTableProps.indexOf(ViewTableProp.Pos);
+        if (posColumnIndex === -1) {
+            throw new Error('To register views the the table must contain a \'Pos\' column');
+        }
+
+        let nodeTypeIndex = viewTableProps.indexOf(ViewTableProp.NodeType);
+        if (nodeTypeIndex === -1) {
+            throw new Error('To register views the the table must contain a \'NodeType\' column');
+        }
+
+        tableDef.rows().forEach((row: string[]) => {
+            const nodeType = row[nodeTypeIndex]
+            const nodeObj = registry.data.helper.node.createObj(nodeType);
+            const nodeView: NodeView = registry.data.helper.node.createView(nodeType, nodeObj);
+            
+            registry.data.view.node.addView(nodeView);
+            registry.stores.objStore.addObj(nodeObj);
+    
+            nodeView.getBounds().moveTo(Point.fromString(row[posColumnIndex]));
+        });
+    }
+}

@@ -1,3 +1,5 @@
+import { Mesh } from "babylonjs";
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams, NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
@@ -45,6 +47,14 @@ export class TriggerZoneNodeParams extends NodeParams {
         field: NodeParamField.List,
         val: '',
     }
+
+    readonly pickableMesh: NodeParam = {
+        name: 'pickableMesh',
+        port: {
+            direction: PortDirection.Input,
+            dataFlow: PortDataFlow.Push,
+        }
+    }
     
     readonly signal: NodeParam = {
         name: 'signal',
@@ -53,8 +63,10 @@ export class TriggerZoneNodeParams extends NodeParams {
             dataFlow: PortDataFlow.Push,
             listener: {
                 onBeforeRender: (nodeObj: NodeObj, registry: Registry) => {
-                    const meshView = <MeshView> registry.data.view.scene.getById(this.mesh.val);
-
+                    let triggerMesh: MeshObj;
+                    let pickableMesh: MeshObj;
+                    
+                    let meshView = <MeshView> registry.data.view.scene.getById(this.mesh.val);
                     if (meshView) {
                         meshView.getObj().setVisibility(0);
                     }

@@ -1,11 +1,12 @@
+import { TableDefinition } from "cucumber";
 import { View } from "../../../../src/core/models/views/View";
 import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
-import { Registry } from "../../../../src/core/Registry";
 import { ViewStore } from "../../../../src/core/stores/ViewStore";
 
 export enum ViewTableProp {
     Id = 'Id',
     Type = 'Type',
+    NodeType = 'NodeType',
     Obj = 'Obj',
     Bounds = 'Bounds',
     Pos = 'Pos',
@@ -71,4 +72,8 @@ export function findViewOrContainedView(viewStore: ViewStore, viewId: string): V
     if (!view) { throw new Error(invalidPathMessage); }
 
     return view;
+}
+
+export function collectViewTableProps(tableDef: TableDefinition): ViewTableProp[] {
+    return <ViewTableProp[]> tableDef.raw()[0];
 }

@@ -34,7 +34,6 @@ export class RayCasterNode extends AbstractNodeFactory {
 
     createObj(): NodeObj<RayCasterNodeParams> {
         const obj = new NodeObj(this.nodeType, new RayCasterNodeParams(), {displayName: this.displayName});
-        
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.executor = new RayCasterNodeExecutor(this.registry, obj);
         obj.graph = this.registry.data.helper.node.graph;

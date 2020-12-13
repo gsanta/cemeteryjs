@@ -1,28 +1,23 @@
 import { Given, TableDefinition, Then, World } from "cucumber";
-import { View } from "../../../src/core/models/views/View";
 import expect from 'expect';
+import { View } from "../../../src/core/models/views/View";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
-import { Rectangle } from "../../../src/utils/geometry/shapes/Rectangle";
-import { Point } from "../../../src/utils/geometry/shapes/Point";
-import { getViewProperty, setViewProperty, ViewTableProp } from "./common/viewTestUtils";
+import { NodeEditorPanelId } from "../../../src/plugins/canvas_plugins/node_editor/registerNodeEditor";
+import { SceneEditorPanelId } from "../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor";
 import { ModelDumper } from "./common/ModelDumper";
+import { collectViewTableProps, getViewProperty, ViewTableProp } from "./common/viewTestUtils";
+import { NodeEditorTestUtils } from "./utils/canvas/NodeEditorTestUtils";
+import { SceneEditorTestUtils } from "./utils/canvas/SceneEditorTestUtilts";
 
 Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: TableDefinition) {
-    const viewTableProps = collectViewTableProps(tableDef);
-
-    if (viewTableProps[0] !== ViewTableProp.Type) {
-        throw new Error('To register views the first column of the table has to be the \'Type\' column');
+    switch(canvasId) {
+        case NodeEditorPanelId:
+            NodeEditorTestUtils.createViewsFromTable(this.registry, tableDef);
+            break;
+        case SceneEditorPanelId:
+            SceneEditorTestUtils.createViewsFromTable(this.registry, tableDef);
+            break;
     }
-    
-    const canvasPanel = (this.registry.ui.canvas.getCanvas(canvasId) as Canvas2dPanel);
-
-    tableDef.rows().forEach((row: string[]) => {
-        const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Bounds);
-        let dimensions: Rectangle = dimensionsIndex !== -1 ? Rectangle.fromString(row[dimensionsIndex]) : new Rectangle(new Point(100, 100), new Point(110, 110));
-        const view = canvasPanel.getViewStore().getViewFactory(row[0]).instantiateOnCanvas(canvasPanel, dimensions);
-
-        row.forEach(((prop, index) => setViewProperty(canvasPanel, view, viewTableProps[index], prop)))
-    });
 });
 
 Then('canvas contains:', function (tableDef: TableDefinition) {
@@ -122,10 +117,6 @@ function viewPropertiesAre(world: World, tableDef: TableDefinition) {
             expect(getViewProperty(viewToCheck, prop)).toEqual(expectedPropValue);
         })
     });
-}
-
-function collectViewTableProps(tableDef: TableDefinition): ViewTableProp[] {
-    return <ViewTableProp[]> tableDef.raw()[0];
 }
 
 function canvasContains(tableDef: TableDefinition, views: View[], exactMatch: boolean) {
