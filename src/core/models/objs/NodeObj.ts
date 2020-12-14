@@ -203,7 +203,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     }
 
     pullData(portName: string): any {
-        // TODO check that port is input port
+        // TODO check that port is output port
         if (this.getPort(portName).hasConnectedPort()) {
             return this.getPort(portName).getConnectedPort().getNodeParam().val;
         }

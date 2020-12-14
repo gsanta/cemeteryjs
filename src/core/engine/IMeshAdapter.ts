@@ -27,6 +27,13 @@ export interface IMeshAdapter {
      */
     getVisibility(meshObj: MeshObj): number;
 
+    /**
+     * Determines if two meshes intersect
+     * @param meshObj the first mesh for intersection check
+     * @param meshObj the second mesh for intersection check
+     * @returns true if the two meshes intersect
+     */
+    intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean;
 
     getDimensions(meshObj: MeshObj): Point;
     createInstance(meshObj: MeshObj): Promise<boolean>;

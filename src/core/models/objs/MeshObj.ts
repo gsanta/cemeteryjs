@@ -143,6 +143,10 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.getVisibility(this);
     }
 
+    intersectsMeshObj(otherMeshObj: MeshObj) {
+        return this.meshAdapter.intersectsMesh(this, otherMeshObj);
+    }
+
     clone(): MeshObj {
         const clone = new MeshObj();
         clone.meshAdapter = this.meshAdapter;

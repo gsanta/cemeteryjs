@@ -20,7 +20,7 @@ export class GameService {
         const routeNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
         routeNodes.forEach(routeNode => routeNode.getObj().execute());
 
-        const rootNodes = this.registry.data.helper.node.graph.getRootNodes();
+        const rootNodes = this.registry.data.helper.node.graph.getAllNodes();
         rootNodes.forEach((node) => {
             node.getPorts()
                 .filter(port => !port.isInputPort() && port.isPushPort())

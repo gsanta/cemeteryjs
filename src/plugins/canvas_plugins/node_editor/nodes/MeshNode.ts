@@ -44,16 +44,11 @@ export class MeshNodeParams extends NodeParams {
         name: 'mesh',
         field: NodeParamField.List,
         val: '',
-    }
-    
-    readonly action: NodeParam = {
-        name: 'action',
         port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
+            direction: PortDirection.Output,
+            dataFlow: PortDataFlow.Pull
         }
     }
-
 }
 
 export class MeshController extends PropController<string> {

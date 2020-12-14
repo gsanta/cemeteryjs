@@ -5,6 +5,7 @@ import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { MeshView } from "../../scene_editor/views/MeshView";
+import { INodeListener } from "../node/INodeListener";
 import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
 
@@ -61,18 +62,60 @@ export class TriggerZoneNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Output,
             dataFlow: PortDataFlow.Push,
-            listener: {
-                onBeforeRender: (nodeObj: NodeObj, registry: Registry) => {
-                    let triggerMesh: MeshObj;
-                    let pickableMesh: MeshObj;
-                    
-                    let meshView = <MeshView> registry.data.view.scene.getById(this.mesh.val);
-                    if (meshView) {
-                        meshView.getObj().setVisibility(0);
-                    }
-                }
+            listener: new MeshIntersectionListener(this)
+        }
+    }
+}
+
+class MeshIntersectionListener implements INodeListener {
+    private lastIntersectedMesh: MeshObj;
+    private nodeParams: TriggerZoneNodeParams;
+
+    constructor(nodeParams: TriggerZoneNodeParams) {
+        this.nodeParams = nodeParams;
+    }
+
+    onBeforeRender(nodeObj: NodeObj, registry: Registry) {
+        const lastIntersectedMesh = this.lastIntersectedMesh;
+        this.lastIntersectedMesh = undefined;
+        
+        const triggerZoneMeshObj = this.getTriggerZoneMesh(registry);
+        const pickableMeshObj = this.getPickableMesh(nodeObj, registry);
+        const intersection = this.checkIntersection(triggerZoneMeshObj, pickableMeshObj);
+
+        if (intersection) {
+            this.lastIntersectedMesh = pickableMeshObj;
+        }
+
+        if (this.lastIntersectedMesh && lastIntersectedMesh !== this.lastIntersectedMesh) {
+            registry.services.node.executePort(nodeObj, 'signal');
+        }
+    }
+
+    private getTriggerZoneMesh(registry: Registry): MeshObj {
+        let meshView = <MeshView> registry.data.view.scene.getById(this.nodeParams.mesh.val);
+        if (meshView) {
+            return meshView.getObj();
+        }
+    }
+
+    private getPickableMesh(nodeObj: NodeObj, registry: Registry): MeshObj {
+        if (nodeObj.getPort('pickableMesh').hasConnectedPort()) {
+            const meshViewId = nodeObj.pullData('pickableMesh');
+            const meshView = <MeshView> registry.data.view.scene.getById(meshViewId);
+            if (meshView) {
+                return meshView.getObj();
             }
         }
+    }
+
+    private checkIntersection(triggerZoneMeshObj: MeshObj, pickableMeshObj: MeshObj): boolean {
+        if (triggerZoneMeshObj && pickableMeshObj) {
+            if (triggerZoneMeshObj.intersectsMeshObj(pickableMeshObj)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

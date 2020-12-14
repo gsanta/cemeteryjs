@@ -128,6 +128,20 @@ export  class Bab_Meshes implements IMeshAdapter {
         return meshData.mainMesh.visibility;
     }
 
+    intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
+        const meshData1 = this.meshes.get(meshObj);
+        if (!meshData1) { return undefined; }
+
+        const meshData2 = this.meshes.get(otherMeshObj);
+        if (!meshData2) { return undefined; }
+
+        if (meshData1 && meshData2) {
+            return meshData1.mainMesh.intersectsMesh(meshData2.mainMesh);
+        }
+
+        return false;
+    }
+
     async createInstance(meshObj: MeshObj): Promise<boolean> {
         const scaling = meshObj.getScale();
 

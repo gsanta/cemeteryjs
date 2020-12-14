@@ -17,6 +17,10 @@ export class NodeGraph {
         return this.rootNodes;
     }
 
+    getAllNodes(): NodeObj[] {
+        return Array.from(this.allNodes);
+    }
+
     addNode(nodeObj: NodeObj) {
         this.nodeGroups.push(new Set([nodeObj]));
         this.allNodes.add(nodeObj);

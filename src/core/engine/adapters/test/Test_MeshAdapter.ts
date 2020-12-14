@@ -67,6 +67,10 @@ export  class Test_MeshAdapter implements IMeshAdapter {
         return this.visibilityMap.get(meshObj) || 1;
     }
 
+    intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
+        return false;
+    }
+
     async createInstance(meshObj: MeshObj): Promise<boolean> {
         return false;
     }
