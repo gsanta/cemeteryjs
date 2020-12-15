@@ -50,8 +50,8 @@ export enum PortDataFlow {
 export interface PortConfig {
     direction: PortDirection;
     dataFlow: PortDataFlow;
-    execute?: (nodeObj: NodeObj, registry: Registry) => void;
     listener?: INodeListener;
+    execute?: (nodeObj: NodeObj, registry: Registry) => void;
 }
 
 export interface NodeParamJson {
@@ -61,14 +61,14 @@ export interface NodeParamJson {
     port?: PortConfig;
 }
 
-export interface NodeParam {
+export interface NodeParam<D = any> {
     name: string;
     field?: NodeParamField;
     fieldDisabled?: boolean;
     port?: PortConfig;
 
-    val?: any;
-    getVal?();
+    val?: D;
+    getData?(nodeObj: NodeObj, registry: Registry): D;
     setVal?(val: string);
 
     toJson?(): NodeParamJson;

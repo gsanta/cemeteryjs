@@ -1,5 +1,6 @@
 import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/registerGameViewer';
 import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
+import { FilterMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/FilterMeshNode';
 import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/KeyboardNode';
 import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
 import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshPropertyNode';
@@ -79,6 +80,7 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new MeshPropertyNode(this.registry));
         this.registry.data.helper.node.registerNode(new TriggerZoneNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshVisibilityNode(this.registry));
+        this.registry.data.helper.node.registerNode(new FilterMeshNode(this.registry));
     }
 
     setup() {

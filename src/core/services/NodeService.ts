@@ -20,4 +20,18 @@ export class NodeService {
             }
         }
     }
+
+    pullData(nodeObj: NodeObj, portName: string) {
+        // TODO check that port is output port
+        if (nodeObj.getPort(portName).hasConnectedPort()) {
+            const otherPort = nodeObj.getPort(portName).getConnectedPort();
+            const nodeParam = otherPort.getNodeParam();
+            if (nodeParam.getData) {
+                return nodeParam.getData(otherPort.getNodeObj(), this.registry);
+            } else {
+                // TODO this is legacy should port to the getData method
+                return nodeObj.getPort(portName).getConnectedPort().getNodeParam().val;
+            }
+        }
+    }
 }

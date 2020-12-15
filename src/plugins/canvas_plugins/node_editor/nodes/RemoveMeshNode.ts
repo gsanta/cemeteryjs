@@ -117,7 +117,7 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
     }
 
     private getMeshObjFromPort(): MeshObj {
-        return this.nodeObj.pullData('mesh');
+        return this.registry.services.node.pullData(this.nodeObj, 'mesh');
     }
 
     private getMeshObjFromField(): MeshObj {
