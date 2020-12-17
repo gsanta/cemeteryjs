@@ -7,6 +7,7 @@ export const RayObjType = 'ray-obj';
 export class RayObj implements IObj {
     readonly objType = RayObjType;
     id: string;
+    name: string;
     meshObj: MeshObj;
 
     rayLength: number;

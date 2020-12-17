@@ -7,6 +7,7 @@ import { Registry } from "../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { MeshViewType } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
+import { MeshController } from "./MeshNode";
 
 export const RemoveMeshNodeType = 'remove-mesh-node-obj';
 
@@ -25,7 +26,7 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -59,39 +60,14 @@ export class RemoveMeshNodeParams extends NodeParams {
         }
     }
 
-    readonly mesh = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Pull
         }
-    }
-}
-
-export class MeshController extends PropController<string> {
-    private nodeObj: NodeObj<RemoveMeshNodeParams>;
-
-    constructor(nodeObj: NodeObj) {
-        super();
-        this.nodeObj = nodeObj;
-    }
-
-    acceptedProps() { return ['mesh']; }
-
-    values(context: PropContext) {
-        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
-    }
-
-    defaultVal() {
-        return this.nodeObj.param.mesh.val;
-    }
-
-    change(val, context: PropContext) {
-        this.nodeObj.param.mesh.val = val;
-        context.registry.services.history.createSnapshot();
-        context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
@@ -106,26 +82,15 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
     execute() {
         let meshObj: MeshObj;
         if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
-            meshObj = this.getMeshObjFromPort();
+            meshObj = this.registry.services.node.pullData(this.nodeObj, 'mesh');
         } else {
-            meshObj = this.getMeshObjFromField();
+            meshObj = this.nodeObj.param.mesh.val;
         }
 
         if (meshObj) {
             this.registry.stores.objStore.removeObj(meshObj);
         }
     }
-
-    private getMeshObjFromPort(): MeshObj {
-        return this.registry.services.node.pullData(this.nodeObj, 'mesh');
-    }
-
-    private getMeshObjFromField(): MeshObj {
-        const meshId = this.nodeObj.param.mesh.val;
-        if (meshId) {
-            return <MeshObj> this.registry.data.view.scene.getById(meshId).getObj();
-        }
-    }
-
+    
     executeStop() {}
 }

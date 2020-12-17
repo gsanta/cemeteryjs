@@ -2,6 +2,7 @@ import { Registry } from "../../Registry";
 
 export interface ObjJson {
     id: string;
+    name: string;
     objType: string;
 }
 
@@ -29,6 +30,7 @@ export abstract class ObjFactoryAdapter implements ObjFactory {
 
 export interface IObj {
     id: string;
+    name: string;
     readonly objType: string;
 
     dispose(): void;

@@ -1,3 +1,4 @@
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
@@ -26,7 +27,7 @@ export class RayCasterNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()), new RayLengthController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new RayLengthController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -42,10 +43,10 @@ export class RayCasterNode extends AbstractNodeFactory {
 }
 
 export class RayCasterNodeParams extends NodeParams {
-    readonly mesh: NodeParam = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
 
     }
     
@@ -103,12 +104,11 @@ export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodePar
     }
 
     execute() {
-        const meshId = this.nodeObj.param.mesh.val;
-        const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
+        const meshObj = this.nodeObj.param.mesh.val;
 
-        if (meshView) {
+        if (meshObj) {
             const rayObj = this.nodeObj.param.ray.val;
-            rayObj.meshObj = meshView.getObj();
+            rayObj.meshObj = meshObj;
             rayObj.rayLength = this.nodeObj.param.length.val;
             this.registry.engine.rays.createInstance(rayObj);
             this.registry.services.node.executePort(this.nodeObj, 'helper');

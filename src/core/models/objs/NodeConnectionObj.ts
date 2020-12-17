@@ -23,8 +23,9 @@ export class NodeConnectionObjFactory extends ObjFactoryAdapter {
 }
 
 export class NodeConnectionObj implements IObj {
-    id: string;
     objType = NodeConnectionObjType;
+    id: string;
+    name: string;
     joinPoint1: string;
     node1: NodeObj;
     joinPoint2: string;
@@ -43,6 +44,7 @@ export class NodeConnectionObj implements IObj {
     serialize(): NodeConnectionObjJson {
         return {
             id: this.id,
+            name: this.name,
             objType: this.objType,
             joinPoint1: this.joinPoint1,
             node1Id: this.node1.id,
@@ -53,6 +55,7 @@ export class NodeConnectionObj implements IObj {
 
     deserialize(json: NodeConnectionObjJson, registry: Registry) {
         this.id = json.id;
+        this.name = json.name;
         this.joinPoint1 = json.joinPoint1;
         this.node1 = registry.stores.objStore.getById(json.node1Id) as NodeObj;
         this.joinPoint2 = json.joinPoint2;

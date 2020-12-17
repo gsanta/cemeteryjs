@@ -185,7 +185,7 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
         if (nodeObj.getPort('path').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('path').getConnectedPort().getNodeParam();
-            return <PathObj> registry.data.view.node.getById(nodeParam.val)?.getObj();
+            return <PathObj> registry.stores.objStore.getById(nodeParam.val);
         }
     }
 }

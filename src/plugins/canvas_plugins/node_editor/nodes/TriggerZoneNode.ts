@@ -1,10 +1,7 @@
-import { Mesh } from "babylonjs";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams, NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParam, NodeParamField, NodeParams, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { MeshView } from "../../scene_editor/views/MeshView";
 import { INodeListener } from "../node/INodeListener";
 import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
@@ -26,7 +23,7 @@ export class TriggerZoneNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -43,10 +40,10 @@ export class TriggerZoneNode extends AbstractNodeFactory {
 }
 
 export class TriggerZoneNodeParams extends NodeParams {
-    readonly mesh: NodeParam = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
     }
 
     readonly pickableMesh: NodeParam = {
@@ -79,7 +76,7 @@ class MeshIntersectionListener implements INodeListener {
         const lastIntersectedMesh = this.lastIntersectedMesh;
         this.lastIntersectedMesh = undefined;
         
-        const triggerZoneMeshObj = this.getTriggerZoneMesh(registry);
+        const triggerZoneMeshObj = this.nodeParams.mesh.val;
         const pickableMeshObj = this.getPickableMesh(nodeObj, registry);
         const intersection = this.checkIntersection(triggerZoneMeshObj, pickableMeshObj);
 
@@ -92,20 +89,10 @@ class MeshIntersectionListener implements INodeListener {
         }
     }
 
-    private getTriggerZoneMesh(registry: Registry): MeshObj {
-        let meshView = <MeshView> registry.data.view.scene.getById(this.nodeParams.mesh.val);
-        if (meshView) {
-            return meshView.getObj();
-        }
-    }
-
     private getPickableMesh(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('pickableMesh').hasConnectedPort()) {
-            const meshViewId = nodeObj.pullData('pickableMesh');
-            const meshView = <MeshView> registry.data.view.scene.getById(meshViewId);
-            if (meshView) {
-                return meshView.getObj();
-            }
+            const meshObjId = nodeObj.pullData('pickableMesh');
+            return <MeshObj> registry.stores.objStore.getById(meshObjId);
         }
     }
 
@@ -118,34 +105,3 @@ class MeshIntersectionListener implements INodeListener {
         return false;
     }
 }
-
-// export class TriggerZoneNodeExecutor extends AbstractNodeExecutor<TriggerZoneNodeParams> {
-//     private registry: Registry;
-
-//     constructor(registry: Registry, nodeObj: NodeObj) {
-//         super(nodeObj);
-//         this.registry = registry;
-//     }
-
-//     execute() {
-//         this.registry
-//         const keyParams = this.getKeyParams(this.nodeObj);
-//         const gameTool = <GameTool> this.registry.ui.canvas.getCanvas(GameViewerPanelId).toolController.getToolById(GameToolId);
-//         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
-        
-//         this.registry.stores.objStore.getAll().forEach((obj) => {
-//             if (obj.objType === NodeObjType) {
-//                 console.log((obj as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
-//             }
-//         })
-
-
-//         if (param) {
-//             this.registry.services.node.executePort(this.nodeObj, param.name);
-//         }
-//     }
-
-//     private getKeyParams(nodeObj: NodeObj): NodeParam[] {
-//         return nodeObj.getParams().filter(param => param.name.match(KEY_REGEX));
-//     }
-// }

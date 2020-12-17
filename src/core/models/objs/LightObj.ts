@@ -42,8 +42,9 @@ export class LigthObjFactory extends ObjFactoryAdapter {
 }
 
 export class LightObj implements IGameObj {
-    id: string;
     objType = LightObjType;
+    id: string;
+    name: string;
 
     private lightAdapter: ILightAdapter;
 

@@ -1,7 +1,7 @@
 import { Registry } from "../../Registry";
 import { IObj, ObjJson } from "./IObj";
 import { NodeObj, NodeParam, PortDataFlow, PortDirection } from "./NodeObj";
-import { ObjAdapter } from "./ObjAdapter";
+import { AbstractObj } from "./AbstractObj";
 
 export interface NodePortObjJson {
     name: string;
@@ -11,9 +11,10 @@ export interface NodePortObjJson {
 
 
 export const NodePortObjType = 'node-port-obj';
-export class NodePortObj extends ObjAdapter {
+export class NodePortObj extends AbstractObj {
+    objType: string = NodePortObjType;
     id: string;
-    objType: string;
+    name: string;
 
     private connectedPortObj: NodePortObj;
     private readonly nodeObj: NodeObj;

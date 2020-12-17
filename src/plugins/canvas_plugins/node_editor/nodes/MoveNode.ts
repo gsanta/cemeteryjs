@@ -1,3 +1,4 @@
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
@@ -26,7 +27,7 @@ export class MoveNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()), new MeshMoveController(nodeView.getObj()), new MeshSpeedController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshMoveController(nodeView.getObj()), new MeshSpeedController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -44,10 +45,10 @@ export class MoveNode extends AbstractNodeFactory {
 }
 
 export class MoveNodeParams extends NodeParams {
-    readonly mesh: NodeParam = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
     }
     
     readonly move: NodeParam = {
@@ -89,16 +90,13 @@ export class MoveNodeExecutor extends AbstractNodeExecutor<MoveNodeParams> {
     }
 
     execute() {
-        const meshId = this.nodeObj.param.mesh.val;
-
-        const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
-
+        const meshObj = this.nodeObj.param.mesh.val;
         const speed = this.nodeObj.param.speed.val; 
 
         if (this.nodeObj.param.move.val === 'forward') {
-            meshView.getObj().move(new Point_3(0, 0, speed));
+            meshObj.move(new Point_3(0, 0, speed));
         } else if (this.nodeObj.param.move.val === 'backward') {
-            meshView.getObj().move(new Point_3(0, 0, -speed));
+            meshObj.move(new Point_3(0, 0, -speed));
         }
     }
 

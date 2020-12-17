@@ -1,15 +1,13 @@
-import { LightViewType } from "./views/LightView";
-import { MeshView, MeshViewType } from "./views/MeshView";
-import { PathView, PathViewType } from "./views/PathView";
-import { SpriteViewType } from "./views/SpriteView";
 import { IRenderer } from "../../../core/plugin/IRenderer";
 import { Registry } from "../../../core/Registry";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
+import { LightViewType } from "./views/LightView";
 import { LightViewControllerParam } from "./views/LightViewControllers";
-import { MeshViewControllerParam } from "./views/MeshViewControllers";
-import { SpriteViewControllerParam } from "./views/SpriteViewControllers";
-import { UI_Accordion } from "../../../core/ui_components/elements/surfaces/UI_Accordion";
 import { MeshSettingsRenderer } from "./views/MeshSettingsRenderer";
+import { MeshViewType } from "./views/MeshView";
+import { PathView, PathViewType } from "./views/PathView";
+import { SpriteViewType } from "./views/SpriteView";
+import { SpriteViewControllerParam } from "./views/SpriteViewControllers";
 
 
 export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {

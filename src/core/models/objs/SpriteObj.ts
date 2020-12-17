@@ -33,8 +33,9 @@ export class SpriteObjFactory extends ObjFactoryAdapter {
 }
 
 export class SpriteObj implements IObj {
-    id: string;
     objType = SpriteObjType;
+    id: string;
+    name: string;
 
     spriteAdapter: ISpriteAdapter;
 
@@ -96,6 +97,7 @@ export class SpriteObj implements IObj {
     serialize(): SpriteObjJson {
         return {
             id: this.id,
+            name: this.name,
             objType: this.objType,
             frameName: this.frameName,
             x: this.startPos && this.startPos.x,
@@ -108,6 +110,7 @@ export class SpriteObj implements IObj {
 
     deserialize(json: SpriteObjJson) {
         this.frameName = json.frameName;
+        this.name = json.name;
         if (json.x !== undefined && json.y !== undefined) {
             this.setPosition(new Point(json.x, json.y));
         }

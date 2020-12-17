@@ -1,3 +1,4 @@
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController } from '../../../../core/plugin/controller/FormController';
@@ -26,7 +27,7 @@ export class RotateNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()), new MeshRotateController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshRotateController(nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -44,10 +45,10 @@ export class RotateNode extends AbstractNodeFactory {
 }
 
 export class RotateNodeParams extends NodeParams {
-    readonly mesh: NodeParam = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: ''
+        val: undefined
     }
 
     readonly rotate: NodeParam = {
@@ -74,14 +75,15 @@ export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
     }
 
     execute() {
-        const meshId = this.nodeObj.param.mesh.val;
+        const meshObj = this.nodeObj.param.mesh.val;
 
-        const meshView = this.registry.data.view.scene.getById(meshId) as MeshView;
-        const rotation = meshView.getObj().getRotation();
-        if (this.nodeObj.param.rotate.val === 'left') {
-            meshView.getObj().setRotation(new Point_3(rotation.x, rotation.y - Math.PI / 30, rotation.z));
-        } else if (this.nodeObj.param.rotate.val === 'right') {
-            meshView.getObj().setRotation(new Point_3(rotation.x, rotation.y + Math.PI / 30, rotation.z));
+        if (meshObj) {
+            const rotation = meshObj.getRotation();
+            if (this.nodeObj.param.rotate.val === 'left') {
+                meshObj.setRotation(new Point_3(rotation.x, rotation.y - Math.PI / 30, rotation.z));
+            } else if (this.nodeObj.param.rotate.val === 'right') {
+                meshObj.setRotation(new Point_3(rotation.x, rotation.y + Math.PI / 30, rotation.z));
+            }
         }
     }
 

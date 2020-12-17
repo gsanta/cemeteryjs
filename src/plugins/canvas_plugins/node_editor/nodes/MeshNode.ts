@@ -1,9 +1,9 @@
+import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
-import { MeshViewType } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 
 export const MeshNodeType = 'mesh-node-obj';
@@ -23,7 +23,7 @@ export class MeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -40,10 +40,10 @@ export class MeshNode extends AbstractNodeFactory {
 }
 
 export class MeshNodeParams extends NodeParams {
-    readonly mesh: NodeParam = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
         port: {
             direction: PortDirection.Output,
             dataFlow: PortDataFlow.Pull
@@ -52,25 +52,27 @@ export class MeshNodeParams extends NodeParams {
 }
 
 export class MeshController extends PropController<string> {
-    private nodeObj: NodeObj;
+    private nodeObj: NodeObj<MeshNodeParams>;
+    private registry: Registry;
 
-    constructor(nodeObj: NodeObj) {
+    constructor(registry: Registry, nodeObj: NodeObj<MeshNodeParams>) {
         super();
         this.nodeObj = nodeObj;
+        this.registry = registry;
     }
 
     acceptedProps() { return ['mesh']; }
 
     values(context: PropContext) {
-        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(meshView => meshView.id)
+        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(meshView => meshView.id)
     }
 
     defaultVal() {
-        return this.nodeObj.param.mesh.val;
+        return this.nodeObj.param.mesh.val ? this.nodeObj.param.mesh.val.id : undefined;
     }
 
-    change(val, context: PropContext) {
-        this.nodeObj.setParam('mesh', val);
+    change(val: string, context: PropContext) {
+        this.nodeObj.param.mesh.val = <MeshObj> this.registry.stores.objStore.getById(val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

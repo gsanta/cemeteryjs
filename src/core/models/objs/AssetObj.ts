@@ -30,11 +30,11 @@ export class AssetObjFactory extends ObjFactoryAdapter {
 
 export class AssetObj implements IObj {
     readonly objType = AssetObjType;
+    name: string;
     id: string;
     assetType: AssetType;
     data: string;
     path: string;
-    name: string;
 
     constructor(config?: {data?: string, path?: string, name?: string, assetType: AssetType}) {
         if (config) {

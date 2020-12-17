@@ -1,3 +1,4 @@
+import { Mesh } from "babylonjs";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
@@ -51,10 +52,10 @@ export class MeshPropertyNodeParams extends NodeParams {
         }
     }
 
-    readonly mesh = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Pull
@@ -127,24 +128,13 @@ export class MeshPropertyNodeExecutor extends AbstractNodeExecutor<MeshPropertyN
 
         let meshObj: MeshObj;
         if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
-            meshObj = this.getMeshObjFromPort();
+            meshObj = this.nodeObj.pullData('mesh');
         } else {
-            meshObj = this.getMeshObjFromField();
+            meshObj = this.nodeObj.param.mesh.val;
         }
 
         if (meshObj) {
             meshObj.setVisibility(visibility);
-        }
-    }
-
-    private getMeshObjFromPort(): MeshObj {
-        return this.nodeObj.pullData('mesh');
-    }
-
-    private getMeshObjFromField(): MeshObj {
-        const meshId = this.nodeObj.param.mesh.val;
-        if (meshId) {
-            return <MeshObj> this.registry.data.view.scene.getById(meshId).getObj();
         }
     }
 

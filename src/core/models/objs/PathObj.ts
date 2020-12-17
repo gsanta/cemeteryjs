@@ -25,6 +25,7 @@ export class PathObj implements IObj {
 
     id: string;
     points: Point[] = [];
+    name: string;
 
     dispose() {}
 
@@ -37,6 +38,7 @@ export class PathObj implements IObj {
 
         return {
             id: this.id,
+            name: this.name,
             objType: this.objType,
             points: pointsJson
         }

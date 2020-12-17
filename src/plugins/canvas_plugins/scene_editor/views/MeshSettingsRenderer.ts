@@ -22,6 +22,12 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         textField.layout = 'horizontal';
         textField.label = 'Id';
 
+        row = layout.row({ key: MeshViewControllerParam.Name });
+
+        const nameField = row.textField({key: MeshViewControllerParam.Name});
+        nameField.layout = 'horizontal';
+        nameField.label = 'Name';
+
         row = layout.row({ key: MeshViewControllerParam.Layer });
         const grid = row.grid({key: MeshViewControllerParam.Layer});
         grid.label = 'Layer';

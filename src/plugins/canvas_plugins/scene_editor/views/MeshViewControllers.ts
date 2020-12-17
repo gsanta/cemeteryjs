@@ -33,6 +33,7 @@ export enum MeshViewControllerParam {
     Color = 'Color',
     Clone = 'clone',
     Visibility = 'visibility',
+    Name = 'name'
 }
 
 export class MeshIdController extends PropController<string> {
@@ -561,4 +562,23 @@ export class MeshVisibilityController extends PropController<string> {
 
         context.registry.services.render.reRenderAll();
     }
+}
+
+export class MeshNameController extends PropController<string> {
+    acceptedProps() { return [MeshViewControllerParam.Name]; }
+
+    defaultVal(context) {
+        return (<MeshView> context.registry.data.view.scene.getOneSelectedView()).getObj().name || '';
+    }
+    
+    change(val, context) {
+        context.updateTempVal(val);
+        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    }
+
+    blur(context) {
+        context.releaseTempVal((val) => (<MeshView> context.registry.data.view.scene.getOneSelectedView()).getObj().name = val);
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+    }    
 }

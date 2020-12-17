@@ -69,9 +69,8 @@ export interface GroundConfig extends MeshShapeConfig {
 
 export class MeshObj implements IGameObj {
     readonly objType = MeshObjType;
-
     id: string;
-
+    name: string;
     shapeConfig: MeshShapeConfig;
     color: string;
     modelId: string;
@@ -162,6 +161,7 @@ export class MeshObj implements IGameObj {
         const scale = this.getScale();
         return {
             id: this.id,
+            name: this.name,
             objType: this.objType,
             scale: {
                 x: scale.x,
@@ -182,6 +182,7 @@ export class MeshObj implements IGameObj {
     
     deserialize(json: MeshObjJson) {
         this.id = json.id;
+        this.name = json.name;
         this.setScale(new Point_3(json.scale.x, json.scale.y, json.scale.z));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
         this.setRotation(new Point_3(json.rotation.x, json.rotation.y, json.rotation.z));

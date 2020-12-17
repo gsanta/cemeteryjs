@@ -25,7 +25,7 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -48,11 +48,11 @@ export class MeshVisibilityNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Push,
-            execute: (nodeObj: NodeObj, registry: Registry) => {
-                const meshView = <MeshView> registry.data.view.scene.getById(this.mesh.val);
+            execute: () => {
+                const meshObj = this.mesh.val;
 
-                if (meshView) {
-                    meshView.getObj().setVisibility(1);
+                if (meshObj) {
+                    meshObj.setVisibility(1);
                 }
             }
         }
@@ -63,20 +63,20 @@ export class MeshVisibilityNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Push,
-            execute: (nodeObj: NodeObj, registry: Registry) => {
-                const meshView = <MeshView> registry.data.view.scene.getById(this.mesh.val);
+            execute: () => {
+                const meshObj = this.mesh.val;
 
-                if (meshView) {
-                    meshView.getObj().setVisibility(0);
+                if (meshObj) {
+                    meshObj.setVisibility(0);
                 }
             }
         }
     }
 
-    readonly mesh = {
+    readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
-        val: '',
+        val: undefined,
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Pull
@@ -97,24 +97,13 @@ export class MeshVisibilityNodeExecutor extends AbstractNodeExecutor<MeshVisibil
 
         let meshObj: MeshObj;
         if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
-            meshObj = this.getMeshObjFromPort();
+            meshObj = this.nodeObj.pullData('mesh');
         } else {
-            meshObj = this.getMeshObjFromField();
+            meshObj =  this.nodeObj.param.mesh.val;
         }
 
         if (meshObj) {
             meshObj.setVisibility(visibility);
-        }
-    }
-
-    private getMeshObjFromPort(): MeshObj {
-        return this.nodeObj.pullData('mesh');
-    }
-
-    private getMeshObjFromField(): MeshObj {
-        const meshId = this.nodeObj.param.mesh.val;
-        if (meshId) {
-            return <MeshObj> this.registry.data.view.scene.getById(meshId).getObj();
         }
     }
 

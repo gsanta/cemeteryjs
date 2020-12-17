@@ -140,8 +140,9 @@ export interface NodeObjConfig {
 }
 
 export class NodeObj<P extends NodeParams = any> implements IObj {
-    id: string;
     objType = NodeObjType;
+    id: string;
+    name: string;
     type: string;
     displayName: string;
     category: string;
@@ -235,6 +236,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
 
         return {
             id: this.id,
+            name: this.name,
             objType: this.objType,
             type: this.type,
             params: params,
@@ -243,8 +245,8 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     }
 
     deserialize(json: NodeObjJson, registry: Registry): void {
-
         this.id = json.id;
+        this.name = json.name;
         this.type = json.type;
         json.params.forEach(jsonParam => this.customParamSerializer && this.customParamSerializer.deserialize(jsonParam) || defaultNodeParamDeserializer(this, jsonParam));
         this.initParams();
