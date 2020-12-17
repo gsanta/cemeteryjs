@@ -7,7 +7,7 @@ import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 import { Registry } from '../../Registry';
 import { UI_GizmoLayer } from './gizmo/UI_GizmoLayer';
 import { FormController } from '../../plugin/controller/FormController';
-import { UI_ElementConfig } from './UI_Element';
+import { UI_Element, UI_ElementConfig } from './UI_Element';
 
 export class UI_SvgCanvas extends UI_SvgGroup {
     _toolbar: UI_Toolbar;
@@ -18,7 +18,7 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     width: string;
     height: string;
 
-    constructor(config: {controller: FormController, canvasPanel: AbstractCanvasPanel, key?: string, target?: string, uniqueId?: string}) {
+    constructor(config: {controller: FormController, canvasPanel: AbstractCanvasPanel, key?: string, parent?: UI_Element, target?: string, uniqueId?: string}) {
         super(config);
 
         this.canvasPanel = this.canvasPanel;

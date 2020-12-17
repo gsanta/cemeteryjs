@@ -83,7 +83,6 @@ import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
 import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
-import { ButtonToolbar } from 'react-bootstrap';
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { CheckboxComp } from './react/inputs/CheckboxComp';

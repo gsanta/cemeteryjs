@@ -44,13 +44,15 @@ export abstract class UI_Element {
 
     readonly uniqueId: string;
     readonly controller: FormController;
+    readonly parent: UI_Element;
 
     css?: UI_Element_Css = {};
 
-    constructor(config: {controller: FormController, key?: string, uniqueId?: string}) {
+    constructor(config: {controller: FormController, key?: string, uniqueId?: string, parent?: UI_Element}) {
         this.uniqueId = config.uniqueId;
         this.controller = config.controller;
         this.key = config.key;
+        this.parent = config.parent;
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {

@@ -11,6 +11,7 @@ import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ElementConfig } from './UI_Element';
+import { UI_Popup } from './surfaces/UI_Popup';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
@@ -75,5 +76,9 @@ export class UI_DefaultContainer extends UI_Container {
 
     icon(config: UI_ElementConfig): UI_Icon {
         return UI_Factory.icon(this, config);
+    }
+
+    popup(config: UI_ElementConfig): UI_Popup {
+        
     }
 }

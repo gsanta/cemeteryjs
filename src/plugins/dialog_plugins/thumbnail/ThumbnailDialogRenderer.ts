@@ -1,5 +1,4 @@
 import { MeshView } from "../../canvas_plugins/scene_editor/views/MeshView";
-import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { IRenderer } from "../../../core/plugin/IRenderer";
 import { Registry } from "../../../core/Registry";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/UI_Dialog";
