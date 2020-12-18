@@ -1,10 +1,11 @@
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PathViewType } from "../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeFactory } from "./AbstractNode";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
 
 export const PathNodeType = 'path-node-obj';
 

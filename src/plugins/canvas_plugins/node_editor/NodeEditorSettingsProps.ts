@@ -1,4 +1,4 @@
-import { NodeObj, NodeObjType } from "../../../core/models/objs/NodeObj";
+import { NodeObj, NodeObjType } from "../../../core/models/objs/node_obj/NodeObj";
 import { NodeView, NodeViewType } from "../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";

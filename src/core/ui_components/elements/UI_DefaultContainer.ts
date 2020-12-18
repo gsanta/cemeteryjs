@@ -46,6 +46,10 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.select(this, config);
     }
 
+    multiSelect(config: {key: string, target?: string}) {
+        return UI_Factory.multiSelect(this, config);
+    }
+
     fileUpload(key: string) {
         return UI_Factory.fileUpload(this, {key});
     }
@@ -78,7 +82,7 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.icon(this, config);
     }
 
-    popup(config: UI_ElementConfig): UI_Popup {
-        
+    popup(config: UI_ElementConfig & { anchorElementKey: string }): UI_Popup {
+        return UI_Factory.popup(this, config)
     }
 }

@@ -1,5 +1,5 @@
 import { TableDefinition, Then, When, World } from "cucumber";
-import { NodeObj } from "../../../src/core/models/objs/NodeObj";
+import { NodeObj } from "../../../src/core/models/objs/node_obj/NodeObj";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { UI_Container } from "../../../src/core/ui_components/elements/UI_Container";
 import { UI_Factory } from "../../../src/core/ui_components/UI_Factory";

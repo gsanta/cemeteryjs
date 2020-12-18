@@ -7,7 +7,7 @@ import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/views/
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
-import { NodeObj } from "../models/objs/NodeObj";
+import { NodeObj } from "../models/objs/node_obj/NodeObj";
 import { NodeViewType } from "../models/views/NodeView";
 import { AfterAllViewsDeserialized, View, ViewFactory, ViewTag } from '../models/views/View';
 import { Registry } from "../Registry";

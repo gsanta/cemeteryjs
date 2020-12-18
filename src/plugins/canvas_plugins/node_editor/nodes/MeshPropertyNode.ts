@@ -1,6 +1,6 @@
-import { Mesh } from "babylonjs";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";

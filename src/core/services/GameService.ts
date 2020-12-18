@@ -1,6 +1,4 @@
-import { AnimationNodeType } from "../../plugins/canvas_plugins/node_editor/nodes/AnimationNode";
 import { RouteNodeObjType } from "../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode";
-import { PortDataFlow } from "../models/objs/NodeObj";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
 

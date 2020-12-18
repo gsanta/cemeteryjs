@@ -45,6 +45,7 @@ import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { GlobalControllerProps } from '../plugin/controller/FormController';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { UI_Popup } from './elements/surfaces/UI_Popup';
+import { UI_MultiSelect } from './elements/UI_MultiSelect';
 
 export class UI_Factory {
 
@@ -64,16 +65,14 @@ export class UI_Factory {
     }
 
     static popup(parent: UI_Container, config: UI_ElementConfig & { anchorElementKey: string }): UI_Popup {
-        const element = new UI_Popup({controller: config.controller, parent, ...config, key: GlobalControllerProps.CloseDialog});
+        const anchorParent = this.findParentWithKey(parent, config.anchorElementKey);
+        const element = new UI_Popup({controller: config.controller || parent.controller, parent: anchorParent, ...config, key: GlobalControllerProps.CloseDialog});
 
-        const anchorParent = <UI_Container> this.findParentWithKey(element, config.anchorElementKey);
 
         anchorParent.children.push(element);
 
         element.canvasPanel = parent.canvasPanel;
         element.panel = parent.panel;
-
-        parent.children.push(element);
 
         return element;
     }
@@ -207,6 +206,15 @@ export class UI_Factory {
 
     static select(parent: UI_Container, config: UI_ElementConfig & { target?: string}) {
         const element = new UI_Select({controller: config.controller || parent.controller, parent, ...config});
+
+        parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
+
+        return element;
+    }
+
+    static multiSelect(parent: UI_Container, config: UI_ElementConfig & { target?: string}) {
+        const element = new UI_MultiSelect({controller: config.controller || parent.controller, parent, ...config});
 
         parent.children.push(element);
         element.canvasPanel = parent.canvasPanel;
@@ -486,13 +494,16 @@ Id
         return element;
     }
 
-    static findParentWithKey(element: UI_Element, key: string): UI_Element {
-        let currentParent = element.parent;
+    static findParentWithKey(element: UI_Container, key: string): UI_Container {
+        let currentElement = element;
 
-        while(currentParent.parent && currentParent.parent.key !== key) {
-            currentParent = currentParent.parent;
+        if (currentElement.key === key) { return currentElement; }
+
+        while(currentElement.parent && currentElement.parent.key !== key) {
+            currentElement = <UI_Container> currentElement.parent;
         }
 
-        return currentParent;
+        return currentElement.parent ? <UI_Container> currentElement.parent : undefined;
+
     }
 }

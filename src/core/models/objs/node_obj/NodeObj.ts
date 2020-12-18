@@ -1,0 +1,135 @@
+import { Registry } from '../../../Registry';
+import { AbstractNodeExecutor } from '../../../services/node/INodeExecutor';
+import { NodeGraph } from '../../../services/node/NodeGraph';
+import { IObj, ObjJson } from '../IObj';
+import { NodeObjDeserialize } from './NodeObjDeserializer';
+import { NodeObjSerializer } from './NodeObjSerializer';
+import { NodePortObj, NodePortObjJson } from '../NodePortObj';
+import { NodeParamJson, NodeParam } from './NodeParam';
+
+export const NodeObjType = 'node-obj';
+
+export interface NodeObjJson extends ObjJson {
+    type: string;
+    params: NodeParamJson[];
+    ports: NodePortObjJson[];
+}
+
+export enum NodeCategory {
+    Input = 'Input',
+    Boolean = 'Boolean',
+    Default = 'Default'
+}
+
+export abstract class NodeParams {
+    [id: string] : NodeParam;
+}
+
+export interface NodeObjConfig {
+    displayName?: string;
+    category?: string;
+}
+
+export class NodeObj<P extends NodeParams = any> implements IObj {
+    objType = NodeObjType;
+    id: string;
+    name: string;
+    type: string;
+    displayName: string;
+    category: string;
+    color: string;
+
+    readonly param: P;
+    paramList: NodeParam[];
+
+    isExecutionStopped = true;
+    executor: AbstractNodeExecutor<any>;
+
+    graph: NodeGraph;
+
+    private ports: Map<string, NodePortObj> = new Map();
+
+
+    constructor(nodeType: string, param: P, config?: NodeObjConfig) {
+        this.type = nodeType;
+        this.param = param;
+        this.initParams();
+        if (config) {
+            this.category = config.category || NodeCategory.Default;
+            this.displayName = config.displayName || nodeType;
+        }
+    }
+
+    execute() {
+        this.executor && this.executor.execute();
+    }
+
+    startExecution() {
+        this.executor && this.executor.executeStart && this.executor.executeStart();
+    }
+
+    stopExecution() {
+        this.executor && this.executor.executeStart && this.executor.executeStop();
+    }
+
+    getParams(): NodeParam[] {
+        return this.paramList;
+    }
+
+    getParam(name: string): NodeParam {
+        return this.param[name];
+    }
+
+    setParam(name: string, value: any) {
+        this.param[name].val = value;
+    }
+
+    getPort(portName: string): NodePortObj {
+        return this.ports.get(portName);
+    }
+
+    getPorts(): NodePortObj[] {
+        return Array.from(this.ports.values());
+    }
+
+    pullData(portName: string): any {
+        // TODO check that port is output port
+        if (this.getPort(portName).hasConnectedPort()) {
+            return this.getPort(portName).getConnectedPort().getNodeParam().val;
+        }
+    }
+
+    dispose() {
+        this.getPorts().forEach(portObj => portObj.dispose());
+    }
+
+    clone(): NodeObj {
+        throw new Error('not implemented');
+    }
+
+    serialize(): NodeObjJson {
+        return new NodeObjSerializer(this).serialize();
+    }
+
+    deserialize(json: NodeObjJson, registry: Registry): void {
+        new NodeObjDeserialize(this).deserialize(json, registry);
+    }
+
+    initParams() {
+        this.paramList = [];
+        Object.entries(this.param).forEach(entry => this.paramList.push(entry[1]));
+
+        const currentPorts = this.ports;
+        this.ports = new Map();
+
+        this.paramList.filter(param => param.port).forEach(port => {
+            if (currentPorts.has(port.name)) {
+                this.ports.set(port.name, currentPorts.get(port.name));
+                currentPorts.delete(port.name);
+            } else {
+                this.ports.set(port.name, new NodePortObj(this, port))
+            }
+        });
+        Array.from(currentPorts.values()).forEach(port => port.dispose());
+    }
+}

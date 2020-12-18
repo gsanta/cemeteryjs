@@ -7,7 +7,8 @@ import { Registry } from "../../../../core/Registry";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ViewStore } from "../../../../core/stores/ViewStore";
-import { NodeObj, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
+import { PortDirection } from "../../../../core/models/objs/node_obj/NodeParam";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;

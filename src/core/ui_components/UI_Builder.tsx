@@ -86,6 +86,10 @@ import { UI_Factory } from './UI_Factory';
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { CheckboxComp } from './react/inputs/CheckboxComp';
+import { UI_Popup } from './elements/surfaces/UI_Popup';
+import { PopupComp } from './react/surfaces/popup/PopupComp';
+import { UI_MultiSelect } from './elements/UI_MultiSelect';
+import { MultiSelectComp } from './react/inputs/MultiSelectComp';
 
 export class UI_Builder {
 
@@ -120,7 +124,7 @@ export class UI_Builder {
             
             return this.buildElement(dialog);
         } else if (panel.region === UI_Region.Canvas1) {
-            const layout = UI_Factory.layout({ controller: panel.controller });
+            const layout = UI_Factory.layout({ controller: panel.controller, key: panel.region });
             const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer.renderInto(canvas);
@@ -207,6 +211,9 @@ export class UI_Builder {
             case UI_ElementType.ToolbarDropdownHeader:
                 const toolbarDropdownHeader = element as UI_ToolDropdownHeader;
                 return <ToolDropdownHeaderComp registry={this.registry} element={toolbarDropdownHeader}>{this.buildChildren(element)}</ToolDropdownHeaderComp>;
+            case UI_ElementType.Popup:
+                const popup = element as UI_Popup;
+                return <PopupComp registry={this.registry} element={popup}>{this.buildChildren(element)}</PopupComp>;
     
         }
     }
@@ -318,6 +325,9 @@ export class UI_Builder {
             case UI_ElementType.Select:
                 const select = element as UI_Select;
                 return <SelectComp registry={this.registry} element={select}/>;
+            case UI_ElementType.MultiSelect:
+                const multiSelect = element as UI_MultiSelect;
+                return <MultiSelectComp registry={this.registry} element={multiSelect}/>;
             case UI_ElementType.FileUpload:
                 const fileUpload = element as UI_FileUpload;
                 return <FileUploadComp registry={this.registry} element={fileUpload}/>;

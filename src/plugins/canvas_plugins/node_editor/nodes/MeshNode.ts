@@ -1,5 +1,6 @@
 import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
@@ -73,6 +74,37 @@ export class MeshController extends PropController<string> {
 
     change(val: string, context: PropContext) {
         this.nodeObj.param.mesh.val = <MeshObj> this.registry.stores.objStore.getById(val);
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Canvas1);
+    }
+}
+
+export class MultiMeshController extends PropController<string> {
+    private nodeObj: NodeObj;
+    private registry: Registry;
+
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super();
+        this.nodeObj = nodeObj;
+        this.registry = registry;
+    }
+
+    acceptedProps() { return ['mesh']; }
+
+    values(context: PropContext) {
+        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(meshView => meshView.id)
+    }
+
+    selectedValues() {
+        return this.nodeObj.param.mesh.val;
+    }
+
+    defaultVal() {
+        return  undefined;
+    }
+
+    change(val: string, context: PropContext) {
+        this.nodeObj.param.mesh.val.push(this.registry.stores.objStore.getById(val));
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1);
     }

@@ -1,5 +1,6 @@
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { INodeListener } from "../node/INodeListener";

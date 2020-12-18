@@ -11,6 +11,7 @@ export enum UI_ElementType {
     Button = 'Button',
     Checkbox = 'Checkbox',
     Select = 'Select',
+    MultiSelect = 'MultiSelect',
     GridSelect = 'GridSelect',
     TextField = 'TextField',
     ListItem = 'ListItem',

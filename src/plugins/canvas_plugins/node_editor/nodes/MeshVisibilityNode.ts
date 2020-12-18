@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
 import { NodePortObj } from "../../../../core/models/objs/NodePortObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
@@ -7,6 +7,7 @@ import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecut
 import { MeshView } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../core/models/objs/node_obj/NodeParam";
 
 export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
 

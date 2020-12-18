@@ -28,7 +28,7 @@ export class MainPanelComp extends React.Component<MainPanelProps> {
         let component: JSX.Element = panel ? new UI_Builder(this.context.registry).build(panel) : null;
 
         return (
-            <div id={this.props.region === UI_Region.Canvas1 ? 'canvas1' : 'canvas2'}>
+            <div style={{position: 'relative'}} id={this.props.region === UI_Region.Canvas1 ? 'canvas1' : 'canvas2'}>
                 {component}
             </div>
         )

@@ -1,14 +1,13 @@
-import { NodeParam, NodeParamField, NodeParamRole, NodeParams, NodePortType, PortDirection } from '../../../core/models/objs/NodeObj';
-import { NodePortView, NodePortViewType } from '../../../core/models/views/child_views/NodePortView';
+import { NodeParam, NodeParamField, PortDirection } from '../../../core/models/objs/node_obj/NodeParam';
+import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
 import { NodeView } from '../../../core/models/views/NodeView';
-import { View, ViewRenderer, ViewTag } from '../../../core/models/views/View';
+import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../core/ui_components/react/styles';
-
 
 export class NodeRenderer implements ViewRenderer {
     private joinPointsHeight: number;
@@ -25,10 +24,10 @@ export class NodeRenderer implements ViewRenderer {
         this.renderRect(group, nodeView);
         const column = this.renderContent(group, nodeView);
         column.data = nodeView;
-        this.renderInputsInto(column, nodeView);
+        this.renderInputsInto(column, nodeView, panel);
     }
 
-    private renderInputsInto(column: UI_Column, nodeView: NodeView) {
+    private renderInputsInto(column: UI_Column, nodeView: NodeView, panel: AbstractCanvasPanel) {
         NodeParam.getFieldParams(nodeView.getObj())
             .map(param => {
                 let row = column.row({key: param.name});
@@ -64,6 +63,18 @@ export class NodeRenderer implements ViewRenderer {
                             select.isDisabled = true
                         }
                     break;
+                    case NodeParamField.MultiList:
+                        const popup = row.popup({key: param.name, anchorElementKey: panel.region});
+                        popup.width = '300px';
+                        const popupSelectRow = popup.row({key: 'popup-row'});
+                        const popupSelect = popupSelectRow.multiSelect({key: param.name, target: nodeView.id});
+                        popupSelect.layout = 'horizontal';
+                        popupSelect.label = param.name;
+                        popupSelect.placeholder = param.name;
+                        popupSelect.isBold = true;
+                        if (this.isFieldDisabled(param, nodeView)) {
+                            popupSelect.isDisabled = true
+                        }
                 }
             });
     }

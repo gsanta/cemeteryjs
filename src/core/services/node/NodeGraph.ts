@@ -1,7 +1,6 @@
- import { NodeObj, NodeParam } from '../../models/objs/NodeObj';
-import { NodeConnectionObj } from '../../models/objs/NodeConnectionObj';
-import { Registry } from '../../Registry';
+ import { NodeObj } from '../../models/objs/node_obj/NodeObj';
 import { NodeView, NodeViewType } from '../../models/views/NodeView';
+import { Registry } from '../../Registry';
 
 export class NodeGraph {
     nodeGroups: Set<NodeObj>[] = [];

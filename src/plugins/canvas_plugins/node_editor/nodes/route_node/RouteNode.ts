@@ -1,5 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
-import { CustomNodeParamSerializer, NodeObj, NodeParam, NodeParamField, NodeParamJson, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';

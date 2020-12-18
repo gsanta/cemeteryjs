@@ -1,8 +1,8 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
-import { PortDirection } from "../../objs/NodeObj";
 import { NodePortObj } from "../../objs/NodePortObj";
+import { PortDirection } from "../../objs/node_obj/NodeParam";
 import { NodeConnectionView } from "../NodeConnectionView";
 import { NodeView } from "../NodeView";
 import { View, ViewJson } from "../View";

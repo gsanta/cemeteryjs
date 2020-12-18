@@ -2,7 +2,7 @@ import { AssetObjType } from "../models/objs/AssetObj";
 import { AfterAllObjsDeserialized, IObj } from "../models/objs/IObj";
 import { LightObj, LightObjType } from "../models/objs/LightObj";
 import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
-import { NodeObjJson, NodeObjType } from "../models/objs/NodeObj";
+import { NodeObjJson, NodeObjType } from "../models/objs/node_obj/NodeObj";
 import { RayObj, RayObjType } from "../models/objs/RayObj";
 import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
 import { SpriteSheetObj, SpriteSheetObjType } from "../models/objs/SpriteSheetObj";

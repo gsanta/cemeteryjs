@@ -30,4 +30,8 @@ export abstract class UI_InputElement extends UI_Element {
     values(registry: Registry): any[] {
         return this.controller && this.controller.values(this);
     }
+
+    selectedValues(): any[] {
+        return this.controller && this.controller.selectedValues(this) || [];
+    }
 }

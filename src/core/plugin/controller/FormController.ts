@@ -16,6 +16,7 @@ export abstract class PropController<T = any> {
     blur?(context: PropContext<T>, element: UI_Element) {}
     defaultVal?(context: PropContext<T>, element: UI_Element) {}
     values?(context: PropContext<T>, element: UI_Element): T[] { return []; }
+    selectedValues?(context: PropContext<T>, element: UI_Element): T[] { return []; }
     onDndStart(context: PropContext<T>, element: UI_Element) {}
     onDndEnd(context: PropContext<T>, element: UI_Element) {}
 }
@@ -130,6 +131,16 @@ export class FormController {
         if (controller) {
             const propContext = this.propContexts.get(controller);
             return controller?.values(propContext, element);
+        }
+
+        return [];
+    }
+
+    selectedValues(element: UI_Element): any[] {
+        const controller = this.findController(element);
+        if (controller) {
+            const propContext = this.propContexts.get(controller);
+            return controller?.selectedValues(propContext, element);
         }
 
         return [];

@@ -1,4 +1,4 @@
-import { NodeObj } from "../../../../src/core/models/objs/NodeObj";
+import { NodeObj } from "../../../../src/core/models/objs/node_obj/NodeObj";
 import { View } from "../../../../src/core/models/views/View";
 import { Registry } from "../../../../src/core/Registry";
 import { getObjProperty, ObjTableProp } from "./objTestUtils";

@@ -1,12 +1,12 @@
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { MeshView } from "../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "./AbstractNode";
 import { MeshController } from "./MeshNode";
 

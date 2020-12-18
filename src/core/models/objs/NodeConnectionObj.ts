@@ -1,5 +1,5 @@
 import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
-import { NodeObj } from "./NodeObj";
+import { NodeObj } from "./node_obj/NodeObj";
 import { Registry } from "../../Registry";
 
 export const NodeConnectionObjType = 'node-connection-obj';

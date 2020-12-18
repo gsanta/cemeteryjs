@@ -1,9 +1,10 @@
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, PortDataFlow, PortDirection } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeFactory } from "./AbstractNode";
-import { MeshController } from "./MeshNode";
+import { MultiMeshController } from "./MeshNode";
 
 export const MeshNodeType = 'mesh-node-obj';
 
@@ -22,7 +23,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
+        nodeView.addParamController(new MultiMeshController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -57,10 +58,25 @@ export class FilterMeshNodeParams extends NodeParams {
 
     readonly output: NodeParam;
     
-    readonly mesh: NodeParam<MeshObj> = {
+    readonly mesh: NodeParam<MeshObj[]> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined
+        field: NodeParamField.MultiList,
+        val: [],
+        toJson: () => {
+            const val = this.mesh.val.map(meshObj => meshObj.id).join(', ');
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: val
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            const ids = (nodeParamJson.val as string).split(', ');
+            const meshObjs = <MeshObj[]> ids.map(id => registry.stores.objStore.getById(id));
+            this.mesh.name = nodeParamJson.name;
+            this.mesh.field = nodeParamJson.field
+            this.mesh.val = meshObjs;
+        }
     }
 }
 

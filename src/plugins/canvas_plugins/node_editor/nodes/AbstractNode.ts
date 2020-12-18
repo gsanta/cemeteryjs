@@ -1,4 +1,4 @@
-import { NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 
 

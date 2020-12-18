@@ -10,7 +10,6 @@ import { ToolType } from "../../../core/plugin/tools/Tool";
 import { Registry } from "../../../core/Registry";
 import { UI_SvgCanvas } from "../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../core/ui_components/react/styles";
-import { NodeRenderer } from "./NodeRenderer";
 import { JoinTool } from "./tools/JoinTool";
 
 export class NodeEditorRenderer implements ICanvasRenderer {

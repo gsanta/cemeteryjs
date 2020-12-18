@@ -1,5 +1,6 @@
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParam, NodeParamField, NodeParams, NodeParamRole, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";

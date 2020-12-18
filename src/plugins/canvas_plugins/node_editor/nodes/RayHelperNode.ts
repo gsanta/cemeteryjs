@@ -1,4 +1,5 @@
-import { NodeObj, NodeParamField, NodeParams, NodeParamRole, NodeParam, PortDirection, PortDataFlow } from "../../../../core/models/objs/NodeObj";
+import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParamField, PortDirection, PortDataFlow, NodeParam } from "../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";

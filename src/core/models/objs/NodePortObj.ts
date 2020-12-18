@@ -1,7 +1,6 @@
-import { Registry } from "../../Registry";
-import { IObj, ObjJson } from "./IObj";
-import { NodeObj, NodeParam, PortDataFlow, PortDirection } from "./NodeObj";
 import { AbstractObj } from "./AbstractObj";
+import { NodeObj } from "./node_obj/NodeObj";
+import { NodeParam, PortDataFlow, PortDirection } from "./node_obj/NodeParam";
 
 export interface NodePortObjJson {
     name: string;

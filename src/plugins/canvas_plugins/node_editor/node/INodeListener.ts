@@ -1,4 +1,4 @@
-import { NodeObj } from "../../../../core/models/objs/NodeObj";
+import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
 import { Registry } from "../../../../core/Registry";
 
 export interface INodeListener {

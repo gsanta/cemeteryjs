@@ -5,7 +5,8 @@ import { FormController, PropController } from "../../plugin/controller/FormCont
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
-import { NodeObj, NodeParam } from '../objs/NodeObj';
+import { NodeObj } from '../objs/node_obj/NodeObj';
+import { NodeParam } from "../objs/node_obj/NodeParam";
 import { NodePortView, NodePortViewType } from "./child_views/NodePortView";
 import { View, ViewJson } from "./View";
 
