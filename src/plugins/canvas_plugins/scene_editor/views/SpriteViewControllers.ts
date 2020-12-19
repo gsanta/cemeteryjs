@@ -70,7 +70,7 @@ export class ScaleXController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 
@@ -114,7 +114,7 @@ export class ScaleYController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 

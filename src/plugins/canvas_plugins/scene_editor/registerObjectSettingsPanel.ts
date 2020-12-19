@@ -23,8 +23,8 @@ function createPanel(registry: Registry): UI_Panel {
 
     const propControllers = [
             // mesh
-            new MeshIdController(),
-            new LayerController(),
+            new MeshIdController(registry),
+            new LayerController(registry),
             new RotationController(registry, CanvasAxis.X),
             new RotationController(registry, CanvasAxis.Y),
             new RotationController(registry, CanvasAxis.Z),
@@ -34,24 +34,24 @@ function createPanel(registry: Registry): UI_Panel {
             new ScaleController(registry, CanvasAxis.X),
             new ScaleController(registry, CanvasAxis.Y),
             new ScaleController(registry, CanvasAxis.Z),
-            new TextureController(),
+            new TextureController(registry),
             new ModelController(registry),
-            new ThumbnailController(),
+            new ThumbnailController(registry),
             new WidthController(registry),
             new DepthController(registry),
             new HeightController(registry),
             new ColorController(registry),
-            new CloneController(),
+            new CloneController(registry),
             new MeshVisibilityController(registry),
-            new MeshNameController(),
+            new MeshNameController(registry),
             
             // path
-            new PathIdController(),
+            new PathIdController(registry),
 
             // sprite
-            new FrameName(),
-            new SelectSpriteSheetController(),
-            new ManageSpriteSheetsController(),
+            new FrameName(registry),
+            new SelectSpriteSheetController(registry),
+            new ManageSpriteSheetsController(registry),
             new ScaleXController(registry),
             new ScaleYController(registry),
 
@@ -62,7 +62,7 @@ function createPanel(registry: Registry): UI_Panel {
             new LightDirController(registry, CanvasAxis.Y),
             new LightDirController(registry, CanvasAxis.Z),
             new LightDiffuseColorController(registry),
-            new LightParentMeshController()
+            new LightParentMeshController(registry)
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

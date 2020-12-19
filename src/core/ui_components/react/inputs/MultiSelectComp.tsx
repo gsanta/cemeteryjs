@@ -1,6 +1,6 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { UI_MultiSelect } from '../../elements/UI_MultiSelect';
-import { ClearIconComponent } from '../icons/ClearIconComponent';
 import { colors } from '../styles';
 import { UI_ComponentProps } from '../UI_ComponentProps';
 import './DropdownComponent.scss';
@@ -15,6 +15,18 @@ export interface DropdownProps extends Focusable {
     clear?: () => void;
 }
 
+const MultiSelectStyled = styled.div`
+
+    .dropdown-component {
+        minWidth: 100px;
+        height: 25px;
+        borderRadius: 0;
+        background: ${colors.grey3};
+        color: ${colors.textColor};
+        width: ${({inputWidth}: {inputWidth: string}) => inputWidth ? inputWidth : 'auto'}
+    }
+`;
+
 export function MultiSelectComp(props: UI_ComponentProps<UI_MultiSelect>) {
     const values: string[] = props.element.values(props.registry) || [];
 
@@ -23,21 +35,10 @@ export function MultiSelectComp(props: UI_ComponentProps<UI_MultiSelect>) {
     });
     const placeholder = <option key="placeholder" value="">{props.element.placeholder}</option>
 
-    const selectStyle: React.CSSProperties = {
-        minWidth: '100px',
-        height: '25px',
-        borderRadius: 0,
-        background: colors.grey3,
-        color: colors.textColor
-    };
-
-    props.element.inputWidth && (selectStyle.width = props.element.inputWidth);
-
     let select = (
         <select
             disabled={props.element.isDisabled}
             className="dropdown-component"
-            style={selectStyle}
             onChange={(e) => {
                 props.element.change(e.target.value, props.registry);
             }}
@@ -53,34 +54,48 @@ export function MultiSelectComp(props: UI_ComponentProps<UI_MultiSelect>) {
         </select>
     );
 
-    if (props.element.label) {
-        const style: React.CSSProperties = {
-            display: 'flex',
-            width: '100%'
-        };
-        
-        if (props.element.layout === 'horizontal') {
-            style.flexDirection = 'row';
-            style.justifyContent = 'space-between';
-            style.alignItems = 'center';
-        } else {
-            style.flexDirection = 'column';
-        }
+    return props.element.label ? renderLabeledMultiSelect(props, select) : renderSimpleMultiSelect(props, select);
+}
 
-        select = (
-            <div style={style} className={`labeled-input ${props.element.layout}`}>
-                <div className="label">{props.element.label}</div>
-                <div className="input">
-                    {select}
-                    {props.element.clearable && props.element.val(props.registry) ? <ClearIconComponent onClick={() => props.element.change(undefined, props.registry)}/> : null}
-                </div>
-            </div>
-        )
+function renderLabeledMultiSelect(props: UI_ComponentProps<UI_MultiSelect>, select: JSX.Element) {
+    const style: React.CSSProperties = {
+        display: 'flex',
+        width: '100%'
+    };
+    
+    if (props.element.layout === 'horizontal') {
+        style.flexDirection = 'row';
+        style.justifyContent = 'space-between';
+        style.alignItems = 'center';
+    } else {
+        style.flexDirection = 'column';
     }
 
-    const selectedValues = props.element.selectedValues().map(val => <span>{val}</span>) 
+    const selectedValues = props.element.selectedValues().map(val => <div>{val}</div>) 
 
-    return <React.Fragment>{select}{selectedValues}</React.Fragment>;
+    return (
+        <MultiSelectStyled inputWidth={props.element.inputWidth} style={style} className={`labeled-input ${props.element.layout}`}>
+            <div className="label">{props.element.label}</div>
+            <div className="ce-input">
+                {select}
+                {selectedValues}
+            </div>
+        </MultiSelectStyled>
+    )
+}
+
+function renderSimpleMultiSelect(props: UI_ComponentProps<UI_MultiSelect>, select: JSX.Element) {
+    const selectedValues = props.element.selectedValues().map(val => <div>{val}</div>) 
+
+    return (
+        <MultiSelectStyled inputWidth={props.element.inputWidth}>
+            <div className="label">{props.element.label}</div>
+            <div className="ce-input">
+                {select}
+                {selectedValues}
+            </div>
+        </MultiSelectStyled>
+    )
 }
 
 MultiSelectComp.displayName = 'MultiSelectComp';

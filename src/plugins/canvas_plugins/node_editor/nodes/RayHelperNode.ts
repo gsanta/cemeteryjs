@@ -26,7 +26,7 @@ export class RayHelperNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new RemoveTimerController(nodeView.getObj()));
+        nodeView.addParamController(new RemoveTimerController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -87,8 +87,8 @@ export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodePar
 class RemoveTimerController extends PropController<string> {
     private nodeObj: NodeObj<RayHelperNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

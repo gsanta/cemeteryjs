@@ -20,7 +20,7 @@ function createPanel(registry: Registry): UI_Panel {
 
     const propControllers = [
 
-        new LayoutControl()
+        new LayoutControl(registry)
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

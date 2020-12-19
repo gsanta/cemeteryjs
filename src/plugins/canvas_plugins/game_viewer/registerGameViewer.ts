@@ -51,12 +51,12 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     const canvas = new Canvas3dPanel(registry, UI_Region.Canvas2, GameViewerPanelId, 'Game viewer');
 
     const propControllers = [
-        new ZoomInController(),
-        new ZoomOutController(),
-        new PlayController(),
-        new StopController(),
-        new CommonToolController(),
-        new GameViewerToolController()
+        new ZoomInController(registry),
+        new ZoomOutController(registry),
+        new PlayController(registry),
+        new StopController(registry),
+        new CommonToolController(registry),
+        new GameViewerToolController(registry)
     ];
 
     const tools = [

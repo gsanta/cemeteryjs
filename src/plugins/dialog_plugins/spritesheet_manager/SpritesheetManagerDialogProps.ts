@@ -2,6 +2,7 @@ import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../core/models/objs/SpriteSheetObj';
 import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
 import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
+import { Registry } from '../../../core/Registry';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { SpriteSheetManagerDialogRenderer } from './SpriteSheetManagerDialogRenderer';
 
@@ -21,8 +22,8 @@ enum DataKeys {
 export class SpriteSheetJsonPathControl extends PropController<{data: string, path: string}> {
     private uiPanel: UI_Panel;
 
-    constructor(uiPanel: UI_Panel) {
-        super();
+    constructor(registry: Registry, uiPanel: UI_Panel) {
+        super(registry);
         this.uiPanel = uiPanel;
     }
 
@@ -39,8 +40,8 @@ export class SpriteSheetJsonPathControl extends PropController<{data: string, pa
 export class SpriteSheetImgController extends PropController<string> {
     private uiPanel: UI_Panel;
 
-    constructor(uiPanel: UI_Panel) {
-        super();
+    constructor(registry: Registry, uiPanel: UI_Panel) {
+        super(registry);
         this.uiPanel = uiPanel;
     }
 
@@ -65,8 +66,8 @@ export class SpriteSheetImgController extends PropController<string> {
 export class AddSpriteSheetController extends PropController<string> {
     private uiPanel: UI_Panel;
 
-    constructor(uiPanel: UI_Panel) {
-        super();
+    constructor(registry: Registry, uiPanel: UI_Panel) {
+        super(registry);
         this.uiPanel = uiPanel;
     }
 

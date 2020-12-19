@@ -18,9 +18,9 @@ function createPanel(registry: Registry): UI_Panel {
     panel.renderer = new LevelSettingsRenderer();
 
     const propControllers = [
-        new LevelController(),
-        new LevelNameController(),
-        new ClearLevelController()
+        new LevelController(registry),
+        new LevelNameController(registry),
+        new ClearLevelController(registry)
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

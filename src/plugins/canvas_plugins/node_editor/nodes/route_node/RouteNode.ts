@@ -28,7 +28,7 @@ export class RouteNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new SpeedControl(nodeView.getObj()));
+        nodeView.addParamController(new SpeedControl(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -109,8 +109,8 @@ export class RouteNodeParams extends NodeParams {
 export class SpeedControl extends PropController<string> {
     private nodeObj: NodeObj<RouteNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

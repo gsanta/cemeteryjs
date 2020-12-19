@@ -2,7 +2,7 @@ import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { MultiSelectController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeFactory } from "./AbstractNode";
@@ -57,7 +57,7 @@ export class MeshController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj<MeshNodeParams>) {
-        super();
+        super(registry);
         this.nodeObj = nodeObj;
         this.registry = registry;
     }
@@ -79,12 +79,12 @@ export class MeshController extends PropController<string> {
     }
 }
 
-export class MultiMeshController extends PropController<string> {
+export class MultiMeshController extends MultiSelectController {
     private nodeObj: NodeObj;
     private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
-        super();
+        super(registry);
         this.nodeObj = nodeObj;
         this.registry = registry;
     }
@@ -92,15 +92,20 @@ export class MultiMeshController extends PropController<string> {
     acceptedProps() { return ['mesh']; }
 
     values(context: PropContext) {
-        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(meshView => meshView.id)
+        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.id)
     }
 
     selectedValues() {
-        return this.nodeObj.param.mesh.val;
+        return this.nodeObj.param.mesh.val.map(meshObj => meshObj.id);
     }
 
     defaultVal() {
         return  undefined;
+    }
+
+    click(context: PropContext) {
+        this.isPopupOpen = !this.isPopupOpen;
+        context.registry.services.render.reRender(UI_Region.Canvas1);
     }
 
     change(val: string, context: PropContext) {

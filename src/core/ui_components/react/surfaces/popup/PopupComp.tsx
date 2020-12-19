@@ -45,7 +45,7 @@ const PopupCompStyled = styled.div`
 export function PopupComp(props: UI_ContainerProps<UI_Popup> ) {
     return (
         <PopupCompStyled onClick={e => e.stopPropagation()}>
-            <div className="ce-popup-overlay" onClick={() => null}></div>
+            <div className="ce-popup-overlay" onClick={() => props.element.click(props.registry)}></div>
             <div 
                 className='ce-popup'
                 style={{

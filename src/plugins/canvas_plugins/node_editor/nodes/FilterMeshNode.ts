@@ -2,6 +2,7 @@ import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../core/models/views/NodeView";
+import { ParamControllers } from "../../../../core/plugin/controller/FormController";
 import { Registry } from "../../../../core/Registry";
 import { AbstractNodeFactory } from "./AbstractNode";
 import { MultiMeshController } from "./MeshNode";
@@ -23,7 +24,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MultiMeshController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new FilterMeshControllers(this.registry, obj));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -101,4 +102,15 @@ class OutputParam implements NodeParam {
             return inputMesh;
         } 
     }
+}
+
+
+export class FilterMeshControllers extends ParamControllers {
+
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super();
+        this.mesh = new MultiMeshController(registry, nodeObj);
+    }
+
+    readonly mesh: MultiMeshController;
 }

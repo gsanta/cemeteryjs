@@ -1,3 +1,4 @@
+import { Registry } from "../../../Registry";
 import { UI_ElementType } from "../UI_ElementType";
 import { UI_Layout } from '../UI_Layout';
 
@@ -6,4 +7,8 @@ export class UI_Popup extends UI_Layout {
     anchorElementKey: string;
     width: string;
     height: string;
+
+    click(registry: Registry): void {
+        this.controller && this.controller.click(this);
+    }
 }

@@ -26,9 +26,9 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     const canvas = new Canvas3dPanel(registry, UI_Region.Dialog, ThumbnailCanvasId, 'Thumbnail canvas');
     
     const propControllers = [
-        new ThumbnailCreateControl(),
-        new ThumbnailUploadControl(),
-        new ClearThumbnailControl()
+        new ThumbnailCreateControl(registry),
+        new ThumbnailUploadControl(registry),
+        new ClearThumbnailControl(registry)
     ];
 
     const tools = [

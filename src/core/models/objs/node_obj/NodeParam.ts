@@ -1,4 +1,5 @@
 import { INodeListener } from "../../../../plugins/canvas_plugins/node_editor/node/INodeListener";
+import { PropController } from "../../../plugin/controller/FormController";
 import { Registry } from "../../../Registry";
 import { NodeObj } from "./NodeObj";
 
@@ -43,6 +44,7 @@ export interface NodeParam<D = any> {
     field?: NodeParamField;
     fieldDisabled?: boolean;
     port?: PortConfig;
+    controller?: PropController;
 
     val?: D;
     getData?(nodeObj: NodeObj, registry: Registry): D;

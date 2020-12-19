@@ -50,6 +50,10 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.multiSelect(this, config);
     }
 
+    popupTriggerButton(config: {key: string, target?: string}) {
+        return UI_Factory.popupTriggerButton(this, config);
+    }
+
     fileUpload(key: string) {
         return UI_Factory.fileUpload(this, {key});
     }

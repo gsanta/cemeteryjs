@@ -18,9 +18,9 @@ function createPanel(registry: Registry): UI_Panel {
     panel.renderer = new FileSettingsRenderer();
 
     const propControllers = [
-        new ExportFileController(),
-        new ImportFileController(),
-        new NewProjectController()
+        new ExportFileController(registry),
+        new ImportFileController(registry),
+        new NewProjectController(registry)
     ];
 
     panel.controller = new FormController(undefined, registry, propControllers);

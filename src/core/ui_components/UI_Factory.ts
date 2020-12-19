@@ -46,6 +46,7 @@ import { GlobalControllerProps } from '../plugin/controller/FormController';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { UI_Popup } from './elements/surfaces/UI_Popup';
 import { UI_MultiSelect } from './elements/UI_MultiSelect';
+import { UI_PopupTriggerButton } from './elements/UI_PopupTriggerButton';
 
 export class UI_Factory {
 
@@ -66,7 +67,7 @@ export class UI_Factory {
 
     static popup(parent: UI_Container, config: UI_ElementConfig & { anchorElementKey: string }): UI_Popup {
         const anchorParent = this.findParentWithKey(parent, config.anchorElementKey);
-        const element = new UI_Popup({controller: config.controller || parent.controller, parent: anchorParent, ...config, key: GlobalControllerProps.CloseDialog});
+        const element = new UI_Popup({controller: config.controller || parent.controller, parent: anchorParent, ...config});
 
 
         anchorParent.children.push(element);
@@ -215,6 +216,15 @@ export class UI_Factory {
 
     static multiSelect(parent: UI_Container, config: UI_ElementConfig & { target?: string}) {
         const element = new UI_MultiSelect({controller: config.controller || parent.controller, parent, ...config});
+
+        parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
+
+        return element;
+    }
+
+    static popupTriggerButton(parent: UI_Container, config: UI_ElementConfig & { target?: string}) {
+        const element = new UI_PopupTriggerButton({controller: config.controller || parent.controller, parent, ...config});
 
         parent.children.push(element);
         element.canvasPanel = parent.canvasPanel;

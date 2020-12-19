@@ -9,7 +9,7 @@ export class StopController extends PropController {
 
     click(context: PropContext) {
         context.registry.stores.game.gameState = 'paused';
-        context.registry.services.render.reRender(context.panel.region);
+        context.registry.services.render.reRenderAll();
     }
 }
 

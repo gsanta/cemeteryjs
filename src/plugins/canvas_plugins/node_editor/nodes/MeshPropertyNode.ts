@@ -26,7 +26,7 @@ export class MeshPropertyNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(nodeView.getObj()), new MeshVisibilityController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshVisibilityController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -72,8 +72,8 @@ export class MeshPropertyNodeParams extends NodeParams {
 export class MeshController extends PropController<string> {
     private nodeObj: NodeObj<MeshPropertyNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 
@@ -97,8 +97,8 @@ export class MeshController extends PropController<string> {
 export class MeshVisibilityController extends PropController<string> {
     private nodeObj: NodeObj<MeshPropertyNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

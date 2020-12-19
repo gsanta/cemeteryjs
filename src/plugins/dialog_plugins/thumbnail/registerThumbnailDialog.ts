@@ -14,9 +14,9 @@ export function registerThumbnaildialog(registry: Registry) {
 
 function createDialog(registry: Registry): UI_Panel {
     const propControllers = [
-        new ThumbnailCreateControl(),
-        new ThumbnailUploadControl(),
-        new ClearThumbnailControl()
+        new ThumbnailCreateControl(registry),
+        new ThumbnailUploadControl(registry),
+        new ClearThumbnailControl(registry)
     ];
 
     const panel = new UI_Panel(registry, UI_Region.Dialog, ThumbnailDialogPanelId, 'Thumbnail Dialog');

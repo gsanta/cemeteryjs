@@ -23,7 +23,7 @@ export class LightYPosController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
     
@@ -66,7 +66,7 @@ export class LightDirController extends PropController<string> {
     acceptedProps() { return [this.prop]; }
 
     constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+        super(registry);
         this.registry = registry;
         switch(axis) {
             case CanvasAxis.X:
@@ -140,7 +140,7 @@ export class LightAngleController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
     
@@ -178,7 +178,7 @@ export class LightDiffuseColorController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 

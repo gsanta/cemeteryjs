@@ -44,15 +44,15 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SceneEditorPanelId, 'Scene editor');
 
     const propControllers = [
-        new ZoomInController(),
-        new ZoomOutController(),
-        new UndoController(),
-        new RedoController(),
-        new PrimitiveShapeDropdownControl(),
-        new PrimitiveShapeDropdownMenuOpenControl(),
-        new CommonToolController(),
-        new SceneEditorToolController(),
-        new CanvasContextDependentToolController(),
+        new ZoomInController(registry),
+        new ZoomOutController(registry),
+        new UndoController(registry),
+        new RedoController(registry),
+        new PrimitiveShapeDropdownControl(registry),
+        new PrimitiveShapeDropdownMenuOpenControl(registry),
+        new CommonToolController(registry),
+        new SceneEditorToolController(registry),
+        new CanvasContextDependentToolController(registry),
     ];
 
     const tools = [

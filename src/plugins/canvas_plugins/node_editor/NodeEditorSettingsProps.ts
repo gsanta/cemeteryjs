@@ -14,7 +14,7 @@ export class DragNodeController extends PropController {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 

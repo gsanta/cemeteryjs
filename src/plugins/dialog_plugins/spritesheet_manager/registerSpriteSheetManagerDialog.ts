@@ -15,10 +15,10 @@ export function registerSpriteSheetManagerDialog(registry: Registry) {
 function createDialog(registry: Registry): UI_Panel {
     
     const panel = new UI_Panel(registry, UI_Region.Dialog, SpriteSheetManagerDialogId, 'Spritesheet Manager');
-    panel.controller = new FormController(undefined, registry);
-    panel.controller.registerPropControl(new SpriteSheetJsonPathControl(panel));
-    panel.controller.registerPropControl(new SpriteSheetImgController(panel));
-    panel.controller.registerPropControl(new AddSpriteSheetController(panel));
+    panel.controller = new FormController(undefined, registry, []);
+    panel.controller.registerPropControl(new SpriteSheetJsonPathControl(registry, panel));
+    panel.controller.registerPropControl(new SpriteSheetImgController(registry, panel));
+    panel.controller.registerPropControl(new AddSpriteSheetController(registry, panel));
     panel.renderer = new SpriteSheetManagerDialogRenderer(registry);
 
     return panel;

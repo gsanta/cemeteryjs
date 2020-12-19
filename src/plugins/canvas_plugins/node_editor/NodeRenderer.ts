@@ -3,6 +3,7 @@ import { NodePortView } from '../../../core/models/views/child_views/NodePortVie
 import { NodeView } from '../../../core/models/views/NodeView';
 import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
+import { MultiSelectController } from '../../../core/plugin/controller/FormController';
 import { UI_SvgForeignObject } from '../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
@@ -64,17 +65,25 @@ export class NodeRenderer implements ViewRenderer {
                         }
                     break;
                     case NodeParamField.MultiList:
-                        const popup = row.popup({key: param.name, anchorElementKey: panel.region});
-                        popup.width = '300px';
-                        const popupSelectRow = popup.row({key: 'popup-row'});
-                        const popupSelect = popupSelectRow.multiSelect({key: param.name, target: nodeView.id});
-                        popupSelect.layout = 'horizontal';
-                        popupSelect.label = param.name;
-                        popupSelect.placeholder = param.name;
-                        popupSelect.isBold = true;
-                        if (this.isFieldDisabled(param, nodeView)) {
-                            popupSelect.isDisabled = true
+                        const controller = <MultiSelectController> nodeView.controller.param[param.name];
+
+                        if (controller.isPopupOpen) {
+                            const popup = row.popup({key: param.name, anchorElementKey: panel.region});
+                            popup.width = '200px';
+                            const popupSelectRow = popup.row({key: 'popup-row'});
+                            const popupSelect = popupSelectRow.multiSelect({key: param.name, target: nodeView.id});
+                            popupSelect.layout = 'horizontal';
+                            popupSelect.label = param.name;
+                            popupSelect.placeholder = param.name;
+                            popupSelect.isBold = true;
+                            if (this.isFieldDisabled(param, nodeView)) {
+                                popupSelect.isDisabled = true
+                            }
                         }
+
+                        const popupTriggerButton = row.popupTriggerButton({key: param.name});
+                        popupTriggerButton.label = 'abcd';
+                    break;
                 }
             });
     }

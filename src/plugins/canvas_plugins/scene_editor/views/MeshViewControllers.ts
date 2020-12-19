@@ -117,7 +117,7 @@ export class ScaleController extends PropController<string> {
     private param: MeshViewControllerParam;
 
     constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+        super(registry);
         this.registry = registry;
         this.axis = axis;
         this.param = axis === CanvasAxis.X ? MeshViewControllerParam.ScaleX : axis === CanvasAxis.Y ? MeshViewControllerParam.ScaleY : MeshViewControllerParam.ScaleZ;
@@ -163,7 +163,7 @@ export class RotationController extends PropController<string> {
     private param: MeshViewControllerParam;
 
     constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+        super(registry);
         this.registry = registry;
         this.axis = axis;
         this.param = axis === CanvasAxis.X ? MeshViewControllerParam.RotX : axis === CanvasAxis.Y ? MeshViewControllerParam.RotY : MeshViewControllerParam.RotZ;
@@ -217,7 +217,7 @@ export class PositionController extends PropController<string> {
     private param: MeshViewControllerParam;
 
     constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+        super(registry);
         this.registry = registry;
         this.axis = axis;
         this.param = axis === CanvasAxis.X ? MeshViewControllerParam.PosX : axis === CanvasAxis.Y ? MeshViewControllerParam.PosY : MeshViewControllerParam.PosZ;
@@ -317,7 +317,7 @@ export class ModelController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 
@@ -365,7 +365,7 @@ export class WidthController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 
@@ -406,7 +406,7 @@ export class HeightController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 
@@ -447,7 +447,7 @@ export class DepthController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 
@@ -489,7 +489,7 @@ export class ColorController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 
@@ -529,7 +529,7 @@ export class MeshVisibilityController extends PropController<string> {
     private registry: Registry;
 
     constructor(registry: Registry) {
-        super();
+        super(registry);
         this.registry = registry;
     }
 

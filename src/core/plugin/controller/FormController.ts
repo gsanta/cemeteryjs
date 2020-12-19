@@ -7,7 +7,22 @@ export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
 }
 
+export enum InputParamType {
+    TextField = 'TextField',
+    NumberField = 'NumberField',
+    List = 'List',
+    MultiSelect = 'MultiList',
+    Checkbox = 'Checkbox'
+}
+
 export abstract class PropController<T = any> {
+    paramType: InputParamType;
+    private context: PropContext;
+
+    constructor(registry: Registry) {
+        this.context = new PropContext(registry);
+    }
+
     abstract acceptedProps(context: PropContext, element: UI_Element): string[];
 
     change?(val: T, context: PropContext<any>, element: UI_Element) {}
@@ -21,10 +36,22 @@ export abstract class PropController<T = any> {
     onDndEnd(context: PropContext<T>, element: UI_Element) {}
 }
 
+export abstract class MultiSelectController extends PropController {
+    paramType = InputParamType.MultiSelect;
+    isPopupOpen: boolean = false;
+}
+
+export abstract class ParamControllers {
+    [id: string] : PropController;
+}
+
 export class PropContext<T = any> {
     private tempVal: T;
     registry: Registry;
-    panel: UI_Panel;
+
+    constructor(registry: Registry) {
+        this.registry = registry;
+    }
 
     updateTempVal(val: T) {
         this.tempVal = val;
@@ -53,16 +80,23 @@ export class FormController {
     protected registry: Registry;
     panel: UI_Panel;
 
-    constructor(panel: UI_Panel, registry: Registry, propControls?: PropController<any>[]) {
+    param: ParamControllers;
+
+    constructor(panel: UI_Panel, registry: Registry, propControls: PropController<any>[], paramControllers?: ParamControllers) {
         this.panel = <UI_Panel> panel;
         this.registry = registry;
+        this.param = paramControllers;
 
-        this.registerPropControl(new CloseDialogController());
+        this.registerPropControl(new CloseDialogController(this.registry));
 
         if (propControls) {
             propControls.forEach(propControl => {
                 this.registerPropControl(propControl);
             });
+        }
+
+        if (paramControllers) {
+            Object.entries(this.param).forEach(entry => this.registerPropControl(entry[1]));
         }
     }
 
@@ -151,9 +185,7 @@ export class FormController {
     }
 
     registerPropControl(propController: PropController<any>) {
-        const propContext = new PropContext();
-        propContext.registry = this.registry;
-        propContext.panel = this.panel;
+        const propContext = new PropContext(this.registry);
 
         this.propContexts.set(propController, propContext);
         this.propControllers.push(propController);

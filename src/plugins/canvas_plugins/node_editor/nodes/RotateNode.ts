@@ -27,7 +27,7 @@ export class RotateNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshRotateController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshRotateController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -93,8 +93,8 @@ export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
 export class MeshRotateController extends PropController<string> {
     private nodeObj: NodeObj<RotateNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

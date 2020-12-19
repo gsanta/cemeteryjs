@@ -18,7 +18,7 @@ function createPanel(registry: Registry): UI_Panel {
     panel.renderer = new AssetManagerPanelRenderer();
 
     const propControllers = [
-        new IsAssetManagerDialogOpenController()
+        new IsAssetManagerDialogOpenController(registry)
     ];
 
     panel.controller = new FormController(panel, registry, propControllers);

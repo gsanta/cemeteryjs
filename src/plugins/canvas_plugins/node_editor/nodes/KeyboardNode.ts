@@ -29,7 +29,7 @@ export class KeyboardNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new KeyControl(nodeView.getObj(), nodeView));
+        nodeView.addParamController(new KeyControl(this.registry, nodeView.getObj(), nodeView));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -96,8 +96,8 @@ export class KeyControl extends PropController {
     private nodeObj: NodeObj<KeyboardNodeParams>;
     private nodeView: NodeView;
 
-    constructor(nodeObj: NodeObj<KeyboardNodeParams>, nodeView: NodeView) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj<KeyboardNodeParams>, nodeView: NodeView) {
+        super(registry);
         this.nodeObj = nodeObj;
         this.nodeView = nodeView;
     }

@@ -26,7 +26,7 @@ export class AnimationNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new AnimationMeshController(nodeView.getObj()), new StartFrameController(nodeView.getObj()), new EndFrameController(nodeView.getObj()));
+        nodeView.addParamController(new AnimationMeshController(this.registry, nodeView.getObj()), new StartFrameController(this.registry, nodeView.getObj()), new EndFrameController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -98,8 +98,8 @@ export class AnimationNodeExecutor extends AbstractNodeExecutor<AnimationNodePar
 export class AnimationMeshController extends PropController<string> {
     private nodeObj: NodeObj<AnimationNodeParams>;
 
-    constructor(nodeObj: NodeObj<AnimationNodeParams>) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj<AnimationNodeParams>) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 
@@ -123,8 +123,8 @@ export class AnimationMeshController extends PropController<string> {
 export class StartFrameController extends PropController<string> {
     private nodeObj: NodeObj<AnimationNodeParams>;
 
-    constructor(nodeObj: NodeObj<AnimationNodeParams>) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj<AnimationNodeParams>) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 
@@ -155,8 +155,8 @@ export class StartFrameController extends PropController<string> {
 export class EndFrameController extends PropController<string> {
     private nodeObj: NodeObj<AnimationNodeParams>;
 
-    constructor(nodeObj: NodeObj<AnimationNodeParams>) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj<AnimationNodeParams>) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

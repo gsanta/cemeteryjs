@@ -28,7 +28,7 @@ export class MoveNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshMoveController(nodeView.getObj()), new MeshSpeedController(nodeView.getObj()));
+        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshMoveController(this.registry, nodeView.getObj()), new MeshSpeedController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -107,8 +107,8 @@ export class MoveNodeExecutor extends AbstractNodeExecutor<MoveNodeParams> {
 export class MeshMoveController extends PropController<string> {
     private nodeObj: NodeObj<MoveNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 
@@ -132,8 +132,8 @@ export class MeshMoveController extends PropController<string> {
 export class MeshSpeedController extends PropController<string> {
     private nodeObj: NodeObj<MoveNodeParams>;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

@@ -90,6 +90,8 @@ import { UI_Popup } from './elements/surfaces/UI_Popup';
 import { PopupComp } from './react/surfaces/popup/PopupComp';
 import { UI_MultiSelect } from './elements/UI_MultiSelect';
 import { MultiSelectComp } from './react/inputs/MultiSelectComp';
+import { UI_PopupTriggerButton } from './elements/UI_PopupTriggerButton';
+import { PopupTriggerButtonComp } from './react/inputs/PopupTriggerButtonComp';
 
 export class UI_Builder {
 
@@ -214,7 +216,6 @@ export class UI_Builder {
             case UI_ElementType.Popup:
                 const popup = element as UI_Popup;
                 return <PopupComp registry={this.registry} element={popup}>{this.buildChildren(element)}</PopupComp>;
-    
         }
     }
 
@@ -328,6 +329,9 @@ export class UI_Builder {
             case UI_ElementType.MultiSelect:
                 const multiSelect = element as UI_MultiSelect;
                 return <MultiSelectComp registry={this.registry} element={multiSelect}/>;
+            case UI_ElementType.PopupTriggerButton:
+                const popupTriggerButton = element as UI_PopupTriggerButton;
+                return <PopupTriggerButtonComp registry={this.registry} element={popupTriggerButton}/>;
             case UI_ElementType.FileUpload:
                 const fileUpload = element as UI_FileUpload;
                 return <FileUploadComp registry={this.registry} element={fileUpload}/>;

@@ -28,9 +28,9 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, NodeEditorPanelId, 'Node editor');
 
     const propControllers = [
-        new ZoomInController(),
-        new ZoomOutController(),
-        new CommonToolController()
+        new ZoomInController(registry),
+        new ZoomOutController(registry),
+        new CommonToolController(registry)
     ];
 
     const tools = [

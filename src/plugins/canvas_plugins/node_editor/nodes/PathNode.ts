@@ -25,7 +25,7 @@ export class PathNode extends AbstractNodeFactory {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
-        nodeView.addParamController(new PathController(nodeView.getObj()));
+        nodeView.addParamController(new PathController(this.registry, nodeView.getObj()));
 
         return nodeView;
     }
@@ -59,8 +59,8 @@ export class PathNodeParams extends NodeParams {
 export class PathController extends PropController<string> {
     private nodeObj: NodeObj;
 
-    constructor(nodeObj: NodeObj) {
-        super();
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(registry);
         this.nodeObj = nodeObj;
     }
 

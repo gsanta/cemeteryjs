@@ -9,6 +9,7 @@ export enum UI_ElementType {
     Column = 'Column',
     Box = 'Box',
     Button = 'Button',
+    PopupTriggerButton = 'PopupTriggerButton',
     Checkbox = 'Checkbox',
     Select = 'Select',
     MultiSelect = 'MultiSelect',
