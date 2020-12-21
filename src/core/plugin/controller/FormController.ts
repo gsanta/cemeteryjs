@@ -17,7 +17,7 @@ export enum InputParamType {
 
 export abstract class PropController<T = any> {
     paramType: InputParamType;
-    private context: PropContext;
+    protected context: PropContext;
 
     constructor(registry: Registry) {
         this.context = new PropContext(registry);
@@ -31,14 +31,20 @@ export abstract class PropController<T = any> {
     blur?(context: PropContext<T>, element: UI_Element) {}
     defaultVal?(context: PropContext<T>, element: UI_Element) {}
     values?(context: PropContext<T>, element: UI_Element): T[] { return []; }
-    selectedValues?(context: PropContext<T>, element: UI_Element): T[] { return []; }
+    selectedValues?(element: UI_Element): T[] { return []; }
     onDndStart(context: PropContext<T>, element: UI_Element) {}
     onDndEnd(context: PropContext<T>, element: UI_Element) {}
 }
 
 export abstract class MultiSelectController extends PropController {
+    protected tempVal: string[];
     paramType = InputParamType.MultiSelect;
     isPopupOpen: boolean = false;
+
+    open() {}
+    done() {}
+    cancel() {}
+    select(val: string) {}
 }
 
 export abstract class ParamControllers {
@@ -173,8 +179,7 @@ export class FormController {
     selectedValues(element: UI_Element): any[] {
         const controller = this.findController(element);
         if (controller) {
-            const propContext = this.propContexts.get(controller);
-            return controller?.selectedValues(propContext, element);
+            return controller?.selectedValues(element);
         }
 
         return [];

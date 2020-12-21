@@ -15,7 +15,6 @@ import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService
 import styled from 'styled-components';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
 import { UI_Region } from '../../plugin/UI_Panel';
-import { GameViewerPanelId } from '../../../plugins/canvas_plugins/game_viewer/registerGameViewer';
 
 export interface AppState {
     isDialogOpen: boolean;
@@ -25,7 +24,7 @@ export interface AppState {
 }
 
 const StyledApp = styled.div`
-    .labeled-input {
+    .ce-labeled-input {
         width: 100%;
 
             align-items: center;

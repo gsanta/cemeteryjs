@@ -1,6 +1,6 @@
 import { NodeParam, NodeParamField, PortDirection } from '../../../core/models/objs/node_obj/NodeParam';
 import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
-import { NodeView } from '../../../core/models/views/NodeView';
+import { NodeHeightCalc, NodeView } from '../../../core/models/views/NodeView';
 import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { MultiSelectController } from '../../../core/plugin/controller/FormController';
@@ -32,7 +32,7 @@ export class NodeRenderer implements ViewRenderer {
         NodeParam.getFieldParams(nodeView.getObj())
             .map(param => {
                 let row = column.row({key: param.name});
-                row.height = '35px';
+                row.height = NodeHeightCalc.getFieldHeight(param) + 'px';
 
                 switch(param.field) {
                     case NodeParamField.NumberField:
@@ -67,22 +67,33 @@ export class NodeRenderer implements ViewRenderer {
                     case NodeParamField.MultiList:
                         const controller = <MultiSelectController> nodeView.controller.param[param.name];
 
-                        if (controller.isPopupOpen) {
-                            const popup = row.popup({key: param.name, anchorElementKey: panel.region});
-                            popup.width = '200px';
-                            const popupSelectRow = popup.row({key: 'popup-row'});
-                            const popupSelect = popupSelectRow.multiSelect({key: param.name, target: nodeView.id});
-                            popupSelect.layout = 'horizontal';
-                            popupSelect.label = param.name;
-                            popupSelect.placeholder = param.name;
-                            popupSelect.isBold = true;
-                            if (this.isFieldDisabled(param, nodeView)) {
-                                popupSelect.isDisabled = true
-                            }
-                        }
+                        const popupMultiSelect = row.popupMultiSelect({key: param.name, anchorElementKey: panel.region})
+                        popupMultiSelect.popupWidth = '200px';
+                        popupMultiSelect.paramController = controller;
+                        popupMultiSelect.label = param.name;
+                        popupMultiSelect.placeholder = 'Select mesh...';
 
-                        const popupTriggerButton = row.popupTriggerButton({key: param.name});
-                        popupTriggerButton.label = 'abcd';
+
+                        // if (controller.isPopupOpen) {
+                        //     const popup = row.popup({key: param.name, anchorElementKey: panel.region});
+                        //     popup.width = '200px';
+                        //     const popupSelectRow = popup.row({key: 'popup-row'});
+                        //     const popupSelect = popupSelectRow.multiSelect({key: param.name, target: nodeView.id});
+                        //     popupSelect.paramController = controller;
+                        //     popupSelect.layout = 'horizontal';
+                        //     popupSelect.label = param.name;
+                        //     popupSelect.placeholder = param.name;
+                        //     popupSelect.isBold = true;
+                        //     if (this.isFieldDisabled(param, nodeView)) {
+                        //         popupSelect.isDisabled = true
+                        //     }
+                        // }
+
+                        // const popupTriggerButton = row.popupTriggerButton({key: param.name});
+                        // popupTriggerButton.paramController = controller;
+                        // popupTriggerButton.layout = 'horizontal';
+                        // popupTriggerButton.text = controller.selectedValues(popupTriggerButton).join(', ') || 'Select mesh...';
+                        // popupTriggerButton.label = param.name;
                     break;
                 }
             });

@@ -69,7 +69,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
         }
 
         select = (
-            <div style={style} className={`labeled-input ${props.element.layout}`}>
+            <div style={style} className={`ce-labeled-input ${props.element.layout}`}>
                 <div className="label">{props.element.label}</div>
                 <div className="input">
                     {select}

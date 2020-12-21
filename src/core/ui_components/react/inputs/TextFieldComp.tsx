@@ -66,7 +66,7 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
         }
 
         return (
-            <div style={style} className={`labeled-input ${props.element.layout}`}>
+            <div style={style} className={`ce-labeled-input ${props.element.layout}`}>
                 <div className="label">{props.element.label}</div>
                 <div className="input">{textFieldComponent}</div>
             </div>

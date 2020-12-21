@@ -80,18 +80,13 @@ import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
-import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
-import { SvgDefComp } from './react/svg/SvgDefComp';
 import { UI_Factory } from './UI_Factory';
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { CheckboxComp } from './react/inputs/CheckboxComp';
-import { UI_Popup } from './elements/surfaces/UI_Popup';
-import { PopupComp } from './react/surfaces/popup/PopupComp';
-import { UI_MultiSelect } from './elements/UI_MultiSelect';
-import { MultiSelectComp } from './react/inputs/MultiSelectComp';
-import { UI_PopupTriggerButton } from './elements/UI_PopupTriggerButton';
-import { PopupTriggerButtonComp } from './react/inputs/PopupTriggerButtonComp';
+import { MultiSelectTriggerComp } from './react/inputs/popup_multiselect/MultiSelectTriggerComp';
+import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
+import { MultiSelectPopupComp } from './react/inputs/popup_multiselect/MultiSelectPopupComp';
 
 export class UI_Builder {
 
@@ -116,7 +111,7 @@ export class UI_Builder {
             panel.renderer.renderInto(accordion);
             
 
-            return this.buildElement(accordion);
+            return this.buildElement(accordion, layout);
         } else if (panel.region === UI_Region.Dialog) {
             const dialog = UI_Factory.dialog({ controller: panel.controller });
             dialog.title = panel.displayName;
@@ -124,27 +119,27 @@ export class UI_Builder {
 
             panel.renderer.renderInto(dialog);
             
-            return this.buildElement(dialog);
+            return this.buildElement(dialog, undefined);
         } else if (panel.region === UI_Region.Canvas1) {
             const layout = UI_Factory.layout({ controller: panel.controller, key: panel.region });
             const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer.renderInto(canvas);
 
-            return this.buildElement(layout);
+            return this.buildElement(layout, undefined);
         } else if (panel.region === UI_Region.Canvas2) {
             const layout = UI_Factory.layout({ controller: panel.controller });
             const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
             
             panel.renderer && panel.renderer.renderInto(canvas);
 
-            return this.buildElement(layout);
+            return this.buildElement(layout, undefined);
         } else {
             const layout = UI_Factory.layout({ controller: panel.controller });
             
             panel.renderer.renderInto(layout);
 
-            return this.buildElement(layout);
+            return this.buildElement(layout, undefined);
         }
     }
 
@@ -183,14 +178,6 @@ export class UI_Builder {
                     this.svgMarkers.push(marker);
                     break;
                 }
-            case UI_ElementType.SvgDef:
-                const def = element as UI_SvgDefs;
-                const children = this.buildChildren(element);
-                this.isDefsSection = true;
-                const markers = this.svgMarkers.map(marker => this.buildElement(marker));
-                const defComp = <SvgDefComp registry={this.registry} element={def}>{}</SvgDefComp>
-                this.isDefsSection = false;
-                return defComp;
             case UI_ElementType.SvgCanvas:
             case UI_ElementType.HtmlCanvas:
                 return this.buildSvgCanvas(element as UI_SvgCanvas | UI_HtmlCanvas);
@@ -208,14 +195,11 @@ export class UI_Builder {
                 return <GizmoLayerComp registry={this.registry} element={gizmoLayer}>{this.buildChildren(element)}</GizmoLayerComp>
             case UI_ElementType.ToolbarDropdown:
                 const toolbarDropdown = element as UI_ToolbarDropdown;
-                const headerComp = toolbarDropdown._header && this.buildElement(toolbarDropdown._header);
+                const headerComp = toolbarDropdown._header && this.buildElement(toolbarDropdown._header, toolbarDropdown);
                 return <ToolbarDropdownComp registry={this.registry} header={headerComp} element={toolbarDropdown}>{this.buildChildren(element)}</ToolbarDropdownComp>
             case UI_ElementType.ToolbarDropdownHeader:
                 const toolbarDropdownHeader = element as UI_ToolDropdownHeader;
                 return <ToolDropdownHeaderComp registry={this.registry} element={toolbarDropdownHeader}>{this.buildChildren(element)}</ToolDropdownHeaderComp>;
-            case UI_ElementType.Popup:
-                const popup = element as UI_Popup;
-                return <PopupComp registry={this.registry} element={popup}>{this.buildChildren(element)}</PopupComp>;
         }
     }
 
@@ -224,16 +208,16 @@ export class UI_Builder {
             if ((child as UI_Container).children !== undefined) {
                 return this.buildContainer(child as UI_Container);
             } else {
-                return this.buildLeaf(child);
+                return this.buildLeaf(child, element);
             }
         });
     }
 
-    private buildElement(element: UI_Element): JSX.Element {
+    private buildElement(element: UI_Element, parent: UI_Element): JSX.Element {
         if ((element as UI_Container).children !== undefined) {
             return this.buildContainer(element as UI_Container);
         } else {
-            return this.buildLeaf(element);
+            return this.buildLeaf(element, parent);
         }
     }
 
@@ -247,7 +231,7 @@ export class UI_Builder {
         let dropLayer: JSX.Element = null;
 
         if (canvas._dropLayer) {
-            dropLayer = this.buildLeaf(canvas._dropLayer);
+            dropLayer = this.buildLeaf(canvas._dropLayer, canvas);
         }
 
         let gizmoLayer: JSX.Element = null;
@@ -262,7 +246,7 @@ export class UI_Builder {
         }
 
         this.isDefsSection = true;
-        const markers = this.svgMarkers.map(marker => this.buildElement(marker));
+        const markers = this.svgMarkers.map(marker => this.buildElement(marker, canvas));
         this.isDefsSection = false;
 
         return <CanvasComp key={canvas.key} registry={this.registry} markers={markers} toolbar={toolbar} dropLayer={dropLayer} gizmoLayer={gizmoLayer} element={canvas}>{children}</CanvasComp>;
@@ -277,13 +261,13 @@ export class UI_Builder {
             switch((child as UI_Tool | UI_ActionIcon | UI_IconSeparator | UI_ToolbarDropdown).placement) {
                 case 'left':
                 default:
-                    toolsLeft.push(this.buildElement(child));
+                    toolsLeft.push(this.buildElement(child, uiToolbar));
                 break;
                 case 'middle':
-                    toolsMiddle.push(this.buildElement(child));
+                    toolsMiddle.push(this.buildElement(child, uiToolbar));
                 break;
                 case 'right':
-                    toolsRight.push(this.buildElement(child));
+                    toolsRight.push(this.buildElement(child, uiToolbar));
                 break;
             }
         });
@@ -292,24 +276,24 @@ export class UI_Builder {
     }
 
     private buildTool(uiTool: UI_Tool) {
-        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip) : null;
+        const tooltip = uiTool._tooltip ? this.buildLeaf(uiTool._tooltip, uiTool) : null;
 
         return <ToolComp registry={this.registry} key={uiTool.uniqueId} tooltip={tooltip} element={uiTool}/>; 
     }
 
     private buildActionIcon(uiActionIcon: UI_ActionIcon) {
-        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip) : null;
+        const tooltip = uiActionIcon._tooltip ? this.buildLeaf(uiActionIcon._tooltip, uiActionIcon) : null;
 
         return <ActionIconComp registry={this.registry} key={uiActionIcon.uniqueId} tooltip={tooltip} element={uiActionIcon}/>; 
     }
 
     private buildIcon(uiIcon: UI_Icon) {
-        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip) : null;
+        const tooltip = uiIcon._tooltip ? this.buildLeaf(uiIcon._tooltip, uiIcon) : null;
 
         return <IconComp registry={this.registry} key={uiIcon.uniqueId} tooltip={tooltip} element={uiIcon}/>; 
     }
 
-    private buildLeaf(element: UI_Element): JSX.Element {
+    private buildLeaf(element: UI_Element, parentElement: UI_Element): JSX.Element {
         switch(element.elementType) {
             case UI_ElementType.Text:
                 const text = element as UI_Text;
@@ -326,12 +310,13 @@ export class UI_Builder {
             case UI_ElementType.Select:
                 const select = element as UI_Select;
                 return <SelectComp registry={this.registry} element={select}/>;
-            case UI_ElementType.MultiSelect:
-                const multiSelect = element as UI_MultiSelect;
-                return <MultiSelectComp registry={this.registry} element={multiSelect}/>;
-            case UI_ElementType.PopupTriggerButton:
-                const popupTriggerButton = element as UI_PopupTriggerButton;
-                return <PopupTriggerButtonComp registry={this.registry} element={popupTriggerButton}/>;
+            case UI_ElementType.PopupMultiSelect:
+                const popupMultiSelect = element as UI_PopupMultiSelect;
+                if (popupMultiSelect.popupAnchorParent === parentElement) {
+                    return <MultiSelectPopupComp registry={this.registry} element={popupMultiSelect}/>;
+                } else {
+                    return <MultiSelectTriggerComp registry={this.registry} element={popupMultiSelect}/>;
+                }
             case UI_ElementType.FileUpload:
                 const fileUpload = element as UI_FileUpload;
                 return <FileUploadComp registry={this.registry} element={fileUpload}/>;

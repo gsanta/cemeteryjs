@@ -11,7 +11,6 @@ import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ElementConfig } from './UI_Element';
-import { UI_Popup } from './surfaces/UI_Popup';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
@@ -46,12 +45,8 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.select(this, config);
     }
 
-    multiSelect(config: {key: string, target?: string}) {
-        return UI_Factory.multiSelect(this, config);
-    }
-
-    popupTriggerButton(config: {key: string, target?: string}) {
-        return UI_Factory.popupTriggerButton(this, config);
+    popupMultiSelect(config: UI_ElementConfig & { anchorElementKey: string }) {
+        return UI_Factory.popupMultiSelect(this, config);
     }
 
     fileUpload(key: string) {
@@ -84,9 +79,5 @@ export class UI_DefaultContainer extends UI_Container {
 
     icon(config: UI_ElementConfig): UI_Icon {
         return UI_Factory.icon(this, config);
-    }
-
-    popup(config: UI_ElementConfig & { anchorElementKey: string }): UI_Popup {
-        return UI_Factory.popup(this, config)
     }
 }

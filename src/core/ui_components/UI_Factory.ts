@@ -40,13 +40,10 @@ import { UI_TextField } from './elements/UI_TextField';
 import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
-import { UI_SvgDefs } from './elements/svg/UI_SvgDef';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { GlobalControllerProps } from '../plugin/controller/FormController';
 import { UI_Checkbox } from './elements/UI_Checkbox';
-import { UI_Popup } from './elements/surfaces/UI_Popup';
-import { UI_MultiSelect } from './elements/UI_MultiSelect';
-import { UI_PopupTriggerButton } from './elements/UI_PopupTriggerButton';
+import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
 
 export class UI_Factory {
 
@@ -63,19 +60,6 @@ export class UI_Factory {
         const dialog = new UI_Dialog({controller: config.controller, ...config, key: GlobalControllerProps.CloseDialog});
 
         return dialog;
-    }
-
-    static popup(parent: UI_Container, config: UI_ElementConfig & { anchorElementKey: string }): UI_Popup {
-        const anchorParent = this.findParentWithKey(parent, config.anchorElementKey);
-        const element = new UI_Popup({controller: config.controller || parent.controller, parent: anchorParent, ...config});
-
-
-        anchorParent.children.push(element);
-
-        element.canvasPanel = parent.canvasPanel;
-        element.panel = parent.panel;
-
-        return element;
     }
 
     static row(parent: UI_Container, config: UI_ElementConfig): UI_Row {
@@ -214,19 +198,12 @@ export class UI_Factory {
         return element;
     }
 
-    static multiSelect(parent: UI_Container, config: UI_ElementConfig & { target?: string}) {
-        const element = new UI_MultiSelect({controller: config.controller || parent.controller, parent, ...config});
+    static popupMultiSelect(parent: UI_Container, config: UI_ElementConfig & { anchorElementKey: string }): UI_PopupMultiSelect {
+        const anchorParent = this.findParentWithKey(parent, config.anchorElementKey);
+        const element = new UI_PopupMultiSelect({controller: config.controller || parent.controller, parent, ...config}, anchorParent);
 
         parent.children.push(element);
-        element.canvasPanel = parent.canvasPanel;
-
-        return element;
-    }
-
-    static popupTriggerButton(parent: UI_Container, config: UI_ElementConfig & { target?: string}) {
-        const element = new UI_PopupTriggerButton({controller: config.controller || parent.controller, parent, ...config});
-
-        parent.children.push(element);
+        anchorParent.children.push(element);
         element.canvasPanel = parent.canvasPanel;
 
         return element;
@@ -361,15 +338,6 @@ Id
         
         element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
-
-        parent.children.push(element);
-        element.canvasPanel = parent.canvasPanel;
-        
-        return element;
-    }
-
-    static svgDef(parent: UI_Container, config: UI_ElementConfig): UI_SvgDefs {
-        const element = new UI_SvgDefs({ controller: config.controller || parent.controller, parent, ...config});
 
         parent.children.push(element);
         element.canvasPanel = parent.canvasPanel;

@@ -6,7 +6,7 @@ import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
 import { NodeObj } from '../objs/node_obj/NodeObj';
-import { NodeParam } from "../objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField } from "../objs/node_obj/NodeParam";
 import { NodePortView, NodePortViewType } from "./child_views/NodePortView";
 import { View, ViewJson } from "./View";
 
@@ -24,6 +24,37 @@ const HEADER_HIGHT = 30;
 const PORT_HEIGHT = 20;
 const INPUT_HEIGHT = 35;
 const NODE_PADDING = 10;
+
+function getInputHeight(nodeParam: NodeParam) {
+    
+    switch(nodeParam.field) {
+        case NodeParamField.MultiList:
+            return 50;
+        default:
+            return 35;
+    }
+}
+
+export class NodeHeightCalc {
+    static getFieldHeights(nodeView: NodeView) {
+        const fieldParams = NodeParam.getFieldParams(nodeView.getObj());
+        let sum = NODE_PADDING * 2;
+
+        fieldParams.forEach(param => sum += this.getFieldHeight(param));
+
+        return sum;
+    }
+
+    static getFieldHeight(nodeParam: NodeParam): number {
+
+        switch(nodeParam.field) {
+            case NodeParamField.MultiList:
+                return 50;
+            default:
+                return 35;
+        }
+    }
+}
 
 export class NodeView extends View {
     readonly  viewType = NodeViewType;
@@ -68,9 +99,8 @@ export class NodeView extends View {
         const outputPortLen = NodeParam.getStandaloneOutputPorts(this.obj).length;
         const PORTS_HEIGHT = inputPortLen > outputPortLen ? inputPortLen * PORT_HEIGHT : outputPortLen * PORT_HEIGHT;
         this.paramsYPosStart = HEADER_HIGHT + PORTS_HEIGHT + NODE_PADDING;
-        const fieldParams = NodeParam.getFieldParams(this.obj);
-        const height = HEADER_HIGHT + PORTS_HEIGHT + INPUT_HEIGHT * (fieldParams.length ? fieldParams.length : 1) + NODE_PADDING * 2;
-        this.bounds.setHeight(height);
+        const inputFieldHeights = NodeHeightCalc.getFieldHeights(this);
+        this.bounds.setHeight(inputFieldHeights + HEADER_HIGHT + PORTS_HEIGHT);
 
         this.initStandalonePortPositions();
         this.initParamRelatedJoinPointPositions();

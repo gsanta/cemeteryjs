@@ -28,7 +28,7 @@ export function CheckboxComp(props: UI_ComponentProps<UI_Checkbox>) {
         }
 
         return (
-            <div style={style} className={`labeled-input ${props.element.layout}`}>
+            <div style={style} className={`ce-labeled-input ${props.element.layout}`}>
                 <div className="label">{props.element.label}</div>
                 <div className="input">{checkboxComponent}</div>
             </div>
