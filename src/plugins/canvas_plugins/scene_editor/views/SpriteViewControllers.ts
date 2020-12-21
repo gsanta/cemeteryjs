@@ -67,11 +67,8 @@ export class ManageSpriteSheetsController extends PropController<string> {
 }
 
 export class ScaleXController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [SpriteViewControllerParam.ScaleX]; }
@@ -111,11 +108,8 @@ export class ScaleXController extends PropController<string> {
 
 
 export class ScaleYController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [SpriteViewControllerParam.ScaleY]; }

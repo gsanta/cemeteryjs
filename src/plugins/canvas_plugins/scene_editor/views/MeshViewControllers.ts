@@ -112,13 +112,11 @@ export class LayerController extends PropController<number> {
 // }
 
 export class ScaleController extends PropController<string> {
-    private registry: Registry;
     private axis: CanvasAxis;
     private param: MeshViewControllerParam;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super(registry);
-        this.registry = registry;
         this.axis = axis;
         this.param = axis === CanvasAxis.X ? MeshViewControllerParam.ScaleX : axis === CanvasAxis.Y ? MeshViewControllerParam.ScaleY : MeshViewControllerParam.ScaleZ;
     }
@@ -158,13 +156,11 @@ export class ScaleController extends PropController<string> {
 }
 
 export class RotationController extends PropController<string> {
-    private registry: Registry;
     private axis: CanvasAxis;
     private param: MeshViewControllerParam;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super(registry);
-        this.registry = registry;
         this.axis = axis;
         this.param = axis === CanvasAxis.X ? MeshViewControllerParam.RotX : axis === CanvasAxis.Y ? MeshViewControllerParam.RotY : MeshViewControllerParam.RotZ;
     }
@@ -212,13 +208,11 @@ export class RotationController extends PropController<string> {
 }
 
 export class PositionController extends PropController<string> {
-    private registry: Registry;
     private axis: CanvasAxis;
     private param: MeshViewControllerParam;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super(registry);
-        this.registry = registry;
         this.axis = axis;
         this.param = axis === CanvasAxis.X ? MeshViewControllerParam.PosX : axis === CanvasAxis.Y ? MeshViewControllerParam.PosY : MeshViewControllerParam.PosZ;
     }
@@ -314,11 +308,8 @@ export class CloneController extends PropController {
 }
 
 export class ModelController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [MeshViewControllerParam.Model]; }
@@ -362,11 +353,8 @@ export class ModelController extends PropController<string> {
 }
 
 export class WidthController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [MeshViewControllerParam.Width]; }
@@ -403,11 +391,8 @@ export class WidthController extends PropController<string> {
 }
 
 export class HeightController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [MeshViewControllerParam.Height]; }
@@ -444,11 +429,8 @@ export class HeightController extends PropController<string> {
 }
 
 export class DepthController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [MeshViewControllerParam.Depth]; }
@@ -486,11 +468,8 @@ export class DepthController extends PropController<string> {
 }
 
 export class ColorController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [MeshViewControllerParam.Color]; }
@@ -526,11 +505,8 @@ export class ColorController extends PropController<string> {
 }
 
 export class MeshVisibilityController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [MeshViewControllerParam.Visibility]; }

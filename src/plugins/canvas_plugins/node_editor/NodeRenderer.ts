@@ -47,7 +47,10 @@ export class NodeRenderer implements ViewRenderer {
                         }
                     break;
                     case NodeParamField.List:
+                        const listController = <MultiSelectController> nodeView.controller.param[param.name];
+
                         const select = row.select({key: param.name, target: nodeView.id});
+                        select.paramController = listController;
                         select.layout = 'horizontal';
                         select.label = param.name;
                         select.placeholder = param.name;
@@ -72,28 +75,6 @@ export class NodeRenderer implements ViewRenderer {
                         popupMultiSelect.paramController = controller;
                         popupMultiSelect.label = param.name;
                         popupMultiSelect.placeholder = 'Select mesh...';
-
-
-                        // if (controller.isPopupOpen) {
-                        //     const popup = row.popup({key: param.name, anchorElementKey: panel.region});
-                        //     popup.width = '200px';
-                        //     const popupSelectRow = popup.row({key: 'popup-row'});
-                        //     const popupSelect = popupSelectRow.multiSelect({key: param.name, target: nodeView.id});
-                        //     popupSelect.paramController = controller;
-                        //     popupSelect.layout = 'horizontal';
-                        //     popupSelect.label = param.name;
-                        //     popupSelect.placeholder = param.name;
-                        //     popupSelect.isBold = true;
-                        //     if (this.isFieldDisabled(param, nodeView)) {
-                        //         popupSelect.isDisabled = true
-                        //     }
-                        // }
-
-                        // const popupTriggerButton = row.popupTriggerButton({key: param.name});
-                        // popupTriggerButton.paramController = controller;
-                        // popupTriggerButton.layout = 'horizontal';
-                        // popupTriggerButton.text = controller.selectedValues(popupTriggerButton).join(', ') || 'Select mesh...';
-                        // popupTriggerButton.label = param.name;
                     break;
                 }
             });

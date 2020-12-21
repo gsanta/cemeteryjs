@@ -1,5 +1,5 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
-import { FormController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { FormController, ParamControllers, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
@@ -20,11 +20,8 @@ export enum LightViewControllerParam {
 }
 
 export class LightYPosController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
     
     acceptedProps() { return [LightViewControllerParam.LightYPos]; }
@@ -61,8 +58,6 @@ export class LightYPosController extends PropController<string> {
 
 export class LightDirController extends PropController<string> {
     private prop: LightViewControllerParam;
-    private registry: Registry;
-
     acceptedProps() { return [this.prop]; }
 
     constructor(registry: Registry, axis: CanvasAxis) {
@@ -137,11 +132,8 @@ export class LightDirController extends PropController<string> {
 }
 
 export class LightAngleController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
     
     acceptedProps() { return [LightViewControllerParam.LightAngle]; }
@@ -175,11 +167,8 @@ export class LightAngleController extends PropController<string> {
 }
 
 export class LightDiffuseColorController extends PropController<string> {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return [LightViewControllerParam.LightColorDiffuse]; }
@@ -237,4 +226,13 @@ export class LightParentMeshController extends PropController<string> {
             context.registry.services.render.reRender(UI_Region.Sidepanel);
         }
     }
+}
+
+export class LightViewControllers extends ParamControllers {
+    constructor(registry: Registry) {
+        super();
+        this.parent = new LightParentMeshController(registry);
+    }
+
+    parent: LightParentMeshController;
 }

@@ -1,11 +1,10 @@
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { ParamControllers } from "../../../../core/plugin/controller/FormController";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { MultiMeshController } from "./MeshNode";
+import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { Registry } from "../../../../../core/Registry";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { FilterMeshNodeControllers } from "./FilterMeshNodeControllers";
 
 export const MeshNodeType = 'mesh-node-obj';
 
@@ -24,7 +23,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamControllers(new FilterMeshControllers(this.registry, obj));
+        nodeView.addParamControllers(new FilterMeshNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -41,7 +40,6 @@ export class FilterMeshNode extends AbstractNodeFactory {
 }
 
 export class FilterMeshNodeParams extends NodeParams {
-
     constructor() {
         super();
 
@@ -102,15 +100,4 @@ class OutputParam implements NodeParam {
             return inputMesh;
         } 
     }
-}
-
-
-export class FilterMeshControllers extends ParamControllers {
-
-    constructor(registry: Registry, nodeObj: NodeObj) {
-        super();
-        this.mesh = new MultiMeshController(registry, nodeObj);
-    }
-
-    readonly mesh: MultiMeshController;
 }

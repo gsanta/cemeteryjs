@@ -54,39 +54,35 @@ export class MeshNodeParams extends NodeParams {
 
 export class MeshController extends PropController<string> {
     private nodeObj: NodeObj<MeshNodeParams>;
-    private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj<MeshNodeParams>) {
         super(registry);
         this.nodeObj = nodeObj;
-        this.registry = registry;
     }
 
     acceptedProps() { return ['mesh']; }
 
-    values(context: PropContext) {
-        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(meshView => meshView.id)
+    values() {
+        return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshView => meshView.id)
     }
 
-    defaultVal() {
+    val() {
         return this.nodeObj.param.mesh.val ? this.nodeObj.param.mesh.val.id : undefined;
     }
 
-    change(val: string, context: PropContext) {
+    change(val: string) {
         this.nodeObj.param.mesh.val = <MeshObj> this.registry.stores.objStore.getById(val);
-        context.registry.services.history.createSnapshot();
-        context.registry.services.render.reRender(UI_Region.Canvas1);
+        this.registry.services.history.createSnapshot();
+        this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
 export class MultiMeshController extends MultiSelectController {
     private nodeObj: NodeObj;
-    private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super(registry);
         this.nodeObj = nodeObj;
-        this.registry = registry;
     }
 
     acceptedProps() { return ['mesh']; }

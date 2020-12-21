@@ -1,21 +1,16 @@
-import { NodeObj, NodeObjType } from "../../../core/models/objs/node_obj/NodeObj";
-import { NodeView, NodeViewType } from "../../../core/models/views/NodeView";
+import { NodeView } from "../../../core/models/views/NodeView";
 import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
-import { UI_ListItem } from "../../../core/ui_components/elements/UI_ListItem";
 
 export enum NodeEditorSettingsProps {
     DragNode = 'DragNode'
 }
 
 export class DragNodeController extends PropController {
-    private registry: Registry;
-
     constructor(registry: Registry) {
         super(registry);
-        this.registry = registry;
     }
 
     acceptedProps() { return this.registry.data.helper.node.getRegisteredNodeTypes() }

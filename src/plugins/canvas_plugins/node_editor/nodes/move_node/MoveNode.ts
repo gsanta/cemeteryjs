@@ -1,15 +1,12 @@
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { MeshView } from "../../scene_editor/views/MeshView";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { MeshController } from "./MeshNode";
+import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { Registry } from "../../../../../core/Registry";
+import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { MeshSpeedController, MoveNodeControllers } from "./MoveNodeControllers";
 
 export const MoveNodeType = 'move-node-obj';
 
@@ -28,7 +25,8 @@ export class MoveNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshMoveController(this.registry, nodeView.getObj()), new MeshSpeedController(this.registry, nodeView.getObj()));
+        nodeView.addParamController(new MeshSpeedController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new MoveNodeControllers(this.registry, obj))
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -102,54 +100,4 @@ export class MoveNodeExecutor extends AbstractNodeExecutor<MoveNodeParams> {
     }
 
     executeStop() {}
-}
-
-export class MeshMoveController extends PropController<string> {
-    private nodeObj: NodeObj<MoveNodeParams>;
-
-    constructor(registry: Registry, nodeObj: NodeObj) {
-        super(registry);
-        this.nodeObj = nodeObj;
-    }
-
-    acceptedProps() { return ['move']; }
-
-    values() {
-        return ['forward', 'backward'];
-    }
-
-    defaultVal() {
-        return this.nodeObj.param.move.val;
-    }
-
-    change(val, context) {
-        context.updateTempVal(val);
-        this.nodeObj.param.move.val = val;
-        context.registry.services.render.reRender(UI_Region.Canvas1);
-    }
-}
-
-export class MeshSpeedController extends PropController<string> {
-    private nodeObj: NodeObj<MoveNodeParams>;
-
-    constructor(registry: Registry, nodeObj: NodeObj) {
-        super(registry);
-        this.nodeObj = nodeObj;
-    }
-
-    acceptedProps() { return ['speed']; }
-
-    defaultVal() {
-        return this.nodeObj.param.speed.val;
-    }
-
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Canvas1);
-    }
-
-    blur(context: PropContext) {
-        this.nodeObj.setParam = context.clearTempVal();
-        context.registry.services.render.reRenderAll();
-    }
 }

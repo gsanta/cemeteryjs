@@ -1,11 +1,11 @@
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { MeshController } from "./MeshNode";
+import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { Registry } from "../../../../../core/Registry";
+import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { RemoveMeshNodeControllers } from "./RemoveMeshNodeControllers";
 
 export const RemoveMeshNodeType = 'remove-mesh-node-obj';
 
@@ -24,7 +24,7 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new RemoveMeshNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -65,6 +65,16 @@ export class RemoveMeshNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Pull
+        },
+        toJson: () => {
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: this.mesh.val ? this.mesh.val.id : undefined
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
         }
     }
 }

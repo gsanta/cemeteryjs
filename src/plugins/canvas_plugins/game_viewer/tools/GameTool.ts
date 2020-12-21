@@ -1,7 +1,7 @@
 import { ToolAdapter } from "../../../../core/plugin/tools/ToolAdapter";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
 import { Registry } from "../../../../core/Registry";
-import { KeyboardNodeType } from "../../node_editor/nodes/KeyboardNode";
+import { KeyboardNodeType } from "../../node_editor/nodes/keyboard_node/KeyboardNode";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 
 export const GameToolId = 'game-tool';

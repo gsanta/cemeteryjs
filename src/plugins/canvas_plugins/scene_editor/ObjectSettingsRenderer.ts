@@ -2,7 +2,7 @@ import { IRenderer } from "../../../core/plugin/IRenderer";
 import { Registry } from "../../../core/Registry";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
 import { LightViewType } from "./views/LightView";
-import { LightViewControllerParam } from "./views/LightViewControllers";
+import { LightViewControllerParam, LightViewControllers } from "./views/LightViewControllers";
 import { MeshSettingsRenderer } from "./views/MeshSettingsRenderer";
 import { MeshViewType } from "./views/MeshView";
 import { PathView, PathViewType } from "./views/PathView";
@@ -13,10 +13,12 @@ import { SpriteViewControllerParam } from "./views/SpriteViewControllers";
 export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
     private registry: Registry;
     private meshSettingsRenderer: MeshSettingsRenderer;
+    private lightViewControllers: LightViewControllers;
 
     constructor(registry: Registry) {
         this.registry = registry;
         this.meshSettingsRenderer = new MeshSettingsRenderer(registry);
+        this.lightViewControllers = new LightViewControllers(registry);
     }
 
     renderInto(layout: UI_Layout): void {
@@ -127,6 +129,7 @@ export class ObjectSettigsRenderer implements IRenderer<UI_Layout> {
         row = layout.row({ key: LightViewControllerParam.LightParentMesh });
 
         const select = row.select({key: LightViewControllerParam.LightParentMesh});
+        select.paramController = this.lightViewControllers.parent;
         select.layout = 'horizontal';
         select.label = 'Parent';
         select.placeholder = 'Select parent';

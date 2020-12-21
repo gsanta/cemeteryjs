@@ -16,7 +16,7 @@ export class NodeObjDeserialize {
         this.nodeObj.name = json.name;
         this.nodeObj.type = json.type;
         json.params.forEach(jsonParam => {
-            const param = <NodeParam> this.nodeObj.param[json.name];
+            const param = <NodeParam> this.nodeObj.param[jsonParam.name];
             param && param.fromJson ? param.fromJson(registry, jsonParam) : this.defaultNodeParamDeserializer(jsonParam)
         });
         this.nodeObj.initParams();
