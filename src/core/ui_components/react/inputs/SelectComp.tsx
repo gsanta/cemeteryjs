@@ -17,7 +17,7 @@ export interface DropdownProps extends Focusable {
 }
 
 export function SelectComp(props: UI_ComponentProps<UI_Select>) {
-    const values: string[] = props.element.paramController.values(props.registry) || [];
+    const values: string[] = props.element.paramController.values(null, null) || [];
 
     const options = values.map(val => {
         return <option key={val} value={val}>{val}</option>
@@ -34,7 +34,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
 
     props.element.inputWidth && (selectStyle.width = props.element.inputWidth);
 
-    const val = props.element.paramController.val(props.registry);
+    const val = props.element.paramController.val();
 
     let select = (
         <select
@@ -42,7 +42,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
             className="dropdown-component"
             style={selectStyle}
             onChange={(e) => {
-                props.element.paramController.change(e.target.value, props.registry);
+                props.element.paramController.change(e.target.value, null, null);
             }}
             onMouseDown={(e) => {
                 e.stopPropagation();
@@ -75,7 +75,7 @@ export function SelectComp(props: UI_ComponentProps<UI_Select>) {
                 <div className="label">{props.element.label}</div>
                 <div className="input">
                     {select}
-                    {props.element.clearable && val ? <ClearIconComponent onClick={() => props.element.paramController.change(undefined, props.registry)}/> : null}
+                    {props.element.clearable && val ? <ClearIconComponent onClick={() => props.element.paramController.change(undefined, null, null)}/> : null}
                 </div>
             </div>
         )

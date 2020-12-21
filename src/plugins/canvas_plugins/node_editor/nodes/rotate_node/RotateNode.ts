@@ -1,14 +1,12 @@
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropController } from '../../../../core/plugin/controller/FormController';
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { MeshController } from "./MeshNode";
+import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { Registry } from "../../../../../core/Registry";
+import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { MeshRotateController, RotateNodeControllers } from "./RotateNodeControllers";
 
 export const RotateNodeType = 'rotate-node-obj';
 
@@ -27,7 +25,8 @@ export class RotateNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()), new MeshRotateController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new RotateNodeControllers(this.registry, obj));
+        nodeView.addParamController(new MeshRotateController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -88,29 +87,4 @@ export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
     }
 
     executeStop() {}
-}
-
-export class MeshRotateController extends PropController<string> {
-    private nodeObj: NodeObj<RotateNodeParams>;
-
-    constructor(registry: Registry, nodeObj: NodeObj) {
-        super(registry);
-        this.nodeObj = nodeObj;
-    }
-
-    acceptedProps() { return ['rotate']; }
-
-    values() {
-        return ['left', 'right'];
-    }
-
-    defaultVal() {
-        return this.nodeObj.param.rotate.val;
-    }
-
-    change(val, context) {
-        context.updateTempVal(val);
-        this.nodeObj.param.rotate.val = val;
-        context.registry.services.render.reRender(UI_Region.Canvas1);
-    }
 }

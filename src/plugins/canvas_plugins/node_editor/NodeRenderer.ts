@@ -37,7 +37,11 @@ export class NodeRenderer implements ViewRenderer {
                 switch(param.field) {
                     case NodeParamField.NumberField:
                     case NodeParamField.TextField:
+                        const inputfieldController = nodeView.controller.param[param.name];
+
                         const textField = row.textField({key: param.name, target: nodeView.id});
+                        textField.paramController = inputfieldController;
+
                         textField.layout = 'horizontal';
                         textField.type = param.field === NodeParamField.TextField ? 'text' : 'number';
                         textField.label = param.name;
@@ -47,7 +51,7 @@ export class NodeRenderer implements ViewRenderer {
                         }
                     break;
                     case NodeParamField.List:
-                        const listController = <MultiSelectController> nodeView.controller.param[param.name];
+                        const listController = nodeView.controller.param[param.name];
 
                         const select = row.select({key: param.name, target: nodeView.id});
                         select.paramController = listController;

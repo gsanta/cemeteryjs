@@ -1,11 +1,12 @@
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { Registry } from "../../../../core/Registry";
-import { INodeListener } from "../node/INodeListener";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { MeshController } from "./MeshNode";
+import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { Registry } from "../../../../../core/Registry";
+import { INodeListener } from "../../node/INodeListener";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { MeshController } from "../MeshNode";
+import { TriggerZoneNodeControllers } from "./TriggerZoneNodeControllers";
 
 export const TriggerZoneNodeType = 'trigger-zone-node-obj';
 
@@ -24,7 +25,7 @@ export class TriggerZoneNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new TriggerZoneNodeControllers(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;

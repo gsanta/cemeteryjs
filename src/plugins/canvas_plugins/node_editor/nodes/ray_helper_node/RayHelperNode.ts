@@ -1,13 +1,14 @@
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParamField, PortDirection, PortDataFlow, NodeParam } from "../../../../core/models/objs/node_obj/NodeParam";
-import { RayObj } from "../../../../core/models/objs/RayObj";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { RayCasterNodeParams } from "./RayCasterNode";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParamField, PortDirection, PortDataFlow, NodeParam } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { RayObj } from "../../../../../core/models/objs/RayObj";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { Registry } from "../../../../../core/Registry";
+import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { RayCasterNodeParams } from "../ray_caster_node/RayCasterNode";
+import { RemoveTimerController } from "./RayHelperNodeControllers";
 
 export const RayHelperNodeType = 'ray-helper-node-obj';
 
@@ -82,29 +83,4 @@ export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodePar
     }
 
     executeStop() {}
-}
-
-class RemoveTimerController extends PropController<string> {
-    private nodeObj: NodeObj<RayHelperNodeParams>;
-
-    constructor(registry: Registry, nodeObj: NodeObj) {
-        super(registry);
-        this.nodeObj = nodeObj;
-    }
-
-    acceptedProps() { return ['remove']; }
-
-    defaultVal() {
-        return this.nodeObj.param.remove.val;
-    }
-
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Canvas1);
-    }
-
-    blur(context: PropContext) {
-        this.nodeObj.param.remove.val = context.clearTempVal();
-        context.registry.services.render.reRenderAll();
-    }
 }

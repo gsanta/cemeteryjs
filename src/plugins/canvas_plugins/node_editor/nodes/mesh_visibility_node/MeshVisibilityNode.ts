@@ -1,13 +1,14 @@
-import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodePortObj } from "../../../../core/models/objs/NodePortObj";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../core/services/node/INodeExecutor";
-import { MeshView } from "../../scene_editor/views/MeshView";
-import { AbstractNodeFactory } from "./AbstractNode";
-import { MeshController } from "./MeshNode";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../core/models/objs/node_obj/NodeParam";
+import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodePortObj } from "../../../../../core/models/objs/NodePortObj";
+import { NodeView } from "../../../../../core/models/views/NodeView";
+import { Registry } from "../../../../../core/Registry";
+import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
+import { MeshView } from "../../../scene_editor/views/MeshView";
+import { AbstractNodeFactory } from "../AbstractNode";
+import { MeshController } from "../MeshNode";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { MeshVisibilityNodeControllers } from "./MeshVisibilityNodeControllers";
 
 export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
 
@@ -26,7 +27,7 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new MeshVisibilityNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;

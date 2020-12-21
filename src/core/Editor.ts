@@ -4,15 +4,15 @@ import { FilterMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/filt
 import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/keyboard_node/KeyboardNode';
 import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
 import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshPropertyNode';
-import { MeshVisibilityNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshVisibilityNode';
+import { MeshVisibilityNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_visibility_node/MeshVisibilityNode';
 import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/move_node/MoveNode';
 import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
-import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/RayCasterNode';
-import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/nodes/RayHelperNode';
+import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/ray_caster_node/RayCasterNode';
+import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/nodes/ray_helper_node/RayHelperNode';
 import { RemoveMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/remove_mesh_node/RemoveMeshNode';
-import { RotateNode } from '../plugins/canvas_plugins/node_editor/nodes/RotateNode';
+import { RotateNode } from '../plugins/canvas_plugins/node_editor/nodes/rotate_node/RotateNode';
 import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
-import { TriggerZoneNode } from '../plugins/canvas_plugins/node_editor/nodes/TriggerZoneNode';
+import { TriggerZoneNode } from '../plugins/canvas_plugins/node_editor/nodes/trigger_zone_node/TriggerZoneNode';
 import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
 import { registerNodeListPanel } from '../plugins/canvas_plugins/node_editor/registerNodeListPanel';
 import { registerObjectSettingsPanel } from '../plugins/canvas_plugins/scene_editor/registerObjectSettingsPanel';
@@ -68,16 +68,16 @@ export class Editor {
     
         // nodes
         this.registry.data.helper.node.registerNode(new KeyboardNode(this.registry));
-        this.registry.data.helper.node.registerNode(new AnimationNode(this.registry));
+        // this.registry.data.helper.node.registerNode(new AnimationNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshNode(this.registry));
         this.registry.data.helper.node.registerNode(new MoveNode(this.registry));
         this.registry.data.helper.node.registerNode(new RotateNode(this.registry));
-        this.registry.data.helper.node.registerNode(new PathNode(this.registry));
-        this.registry.data.helper.node.registerNode(new RouteNode(this.registry));
+        // this.registry.data.helper.node.registerNode(new PathNode(this.registry));
+        // this.registry.data.helper.node.registerNode(new RouteNode(this.registry));
         this.registry.data.helper.node.registerNode(new RayCasterNode(this.registry));
         this.registry.data.helper.node.registerNode(new RayHelperNode(this.registry));
         this.registry.data.helper.node.registerNode(new RemoveMeshNode(this.registry));
-        this.registry.data.helper.node.registerNode(new MeshPropertyNode(this.registry));
+        // this.registry.data.helper.node.registerNode(new MeshPropertyNode(this.registry));
         this.registry.data.helper.node.registerNode(new TriggerZoneNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshVisibilityNode(this.registry));
         this.registry.data.helper.node.registerNode(new FilterMeshNode(this.registry));

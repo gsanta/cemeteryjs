@@ -25,7 +25,7 @@ export abstract class PropController<T = any> {
         this.context = new PropContext(registry);
     }
 
-    abstract acceptedProps(context: PropContext, element: UI_Element): string[];
+    acceptedProps(context: PropContext, element: UI_Element): string[] { return []; }
 
     change?(val: T, context: PropContext<any>, element: UI_Element) {}
     click?(context: PropContext<T>, element: UI_Element) {}
