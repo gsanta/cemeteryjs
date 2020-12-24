@@ -1,105 +1,111 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
-import { FormController, ParamControllers, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { FormController, ParamControllers, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
-import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
+import { toDegree } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 import { LightView } from './LightView';
 import { MeshView, MeshViewType } from './MeshView';
 
-export enum LightViewControllerParam {
-    LightYPos = 'light-pos-y',
-    LightAngle = 'LightAngle',
+export class LightViewControllers extends ParamControllers {
+    constructor(registry: Registry) {
+        super();
+        this.posY = new LightYPosController(registry);
+        this.dirX = new LightDirController(registry, CanvasAxis.X);
+        this.dirY = new LightDirController(registry, CanvasAxis.Y);
+        this.dirZ = new LightDirController(registry, CanvasAxis.Z);
+        this.angle = new LightAngleController(registry);
+        this.diffuseColor = new LightDiffuseColorController(registry);
+        this.parent = new LightParentMeshController(registry);
+    }
 
-    LightDirX = 'light-dir-x',
-    LightDirY = 'light-dir-y',
-    LightDirZ = 'light-dir-z',
-    LightColorDiffuse = 'light-color-diffuse',
-    LightParentMesh = 'light-parent-mesh'
+    posY: LightYPosController;
+    dirX: LightDirController;
+    dirY: LightDirController;
+    dirZ: LightDirController;
+    angle: LightAngleController;
+    diffuseColor: LightDiffuseColorController;
+    parent: LightParentMeshController;
 }
 
-export class LightYPosController extends PropController<string> {
+export class LightYPosController extends PropController {
+    private tempVal: string;
+
     constructor(registry: Registry) {
         super(registry);
     }
     
-    acceptedProps() { return [LightViewControllerParam.LightYPos]; }
-
-    defaultVal(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-
-        return lightView.getObj().getPosition().y;
+    val() {
+        if (this.tempVal) {
+            return this.tempVal;
+        } else {
+            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+    
+            return lightView.getObj().getPosition().y;
+        }
     }
 
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    blur(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
+    blur() {
+        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
         
         try {
-            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
+            if (this.tempVal !== undefined && this.tempVal !== "") {
                 const pos = lightView.getObj().getPosition();
-                const yPos = parseFloat(context.getTempVal());                
+                const yPos = parseFloat(this.tempVal);                
                 lightView.getObj().setPosition(new Point_3(pos.x, yPos, pos.z));
-                context.registry.services.history.createSnapshot();
+                this.registry.services.history.createSnapshot();
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
         } finally {
-            context.clearTempVal();
-            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+            this.tempVal = undefined;
+            this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
     }
 }
 
-export class LightDirController extends PropController<string> {
-    private prop: LightViewControllerParam;
-    acceptedProps() { return [this.prop]; }
+export class LightDirController extends PropController {
+    private tempVal: string;
+    private axis: CanvasAxis;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super(registry);
-        this.registry = registry;
-        switch(axis) {
-            case CanvasAxis.X:
-                this.prop = LightViewControllerParam.LightDirX;
-                break;
-            case CanvasAxis.Y:
-                this.prop = LightViewControllerParam.LightDirY;
-                break;
-            case CanvasAxis.Z:
-                this.prop = LightViewControllerParam.LightDirZ;
-                break;
+        this.axis = axis;
+    }
+
+    val() {
+        if (this.tempVal) {
+            return this.tempVal;
+        } else {
+            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+    
+            return this.getVal(lightView);
         }
     }
 
-    defaultVal(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-
-        return this.getVal(lightView);
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Sidepanel);
-    }
-
-    blur(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
+    blur() {
+        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
 
         try {
-            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                const val = context.getTempVal() || this.defaultVal(context);
-                this.setVal(lightView, val);
+            if (this.tempVal !== undefined && this.tempVal !== "") {
+                this.setVal(lightView, this.tempVal);
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
         } finally {
-            context.clearTempVal();
-            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+            this.tempVal = undefined;
+            this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
 
     }
@@ -109,130 +115,124 @@ export class LightDirController extends PropController<string> {
 
         const valNum = FormController.parseFloat(val);
 
-        switch(this.prop) {
-            case LightViewControllerParam.LightDirX:
+        switch(this.axis) {
+            case CanvasAxis.X:
                 return view.getObj().setDirection(new Point_3(valNum, currDir.y, currDir.z));
-            case LightViewControllerParam.LightDirY:
+            case CanvasAxis.Y:
                 return view.getObj().setDirection(new Point_3(currDir.x, valNum, currDir.z));
-            case LightViewControllerParam.LightDirZ:
+            case CanvasAxis.Z:
                 return view.getObj().setDirection(new Point_3(currDir.x, currDir.y, valNum));    
         }
     }
 
     private getVal(view: LightView) {
-        switch(this.prop) {
-            case LightViewControllerParam.LightDirX:
+        switch(this.axis) {
+            case CanvasAxis.X:
                 return view.getObj().getDirection().x;
-            case LightViewControllerParam.LightDirY:
+            case CanvasAxis.Y:
                 return view.getObj().getDirection().y;
-            case LightViewControllerParam.LightDirZ:
+            case CanvasAxis.Z:
                 return view.getObj().getDirection().z;    
         }
     }
 }
 
-export class LightAngleController extends PropController<string> {
+export class LightAngleController extends PropController {
+    private tempVal: string;
+
     constructor(registry: Registry) {
         super(registry);
     }
+
+    val() {
+        if (this.tempVal) {
+            return this.tempVal;
+        } else {
+            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
     
-    acceptedProps() { return [LightViewControllerParam.LightAngle]; }
-
-    defaultVal(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-
-        return toDegree(lightView.getObj().getAngle());
+            return toDegree(lightView.getObj().getAngle());
+        }
     }
 
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    blur(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
+    blur() {
+        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
 
         try {
-            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                const angle = context.getTempVal() || this.defaultVal(context);
+            if (this.tempVal !== undefined && this.tempVal !== "") {
+                const angle = parseFloat(this.tempVal);
                 lightView.getObj().setAngle(angle);
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
         } finally {
-            context.clearTempVal();
-            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+            this.tempVal = undefined;
+            this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
     }
 }
 
-export class LightDiffuseColorController extends PropController<string> {
+export class LightDiffuseColorController extends PropController {
+    private tempVal: string;
+
     constructor(registry: Registry) {
         super(registry);
     }
 
-    acceptedProps() { return [LightViewControllerParam.LightColorDiffuse]; }
-
-    defaultVal(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-
-        return lightView.getObj().getDiffuseColor();
+    val() {
+        if (this.tempVal) {
+            return this.tempVal;
+        } else {
+            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+    
+            return lightView.getObj().getDiffuseColor();
+        }
     }
 
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Sidepanel);
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
-    blur(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
+    blur() {
+        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
 
         try {
-            if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-                const color = context.getTempVal() || this.defaultVal(context);
-                lightView.getObj().setDiffuseColor(color);
-                context.registry.services.history.createSnapshot();
+            if (this.tempVal !== undefined && this.tempVal !== "") {
+                lightView.getObj().setDiffuseColor(this.tempVal);
+                this.registry.services.history.createSnapshot();
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
         } finally {
-            context.clearTempVal();
-            context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+            this.tempVal = undefined;
+            this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
-
     }
 }
 
-export class LightParentMeshController extends PropController<string> {
-    acceptedProps() { return [LightViewControllerParam.LightParentMesh]; }
-
-    values(context: PropContext) {
-        return context.registry.data.view.scene.getViewsByType(MeshViewType).map(obj => obj.id)
+export class LightParentMeshController extends PropController {
+    values() {
+        return this.registry.data.view.scene.getViewsByType(MeshViewType).map(obj => obj.id)
     }
 
-    defaultVal(context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-
+    val() {
+        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
         return lightView.getParent() && lightView.getParent().id;
     }
 
-    change(val, context: PropContext) {
-        const lightView = <LightView> context.registry.data.view.scene.getOneSelectedView();
-        const meshView = <MeshView> context.registry.data.view.scene.getById(val);
+    change(val: string) {
+        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+        const meshView = <MeshView> this.registry.data.view.scene.getById(val);
 
         if (meshView) {
             lightView.setParent(meshView);
-            context.registry.services.history.createSnapshot();
-            context.registry.services.render.reRender(UI_Region.Sidepanel);
+            this.registry.services.history.createSnapshot();
+            this.registry.services.render.reRender(UI_Region.Sidepanel);
         }
     }
-}
-
-export class LightViewControllers extends ParamControllers {
-    constructor(registry: Registry) {
-        super();
-        this.parent = new LightParentMeshController(registry);
-    }
-
-    parent: LightParentMeshController;
 }
