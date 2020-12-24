@@ -1,12 +1,12 @@
 import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/registerGameViewer';
-import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
+import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/animation_node/AnimationNode';
 import { FilterMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/filter_mesh_node/FilterMeshNode';
 import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/keyboard_node/KeyboardNode';
-import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshNode';
-import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/MeshPropertyNode';
+import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_node/MeshNode';
+import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_property_node/MeshPropertyNode';
 import { MeshVisibilityNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_visibility_node/MeshVisibilityNode';
 import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/move_node/MoveNode';
-import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/PathNode';
+import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/path_node/PathNode';
 import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/ray_caster_node/RayCasterNode';
 import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/nodes/ray_helper_node/RayHelperNode';
 import { RemoveMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/remove_mesh_node/RemoveMeshNode';

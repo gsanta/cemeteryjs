@@ -9,6 +9,7 @@ import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { AbstractNodeFactory } from "../AbstractNode";
+import { RouteNodeControllers } from "./RouteNodeControllers";
 import { RouteWalker } from "./RouteWalker";
 
 export const RouteNodeObjType = 'route-node-obj';
@@ -28,7 +29,7 @@ export class RouteNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new SpeedControl(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new RouteNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -105,49 +106,6 @@ export class RouteNodeParams extends NodeParams {
         }
     }
 }
-
-export class SpeedControl extends PropController<string> {
-    private nodeObj: NodeObj<RouteNodeParams>;
-
-    constructor(registry: Registry, nodeObj: NodeObj) {
-        super(registry);
-        this.nodeObj = nodeObj;
-    }
-
-    acceptedProps() { return ['speed']; }
-
-    defaultVal(context: PropContext, element: UI_Element) {
-        return this.nodeObj.param.speed.val;
-    }
-    
-    change(val, context) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Canvas1);
-    }
-
-    blur(context: PropContext, element) {
-        const speed = context.getTempVal();
-        context.clearTempVal();
-
-        try {
-            if (speed) {
-                const speedNum = parseFloat(speed);
-                this.nodeObj.param.speed.val = speedNum;
-            }
-        } catch (e) {
-            console.log(e);
-        }
-
-        const routeWalker = this.nodeObj.param.routeWalker.val as RouteWalker;
-        if (routeWalker) {
-            routeWalker.setSpeed(this.nodeObj.param.speed.val);
-        }
-
-        context.registry.services.history.createSnapshot();
-        context.registry.services.render.reRender(UI_Region.Canvas1);
-    }
-}
-
 
 export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     private registry: Registry;

@@ -2,13 +2,11 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParamField, PortDirection, PortDataFlow, NodeParam } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { AbstractNodeFactory } from "../AbstractNode";
 import { RayCasterNodeParams } from "../ray_caster_node/RayCasterNode";
-import { RemoveTimerController } from "./RayHelperNodeControllers";
+import { RayHelperNodeControllers } from "./RayHelperNodeControllers";
 
 export const RayHelperNodeType = 'ray-helper-node-obj';
 
@@ -27,7 +25,7 @@ export class RayHelperNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new RemoveTimerController(this.registry, nodeView.getObj()));
+        nodeView.addParamControllers(new RayHelperNodeControllers(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -48,7 +46,7 @@ export class RayHelperNodeParams extends NodeParams {
     readonly remove: NodeParam = {
         name: 'remove',
         field: NodeParamField.NumberField,
-    val: -1
+        val: -1
     }
     
     readonly rayCaster: NodeParam = {
@@ -79,8 +77,5 @@ export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodePar
                 setTimeout(() => this.registry.engine.rays.removeHelper(rayObj), this.nodeObj.param.remove.val * 1000);
             }
         }
-
     }
-
-    executeStop() {}
 }

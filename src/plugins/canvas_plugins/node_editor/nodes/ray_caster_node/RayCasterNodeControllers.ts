@@ -1,8 +1,8 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { MeshController } from "../MeshNode";
+import { MeshController } from "../mesh_node/MeshNodeControllers";
 import { RayCasterNodeParams } from "./RayCasterNode";
 
 export class RayCasterNodeControllers extends ParamControllers {
@@ -36,8 +36,11 @@ export class RayLengthController extends PropController<string> {
     }
 
     blur() {
-        this.nodeObj.param.length.val = this.tempVal;
-        this.tempVal = undefined;
-        this.registry.services.render.reRenderAll();
+        try {
+            this.nodeObj.param.length.val = parseFloat(this.tempVal);
+            this.tempVal = undefined;
+        } finally {
+            this.registry.services.render.reRenderAll();
+        }
     }
 }

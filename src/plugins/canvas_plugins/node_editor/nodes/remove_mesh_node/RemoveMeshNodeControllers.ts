@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { ParamControllers } from "../../../../../core/plugin/controller/FormController";
 import { Registry } from "../../../../../core/Registry";
-import { MeshController } from "../MeshNode";
+import { MeshController } from "../mesh_node/MeshNodeControllers";
 
 export class RemoveMeshNodeControllers extends ParamControllers {
 

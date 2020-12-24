@@ -1,8 +1,8 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { MeshController } from "../MeshNode";
+import { MeshController } from "../mesh_node/MeshNodeControllers";
 import { MoveNodeParams } from "./MoveNode";
 
 export class MoveNodeControllers extends ParamControllers {
@@ -27,8 +27,6 @@ export class MeshMoveController extends PropController<string> {
         this.nodeObj = nodeObj;
     }
 
-    acceptedProps() { return ['move']; }
-
     values() {
         return ['forward', 'backward'];
     }
@@ -45,25 +43,28 @@ export class MeshMoveController extends PropController<string> {
 
 export class MeshSpeedController extends PropController<string> {
     private nodeObj: NodeObj<MoveNodeParams>;
+    private tempVal: string;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super(registry);
         this.nodeObj = nodeObj;
     }
 
-    acceptedProps() { return ['speed']; }
-
-    defaultVal() {
-        return this.nodeObj.param.speed.val;
+    val() {
+        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.speed.val;
     }
 
-    change(val, context: PropContext) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Canvas1);
+    change(val) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 
-    blur(context: PropContext) {
-        this.nodeObj.setParam = context.clearTempVal();
-        context.registry.services.render.reRenderAll();
+    blur() {
+        try {
+            this.nodeObj.param.speed.val = parseFloat(this.tempVal);
+            this.tempVal = undefined;
+        } finally {
+            this.registry.services.render.reRenderAll();
+        }
     }
 }

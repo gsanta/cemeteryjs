@@ -1,7 +1,7 @@
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { MeshBoxConfig } from '../../../../core/models/objs/MeshObj';
 import { MeshView } from './MeshView';
-import { PropContext, PropController } from '../../../../core/plugin/controller/FormController';
+import { ParamControllers, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
@@ -9,8 +9,10 @@ import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
 import { UI_Element } from '../../../../core/ui_components/elements/UI_Element';
-import { Canvas2dPanel } from '../../../../core/plugin/Canvas2dPanel';
-import { Point } from '../../../../utils/geometry/shapes/Point';
+
+export class MeshViewControllers extends ParamControllers {
+
+}
 
 export enum MeshViewControllerParam {
     MeshId = 'MeshId',
@@ -71,45 +73,6 @@ export class LayerController extends PropController<number> {
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
-
-// export class RotationController extends PropController<string> {
-//     private registry: Registry;
-
-//     constructor(registry: Registry) {
-//         super();
-//         this.registry = registry;
-//     }
-
-//     acceptedProps() { return [MeshViewControllerParam.Rotation]; }
-
-//     defaultVal(context: PropContext) {
-//         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-
-//         return Math.round(toDegree(meshView.getRotation())).toString();
-//     }
-    
-//     change(val, context) {
-//         context.updateTempVal(val);
-//         context.registry.services.render.reRender(UI_Region.Sidepanel);
-//     }
-
-//     blur(context: PropContext) {
-//         const meshView = <MeshView> context.registry.data.view.scene.getOneSelectedView();
-
-//         try {
-//             if (context.getTempVal() !== undefined && context.getTempVal() !== "") {
-//                 meshView.setRotation(toRadian(parseFloat(context.getTempVal())));
-//                 context.registry.services.history.createSnapshot();
-//             }
-//         } catch(e) {
-//             this.registry.services.error.setError(new ApplicationError(e));
-//         } finally {
-//             context.clearTempVal();
-//         }
-
-//         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
-//     }
-// }
 
 export class ScaleController extends PropController<string> {
     private axis: CanvasAxis;

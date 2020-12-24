@@ -1,4 +1,4 @@
-import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/AnimationNode';
+import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/animation_node/AnimationNode';
 import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { NodeObj } from '../models/objs/node_obj/NodeObj';
 import { NodeView, NodeViewType } from '../models/views/NodeView';

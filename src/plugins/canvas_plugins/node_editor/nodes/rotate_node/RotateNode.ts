@@ -6,7 +6,7 @@ import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { MeshRotateController, RotateNodeControllers } from "./RotateNodeControllers";
+import { RotateNodeControllers } from "./RotateNodeControllers";
 
 export const RotateNodeType = 'rotate-node-obj';
 
@@ -26,7 +26,6 @@ export class RotateNode extends AbstractNodeFactory {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RotateNodeControllers(this.registry, obj));
-        nodeView.addParamController(new MeshRotateController(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
@@ -85,6 +84,4 @@ export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
             }
         }
     }
-
-    executeStop() {}
 }

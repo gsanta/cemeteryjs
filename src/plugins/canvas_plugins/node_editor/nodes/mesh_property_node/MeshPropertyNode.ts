@@ -1,15 +1,18 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
+import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
+import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
+import { MeshViewType } from "../../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { MeshVisibilityNodeControllers } from "./MeshVisibilityNodeControllers";
+import { MeshPropertyNodeControllers } from "./MeshPropertyNodeControllers";
 
-export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
+export const MeshPropertyNodeType = 'mesh-property-node-obj';
 
-export class MeshVisibilityNode extends AbstractNodeFactory {
+export class MeshPropertyNode extends AbstractNodeFactory {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -17,58 +20,36 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
         this.registry = registry;
     }
 
-    nodeType = MeshVisibilityNodeType;
-    displayName = 'Mesh Visibility';
+    nodeType = MeshPropertyNodeType;
+    displayName = 'Mesh Property';
     category = 'Mesh';
 
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamControllers(new MeshVisibilityNodeControllers(this.registry, obj));
+        nodeView.addParamControllers(new MeshPropertyNodeControllers(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, new MeshVisibilityNodeParams(), {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, new MeshPropertyNodeParams(), {displayName: this.displayName});
         
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
-        // obj.executor = new MeshPropertyNodeExecutor(this.registry, obj);
+        obj.executor = new MeshPropertyNodeExecutor(this.registry, obj);
 
         return obj;
     }
 }
 
-export class MeshVisibilityNodeParams extends NodeParams {    
-    readonly signalOn: NodeParam = {
-        name: 'signal on',
+export class MeshPropertyNodeParams extends NodeParams {    
+    readonly signal: NodeParam = {
+        name: 'signal',
         port: {
             direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push,
-            execute: () => {
-                const meshObj = this.mesh.val;
-
-                if (meshObj) {
-                    meshObj.setVisibility(1);
-                }
-            }
-        }
-    }
-
-    readonly signalOff: NodeParam = {
-        name: 'signal off',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push,
-            execute: () => {
-                const meshObj = this.mesh.val;
-
-                if (meshObj) {
-                    meshObj.setVisibility(0);
-                }
-            }
+            dataFlow: PortDataFlow.Push
         }
     }
 
@@ -81,9 +62,15 @@ export class MeshVisibilityNodeParams extends NodeParams {
             dataFlow: PortDataFlow.Pull
         }
     }
+
+    readonly visible = {
+        name: 'visible',
+        field: NodeParamField.Checkbox,
+        val: 1,
+    }
 }
 
-export class MeshVisibilityNodeExecutor extends AbstractNodeExecutor<MeshVisibilityNodeParams> {
+export class MeshPropertyNodeExecutor extends AbstractNodeExecutor<MeshPropertyNodeParams> {
     private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -98,7 +85,7 @@ export class MeshVisibilityNodeExecutor extends AbstractNodeExecutor<MeshVisibil
         if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
             meshObj = this.nodeObj.pullData('mesh');
         } else {
-            meshObj =  this.nodeObj.param.mesh.val;
+            meshObj = this.nodeObj.param.mesh.val;
         }
 
         if (meshObj) {

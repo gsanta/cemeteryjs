@@ -25,7 +25,7 @@ export class MoveNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.addParamController(new MeshSpeedController(this.registry, nodeView.getObj()));
+        // nodeView.addParamController(new MeshSpeedController(this.registry, nodeView.getObj()));
         nodeView.addParamControllers(new MoveNodeControllers(this.registry, obj))
         nodeView.id = this.registry.data.view.node.generateId(nodeView);
 

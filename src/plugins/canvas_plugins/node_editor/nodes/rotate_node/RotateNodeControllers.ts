@@ -2,7 +2,7 @@ import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { MeshController } from "../MeshNode";
+import { MeshController } from "../mesh_node/MeshNodeControllers";
 import { RotateNodeParams } from "./RotateNode";
 
 export class RotateNodeControllers extends ParamControllers {

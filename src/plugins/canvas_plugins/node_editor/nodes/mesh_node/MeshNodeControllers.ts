@@ -1,55 +1,18 @@
-import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
-import { NodeObj, NodeParams } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../core/models/views/NodeView";
-import { MultiSelectController, PropContext, PropController } from '../../../../core/plugin/controller/FormController';
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
-import { Registry } from "../../../../core/Registry";
-import { AbstractNodeFactory } from "./AbstractNode";
+import { MeshObjType, MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { MultiSelectController, ParamControllers, PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { Registry } from "../../../../../core/Registry";
+import { MeshNodeParams } from "./MeshNode";
 
-export const MeshNodeType = 'mesh-node-obj';
+export class MeshNodeControllers extends ParamControllers {
 
-export class MeshNode extends AbstractNodeFactory {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
+    constructor(registry: Registry, nodeObj: NodeObj) {
         super();
-        this.registry = registry;
-}
-
-    nodeType = MeshNodeType;
-    displayName = 'Mesh';
-    category = 'Mesh';
-
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
-        nodeView.setObj(obj);
-        nodeView.addParamController(new MeshController(this.registry, nodeView.getObj()));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
-
-        return nodeView;
+        this.mesh = new MeshController(registry, nodeObj);
     }
 
-    createObj(): NodeObj {
-        const obj = new NodeObj<MeshNodeParams>(this.nodeType, new MeshNodeParams(), {displayName: this.displayName});
-        
-        obj.id = this.registry.stores.objStore.generateId(obj.type);
-        obj.graph = this.registry.data.helper.node.graph;
-        
-        return obj;
-    }
-}
-
-export class MeshNodeParams extends NodeParams {
-    readonly mesh: NodeParam<MeshObj> = {
-        name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Pull
-        }
-    }
+    readonly mesh: MeshController;
 }
 
 export class MeshController extends PropController<string> {

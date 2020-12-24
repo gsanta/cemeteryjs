@@ -5,7 +5,6 @@ import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { INodeListener } from "../../node/INodeListener";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { MeshController } from "../MeshNode";
 import { TriggerZoneNodeControllers } from "./TriggerZoneNodeControllers";
 
 export const TriggerZoneNodeType = 'trigger-zone-node-obj';

@@ -1,7 +1,7 @@
 import { NodeRenderer } from "../../../plugins/canvas_plugins/node_editor/NodeRenderer";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { FormController, ParamControllers, PropController } from "../../plugin/controller/FormController";
+import { FormController, ParamControllers } from "../../plugin/controller/FormController";
 import { Registry } from "../../Registry";
 import { NodeGraph } from '../../services/node/NodeGraph';
 import { sizes } from "../../ui_components/react/styles";
@@ -24,16 +24,6 @@ const HEADER_HIGHT = 30;
 const PORT_HEIGHT = 20;
 const INPUT_HEIGHT = 35;
 const NODE_PADDING = 10;
-
-function getInputHeight(nodeParam: NodeParam) {
-    
-    switch(nodeParam.field) {
-        case NodeParamField.MultiList:
-            return 50;
-        default:
-            return 35;
-    }
-}
 
 export class NodeHeightCalc {
     static getFieldHeights(nodeView: NodeView) {
@@ -70,17 +60,12 @@ export class NodeView extends View {
         super();
         
         this.registry = registry;
-        this.controller = new FormController(undefined, registry, []);
         this.renderer = new NodeRenderer(this);
         this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
     }
 
     addParamControllers(paramControllers: ParamControllers) {
         this.controller = new FormController(undefined, this.registry, [], paramControllers);
-    }
-
-    addParamController(...paramControllers: PropController[]) {
-        paramControllers.forEach(paramController => this.controller.registerPropControl(paramController));
     }
 
     getPortViews(): NodePortView[] {
