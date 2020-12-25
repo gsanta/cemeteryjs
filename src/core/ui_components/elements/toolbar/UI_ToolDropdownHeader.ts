@@ -1,11 +1,11 @@
-import { ListController } from '../../../plugin/controller/FormController';
+import { UI_Element, UI_ElementConfig } from '../UI_Element';
+import { UI_Tool } from './UI_Tool';
+import { UI_ElementType } from '../UI_ElementType';
 import { UI_Factory } from '../../UI_Factory';
 import { UI_Container } from '../UI_Container';
-import { UI_ElementConfig } from '../UI_Element';
-import { UI_ElementType } from '../UI_ElementType';
-import { UI_Tool } from './UI_Tool';
+import { Registry } from '../../../Registry';
 
-export class UI_ToolDropdownHeader extends UI_Container<ListController> {
+export class UI_ToolDropdownHeader extends UI_Container {
     elementType = UI_ElementType.ToolbarDropdownHeader;
     placement: 'left' | 'middle' | 'right';
     isOpen: boolean;
@@ -13,5 +13,9 @@ export class UI_ToolDropdownHeader extends UI_Container<ListController> {
 
     tool(config: UI_ElementConfig): UI_Tool {
         return UI_Factory.tool(this, config);
+    }
+
+    click(registry: Registry): void {
+        this.controller && this.controller.click(this);
     }
 }

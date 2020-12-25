@@ -29,7 +29,7 @@ export const ButtonComp = (props: UI_ComponentProps<UI_Button>) => {
     props.element.width && (style.width = props.element.width);
     
     return (
-        <ButtonStyled className="ce-button" style={style} {...props} onClick={() => props.element.paramController.click()}>
+        <ButtonStyled className="ce-button" style={style} {...props} onClick={() => props.element.click(props.registry)}>
             {props.element.label}
             
             {/* <div className="button-label" style={{width: props.element.width ? props.element.width : 'auto'}}>

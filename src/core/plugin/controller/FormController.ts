@@ -16,7 +16,6 @@ export enum InputParamType {
 }
 
 export abstract class PropController<T = any> {
-    protected isFocused = false;
     paramType: InputParamType;
     protected context: PropContext;
     protected registry: Registry;
@@ -26,13 +25,18 @@ export abstract class PropController<T = any> {
         this.context = new PropContext(registry);
     }
 
-    change?(val: T) {}
-    click?() {}
-    focus?() {}
-    blur?() {}
-    values?(): T[] { return []; }
+    acceptedProps(context: PropContext, element: UI_Element): string[] { return []; }
+
+    change?(val: T, context: PropContext<any>, element: UI_Element) {}
+    click?(context: PropContext<T>, element: UI_Element) {}
+    focus?(context: PropContext<T>, element: UI_Element) {}
+    blur?(context: PropContext<T>, element: UI_Element) {}
+    defaultVal?(context: PropContext<T>, element: UI_Element) {}
+    values?(context: PropContext<T>, element: UI_Element): T[] { return []; }
     val(): T { return undefined; }
-    selectedValues?(): T[] { return []; }
+    selectedValues?(element: UI_Element): T[] { return []; }
+    onDndStart(context: PropContext<T>, element: UI_Element) {}
+    onDndEnd(context: PropContext<T>, element: UI_Element) {}
 }
 
 export abstract class MultiSelectController extends PropController {
@@ -44,15 +48,6 @@ export abstract class MultiSelectController extends PropController {
     done() {}
     cancel() {}
     select(val: string) {}
-}
-
-export abstract class ListController extends PropController {
-    select(val: string) {}
-}
-
-export abstract class DragAndDropController extends PropController {
-    onDndStart() {}
-    onDndEnd(dropId: string) {}
 }
 
 export abstract class ParamControllers {
@@ -101,6 +96,8 @@ export class FormController {
         this.registry = registry;
         this.param = paramControllers;
 
+        this.registerPropControl(new CloseDialogController(this.registry));
+
         if (propControls) {
             propControls.forEach(propControl => {
                 this.registerPropControl(propControl);
@@ -110,6 +107,89 @@ export class FormController {
         if (paramControllers) {
             Object.entries(this.param).forEach(entry => this.registerPropControl(entry[1]));
         }
+    }
+
+    change(val: any, element: UI_Element): void {
+        const controller = this.findController(element); 
+
+        if (controller) {        
+            controller.change(val, this.propContexts.get(controller), element);
+        }
+    }
+
+    click(element: UI_Element): void {
+        const controller = this.findController(element); 
+        console.log('clicking: ' + element.key)
+        if (controller) {
+            console.log('has contorller')
+
+            this.findController(element).click(this.propContexts.get(controller), element);
+        }
+    }
+
+    focus(element: UI_Element): void {
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).focus(this.propContexts.get(controller), element);
+        }
+    }
+
+    blur(element: UI_Element): void {
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).blur(this.propContexts.get(controller), element);
+        }
+    }
+
+    dndStart(element: UI_Element, listItem: string): void {
+        const controller = this.findController(element); 
+
+        if (controller) {
+            this.findController(element).onDndStart(this.propContexts.get(controller), element);
+        }
+    }
+
+    dndEnd(element: UI_ListItem): void {
+        const controller = this.findController(element); 
+        if (controller) {
+            controller.onDndEnd(this.propContexts.get(controller), element);
+        }
+    }
+
+    val(element: UI_Element): any {
+        const controller = this.findController(element);
+        if (controller) {
+            const context = this.propContexts.get(controller);
+            
+            const tmpVal = context.getTempVal();
+    
+            return tmpVal !== undefined ? tmpVal : controller?.defaultVal(this.propContexts.get(controller), element);
+        }
+    }
+
+    values(element: UI_Element): any[] {
+        const controller = this.findController(element);
+        if (controller) {
+            const propContext = this.propContexts.get(controller);
+            return controller?.values(propContext, element);
+        }
+
+        return [];
+    }
+
+    selectedValues(element: UI_Element): any[] {
+        const controller = this.findController(element);
+        if (controller) {
+            return controller?.selectedValues(element);
+        }
+
+        return [];
+    }
+
+    private findController(element: UI_Element): PropController {
+        return this.propControllers.find(controller => controller.acceptedProps(this.propContexts.get(controller), element).includes(element.key));
     }
 
     registerPropControl(propController: PropController<any>) {
@@ -125,5 +205,14 @@ export class FormController {
         } catch(e) {
             console.log(e);
         }
+    }
+}
+
+class CloseDialogController extends PropController {
+    acceptedProps() { return [GlobalControllerProps.CloseDialog]; }
+
+    click(context: PropContext) {
+        context.registry.ui.helper.setDialogPanel(undefined);
+        context.registry.services.render.reRenderAll();
     }
 }

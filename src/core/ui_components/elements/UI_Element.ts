@@ -41,7 +41,6 @@ export abstract class UI_Element<C extends PropController = any> {
     //TODO: consider restrict it only to svg elements
     scopedToolId: string;
     isInteractive: boolean = true;
-    val: any;
 
     readonly uniqueId: string;
     readonly controller: FormController;

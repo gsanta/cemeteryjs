@@ -104,7 +104,7 @@ export class ScaleController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -148,7 +148,7 @@ export class RotationController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -200,7 +200,7 @@ export class PositionController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -239,7 +239,7 @@ export class TextureController extends PropController {
     private tempVal: string;
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -297,7 +297,7 @@ export class ModelController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -344,7 +344,7 @@ export class WidthController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -386,7 +386,7 @@ export class HeightController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -428,7 +428,7 @@ export class DepthController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -471,7 +471,7 @@ export class ColorController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -510,7 +510,7 @@ export class MeshVisibilityController extends PropController {
     }
 
     val() {
-        if (this.tempVal !== undefined) {
+        if (this.tempVal) {
             return this.tempVal;
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
@@ -546,7 +546,7 @@ export class MeshNameController extends PropController<string> {
     private tempVal: string;
 
     val() {
-        return this.tempVal !== undefined ? this.tempVal : (<MeshView> this.registry.data.view.scene.getOneSelectedView()).getObj().name;
+        return this.tempVal ? this.tempVal : (<MeshView> this.registry.data.view.scene.getOneSelectedView()).getObj().name;
     }
     
     change(val: string) {

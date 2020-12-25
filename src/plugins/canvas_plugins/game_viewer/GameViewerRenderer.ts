@@ -3,18 +3,16 @@ import { ICanvasRenderer } from "../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../core/plugin/tools/CameraTool";
 import { Registry } from "../../../core/Registry";
 import { UI_HtmlCanvas } from "../../../core/ui_components/elements/UI_HtmlCanvas";
-import { GameViewerControllers } from "./GameViewerControllers";
+import { GameViewerProps } from "./GameViewerProps";
 import { GameToolId } from "./tools/GameTool";
 
 export class GameViewerRenderer implements ICanvasRenderer {
     private canvas: AbstractCanvasPanel;
     private registry: Registry;
-    private controller: GameViewerControllers;
 
     constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.canvas = canvas;
         this.registry = registry;
-        this.controller = new GameViewerControllers(registry);
     }
 
     renderInto(htmlCanvas: UI_HtmlCanvas): void { 
@@ -54,16 +52,14 @@ export class GameViewerRenderer implements ICanvasRenderer {
         separator = toolbar.iconSeparator();
         separator.placement = 'middle';
 
-        actionIcon = toolbar.actionIcon({ key: 'play-start', uniqueId: `play-start-${this.canvas.id}`});
-        actionIcon.paramController = this.controller.playStart;
+        actionIcon = toolbar.actionIcon({key: GameViewerProps.Play, uniqueId: `${GameViewerProps.Play}-${this.canvas.id}`});
         actionIcon.icon = 'play';
         actionIcon.placement = 'middle';
         actionIcon.isActivated = this.registry.stores.game.gameState === 'running';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Play';
 
-        actionIcon = toolbar.actionIcon({ key: 'play-stop', uniqueId: `play-stop-${this.canvas.id}`});
-        actionIcon.paramController = this.controller.playStop;
+        actionIcon = toolbar.actionIcon({key: GameViewerProps.Stop, uniqueId: `${GameViewerProps.Stop}-${this.canvas.id}`});
         actionIcon.icon = 'stop';
         actionIcon.placement = 'middle';
         actionIcon.isActivated = this.registry.stores.game.gameState === 'paused';

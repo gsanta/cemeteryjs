@@ -1,65 +1,51 @@
 import { Tools } from "babylonjs";
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
-import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
-import { ParamControllers, PropController } from '../../../core/plugin/controller/FormController';
-import { UI_Region } from "../../../core/plugin/UI_Panel";
-import { Registry } from "../../../core/Registry";
 import { MeshView } from "../../canvas_plugins/scene_editor/views/MeshView";
-import { ThumbnailCanvasId } from "./registerThumbnailCanvas";
+import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
+import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
+import { UI_Region } from "../../../core/plugin/UI_Panel";
+import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 
-export class ThumbnailDialogControllers extends ParamControllers {
-    constructor(registry: Registry) {
-        super();
-
-        const canvas = <Canvas3dPanel> registry.ui.canvas.getCanvas(ThumbnailCanvasId);
-
-        this.createFromModel = new ThumbnailCreateControl(registry, canvas);
-        this.createFromFile = new ThumbnailUploadControl(registry);
-        this.newProject = new ClearThumbnailControl(registry);
-    }
-
-    createFromModel: ThumbnailCreateControl;
-    createFromFile: ThumbnailUploadControl;
-    clearThumbnail: ClearThumbnailControl;
+export enum ThumbnailMakerControllerProps {
+    ThumbnailCreate = 'ThumbnailFromModel',
+    ThumbnailUpload = 'ThumbnailFromFile',
+    ClearThumbnail = 'ClearThumbnail'
 }
 
-export class ThumbnailCreateControl extends PropController {
-    private panel: Canvas3dPanel;
-
-    constructor(registry: Registry, panel: Canvas3dPanel) {
-        super(registry);
-
-        this.panel = panel;
-    }
+export class ThumbnailCreateControl extends PropController<any> {
+    acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailCreate]; }
     
-    async click() {
-        const engine = this.panel.engine;
-        const meshView = this.registry.data.view.scene.getOneSelectedView() as MeshView;
+    async click(context: PropContext, element: UI_Element) {
+        const engine = (<Canvas3dPanel> element.canvasPanel).engine;
+        const meshView = context.registry.data.view.scene.getOneSelectedView() as MeshView;
 
         // TODO: should not cast to Bab_EngineFacade
         const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((engine as Bab_EngineFacade).engine, engine.getCamera().camera, 1000)
         meshView.thumbnailData = thumbnail;
-        this.registry.services.history.createSnapshot();
-        this.registry.services.render.reRender(UI_Region.Dialog);
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
-export class ThumbnailUploadControl extends PropController {
+export class ThumbnailUploadControl extends PropController<any> {
+    acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailUpload]; }
 
-    change(val) {
-        const meshView = this.registry.data.view.scene.getOneSelectedView() as MeshView;
+    change(val, context) {
+        const meshView = context.registry.stores.views.getOneSelectedView() as MeshView;
                 
         meshView.thumbnailData = val.data;
-        this.registry.services.history.createSnapshot();
-        this.registry.services.render.reRender(UI_Region.Dialog);
+        context.registry.services.history.createSnapshot();
+        context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
-export class ClearThumbnailControl extends PropController {
-    change(val) {
-        const meshView = this.registry.data.view.scene.getOneSelectedView() as MeshView;
+export class ClearThumbnailControl extends PropController<any> {
+    acceptedProps() { return [ThumbnailMakerControllerProps.ClearThumbnail]; }
+
+    change(val, context) {
+        const meshView = context.registry.stores.views.getOneSelectedView() as MeshView;
  
         meshView.thumbnailData = undefined;
-        this.registry.services.render.reRender(UI_Region.Dialog);
+        context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }

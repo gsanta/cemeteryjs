@@ -2,7 +2,7 @@ import { FormController } from "../../../core/plugin/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { LevelSettingsRenderer } from "./LevelSettingsPanel";
-import { LevelController, LevelNameController, ClearLevelController } from "./LevelSettingsControllers";
+import { LevelController, LevelNameController, ClearLevelController } from "./LevelSettingsProps";
 
 export const LevelSettingsPanelId = 'level-settings-panel'; 
 
