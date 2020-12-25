@@ -1,65 +1,57 @@
-import { Registry } from "../../Registry";
-import { Point } from '../../../utils/geometry/shapes/Point';
-import { IPointerEvent } from "../../services/input/PointerService";
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { UI_Element } from "../../ui_components/elements/UI_Element";
-import { Tool } from "../tools/Tool";
-import { View } from "../../models/views/View";
-import { PropController, PropContext } from "./FormController";
-import { SelectToolId } from "../tools/SelectTool";
-import { MeshToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/MeshTool";
-import { DeleteToolId } from "../tools/DeleteTool";
-import { CameraToolId } from "../tools/CameraTool";
-import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SpriteTool";
-import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/PathTool";
-import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/CubeTool";
-import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SphereTool";
-import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
 import { MoveAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
-import { LightToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/LightTool";
 import { RotateAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/RotateAxisTool";
+import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
+import { Point } from '../../../utils/geometry/shapes/Point';
+import { View } from "../../models/views/View";
+import { Registry } from "../../Registry";
+import { IPointerEvent } from "../../services/input/PointerService";
+import { UI_Element } from "../../ui_components/elements/UI_Element";
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
+import { Tool } from "../tools/Tool";
+import { ListController } from "./FormController";
 
-export class CommonToolController extends PropController<any> {
-    acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
+export class CommonToolController extends ListController {
+    private panel: AbstractCanvasPanel;
 
-    click(context: PropContext, element: UI_Element) {
-        element.canvasPanel.toolController.setSelectedTool(element.key);
-        context.registry.services.render.reRender(element.canvasPanel.region);
+    constructor(registry: Registry, panel: AbstractCanvasPanel) {
+        super(registry);
+        this.panel = panel
+    }
+
+    select(val: string) {
+        this.panel.toolController.setSelectedTool(val);
+        this.registry.services.render.reRender(this.panel.region);
     }
 }
 
-export class SceneEditorToolController extends PropController<any> {
-    acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId, LightToolId]; }
+export class CanvasContextDependentToolController extends ListController {
+    private panel: AbstractCanvasPanel;
 
-    click(context: PropContext, element: UI_Element) {
-        element.canvasPanel.toolController.setSelectedTool(element.key);
-        context.registry.services.render.reRender(element.canvasPanel.region);
+    constructor(registry: Registry, panel: AbstractCanvasPanel) {
+        super(registry);
+        this.panel = panel
     }
-}
 
-export class CanvasContextDependentToolController extends PropController<any> {
-    acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId, RotateAxisToolId]; }
-
-    click(context: PropContext, element: UI_Element) {
-        const tool = element.canvasPanel.toolController.getToolById(element.key);
+    select(val: string) {
+        const tool = this.panel.toolController.getToolById(val);
         tool.isSelected = !tool.isSelected;
 
         switch(tool.id) {
             case ScaleAxisToolId:
-                element.canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected = false;
-                element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
+                this.panel.toolController.getToolById(RotateAxisToolId).isSelected = false;
+                this.panel.toolController.getToolById(MoveAxisToolId).isSelected = false;
                 break;
             case RotateAxisToolId:
-                element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;
-                element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
+                this.panel.toolController.getToolById(ScaleAxisToolId).isSelected = false;
+                this.panel.toolController.getToolById(MoveAxisToolId).isSelected = false;
                 break;
             case MoveAxisToolId:
-                element.canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected = false;
-                element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;        
+                this.panel.toolController.getToolById(RotateAxisToolId).isSelected = false;
+                this.panel.toolController.getToolById(ScaleAxisToolId).isSelected = false;        
                 break;
         }
 
-        context.registry.services.render.reRender(element.canvasPanel.region);
+        this.registry.services.render.reRender(this.panel.region);
     }
 }
 

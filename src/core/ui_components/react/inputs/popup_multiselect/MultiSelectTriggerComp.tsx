@@ -30,7 +30,7 @@ export const MultiSelectTriggerComp = (props: UI_ComponentProps<UI_PopupMultiSel
     if (props.element.label) {
         classNames = `ce-labeled-input ${props.element.layout}`;
     }
-    const selectedValues = props.element.paramController.selectedValues(props.element);
+    const selectedValues = props.element.paramController.selectedValues();
 
     const selectedValueComps = selectedValues.length > 0 ? selectedValues.map(val => <div>{val}</div>) : 'Select meshes...';
     const buttonComp = <div className="input"  onClick={() => props.element.paramController.open()}>{selectedValueComps}</div>;

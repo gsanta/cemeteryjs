@@ -1,35 +1,28 @@
-import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
-import { PropController, PropContext } from "../../../core/plugin/controller/FormController";
+import { ListController, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
-import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
+import { SceneEditorPanelId } from "./registerSceneEditor";
 import { SceneEditorRenderer } from "./SceneEditorRenderer";
-import { CubeToolId } from "./tools/CubeTool";
-import { GroundToolId } from "./tools/GroundTool";
-import { SphereToolId } from "./tools/SphereTool";
 
 export enum SceneEditorToolbarProps {
     SelectPrimitiveShape = 'select-primitive-shape',
     OpenDropdown = 'open-dropdown'
 }
 
-export class PrimitiveShapeDropdownMenuOpenControl extends PropController<any> {
-    acceptedProps() { return [SceneEditorToolbarProps.OpenDropdown]; }
-
-    click(context: PropContext, element: UI_Element) {
-        const renderer = element.canvasPanel.renderer as SceneEditorRenderer;
+export class PrimitiveShapeDropdownMenuOpenControl extends PropController {
+    click() {
+        const renderer = this.registry.ui.canvas.getCanvas(SceneEditorPanelId).renderer as SceneEditorRenderer;
         renderer.isShapeDropdownOpen = !renderer.isShapeDropdownOpen;
-        context.registry.services.render.reRender(UI_Region.Canvas1);
+        this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
 
-export class PrimitiveShapeDropdownControl extends PropController<any> {
-    acceptedProps() { return [CubeToolId, SphereToolId, GroundToolId]; }
-
-    click(context: PropContext, element: UI_Element) {
-        const renderer = element.canvasPanel.renderer as SceneEditorRenderer;
-        element.canvasPanel.toolController.setSelectedTool(element.key);
+export class PrimitiveShapeDropdownControl extends ListController {
+    select(val: string) {
+        const sceneEditor = this.registry.ui.canvas.getCanvas(SceneEditorPanelId);
+        const renderer = <SceneEditorRenderer> sceneEditor.renderer;
+        sceneEditor.toolController.setSelectedTool(val);
         renderer.isShapeDropdownOpen = false;
-        renderer.activeShapeToolId = element.key;
-        context.registry.services.render.reRender(UI_Region.Canvas1);
+        renderer.activeShapeToolId = val;
+        this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

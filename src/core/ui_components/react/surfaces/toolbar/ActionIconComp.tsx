@@ -33,7 +33,7 @@ export class ActionIconComp extends React.Component<ActionIconCompProps> {
                 id={this.props.element.uniqueId}
                 ref={this.ref}
                 className={classes}
-                onClick={() => this.props.element.click(this.props.registry)}
+                onClick={() => this.props.element.paramController.click()}
             >
                 {this.props.tooltip}
             </div>

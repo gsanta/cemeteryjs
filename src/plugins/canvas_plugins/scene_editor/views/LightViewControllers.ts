@@ -3,7 +3,7 @@ import { FormController, ParamControllers, PropController } from '../../../../co
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
-import { toDegree } from '../../../../utils/geometry/Measurements';
+import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 import { LightView } from './LightView';
 import { MeshView, MeshViewType } from './MeshView';
@@ -37,7 +37,7 @@ export class LightYPosController extends PropController {
     }
     
     val() {
-        if (this.tempVal) {
+        if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
             const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
@@ -80,7 +80,7 @@ export class LightDirController extends PropController {
     }
 
     val() {
-        if (this.tempVal) {
+        if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
             const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
@@ -145,7 +145,7 @@ export class LightAngleController extends PropController {
     }
 
     val() {
-        if (this.tempVal) {
+        if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
             const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
@@ -165,7 +165,7 @@ export class LightAngleController extends PropController {
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
                 const angle = parseFloat(this.tempVal);
-                lightView.getObj().setAngle(angle);
+                lightView.getObj().setAngle(toRadian(angle));
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
@@ -184,7 +184,7 @@ export class LightDiffuseColorController extends PropController {
     }
 
     val() {
-        if (this.tempVal) {
+        if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
             const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();

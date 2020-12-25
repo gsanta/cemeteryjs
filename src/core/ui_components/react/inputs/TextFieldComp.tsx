@@ -43,10 +43,10 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
             type={props.element.type}
             onKeyDown={e => e.stopPropagation()}
             onKeyUp={e => e.stopPropagation()}
-            onFocus={() => props.element.paramController ? props.element.paramController.focus(null, null) : props.element.focus(props.registry)}
-            value={props.element.paramController ? props.element.paramController.val() : props.element.val(props.registry)}
-            onChange={e => props.element.paramController ? props.element.paramController.change(e.target.value, null, null) : props.element.change(e.target.value, props.registry)}
-            onBlur={() => props.element.paramController ? props.element.paramController.blur(null, null) : props.element.blur(props.registry)}
+            onFocus={() => props.element.paramController.focus()}
+            value={props.element.paramController.val()}
+            onChange={e => props.element.paramController.change(e.target.value)}
+            onBlur={() => props.element.paramController.blur()}
             disabled={props.element.isDisabled}
         />
     );

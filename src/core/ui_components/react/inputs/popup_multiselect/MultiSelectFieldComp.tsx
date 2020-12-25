@@ -27,7 +27,7 @@ const MultiSelectStyled = styled.div`
 `;
 
 export function MultiSelectFieldComp(props: UI_ComponentProps<UI_PopupMultiSelect>) {
-    const values: string[] = props.element.values(props.registry) || [];
+    const values: string[] = props.element.paramController.values() || [];
 
     const options = values.map(val => {
         return <option key={val} value={val}>{val}</option>
@@ -60,7 +60,7 @@ function renderLabeledMultiSelect(props: UI_ComponentProps<UI_PopupMultiSelect>,
     style.justifyContent = 'space-between';
     style.alignItems = 'center';
 
-    const selectedValues = props.element.paramController.selectedValues(props.element).map(val => <div>{val}</div>);
+    const selectedValues = props.element.paramController.selectedValues().map(val => <div>{val}</div>);
 
     return (
         <MultiSelectStyled inputWidth={props.element.inputWidth} style={style} className={`ce-labeled-input ${props.element.layout}`}>
@@ -74,7 +74,7 @@ function renderLabeledMultiSelect(props: UI_ComponentProps<UI_PopupMultiSelect>,
 }
 
 function renderSimpleMultiSelect(props: UI_ComponentProps<UI_PopupMultiSelect>, select: JSX.Element) {
-    const selectedValues = props.element.paramController.selectedValues(props.element).map(val => <div>{val}</div>);
+    const selectedValues = props.element.paramController.selectedValues().map(val => <div>{val}</div>);
 
     return (
         <MultiSelectStyled inputWidth={props.element.inputWidth}>

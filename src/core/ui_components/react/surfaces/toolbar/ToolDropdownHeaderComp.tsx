@@ -6,7 +6,7 @@ export const ToolDropdownHeaderComp = (props: UI_ContainerProps<UI_ToolDropdownH
     return (
         <div className="ce-toolbar-dropdown-header">
             {props.children[0]}
-            <div className="ce-menu-expand" onClick={() => props.element.click(props.registry)}></div>
+            <div className="ce-menu-expand" onClick={() => props.element.paramController.select(props.element.val)}></div>
         </div>
     );
 }

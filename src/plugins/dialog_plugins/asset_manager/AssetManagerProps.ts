@@ -37,12 +37,10 @@ export class AssetManagerControllers extends ParamControllers {
 }
 
 export class DeleteAssetControl extends PropController<any> {
-    acceptedProps() { return [AssetManagerDialogProps.DeleteAsset]; }
-
-    click(context: PropContext, element) {
-        const asset = context.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
-        context.registry.stores.assetStore.deleteAsset(asset);
-        context.registry.services.render.reRender(UI_Region.Dialog);
+    click() {
+        const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
+        this.registry.stores.assetStore.deleteAsset(asset);
+        this.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
@@ -53,12 +51,10 @@ export class EnterEditModeControl extends PropController<any> {
         super(registry);
     }
 
-    acceptedProps() { return [AssetManagerDialogProps.EnterEditMode]; }
-
-    click(context: PropContext, element) {
-        const asset = context.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
+    click() {
+        const asset = this.registry.stores.assetStore.getAssetById(( <UI_InputElement> element).listItemId);
         this.editedAsset = asset;
-        context.registry.services.render.reRender(UI_Region.Dialog);
+        this.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
@@ -71,23 +67,22 @@ export class AssetNameControl extends PropController<any> {
         this.controllers = controllers;
     }
 
-    acceptedProps() { return [AssetManagerDialogProps.AssetName]; }
-
-    change(val, context) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Dialog);
+    change(val: string) {
+        this.tempAssetName = val;
+        this.registry.services.render.reRender(UI_Region.Dialog);
     }
 
-    blur(context: PropContext) {
-        this.tempAssetName = context.getTempVal();
-    }
-
-    defaultVal(context: PropContext) {
-        return this.controllers.enterEditMode.editedAsset ? this.controllers.enterEditMode.editedAsset.name  : '';
+    val() {
+        const editedAsset = this.controllers.enterEditMode.editedAsset;
+        if (this.tempAssetName !== undefined) {
+            return this.tempAssetName;
+        } else if (editedAsset) {
+            return editedAsset.name;
+        }
     }
 }
 
-export class AssetPathControl extends PropController<any> {
+export class AssetPathControl extends PropController {
     private controllers: AssetManagerControllers;
     tempAssetPath: string;
 
@@ -96,20 +91,18 @@ export class AssetPathControl extends PropController<any> {
         this.controllers = controllers;
     }
 
-    acceptedProps() { return [AssetManagerDialogProps.AssetPath]; }
-
-    change(val: any, context: PropContext<any>) {
-        context.updateTempVal(val);
-        context.registry.services.render.reRender(UI_Region.Dialog);
+    change(val: any) {
+        this.tempAssetPath = val;
+        this.registry.services.render.reRender(UI_Region.Dialog);
     }
 
-    blur(context: PropContext, element: UI_Element) {
-        this.tempAssetPath = context.getTempVal();
-    }
-
-    defaultVal(context) {
-        const renderer = <AssetManagerDialogRenderer> context.panel.renderer;
-        return this.controllers.enterEditMode.editedAsset ? this.controllers.enterEditMode.editedAsset.path  : '';
+    val() {
+        const editedAsset = this.controllers.enterEditMode.editedAsset;
+        if (this.tempAssetPath !== undefined) {
+            return this.tempAssetPath;
+        } else if (editedAsset) {
+            return editedAsset.path;
+        }
     }
 }
 
@@ -121,15 +114,13 @@ export class SaveEditControl extends PropController<any> {
         this.controllers = controllers;
     }
 
-    acceptedProps() { return [AssetManagerDialogProps.SaveEdit]; }
-
-    click(context: PropContext<any>) {
+    click() {
         const editedAsset = this.controllers.enterEditMode.editedAsset;
         editedAsset.name = this.controllers.assetNameControl.tempAssetName;
         editedAsset.name = this.controllers.assetPathControl.tempAssetPath;
 
         this.controllers.enterEditMode.editedAsset = undefined;
-        context.registry.services.render.reRender(UI_Region.Dialog);
+        this.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
 
@@ -141,10 +132,8 @@ export class CancelEditControl extends PropController<any> {
         this.controllers = controllers;
     }
 
-    acceptedProps() { return [AssetManagerDialogProps.CancelEdit]; }
-
-    click(context: PropContext<any>) {
+    click() {
         this.controllers.enterEditMode.editedAsset = undefined;
-        context.registry.services.render.reRender(UI_Region.Dialog);
+        this.registry.services.render.reRender(UI_Region.Dialog);
     }
 }

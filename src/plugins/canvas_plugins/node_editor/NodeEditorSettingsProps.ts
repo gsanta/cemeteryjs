@@ -1,35 +1,36 @@
 import { NodeView } from "../../../core/models/views/NodeView";
-import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
+import { DragAndDropController, ParamControllers, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
-import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 
-export enum NodeEditorSettingsProps {
-    DragNode = 'DragNode'
+export class NodeEditorSettingsControllers extends ParamControllers {
+    constructor(registry: Registry) {
+        super();
+        this.dragNode = new DragNodeController(registry);
+    }
+
+    dragNode: DragNodeController;
 }
 
-export class DragNodeController extends PropController {
+export class DragNodeController extends DragAndDropController {
     constructor(registry: Registry) {
         super(registry);
     }
 
-    acceptedProps() { return this.registry.data.helper.node.getRegisteredNodeTypes() }
-
-    onDndStart(context: PropContext) {
-        context.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
-        context.registry.services.render.reRenderAll();
+    onDndStart() {
+        this.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
+        this.registry.services.render.reRenderAll();
     }
 
-    onDndEnd(context: PropContext, element: UI_Element) {
-        const nodeType = element.key;
-        const nodeObj = context.registry.data.helper.node.createObj(nodeType);
-        const nodeView: NodeView = context.registry.data.helper.node.createView(nodeType, nodeObj);
+    onDndEnd(dropId: string) {
+        const nodeObj = this.registry.data.helper.node.createObj(dropId);
+        const nodeView: NodeView = this.registry.data.helper.node.createView(dropId, nodeObj);
 
-        context.registry.stores.objStore.addObj(nodeObj);
-        context.registry.data.view.node.addView(nodeView);
+        this.registry.stores.objStore.addObj(nodeObj);
+        this.registry.data.view.node.addView(nodeView);
 
-        nodeView.getBounds().moveTo(context.registry.services.pointer.pointer.curr);
-        context.registry.services.history.createSnapshot();
-        context.registry.services.render.reRender(UI_Region.Canvas1);
+        nodeView.getBounds().moveTo(this.registry.services.pointer.pointer.curr);
+        this.registry.services.history.createSnapshot();
+        this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 } 

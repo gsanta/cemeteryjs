@@ -1,6 +1,6 @@
 import { IRenderer } from "../../../core/plugin/IRenderer";
 import { UI_Layout } from "../../../core/ui_components/elements/UI_Layout";
-import { LevelSettingsProps } from "./LevelSettingsProps";
+import { LevelSettingsProps } from "./LevelSettingsControllers";
 
 export class LevelSettingsRenderer implements IRenderer<UI_Layout> {
     renderInto(layout: UI_Layout): void {

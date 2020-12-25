@@ -57,14 +57,8 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
 
             const b64Text = `data:application/octet-stream;base64,${btoa(binary)}`;
             console.log(b64Text);
-            props.element.change({path: acceptedFiles[0].path, data: b64Text}, props.registry);
+            props.element.paramController.change({path: acceptedFiles[0].path, data: b64Text});
         }
-        // if (props.readDataAs === 'text') {
-            // reader.readAsText(acceptedFiles[0]);
-        // } else {
-            // }
-
-            //
         reader.readAsArrayBuffer(acceptedFiles[0]);
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
@@ -74,7 +68,7 @@ export const FileUploadComp = (props: UI_ComponentProps<UI_FileUpload>) => {
 
     return (
         <FileUploadStyled style={style} className='file-upload' {...getRootProps()}>
-            <div className='file-upload' onClick={() => props.element.click(props.registry)}>
+            <div className='file-upload' onClick={() => props.element.paramController.click()}>
                 <input {...getInputProps()} />
                 
                 <div className="button-label" style={{width: props.element.width ? props.element.width : 'auto'}}>

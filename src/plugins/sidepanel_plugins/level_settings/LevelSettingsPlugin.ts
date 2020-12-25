@@ -1,6 +1,6 @@
 import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { LevelSettingsProps } from './LevelSettingsProps';
+import { LevelSettingsProps } from './LevelSettingsControllers';
 
 export const LevelSettingsPluginId = 'level-settings-plugin';
 

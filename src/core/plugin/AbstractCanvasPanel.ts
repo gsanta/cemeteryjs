@@ -1,11 +1,9 @@
 import { Point } from '../../utils/geometry/shapes/Point';
-import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
-import { UI_Element } from '../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { FormController, PropContext, PropController } from './controller/FormController';
+import { PropController } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
@@ -62,10 +60,6 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
         this.camera = camera;
     }
 
-    setController(controller: FormController) {
-        this.controller = controller;
-    }
-
     addTool(tool: Tool) {
         this.toolController.registerTool(tool);
     }
@@ -102,41 +96,42 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
     };
 }
 
-export const ZoomInProp = 'zoom-in';
 export class ZoomInController extends PropController {
-    acceptedProps() { return [ZoomInProp]; }
+    private canvasPanel: AbstractCanvasPanel;
 
-    click(context: PropContext, element: UI_Element) {
-        const cameraTool = <CameraTool> element.canvasPanel.toolController.getToolById(CameraToolId);
+    constructor(registry: Registry, canvasPanel: AbstractCanvasPanel) {
+        super(registry);
+        this.canvasPanel = canvasPanel;
+    }
+
+    click() {
+        const cameraTool = <CameraTool> this.canvasPanel.toolController.getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
 
-export const ZoomOutProp = 'zoom-out';
 export class ZoomOutController extends PropController {
-    acceptedProps() { return [ZoomOutProp]; }
+    private canvasPanel: AbstractCanvasPanel;
 
-    click(context: PropContext, element: UI_Element) {
-        const cameraTool = <CameraTool> element.canvasPanel.toolController.getToolById(CameraToolId);
+    constructor(registry: Registry, canvasPanel: AbstractCanvasPanel) {
+        super(registry);
+        this.canvasPanel = canvasPanel;
+    }
+
+    click() {
+        const cameraTool = <CameraTool> this.canvasPanel.toolController.getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }
 
-export const UndoProp = 'undo';
 export class UndoController extends PropController<any> {
-    acceptedProps() { return [UndoProp]; }
-
-    click(context: PropContext) {
-        context.registry.services.history.undo();
+    click() {
+        this.registry.services.history.undo();
     }
 }
 
-export const RedoProp = 'redo';
-
 export class RedoController extends PropController<any> {
-    acceptedProps() { return [RedoProp]; }
-
-    click(context: PropContext) {
-        context.registry.services.history.redo();
+    click() {
+        this.registry.services.history.redo();
     }
 }
