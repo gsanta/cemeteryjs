@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { Point } from '../../../../../utils/geometry/shapes/Point';
-import { Registry } from '../../../../Registry';
 import { useDrop } from 'react-dnd';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_DropLayer } from '../../../elements/surfaces/canvases/UI_DropLayer';

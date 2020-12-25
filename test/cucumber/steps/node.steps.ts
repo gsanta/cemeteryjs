@@ -7,17 +7,18 @@ import { NodeListPanelId } from "../../../src/plugins/canvas_plugins/node_editor
 import { Point } from "../../../src/utils/geometry/shapes/Point";
 import { ModelDumper } from "./common/ModelDumper";
 import expect from 'expect';
+import { NodeEditorSettingsControllers } from "../../../src/plugins/canvas_plugins/node_editor/NodeEditorSettingsControllers";
 
 When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
     const nodeListPanel = this.registry.ui.panel.getPanel(NodeListPanelId);
+    const nodeEditorSettingsController = <NodeEditorSettingsControllers> nodeListPanel.paramController;
+    nodeEditorSettingsController.dragNode.onDndStart(nodeType);
 
-    const container = <UI_Container> { children: [] };
-    const element = UI_Factory.listItem(container, { key: nodeType, controller: nodeListPanel.controller, dropTargetPlugin: canvasPanel});
-
-    element.dndStart(this.registry);
+    const element = UI_Factory.listItem(<UI_Container> { children: [] }, { key: nodeType, controller: nodeListPanel.controller, dropTargetPlugin: canvasPanel});
     canvasPanel.toolController.dndDrop(new Point(x, y), element);
-    canvasPanel.toolController.dndEnd();
+
+    nodeEditorSettingsController.dragNode.onDndEnd();
 });
 
 When('connect node \'{word}:{word}\' with node \'{word}:{word}\'', function(node1Id: string, node1PortName: string, node2Id: string, node2PortName) {

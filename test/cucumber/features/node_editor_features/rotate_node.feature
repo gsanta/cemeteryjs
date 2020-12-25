@@ -5,15 +5,15 @@ Feature: Rotate node
         And views on canvas 'scene-editor':
             | Type       | Bounds          |
             | mesh-view  | 50:50,60:60     |
-        When hover over canvas 'node-editor'
+        When change canvas to 'node-editor' 
+        And hover over canvas 'node-editor'
         And drop node 'keyboard-node-obj' at '100:100'
         And drop node 'rotate-node-obj' at '400:100'
         And drop node 'rotate-node-obj' at '400:400'
-        And change param 'key1' to 'a' in view 'node-view-1'
-        And change param 'key2' to 'd' in view 'node-view-1'
-        And change param 'mesh' to 'mesh-view-1' in view 'node-view-2'
-        And change param 'mesh' to 'mesh-view-1' in view 'node-view-3'
-        And change param 'rotate' to 'right' in view 'node-view-3'
+        And change param to 'a' in controller 'key1' of view 'node-view-1'
+        And change param to 'd' in controller 'key2' of view 'node-view-1'
+        And change param to 'mesh-view-1' in controller 'mesh' of view 'node-view-2'
+        And change param to 'right' in controller 'rotate' of view 'node-view-3'
         And mouse drags from view 'node-view-1.key1' to view 'node-view-2.input'
         And mouse drags from view 'node-view-1.key2' to view 'node-view-3.input'
         Then canvas contains:

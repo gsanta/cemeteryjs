@@ -65,6 +65,7 @@ export class NodeView extends View {
     }
 
     addParamControllers(paramControllers: ParamControllers) {
+        this.paramController = paramControllers;
         this.controller = new FormController(undefined, this.registry, [], paramControllers);
     }
 

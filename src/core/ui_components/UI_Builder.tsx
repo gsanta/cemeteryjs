@@ -108,9 +108,8 @@ export class UI_Builder {
             const layout = UI_Factory.layout({});
             const accordion = layout.accordion({ controller: panel.controller });
             accordion.title = panel.displayName;
-            panel.renderer.renderInto(accordion);
+            panel.renderer && panel.renderer.renderInto(accordion);
             
-
             return this.buildElement(accordion, layout);
         } else if (panel.region === UI_Region.Dialog) {
             const dialog = UI_Factory.dialog({ controller: panel.controller });

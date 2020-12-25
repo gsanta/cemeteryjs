@@ -2,7 +2,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
-import { FormController } from "../../plugin/controller/FormController";
+import { FormController, ParamControllers } from "../../plugin/controller/FormController";
 import { IControlledModel } from "../../plugin/IControlledModel";
 import { Registry } from "../../Registry";
 import { ViewStore } from "../../stores/ViewStore";
@@ -60,6 +60,7 @@ export abstract class View implements IControlledModel {
     childViews: View[] = [];
 
     controller: FormController = undefined;
+    paramController: ParamControllers;
     renderer: ViewRenderer;
 
     deleteConstraiedViews: ChildViewContext = new ChildViewContext();

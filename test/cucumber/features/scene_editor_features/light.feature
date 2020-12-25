@@ -8,7 +8,7 @@ Feature: Light
         Then canvas contains:
             | Id             | Type       | Obj         |
             | light-view-1   | light-view | light-obj-1 |
-        And change param 'light-pos-y' to '8' in panel 'object-settings-panel'
+        And change param to '8' in controller 'posY' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | PosY |
             | light-obj-1   | light-obj  | 8    |
@@ -69,11 +69,11 @@ Feature: Light
             | Type       | Bounds          | Selected |
             | light-view | 50:50,60:60     | true     |
         When hover over canvas 'scene-editor'
-        And change param 'light-dir-x' to '1' in panel 'object-settings-panel'
+        And change param to '1' in controller 'dirX' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | DirX | DirY | DirZ |
             | light-obj-1   | light-obj  | 1    | -1   | 0    |
-        When change param 'light-dir-y' to '-2' in panel 'object-settings-panel'
+        When change param to '-2' in controller 'dirY' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | DirX | DirY | DirZ |
             | light-obj-1   | light-obj  | 1    | -2   | 0    |
@@ -83,7 +83,7 @@ Feature: Light
         And views on canvas 'scene-editor':
             | Type       | Bounds          | Selected |
             | light-view | 50:50,60:60     | true     |
-        And change param 'light-color-diffuse' to '#FF0000' in panel 'object-settings-panel'
+        And change param to '#FF0000' in controller 'diffuseColor' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | DiffuseColor |
             | light-obj-1   | light-obj  | #FF0000      |
@@ -256,7 +256,7 @@ Feature: Light
             | light-view | 50:50,60:60     | true     |
             | mesh-view  | 20:20,30:30     | false    |
         When hover over canvas 'scene-editor'
-        And change param 'light-parent-mesh' to 'mesh-view-1' in panel 'object-settings-panel'
+        And change param to 'mesh-view-1' in controller 'parent' of panel 'object-settings-panel'
         Then canvas contains:
             | Id           | Type       | Bounds          | Selected | Parent      |
             | light-view-1 | light-view | 50:50,60:60     | true     | mesh-view-1 |

@@ -24,7 +24,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
     renderInto(svgCanvas: UI_SvgCanvas): void {
         const dropLayer = svgCanvas.dropLayer({});
         dropLayer.acceptedDropIds = this.registry.data.helper.node.getRegisteredNodeTypes();
-        dropLayer.isDragging = !!this.canvas.dropItem;
+        dropLayer.isDragging = !!this.registry.services.dragAndDropService.isDragging;
 
         const toolbar = svgCanvas.toolbar();
         const selectedTool = this.canvas.toolController.getSelectedTool();

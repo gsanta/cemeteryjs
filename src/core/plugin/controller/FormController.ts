@@ -35,8 +35,6 @@ export abstract class PropController<T = any> {
     values?(context: PropContext<T>, element: UI_Element): T[] { return []; }
     val(): T { return undefined; }
     selectedValues?(element: UI_Element): T[] { return []; }
-    onDndStart(context: PropContext<T>, element: UI_Element) {}
-    onDndEnd(context: PropContext<T>, element: UI_Element) {}
 }
 
 export abstract class MultiSelectController extends PropController {
@@ -48,6 +46,11 @@ export abstract class MultiSelectController extends PropController {
     done() {}
     cancel() {}
     select(val: string) {}
+}
+
+export abstract class DragAndDropController extends PropController {
+    abstract onDndStart(dropId: string);
+    abstract onDndEnd();
 }
 
 export abstract class ParamControllers {
@@ -143,20 +146,20 @@ export class FormController {
         }
     }
 
-    dndStart(element: UI_Element, listItem: string): void {
-        const controller = this.findController(element); 
+    // dndStart(element: UI_Element, listItem: string): void {
+    //     const controller = this.findController(element); 
 
-        if (controller) {
-            this.findController(element).onDndStart(this.propContexts.get(controller), element);
-        }
-    }
+    //     if (controller) {
+    //         this.findController(element).onDndStart(this.propContexts.get(controller), element);
+    //     }
+    // }
 
-    dndEnd(element: UI_ListItem): void {
-        const controller = this.findController(element); 
-        if (controller) {
-            controller.onDndEnd(this.propContexts.get(controller), element);
-        }
-    }
+    // dndEnd(element: UI_ListItem): void {
+    //     const controller = this.findController(element); 
+    //     if (controller) {
+    //         controller.onDndEnd(this.propContexts.get(controller), element);
+    //     }
+    // }
 
     val(element: UI_Element): any {
         const controller = this.findController(element);

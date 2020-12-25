@@ -6,15 +6,15 @@ Feature: Mesh
             | Type       | Bounds          | Selected |
             | mesh-view  | 50:50,60:60     | true     |
         When hover over canvas 'scene-editor'
-        And change param 'scale-x' to '2' in panel 'object-settings-panel'
+        And change param to '2' in controller 'scaleX' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Scale   |
             | mesh-obj-1    | mesh-obj   | 2:1:1   |
-        When change param 'scale-y' to '2' in panel 'object-settings-panel'
+        When change param to '2' in controller 'scaleY' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Scale   |
             | mesh-obj-1    | mesh-obj   | 2:2:1   |
-        When change param 'scale-z' to '2' in panel 'object-settings-panel'
+        When change param to '2' in controller 'scaleZ' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Scale   |
             | mesh-obj-1    | mesh-obj   | 2:2:2   |
@@ -26,7 +26,7 @@ Feature: Mesh
             | Type       | Bounds          | Selected |
             | mesh-view  | 50:50,60:60     | true     |
         When hover over canvas 'scene-editor'
-        And change param 'rot-y' to '30' in panel 'object-settings-panel'
+        And change param to '30' in controller 'rotateY' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Rotation   |
             | mesh-obj-1    | mesh-obj   | 0:30:0     |
@@ -40,15 +40,15 @@ Feature: Mesh
         Then obj properties are:
             | Id            | Type       | Pos        |
             | mesh-obj-1    | mesh-obj   | 5.5:0:-5.5 |
-        When change param 'pos-x' to '10' in panel 'object-settings-panel'
+        When change param to '10' in controller 'posX' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Pos       |
             | mesh-obj-1    | mesh-obj   | 10:0:-5.5 |
-        When change param 'pos-y' to '15' in panel 'object-settings-panel'
+        When change param to '15' in controller 'posY' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Pos        |
             | mesh-obj-1    | mesh-obj   | 10:15:-5.5 |
-        When change param 'pos-z' to '0' in panel 'object-settings-panel'
+        When change param to '0' in controller 'posZ' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Pos       |
             | mesh-obj-1    | mesh-obj   | 10:15:0   |
@@ -59,7 +59,7 @@ Feature: Mesh
             | Type       | Bounds          | Selected |
             | mesh-view  | 50:50,60:60     | true     |
         When hover over canvas 'scene-editor'
-        And change param 'model' to 'model1.babylon' in panel 'object-settings-panel'
+        And change param to 'model1.babylon' in controller 'model' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Model          |
             | mesh-obj-1    | mesh-obj   | model1.babylon |
@@ -70,7 +70,7 @@ Feature: Mesh
             | Type       | Bounds          | Selected |
             | mesh-view  | 50:50,60:60     | true     |
         When hover over canvas 'scene-editor'
-        And change param 'texture' to 'texture1.png' in panel 'object-settings-panel'
+        And change param to 'texture1.png' in controller 'texture' of panel 'object-settings-panel'
         Then obj properties are:
             | Id            | Type       | Texture      |
             | mesh-obj-1    | mesh-obj   | texture1.png |

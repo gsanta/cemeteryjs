@@ -25,12 +25,12 @@ export const ListItemComp = (props: UI_ComponentProps<UI_ListItem>) => {
         [isDragging, drag] = useDrag({
             item: { type: props.element.listItemId },
             begin: () => {
-                props.element.dndStart(props.registry);
+                props.element.paramController.onDndStart(props.element.listItemId);
             },
             collect: monitor => ({
                 isDragging: !!monitor.isDragging(),
             }),
-            end: (dropResult, monitor) => (props.element.dropTargetPlugin as Canvas2dPanel).toolController.dndEnd()
+            end: (dropResult, monitor) => props.element.paramController.onDndEnd()
         });
     }
 

@@ -113,6 +113,7 @@ export interface UI_Perspective {
 }
 
 export const SceneEditorPerspectiveName = 'Scene Editor';
+export const NodeEditorPerspectiveName = 'Node Editor';
 
 export class UI_PerspectiveService {
 
@@ -140,7 +141,7 @@ export class UI_PerspectiveService {
         });
 
         this.perspectives.push({
-            name: 'Node Editor',
+            name: NodeEditorPerspectiveName,
             canvas1Plugin: NodeEditorPanelId,
             canvas2Plugin: GameViewerPanelId,
             sidepanelPlugins: [

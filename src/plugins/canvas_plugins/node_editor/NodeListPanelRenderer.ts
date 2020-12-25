@@ -2,17 +2,19 @@ import { IRenderer } from '../../../core/plugin/IRenderer';
 import { UI_Panel } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Layout } from '../../../core/ui_components/elements/UI_Layout';
-import { NodeEditorSettingsProps } from './NodeEditorSettingsProps';
+import { NodeEditorSettingsControllers } from './NodeEditorSettingsControllers';
 import { AbstractNodeFactory } from './nodes/AbstractNode';
 import { NodeEditorPanelId } from './registerNodeEditor';
 
 export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
     private registry: Registry;
     private panel: UI_Panel;
+    private controller: NodeEditorSettingsControllers;
 
     constructor(registry: Registry, panel: UI_Panel) {
         this.registry = registry;
         this.panel = panel;
+        this.controller = new NodeEditorSettingsControllers(registry);
     }
 
     renderInto(container: UI_Layout): void {
@@ -34,6 +36,7 @@ export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
 
             nodes.forEach((node) => {
                 const listItem = accordion.listItem({key: node.nodeType, dropTargetPlugin: nodeEditorPlugin})
+                listItem.paramController = this.controller.dragNode; 
                 listItem.label = node.displayName;
                 listItem.droppable = true; 
                 listItem.listItemId = node.nodeType;

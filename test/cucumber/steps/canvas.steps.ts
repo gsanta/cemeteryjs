@@ -6,6 +6,20 @@ import { createFakeMouseEvent } from './common/inputTestUtils';
 import { createFakeUIElement, createFakeUIElementForView } from './common/uiTestHelpers';
 import { findViewOrContainedView } from './common/viewTestUtils';
 import expect from 'expect';
+import { SceneEditorPanelId } from '../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor';
+import { NodeEditorPanelId } from '../../../src/plugins/canvas_plugins/node_editor/registerNodeEditor';
+import { NodeEditorPerspectiveName, SceneEditorPerspectiveName } from '../../../src/core/services/UI_PerspectiveService';
+
+When('change canvas to \'{word}\'', function(panelId: string) {
+    switch(panelId) {
+        case SceneEditorPanelId:
+            this.registry.services.uiPerspective.activatePerspective(SceneEditorPerspectiveName);
+        break;
+        case NodeEditorPanelId:
+            this.registry.services.uiPerspective.activatePerspective(NodeEditorPerspectiveName);
+        break;
+    }
+});
 
 When('hover over canvas \'{word}\'', function(panelId: string) {
     this.registry.ui.helper.hoveredPanel = this.registry.ui.canvas.getCanvas(panelId); 

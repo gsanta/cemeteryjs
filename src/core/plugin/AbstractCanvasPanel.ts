@@ -34,8 +34,6 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
 }
 
 export abstract class AbstractCanvasPanel extends UI_Panel {
-    dropItem: UI_ListItem;
-
     readonly displayName: string;
 
     protected gizmos: GizmoPlugin[] = [];

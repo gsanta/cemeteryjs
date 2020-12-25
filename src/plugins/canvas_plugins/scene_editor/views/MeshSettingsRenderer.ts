@@ -9,9 +9,9 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
     private registry: Registry;
     private controller: MeshViewControllers;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, controller: MeshViewControllers) {
         this.registry = registry;
-        this.controller = new MeshViewControllers(registry);
+        this.controller = controller;
     }
 
     renderInto(layout: UI_Layout): void {

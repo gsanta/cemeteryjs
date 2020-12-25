@@ -2,7 +2,7 @@ import { Registry } from '../Registry';
 import { UI_Container } from '../ui_components/elements/UI_Container';
 import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { IDataExporter } from '../services/export/IDataExporter';
-import { FormController } from './controller/FormController';
+import { FormController, ParamControllers } from './controller/FormController';
 import { ToolController } from './controller/ToolController';
 import { IRenderer } from './IRenderer';
 
@@ -54,6 +54,7 @@ export class UI_Panel {
 
     renderer: IRenderer;
     controller: FormController;
+    paramController: ParamControllers;
     data: Map<string, any> = new Map();
 
     private onMountedFunc: () => void;

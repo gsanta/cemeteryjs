@@ -189,6 +189,7 @@ export class ViewStore {
         this.selectedViews.push(...items);
 
         this.hooks.forEach(hook => hook.addSelectionHook(items));
+        this.registry.services.event.select.emit();
     }
 
     removeSelectedView(item: View) {
@@ -196,6 +197,7 @@ export class ViewStore {
         this.selectedViews = without(this.selectedViews, item);
 
         this.hooks.forEach(hook => hook.removeSelectionHook([item]));
+        this.registry.services.event.select.emit();
     }
 
     getSelectedViews(): View[] {

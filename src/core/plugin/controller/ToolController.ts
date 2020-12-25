@@ -92,7 +92,7 @@ export class ToolController {
     private scopedTool: Tool;
 
     private registry: Registry;
-    private plugin: AbstractCanvasPanel;
+    private canvasPanel: AbstractCanvasPanel;
 
     private toolMap: Map<string, Tool> = new Map();
     private tools: Tool[] = [];
@@ -100,9 +100,9 @@ export class ToolController {
     protected priorityTool: Tool;
     protected selectedTool: Tool;
 
-    constructor(plugin: AbstractCanvasPanel, registry: Registry, tools: Tool[] = []) {
+    constructor(canvasPanel: AbstractCanvasPanel, registry: Registry, tools: Tool[] = []) {
         this.registry = registry;
-        this.plugin = plugin;
+        this.canvasPanel = canvasPanel;
 
         tools.forEach(tool => this.registerTool(tool));
 
@@ -135,10 +135,11 @@ export class ToolController {
         const e = <MouseEvent> {x: point.x, y: point.y};
         this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
 
-        if (this.plugin.dropItem) {
-            this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem)
-            this.plugin.dropItem = undefined;
-        }
+        this.registry.services.dragAndDropService.emitDrop();
+        // if (this.plugin.dropItem) {
+        //     this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem)
+        //     this.plugin.dropItem = undefined;
+        // }
 
         this.registry.services.render.reRenderAll();
     }
@@ -161,15 +162,6 @@ export class ToolController {
         this.registry.services.pointer.pointerWheelEnd(this);
     }
 
-    // // dndDrop is not always called only if the item was dropped to the 'droppable area', but this method
-    // // runs even if the drop happens at an illegal position, so it can be used for some cleanup work
-    dndEnd() {
-        if (this.plugin.dropItem) {
-            this.plugin.dropItem = undefined;
-            this.registry.services.render.reRenderAll();
-        }
-    }
-
     registerTool(tool: Tool) {
         if (this.tools.indexOf(tool) === -1) {
             this.tools.push(tool);
@@ -189,7 +181,7 @@ export class ToolController {
         this.selectedTool = this.getToolById(toolId);
         this.selectedTool.select();
         this.selectedTool.isSelected = true;
-        this.registry.services.render.reRender(this.plugin.region);
+        this.registry.services.render.reRender(this.canvasPanel.region);
     }
 
     getSelectedTool(): Tool {
@@ -213,7 +205,7 @@ export class ToolController {
             this.getActiveTool().leave();
             this.priorityTool = this.toolMap.get(toolId);
             this.priorityTool.select();
-            this.registry.services.render.reRender(this.plugin.region);
+            this.registry.services.render.reRender(this.canvasPanel.region);
         }
     }
 
@@ -221,7 +213,7 @@ export class ToolController {
         if (this.priorityTool && this.priorityTool.id === toolId) {
             this.priorityTool.deselect();
             this.priorityTool = null;
-            this.registry.services.render.reRender(this.plugin.region);
+            this.registry.services.render.reRender(this.canvasPanel.region);
         }
     }
 
@@ -230,7 +222,7 @@ export class ToolController {
             this.getActiveTool().leave();
             this.scopedTool = this.toolMap.get(toolId);
             this.scopedTool.select();
-            this.registry.services.render.reRender(this.plugin.region);
+            this.registry.services.render.reRender(this.canvasPanel.region);
         }
     }
 
@@ -240,7 +232,7 @@ export class ToolController {
         }
     }
 
-    private convertEvent(e: MouseEvent, isPointerDown: boolean, droppedItemId?: string): IPointerEvent {
+    private convertEvent(e: MouseEvent, isPointerDown: boolean): IPointerEvent {
         return {
             pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
             preventDefault: () => e.preventDefault(),
