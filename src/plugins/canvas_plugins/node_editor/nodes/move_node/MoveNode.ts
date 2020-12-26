@@ -1,14 +1,21 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { MeshSpeedController, MoveNodeControllers } from "./MoveNodeControllers";
+import { MoveNodeControllers } from "./MoveNodeControllers";
 
 export const MoveNodeType = 'move-node-obj';
+
+export enum MoveDirection {
+    Forward = 'forward',
+    Backward = 'backward',
+    Left = 'left',
+    Right = 'right'
+}
 
 export class MoveNode extends AbstractNodeFactory {
     private registry: Registry;
@@ -48,12 +55,26 @@ export class MoveNodeParams extends NodeParams {
         name: 'mesh',
         field: NodeParamField.List,
         val: undefined,
+        toJson: () => {
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: this.mesh.val ? this.mesh.val.id : undefined
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            this.mesh.name = nodeParamJson.name;
+            this.mesh.field = nodeParamJson.field;
+            if (nodeParamJson.val) {
+                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            }
+        }
     }
     
     readonly move: NodeParam = {
         name: 'move',
         field: NodeParamField.List,
-        val: 'forward',
+        val: MoveDirection.Forward,
     }
     
     readonly speed: NodeParam = {
@@ -90,12 +111,21 @@ export class MoveNodeExecutor extends AbstractNodeExecutor<MoveNodeParams> {
 
     execute() {
         const meshObj = this.nodeObj.param.mesh.val;
-        const speed = this.nodeObj.param.speed.val; 
+        const speed = this.nodeObj.param.speed.val;
 
-        if (this.nodeObj.param.move.val === 'forward') {
-            meshObj.move(new Point_3(0, 0, speed));
-        } else if (this.nodeObj.param.move.val === 'backward') {
-            meshObj.move(new Point_3(0, 0, -speed));
+        switch(this.nodeObj.param.move.val) {
+            case MoveDirection.Forward:
+                meshObj.move(new Point_3(0, 0, speed));
+                break;
+            case MoveDirection.Backward:
+                meshObj.move(new Point_3(0, 0, -speed));
+                break;
+            case MoveDirection.Left:
+                meshObj.move(new Point_3(-speed, 0, 0));
+                break;
+            case MoveDirection.Right:
+                meshObj.move(new Point_3(speed, 0, 0));
+                break;    
         }
     }
 

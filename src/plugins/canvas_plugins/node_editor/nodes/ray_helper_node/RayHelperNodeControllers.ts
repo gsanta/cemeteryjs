@@ -37,6 +37,7 @@ export class RemoveTimerController extends PropController<string> {
         try {
             this.nodeObj.param.remove.val = this.tempVal;
             this.tempVal = undefined;
+            this.registry.services.history.createSnapshot();
         } finally {
             this.registry.services.render.reRenderAll();
         }

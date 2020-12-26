@@ -3,7 +3,7 @@ import { ParamControllers, PropController } from "../../../../../core/plugin/con
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshController } from "../mesh_node/MeshNodeControllers";
-import { MoveNodeParams } from "./MoveNode";
+import { MoveDirection, MoveNodeParams } from "./MoveNode";
 
 export class MoveNodeControllers extends ParamControllers {
 
@@ -28,7 +28,7 @@ export class MeshMoveController extends PropController<string> {
     }
 
     values() {
-        return ['forward', 'backward'];
+        return [MoveDirection.Forward, MoveDirection.Backward, MoveDirection.Left, MoveDirection.Right];
     }
 
     val() {
@@ -37,6 +37,7 @@ export class MeshMoveController extends PropController<string> {
 
     change(val) {
         this.nodeObj.param.move.val = val;
+        this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
@@ -63,8 +64,9 @@ export class MeshSpeedController extends PropController<string> {
         try {
             this.nodeObj.param.speed.val = parseFloat(this.tempVal);
             this.tempVal = undefined;
+            this.registry.services.history.createSnapshot();
         } finally {
             this.registry.services.render.reRenderAll();
         }
     }
-}
+} 

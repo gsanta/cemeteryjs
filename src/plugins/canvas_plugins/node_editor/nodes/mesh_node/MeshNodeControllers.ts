@@ -48,18 +48,16 @@ export class MultiMeshController extends MultiSelectController {
         this.nodeObj = nodeObj;
     }
 
-    acceptedProps() { return ['mesh']; }
-
-    values(context: PropContext) {
-        return context.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.id)
+    values() {
+        return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.id)
     }
 
     selectedValues() {
         return this.tempVal || []
     }
 
-    defaultVal() {
-        return  undefined;
+    val() {
+        return this.nodeObj.param.mesh.val.map(meshObj => meshObj.id);
     }
 
     open() {
@@ -69,7 +67,9 @@ export class MultiMeshController extends MultiSelectController {
     }
 
     select(val: string) {
-        this.tempVal.push(val);
+        if (!this.tempVal.includes(val)) {
+            this.tempVal.push(val);
+        }
         // this.nodeObj.param.mesh.val.push(this.registry.stores.objStore.getById(val));
         // context.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
@@ -79,10 +79,16 @@ export class MultiMeshController extends MultiSelectController {
         const meshObjs = this.tempVal.map(val => this.registry.stores.objStore.getById(val));
         this.nodeObj.param.mesh.val = meshObjs;
         this.isPopupOpen = false;
+        this.registry.services.history.createSnapshot();
         this.registry.services.render.reRenderAll();
     }
 
     cancel() {
         this.isPopupOpen = false;
+    }
+
+    remove(val: string) {
+        this.tempVal = this.tempVal.filter(v => v !== val);
+        this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }

@@ -94,9 +94,9 @@ class OutputParam implements NodeParam {
         }
 
         const inputMesh = nodeObj.pullData('input');
-        const acceptedMesh = nodeObj.param.mesh.val;
+        const acceptedMeshes = nodeObj.param.mesh.val;
 
-        if(inputMesh === acceptedMesh) {
+        if(acceptedMeshes.includes(inputMesh)) {
             return inputMesh;
         } 
     }

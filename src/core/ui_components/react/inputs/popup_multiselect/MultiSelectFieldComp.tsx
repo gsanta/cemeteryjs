@@ -1,7 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { UI_PopupMultiSelect } from '../../../elements/UI_PopupMultiSelect';
+import { cssClassBuilder } from '../../layout/RowComp';
 import { colors } from '../../styles';
+import { IconStyled } from '../../text/IconComp';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { Focusable } from "../Focusable";
 
@@ -24,10 +26,18 @@ const MultiSelectStyled = styled.div`
         color: ${colors.textColor};
         width: ${({inputWidth}: {inputWidth: string}) => inputWidth ? inputWidth : 'auto'}
     }
+
+    .ce-selected-items {
+        margin-top: 10px;
+        .ce-selected-item {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
 `;
 
 export function MultiSelectFieldComp(props: UI_ComponentProps<UI_PopupMultiSelect>) {
-    const values: string[] = props.element.values(props.registry) || [];
+    const values: string[] = props.element.paramController.values(null, null) || [];
 
     const options = values.map(val => {
         return <option key={val} value={val}>{val}</option>
@@ -41,9 +51,9 @@ export function MultiSelectFieldComp(props: UI_ComponentProps<UI_PopupMultiSelec
             onChange={(e) => props.element.paramController.select(e.target.value)}
             onMouseDown={(e) => e.stopPropagation()}
             onMouseUp={(e) => e.stopPropagation()}
-            value={props.element.val(props.registry) ? props.element.val(props.registry) : ''}
+            value={''}
         >
-            {props.element.val(props.registry) ? options : [placeholder, ...options]}
+            {[placeholder, ...options]}
         </select>
     );
 
@@ -60,30 +70,50 @@ function renderLabeledMultiSelect(props: UI_ComponentProps<UI_PopupMultiSelect>,
     style.justifyContent = 'space-between';
     style.alignItems = 'center';
 
-    const selectedValues = props.element.paramController.selectedValues(props.element).map(val => <div>{val}</div>);
-
     return (
         <MultiSelectStyled inputWidth={props.element.inputWidth} style={style} className={`ce-labeled-input ${props.element.layout}`}>
             <div className="label">{props.element.label}</div>
             <div className="ce-input">
                 {select}
-                {selectedValues}
+                {renderSelectedItems(props)}
             </div>
         </MultiSelectStyled>
     )
 }
 
 function renderSimpleMultiSelect(props: UI_ComponentProps<UI_PopupMultiSelect>, select: JSX.Element) {
-    const selectedValues = props.element.paramController.selectedValues(props.element).map(val => <div>{val}</div>);
 
     return (
         <MultiSelectStyled inputWidth={props.element.inputWidth}>
             <div className="ce-input">
                 {select}
-                {selectedValues}
+                {renderSelectedItems(props)}
             </div>
         </MultiSelectStyled>
     )
+}
+
+function renderSelectedItems(props: UI_ComponentProps<UI_PopupMultiSelect>) {
+    const classes = cssClassBuilder(
+        'ce-icon',
+        `delete-icon`
+    );
+
+    const selectedItems = props.element.paramController.selectedValues(props.element)
+        .map(val => {
+            return (
+                <div className="ce-selected-item">
+                    <div>{val}</div>
+                    <IconStyled className={classes} onClick={() => props.element.paramController.remove(val)}/>
+                </div>
+            );
+        });
+    
+    return (
+        <div className="ce-selected-items">
+            {selectedItems}
+        </div>
+    );
 }
 
 MultiSelectFieldComp.displayName = 'MultiSelectComp';

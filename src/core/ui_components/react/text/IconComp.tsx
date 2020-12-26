@@ -24,7 +24,7 @@ const doneIcon = require('../../../../../assets/images/icons/done.svg');
 const playIcon = require('../../../../../assets/images/icons/play.svg');
 const stopIcon = require('../../../../../assets/images/icons/stop.svg');
 
-const IconStyled = styled.div`
+export const IconStyled = styled.div`
     &.ce-icon {
         width: 24px;
         height: 24px;

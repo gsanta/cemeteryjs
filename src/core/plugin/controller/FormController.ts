@@ -46,6 +46,7 @@ export abstract class MultiSelectController extends PropController {
     done() {}
     cancel() {}
     select(val: string) {}
+    remove(val: string) {}
 }
 
 export abstract class DragAndDropController extends PropController {

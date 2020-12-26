@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../../core/models/objs/RayObj";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
@@ -45,7 +45,20 @@ export class RayCasterNodeParams extends NodeParams {
         name: 'mesh',
         field: NodeParamField.List,
         val: undefined,
-
+        toJson: () => {
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: this.mesh.val ? this.mesh.val.id : undefined
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            this.mesh.name = nodeParamJson.name;
+            this.mesh.field = nodeParamJson.field;
+            if (nodeParamJson.val) {
+                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            }
+        }
     }
     
     readonly length: NodeParam = {
