@@ -26,15 +26,18 @@ export class MeshController extends PropController<string> {
     acceptedProps() { return ['mesh']; }
 
     values() {
-        return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshView => meshView.id)
+        return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.name ? meshObj.name : meshObj.id)
     }
 
     val() {
-        return this.nodeObj.param.mesh.val ? this.nodeObj.param.mesh.val.id : undefined;
+        const meshObj = this.nodeObj.param.mesh.val;
+        if (meshObj) {
+            return meshObj.name ? meshObj.name : meshObj.id;
+        }
     }
 
     change(val: string) {
-        this.nodeObj.param.mesh.val = <MeshObj> this.registry.stores.objStore.getById(val);
+        this.nodeObj.param.mesh.val = <MeshObj> this.registry.stores.objStore.getByNameOrId(val);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

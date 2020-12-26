@@ -1,12 +1,12 @@
 import { NodeObj, NodeObjType, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { GameViewerPanelId } from "../../../game_viewer/registerGameViewer";
 import { GameTool, GameToolId } from "../../../game_viewer/tools/GameTool";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { KeyboardNodeControllers, KEY_REGEX } from "./KeyboardNodeController";
+import { KeyboardNodeControllers, KeyControl, KEY_REGEX } from "./KeyboardNodeController";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
@@ -43,14 +43,27 @@ export class KeyboardNode extends AbstractNodeFactory {
 }
 
 export class KeyboardNodeParams extends NodeParams {
-    readonly key1: NodeParam = {
-        name: 'key1',
-        val: '',
-        field: NodeParamField.List,
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+
+    constructor() {
+        super();
+
+        this.key1 = new KeyboardNodeParam('key1')
+    }
+
+    readonly key1: NodeParam;
+}
+
+export class KeyboardNodeParam implements NodeParam {
+    name: string;
+    val = '';
+    field = NodeParamField.List;
+    port = {
+        direction: PortDirection.Output,
+        dataFlow: PortDataFlow.Push
+    };
+
+    constructor(name: string) {
+        this.name = name;
     }
 }
 

@@ -18,6 +18,7 @@ export interface ObjStoreHook {
 export class ObjStore {
     protected objs: IObj[] = [];
     protected objById: Map<string, IObj> = new Map();
+    protected nameCache: Map<string, IObj> = new Map();
     private objsByType: Map<string, IObj[]> = new Map();
     private idGenerator: IdGenerator;
     private hooks: ObjStoreHook[] = [];
@@ -96,6 +97,7 @@ export class ObjStore {
 
         this.objs.splice(this.objs.indexOf(obj), 1);
         this.objById.delete(obj.id);
+        this.nameCache.delete(obj.name);
 
         const thisObjTypes = this.objsByType.get(obj.objType) || [];
         thisObjTypes.splice(thisObjTypes.indexOf(obj), 1);
@@ -108,6 +110,27 @@ export class ObjStore {
 
     getById(id: string) {
         return this.objById.get(id);
+    }
+
+    getByName(name: string) {
+        if (this.nameCache.get(name) && this.nameCache.get(name).name !== name) {
+            this.nameCache.delete(name);
+        }
+
+        if (!this.nameCache.get(name)) {
+            this.addObjWithNameToCache(name);
+        }
+
+        return this.nameCache.get(name);
+    }
+
+    private addObjWithNameToCache(name: string) {
+        const obj = this.objs.find(obj => obj.name === name);
+        this.nameCache.set(name, obj);
+    }
+
+    getByNameOrId(nameOrId: string) {
+        return this.getById(nameOrId) || this.getByName(nameOrId);
     }
 
     getObjsByType(type: string): IObj[] {
@@ -130,6 +153,7 @@ export class ObjStore {
         this.objs.forEach(obj => this.removeObj(obj));
         this.objs = [];
         this.objById = new Map();
+        this.nameCache = new Map();
         this.objsByType = new Map();
         this.idGenerator.clear();
     }

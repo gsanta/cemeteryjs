@@ -546,7 +546,7 @@ export class MeshNameController extends PropController<string> {
     private tempVal: string;
 
     val() {
-        return this.tempVal ? this.tempVal : (<MeshView> this.registry.data.view.scene.getOneSelectedView()).getObj().name;
+        return this.tempVal !== undefined ? this.tempVal : (<MeshView> this.registry.data.view.scene.getOneSelectedView()).getObj().name;
     }
     
     change(val: string) {

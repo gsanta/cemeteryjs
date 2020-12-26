@@ -1,12 +1,10 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { ParamControllers, PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
-import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
-import { KeyboardNodeParams } from "./KeyboardNode";
+import { KeyboardNodeParam, KeyboardNodeParams } from "./KeyboardNode";
 
 export const KEY_REGEX = /key(\d*)/;
 
@@ -14,10 +12,13 @@ export class KeyboardNodeControllers extends ParamControllers {
 
     constructor(registry: Registry, nodeView: NodeView) {
         super();
-        this.key1 = new KeyControl(registry, this, nodeView, 'key1');
-    }
 
-    readonly key1: KeyControl;
+        nodeView.getObj().getParams().forEach(param => {
+            if (param.name.match(KEY_REGEX)) {
+                this[param.name] = new KeyControl(registry, this, nodeView, param.name);
+            }
+        });
+    }
 }
 
 export class KeyControl extends PropController {
@@ -34,7 +35,7 @@ export class KeyControl extends PropController {
         this.controllers = controllers;
     }
 
-    acceptedProps(context: PropContext, element: UI_Element) {
+    acceptedProps() {
         return this.nodeObj.getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
     }
 
@@ -69,15 +70,7 @@ export class KeyControl extends PropController {
 
         const keyName = `key${newIndex}`;
         
-        this.nodeObj.param[keyName] = {
-            name: keyName,
-            val: '',
-            field: NodeParamField.List,
-            port: {
-                direction: PortDirection.Output,
-                dataFlow: PortDataFlow.Push
-            }
-        };
+        this.nodeObj.param[keyName] = new KeyboardNodeParam(keyName);
         this.controllers[keyName] = new KeyControl(this.registry, this.controllers, this.nodeView, keyName);
         this.nodeObj.initParams();
         this.nodeView.setup();
