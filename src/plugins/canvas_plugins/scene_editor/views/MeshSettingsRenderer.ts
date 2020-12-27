@@ -41,6 +41,7 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
 
         row = layout.row({ key: 'clone-row' });
         const cloneMeshButton = row.button('clone');
+        cloneMeshButton.paramController = this.controller.clone;
         cloneMeshButton.label = 'Clone Mesh';
         cloneMeshButton.width = '200px';
         

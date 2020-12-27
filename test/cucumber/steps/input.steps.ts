@@ -22,7 +22,7 @@ When('click button \'{word}\' in panel \'{word}\'', function(paramName: string, 
     
     const fakeUIElement = createFakeUIElement({ controller: panel.controller, key: paramName });
     
-    panel.controller.click(fakeUIElement);
+    panel.paramController[paramName].click(null, null);
 });
 
 When('press key \'{word}\'', function(key: string) {

@@ -79,13 +79,6 @@ export class KeyboardNodeExecutor extends AbstractNodeExecutor<KeyboardNodeParam
         const keyParams = this.getKeyParams(this.nodeObj);
         const gameTool = <GameTool> this.registry.ui.canvas.getCanvas(GameViewerPanelId).toolController.getToolById(GameToolId);
         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
-        
-        this.registry.stores.objStore.getAll().forEach((obj) => {
-            if (obj.objType === NodeObjType) {
-                console.log((obj as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
-            }
-        })
-
 
         if (param) {
             this.registry.services.node.executePort(this.nodeObj, param.name);

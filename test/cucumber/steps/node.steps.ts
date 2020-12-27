@@ -21,10 +21,6 @@ When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: nu
     nodeEditorSettingsController.dragNode.onDndEnd();
 });
 
-When('connect node \'{word}:{word}\' with node \'{word}:{word}\'', function(node1Id: string, node1PortName: string, node2Id: string, node2PortName) {
-    
-});
-
 Then('node params for \'{word}\' are:', function(nodeObjId: string, tableDef: TableDefinition) {
     const nodeObj = <NodeObj> this.registry.stores.objStore.getById(nodeObjId);
     nodeParamsAre(this, nodeObj, tableDef);

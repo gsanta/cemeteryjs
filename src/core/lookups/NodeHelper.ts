@@ -32,7 +32,7 @@ export class NodeHelper {
     }
 
     getRegisteredNodeTypes(): string[] {
-    return Array.from(this.nodes.keys());
+        return Array.from(this.nodes.keys());
     }
 
     getNode(nodeType: string): AbstractNodeFactory {

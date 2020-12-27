@@ -18,14 +18,12 @@ export class DragNodeController extends DragAndDropController {
 
     constructor(registry: Registry) {
         super(registry);
-        console.log('new controller')
 
         this.registry.services.dragAndDropService.onDrop(() => this.onDrop());
     }
 
     onDndStart(dropId: string) {
         this.dropId = dropId;
-        console.log(this.dropId)
         this.registry.ui.helper.hoveredPanel = this.registry.ui.helper.getPanel1(); 
         this.registry.services.dragAndDropService.dragStart();
         this.registry.services.render.reRender(UI_Region.Sidepanel, UI_Region.Canvas1);
@@ -39,7 +37,6 @@ export class DragNodeController extends DragAndDropController {
 
     private onDrop() {
         const nodeType = this.dropId;
-        console.log(nodeType);
         const nodeObj = this.registry.data.helper.node.createObj(nodeType);
         const nodeView: NodeView = this.registry.data.helper.node.createView(nodeType, nodeObj);
 

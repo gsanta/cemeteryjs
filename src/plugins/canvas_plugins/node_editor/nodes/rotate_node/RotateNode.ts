@@ -74,7 +74,6 @@ export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
 
     execute() {
         const meshObj = this.nodeObj.param.mesh.val;
-
         if (meshObj) {
             const rotation = meshObj.getRotation();
             if (this.nodeObj.param.rotate.val === 'left') {

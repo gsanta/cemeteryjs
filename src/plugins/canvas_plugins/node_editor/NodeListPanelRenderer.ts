@@ -8,13 +8,11 @@ import { NodeEditorPanelId } from './registerNodeEditor';
 
 export class NodeListPanelRenderer implements IRenderer<UI_Layout> {
     private registry: Registry;
-    private panel: UI_Panel;
     private controller: NodeEditorSettingsControllers;
 
-    constructor(registry: Registry, panel: UI_Panel) {
+    constructor(registry: Registry, controller: NodeEditorSettingsControllers) {
         this.registry = registry;
-        this.panel = panel;
-        this.controller = new NodeEditorSettingsControllers(registry);
+        this.controller = controller;
     }
 
     renderInto(container: UI_Layout): void {

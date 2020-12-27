@@ -30,6 +30,8 @@ function createPanel(registry: Registry): UI_Panel {
 
     registry.services.event.select.on(() => {
         const selectedViews = registry.data.view.scene.getSelectedViews();
+        panel.renderer = undefined;
+        panel.paramController = undefined;
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {
                 case MeshViewType:

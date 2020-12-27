@@ -16,8 +16,10 @@ export function registerNodeListPanel(registry: Registry) {
 function createPanel(registry: Registry): UI_Panel {
 
     const panel = new UI_Panel(registry, UI_Region.Sidepanel, NodeListPanelId, 'Node List');
-    panel.renderer = new NodeListPanelRenderer(registry, panel);
-    panel.paramController = new NodeEditorSettingsControllers(registry);
+    const controller = new NodeEditorSettingsControllers(registry);
+    const renderer = new NodeListPanelRenderer(registry, controller);
+    panel.paramController = controller;
+    panel.renderer = renderer;
 
     return panel;
 }
