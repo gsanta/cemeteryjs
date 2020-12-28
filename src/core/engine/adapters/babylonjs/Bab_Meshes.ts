@@ -1,5 +1,5 @@
 import { Mesh } from "babylonjs/Meshes/mesh";
-import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton, Color3 } from "babylonjs";
+import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton, Color3, AnimationGroup } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IMeshAdapter } from "../../IMeshAdapter";
 import { BasicShapeType, MeshObj } from "../../../models/objs/MeshObj";
@@ -12,7 +12,9 @@ import { toVector3 } from "./Bab_Utils";
 
 export interface MeshData {
     mainMesh: Mesh;
+    meshes: Mesh[];
     skeletons: Skeleton[];
+    animationGroups: AnimationGroup[];
 }
 
 export  class Bab_Meshes implements IMeshAdapter {
@@ -128,6 +130,13 @@ export  class Bab_Meshes implements IMeshAdapter {
         return meshData.mainMesh.visibility;
     }
 
+    /**
+     * Gives information about the node hierarchy of the mesh 
+     */
+    getMeshTree(meshObj: MeshObj): MeshTreeNode[] {
+        return this.meshes.get(meshObj).meshes
+    }
+
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         const meshData1 = this.meshes.get(meshObj);
         if (!meshData1) { return undefined; }
@@ -199,7 +208,7 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     private createPlaceHolderMeshInstance(meshObj: MeshObj) {
         const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
-        this.meshes.set(meshObj, {mainMesh: mesh, skeletons: []});
+        this.meshes.set(meshObj, {mainMesh: mesh, skeletons: [], animationGroups: [], meshes: []});
     }
 
     deleteInstance(meshObj: MeshObj) {
@@ -218,20 +227,20 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     createMaterial(meshObj: MeshObj) {
-        const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return; }
+        // const meshData = this.meshes.get(meshObj);
+        // if (!meshData) { return; }
 
-        let mesh = meshData.mainMesh;
+        // let mesh = meshData.mainMesh;
 
-        const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.textureId);
+        // const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.textureId);
 
-        if (textureObj && textureObj.path) {
-            // TODO detect mesh with material in a safer way
-            mesh = <Mesh> (mesh.getChildMeshes().length > 0 ? mesh.getChildMeshes()[0] : mesh);
+        // if (textureObj && textureObj.path) {
+        //     // TODO detect mesh with material in a safer way
+        //     mesh = <Mesh> (mesh.getChildMeshes().length > 0 ? mesh.getChildMeshes()[0] : mesh);
             
-            (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
-            (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
-        }
+        //     (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+        //     (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
+        // }
     }
 
     playAnimation(meshObj: MeshObj, startFrame: number, endFrame: number, repeat: boolean): boolean {

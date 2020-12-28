@@ -42,6 +42,8 @@ export enum UI_ElementType {
     TableColumn = 'TableColumn',
 
     Accordion = 'Accordion',
+    Tree = 'Tree',
+
     FileUpload = 'FileUpload',
 
     Toolbar = 'Toolbar',

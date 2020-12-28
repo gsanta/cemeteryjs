@@ -6,6 +6,7 @@ import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
+import { MeshLoaderDialogId } from '../../../dialog_plugins/mesh_loader/registerMeshLoaderDialog';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
 import { MeshView } from './MeshView';
 
@@ -328,6 +329,8 @@ export class ModelController extends PropController {
             const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj())
             meshView.getBounds().setWidth(realDimensions.x);
             meshView.getBounds().setHeight(realDimensions.y);
+            const dialog = this.registry.ui.panel.getPanel(MeshLoaderDialogId);
+            this.registry.ui.helper.setDialogPanel(dialog);
             this.registry.services.history.createSnapshot();
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));

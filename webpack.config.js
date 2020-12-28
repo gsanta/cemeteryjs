@@ -45,7 +45,7 @@ module.exports = env => {
                 {
                     test: /\.ttf$/,
                     use: ['file-loader']
-                  }
+                }
             ]
         },
         plugins: [
@@ -73,9 +73,9 @@ module.exports = env => {
             library: 'cemetery',
             publicPath: ''
         },
-        // externals: {
-        //     "babylonjs": "BABYLON"
-        // },
+        externals: {
+            "babylonjs": "BABYLON"
+        },
         devtool: 'eval',
         context: __dirname,
         devServer: {

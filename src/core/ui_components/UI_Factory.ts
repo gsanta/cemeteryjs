@@ -22,7 +22,7 @@ import { UI_Box } from './elements/UI_Box';
 import { UI_Button } from "./elements/UI_Button";
 import { UI_Column } from './elements/UI_Column';
 import { UI_Container } from './elements/UI_Container';
-import { UI_Element, UI_ElementConfig } from './elements/UI_Element';
+import { UI_ControlledElementConfig, UI_Element, UI_ElementConfig } from './elements/UI_Element';
 import { UI_FileUpload } from "./elements/UI_FileUpload";
 import { UI_GridSelect } from './elements/UI_GridSelect';
 import { UI_HtmlCanvas } from './elements/UI_HtmlCanvas';
@@ -41,9 +41,11 @@ import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
-import { GlobalControllerProps } from '../plugin/controller/FormController';
+import { GlobalControllerProps, PropController } from '../plugin/controller/FormController';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
+import { UI_Tree } from './elements/complex/tree/UI_Tree';
+import { TreeController } from './elements/complex/tree/TreeController';
 
 export class UI_Factory {
 
@@ -133,6 +135,15 @@ export class UI_Factory {
 
     static accordion(parent: UI_Container, config: UI_ElementConfig): UI_Accordion {
         const element = new UI_Accordion({controller: config.controller || parent.controller, parent, ...config});
+
+        parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
+
+        return element;
+    }
+
+    static tree(parent: UI_Container, config: UI_ControlledElementConfig<TreeController>): UI_Tree {
+        const element = new UI_Tree(config);
 
         parent.children.push(element);
         element.canvasPanel = parent.canvasPanel;

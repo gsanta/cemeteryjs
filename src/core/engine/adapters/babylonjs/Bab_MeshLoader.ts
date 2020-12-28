@@ -1,4 +1,4 @@
-import { Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from "babylonjs";
+import { AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from "babylonjs";
 import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
 import { AssetObj } from "../../../models/objs/AssetObj";
 import { MeshObj } from "../../../models/objs/MeshObj";
@@ -6,7 +6,7 @@ import { Registry } from "../../../Registry";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { MeshData } from "./Bab_Meshes";
 import { toVector3 } from "./Bab_Utils";
-// require('babylonjs-loaders');
+import 'babylonjs-loaders';
 
 export  class Bab_MeshLoader implements IMeshLoaderAdapter {
     
@@ -58,7 +58,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
             clone = <Mesh> templateMesh.instantiateHierarchy();
             clone.name = meshObj.id;
         }
-        this.engineFacade.meshes.meshes.set(meshObj, {mainMesh: clone, skeletons: meshData.skeletons});
+        this.engineFacade.meshes.meshes.set(meshObj, {mainMesh: clone, skeletons: meshData.skeletons, animationGroups: meshData.animationGroups});
 
         
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
@@ -77,18 +77,15 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         this.engineFacade.meshes.createMaterial(meshObj);
     }
 
-    private loadMesh(asset: AssetObj): Promise<Mesh> {
-        return new Promise((resolve, reject) => {
-            SceneLoader.ImportMesh(
-                '',
-                asset.path,
-                undefined,
-                this.engineFacade.scene,
-                (meshes: Mesh[], ps: ParticleSystem[], skeletons: Skeleton[], animGroups) => resolve(this.createModelData(asset, meshes, skeletons)),
-                () => {},
-                (scene: Scene, message: string) => { reject(message); }
-            );
-        });
+    private async loadMesh(asset: AssetObj): Promise<void> {
+        try {
+            const result = await SceneLoader.ImportMeshAsync(null, asset.path, undefined, this.engineFacade.scene);
+            // const result = await SceneLoader.ImportMeshAsync(null, 'assets/example_game/people/', 'main_character.glb', this.engineFacade.scene);
+            this.createModelData(asset, result.meshes as Mesh[], result.skeletons, result.animationGroups);
+            result.animationGroups[1].start(true);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     private configMesh(mesh: Mesh) {        
@@ -98,17 +95,21 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         mesh.isVisible = true;
     }
 
-    private createModelData(asset: AssetObj, meshes: Mesh[], skeletons: Skeleton[]): Mesh {
+    private createModelData(asset: AssetObj, meshes: Mesh[], skeletons: Skeleton[], animationGroups: AnimationGroup[]): Mesh {
         if (meshes.length === 0) { throw new Error('No mesh was loaded.') }
 
         const mainMesh = meshes.find(mesh => !mesh.parent) || meshes[0];
 
-        meshes[0].material = new StandardMaterial(asset.id, this.engineFacade.scene);
-   
+        meshes[1].material = new StandardMaterial(asset.id, this.engineFacade.scene);
+        (<StandardMaterial> meshes[1].material).diffuseTexture = new Texture('assets/example_game/people/pal.png',  this.engineFacade.scene);
+        // (meshes[0].getChildren()[0].getChildren()[0] as Mesh).material = new StandardMaterial(asset.id, this.engineFacade.scene);
+        // (<StandardMaterial> (meshes[0].getChildren()[0].getChildren()[0] as Mesh).material).diffuseTexture  = new Texture('assets/example_game/people/pal.png',  this.engineFacade.scene);
+
+
         meshes[0].name = asset.id;
         this.configMesh(meshes[0]);
 
-        const meshData = {mainMesh, skeletons};
+        const meshData = {mainMesh, skeletons, animationGroups};
 
         this.templates.add(mainMesh);
         this.templatesById.set(asset.id, meshData);

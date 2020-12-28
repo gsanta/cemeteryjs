@@ -1,6 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
-import { FormController, PropController } from '../../plugin/controller/FormController';
+import { FormController, ParamControllers, PropController } from '../../plugin/controller/FormController';
 import { UI_Panel } from '../../plugin/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
@@ -29,6 +29,12 @@ export interface UI_ElementConfig {
     controller?: FormController;
 }
 
+export interface UI_ControlledElementConfig<C extends PropController> {
+    key?: string;
+    controller: C;
+    parent: UI_Element;
+}
+
 export abstract class UI_Element<C extends PropController = any> {
     elementType: UI_ElementType;
     readonly key: string;
@@ -49,11 +55,12 @@ export abstract class UI_Element<C extends PropController = any> {
 
     css?: UI_Element_Css = {};
 
-    constructor(config: {controller: FormController, key?: string, uniqueId?: string, parent?: UI_Element}) {
+    constructor(config: {controller: FormController, key?: string, uniqueId?: string, parent?: UI_Element, paramController?: C}) {
         this.uniqueId = config.uniqueId;
         this.controller = config.controller;
         this.key = config.key;
         this.parent = config.parent;
+        this.paramController = config.paramController;
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {

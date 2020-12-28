@@ -65,6 +65,7 @@ import { SvgTextComp } from './react/svg/SvgTextComp';
 import { UI_SvgLine } from './elements/svg/UI_SvgLine';
 import { SvgLineComp } from './react/svg/SvgLineComp';
 import { ListItemComp } from './react/data_display/ListItemComp';
+import { TreeComp } from './react/data_display/tree/TreeComp';
 import { DialogComp } from './react/dialogs/DialogComp';
 import { UI_Panel, UI_Region } from '../plugin/UI_Panel';
 import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
@@ -87,6 +88,7 @@ import { CheckboxComp } from './react/inputs/CheckboxComp';
 import { MultiSelectTriggerComp } from './react/inputs/popup_multiselect/MultiSelectTriggerComp';
 import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
 import { MultiSelectPopupComp } from './react/inputs/popup_multiselect/MultiSelectPopupComp';
+import { UI_Tree } from './elements/complex/tree/UI_Tree';
 
 export class UI_Builder {
 
@@ -375,7 +377,9 @@ export class UI_Builder {
             case UI_ElementType.DropLayer:
                 const dropLayer = element as UI_DropLayer;
                 return <DropLayerComp registry={this.registry} element={dropLayer}></DropLayerComp>;
-     
+            case UI_ElementType.Tree:
+                const tree = element as UI_Tree;
+                return <TreeComp registry={this.registry} element={tree}/>;
         }
     }
 }   

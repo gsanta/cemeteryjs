@@ -17,6 +17,7 @@ import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/regist
 import { registerNodeListPanel } from '../plugins/canvas_plugins/node_editor/registerNodeListPanel';
 import { registerObjectSettingsPanel } from '../plugins/canvas_plugins/scene_editor/registerObjectSettingsPanel';
 import { registerSceneEditor } from '../plugins/canvas_plugins/scene_editor/registerSceneEditor';
+import { registerMeshLoaderDialog } from '../plugins/dialog_plugins/mesh_loader/registerMeshLoaderDialog';
 import { registerSpriteSheetManagerDialog } from '../plugins/dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
 import { registerThumbnailCanvas } from '../plugins/dialog_plugins/thumbnail/registerThumbnailCanvas';
 import { registerThumbnaildialog } from '../plugins/dialog_plugins/thumbnail/registerThumbnailDialog';
@@ -60,6 +61,7 @@ export class Editor {
         // dialogs
         registerThumbnaildialog(this.registry);
         registerSpriteSheetManagerDialog(this.registry);
+        registerMeshLoaderDialog(this.registry);
 
         registerSceneEditor(this.registry);
         registerNodeEditor(this.registry);

@@ -68,6 +68,11 @@ export interface GroundConfig extends MeshShapeConfig {
     height: number;
 }
 
+export interface MeshTreeNode {
+    name: string;
+    children: MeshTreeNode[];
+}
+
 export class MeshObj implements IGameObj {
     readonly objType = MeshObjType;
     id: string;
@@ -114,6 +119,10 @@ export class MeshObj implements IGameObj {
 
     getScale(): Point_3 {
         return this.meshAdapter.getScale(this);
+    }
+
+    getMeshTree(): MeshTreeNode[] {
+
     }
 
     dispose() {
