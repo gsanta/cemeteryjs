@@ -64,7 +64,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     }
 
     getVisibility(meshObj: MeshObj): number {
-        return this.visibilityMap.get(meshObj) || 1;
+        return this.visibilityMap.get(meshObj) !== undefined ? this.visibilityMap.get(meshObj) : 1;
     }
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {

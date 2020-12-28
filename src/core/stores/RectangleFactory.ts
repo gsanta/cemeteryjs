@@ -30,6 +30,7 @@ export class RectangleFactory  {
         const point = obj.getPosition();
         const width = 10;
         const depth = 10;
+        const visibility = obj.getVisibility();
 
         const mesh = MeshBuilder.CreateBox(
             obj.id,
@@ -51,6 +52,7 @@ export class RectangleFactory  {
         mesh.material = this.createSimpleMaterial(scene, obj);
 
         mesh.computeWorldMatrix(true);
+        mesh.visibility = visibility;
 
         return mesh;
     }

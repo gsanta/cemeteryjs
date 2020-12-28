@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { INodeListener } from "../../node/INodeListener";
@@ -45,13 +45,27 @@ export class TriggerZoneNodeParams extends NodeParams {
         name: 'mesh',
         field: NodeParamField.List,
         val: undefined,
+        toJson: () => {
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: this.mesh.val ? this.mesh.val.id : undefined
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            this.mesh.name = nodeParamJson.name;
+            this.mesh.field = nodeParamJson.field;
+            if (nodeParamJson.val) {
+                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            }
+        }
     }
 
     readonly pickableMesh: NodeParam = {
         name: 'pickableMesh',
         port: {
             direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push,
+            dataFlow: PortDataFlow.Pull,
         }
     }
     
@@ -86,14 +100,14 @@ class MeshIntersectionListener implements INodeListener {
         }
 
         if (this.lastIntersectedMesh && lastIntersectedMesh !== this.lastIntersectedMesh) {
+            console.log('trigger')
             registry.services.node.executePort(nodeObj, 'signal');
         }
     }
 
     private getPickableMesh(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('pickableMesh').hasConnectedPort()) {
-            const meshObjId = nodeObj.pullData('pickableMesh');
-            return <MeshObj> registry.stores.objStore.getById(meshObjId);
+            return nodeObj.pullData('pickableMesh');
         }
     }
 

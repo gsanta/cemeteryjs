@@ -89,7 +89,7 @@ export class NodeView extends View {
         this.bounds.setHeight(inputFieldHeights + HEADER_HIGHT + PORTS_HEIGHT);
 
         this.initStandalonePortPositions();
-        this.initParamRelatedJoinPointPositions();
+        this.initPortsWithFieldPositions();
     }
 
     private initStandalonePortPositions() {
@@ -113,7 +113,7 @@ export class NodeView extends View {
             });
     }
 
-    private initParamRelatedJoinPointPositions() {
+    private initPortsWithFieldPositions() {
         this.containedViews
             .filter((portView: NodePortView) => NodeParam.isFieldParam(portView.getObj().getNodeParam()))
             .forEach((portView: NodePortView) => {

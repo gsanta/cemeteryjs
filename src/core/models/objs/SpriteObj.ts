@@ -86,6 +86,23 @@ export class SpriteObj implements IObj {
         throw new Error('unimplemented');
     }
 
+    
+    /**
+     * Set the visibility of a sprite
+     * @param visibility number between 0 and 1, 0 means invisible, 1 means fully visible
+     */
+    setVisibility(visibility: number): void {
+        throw new Error('not implemented')
+    }
+
+    /**
+     * Get the visibility of a sprite
+     * @returns number between 0 and 1, 0 means invisible, 1 means fully visible
+     */    
+    getVisibility(): number {
+        throw new Error('not implemented')
+    }
+
     dispose() {
         this.spriteAdapter && this.spriteAdapter.deleteInstance(this);
     }

@@ -48,6 +48,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         const meshData = this.templatesById.get(model.id);
         const templateMesh = meshData.mainMesh;
         const rotation = meshObj.getRotation();
+        const visibility = meshObj.getVisibility();
 
         let clone: Mesh;
 
@@ -68,6 +69,7 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         clone.scaling = new Vector3(scale.x, scale.x, scale.x);
         clone.position.y = position.y;
         clone.rotationQuaternion = undefined;
+        clone.visibility = visibility;
 
         clone.setAbsolutePosition(new Vector3(position.x, 0, position.z));
         clone.rotation = toVector3(rotation);

@@ -34,6 +34,7 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
 
         row = layout.row({ key: 'layer-row' });
         const grid = row.grid({ key: 'layer' });
+        grid.paramController = this.controller.layer; 
         grid.label = 'Layer';
         const filledIndexes = new Set<number>();
         this.registry.data.view.scene.getAllViews().forEach(view => filledIndexes.add(view.layer));

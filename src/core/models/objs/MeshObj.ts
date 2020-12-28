@@ -25,6 +25,7 @@ export interface MeshObjJson extends ObjJson {
     routeId: string;
     color: string;
     shapeConfig: MeshShapeConfig;
+    visibility: number;
 }
 
 export class MeshObjFactory extends ObjFactoryAdapter {
@@ -176,7 +177,8 @@ export class MeshObj implements IGameObj {
             textureId: this.textureId,
             routeId: this.routeId,
             color: this.color,
-            shapeConfig: this.shapeConfig
+            shapeConfig: this.shapeConfig,
+            visibility: this.getVisibility()
         }
     }
     
@@ -192,5 +194,6 @@ export class MeshObj implements IGameObj {
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;
+        this.setVisibility(json.visibility);
     }
 }

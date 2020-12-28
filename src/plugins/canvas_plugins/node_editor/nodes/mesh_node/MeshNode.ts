@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../AbstractNode";
@@ -47,6 +47,20 @@ export class MeshNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Output,
             dataFlow: PortDataFlow.Pull
+        },
+        toJson: () => {
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: this.mesh.val ? this.mesh.val.id : undefined
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            this.mesh.name = nodeParamJson.name;
+            this.mesh.field = nodeParamJson.field;
+            if (nodeParamJson.val) {
+                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            }
         }
     }
 }

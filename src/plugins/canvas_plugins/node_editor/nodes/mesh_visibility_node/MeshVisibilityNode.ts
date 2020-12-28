@@ -4,7 +4,7 @@ import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { MeshVisibilityNodeControllers } from "./MeshVisibilityNodeControllers";
 
 export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
@@ -42,7 +42,7 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
 }
 
 export class MeshVisibilityNodeParams extends NodeParams {    
-    readonly signalOn: NodeParam = {
+    readonly 'signal on': NodeParam = {
         name: 'signal on',
         port: {
             direction: PortDirection.Input,
@@ -57,7 +57,7 @@ export class MeshVisibilityNodeParams extends NodeParams {
         }
     }
 
-    readonly signalOff: NodeParam = {
+    readonly 'signal off': NodeParam = {
         name: 'signal off',
         port: {
             direction: PortDirection.Input,
@@ -79,6 +79,20 @@ export class MeshVisibilityNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Pull
+        },
+        toJson: () => {
+            return {
+                name: this.mesh.name,
+                field: this.mesh.field,
+                val: this.mesh.val ? this.mesh.val.id : undefined
+            }
+        },
+        fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
+            this.mesh.name = nodeParamJson.name;
+            this.mesh.field = nodeParamJson.field;
+            if (nodeParamJson.val) {
+                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            }
         }
     }
 }

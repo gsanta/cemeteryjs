@@ -6,7 +6,7 @@ import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../AbstractNode";
 import { FilterMeshNodeControllers } from "./FilterMeshNodeControllers";
 
-export const MeshNodeType = 'mesh-node-obj';
+export const FilterMeshNodeType = 'filter-mesh-node-obj';
 
 export class FilterMeshNode extends AbstractNodeFactory {
     private registry: Registry;
@@ -16,7 +16,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
         this.registry = registry;
 }
 
-    nodeType = MeshNodeType;
+    nodeType = FilterMeshNodeType;
     displayName = 'Filter Mesh';
     category = 'Mesh';
 

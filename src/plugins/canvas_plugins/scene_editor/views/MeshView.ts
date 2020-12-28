@@ -14,6 +14,7 @@ export interface MeshViewJson extends ViewJson {
     rotation: number;
     thumbnailData: string;
     color: string;
+    layer: number; 
 }
 
 export class MeshView extends View {
@@ -137,6 +138,7 @@ export class MeshView extends View {
             rotation: this.rotation,
             thumbnailData: this.thumbnailData,
             color: this.color,
+            layer: this.layer
         }
     }
 
@@ -153,6 +155,7 @@ export class MeshView extends View {
         meshView.rotation = json.rotation;
         meshView.thumbnailData = json.thumbnailData;
         meshView.color = json.color;
+        meshView.layer = json.layer;
 
         const afterAllViewsDeserialized = () => {
             json.childViewIds.map(id => meshView.addChildView(registry.data.view.scene.getById(id)));

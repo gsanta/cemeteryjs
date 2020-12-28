@@ -11,8 +11,8 @@ export const GridSelectComp = (props: UI_ComponentProps<UI_GridSelect>) => {
         <GridComponent
             isReversed={false}
             markedValues={props.element.filledIndexes}
-            value={props.element.val(props.registry)}
-            onChange={(val) => props.element.change(val, props.registry)}
+            value={props.element.paramController.val()}
+            onChange={(val) => props.element.paramController.change(val, null, null)}
         />
     );
 
