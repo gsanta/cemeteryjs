@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { MeshObj } from "../../../models/objs/MeshObj";
+import { MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { IMeshAdapter } from "../../IMeshAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
@@ -46,6 +46,10 @@ export  class Wrap_Meshes implements IMeshAdapter {
 
     getVisibility(meshObj: MeshObj): number {
         return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getVisibility(meshObj));
+    }
+
+    getMeshTree(meshObj: MeshObj): MeshTreeNode[] {
+        return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getMeshTree(meshObj));
     }
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {

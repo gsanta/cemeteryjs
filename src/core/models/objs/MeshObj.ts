@@ -122,7 +122,7 @@ export class MeshObj implements IGameObj {
     }
 
     getMeshTree(): MeshTreeNode[] {
-
+        return this.meshAdapter.getMeshTree(this);
     }
 
     dispose() {

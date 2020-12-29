@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { MeshObj } from "../../../models/objs/MeshObj";
+import { MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { IMeshAdapter } from "../../IMeshAdapter";
 import { Test_EngineFacade } from "./Test_EngineFacade";
@@ -66,6 +66,11 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     getVisibility(meshObj: MeshObj): number {
         return this.visibilityMap.get(meshObj) !== undefined ? this.visibilityMap.get(meshObj) : 1;
     }
+
+    getMeshTree(meshObj: MeshObj): MeshTreeNode[] {
+        return [];
+    }
+
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         return false;

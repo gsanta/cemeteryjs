@@ -12,6 +12,7 @@ import { UI_Icon } from './UI_Icon';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ControlledElementConfig, UI_ElementConfig } from './UI_Element';
 import { PropController } from '../../plugin/controller/FormController';
+import { TreeController } from './complex/tree/TreeController';
 
 export class UI_DefaultContainer extends UI_Container {
     listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
@@ -82,7 +83,7 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.icon(this, config);
     }
 
-    tree(config: UI_ControlledElementConfig<PropController>) {
+    tree(config: UI_ControlledElementConfig<TreeController>) {
         return UI_Factory.tree(this, config);
     }
 }

@@ -56,9 +56,9 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
             clone = templateMesh;
         } else {
             clone = <Mesh> templateMesh.instantiateHierarchy();
-            clone.name = meshObj.id;
+            // clone.name = meshObj.id;
         }
-        this.engineFacade.meshes.meshes.set(meshObj, {mainMesh: clone, skeletons: meshData.skeletons, animationGroups: meshData.animationGroups});
+        this.engineFacade.meshes.meshes.set(meshObj, {mainMesh: clone, skeletons: meshData.skeletons, animationGroups: meshData.animationGroups, meshes: []});
 
         
         clone.setAbsolutePosition(new Vector3(0, 0, 0));
@@ -106,15 +106,21 @@ export  class Bab_MeshLoader implements IMeshLoaderAdapter {
         // (<StandardMaterial> (meshes[0].getChildren()[0].getChildren()[0] as Mesh).material).diffuseTexture  = new Texture('assets/example_game/people/pal.png',  this.engineFacade.scene);
 
 
-        meshes[0].name = asset.id;
+        // meshes = meshes.filter(mesh => meshes.includes(mesh.parent));
+
+        // meshes[0].name = asset.id;
         this.configMesh(meshes[0]);
 
-        const meshData = {mainMesh, skeletons, animationGroups};
+        const meshData = {mainMesh, skeletons, animationGroups, meshes};
 
         this.templates.add(mainMesh);
         this.templatesById.set(asset.id, meshData);
 
         return meshes[0];
+    }
+
+    private removeDuplicateMeshes(meshes: Mesh[], uniqueMeshes: Mesh[]) {
+        
     }
 
     static getFolderNameFromFileName(fileName: string) {

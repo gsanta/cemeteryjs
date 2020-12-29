@@ -4,7 +4,7 @@ export interface TreeData {
     name: string;
     toggled: boolean;
     checked: boolean;
-    children: TreeData;
+    children: TreeData[];
 }
 
 export abstract class TreeController extends PropController {

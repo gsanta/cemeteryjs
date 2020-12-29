@@ -6,15 +6,6 @@ import {Treebeard} from 'react-treebeard';
 import { TreeData } from '../../../elements/complex/tree/TreeController';
 const reactTreeBeard = require('react-treebeard');
 
-const nodes = [{
-    value: 'mars',
-    label: 'Mars',
-    children: [
-        { value: 'phobos', label: 'Phobos' },
-        { value: 'deimos', label: 'Deimos' },
-    ],
-}];
-
 const data = {
     name: 'root',
     toggled: true,
@@ -49,16 +40,6 @@ const data = {
             ]
         }
     ]
-};
-
-const decorators = {
-    Header: (props) => {
-        return (
-            <div style={props.style}>
-                <div>{props.node.name} <input type="checkbox" checked={props.node.checked}/></div>
-            </div>
-        );
-    }
 };
 
 const linkStyle = {

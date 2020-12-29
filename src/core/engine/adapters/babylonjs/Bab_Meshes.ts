@@ -2,7 +2,7 @@ import { Mesh } from "babylonjs/Meshes/mesh";
 import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton, Color3, AnimationGroup } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IMeshAdapter } from "../../IMeshAdapter";
-import { BasicShapeType, MeshObj } from "../../../models/objs/MeshObj";
+import { BasicShapeType, MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { RectangleFactory } from "../../../stores/RectangleFactory";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
@@ -134,7 +134,21 @@ export  class Bab_Meshes implements IMeshAdapter {
      * Gives information about the node hierarchy of the mesh 
      */
     getMeshTree(meshObj: MeshObj): MeshTreeNode[] {
-        return this.meshes.get(meshObj).meshes
+        if (meshObj.modelId) {
+            const template = this.engineFacade.meshLoader.templatesById.get(meshObj.modelId);
+            if (template) {
+                return template.meshes.map(mesh => this.createMeshTree(mesh));
+            }
+        }
+    }
+
+    private createMeshTree(root: Mesh) {
+        const meshTreeNode: MeshTreeNode = <MeshTreeNode> {
+            name: root.name,
+            children: root.getChildMeshes().map(mesh => this.createMeshTree(<Mesh> mesh))
+        }
+
+        return meshTreeNode;
     }
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
