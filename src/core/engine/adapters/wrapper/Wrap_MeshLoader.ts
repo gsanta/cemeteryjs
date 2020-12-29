@@ -1,4 +1,5 @@
-import { MeshObj } from "../../../models/objs/MeshObj";
+import { AssetObj } from "../../../models/objs/AssetObj";
+import { MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
@@ -12,11 +13,19 @@ export class Wrap_MeshLoader implements IMeshLoaderAdapter {
         this.engineFacade = engineFacade;
     }
 
-    async load(meshObj: MeshObj): Promise<void> {
-        await this.engineFacade.realEngine.meshLoader.load(meshObj);
+    async load(assetObj: AssetObj): Promise<void> {
+        await this.engineFacade.realEngine.meshLoader.load(assetObj);
     }
 
     clear() {
         this.engineFacade.realEngine.meshLoader.clear();
+    }
+
+    getMeshTree(assetObj: AssetObj): MeshTreeNode[] {
+        return this.engineFacade.realEngine.meshLoader.getMeshTree(assetObj);
+    }
+
+    setPrimaryMeshNode(assetObj: AssetObj, primaryMeshName: string) {
+        return this.engineFacade.realEngine.meshLoader.setPrimaryMeshNode(assetObj, primaryMeshName);
     }
 }

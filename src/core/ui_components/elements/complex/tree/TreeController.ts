@@ -10,5 +10,4 @@ export interface TreeData {
 export abstract class TreeController extends PropController {
     abstract getData(): TreeData;
     abstract check(data: TreeData): void;
-    abstract toggle(data: TreeData): void;
 }

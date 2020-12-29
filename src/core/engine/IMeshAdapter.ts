@@ -1,4 +1,4 @@
-import { MeshObj, MeshTreeNode } from "../models/objs/MeshObj";
+import { MeshObj } from "../models/objs/MeshObj";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../utils/geometry/shapes/Point_3";
 
@@ -38,11 +38,6 @@ export interface IMeshAdapter {
     getDimensions(meshObj: MeshObj): Point;
     createInstance(meshObj: MeshObj): Promise<boolean>;
     deleteInstance(meshObj: MeshObj): void;
-
-    /**
-     * Gives information about the node hierarchy of the mesh 
-     */
-    getMeshTree(meshObj: MeshObj): MeshTreeNode[];
 
     createMaterial(meshObj: MeshObj);
 

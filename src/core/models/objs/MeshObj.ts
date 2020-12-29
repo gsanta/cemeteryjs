@@ -121,10 +121,6 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.getScale(this);
     }
 
-    getMeshTree(): MeshTreeNode[] {
-        return this.meshAdapter.getMeshTree(this);
-    }
-
     dispose() {
         this.meshAdapter.deleteInstance(this);
     }

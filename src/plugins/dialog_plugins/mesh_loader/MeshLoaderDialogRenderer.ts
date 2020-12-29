@@ -17,8 +17,21 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         layout.width = '530px';
         layout.height = '300px';
 
-        const row = layout.row({key: 'row1'});
-        const tree = row.tree({controller: undefined, key: 'tree1', parent: row});
+        let row = layout.row({key: 'tree-row'});
+        const tree = row.tree({controller: undefined, key: 'tree', parent: row});
         tree.paramController = this.controller.tree;
+
+        row = layout.row({key: 'texture-row'});
+        const textureTextField = row.textField({ key: 'texture' });
+        textureTextField.paramController = this.controller.texture;
+        textureTextField.layout = 'horizontal';
+        textureTextField.label = 'Texture path';
+        textureTextField.type = 'text';
+
+        row = layout.row({ key: 'save-row' });
+        const changeThumbnailButton = row.button('save');
+        changeThumbnailButton.paramController = this.controller.save;
+        changeThumbnailButton.label = 'Save';
+        changeThumbnailButton.width = '200px';
     }
 }

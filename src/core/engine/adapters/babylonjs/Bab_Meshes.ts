@@ -9,82 +9,83 @@ import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { toHexString } from "../../../ui_components/react/colorUtils";
 import { toVector3 } from "./Bab_Utils";
+import { MeshCreator } from "./mesh/MeshCreator";
 
 export interface MeshData {
-    mainMesh: Mesh;
     meshes: Mesh[];
     skeletons: Skeleton[];
     animationGroups: AnimationGroup[];
 }
 
 export  class Bab_Meshes implements IMeshAdapter {
-    
     meshes: Map<MeshObj, MeshData> = new Map();
     meshToObj: Map<Mesh, MeshObj> = new Map();
 
     private registry: Registry;
     private engineFacade: Bab_EngineFacade;
     private rectangleFactory: RectangleFactory = new RectangleFactory(1, 'black');
+    private meshCreator: MeshCreator;
 
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this.registry = registry;
         this.engineFacade = engineFacade;
+        this.meshCreator = new MeshCreator(registry, engineFacade);
     }
 
     setPosition(meshObj: MeshObj, pos: Point_3): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.position = new Vector3(pos.x, pos.y, pos.z);
+        meshData.meshes[0].position = new Vector3(pos.x, pos.y, pos.z);
     }
 
     getPosition(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        return new Point_3(meshData.mainMesh.position.x, meshData.mainMesh.position.y, meshData.mainMesh.position.z);
+        return new Point_3(meshData.meshes[0].position.x, meshData.meshes[0].position.y, meshData.meshes[0].position.z);
     }
 
     setScale(meshObj: MeshObj, point: Point_3) {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.scaling = new Vector3(point.x, point.y, point.z);
+        meshData.meshes[0].scaling = new Vector3(point.x, point.y, point.z);
     } 
 
     getScale(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        return new Point_3(meshData.mainMesh.scaling.x, meshData.mainMesh.scaling.y, meshData.mainMesh.scaling.z);
+        return new Point_3(meshData.meshes[0].scaling.x, meshData.meshes[0].scaling.y, meshData.meshes[0].scaling.z);
     } 
 
     translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.translate(axis === 'x' ? Axis.X : axis === 'y' ? Axis.Y : Axis.Z, amount, space === 'local' ? Space.LOCAL : Space.WORLD);
+        meshData.meshes[0].translate(axis === 'x' ? Axis.X : axis === 'y' ? Axis.Y : Axis.Z, amount, space === 'local' ? Space.LOCAL : Space.WORLD);
     }
 
     setRotation(meshObj: MeshObj, rot: Point_3): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.rotation = toVector3(rot);
+        meshData.meshes[0].rotation = toVector3(rot);
     }
 
     getRotation(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        return new Point_3(meshData.mainMesh.rotation.x, meshData.mainMesh.rotation.y, meshData.mainMesh.rotation.z);
+        return new Point_3(meshData.meshes[0].rotation.x, meshData.meshes[0].rotation.y, meshData.meshes[0].rotation.z);
     }
 
     getDimensions(meshObj: MeshObj): Point {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        const mesh = meshData.mainMesh;
+        const mesh = meshData.meshes[0];
         mesh.computeWorldMatrix();
         mesh.getBoundingInfo().update(mesh._worldMatrix);
 
@@ -102,53 +103,35 @@ export  class Bab_Meshes implements IMeshAdapter {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.material = new StandardMaterial(`${meshObj}-mat`, this.engineFacade.scene);
-        (<StandardMaterial> meshData.mainMesh.material).diffuseColor  = Color3.FromHexString(toHexString(color));
-        (<StandardMaterial> meshData.mainMesh.material).specularColor  = Color3.FromHexString(toHexString(color));
+        meshData.meshes[0].material = new StandardMaterial(`${meshObj}-mat`, this.engineFacade.scene);
+        (<StandardMaterial> meshData.meshes[0].material).diffuseColor  = Color3.FromHexString(toHexString(color));
+        (<StandardMaterial> meshData.meshes[0].material).specularColor  = Color3.FromHexString(toHexString(color));
     }
 
     getColor(meshObj: MeshObj): string {
         const meshData = this.meshes.get(meshObj);
         
         if (!meshData) { return; }
-        if (!meshData.mainMesh.material) { return; }
+        if (!meshData.meshes[0].material) { return; }
+        const material = <StandardMaterial> meshData.meshes[0].material;
 
-        return (<StandardMaterial> meshData.mainMesh.material).diffuseColor.toHexString();
+        if (material && material.diffuseColor) {
+            return material.diffuseColor.toHexString();
+        }
     }
 
     setVisibility(meshObj: MeshObj, visibility: number): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.mainMesh.visibility = visibility;
+        meshData.meshes[0].visibility = visibility;
     }
 
     getVisibility(meshObj: MeshObj): number {        
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return undefined; }
 
-        return meshData.mainMesh.visibility;
-    }
-
-    /**
-     * Gives information about the node hierarchy of the mesh 
-     */
-    getMeshTree(meshObj: MeshObj): MeshTreeNode[] {
-        if (meshObj.modelId) {
-            const template = this.engineFacade.meshLoader.templatesById.get(meshObj.modelId);
-            if (template) {
-                return template.meshes.map(mesh => this.createMeshTree(mesh));
-            }
-        }
-    }
-
-    private createMeshTree(root: Mesh) {
-        const meshTreeNode: MeshTreeNode = <MeshTreeNode> {
-            name: root.name,
-            children: root.getChildMeshes().map(mesh => this.createMeshTree(<Mesh> mesh))
-        }
-
-        return meshTreeNode;
+        return meshData.meshes[0].visibility;
     }
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
@@ -159,7 +142,7 @@ export  class Bab_Meshes implements IMeshAdapter {
         if (!meshData2) { return undefined; }
 
         if (meshData1 && meshData2) {
-            return meshData1.mainMesh.intersectsMesh(meshData2.mainMesh);
+            return meshData1.meshes[0].intersectsMesh(meshData2.meshes[0]);
         }
 
         return false;
@@ -177,9 +160,9 @@ export  class Bab_Meshes implements IMeshAdapter {
         }
 
         const meshData = this.meshes.get(meshObj);
-        if (meshData && meshData.mainMesh) {
-            meshData.mainMesh.scaling = toVector3(scaling);
-            this.meshToObj.set(meshData.mainMesh, meshObj);
+        if (meshData && meshData.meshes[0]) {
+            meshData.meshes[0].scaling = toVector3(scaling);
+            this.meshToObj.set(meshData.meshes[0], meshObj);
         }
 
         return true;
@@ -200,36 +183,27 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     private async createModeledMeshInstance(meshObj: MeshObj) {
-        let meshData = this.meshes.get(meshObj);
-        this.meshes.delete(meshObj);
+        this.deleteInstance(meshObj);
         try {
-            await this.engineFacade.meshLoader.load(meshObj);
-            if (meshData) {
-                meshData.mainMesh.dispose();
-                meshData.skeletons.forEach(skeleton => skeleton.dispose());
-            }
-            meshData = this.meshes.get(meshObj);
+            const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
+            await this.engineFacade.meshLoader.load(assetObj);
+            const meshData = this.meshCreator.setupInstance(meshObj);
+            this.meshes.set(meshObj, meshData);
         } catch(e) {
-            if (meshData) {
-                meshData.mainMesh.dispose();
-            }
-
             this.createPlaceHolderMeshInstance(meshObj);
         }
-
-
     }
 
     private createPlaceHolderMeshInstance(meshObj: MeshObj) {
         const mesh = this.rectangleFactory.createMesh(meshObj, this.engineFacade.scene);
-        this.meshes.set(meshObj, {mainMesh: mesh, skeletons: [], animationGroups: [], meshes: []});
+        this.meshes.set(meshObj, {skeletons: [], animationGroups: [], meshes: [mesh]});
     }
 
     deleteInstance(meshObj: MeshObj) {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        const mesh = meshData.mainMesh;
+        const mesh = meshData.meshes[0];
 
         if (this.engineFacade.meshLoader.templates.has(mesh)) {
             mesh.isVisible = false;
@@ -241,27 +215,14 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     createMaterial(meshObj: MeshObj) {
-        // const meshData = this.meshes.get(meshObj);
-        // if (!meshData) { return; }
-
-        // let mesh = meshData.mainMesh;
-
-        // const textureObj = this.registry.stores.assetStore.getAssetById(meshObj.textureId);
-
-        // if (textureObj && textureObj.path) {
-        //     // TODO detect mesh with material in a safer way
-        //     mesh = <Mesh> (mesh.getChildMeshes().length > 0 ? mesh.getChildMeshes()[0] : mesh);
-            
-        //     (<StandardMaterial> mesh.material).diffuseTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
-        //     (<StandardMaterial> mesh.material).specularTexture  = new Texture(textureObj.path,  this.engineFacade.scene);
-        // }
+        this.meshCreator.createMaterial(meshObj);
     }
 
     playAnimation(meshObj: MeshObj, startFrame: number, endFrame: number, repeat: boolean): boolean {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return false; }
 
-        const skeletalMesh = meshData.mainMesh.skeleton ? meshData.mainMesh : meshData.mainMesh.getChildMeshes().find(childMesh => childMesh.skeleton);
+        const skeletalMesh = meshData.meshes[0].skeleton ? meshData.meshes[0] : meshData.meshes[0].getChildMeshes().find(childMesh => childMesh.skeleton);
         
         if (!skeletalMesh) { return false; }
 

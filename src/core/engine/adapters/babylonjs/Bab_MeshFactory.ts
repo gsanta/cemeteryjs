@@ -24,7 +24,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
         mesh.rotation = toVector3(rotation);
-        this.engineFacade.meshes.meshes.set(obj, {mainMesh: mesh, skeletons: [], animationGroups: [], meshes: []});
+        this.engineFacade.meshes.meshes.set(obj, {skeletons: [], animationGroups: [], meshes: [mesh]});
     }
 
     sphere(obj: MeshObj) {
@@ -36,7 +36,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x + config.diameter / 2, pos.y, pos.z - config.diameter / 2), 1, Space.WORLD);
         mesh.rotation = toVector3(rotation);
-        this.engineFacade.meshes.meshes.set(obj, {mainMesh: mesh, skeletons: [], animationGroups: [], meshes: []});
+        this.engineFacade.meshes.meshes.set(obj, {skeletons: [], animationGroups: [], meshes: [mesh]});
     }
 
     ground(obj: MeshObj) {
@@ -47,7 +47,7 @@ export class Bab_MeshFactory implements IMeshFactory {
         const rotation = obj.getRotation();
         mesh.translate(new Vector3(pos.x, pos.y, pos.z), 1, Space.WORLD);
         mesh.rotation = toVector3(rotation);
-        this.engineFacade.meshes.meshes.set(obj, {mainMesh: mesh, skeletons: [], animationGroups: [], meshes: []});
+        this.engineFacade.meshes.meshes.set(obj, {skeletons: [], animationGroups: [], meshes: [mesh]});
     }
 
     private createMaterial(obj: MeshObj, mesh: Mesh) {

@@ -265,8 +265,6 @@ export class TextureController extends PropController {
 
         const asset = new AssetObj({path: val, assetType: AssetType.Texture});
         meshView.getObj().textureId = this.registry.stores.assetStore.addObj(asset);
-        this.registry.services.localStore.saveAsset(asset);
-
         this.registry.engine.meshes.createMaterial(meshView.getObj());
         this.registry.services.history.createSnapshot();
     }
@@ -317,21 +315,22 @@ export class ModelController extends PropController {
 
     async blur() {
         const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-
+        const meshObj = meshView.getObj();
         const val = this.tempVal;
         this.tempVal = undefined;
 
         const asset = new AssetObj({path: val, assetType: AssetType.Model});
-        meshView.getObj().modelId = this.registry.stores.assetStore.addObj(asset);
+        meshObj.modelId = this.registry.stores.assetStore.addObj(asset);
         this.registry.services.localStore.saveAsset(asset);
         try {
-            await this.registry.engine.meshes.createInstance(meshView.getObj())
-            const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj())
-            meshView.getBounds().setWidth(realDimensions.x);
-            meshView.getBounds().setHeight(realDimensions.y);
+            const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
+            await this.registry.engine.meshLoader.load(assetObj);
+            // const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj())
+            // meshView.getBounds().setWidth(realDimensions.x);
+            // meshView.getBounds().setHeight(realDimensions.y);
             const dialog = this.registry.ui.panel.getPanel(MeshLoaderDialogId);
             this.registry.ui.helper.setDialogPanel(dialog);
-            this.registry.services.history.createSnapshot();
+            // this.registry.services.history.createSnapshot();
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
         }

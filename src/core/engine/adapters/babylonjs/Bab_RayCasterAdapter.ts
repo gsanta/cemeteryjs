@@ -23,7 +23,7 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
         const meshData = this.engineFacade.meshes.meshes.get(meshObj);
 
         if (!meshData) { return; }
-        const mesh = meshData.mainMesh;
+        const mesh = meshData.meshes[0];
 
         const origin = mesh.position;
 	
@@ -47,7 +47,7 @@ export class Bab_RayCasterAdapter implements IRayCasterAdapter {
         const meshData = this.engineFacade.meshes.meshes.get(meshObj);
 
         if (!meshData) { return; }
-        const mesh = meshData.mainMesh;
+        const mesh = meshData.meshes[0];
 
         if (!this.rays.has(rayObj)) {
             this.createInstance(rayObj);
