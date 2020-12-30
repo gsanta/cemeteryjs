@@ -53,7 +53,6 @@ import { UI_ActionIcon } from './elements/toolbar/UI_ActionIcon';
 import { ActionIconComp } from './react/surfaces/toolbar/ActionIconComp';
 import { ToolComp } from './react/surfaces/toolbar/ToolComp';
 import { IconSeparatorComp } from './react/surfaces/toolbar/IconSeparatorComp';
-import { UI_Dialog } from './elements/surfaces/UI_Dialog';
 import { UI_Image } from './elements/UI_Image';
 import { UI_Column } from './elements/UI_Column';
 import { ColumnComp } from './react/layout/ColumnComp';
@@ -89,6 +88,11 @@ import { MultiSelectTriggerComp } from './react/inputs/popup_multiselect/MultiSe
 import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
 import { MultiSelectPopupComp } from './react/inputs/popup_multiselect/MultiSelectPopupComp';
 import { UI_Tree } from './elements/complex/tree/UI_Tree';
+import { UI_DialogFooter } from './elements/surfaces/dialog/UI_DialogFooter';
+import { DialogFooterComp } from './react/dialogs/DialogFooterComp';
+import { UI_Dialog } from './elements/surfaces/dialog/UI_Dialog';
+import { UI_Separator } from './elements/surfaces/misc/UI_Separator';
+import { SeparatorComp } from './react/surfaces/misc/SeparatorComp';
 
 export class UI_Builder {
 
@@ -201,6 +205,9 @@ export class UI_Builder {
             case UI_ElementType.ToolbarDropdownHeader:
                 const toolbarDropdownHeader = element as UI_ToolDropdownHeader;
                 return <ToolDropdownHeaderComp registry={this.registry} element={toolbarDropdownHeader}>{this.buildChildren(element)}</ToolDropdownHeaderComp>;
+            case UI_ElementType.DialogFooter:
+                const dialogFooter = element as UI_DialogFooter;
+                return <DialogFooterComp registry={this.registry} element={dialogFooter}>{this.buildChildren(element)}</DialogFooterComp>;
         }
     }
 
@@ -380,6 +387,9 @@ export class UI_Builder {
             case UI_ElementType.Tree:
                 const tree = element as UI_Tree;
                 return <TreeComp registry={this.registry} element={tree}/>;
+            case UI_ElementType.Separator:
+                const separator = element as UI_Separator;
+                return <SeparatorComp registry={this.registry} element={separator}/>;
         }
     }
 }   

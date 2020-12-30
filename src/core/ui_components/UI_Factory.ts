@@ -4,7 +4,7 @@ import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';
 import { UI_TableRowGroup } from './elements/surfaces/table/UI_TableRowGroup';
 import { UI_Accordion } from './elements/surfaces/UI_Accordion';
-import { UI_Dialog } from './elements/surfaces/UI_Dialog';
+import { UI_Dialog } from './elements/surfaces/dialog/UI_Dialog';
 import { UI_SvgCircle } from './elements/svg/UI_SvgCircle';
 import { UI_SvgForeignObject } from './elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from './elements/svg/UI_SvgGroup';
@@ -46,6 +46,8 @@ import { UI_Checkbox } from './elements/UI_Checkbox';
 import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
 import { UI_Tree } from './elements/complex/tree/UI_Tree';
 import { TreeController } from './elements/complex/tree/TreeController';
+import { UI_DialogFooter } from './elements/surfaces/dialog/UI_DialogFooter';
+import { UI_Separator } from './elements/surfaces/misc/UI_Separator';
 
 export class UI_Factory {
 
@@ -62,6 +64,17 @@ export class UI_Factory {
         const dialog = new UI_Dialog({controller: config.controller, ...config, key: GlobalControllerProps.CloseDialog});
 
         return dialog;
+    }
+
+    static dialogFooter(parent: UI_Dialog, config: UI_ElementConfig): UI_DialogFooter {
+        const element = new UI_DialogFooter({controller: config.controller, ...config, key: GlobalControllerProps.CloseDialog});
+
+        element.canvasPanel = parent.canvasPanel;
+        element.panel = parent.panel;
+
+        parent.children.push(element);
+
+        return element;
     }
 
     static row(parent: UI_Container, config: UI_ElementConfig): UI_Row {
@@ -426,6 +439,17 @@ Id
 
     static iconSeparator(parent: UI_Toolbar, config: UI_ElementConfig): UI_IconSeparator {
         const element = new UI_IconSeparator({controller: config.controller || parent.controller, parent, ...config});
+
+        parent.children.push(element);
+        element.canvasPanel = parent.canvasPanel;
+
+        return element;
+    }
+
+    ///////////////////////////////////////////// Panels ////////////////////////////////////////////
+
+    static separator(parent: UI_Container, config: UI_ElementConfig): UI_Separator {
+        const element = new UI_Separator({controller: config.controller || parent.controller, parent, ...config});
 
         parent.children.push(element);
         element.canvasPanel = parent.canvasPanel;

@@ -31,13 +31,13 @@ export class MeshLoader {
 
         // meshes[1].material = new StandardMaterial(asset.id, this.engineFacade.scene);
         // (<StandardMaterial> meshes[1].material).diffuseTexture = new Texture('assets/example_game/people/pal.png',  this.engineFacade.scene);
-        (meshes[1] as Mesh).material = new StandardMaterial(asset.id, this.engineFacade.scene);
-        (<StandardMaterial> (meshes[1] as Mesh).material).diffuseTexture  = new Texture('assets/example_game/people/pal.png',  this.engineFacade.scene);
+        // (meshes[1] as Mesh).material = new StandardMaterial(asset.id, this.engineFacade.scene);
+        // (<StandardMaterial> (meshes[1] as Mesh).material).diffuseTexture  = new Texture('assets/example_game/people/pal.png',  this.engineFacade.scene);
 
         meshes[1].isPickable = true;
         meshes[1].checkCollisions = true;
         meshes[1].receiveShadows = true;
-        // meshes.forEach(mesh => mesh.isVisible = false);
+        meshes.forEach(mesh => mesh.isVisible = false);
 
         return {
             loadedMeshes: meshes,

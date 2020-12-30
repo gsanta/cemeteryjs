@@ -43,6 +43,10 @@ export function RowComp(props: RowProps) {
     props.element.hAlign && (style.justifyContent = props.element.hAlign);
     props.element.height && (style.height = props.element.height);
     
+    if (props.element.direction === 'right-to-left') {
+        style.flexDirection = 'row-reverse';
+    }
+    
     return (
         <RowStyled style={style} className={classes}>{props.children}</RowStyled>
     );

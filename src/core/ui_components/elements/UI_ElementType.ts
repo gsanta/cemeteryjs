@@ -4,6 +4,7 @@
 export enum UI_ElementType {
     Layout = 'Layout',
     Dialog = 'Dialog',
+    DialogFooter = 'DialogFooter',
     Row = 'Row',
     Column = 'Column',
     Box = 'Box',
@@ -53,6 +54,7 @@ export enum UI_ElementType {
     ActionIcon = 'ActionIcon',
     IconSeparator = 'IconSeparator',
 
+    Separator = 'Separator',
 
     GizmoLayer = 'GizmoLayer',
 

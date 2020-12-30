@@ -51,7 +51,7 @@ export class MeshHierarchyTreeController extends TreeController {
     private getTreeData(node: MeshTreeNode): TreeData {
         return {
             name: node.name,
-            toggled: false,
+            toggled: true,
             checked: false,
             children: node.children.length > 0 ? node.children.map(child => this.getTreeData(child)) : undefined
         }

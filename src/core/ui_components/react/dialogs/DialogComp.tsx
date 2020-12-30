@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { UI_Dialog } from '../../elements/surfaces/dialog/UI_Dialog';
 import { colors } from '../styles';
 import { UI_ContainerProps } from '../UI_ComponentProps';
-import { UI_Dialog } from '../../elements/surfaces/UI_Dialog';
 
 const DialogOverlayStyled = styled.div`
     position: absolute;
@@ -31,6 +31,16 @@ const DialogStyled = styled.div`
     transform: translate(-50%, 0);
     position: absolute;
     color: ${colors.textColor};
+
+    .ce-dialog-footer {
+        position: absolute;
+        bottom: 0;
+        left: 15px;
+        width: calc(100% - 30px);
+        height: 40px;
+        padding: 10px 0;
+        border-top: 1px solid ${colors.grey3};
+    }
 `;
 
 const DialogTitleStyled = styled.div`
