@@ -191,7 +191,8 @@ export class UI_Builder {
                 return <BoxComp registry={this.registry} element={box}>{this.buildChildren(element)}</BoxComp>;
             case UI_ElementType.Dialog:
                 const dialog = element as UI_Dialog;
-                return <DialogComp registry={this.registry} element={dialog}>{this.buildChildren(element)}</DialogComp>;
+                const footer = dialog._footer ? this.buildElement(dialog._footer, dialog) : null;
+                return <DialogComp registry={this.registry} element={dialog} footer={footer}>{this.buildChildren(element)}</DialogComp>;
             case UI_ElementType.SvgForeignObject:
                 const foreignObject = element as UI_SvgForeignObject;
                 return <ForeignObjectComp registry={this.registry} element={foreignObject}>{this.buildChildren(element)}</ForeignObjectComp>;

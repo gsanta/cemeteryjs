@@ -72,7 +72,7 @@ export class UI_Factory {
         element.canvasPanel = parent.canvasPanel;
         element.panel = parent.panel;
 
-        parent.children.push(element);
+        parent._footer = element;
 
         return element;
     }

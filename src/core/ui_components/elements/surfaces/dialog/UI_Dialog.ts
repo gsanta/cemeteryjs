@@ -12,6 +12,8 @@ import { UI_Separator } from "../misc/UI_Separator";
 export class UI_Dialog extends UI_Layout {
     elementType = UI_ElementType.Dialog;
 
+    _footer: UI_DialogFooter;
+
     width: string;
     height: string;
     title: string;

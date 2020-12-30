@@ -20,6 +20,7 @@ const DialogOverlayStyled = styled.div`
 const DialogStyled = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     border-radius: 4px;
     background-color: ${colors.panelBackground};
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.14);
@@ -33,12 +34,10 @@ const DialogStyled = styled.div`
     color: ${colors.textColor};
 
     .ce-dialog-footer {
-        position: absolute;
-        bottom: 0;
-        left: 15px;
-        width: calc(100% - 30px);
+        width: 100%;
         height: 40px;
-        padding: 10px 0;
+        padding-top: 10px;
+        margin-top: 10px;
         border-top: 1px solid ${colors.grey3};
     }
 `;
@@ -57,7 +56,7 @@ const DialogBodyStyled = styled.div`
     justify-content: space-between;
 `;
 
-export function DialogComp(props: UI_ContainerProps<UI_Dialog> ) {
+export function DialogComp(props: UI_ContainerProps<UI_Dialog> & { footer: JSX.Element }) {
     return (
         <div onClick={e => e.stopPropagation()}>
             <DialogOverlayStyled onClick={() => props.element.close(props.registry)}></DialogOverlayStyled>
@@ -73,6 +72,7 @@ export function DialogComp(props: UI_ContainerProps<UI_Dialog> ) {
                     {/* <div><CloseIconComponent onClick={() => props.element.close()} /></div> */}
                 </DialogTitleStyled>
                 <DialogBodyStyled>{props.children}</DialogBodyStyled>
+                {props.footer ? props.footer : null}
             </DialogStyled>
         </div>
     );

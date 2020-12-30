@@ -204,12 +204,18 @@ export  class Bab_Meshes implements IMeshAdapter {
         if (!meshData) { return; }
 
         const mesh = meshData.meshes[0];
-
-        if (this.engineFacade.meshLoader.templates.has(mesh)) {
+        const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
+        if (assetObj && this.engineFacade.meshLoader.isTemplateMesh(assetObj, mesh)) {
             mesh.isVisible = false;
         } else {
             mesh.dispose();
         }
+
+        // if (this.engineFacade.meshLoader.templates.has(mesh)) {
+        //     mesh.isVisible = false;
+        // } else {
+        //     mesh.dispose();
+        // }
 
         this.meshes.delete(meshObj);
     }

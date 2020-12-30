@@ -1,17 +1,19 @@
-import { AnimationGroup, Mesh, ParticleSystem, Scene, SceneLoader, Skeleton, StandardMaterial, Texture, Vector3 } from "babylonjs";
-import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
+import { AnimationGroup, Mesh, Skeleton } from "babylonjs";
+import 'babylonjs-loaders';
 import { AssetObj } from "../../../models/objs/AssetObj";
 import { MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
+import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
-import { MeshData } from "./Bab_Meshes";
-import { toVector3 } from "./Bab_Utils";
-import 'babylonjs-loaders';
 import { LoadedMeshData, MeshLoader } from "./mesh_loader/MeshLoader";
 
 export interface MeshTemplate {
     realMeshes: Mesh[];
     dedupedMeshes: Mesh[];
+    /**
+     * contains those meshes also which are deeper in the hierarchy alongside with the root meshes
+     */
+    allMeshes: Mesh[];
     skeletons: Skeleton[];
     animationGroups: AnimationGroup[];
 
@@ -78,14 +80,15 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
     getMeshTree(assetObj: AssetObj): MeshTreeNode[] {
         const template = this.templatesById.get(assetObj.id);
         if (template) {
-            return template.dedupedMeshes.map(mesh => this.createMeshTree(mesh));
+            return template.dedupedMeshes.map(mesh => this.createMeshTree(mesh, template));
         }
     }
 
-    private createMeshTree(root: Mesh) {
+    private createMeshTree(root: Mesh, template: MeshTemplate) {
         const meshTreeNode: MeshTreeNode = <MeshTreeNode> {
+            isPrimaryMesh: template.realMeshes.includes(root),
             name: root.name,
-            children: root.getChildMeshes().map(mesh => this.createMeshTree(<Mesh> mesh))
+            children: root.getChildMeshes().map(mesh => this.createMeshTree(<Mesh> mesh, template))
         }
 
         return meshTreeNode;
@@ -97,19 +100,31 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
         this.templatesById = new Map();
     }
 
+    isTemplateMesh(assetObj: AssetObj, mesh: Mesh) {
+        const template = this.templatesById.get(assetObj.id);
+        if (template) {
+            if (template.allMeshes.includes(mesh)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private createTemplate(loadedMeshData: LoadedMeshData): MeshTemplate {
-        const dedupedMainMeshes = this.removeRootMeshesWhichAreAlsoAChild(loadedMeshData.loadedMeshes);
+        const dedupedMainMeshes = this.getDedupedMeshes(loadedMeshData.loadedMeshes);
         
         return {
             realMeshes: dedupedMainMeshes,
             dedupedMeshes: dedupedMainMeshes,
+            allMeshes: this.getAllMeshes(loadedMeshData.loadedMeshes),
             skeletons: loadedMeshData.loadedSkeletons,
             animationGroups: loadedMeshData.loadedAnimationGroups,
             loadedData: loadedMeshData
         }
     }
 
-    private removeRootMeshesWhichAreAlsoAChild(meshes: Mesh[]): Mesh[] {
+    private getDedupedMeshes(meshes: Mesh[]): Mesh[] {
         const mainMeshes: Mesh[] = [];
         const childMeshes: Mesh[] = [];
 
@@ -127,6 +142,16 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
         });
 
         return dedupedMainMeshes;
+    }
+
+    private getAllMeshes(meshes: Mesh[]): Mesh[] {
+        const meshSet: Set<Mesh> = new Set();
+    
+        meshes.forEach(mesh => {
+            this.flattenMeshHierarchy(mesh).forEach(mesh => meshSet.add(mesh));
+        });
+
+        return Array.from(meshSet);
     }
 
     private flattenMeshHierarchy(mesh: Mesh): Mesh[] {

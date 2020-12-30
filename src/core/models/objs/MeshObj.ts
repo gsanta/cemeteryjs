@@ -70,6 +70,7 @@ export interface GroundConfig extends MeshShapeConfig {
 
 export interface MeshTreeNode {
     name: string;
+    isPrimaryMesh: boolean;
     children: MeshTreeNode[];
 }
 

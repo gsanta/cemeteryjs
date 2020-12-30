@@ -321,7 +321,6 @@ export class ModelController extends PropController {
 
         const asset = new AssetObj({path: val, assetType: AssetType.Model});
         meshObj.modelId = this.registry.stores.assetStore.addObj(asset);
-        this.registry.services.localStore.saveAsset(asset);
         try {
             const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
             await this.registry.engine.meshLoader.load(assetObj);
