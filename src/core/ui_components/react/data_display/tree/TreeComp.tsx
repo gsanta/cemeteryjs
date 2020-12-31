@@ -49,7 +49,7 @@ const linkStyle = {
     display: 'flex'
 }
 
-export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {data: TreeData, cursor: TreeData, active: boolean, style: any}> {
+export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {cursor: TreeData, active: boolean, style: any}> {
 
     constructor(props: UI_ComponentProps<UI_Tree>) {
         super(props);
@@ -60,7 +60,6 @@ export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {data:
         delete style.tree.node.activeLink.background;
 
         this.state = {
-            data: this.props.element.paramController.getData(),
             cursor: undefined,
             active: false,
             style: style
@@ -70,7 +69,7 @@ export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {data:
     }
 
     onToggle(node, toggled) {
-        const {cursor, data} = this.state;
+        const {cursor} = this.state;
         if (cursor) {
             this.setState(() => ({cursor, active: false}));
         }
@@ -78,14 +77,16 @@ export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {data:
         if (node.children) { 
             node.toggled = toggled; 
         }
-        this.setState(() => ({cursor: node, data: Object.assign({}, data)}));
+        this.setState(() => ({cursor: node}));
     }
     
     render(){
-        const {data, style} = this.state;
+        const {style} = this.state;
+        const data = this.props.element.paramController.getData();
+        if (!data) { return null; }
         return (
             <Treebeard
-                data={data}
+                data={this.props.element.paramController.getData()}
                 onToggle={this.onToggle}
                 decorators={{...reactTreeBeard.decorators, ...this.getDecorators()}}
                 style={style}

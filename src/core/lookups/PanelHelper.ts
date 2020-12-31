@@ -36,6 +36,7 @@ export class PanelHelper {
 
     setDialogPanel(uiPanel: UI_Panel) {
         this._dialogPanel = uiPanel;
+        this._dialogPanel && this._dialogPanel.open();
     }
 
     getDialogPanel(): UI_Panel {

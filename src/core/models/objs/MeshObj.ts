@@ -1,6 +1,7 @@
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
+import { AssetObj } from './AssetObj';
 import { IGameObj } from './IGameObj';
 import { IObj, ObjFactoryAdapter, ObjJson } from './IObj';
 
@@ -80,7 +81,7 @@ export class MeshObj implements IGameObj {
     name: string;
     shapeConfig: MeshShapeConfig;
     color: string;
-    modelId: string;
+    modelObj: AssetObj;
     textureId: string;
     routeId: string;
 
@@ -153,13 +154,13 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.intersectsMesh(this, otherMeshObj);
     }
 
-    clone(): MeshObj {
+    clone(registry: Registry): MeshObj {
         const clone = new MeshObj();
         clone.meshAdapter = this.meshAdapter;
-        clone.deserialize(this.serialize());
+        clone.deserialize(this.serialize(), registry);
         clone.id = undefined;
         clone.textureId = undefined;
-        clone.modelId = undefined;
+        clone.modelObj = undefined;
 
         return clone;
     }
@@ -179,7 +180,7 @@ export class MeshObj implements IGameObj {
             posY: this.getPosition().y,
             posZ: this.getPosition().z,
             rotation: this.getRotation(),
-            modelId: this.modelId,
+            modelId: this.modelObj ? this.modelObj.id : undefined,
             textureId: this.textureId,
             routeId: this.routeId,
             color: this.color,
@@ -188,14 +189,14 @@ export class MeshObj implements IGameObj {
         }
     }
     
-    deserialize(json: MeshObjJson) {
+    deserialize(json: MeshObjJson, registry: Registry) {
         this.id = json.id;
         this.name = json.name;
         this.setScale(new Point_3(json.scale.x, json.scale.y, json.scale.z));
         this.setPosition(new Point_3(json.posX, json.posY, json.posZ));
         this.setRotation(new Point_3(json.rotation.x, json.rotation.y, json.rotation.z));
 
-        this.modelId = json.modelId;
+        this.modelObj = json.modelId ? registry.stores.assetStore.getAssetById(json.modelId) : undefined;
         this.textureId = json.textureId;
         this.routeId = json.routeId;
         this.color = json.color;

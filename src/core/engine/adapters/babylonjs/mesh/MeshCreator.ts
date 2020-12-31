@@ -15,7 +15,7 @@ export class MeshCreator {
     }
 
     setupInstance(meshObj: MeshObj): MeshData {
-        const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
+        const assetObj = meshObj.modelObj;
         const position = meshObj.getPosition();
         const rotation = meshObj.getRotation();
         const visibility = meshObj.getVisibility();

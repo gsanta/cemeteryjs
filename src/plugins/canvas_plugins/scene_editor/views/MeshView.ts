@@ -106,12 +106,11 @@ export class MeshView extends View {
         let bounds = meshView.getBounds().clone();
         bounds = bounds.moveTo(bounds.getBoundingCenter());
 
-        const meshObjClone = meshObj.clone();
+        const meshObjClone = meshObj.clone(registry);
         meshObjClone.meshAdapter = registry.engine.meshes;
         const meshClone = meshView.clone(registry);
 
         const textureAsset = registry.stores.assetStore.getAssetById(meshObj.textureId);
-        const modelAsset = registry.stores.assetStore.getAssetById(meshObj.modelId);
 
         if (textureAsset) {
             const textureAssetClone = textureAsset.clone();
@@ -119,10 +118,8 @@ export class MeshView extends View {
             meshObjClone.textureId = textureAssetClone.id;
         }
 
-        if (modelAsset) {
-            const modelAssetClone = modelAsset.clone();
-            registry.stores.assetStore.addObj(modelAssetClone);
-            meshObjClone.modelId = modelAssetClone.id;
+        if (meshObj.modelObj) {
+            meshObjClone.modelObj = meshObj.modelObj.clone();
         }
 
         meshClone.setObj(meshObjClone);

@@ -59,6 +59,7 @@ export class UI_Panel {
 
     private onMountedFunc: () => void;
     private onUnmountedFunc: () => void;
+    private onOpenFunc: () => void;
 
     getFormController(controllerId: string): FormController { return undefined; }
 
@@ -87,6 +88,15 @@ export class UI_Panel {
 
     onUnmounted(onUnmountedFunc: () => void) {
         this.onUnmounted = onUnmountedFunc;
+    }
+
+    // TODO this is needed for Dialogs, so create a subclass for dialogs and move it there
+    open() {
+        this.onOpenFunc && this.onOpenFunc();
+    }
+    // TODO this is needed for Dialogs, so create a subclass for dialogs and move it there
+    onOpen(onOpenFunc: () => void) {
+        this.onOpenFunc = onOpenFunc;
     }
 
     // TODO should be temporary, port it to PointerService somehow

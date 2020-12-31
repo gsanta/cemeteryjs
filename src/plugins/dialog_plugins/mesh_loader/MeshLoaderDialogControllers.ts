@@ -3,54 +3,65 @@ import { MeshObj, MeshTreeNode } from "../../../core/models/objs/MeshObj";
 import { ParamControllers, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
+import { ApplicationError } from "../../../core/services/ErrorService";
 import { TreeController, TreeData } from "../../../core/ui_components/elements/complex/tree/TreeController";
 import { MeshView } from "../../canvas_plugins/scene_editor/views/MeshView";
 import { MeshLoaderPreviewCanvas } from "./MeshLoaderPreviewCanvas";
 
 export class MeshLoaderDialogControllers extends ParamControllers {
-    constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas) {
+    constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
         super();
-        this.tree = new MeshHierarchyTreeController(registry, canvas);
+        this.tree = new MeshHierarchyTreeController(registry, this, canvas, meshObj);
         this.texture = new TextureController(registry);
         this.save = new SaveController(registry, this);
+        this.model = new ModelController(registry, canvas, meshObj);
     }
 
     tree: MeshHierarchyTreeController;
     texture: TextureController;
     save: SaveController;
+    model: ModelController;
 }
 
 export class MeshHierarchyTreeController extends TreeController {
     selectedNodeName: string;
     private treeData: TreeData;
     private canvas: MeshLoaderPreviewCanvas;
+    private controllers: MeshLoaderDialogControllers;
     private meshObj: MeshObj;
-    private assetObj: AssetObj;
 
-    constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas) {
+    constructor(registry: Registry, controllers: MeshLoaderDialogControllers, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
         super(registry);
 
+        this.controllers = controllers;
         this.canvas = canvas;
+        this.meshObj = meshObj;
     }
 
     getData(): TreeData {
-        const selectedViews = this.registry.data.view.scene.getSelectedViews();
-        const meshView = <MeshView> selectedViews[0];
-        this.meshObj = meshView.getObj();
+        const { tempAssetObj } = this.controllers.model;
         
-        this.assetObj = this.registry.stores.assetStore.getAssetById(meshView.getObj().modelId);
-        const nodes = this.registry.engine.meshLoader.getMeshTree(this.assetObj);
-        return this.convertToTreeData(nodes);
+        if (!this.treeData) {
+            if (tempAssetObj) {
+                const nodes = this.canvas.getEngine().meshLoader.getMeshTree(tempAssetObj);
+                this.convertToTreeData(nodes);
+            }
+        }
+
+        return this.treeData;
     }
 
     check(data: TreeData): void {
+        const { tempAssetObj } = this.controllers.model;
+
         const isChecked = data.checked;
         if (isChecked) {
             this.iterateTreeData(this.treeData, (treeData) => treeData.checked = false);
             this.selectedNodeName = data.name;
             data.checked = true;
-            this.canvas.getEngine().meshLoader.setPrimaryMeshNode(this.assetObj, this.selectedNodeName);
-            this.canvas.setMesh();
+            this.canvas.getEngine().meshLoader.setPrimaryMeshNode(tempAssetObj, this.selectedNodeName);
+            this.meshObj.modelObj = tempAssetObj;
+            this.canvas.setMesh(this.meshObj, tempAssetObj);
 
         } else {
             this.selectedNodeName = undefined;
@@ -86,6 +97,47 @@ export class MeshHierarchyTreeController extends TreeController {
         treeData.children && treeData.children.forEach(child => this.iterateTreeData(child, callback));
     }
 }
+
+export class ModelController extends PropController {
+    private canvas: MeshLoaderPreviewCanvas
+    private tempVal: string;
+    tempAssetObj: AssetObj;
+    private meshObj: MeshObj;
+    
+    constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
+        super(registry);
+
+        this.canvas = canvas;
+        this.meshObj = meshObj;
+    }
+
+    val() {
+        if (this.tempVal !== undefined) {
+            return this.tempVal;
+        } else {
+            return this.meshObj.modelObj ? this.meshObj.modelObj.id : undefined;
+        }
+    }
+
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
+    }
+
+    async blur() {
+        const val = this.tempVal;
+        this.tempVal = undefined;
+
+        this.tempAssetObj = new AssetObj({path: val, assetType: AssetType.Model});
+        try {
+            await this.canvas.getEngine().meshLoader.load(this.tempAssetObj);
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+        }
+        this.registry.services.render.reRenderAll();
+    }
+}
+
 
 export class TextureController extends PropController {
     private tempVal: string;
@@ -127,8 +179,11 @@ export class SaveController extends PropController {
 
     async click() {
         const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-        const assetObj = this.registry.stores.assetStore.getAssetById(meshView.getObj().modelId);
-        this.registry.engine.meshLoader.setPrimaryMeshNode(assetObj, this.controllers.tree.selectedNodeName);
+        const meshObj = meshView.getObj();
+        meshObj.modelObj = this.controllers.model.tempAssetObj;
+        this.registry.stores.assetStore.addObj(meshObj.modelObj);
+        await this.registry.engine.meshLoader.load(meshObj.modelObj);
+        this.registry.engine.meshLoader.setPrimaryMeshNode(meshView.getObj().modelObj, this.controllers.tree.selectedNodeName);
         await this.registry.engine.meshes.createInstance(meshView.getObj());
 
         const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj());

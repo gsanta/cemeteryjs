@@ -78,7 +78,7 @@ function getMeshObjProperty(registry: Registry, obj: MeshObj, prop: ObjTableProp
         case ObjTableProp.Scale:
             return obj.getScale().toString();
         case ObjTableProp.Model:
-            return registry.stores.assetStore.getAssetById(obj.modelId).path;
+            return obj.modelObj.path;
         case ObjTableProp.Texture:
             return registry.stores.assetStore.getAssetById(obj.textureId).path;
     }

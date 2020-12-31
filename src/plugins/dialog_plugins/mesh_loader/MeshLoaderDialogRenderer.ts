@@ -18,10 +18,17 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
     renderInto(dialog: UI_Dialog): void {
         dialog.width = '530px';
 
+        let row = dialog.row({key: 'model-row'});
+        const modelTextField = row.textField({ key: 'model' });
+        modelTextField.paramController = this.controller.model;
+        modelTextField.layout = 'horizontal';
+        modelTextField.label = 'Texture path';
+        modelTextField.type = 'text';
+
         let separator = dialog.separator({key: 'separator-tree'});
         separator.text = 'primary mesh'
 
-        let row = dialog.row({key: 'tree-row'});
+        row = dialog.row({key: 'tree-row'});
         const tree = row.tree({controller: undefined, key: 'tree', parent: row});
         tree.paramController = this.controller.tree;
 
@@ -44,12 +51,6 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         const canvas = row.htmlCanvas({canvasPanel:  this.registry.ui.canvas.getCanvas(MeshLoaderPreviewCanvasId)});
         canvas.width = '300px';
         canvas.height = '300px';
-
-        // row = layout.row({ key: 'save-row' });
-        // const changeThumbnailButton = row.button('save');
-        // changeThumbnailButton.paramController = this.controller.save;
-        // changeThumbnailButton.label = 'Save';
-        // changeThumbnailButton.width = '200px';
 
         const footer = dialog.footer({key: 'footer'});
         row = footer.row({key: 'button-row'});

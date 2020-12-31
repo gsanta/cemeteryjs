@@ -23,15 +23,11 @@ export class MeshLoaderPreviewCanvas {
         this.registry = registry;
         this.engine = new Bab_EngineFacade(registry);
 
-        this.canvas = createCanvas(registry, this.engine, () => this.setMesh());
+        this.canvas = createCanvas(registry, this.engine);
     }
 
-    async setMesh() {
-        const selectedViews = this.registry.data.view.scene.getSelectedViews();
-        const meshObj = selectedViews[0].getObj() as MeshObj;
-        // const selectedViews = registry.data.view.scene.getSelectedViews();
-        // const meshObj = selectedViews[0].getObj() as MeshObj;
-        const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
+    async setMesh(meshObj: MeshObj, assetObj: AssetObj) {
+
         await this.engine.meshLoader.load(assetObj);
         this.engine.meshes.createInstance(meshObj)
         this.engine.meshes.setRotation(meshObj, new Point_3(0, 0, 0));
@@ -47,7 +43,7 @@ export class MeshLoaderPreviewCanvas {
     }
 }
 
-function createCanvas(registry: Registry, engine: IEngineFacade, onMounted: () => void): AbstractCanvasPanel {
+function createCanvas(registry: Registry, engine: IEngineFacade): AbstractCanvasPanel {
     const canvas = new Canvas3dPanel(registry, UI_Region.Dialog, MeshLoaderPreviewCanvasId, 'Preview canvas');
 
     const tools = [
@@ -61,13 +57,7 @@ function createCanvas(registry: Registry, engine: IEngineFacade, onMounted: () =
     tools.forEach(tool => canvas.addTool(tool));
 
 
-    canvas.onMounted(() => {
-        engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]);
-
-        setTimeout(() => {
-            onMounted();
-        }, 500);
-    });
+    canvas.onMounted(() => engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]));
 
     canvas.onUnmounted(() => {
         // engine.engine.dispose();

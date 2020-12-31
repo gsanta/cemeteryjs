@@ -289,50 +289,13 @@ export class CloneController extends PropController {
 }
 
 export class ModelController extends PropController {
-    private tempVal: string;
-
     constructor(registry: Registry) {
         super(registry);
     }
 
-    val() {
-        if (this.tempVal) {
-            return this.tempVal;
-        } else {
-            const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-    
-            if (meshView.getObj().modelId) {
-                const assetObj = this.registry.stores.assetStore.getAssetById(meshView.getObj().modelId);
-                return assetObj.path
-            }
-        }
-    }
-
-    change(val: string) {
-        this.tempVal = val;
-        this.registry.services.render.reRender(UI_Region.Sidepanel);
-    }
-
-    async blur() {
-        const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-        const meshObj = meshView.getObj();
-        const val = this.tempVal;
-        this.tempVal = undefined;
-
-        const asset = new AssetObj({path: val, assetType: AssetType.Model});
-        meshObj.modelId = this.registry.stores.assetStore.addObj(asset);
-        try {
-            const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
-            await this.registry.engine.meshLoader.load(assetObj);
-            // const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj())
-            // meshView.getBounds().setWidth(realDimensions.x);
-            // meshView.getBounds().setHeight(realDimensions.y);
-            const dialog = this.registry.ui.panel.getPanel(MeshLoaderDialogId);
-            this.registry.ui.helper.setDialogPanel(dialog);
-            // this.registry.services.history.createSnapshot();
-        } catch(e) {
-            this.registry.services.error.setError(new ApplicationError(e));
-        }
+    click() {
+        const dialog = this.registry.ui.panel.getPanel(MeshLoaderDialogId);
+        this.registry.ui.helper.setDialogPanel(dialog);
         this.registry.services.render.reRenderAll();
     }
 }

@@ -136,11 +136,10 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         visibilityTextField.type = 'number';
 
         row = accordion.row({ key: 'model-row' });
-        const modelTextField = row.textField({ key: 'model' });
-        modelTextField.paramController = this.controller.model;
-        modelTextField.layout = 'horizontal';
-        modelTextField.label = 'Model path';
-        modelTextField.type = 'text';
+        const modelButton = row.button('model');
+        modelButton.paramController = this.controller.model;
+        modelButton.label = 'Load model';
+        modelButton.width = '200px';
 
         row = accordion.row({ key: 'texture-row' });
         const textureTextField = row.textField({ key: 'texture' });
