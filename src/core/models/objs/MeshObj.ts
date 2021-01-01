@@ -82,7 +82,7 @@ export class MeshObj implements IGameObj {
     shapeConfig: MeshShapeConfig;
     color: string;
     modelObj: AssetObj;
-    textureId: string;
+    textureObj: AssetObj;
     routeId: string;
 
     meshAdapter: IMeshAdapter;
@@ -159,7 +159,7 @@ export class MeshObj implements IGameObj {
         clone.meshAdapter = this.meshAdapter;
         clone.deserialize(this.serialize(), registry);
         clone.id = undefined;
-        clone.textureId = undefined;
+        clone.textureObj = undefined;
         clone.modelObj = undefined;
 
         return clone;
@@ -181,7 +181,7 @@ export class MeshObj implements IGameObj {
             posZ: this.getPosition().z,
             rotation: this.getRotation(),
             modelId: this.modelObj ? this.modelObj.id : undefined,
-            textureId: this.textureId,
+            textureId: this.textureObj ? this.textureObj.id : undefined,
             routeId: this.routeId,
             color: this.color,
             shapeConfig: this.shapeConfig,
@@ -197,7 +197,7 @@ export class MeshObj implements IGameObj {
         this.setRotation(new Point_3(json.rotation.x, json.rotation.y, json.rotation.z));
 
         this.modelObj = json.modelId ? registry.stores.assetStore.getAssetById(json.modelId) : undefined;
-        this.textureId = json.textureId;
+        this.textureObj = json.textureId ? registry.stores.assetStore.getAssetById(json.textureId) : undefined;
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;

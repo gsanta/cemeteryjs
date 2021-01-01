@@ -245,11 +245,9 @@ export class TextureController extends PropController {
         } else {
             const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
     
-            if (meshView.getObj().textureId) {
-                const assetObj = this.registry.stores.assetStore.getAssetById(meshView.getObj().textureId);
-                return assetObj.path;
+            if (meshView.getObj().textureObj) {
+                return meshView.getObj().textureObj.path;
             }
-
         }
     }
 
@@ -264,7 +262,7 @@ export class TextureController extends PropController {
         this.tempVal = undefined;
 
         const asset = new AssetObj({path: val, assetType: AssetType.Texture});
-        meshView.getObj().textureId = this.registry.stores.assetStore.addObj(asset);
+        meshView.getObj().textureObj = asset;
         this.registry.engine.meshes.createMaterial(meshView.getObj());
         this.registry.services.history.createSnapshot();
     }

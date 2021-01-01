@@ -17,8 +17,10 @@ export interface IEngineFacade {
     rays: IRayCasterAdapter;
     
     setup(canvas: HTMLCanvasElement): void;
+    clear(): void;
     getCamera(): Camera3D;
     resize();
     registerRenderLoop(loop: () => void);
+    onReady(onReadyFunc: () => void);
 }
 

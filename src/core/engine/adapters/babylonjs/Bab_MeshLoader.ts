@@ -1,7 +1,7 @@
 import { AnimationGroup, Mesh, Skeleton } from "babylonjs";
 import 'babylonjs-loaders';
 import { AssetObj } from "../../../models/objs/AssetObj";
-import { MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
+import { MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
@@ -14,10 +14,15 @@ export interface MeshTemplate {
      * contains those meshes also which are deeper in the hierarchy alongside with the root meshes
      */
     allMeshes: Mesh[];
+    /**
+     * contains the visibility properties of all of the meshes when the mes was loaded, so it can be restored later
+     */
+    initalMeshVisibilities: boolean[];
     skeletons: Skeleton[];
     animationGroups: AnimationGroup[];
 
     loadedData: LoadedMeshData;
+    instances: number;
 }
 
 export class Bab_MeshLoader implements IMeshLoaderAdapter {
@@ -45,15 +50,19 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
             
             const template = this.createTemplate(loadedMeshData);
             this.templatesById.set(assetObj.id, template);
+            this.hideTemplate(assetObj);
         }
     }
 
     setPrimaryMeshNode(assetObj: AssetObj, primaryMeshName: string) {
         const template = this.templatesById.get(assetObj.id);
+        const isVisible = template.realMeshes[0].isVisible;
+
         if (template) {
             for (let i = 0; i < template.dedupedMeshes.length; i++) {
                 const mesh = this.findMeshInHierarchy(template.dedupedMeshes[i], primaryMeshName);
                 if (mesh) {
+                    mesh.isVisible = isVisible;
                     template.realMeshes = [mesh];
                     break;
                 }
@@ -61,7 +70,7 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
         }
     }
 
-    private findMeshInHierarchy(mesh: Mesh, meshName: string) {
+    private findMeshInHierarchy(mesh: Mesh, meshName: string): Mesh {
         if (mesh.name === meshName) {
             return mesh;
         } else {
@@ -95,9 +104,9 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
     }
 
     clear() {
-        this.templates.forEach(template => template.dispose());
-        this.templates.clear();
+        Array.from(this.templatesById.values()).forEach(templateData => templateData.dedupedMeshes.forEach(mesh => mesh.dispose()));
         this.templatesById = new Map();
+        this.loadedIds = new Set();
     }
 
     isTemplateMesh(assetObj: AssetObj, mesh: Mesh) {
@@ -111,16 +120,34 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
         return false;
     }
 
+    hideTemplate(assetObj: AssetObj) {
+        const template = this.templatesById.get(assetObj.id);
+        if (template) {
+            template.allMeshes.forEach(mesh => mesh.isVisible = false);
+        }
+    }
+
+    showTemplate(assetObj: AssetObj) {
+        const template = this.templatesById.get(assetObj.id);
+        if (template) {
+            template.allMeshes.forEach((mesh, index) => mesh.isVisible = template.initalMeshVisibilities[index]);
+        }
+    }
+
     private createTemplate(loadedMeshData: LoadedMeshData): MeshTemplate {
         const dedupedMainMeshes = this.getDedupedMeshes(loadedMeshData.loadedMeshes);
+        const allMeshes = this.getAllMeshes(loadedMeshData.loadedMeshes);
+        const initialMeshVisibilities = allMeshes.map(mesh => mesh.isVisible);
         
         return {
             realMeshes: dedupedMainMeshes,
             dedupedMeshes: dedupedMainMeshes,
             allMeshes: this.getAllMeshes(loadedMeshData.loadedMeshes),
+            initalMeshVisibilities: initialMeshVisibilities,
             skeletons: loadedMeshData.loadedSkeletons,
             animationGroups: loadedMeshData.loadedAnimationGroups,
-            loadedData: loadedMeshData
+            loadedData: loadedMeshData,
+            instances: 0
         }
     }
 

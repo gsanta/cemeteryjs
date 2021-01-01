@@ -25,10 +25,13 @@ export class Wrap_EngineFacade implements IEngineFacade {
 
     engines: IEngineFacade[] = [];
 
+    private testEngine: Test_EngineFacade;
+
     constructor(registry: Registry, realEngine: IEngineFacade) {
         this.registry = registry;
 
-        this.engines.push(new Test_EngineFacade(registry));
+        this.testEngine = new Test_EngineFacade(registry);
+        this.engines.push(this.testEngine);
 
         if (realEngine) {
             this.realEngine = realEngine;
@@ -52,8 +55,17 @@ export class Wrap_EngineFacade implements IEngineFacade {
         this.realEngine.setup(canvas);
     }
 
+    clear() {
+        this.realEngine.clear();
+        this.testEngine.clear();
+    }
+
     registerRenderLoop(loop: () => void) {
         this.realEngine.registerRenderLoop(loop);
+    }
+
+    onReady(onReadyFunc: () => void) {
+        this.realEngine.onReady(onReadyFunc);
     }
 
     resize() {

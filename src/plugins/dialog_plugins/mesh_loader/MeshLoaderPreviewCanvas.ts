@@ -1,4 +1,5 @@
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
+import { Wrap_EngineFacade } from "../../../core/engine/adapters/wrapper/Wrap_EngineFacade";
 import { IEngineFacade } from "../../../core/engine/IEngineFacade";
 import { AssetObj } from "../../../core/models/objs/AssetObj";
 import { MeshObj } from "../../../core/models/objs/MeshObj";
@@ -21,15 +22,14 @@ export class MeshLoaderPreviewCanvas {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.engine = new Bab_EngineFacade(registry);
+        this.engine = new Wrap_EngineFacade(registry, new Bab_EngineFacade(registry, 'Mesh Loader Engine'));
 
         this.canvas = createCanvas(registry, this.engine);
     }
 
     async setMesh(meshObj: MeshObj, assetObj: AssetObj) {
-
         await this.engine.meshLoader.load(assetObj);
-        this.engine.meshes.createInstance(meshObj)
+        await this.engine.meshes.createInstance(meshObj)
         this.engine.meshes.setRotation(meshObj, new Point_3(0, 0, 0));
         this.engine.meshes.setPosition(meshObj, new Point_3(0, 0, 0));
     }

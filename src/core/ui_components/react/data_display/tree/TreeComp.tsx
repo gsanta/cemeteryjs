@@ -56,6 +56,7 @@ export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {curso
 
         const style = reactTreeBeard.theme;
         style.tree.node.link = linkStyle;
+        style.tree.base.width = '100%';
         delete style.tree.base.backgroundColor;
         delete style.tree.node.activeLink.background;
 
@@ -98,8 +99,9 @@ export class TreeComp extends React.Component<UI_ComponentProps<UI_Tree>, {curso
         return {
             Header: (props) => {
                 return (
-                    <div style={props.style}>
-                        <div>{props.node.name} <input type="checkbox" checked={props.node.checked} onClick={(e) => this.onCheck(e, props.node)}/></div>
+                    <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+                        <div>{props.node.name}</div>
+                        <input type="checkbox" checked={props.node.checked} onClick={(e) => this.onCheck(e, props.node)}/>
                     </div>
                 );
             }

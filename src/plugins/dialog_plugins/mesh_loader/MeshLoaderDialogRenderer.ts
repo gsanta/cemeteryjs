@@ -22,7 +22,7 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         const modelTextField = row.textField({ key: 'model' });
         modelTextField.paramController = this.controller.model;
         modelTextField.layout = 'horizontal';
-        modelTextField.label = 'Texture path';
+        modelTextField.label = 'Model path';
         modelTextField.type = 'text';
 
         let separator = dialog.separator({key: 'separator-tree'});

@@ -25,7 +25,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
     }
 
     getPosition(meshObj: MeshObj): Point_3 {
-        return this.posMap.get(meshObj);
+        return this.posMap.get(meshObj) || new Point_3(0, 0, 0);
     }
 
     setScale(meshObj: MeshObj, scale: Point_3) {

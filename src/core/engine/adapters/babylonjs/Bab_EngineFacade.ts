@@ -13,6 +13,7 @@ import { Bab_Sprites } from "./Bab_Sprites";
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
     engine: Engine;
+    name: string;
     private camera: Camera3D;
     private registry: Registry;
     private light: Light;
@@ -26,10 +27,12 @@ export class Bab_EngineFacade implements IEngineFacade {
     rays: Bab_RayCasterAdapter;
 
     private renderLoops: (() => void)[] = [];
+    private onReadyFuncs: (() => void)[] = [];
+    private isReady = false;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, name: string) {
         this.registry = registry;
-
+        this.name = name;
         this.camera = new Camera3D(this.registry);
         this.spriteLoader = new Bab_SpriteLoader(this.registry, this);
         this.sprites = new Bab_Sprites(this.registry, this);
@@ -59,7 +62,27 @@ export class Bab_EngineFacade implements IEngineFacade {
             this.scene.render();
         });
 
+        this.isReady = true;
+        this.onReadyFuncs.forEach(onReadyFunc => onReadyFunc());
         this.renderLoops.forEach(renderLoop => this.engine.runRenderLoop(renderLoop));
+    }
+
+    clear() {
+        Array.from(this.meshes.meshes.values()).forEach(meshData => meshData.meshes.forEach(mesh => mesh.dispose()));
+        this.meshes.meshes = new Map();
+        this.meshLoader.clear();
+
+        Array.from(this.sprites.sprites.values()).forEach(sprite => sprite.dispose());
+        this.sprites.sprites = new Map();
+        this.spriteLoader.managers = new Map();
+    }
+
+    onReady(onReadyFunc: () => void) {
+        if (this.isReady) {
+            onReadyFunc();
+        } else {
+            this.onReadyFuncs.push(onReadyFunc);
+        }
     }
 
     registerRenderLoop(loop: () => void) {

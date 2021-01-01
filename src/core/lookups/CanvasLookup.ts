@@ -18,6 +18,10 @@ export class CanvasLookup {
         this.canvases.set(canvas.id, canvas);
     }
 
+    unregisterCanvas(id: string) {
+        this.canvases.delete(id);
+    }
+
     getCanvas(id: string) {
         return this.canvases.get(id);
     }

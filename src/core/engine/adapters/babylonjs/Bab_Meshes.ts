@@ -159,6 +159,10 @@ export  class Bab_Meshes implements IMeshAdapter {
             await this.createPlaceHolderMeshInstance(meshObj);
         }
 
+        if (meshObj.textureObj) {
+            this.createMaterial(meshObj);
+        }
+
         const meshData = this.meshes.get(meshObj);
         if (meshData && meshData.meshes[0]) {
             meshData.meshes[0].scaling = toVector3(scaling);
@@ -183,10 +187,8 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     private async createModeledMeshInstance(meshObj: MeshObj) {
-        this.deleteInstance(meshObj);
         try {
-            // const assetObj = this.registry.stores.assetStore.getAssetById(meshObj.modelId);
-            // await this.engineFacade.meshLoader.load(assetObj);
+            await this.engineFacade.meshLoader.load(meshObj.modelObj);
             const meshData = this.meshCreator.setupInstance(meshObj);
             this.meshes.set(meshObj, meshData);
         } catch(e) {
@@ -200,12 +202,19 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     deleteInstance(meshObj: MeshObj) {
+        const { meshLoader } = this.engineFacade; 
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
         const mesh = meshData.meshes[0];
-        if (meshObj.modelObj && this.engineFacade.meshLoader.isTemplateMesh(meshObj.modelObj, mesh)) {
-            mesh.isVisible = false;
+        if (meshObj.modelObj) {
+            const templateData = meshLoader.templatesById.get(meshObj.modelObj.id);
+            templateData.instances -= 1;
+            if (templateData.instances === 0) {
+                meshLoader.hideTemplate(meshObj.modelObj);
+            } else {
+                mesh.dispose();
+            }
         } else {
             mesh.dispose();
         }

@@ -11,10 +11,17 @@ import { MeshLoaderPreviewCanvas } from "./MeshLoaderPreviewCanvas";
 export class MeshLoaderDialogControllers extends ParamControllers {
     constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
         super();
-        this.tree = new MeshHierarchyTreeController(registry, this, canvas, meshObj);
-        this.texture = new TextureController(registry);
-        this.save = new SaveController(registry, this);
-        this.model = new ModelController(registry, canvas, meshObj);
+
+        const clone = meshObj.clone(registry);
+
+        canvas.getEngine().onReady(() => {
+            initMeshObj(registry, canvas, clone, meshObj).then(() => registry.services.render.reRenderAll())
+        });
+
+        this.tree = new MeshHierarchyTreeController(registry, this, canvas, clone);
+        this.texture = new TextureController(registry, canvas, clone);
+        this.save = new SaveController(registry, this, clone);
+        this.model = new ModelController(registry, this, canvas, clone);
     }
 
     tree: MeshHierarchyTreeController;
@@ -23,9 +30,27 @@ export class MeshLoaderDialogControllers extends ParamControllers {
     model: ModelController;
 }
 
+async function initMeshObj(registry: Registry, canvas: MeshLoaderPreviewCanvas, cloneMeshObj: MeshObj, origMeshObj: MeshObj) {
+    cloneMeshObj.meshAdapter = canvas.getEngine().meshes;
+    if (origMeshObj.modelObj) {
+        await ModelController.createModel(registry, canvas, cloneMeshObj, origMeshObj.modelObj.path);
+    }
+
+    if (origMeshObj.textureObj) {
+        TextureController.createTexture(canvas, cloneMeshObj, origMeshObj.textureObj.path);
+    }
+}
+
+function resetControllers(controller: MeshLoaderDialogControllers, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
+    canvas.getEngine().clear();
+    controller.tree.treeData = undefined;
+    meshObj.modelObj = undefined;
+    meshObj.textureObj = undefined;
+}
+
 export class MeshHierarchyTreeController extends TreeController {
     selectedNodeName: string;
-    private treeData: TreeData;
+    treeData: TreeData;
     private canvas: MeshLoaderPreviewCanvas;
     private controllers: MeshLoaderDialogControllers;
     private meshObj: MeshObj;
@@ -39,12 +64,12 @@ export class MeshHierarchyTreeController extends TreeController {
     }
 
     getData(): TreeData {
-        const { tempAssetObj } = this.controllers.model;
-        
         if (!this.treeData) {
-            if (tempAssetObj) {
-                const nodes = this.canvas.getEngine().meshLoader.getMeshTree(tempAssetObj);
-                this.convertToTreeData(nodes);
+            if (this.meshObj.modelObj) {
+                const nodes = this.canvas.getEngine().meshLoader.getMeshTree(this.meshObj.modelObj);
+                if (nodes) {
+                    this.convertToTreeData(nodes);
+                }
             }
         }
 
@@ -52,17 +77,16 @@ export class MeshHierarchyTreeController extends TreeController {
     }
 
     check(data: TreeData): void {
-        const { tempAssetObj } = this.controllers.model;
+        const { modelObj } = this.meshObj;
 
         const isChecked = data.checked;
         if (isChecked) {
             this.iterateTreeData(this.treeData, (treeData) => treeData.checked = false);
             this.selectedNodeName = data.name;
             data.checked = true;
-            this.canvas.getEngine().meshLoader.setPrimaryMeshNode(tempAssetObj, this.selectedNodeName);
-            this.meshObj.modelObj = tempAssetObj;
-            this.canvas.setMesh(this.meshObj, tempAssetObj);
-
+            this.canvas.getEngine().meshLoader.setPrimaryMeshNode(modelObj, this.selectedNodeName);
+            this.meshObj.modelObj = modelObj;
+            this.canvas.setMesh(this.meshObj, modelObj);
         } else {
             this.selectedNodeName = undefined;
         }
@@ -101,12 +125,13 @@ export class MeshHierarchyTreeController extends TreeController {
 export class ModelController extends PropController {
     private canvas: MeshLoaderPreviewCanvas
     private tempVal: string;
-    tempAssetObj: AssetObj;
     private meshObj: MeshObj;
+    private controllers: MeshLoaderDialogControllers;
     
-    constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
+    constructor(registry: Registry, controllers: MeshLoaderDialogControllers, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
         super(registry);
 
+        this.controllers = controllers;
         this.canvas = canvas;
         this.meshObj = meshObj;
     }
@@ -115,45 +140,7 @@ export class ModelController extends PropController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            return this.meshObj.modelObj ? this.meshObj.modelObj.id : undefined;
-        }
-    }
-
-    change(val: string) {
-        this.tempVal = val;
-        this.registry.services.render.reRender(UI_Region.Sidepanel);
-    }
-
-    async blur() {
-        const val = this.tempVal;
-        this.tempVal = undefined;
-
-        this.tempAssetObj = new AssetObj({path: val, assetType: AssetType.Model});
-        try {
-            await this.canvas.getEngine().meshLoader.load(this.tempAssetObj);
-        } catch(e) {
-            this.registry.services.error.setError(new ApplicationError(e));
-        }
-        this.registry.services.render.reRenderAll();
-    }
-}
-
-
-export class TextureController extends PropController {
-    private tempVal: string;
-    tempAsset: AssetObj;
-
-    val() {
-        if (this.tempVal) {
-            return this.tempVal;
-        } else {
-            const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-    
-            if (meshView.getObj().textureId) {
-                const assetObj = this.registry.stores.assetStore.getAssetById(meshView.getObj().textureId);
-                return assetObj.path;
-            }
-
+            return this.meshObj.modelObj ? this.meshObj.modelObj.path : undefined;
         }
     }
 
@@ -165,23 +152,88 @@ export class TextureController extends PropController {
     async blur() {
         const val = this.tempVal;
         this.tempVal = undefined;
-        this.tempAsset = new AssetObj({path: val, assetType: AssetType.Texture});
+
+        resetControllers(this.controllers, this.canvas, this.meshObj);
+
+        await ModelController.createModel(this.registry, this.canvas, this.meshObj, val);
+
+        this.registry.services.render.reRenderAll();
+    }
+
+    static async createModel(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj, path: string) {
+        const assetObj = new AssetObj({path: path, assetType: AssetType.Model});
+        assetObj.id = 'temp-model-asset';
+        meshObj.modelObj = assetObj;
+        try {
+            await canvas.getEngine().meshLoader.load(assetObj);
+            canvas.setMesh(meshObj, assetObj);
+        } catch(e) {
+            registry.services.error.setError(new ApplicationError(e));
+        }
+    }
+}
+
+
+export class TextureController extends PropController {
+    private tempVal: string;
+    private meshObj: MeshObj;
+    private canvas: MeshLoaderPreviewCanvas;
+
+    constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
+        super(registry);
+        this.meshObj = meshObj;
+        this.canvas = canvas;
+    }
+
+    val() {
+        if (this.tempVal !== undefined) {
+            return this.tempVal;
+        } else {
+            return this.meshObj.textureObj ? this.meshObj.textureObj.path : undefined;
+        }
+    }
+
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(UI_Region.Dialog);
+    }
+
+    async blur() {
+        const val = this.tempVal;
+        this.tempVal = undefined;
+
+        TextureController.createTexture(this.canvas, this.meshObj, val);
+    }
+
+    static createTexture(canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj, path: string): AssetObj {
+        const assetObj = new AssetObj({path: path, assetType: AssetType.Texture});
+        assetObj.id = 'temp-texture-asset';
+
+        meshObj.textureObj = assetObj;
+        canvas.getEngine().meshes.createMaterial(meshObj);
+        return assetObj;
     }
 }
 
 export class SaveController extends PropController {
     private controllers: MeshLoaderDialogControllers;
-    constructor(registry: Registry, controllers: MeshLoaderDialogControllers) {
+    private meshObj: MeshObj;
+    constructor(registry: Registry, controllers: MeshLoaderDialogControllers, meshObj: MeshObj) {
         super(registry);
 
         this.controllers = controllers;
+        this.meshObj = meshObj;
     }
 
     async click() {
+        const { modelObj } = this.meshObj;
         const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
         const meshObj = meshView.getObj();
-        meshObj.modelObj = this.controllers.model.tempAssetObj;
-        this.registry.stores.assetStore.addObj(meshObj.modelObj);
+        const assetObj = new AssetObj({path: modelObj.path, name: modelObj.name, assetType: modelObj.assetType});
+        
+        this.registry.engine.meshes.deleteInstance(meshObj);
+        this.registry.stores.assetStore.addObj(assetObj);
+        meshObj.modelObj = assetObj;
         await this.registry.engine.meshLoader.load(meshObj.modelObj);
         this.registry.engine.meshLoader.setPrimaryMeshNode(meshView.getObj().modelObj, this.controllers.tree.selectedNodeName);
         await this.registry.engine.meshes.createInstance(meshView.getObj());
@@ -190,9 +242,10 @@ export class SaveController extends PropController {
         meshView.getBounds().setWidth(realDimensions.x);
         meshView.getBounds().setHeight(realDimensions.y);
 
-        const textureAssetObj = this.controllers.texture.tempAsset;
+        const textureAssetObj = this.meshObj.textureObj;
         if (textureAssetObj) {
-            meshView.getObj().textureId = this.registry.stores.assetStore.addObj(textureAssetObj);
+            this.registry.stores.assetStore.addObj(textureAssetObj);
+            meshView.getObj().textureObj = textureAssetObj;
             this.registry.engine.meshes.createMaterial(meshView.getObj());
         }
 

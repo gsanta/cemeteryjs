@@ -41,9 +41,15 @@ export class Test_EngineFacade implements IEngineFacade {
         this.realEngine.setup(canvas);
     }
 
+    clear() {
+        
+    }
+
     registerRenderLoop(loop: () => void) {
         this.realEngine.registerRenderLoop(loop);
     }
+
+    onReady() {}
 
     resize() {
         this.realEngine.resize();

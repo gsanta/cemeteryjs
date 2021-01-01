@@ -110,12 +110,8 @@ export class MeshView extends View {
         meshObjClone.meshAdapter = registry.engine.meshes;
         const meshClone = meshView.clone(registry);
 
-        const textureAsset = registry.stores.assetStore.getAssetById(meshObj.textureId);
-
-        if (textureAsset) {
-            const textureAssetClone = textureAsset.clone();
-            registry.stores.assetStore.addObj(textureAssetClone);
-            meshObjClone.textureId = textureAssetClone.id;
+        if (meshObj.textureObj) {
+            meshObjClone.textureObj = meshObj.textureObj.clone();
         }
 
         if (meshObj.modelObj) {

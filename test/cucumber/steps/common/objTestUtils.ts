@@ -80,7 +80,7 @@ function getMeshObjProperty(registry: Registry, obj: MeshObj, prop: ObjTableProp
         case ObjTableProp.Model:
             return obj.modelObj.path;
         case ObjTableProp.Texture:
-            return registry.stores.assetStore.getAssetById(obj.textureId).path;
+            return obj.textureObj.path;
     }
 }
 
