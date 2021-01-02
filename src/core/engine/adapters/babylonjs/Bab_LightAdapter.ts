@@ -1,11 +1,11 @@
 import { Color3, SpotLight, Vector3 } from "babylonjs";
-import { Point_3 } from "../../utils/geometry/shapes/Point_3";
-import { LightObj } from "../models/objs/LightObj";
-import { MeshObj } from "../models/objs/MeshObj";
-import { Registry } from "../Registry";
-import { Bab_EngineFacade } from "./adapters/babylonjs/Bab_EngineFacade";
-import { toVector3 } from "./adapters/babylonjs/Bab_Utils";
-import { ILightAdapter } from "./ILightAdapter";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { LightObj } from "../../../models/objs/LightObj";
+import { MeshObj } from "../../../models/objs/MeshObj";
+import { Registry } from "../../../Registry";
+import { Bab_EngineFacade } from "./Bab_EngineFacade";
+import { toVector3 } from "./Bab_Utils";
+import { ILightAdapter } from "../../ILightAdapter";
 
 
 export const defaultLightDirection = new Point_3(0, -1, 0);

@@ -6,6 +6,7 @@ import { IMeshAdapter } from "./IMeshAdapter";
 import { IMeshFactory } from "./IMeshFactory";
 import { ILightAdapter } from "./ILightAdapter";
 import { IRayCasterAdapter } from "./IRayCasterAdapter";
+import { IAnimationAdapter } from "./IAnimationAdapter";
 
 export interface IEngineFacade {
     spriteLoader: ISpriteLoaderAdapter;
@@ -15,6 +16,7 @@ export interface IEngineFacade {
     meshLoader: IMeshLoader;
     meshFactory: IMeshFactory;
     rays: IRayCasterAdapter;
+    animatons: IAnimationAdapter;
     
     setup(canvas: HTMLCanvasElement): void;
     clear(): void;

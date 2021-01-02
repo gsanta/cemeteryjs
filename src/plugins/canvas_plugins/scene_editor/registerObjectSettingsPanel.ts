@@ -21,8 +21,6 @@ export function registerObjectSettingsPanel(registry: Registry) {
 function createPanel(registry: Registry): UI_Panel {
     const panel = new UI_Panel(registry, UI_Region.Sidepanel, ObjectSettingsPanelId, 'Object Settings');
     
-    const meshSettingsController = new MeshViewControllers(registry);
-    const meshSettingsRenderer = new MeshSettingsRenderer(registry, meshSettingsController);
     const lightSettingsController = new LightViewControllers(registry);
     const lightSettingsRenderer = new LightSettingsRenderer(lightSettingsController);
     const spriteSettingsController = new SpriteViewControllers(registry);
@@ -35,8 +33,9 @@ function createPanel(registry: Registry): UI_Panel {
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {
                 case MeshViewType:
-                    panel.renderer = meshSettingsRenderer;
+                    const meshSettingsController = new MeshViewControllers(registry)
                     panel.paramController = meshSettingsController;
+                    panel.renderer = new MeshSettingsRenderer(registry, meshSettingsController);
                 break;
                 case SpriteViewType:
                     panel.renderer = spriteSettingsRenderer;

@@ -93,6 +93,16 @@ export class Bab_MeshLoader implements IMeshLoaderAdapter {
         }
     }
 
+    /**
+     * Gives information about the node hierarchy of the mesh 
+     */
+    getAnimationGroups(assetObj: AssetObj): string[] {
+        const template = this.templatesById.get(assetObj.id);
+        if (template) {
+            return template.animationGroups.map(animationGroup => animationGroup.name);
+        }
+    }
+
     private createMeshTree(root: Mesh, template: MeshTemplate) {
         const meshTreeNode: MeshTreeNode = <MeshTreeNode> {
             isPrimaryMesh: template.realMeshes.includes(root),

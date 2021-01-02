@@ -35,7 +35,7 @@ export function RowComp(props: RowProps) {
         props.element.separator ? `ce-separator-${props.element.separator}` : undefined
     );
 
-    const style: React.CSSProperties = {};
+    const style: React.CSSProperties = props.element.css;
 
     props.element.padding && (style.padding = props.element.padding);
     props.element.margin && (style.margin = props.element.margin);

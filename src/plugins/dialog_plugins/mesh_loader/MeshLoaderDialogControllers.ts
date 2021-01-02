@@ -20,14 +20,18 @@ export class MeshLoaderDialogControllers extends ParamControllers {
 
         this.tree = new MeshHierarchyTreeController(registry, this, canvas, clone);
         this.texture = new TextureController(registry, canvas, clone);
+        this.animations = new AnimationGroupTreeController(registry, this, canvas, clone);
         this.save = new SaveController(registry, this, clone);
         this.model = new ModelController(registry, this, canvas, clone);
+        this.cancel = new CancelController(registry);
     }
 
     tree: MeshHierarchyTreeController;
     texture: TextureController;
-    save: SaveController;
     model: ModelController;
+    save: SaveController;
+    cancel: CancelController;
+    animations: AnimationGroupTreeController;
 }
 
 async function initMeshObj(registry: Registry, canvas: MeshLoaderPreviewCanvas, cloneMeshObj: MeshObj, origMeshObj: MeshObj) {
@@ -50,7 +54,7 @@ function resetControllers(controller: MeshLoaderDialogControllers, canvas: MeshL
 
 export class MeshHierarchyTreeController extends TreeController {
     selectedNodeName: string;
-    treeData: TreeData;
+    treeData: TreeData[];
     private canvas: MeshLoaderPreviewCanvas;
     private controllers: MeshLoaderDialogControllers;
     private meshObj: MeshObj;
@@ -63,12 +67,87 @@ export class MeshHierarchyTreeController extends TreeController {
         this.meshObj = meshObj;
     }
 
-    getData(): TreeData {
+    getData(): TreeData[] {
         if (!this.treeData) {
             if (this.meshObj.modelObj) {
                 const nodes = this.canvas.getEngine().meshLoader.getMeshTree(this.meshObj.modelObj);
                 if (nodes) {
-                    this.convertToTreeData(nodes);
+                    this.treeData = this.convertToTreeData(nodes);
+                }
+            }
+        }
+
+        return this.treeData;
+    }
+
+    async check(data: TreeData) {
+        const { modelObj } = this.meshObj;
+
+        const isChecked = data.checked;
+        if (isChecked) {
+            this.iterateTree(this.treeData, (treeData) => treeData.checked = false);
+            this.selectedNodeName = data.name;
+            data.checked = true;
+            this.canvas.getEngine().meshes.deleteInstance(this.meshObj);
+            this.canvas.getEngine().meshLoader.setPrimaryMeshNode(modelObj, this.selectedNodeName);
+            // await this.canvas.getEngine().meshes.createInstance(this.meshObj);
+            this.meshObj.modelObj = modelObj;
+            this.canvas.setMesh(this.meshObj, modelObj);
+        } else {
+            this.selectedNodeName = undefined;
+        }
+    }
+
+    private convertToTreeData(nodes: MeshTreeNode[]): TreeData[] {
+        return nodes.map(node => this.getTreeData(node));
+    }
+
+    private getTreeData(node: MeshTreeNode): TreeData {
+        return {
+            name: node.name,
+            toggled: true,
+            checked: node.isPrimaryMesh,
+            children: node.children.length > 0 ? node.children.map(child => this.getTreeData(child)) : undefined
+        }
+    }
+
+    private iterateTree(treeData: TreeData[], callback: (treeData: TreeData) => void) {
+        treeData.forEach(treeElement => this.iterateTreeElement(treeElement, callback));
+    }
+
+    private iterateTreeElement(treeData: TreeData, callback: (treeData: TreeData) => void) {
+        callback(treeData);
+        treeData.children && treeData.children.forEach(child => this.iterateTreeElement(child, callback));
+    }
+}
+
+export class AnimationGroupTreeController extends TreeController {
+    selectedNodeName: string;
+    treeData: TreeData[];
+    private canvas: MeshLoaderPreviewCanvas;
+    private controllers: MeshLoaderDialogControllers;
+    private meshObj: MeshObj;
+
+    constructor(registry: Registry, controllers: MeshLoaderDialogControllers, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
+        super(registry);
+
+        this.controllers = controllers;
+        this.canvas = canvas;
+        this.meshObj = meshObj;
+    }
+
+    getData(): TreeData[] {
+        if (!this.treeData) {
+            if (this.meshObj.modelObj) {
+                const nodes = this.canvas.getEngine().meshLoader.getAnimationGroups(this.meshObj.modelObj) || [];
+                if (nodes && nodes.length > 0) {
+                    this.treeData = nodes.map(node => {
+                        return {
+                            name: node,
+                            toggled: true,
+                            checked: false
+                        }
+                    });
                 }
             }
         }
@@ -81,44 +160,15 @@ export class MeshHierarchyTreeController extends TreeController {
 
         const isChecked = data.checked;
         if (isChecked) {
-            this.iterateTreeData(this.treeData, (treeData) => treeData.checked = false);
+            this.treeData.forEach(treeElement => treeElement.checked = false);
             this.selectedNodeName = data.name;
             data.checked = true;
-            this.canvas.getEngine().meshLoader.setPrimaryMeshNode(modelObj, this.selectedNodeName);
-            this.meshObj.modelObj = modelObj;
-            this.canvas.setMesh(this.meshObj, modelObj);
+            this.canvas.getEngine().animatons.stopAllAnimations(this.meshObj);
+            this.canvas.getEngine().animatons.startAnimation(this.meshObj, data.name);
         } else {
+            this.canvas.getEngine().animatons.stopAllAnimations(this.meshObj);
             this.selectedNodeName = undefined;
         }
-    }
-
-    private convertToTreeData(nodes: MeshTreeNode[]): TreeData {
-        if (nodes.length > 1) {
-            this.treeData = {
-                name: '_virtual_root__',
-                toggled: true,
-                checked: false,
-                children: nodes.map(node => this.getTreeData(node))
-            }
-        } else {
-            this.treeData = this.getTreeData(nodes[0]);
-        }
-
-        return this.treeData;
-    }
-
-    private getTreeData(node: MeshTreeNode): TreeData {
-        return {
-            name: node.name,
-            toggled: true,
-            checked: node.isPrimaryMesh,
-            children: node.children.length > 0 ? node.children.map(child => this.getTreeData(child)) : undefined
-        }
-    }
-
-    private iterateTreeData(treeData: TreeData, callback: (treeData: TreeData) => void) {
-        callback(treeData);
-        treeData.children && treeData.children.forEach(child => this.iterateTreeData(child, callback));
     }
 }
 
@@ -250,6 +300,13 @@ export class SaveController extends PropController {
         }
 
         this.registry.services.history.createSnapshot();
+        this.registry.ui.helper.setDialogPanel(undefined);
+        this.registry.services.render.reRenderAll();
+    }
+}
+
+export class CancelController extends PropController {
+    click() {
         this.registry.ui.helper.setDialogPanel(undefined);
         this.registry.services.render.reRenderAll();
     }

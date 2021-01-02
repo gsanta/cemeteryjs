@@ -25,6 +25,10 @@ export class Wrap_MeshLoader implements IMeshLoaderAdapter {
         return this.engineFacade.realEngine.meshLoader.getMeshTree(assetObj);
     }
 
+    getAnimationGroups(assetObj: AssetObj): string[] {
+        return this.engineFacade.realEngine.meshLoader.getAnimationGroups(assetObj);
+    }
+
     setPrimaryMeshNode(assetObj: AssetObj, primaryMeshName: string) {
         return this.engineFacade.realEngine.meshLoader.setPrimaryMeshNode(assetObj, primaryMeshName);
     }

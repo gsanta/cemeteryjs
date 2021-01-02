@@ -22,6 +22,7 @@ export interface UI_Element_Css {
     fontWeight?: "bold" | "normal" | number;
     height?: string;
     padding?: string;
+    margin?: string;
 }
 
 export interface UI_ElementConfig {

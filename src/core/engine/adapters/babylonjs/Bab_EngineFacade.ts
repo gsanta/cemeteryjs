@@ -1,7 +1,7 @@
 import { Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
 import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
-import { Bab_LightAdapter } from "../../Bab_LightAdapter";
+import { Bab_LightAdapter } from "./Bab_LightAdapter";
 import { IEngineFacade } from "../../IEngineFacade";
 import { Bab_Meshes } from "./Bab_Meshes";
 import { Bab_MeshFactory } from "./Bab_MeshFactory";
@@ -9,6 +9,8 @@ import { Bab_MeshLoader } from "./Bab_MeshLoader";
 import { Bab_RayCasterAdapter } from "./Bab_RayCasterAdapter";
 import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
 import { Bab_Sprites } from "./Bab_Sprites";
+import { IAnimationAdapter } from "../../IAnimationAdapter";
+import { Bab_AnimationAdapter } from "./Bab_AnimationAdapter";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -25,6 +27,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     meshFactory: Bab_MeshFactory;
     lights: Bab_LightAdapter;
     rays: Bab_RayCasterAdapter;
+    animatons: IAnimationAdapter;
 
     private renderLoops: (() => void)[] = [];
     private onReadyFuncs: (() => void)[] = [];
@@ -41,6 +44,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.meshFactory = new Bab_MeshFactory(this.registry, this);
         this.lights = new Bab_LightAdapter(this.registry, this);
         this.rays = new Bab_RayCasterAdapter(this.registry, this);
+        this.animatons = new Bab_AnimationAdapter(this.registry, this);
     }
 
     getCamera(): Camera3D {

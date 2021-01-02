@@ -35,6 +35,7 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
     props.element.inputWidth && (inputStyle.width = props.element.inputWidth);
 
 
+    const value = props.element.paramController ? props.element.paramController.val() : props.element.val(props.registry);
     let textFieldComponent = (
         <FormControlStyled
             className={props.element.isDisabled ? 'ce-disabled' : null}
@@ -44,7 +45,7 @@ export function TextFieldComp(props: UI_ComponentProps<UI_TextField>) {
             onKeyDown={e => e.stopPropagation()}
             onKeyUp={e => e.stopPropagation()}
             onFocus={() => props.element.paramController ? props.element.paramController.focus(null, null) : props.element.focus(props.registry)}
-            value={props.element.paramController ? props.element.paramController.val() : props.element.val(props.registry)}
+            value={value === undefined || value === null ? '' : value}
             onChange={e => props.element.paramController ? props.element.paramController.change(e.target.value, null, null) : props.element.change(e.target.value, props.registry)}
             onBlur={() => props.element.paramController ? props.element.paramController.blur(null, null) : props.element.blur(props.registry)}
             disabled={props.element.isDisabled}

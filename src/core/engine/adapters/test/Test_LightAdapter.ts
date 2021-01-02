@@ -4,7 +4,7 @@ import { IObj } from "../../../models/objs/IObj";
 import { LightObj } from "../../../models/objs/LightObj";
 import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
-import { defaultLightDirection } from "../../Bab_LightAdapter";
+import { defaultLightDirection } from "../babylonjs/Bab_LightAdapter";
 import { ILightAdapter } from "../../ILightAdapter";
 import { Test_EngineFacade } from "./Test_EngineFacade";
 

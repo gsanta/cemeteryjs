@@ -25,6 +25,16 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         modelTextField.label = 'Model path';
         modelTextField.type = 'text';
 
+        row = dialog.row({key: 'texture-row'});
+        row.css = {
+            margin: '10px 0 0 0'
+        }
+        const textureTextField = row.textField({ key: 'texture' });
+        textureTextField.paramController = this.controller.texture;
+        textureTextField.layout = 'horizontal';
+        textureTextField.label = 'Texture path (optional)';
+        textureTextField.type = 'text';
+
         let separator = dialog.separator({key: 'separator-tree'});
         separator.text = 'primary mesh'
 
@@ -32,15 +42,12 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         const tree = row.tree({controller: undefined, key: 'tree', parent: row});
         tree.paramController = this.controller.tree;
 
-        separator = dialog.separator({key: 'separator-texture'});
-        separator.text = 'texture'
+        separator = dialog.separator({key: 'separator-animations'});
+        separator.text = 'animations'
 
-        row = dialog.row({key: 'texture-row'});
-        const textureTextField = row.textField({ key: 'texture' });
-        textureTextField.paramController = this.controller.texture;
-        textureTextField.layout = 'horizontal';
-        textureTextField.label = 'Texture path';
-        textureTextField.type = 'text';
+        row = dialog.row({key: 'animation-row'});
+        const animations = row.tree({controller: undefined, key: 'animations', parent: row});
+        animations.paramController = this.controller.animations;
         
         separator = dialog.separator({key: 'separator-canvas'});
 
@@ -58,6 +65,11 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         const saveButton = row.button('save');
         saveButton.paramController = this.controller.save;
         saveButton.label = 'Save';
-        saveButton.width = '200px';
+        saveButton.width = '100px';
+
+        const cancelButton = row.button('cancel');
+        cancelButton.paramController = this.controller.cancel;
+        cancelButton.label = 'Cancel';
+        cancelButton.width = '100px';
     }
 }

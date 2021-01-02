@@ -1,5 +1,6 @@
 import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
+import { IAnimationAdapter } from "../../IAnimationAdapter";
 import { IEngineFacade } from "../../IEngineFacade";
 import { ILightAdapter } from "../../ILightAdapter";
 import { IMeshAdapter } from "../../IMeshAdapter";
@@ -8,6 +9,7 @@ import { IMeshLoaderAdapter } from "../../IMeshLoaderAdapter";
 import { IRayCasterAdapter } from "../../IRayCasterAdapter";
 import { ISpriteAdapter } from "../../ISpriteAdapter";
 import { ISpriteLoaderAdapter } from "../../ISpriteLoaderAdapter";
+import { Test_AnimationAdapter } from "./Test_AnimatonAdapter";
 import { Test_LightAdapter } from "./Test_LightAdapter";
 import { Test_MeshAdapter } from "./Test_MeshAdapter";
 import { Test_RayCasterAdapter } from "./Test_RayCasterAdapter";
@@ -24,6 +26,7 @@ export class Test_EngineFacade implements IEngineFacade {
     meshFactory: IMeshFactory;
     lights: ILightAdapter;
     rays: IRayCasterAdapter;
+    animatons: IAnimationAdapter;
 
     constructor(registry: Registry) {
         this.registry = registry;
@@ -31,6 +34,7 @@ export class Test_EngineFacade implements IEngineFacade {
         this.lights = new Test_LightAdapter(this.registry, this);
         this.meshes = new Test_MeshAdapter(this.registry, this);
         this.rays = new Test_RayCasterAdapter();
+        this.animatons = new Test_AnimationAdapter();
     }
 
     getCamera(): Camera3D {
@@ -42,7 +46,7 @@ export class Test_EngineFacade implements IEngineFacade {
     }
 
     clear() {
-        
+
     }
 
     registerRenderLoop(loop: () => void) {
