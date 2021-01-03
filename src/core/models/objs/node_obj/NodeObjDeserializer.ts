@@ -45,6 +45,7 @@ export class NodeObjDeserialize {
         if (this.nodeObj.param[json.name]) {
             param = this.nodeObj.param[json.name];
             param.val = json.val;
+            param.setVal ? param.setVal(json.val) : param.val = json.val;
         } else {
             param = { 
                 name: json.name,

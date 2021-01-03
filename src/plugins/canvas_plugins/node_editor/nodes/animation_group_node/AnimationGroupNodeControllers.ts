@@ -27,7 +27,7 @@ export class AnimationController extends PropController<string> {
     }
 
     values() {
-        const meshObj = this.nodeObj.param.mesh.getData(this.nodeObj);
+        const meshObj = this.nodeObj.param.mesh.getVal();
         if (meshObj) {
             return this.registry.engine.animatons.getAnimationGroups(meshObj);
         } else {

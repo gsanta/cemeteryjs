@@ -149,10 +149,6 @@ export class ViewStore {
 
         const thisViewTypes = this.viewsByType.get(view.viewType);
         thisViewTypes.splice(thisViewTypes.indexOf(view), 1);
-        if (this.viewsByType.get(view.viewType).length === 0) {
-            this.viewsByType.delete(view.viewType);
-        }
-
         this.views.splice(this.views.indexOf(view), 1);
         this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
         view.dispose();

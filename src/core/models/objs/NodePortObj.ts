@@ -66,11 +66,11 @@ export class NodePortObj extends AbstractObj {
     }
 
     hasListener() {
-        return !!this.param.port.listener;
+        return !!this.param.listener;
     }
 
     getListener() {
-        return this.param.port.listener;
+        return this.param.listener;
     }
 
     isInputPort() {

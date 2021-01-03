@@ -1,6 +1,6 @@
 import { MeshObjType, MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { MultiSelectController, ParamControllers, PropContext, PropController } from "../../../../../core/plugin/controller/FormController";
+import { MultiSelectController, ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshNodeParams } from "./MeshNode";
@@ -23,8 +23,6 @@ export class MeshController extends PropController<string> {
         this.nodeObj = nodeObj;
     }
 
-    acceptedProps() { return ['mesh']; }
-
     values() {
         return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.name ? meshObj.name : meshObj.id)
     }
@@ -37,7 +35,11 @@ export class MeshController extends PropController<string> {
     }
 
     change(val: string) {
-        this.nodeObj.param.mesh.val = <MeshObj> this.registry.stores.objStore.getByNameOrId(val);
+        if (this.nodeObj.param.mesh.setVal) {
+            this.nodeObj.param.mesh.setVal(this.registry.stores.objStore.getByNameOrId(val) as MeshObj);
+        } else {
+            this.nodeObj.param.mesh.val = this.registry.stores.objStore.getByNameOrId(val) as MeshObj;
+        }
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

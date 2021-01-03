@@ -39,16 +39,34 @@ export interface NodeParamJson {
     port?: PortConfig;
 }
 
-export interface NodeParam<D = any> {
+export abstract class NodeParam<D = any> {
+    protected nodeObj?: NodeObj;
+
+    constructor(nodeObj: NodeObj) {
+        this.nodeObj = nodeObj;
+    }
+
     name: string;
     field?: NodeParamField;
     fieldDisabled?: boolean;
     port?: PortConfig;
     controller?: PropController;
+    listener?: INodeListener;
 
     val?: D;
-    getData?(nodeObj: NodeObj): D;
-    setVal?(val: string);
+    getVal?(): D {
+        const port = this.nodeObj.getPort(this.name);
+        if (port.hasConnectedPort()) {
+            const otherPort = port.getConnectedPorts()[0];
+            const otherParam = otherPort.getNodeParam();
+            // TODO this is legacy only getVal should remain
+            return otherParam.getVal ? otherParam.getVal() : otherParam.val;
+        } else {
+            return this.val;
+        }
+    }
+
+    setVal?(val: D);
 
     toJson?(): NodeParamJson;
     fromJson?(registry: Registry, json: NodeParamJson): void;
@@ -91,6 +109,5 @@ export namespace NodeParam {
 export interface PortConfig {
     direction: PortDirection;
     dataFlow: PortDataFlow;
-    listener?: INodeListener;
     execute?: (nodeObj: NodeObj, registry: Registry) => void;
 }

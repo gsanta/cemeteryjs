@@ -87,8 +87,9 @@ export class MeshObj implements IGameObj {
 
     meshAdapter: IMeshAdapter;
 
-    move(point: Point_3) {
-        this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
+    translate(point: Point_3, isGlobal = true) {
+        this.meshAdapter.translate(this, point, false);
+        // this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
     }
 
     setPosition(pos: Point_3) {

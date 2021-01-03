@@ -63,8 +63,10 @@ export class MeshView extends View {
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
 
-        const point2 = point.div(sceneAndGameViewRatio).negateY();
-        this.obj.move(new Point_3(point2.x, 0, point2.y));
+        const center = this.bounds.getBoundingCenter();
+        const objPos = center.div(sceneAndGameViewRatio).negateY();
+        const objPos3 = this.obj.getPosition();
+        this.obj.setPosition(new Point_3(objPos.x, objPos3.y, objPos.y))
         this.containedViews.forEach(child => child.calcBounds());
         this.childViews.forEach(boundView => boundView.calcBounds());
     }

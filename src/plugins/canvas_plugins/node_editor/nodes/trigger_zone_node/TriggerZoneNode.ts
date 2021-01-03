@@ -74,8 +74,8 @@ export class TriggerZoneNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Output,
             dataFlow: PortDataFlow.Push,
-            listener: new MeshIntersectionListener(this)
-        }
+        },
+        listener: new MeshIntersectionListener(this)
     }
 }
 

@@ -33,7 +33,7 @@ export class KeyboardNode extends AbstractNodeFactory {
 
     createObj(): NodeObj {
         const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, {displayName: this.displayName});
-        obj.setParams(new KeyboardNodeParams());
+        obj.setParams(new KeyboardNodeParams(obj));
         obj.executor = new KeyboardNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -44,16 +44,16 @@ export class KeyboardNode extends AbstractNodeFactory {
 
 export class KeyboardNodeParams extends NodeParams {
 
-    constructor() {
+    constructor(nodeObj: NodeObj) {
         super();
 
-        this.key1 = new KeyboardNodeParam('key1')
+        this.key1 = new KeyboardNodeParam('key1', nodeObj);
     }
 
     readonly key1: NodeParam;
 }
 
-export class KeyboardNodeParam implements NodeParam {
+export class KeyboardNodeParam extends NodeParam {
     name: string;
     val = '';
     field = NodeParamField.List;
@@ -62,7 +62,8 @@ export class KeyboardNodeParam implements NodeParam {
         dataFlow: PortDataFlow.Push
     };
 
-    constructor(name: string) {
+    constructor(name: string, nodeObj: NodeObj) {
+        super(nodeObj);
         this.name = name;
     }
 }

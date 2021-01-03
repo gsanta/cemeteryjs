@@ -70,7 +70,7 @@ export class KeyControl extends PropController {
 
         const keyName = `key${newIndex}`;
         
-        this.nodeObj.param[keyName] = new KeyboardNodeParam(keyName);
+        this.nodeObj.param[keyName] = new KeyboardNodeParam(keyName, this.nodeObj);
         this.controllers[keyName] = new KeyControl(this.registry, this.controllers, this.nodeView, keyName);
         this.nodeObj.initParams();
         this.nodeView.setup();

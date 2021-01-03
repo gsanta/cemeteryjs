@@ -60,11 +60,13 @@ export  class Bab_Meshes implements IMeshAdapter {
         return new Point_3(meshData.meshes[0].scaling.x, meshData.meshes[0].scaling.y, meshData.meshes[0].scaling.z);
     } 
 
-    translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
+    translate(meshObj: MeshObj, delta: Point_3, isGlobal: boolean): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.meshes[0].translate(axis === 'x' ? Axis.X : axis === 'y' ? Axis.Y : Axis.Z, amount, space === 'local' ? Space.LOCAL : Space.WORLD);
+        meshData.meshes[0].translate(Axis.X, delta.x, isGlobal ? Space.WORLD : Space.LOCAL);
+        meshData.meshes[0].translate(Axis.Y, delta.y, isGlobal ? Space.WORLD : Space.LOCAL);
+        meshData.meshes[0].translate(Axis.Z, delta.z, isGlobal ? Space.WORLD : Space.LOCAL);
     }
 
     setRotation(meshObj: MeshObj, rot: Point_3): void {

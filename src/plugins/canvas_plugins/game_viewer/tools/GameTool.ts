@@ -16,5 +16,12 @@ export class GameTool extends ToolAdapter {
     keydown(e: IKeyboardEvent) {
         this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
         this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
+        this.registry.services.game.executeKeyDown(e);
+    }
+
+    keyup(e: IKeyboardEvent) {
+        // this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
+        // this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
+        this.registry.services.game.executeKeyUp(e);
     }
 }

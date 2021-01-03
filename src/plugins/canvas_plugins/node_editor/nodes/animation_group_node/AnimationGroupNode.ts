@@ -67,7 +67,7 @@ export class AnimationGroupNodeParams extends NodeParams {
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
         },
-        getData(nodeObj: NodeObj) {
+        getVal() {
             return this.val;
         }
     }
@@ -90,18 +90,18 @@ export class AnimationGroupNodeParams extends NodeParams {
         fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
             this.val = nodeParamJson.val;
         },
-        getData(nodeObj: NodeObj) {
+        getVal() {
             return this.mesh.val;
         }
     }
 }
 
-class SignalNode implements NodeParam {
+class SignalNode extends NodeParam {
     private registry: Registry;
     private params: AnimationGroupNodeParams;
-    private nodeObj: NodeObj;
 
     constructor(registry: Registry, params: AnimationGroupNodeParams, nodeObj: NodeObj) {
+        super(nodeObj);
         this.registry = registry;
         this.params = params;
         this.nodeObj = nodeObj;
@@ -112,7 +112,7 @@ class SignalNode implements NodeParam {
         direction: PortDirection.Input,
         dataFlow: PortDataFlow.Push,
         execute: () => {
-            const meshObj = this.params.mesh.getData(this.nodeObj);
+            const meshObj = this.params.mesh.getVal();
             const animation = this.params.animation.val;
             if (meshObj && animation) {
                 this.registry.engine.animatons.startAnimation(meshObj, animation)

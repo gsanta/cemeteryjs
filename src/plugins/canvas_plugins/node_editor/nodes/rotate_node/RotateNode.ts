@@ -3,8 +3,10 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
+import { IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { INodeListener } from "../../node/INodeListener";
 import { AbstractNodeFactory } from "../AbstractNode";
 import { RotateNodeControllers } from "./RotateNodeControllers";
 
@@ -33,7 +35,7 @@ export class RotateNode extends AbstractNodeFactory {
 
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
-        obj.setParams(new RotateNodeParams());
+        obj.setParams(new RotateNodeParams(obj));
         obj.executor = new RotateNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
@@ -43,6 +45,15 @@ export class RotateNode extends AbstractNodeFactory {
 }
 
 export class RotateNodeParams extends NodeParams {
+
+    constructor(nodeObj: NodeObj) {
+        super();
+        const rotator = new MeshRotator(nodeObj, this);
+        this.key = new KeyboardNodeParam(nodeObj, 'key', this, rotator);
+    }
+
+    readonly key: KeyboardNodeParam;
+
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
@@ -64,6 +75,50 @@ export class RotateNodeParams extends NodeParams {
     }
 }
 
+class KeyboardNodeParam extends NodeParam {
+    name: string;
+    val = '';
+    field = NodeParamField.List;
+
+    constructor(nodeObj: NodeObj, name: string, params: RotateNodeParams, meshRotator: MeshRotator) {
+        super(nodeObj);
+        this.name = name;
+        this.listener = new KeyboardListener(params, meshRotator);
+    }
+
+    setVal(val: string) {
+        this.val = val;
+    }
+
+    listener: INodeListener;
+}
+
+class KeyboardListener implements INodeListener {
+    private keys: Set<string> = new Set();
+    private rotateNodeParams: RotateNodeParams;
+    private meshRotator: MeshRotator;
+
+    constructor(rotateNodeParams: RotateNodeParams, meshRotator: MeshRotator) {
+        this.rotateNodeParams = rotateNodeParams;
+        this.meshRotator = meshRotator;
+    }
+
+    onKeyDown(e: IKeyboardEvent) {
+        this.keys.add(String.fromCharCode(e.keyCode).toLocaleLowerCase());
+    }
+
+    onKeyUp(e: IKeyboardEvent) {
+        this.keys.delete(String.fromCharCode(e.keyCode).toLocaleLowerCase());
+        this.meshRotator.reset();
+    }
+
+    onBeforeRender() {
+        if (this.keys.has(this.rotateNodeParams.key.val)) {
+            this.meshRotator.tick();
+        }
+    }
+}
+
 export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
     private registry: Registry;
 
@@ -81,6 +136,41 @@ export class RotateNodeExecutor extends AbstractNodeExecutor<RotateNodeParams> {
             } else if (this.nodeObj.param.rotate.val === 'right') {
                 meshObj.setRotation(new Point_3(rotation.x, rotation.y + Math.PI / 30, rotation.z));
             }
+        }
+    }
+}
+
+class MeshRotator {
+    private time = undefined;
+    private moveNodeParams: RotateNodeParams;
+    private nodeObj: NodeObj;
+
+    constructor(nodeObj: NodeObj, moveNodeParams: RotateNodeParams) {
+        this.moveNodeParams = moveNodeParams;
+        this.nodeObj = nodeObj;
+    }
+
+    tick() {
+        const currentTime = Date.now();
+        if (this.time !== undefined) {
+            this.rotate(currentTime - this.time);
+        }
+        this.time = currentTime;
+    }
+
+    reset() {
+        this.time = undefined;
+    }
+
+    private rotate(deltaTime: number) {
+        const meshObj = this.moveNodeParams.mesh.val; //getData(this.nodeObj);
+        const speed = deltaTime * 0.001;
+
+        const rotation = meshObj.getRotation();
+        if (this.nodeObj.param.rotate.val === 'left') {
+            meshObj.setRotation(new Point_3(rotation.x, rotation.y - speed, rotation.z));
+        } else if (this.nodeObj.param.rotate.val === 'right') {
+            meshObj.setRotation(new Point_3(rotation.x, rotation.y + speed, rotation.z));
         }
     }
 }

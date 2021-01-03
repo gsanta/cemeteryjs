@@ -20,7 +20,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
         const deltaY = -this.registry.services.pointer.pointer.getDiff().y / 10;
         let delta = new Point_3(0, deltaY, 0);    
         
-        this.meshView.getObj().move(delta);
+        this.meshView.getObj().translate(delta);
     }
 
     protected updateZ() {

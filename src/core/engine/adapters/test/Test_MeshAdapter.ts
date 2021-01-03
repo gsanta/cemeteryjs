@@ -36,7 +36,7 @@ export  class Test_MeshAdapter implements IMeshAdapter {
         return this.scaleMap.get(meshObj) || new Point_3(1, 1, 1);
     } 
 
-    translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
+    translate(meshObj: MeshObj, delta: Point_3, isGlobal: boolean): void {
     }
 
     setRotation(meshObj: MeshObj, rot: Point_3): void {

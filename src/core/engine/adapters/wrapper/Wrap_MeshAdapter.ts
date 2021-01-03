@@ -52,8 +52,9 @@ export  class Wrap_Meshes implements IMeshAdapter {
         return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.intersectsMesh(meshObj, otherMeshObj));
     }
 
-    translate(meshObj: MeshObj, axis: 'x' | 'y' | 'z', amount: number, space: 'local' | 'global' = 'local'): void {
-        this.engineFacade.engines.forEach(engine => engine.meshes.translate(meshObj, axis, amount, space));
+    translate(meshObj: MeshObj, delta: Point_3, isGlobal: boolean): void {
+        this.engineFacade.realEngine.meshes.translate(meshObj, delta, isGlobal);
+        this.engineFacade.testEngine.meshes.translate(meshObj, delta, isGlobal);
     }
 
     setRotation(meshObj: MeshObj, rot: Point_3): void {

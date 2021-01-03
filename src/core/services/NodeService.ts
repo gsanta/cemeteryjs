@@ -26,8 +26,8 @@ export class NodeService {
         if (nodeObj.getPort(portName).hasConnectedPort()) {
             const otherPort = nodeObj.getPort(portName).getConnectedPorts()[0];
             const nodeParam = otherPort.getNodeParam();
-            if (nodeParam.getData) {
-                return nodeParam.getData(otherPort.getNodeObj());
+            if (nodeParam.getVal) {
+                return nodeParam.getVal();
             } else {
                 // TODO this is legacy should port to the getData method
                 return nodeObj.getPort(portName).getConnectedPorts()[0].getNodeParam().val;

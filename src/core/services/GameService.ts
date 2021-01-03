@@ -1,6 +1,9 @@
 import { RouteNodeObjType } from "../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode";
+import { NodeObj, NodeParams } from "../models/objs/node_obj/NodeObj";
+import { NodeParam } from "../models/objs/node_obj/NodeParam";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
+import { IKeyboardEvent } from "./input/KeyboardService";
 
 export class GameService {
     viewImporter: ImportService;
@@ -18,16 +21,42 @@ export class GameService {
         const routeNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
         routeNodes.forEach(routeNode => routeNode.getObj().execute());
 
-        const rootNodes = this.registry.data.helper.node.graph.getAllNodes();
-        rootNodes.forEach((node) => {
-            node.getPorts()
-                .filter(port => !port.isInputPort() && port.isPushPort())
-                .forEach(port => {
-                    if (port.hasListener() && port.getListener().onBeforeRender) {
-                        port.getListener().onBeforeRender(port.getNodeObj(), this.registry);
-                    }
-                });
+        // const nodes = this.registry.data.helper.node.graph.getAllNodes();
+        // nodes.forEach((node) => {
+        //     node.getParams()
+        //         .forEach(port => {
+        //             if (port.hasListener() && port.getListener().onBeforeRender) {
+        //                 port.getListener().onBeforeRender(port.getNodeObj(), this.registry);
+        //             }
+        //         });
+        // });
+
+        this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
+            if (param.listener && param.listener.onBeforeRender) {
+                param.listener.onBeforeRender(nodeObj, this.registry);
+            }
         })
+    }
+
+    executeKeyDown(e: IKeyboardEvent) {
+        this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
+            if (param.listener && param.listener.onKeyDown) {
+                param.listener.onKeyDown(e, nodeObj, this.registry);
+            }
+        })
+    }
+
+    executeKeyUp(e: IKeyboardEvent) {
+        this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
+            if (param.listener && param.listener.onKeyDown) {
+                param.listener.onKeyUp(e, nodeObj, this.registry);
+            }
+        })
+    }
+
+    private iterateNodeParams(callback: (nodeObj: NodeObj, param: NodeParam) => void) {
+        const nodes = this.registry.data.helper.node.graph.getAllNodes();
+        nodes.forEach((node) => node.getParams().forEach(param => callback(node, param)));
     }
 
     // setPlaying(isPlaying: boolean) {
