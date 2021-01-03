@@ -30,4 +30,8 @@ export class Bab_AnimationAdapter implements IAnimationAdapter {
     stopAllAnimations(meshObj: MeshObj): void {
         this.engineFacade.meshes.meshes.get(meshObj).animationGroups.forEach(group => group.stop());
     }
+
+    getAnimationGroups(meshObj: MeshObj): string[] {
+        return this.engineFacade.meshes.meshes.get(meshObj).animationGroups.map(animationGroup => animationGroup.name);
+    }
 }

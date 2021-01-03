@@ -39,7 +39,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     category: string;
     color: string;
 
-    readonly param: P;
+    param: P;
     paramList: NodeParam[];
 
     isExecutionStopped = true;
@@ -50,10 +50,8 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     private ports: Map<string, NodePortObj> = new Map();
 
 
-    constructor(nodeType: string, param: P, config?: NodeObjConfig) {
+    constructor(nodeType: string, config?: NodeObjConfig) {
         this.type = nodeType;
-        this.param = param;
-        this.initParams();
         if (config) {
             this.category = config.category || NodeCategory.Default;
             this.displayName = config.displayName || nodeType;
@@ -72,15 +70,16 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
         this.executor && this.executor.executeStart && this.executor.executeStop();
     }
 
+    setParams(params: P) {
+        this.param = params;
+        this.initParams();
+    }
+
     getParams(): NodeParam[] {
         return this.paramList;
     }
 
-    getParam(name: string): NodeParam {
-        return this.param[name];
-    }
-
-    setParam(name: string, value: any) {
+    setParamVal(name: string, value: any) {
         this.param[name].val = value;
     }
 
@@ -95,7 +94,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     pullData(portName: string): any {
         // TODO check that port is output port
         if (this.getPort(portName).hasConnectedPort()) {
-            return this.getPort(portName).getConnectedPort().getNodeParam().val;
+            return this.getPort(portName).getConnectedPorts()[0].getNodeParam().val;
         }
     }
 

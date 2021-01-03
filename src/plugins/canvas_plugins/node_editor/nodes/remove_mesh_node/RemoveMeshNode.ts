@@ -31,8 +31,8 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, new RemoveMeshNodeParams(), {displayName: this.displayName});
-        
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        obj.setParams(new RemoveMeshNodeParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
         obj.executor = new RemoveMeshNodeExecutor(this.registry, obj);

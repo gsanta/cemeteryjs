@@ -9,16 +9,14 @@ export class ImportService {
     }
 
     async import(file: string): Promise<void> {
-        const json = <AppJson> JSON.parse(file);
-
-        this.importObjs(json);
-        this.importViews(json);
-
-        const promises: Promise<void>[] = [];
-
-        const plugins = this.registry.plugins.getAll().filter(plugin => plugin.importer);
-        
         try {
+            const json = <AppJson> JSON.parse(file);
+
+            this.importObjs(json);
+            this.importViews(json);
+
+            const plugins = this.registry.plugins.getAll().filter(plugin => plugin.importer);
+        
             for (let i = 0; i < plugins.length; i++) {
                 await plugins[i].importer.import(json);
             }

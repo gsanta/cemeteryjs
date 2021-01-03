@@ -14,7 +14,7 @@ export function isJoinPointView(view: View) {
 
 export interface NoePortViewJson extends ViewJson {
     point: string;
-    connectionId: string;
+    connectionIds: string[];
 }
 
 export const NodePortViewType = 'NodePortViewType';
@@ -23,7 +23,7 @@ export class NodePortView extends ContainedView {
     id: string;
     point: Point;
     containerView: NodeView;
-    private connection: NodeConnectionView;
+    private connections: NodeConnectionView[] = [];
     protected obj: NodePortObj;
     bounds: Rectangle;
 
@@ -48,9 +48,9 @@ export class NodePortView extends ContainedView {
 
     move(delta: Point) {
         const portDirection = this.obj.getNodeParam().port.direction;
-        if (this.connection) {
-            portDirection === PortDirection.Input ? this.connection.setPoint1(this.getAbsolutePosition()) : this.connection.setPoint2(this.getAbsolutePosition());
-        }
+        this.connections.forEach(connection => {
+            portDirection === PortDirection.Input ? connection.setPoint1(this.getAbsolutePosition()) : connection.setPoint2(this.getAbsolutePosition());
+        });
     }
 
     getBounds(): Rectangle {
@@ -63,19 +63,18 @@ export class NodePortView extends ContainedView {
 
     dispose() {}
 
-    removeConnection() {
-        this.obj.removeConnectedPort();
-        this.containerView.deleteConstraiedViews.removeView(this.connection);
-        this.connection = undefined;
+    removeConnection(connection: NodeConnectionView) {
+        const otherPortView = connection.getOtherPortView(this);
+        this.obj.removeConnectedPort(otherPortView.getObj());
+        this.containerView.deleteConstraiedViews.removeView(connection);
+        this.connections = this.connections.filter(conn => conn !== connection);
     }
 
-    setConnection(connection: NodeConnectionView) {
-        this.connection = connection;
-        this.containerView.deleteConstraiedViews.addView(connection);
-    }
-
-    getConnection(): NodeConnectionView {
-        return this.connection;
+    addConnection(connection: NodeConnectionView) {
+        if (!this.connections.includes(connection)) {
+            this.connections.push(connection);
+            this.containerView.deleteConstraiedViews.addView(connection);
+        }
     }
 
     toString() {
@@ -86,7 +85,7 @@ export class NodePortView extends ContainedView {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            connectionId: this.connection.id
+            connectionIds: this.connections.map(connection => connection.id)
         }
     }
 

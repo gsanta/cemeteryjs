@@ -30,8 +30,8 @@ export class FilterMeshNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj<FilterMeshNodeParams>(this.nodeType, new FilterMeshNodeParams(), {displayName: this.displayName});
-        
+        const obj = new NodeObj<FilterMeshNodeParams>(this.nodeType, {displayName: this.displayName});
+        obj.setParams(new FilterMeshNodeParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type) ;
         obj.graph = this.registry.data.helper.node.graph;
         
@@ -87,10 +87,10 @@ class OutputParam implements NodeParam {
         dataFlow: PortDataFlow.Pull
     }
 
-    getData(nodeObj: NodeObj<FilterMeshNodeParams>, registry: Registry): MeshObj {
+    getData(nodeObj: NodeObj<FilterMeshNodeParams>): MeshObj {
         const port = nodeObj.getPort('input');
         if (port.hasConnectedPort()) {
-            port.getConnectedPort().getNodeObj().pullData(port.getConnectedPort().getNodeParam().name);
+            port.getConnectedPorts()[0].getNodeObj().pullData(port.getConnectedPorts()[0].getNodeParam().name);
         }
 
         const inputMesh = nodeObj.pullData('input');

@@ -47,11 +47,11 @@ export class JoinTool extends PointerTool {
             }
 
             const connectionView = <NodeConnectionView> this.registry.data.view.node.getViewFactory(NodeConnectionViewType).instantiate();
-            nodePortView1.setConnection(connectionView);
-            nodePortView2.setConnection(connectionView);
+            nodePortView1.addConnection(connectionView);
+            nodePortView2.addConnection(connectionView);
             connectionView.setNodePortView1(nodePortView1);
             connectionView.setNodePortView2(nodePortView2);
-            nodePortView1.getObj().setConnectedPort(nodePortView2.getObj());
+            nodePortView1.getObj().addConnectedPort(nodePortView2.getObj());
 
             connectionView.setPoint1(nodePortView1.getAbsolutePosition());
             connectionView.setPoint2(nodePortView2.getAbsolutePosition());

@@ -4,8 +4,8 @@ import { NodeParam, PortDataFlow, PortDirection } from "./node_obj/NodeParam";
 
 export interface NodePortObjJson {
     name: string;
-    connectedObjId?: string;
-    connectedPortName?: string;
+    connectedObjIds?: string[];
+    connectedPortNames?: string[];
 } 
 
 
@@ -15,7 +15,7 @@ export class NodePortObj extends AbstractObj {
     id: string;
     name: string;
 
-    private connectedPortObj: NodePortObj;
+    private connectedPortObjs: NodePortObj[] = [];
     private readonly nodeObj: NodeObj;
     private readonly param: NodeParam;
 
@@ -30,33 +30,31 @@ export class NodePortObj extends AbstractObj {
         }
     }
 
-    setConnectedPort(otherPortObj: NodePortObj) {        
-        this.connectedPortObj = otherPortObj;        
-        this.param.fieldDisabled = true;
-        if (otherPortObj.getConnectedPort() !== this) {
-            console.log(otherPortObj.getNodeParam().name)
-            console.log(otherPortObj.getNodeObj().getPorts().indexOf(otherPortObj))
-            otherPortObj.setConnectedPort(this);
+    addConnectedPort(otherPortObj: NodePortObj) {
+        if (!this.connectedPortObjs.includes(otherPortObj)) {
+            this.connectedPortObjs.push(otherPortObj);        
+            this.param.fieldDisabled = true;
+            if (!otherPortObj.getConnectedPorts().includes(this)) {
+                otherPortObj.addConnectedPort(this);
+            }
+    
+            this.nodeObj.graph.onConnect([this.nodeObj, this.param.name], [otherPortObj.nodeObj, otherPortObj.param.name]);
         }
-        console.log((otherPortObj.getNodeObj() as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
-
-        this.nodeObj.graph.onConnect([this.nodeObj, this.param.name], [otherPortObj.nodeObj, otherPortObj.param.name]);
     }
 
-    getConnectedPort(): NodePortObj {
-        return this.connectedPortObj;
+    getConnectedPorts(): NodePortObj[] {
+        return this.connectedPortObjs;
     }
 
-    removeConnectedPort() {
-        if (this.hasConnectedPort()) {
-            const connectedPortObj = this.getConnectedPort();
-            this.nodeObj.graph.onDisconnect([this.nodeObj, this.param.name], [connectedPortObj.nodeObj, connectedPortObj.param.name]);
+    removeConnectedPort(portObj: NodePortObj) {
+        if (this.connectedPortObjs.includes(portObj)) {
+            this.nodeObj.graph.onDisconnect([this.nodeObj, this.param.name], [portObj.nodeObj, portObj.param.name]);
+            this.connectedPortObjs = this.connectedPortObjs.filter(obj => obj !== portObj);
         }
-        this.connectedPortObj = undefined;
     }
 
     hasConnectedPort() {
-        return !!this.getConnectedPort();
+        return this.connectedPortObjs.length > 0;
     }
 
     getNodeObj() {
@@ -84,6 +82,6 @@ export class NodePortObj extends AbstractObj {
     }
 
     dispose(): void {
-        this.removeConnectedPort();
+        this.connectedPortObjs.forEach(portObj => this.removeConnectedPort(portObj));
     }
 }

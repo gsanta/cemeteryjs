@@ -17,8 +17,8 @@ export class NodeObjSerializer {
             let portJson: NodePortObjJson = { name: port.getNodeParam().name };
 
             if (port.hasConnectedPort()) {
-                portJson.connectedObjId = port.getConnectedPort().getNodeObj().id;
-                portJson.connectedPortName = port.getConnectedPort().getNodeParam().name
+                portJson.connectedObjIds = port.getConnectedPorts().map(connectedPort => connectedPort.getNodeObj().id);
+                portJson.connectedPortNames = port.getConnectedPorts().map(connectedPort => connectedPort.getNodeParam().name);
             }
 
             return portJson;

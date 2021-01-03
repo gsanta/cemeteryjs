@@ -10,27 +10,27 @@ export class NodeService {
     }
 
     executePort(nodeObj: NodeObj, port: string) {
-        const connectedPort = nodeObj.getPort(port).getConnectedPort();
-        if (connectedPort) {
+        const connectedPort = nodeObj.getPort(port).getConnectedPorts();
+        nodeObj.getPort(port).getConnectedPorts().forEach(portObj => {
             //TODO temporary, all executors should be migrated to be on the port rather than on the obj
-            if (connectedPort.getNodeParam().port.execute) {
-                connectedPort.getNodeParam().port.execute(connectedPort.getNodeObj(), this.registry);
+            if (portObj.getNodeParam().port.execute) {
+                portObj.getNodeParam().port.execute(portObj.getNodeObj(), this.registry);
             } else {
-                connectedPort.getNodeObj().executor.execute();
+                portObj.getNodeObj().executor.execute();
             }
-        }
+        });
     }
 
     pullData(nodeObj: NodeObj, portName: string) {
         // TODO check that port is output port
         if (nodeObj.getPort(portName).hasConnectedPort()) {
-            const otherPort = nodeObj.getPort(portName).getConnectedPort();
+            const otherPort = nodeObj.getPort(portName).getConnectedPorts()[0];
             const nodeParam = otherPort.getNodeParam();
             if (nodeParam.getData) {
-                return nodeParam.getData(otherPort.getNodeObj(), this.registry);
+                return nodeParam.getData(otherPort.getNodeObj());
             } else {
                 // TODO this is legacy should port to the getData method
-                return nodeObj.getPort(portName).getConnectedPort().getNodeParam().val;
+                return nodeObj.getPort(portName).getConnectedPorts()[0].getNodeParam().val;
             }
         }
     }

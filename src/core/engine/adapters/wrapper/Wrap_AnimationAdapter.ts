@@ -25,4 +25,8 @@ export class Wrap_AnimationAdapter implements IAnimationAdapter {
     stopAllAnimations(meshObj: MeshObj): void {
         this.engineFacade.realEngine.animatons.stopAllAnimations(meshObj);
     }
+
+    getAnimationGroups(meshObj: MeshObj) {
+        return this.engineFacade.realEngine.animatons.getAnimationGroups(meshObj);
+    }
 }

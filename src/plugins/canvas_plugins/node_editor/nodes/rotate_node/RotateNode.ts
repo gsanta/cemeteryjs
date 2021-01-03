@@ -32,8 +32,8 @@ export class RotateNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, new RotateNodeParams(), {displayName: this.displayName});
-        
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        obj.setParams(new RotateNodeParams());
         obj.executor = new RotateNodeExecutor(this.registry, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;

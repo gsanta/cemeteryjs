@@ -108,7 +108,9 @@ export class NodeGraph {
     }
 
     private getAdjacentNodes(nodeObj: NodeObj): NodeObj[] {
-        return nodeObj.getPorts().filter(port => port.hasConnectedPort()).map(port => port.getConnectedPort().getNodeObj());
+        const adjacentNodes: NodeObj[] = [];
+        nodeObj.getPorts().map(port => port.getConnectedPorts().forEach(connectedPort => adjacentNodes.push(connectedPort.getNodeObj())));
+        return adjacentNodes;
     }
 
     private calculateRootNodes() {

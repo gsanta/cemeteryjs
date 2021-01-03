@@ -34,8 +34,8 @@ export class MeshPropertyNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, new MeshPropertyNodeParams(), {displayName: this.displayName});
-        
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        obj.setParams(new MeshPropertyNodeParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
         obj.executor = new MeshPropertyNodeExecutor(this.registry, obj);

@@ -47,7 +47,7 @@ export interface NodeParam<D = any> {
     controller?: PropController;
 
     val?: D;
-    getData?(nodeObj: NodeObj, registry: Registry): D;
+    getData?(nodeObj: NodeObj): D;
     setVal?(val: string);
 
     toJson?(): NodeParamJson;

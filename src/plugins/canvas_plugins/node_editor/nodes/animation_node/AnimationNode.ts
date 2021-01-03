@@ -1,11 +1,7 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
-import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
-import { MeshView, MeshViewType } from "../../../scene_editor/views/MeshView";
 import { AbstractNodeFactory } from "../AbstractNode";
 import { AnimationNodeControllers } from "./AnimationNodeControllers";
 
@@ -34,8 +30,8 @@ export class AnimationNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, new AnimationNodeParams(), {displayName: this.displayName});
-        
+        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        obj.setParams(new AnimationNodeParams());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 

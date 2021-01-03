@@ -1,17 +1,14 @@
 import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/registerGameViewer';
-import { AnimationNode } from '../plugins/canvas_plugins/node_editor/nodes/animation_node/AnimationNode';
+import { AnimationGroupNode } from '../plugins/canvas_plugins/node_editor/nodes/animation_group_node/AnimationGroupNode';
 import { FilterMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/filter_mesh_node/FilterMeshNode';
 import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/nodes/keyboard_node/KeyboardNode';
 import { MeshNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_node/MeshNode';
-import { MeshPropertyNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_property_node/MeshPropertyNode';
 import { MeshVisibilityNode } from '../plugins/canvas_plugins/node_editor/nodes/mesh_visibility_node/MeshVisibilityNode';
 import { MoveNode } from '../plugins/canvas_plugins/node_editor/nodes/move_node/MoveNode';
-import { PathNode } from '../plugins/canvas_plugins/node_editor/nodes/path_node/PathNode';
 import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/nodes/ray_caster_node/RayCasterNode';
 import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/nodes/ray_helper_node/RayHelperNode';
 import { RemoveMeshNode } from '../plugins/canvas_plugins/node_editor/nodes/remove_mesh_node/RemoveMeshNode';
 import { RotateNode } from '../plugins/canvas_plugins/node_editor/nodes/rotate_node/RotateNode';
-import { RouteNode } from '../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
 import { TriggerZoneNode } from '../plugins/canvas_plugins/node_editor/nodes/trigger_zone_node/TriggerZoneNode';
 import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
 import { registerNodeListPanel } from '../plugins/canvas_plugins/node_editor/registerNodeListPanel';
@@ -83,6 +80,7 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new TriggerZoneNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshVisibilityNode(this.registry));
         this.registry.data.helper.node.registerNode(new FilterMeshNode(this.registry));
+        this.registry.data.helper.node.registerNode(new AnimationGroupNode(this.registry));
     }
 
     setup() {

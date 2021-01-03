@@ -26,11 +26,14 @@ export class NodeObjDeserialize {
 
         this.nodeObj.getPorts().forEach(port => {
             const portJson = portJsonMap.get(port.getNodeParam().name);
-            if (portJson.connectedObjId) {
-                const connectedObj = <NodeObj> registry.stores.objStore.getById(portJson.connectedObjId);
-                if (connectedObj) {
-                    port.setConnectedPort(connectedObj.getPort(portJson.connectedPortName));
-                }
+
+            if (portJson.connectedObjIds) {
+                portJson.connectedObjIds.forEach((connectedObjId, index)  => {
+                    const connectedObj = <NodeObj> registry.stores.objStore.getById(connectedObjId);
+                    if (connectedObj) {
+                        port.addConnectedPort(connectedObj.getPort(portJson.connectedPortNames[index]));
+                    }
+                });
             }
         });
     }
