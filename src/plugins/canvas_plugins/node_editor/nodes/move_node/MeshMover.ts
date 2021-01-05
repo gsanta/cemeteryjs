@@ -7,13 +7,27 @@ export class MeshMover {
     private meshObj: MeshObj;
     private speed: number;
     private direction: MoveDirection;
+    private isStopped = true;
 
     tick() {
+        if (this.isStopped || this.meshObj === undefined || this.direction === undefined || this.speed === undefined) {
+            return;
+        }
+
         const currentTime = Date.now();
         if (this.time !== undefined) {
             this.move(currentTime - this.time);
         }
         this.time = currentTime;
+    }
+
+    stop() {
+        this.isStopped = true;
+        this.reset();
+    }
+
+    start() {
+        this.isStopped = false;
     }
 
     reset() {

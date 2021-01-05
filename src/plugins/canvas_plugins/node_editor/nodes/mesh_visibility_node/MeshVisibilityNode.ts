@@ -46,13 +46,13 @@ export class MeshVisibilityNodeParams extends NodeParams {
         name: 'signal on',
         port: {
             direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push,
-            execute: () => {
-                const meshObj = this.mesh.val;
+            dataFlow: PortDataFlow.Push
+        },
+        execute: () => {
+            const meshObj = this.mesh.val;
 
-                if (meshObj) {
-                    meshObj.setVisibility(1);
-                }
+            if (meshObj) {
+                meshObj.setVisibility(1);
             }
         }
     }
@@ -62,12 +62,12 @@ export class MeshVisibilityNodeParams extends NodeParams {
         port: {
             direction: PortDirection.Input,
             dataFlow: PortDataFlow.Push,
-            execute: () => {
-                const meshObj = this.mesh.val;
+        },
+        execute() {
+            const meshObj = this.mesh.val;
 
-                if (meshObj) {
-                    meshObj.setVisibility(0);
-                }
+            if (meshObj) {
+                meshObj.setVisibility(0);
             }
         }
     }

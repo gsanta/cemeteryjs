@@ -8,19 +8,7 @@ export class NodeService {
     constructor(registry: Registry) {
         this.registry = registry;
     }
-
-    executePort(nodeObj: NodeObj, port: string) {
-        const connectedPort = nodeObj.getPort(port).getConnectedPorts();
-        nodeObj.getPort(port).getConnectedPorts().forEach(portObj => {
-            //TODO temporary, all executors should be migrated to be on the port rather than on the obj
-            if (portObj.getNodeParam().port.execute) {
-                portObj.getNodeParam().port.execute(portObj.getNodeObj(), this.registry);
-            } else {
-                portObj.getNodeObj().executor.execute();
-            }
-        });
-    }
-
+    
     pullData(nodeObj: NodeObj, portName: string) {
         // TODO check that port is output port
         if (nodeObj.getPort(portName).hasConnectedPort()) {

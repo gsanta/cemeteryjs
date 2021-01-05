@@ -100,8 +100,7 @@ class MeshIntersectionListener implements INodeListener {
         }
 
         if (this.lastIntersectedMesh && lastIntersectedMesh !== this.lastIntersectedMesh) {
-            console.log('trigger')
-            registry.services.node.executePort(nodeObj, 'signal');
+            this.nodeParams.signal.callConnectedPorts();
         }
     }
 

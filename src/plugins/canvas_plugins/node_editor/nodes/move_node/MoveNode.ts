@@ -56,23 +56,83 @@ export class MoveNodeParams extends NodeParams {
 
         const meshMover = new MeshMover();
 
+        this.keyDown = new KeyDownParam(nodeObj, this, meshMover);
+        this.keyUp = new KeyUpParam(nodeObj, this, meshMover);
         this.mesh = new MeshNodeParam(nodeObj, meshMover);
         this.key = new KeyboardNodeParam(nodeObj, 'key', this, meshMover);
         this.move = new MoveNodeParam(nodeObj, meshMover);
         this.speed = new SpeedNodeParam(nodeObj, meshMover);
+        this.start = new StartNodeParam(nodeObj);
+        this.stop = new StopNodeParam(nodeObj);
     }
 
+    readonly keyDown: KeyDownParam;
+    readonly keyUp: KeyUpParam;
     readonly mesh: MeshNodeParam;
     readonly key: KeyboardNodeParam;
     readonly move: MoveNodeParam;
     readonly speed: SpeedNodeParam;
+    readonly start: NodeParam;
+    readonly stop: NodeParam;
+}
+
+class KeyDownParam extends NodeParam {
+    private meshMover: MeshMover;
+    private params: MoveNodeParams;
+
+    constructor(nodeObj: NodeObj, params: MoveNodeParams, meshMover: MeshMover) {
+        super(nodeObj);
+
+        this.meshMover = meshMover;
+        this.params = params;
+    }
     
-    readonly animation: NodeParam = {
-        name: 'animation',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+    name = 'keyDown';
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Push
+    }
+    execute() {
+        this.meshMover.start();
+        this.params.start.callConnectedPorts();
+    }
+}
+
+class KeyUpParam extends NodeParam {
+    private meshMover: MeshMover;
+    private params: MoveNodeParams;
+
+    constructor(nodeObj: NodeObj, params: MoveNodeParams, meshMover: MeshMover) {
+        super(nodeObj);
+
+        this.meshMover = meshMover;
+        this.params = params;
+    }
+
+    name = 'keyUp';
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Push
+    };
+    execute() {
+        this.meshMover.stop();
+        this.params.stop.callConnectedPorts();
+    }
+}
+
+class StartNodeParam extends NodeParam {
+    name = 'start';
+    port = {
+        direction: PortDirection.Output,
+        dataFlow: PortDataFlow.Push
+    }
+}
+
+class StopNodeParam extends NodeParam {
+    name = 'stop';
+    port = {
+        direction: PortDirection.Output,
+        dataFlow: PortDataFlow.Push
     }
 }
 
@@ -161,7 +221,7 @@ class KeyboardNodeParam extends NodeParam {
     constructor(nodeObj: NodeObj, name: string, params: MoveNodeParams, meshMover: MeshMover) {
         super(nodeObj);
         this.name = name;
-        this.listener = new KeyboardListener(params, meshMover);
+        this.listener = new KeyboardListener(params, meshMover, nodeObj);
     }
 
     setVal(val: string) {
@@ -172,28 +232,36 @@ class KeyboardNodeParam extends NodeParam {
 }
 
 class KeyboardListener implements INodeListener {
-    private keys: Set<string> = new Set();
-    private moveNodeParams: MoveNodeParams;
+    private params: MoveNodeParams;
     private meshMover: MeshMover;
+    private nodeObj: NodeObj;
+    private isKeyDown: boolean = false;
 
-    constructor(moveNodeParams: MoveNodeParams, meshMover: MeshMover) {
-        this.moveNodeParams = moveNodeParams;
+    constructor(moveNodeParams: MoveNodeParams, meshMover: MeshMover, nodeObj: NodeObj) {
+        this.params = moveNodeParams;
         this.meshMover = meshMover;
+        this.nodeObj = nodeObj;
     }
 
     onKeyDown(e: IKeyboardEvent) {
-        this.keys.add(String.fromCharCode(e.keyCode).toLocaleLowerCase());
+        if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+            this.isKeyDown = true;
+            this.params.start.callConnectedPorts();
+        }
     }
 
     onKeyUp(e: IKeyboardEvent) {
-        this.keys.delete(String.fromCharCode(e.keyCode).toLocaleLowerCase());
-        this.meshMover.reset();
+        if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+            this.isKeyDown = false;
+            this.meshMover.reset();
+            this.params.stop.callConnectedPorts();
+        }
     }
 
     onBeforeRender() {
-        if (this.keys.has(this.moveNodeParams.key.val)) {
-            this.meshMover.setMeshObj(this.moveNodeParams.mesh.getVal());
+        // if (this.isKeyDown) {
+            this.meshMover.setMeshObj(this.params.mesh.getVal());
             this.meshMover.tick();
-        }
+        // }
     }
 }

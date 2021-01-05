@@ -33,9 +33,10 @@ export class RayCasterNode extends AbstractNodeFactory {
 
     createObj(): NodeObj<RayCasterNodeParams> {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
-        obj.setParams(new RayCasterNodeParams());
+        const params = new RayCasterNodeParams();
+        obj.setParams(params);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
-        obj.executor = new RayCasterNodeExecutor(this.registry, obj);
+        obj.executor = new RayCasterNodeExecutor(this.registry, params, obj);
         obj.graph = this.registry.data.helper.node.graph;
         return obj;
     }
@@ -109,10 +110,12 @@ export class RayCasterNodeParams extends NodeParams {
 
 export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodeParams> {
     private registry: Registry;
+    private rayCasterNodeParams: RayCasterNodeParams;
 
-    constructor(registry: Registry, nodeObj: NodeObj) {
+    constructor(registry: Registry, rayCasterNodeParams: RayCasterNodeParams, nodeObj: NodeObj) {
         super(nodeObj);
         this.registry = registry;
+        this.rayCasterNodeParams = rayCasterNodeParams;
     }
 
     execute() {
@@ -123,11 +126,11 @@ export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodePar
             rayObj.meshObj = meshObj;
             rayObj.rayLength = this.nodeObj.param.length.val;
             this.registry.engine.rays.createInstance(rayObj);
-            this.registry.services.node.executePort(this.nodeObj, 'helper');
+            this.rayCasterNodeParams.helper.callConnectedPorts();
 
             if (rayObj.pickedMeshObj) {
                 this.nodeObj.param.pickedMesh.val = rayObj.pickedMeshObj;
-                this.registry.services.node.executePort(this.nodeObj, 'signal');
+                this.rayCasterNodeParams.signal.callConnectedPorts();
             }
         }
     }

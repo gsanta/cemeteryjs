@@ -70,6 +70,19 @@ export abstract class NodeParam<D = any> {
 
     toJson?(): NodeParamJson;
     fromJson?(registry: Registry, json: NodeParamJson): void;
+
+    execute?(): void {}
+
+    callConnectedPorts?() {
+        this.nodeObj.getPort(this.name).getConnectedPorts().forEach(portObj => {
+            //TODO temporary, all executors should be migrated to be on the port rather than on the obj
+            if (portObj.getNodeParam().execute) {
+                portObj.getNodeParam().execute();
+            } else {
+                portObj.getNodeObj().executor.execute();
+            }
+        });
+    }
 }
 
 export namespace NodeParam {
@@ -109,5 +122,4 @@ export namespace NodeParam {
 export interface PortConfig {
     direction: PortDirection;
     dataFlow: PortDataFlow;
-    execute?: (nodeObj: NodeObj, registry: Registry) => void;
 }

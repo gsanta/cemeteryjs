@@ -44,10 +44,12 @@ export class AnimationGroupNodeParams extends NodeParams {
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
 
-        this.signal = new SignalNode(registry, this, nodeObj);
+        this.signalStart = new SignalStartNode(registry, this, nodeObj);
+        this.signalStop = new SignalStopNode(registry, this, nodeObj);
     }
 
-    readonly signal: NodeParam;
+    readonly signalStart: NodeParam;
+    readonly signalStop: NodeParam;
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
@@ -96,7 +98,7 @@ export class AnimationGroupNodeParams extends NodeParams {
     }
 }
 
-class SignalNode extends NodeParam {
+class SignalStartNode extends NodeParam {
     private registry: Registry;
     private params: AnimationGroupNodeParams;
 
@@ -107,16 +109,43 @@ class SignalNode extends NodeParam {
         this.nodeObj = nodeObj;
     }
 
-    name = 'signal';
+    name = 'signalStart';
     port = {
         direction: PortDirection.Input,
         dataFlow: PortDataFlow.Push,
-        execute: () => {
-            const meshObj = this.params.mesh.getVal();
-            const animation = this.params.animation.val;
-            if (meshObj && animation) {
-                this.registry.engine.animatons.startAnimation(meshObj, animation)
-            }
+    }
+
+    execute() {
+        const meshObj = this.params.mesh.getVal();
+        const animation = this.params.animation.val;
+        if (meshObj && animation) {
+            this.registry.engine.animatons.startAnimation(meshObj, animation)
+        }
+    }
+}
+
+class SignalStopNode extends NodeParam {
+    private registry: Registry;
+    private params: AnimationGroupNodeParams;
+
+    constructor(registry: Registry, params: AnimationGroupNodeParams, nodeObj: NodeObj) {
+        super(nodeObj);
+        this.registry = registry;
+        this.params = params;
+        this.nodeObj = nodeObj;
+    }
+
+    name = 'signalStop';
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Push,
+    }
+
+    execute() {
+        const meshObj = this.params.mesh.getVal();
+        const animation = this.params.animation.val;
+        if (meshObj && animation) {
+            this.registry.engine.animatons.stopAnimation(meshObj, animation)
         }
     }
 }

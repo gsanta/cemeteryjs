@@ -37,7 +37,8 @@ export class MeshRotateController extends PropController<string> {
     }
 
     change(val) {
-        this.nodeObj.param.rotate.val = val;
+        this.nodeObj.param.rotate.setVal(val);
+        this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 }
@@ -59,7 +60,7 @@ export class KeyControl extends PropController {
     }
 
     change(val) {
-        this.nodeObj.param.key.val = val;
+        this.nodeObj.param.key.setVal(val);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

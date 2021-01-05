@@ -48,7 +48,7 @@ export class GameService {
 
     executeKeyUp(e: IKeyboardEvent) {
         this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
-            if (param.listener && param.listener.onKeyDown) {
+            if (param.listener && param.listener.onKeyUp) {
                 param.listener.onKeyUp(e, nodeObj, this.registry);
             }
         })

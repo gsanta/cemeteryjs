@@ -13,12 +13,12 @@ export class KeyboardNodeControllers extends ParamControllers {
     constructor(registry: Registry, nodeView: NodeView) {
         super();
 
-        nodeView.getObj().getParams().forEach(param => {
-            if (param.name.match(KEY_REGEX)) {
-                this[param.name] = new KeyControl(registry, this, nodeView, param.name);
-            }
-        });
+        this.key = new KeyControl(registry, this, nodeView, 'key');
+        this.modifier = new KeyControl(registry, this, nodeView, 'modifier');
     }
+
+    key: KeyControl;
+    modifier: KeyControl;
 }
 
 export class KeyControl extends PropController {
@@ -51,7 +51,7 @@ export class KeyControl extends PropController {
         this.nodeObj.param[this.paramName].val = val;
         this.registry.services.history.createSnapshot();
 
-        this.createNewKeyParam();
+        // this.createNewKeyParam();
 
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
