@@ -49,7 +49,9 @@ export enum Keyboard {
     ArrowLeft = 37,
     ArrowRight = 39,
     ArrowDown = 40,
-    ArrowUp = 38
+    ArrowUp = 38,
+    Shift = 16,
+    Ctrl = 17
 }
 
 export interface IKeyboardEvent {
@@ -59,6 +61,15 @@ export interface IKeyboardEvent {
     isCtrlDown: boolean;
     isMetaDown: boolean;
     isKeyup: boolean;
+}
+
+export function getKeyFromKeyCode(keyCode: number) {
+    const key = String.fromCharCode(keyCode).toLocaleLowerCase();
+
+    if (key === ' ') {
+        return 'Space'
+    }
+    return key;
 }
 
 export class KeyboardService {

@@ -36,18 +36,21 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         const toolbar = uiSvgCanvas.toolbar();
 
         let tool = toolbar.tool({key: MeshToolId});
+        tool.uniqueId = `${MeshToolId}-${this.canvas.id}`;
         tool.icon = 'mesh';
         tool.isActive = this.canvas.toolController.getToolById(MeshToolId).isSelected;
         let tooltip = tool.tooltip();
         tooltip.label = 'Add Mesh';
 
         tool = toolbar.tool({key: SpriteToolId});
+        tool.uniqueId = `${SpriteToolId}-${this.canvas.id}`;
         tool.icon = 'sprite';
         tool.isActive = this.canvas.toolController.getToolById(SpriteToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Add Sprite';
 
         tool = toolbar.tool({key: LightToolId});
+        tool.uniqueId = `${LightToolId}-${this.canvas.id}`;
         tool.icon = 'light';
         tool.isActive = this.canvas.toolController.getToolById(LightToolId).isSelected;
         tooltip = tool.tooltip();
@@ -59,24 +62,28 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         separator.placement = 'left';
 
         tool = toolbar.tool({key: PathToolId});
+        tool.uniqueId = `${PathToolId}-${this.canvas.id}`;
         tool.icon = 'path';
         tool.isActive = this.canvas.toolController.getToolById(PathToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Path tool';
 
         tool = toolbar.tool({key: SelectToolId});
+        tool.uniqueId = `${SelectToolId}-${this.canvas.id}`;
         tool.icon = 'select';
         tool.isActive = this.canvas.toolController.getToolById(SelectToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
 
         tool = toolbar.tool({key: DeleteToolId});
+        tool.uniqueId = `${DeleteToolId}-${this.canvas.id}`;
         tool.icon = 'delete';
         tool.isActive = this.canvas.toolController.getToolById(DeleteToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Delete tool';
 
         tool = toolbar.tool({key: CameraToolId});
+        tool.uniqueId = `${CameraToolId}-${this.canvas.id}`;
         tool.icon = 'pan';
         tool.isActive = this.canvas.toolController.getToolById(CameraToolId).isSelected;
         tooltip = tool.tooltip();
@@ -151,26 +158,30 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         
         let tool = toolController.getToolById(this.activeShapeToolId);
         let shapeTool = toolbarDropdownHeader.tool({key: this.activeShapeToolId});
+        shapeTool.uniqueId = 'shape-tools';
         shapeTool.isActive = this.canvas.toolController.getToolById(this.activeShapeToolId).isSelected;
         shapeTool.icon = tool.icon;
         let tooltip = shapeTool.tooltip();
-        tooltip.label = `${tool.displayName} tool`;
+        tooltip.label = `Geometry tool`;
 
         if (this.isShapeDropdownOpen) {
             tool = toolController.getToolById(CubeToolId);
             shapeTool = toolbarDropdown.tool({key: CubeToolId});
+            shapeTool.uniqueId = `${CubeToolId}-${this.canvas.id}`;
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;
 
             tool = toolController.getToolById(SphereToolId);
             shapeTool = toolbarDropdown.tool({key: SphereToolId});
+            shapeTool.uniqueId = `${SphereToolId}-${this.canvas.id}`;
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;
 
             tool = toolController.getToolById(GroundToolId);
             shapeTool = toolbarDropdown.tool({key: GroundToolId});
+            shapeTool.uniqueId = `${GroundToolId}-${this.canvas.id}`;
             shapeTool.icon = tool.icon;
             tooltip = shapeTool.tooltip();
             tooltip.label = `${tool.displayName} tool`;

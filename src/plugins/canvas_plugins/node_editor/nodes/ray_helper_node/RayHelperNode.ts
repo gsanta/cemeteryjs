@@ -33,8 +33,7 @@ export class RayHelperNode extends AbstractNodeFactory {
 
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
-        obj.setParams(new RayHelperNodeParams());
-        obj.executor = new RayHelperNodeExecutor(this.registry, obj);
+        obj.setParams(new RayHelperNodeParams(obj, this.registry));
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 
@@ -43,27 +42,35 @@ export class RayHelperNode extends AbstractNodeFactory {
 }
 
 export class RayHelperNodeParams extends NodeParams {
+
+    constructor(nodeObj: NodeObj, registry: Registry) {
+        super();
+
+        this.rayCaster = new RayCasterNodeParam(registry, nodeObj);
+    }
+
     readonly remove: NodeParam = {
         name: 'remove',
         field: NodeParamField.NumberField,
         val: -1
     }
     
-    readonly rayCaster: NodeParam = {
-        name: 'rayCaster',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
-    }
+    readonly rayCaster: RayCasterNodeParam;
 }
 
-export class RayHelperNodeExecutor extends AbstractNodeExecutor<RayHelperNodeParams> {
+class RayCasterNodeParam extends NodeParam {
     private registry: Registry;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super(nodeObj);
+
         this.registry = registry;
+    }
+
+    name = 'rayCaster';
+    port = {
+        direction: PortDirection.Output,
+        dataFlow: PortDataFlow.Push
     }
 
     execute() {

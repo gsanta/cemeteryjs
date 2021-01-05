@@ -2,7 +2,7 @@ import { ToolAdapter } from "../../../../core/plugin/tools/ToolAdapter";
 import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
 import { Registry } from "../../../../core/Registry";
 import { KeyboardNodeType } from "../../node_editor/nodes/keyboard_node/KeyboardNode";
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel, InteractionMode } from "../../../../core/plugin/AbstractCanvasPanel";
 
 export const GameToolId = 'game-tool';
 export class GameTool extends ToolAdapter {
@@ -14,14 +14,18 @@ export class GameTool extends ToolAdapter {
     }
 
     keydown(e: IKeyboardEvent) {
-        this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
-        this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
-        this.registry.services.game.executeKeyDown(e);
+        if (this.panel.interactionMode === InteractionMode.Execution) {
+            this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
+            this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
+            this.registry.services.game.executeKeyDown(e);
+        }
     }
 
     keyup(e: IKeyboardEvent) {
-        // this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
-        // this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
-        this.registry.services.game.executeKeyUp(e);
+        if (this.panel.interactionMode === InteractionMode.Execution) {
+            // this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
+            // this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
+            this.registry.services.game.executeKeyUp(e);
+        }
     }
 }

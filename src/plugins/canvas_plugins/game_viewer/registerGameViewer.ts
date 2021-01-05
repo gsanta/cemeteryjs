@@ -12,7 +12,7 @@ import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
 import { AxisGizmo } from "../../canvas/gizmos/axis_gizmo/AxisGizmo";
 import { onScreenCastGizmoKeyDown, ScreenCastKeysGizmoRenderer } from "../../canvas/gizmos/screencast_keys_gizmo/ScreenCastKeysGizmo";
 import { GameViewerToolController, StopController } from "./GameViewerControllers";
-import { PlayController } from "./GameViewerProps";
+import { EditModeController, InteractionModeController, PlayController } from "./GameViewerProps";
 import { GameViewerRenderer } from "./GameViewerRenderer";
 import { GameTool } from "./tools/GameTool";
 (<any> window).earcut = require('earcut');
@@ -56,7 +56,9 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new PlayController(registry),
         new StopController(registry),
         new CommonToolController(registry),
-        new GameViewerToolController(registry)
+        new GameViewerToolController(registry),
+        new EditModeController(registry),
+        new InteractionModeController(registry),
     ];
 
     const tools = [

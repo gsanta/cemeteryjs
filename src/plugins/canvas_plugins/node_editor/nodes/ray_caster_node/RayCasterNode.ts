@@ -33,16 +33,22 @@ export class RayCasterNode extends AbstractNodeFactory {
 
     createObj(): NodeObj<RayCasterNodeParams> {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
-        const params = new RayCasterNodeParams();
+        const params = new RayCasterNodeParams(this.registry, obj);
         obj.setParams(params);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
-        obj.executor = new RayCasterNodeExecutor(this.registry, params, obj);
         obj.graph = this.registry.data.helper.node.graph;
         return obj;
     }
 }
 
 export class RayCasterNodeParams extends NodeParams {
+
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super();
+        this.when = new WhenNodeParam(registry, nodeObj, this);
+        this.helper = new HelperNodeParam(nodeObj);
+    }
+
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
@@ -74,21 +80,8 @@ export class RayCasterNodeParams extends NodeParams {
         val: new RayObj
     }
     
-    readonly when: NodeParam = {
-        name: 'when',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
-    }
-    
-    readonly helper: NodeParam = {
-        name: 'helper',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
-    }
+    readonly when: WhenNodeParam;
+    readonly helper: HelperNodeParam;
 
     readonly signal: NodeParam = {
         name: 'signal',
@@ -108,14 +101,20 @@ export class RayCasterNodeParams extends NodeParams {
     }
 }
 
-export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodeParams> {
+class WhenNodeParam extends NodeParam {
     private registry: Registry;
     private rayCasterNodeParams: RayCasterNodeParams;
 
-    constructor(registry: Registry, rayCasterNodeParams: RayCasterNodeParams, nodeObj: NodeObj) {
+    constructor(registry: Registry, nodeObj: NodeObj, rayCasterNodeParams: RayCasterNodeParams) {
         super(nodeObj);
         this.registry = registry;
         this.rayCasterNodeParams = rayCasterNodeParams;
+    }
+
+    name = 'when';
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Push
     }
 
     execute() {
@@ -133,5 +132,13 @@ export class RayCasterNodeExecutor extends AbstractNodeExecutor<RayCasterNodePar
                 this.rayCasterNodeParams.signal.callConnectedPorts();
             }
         }
+    }
+}
+
+class HelperNodeParam extends NodeParam {
+    name = 'helper';
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Push
     }
 }

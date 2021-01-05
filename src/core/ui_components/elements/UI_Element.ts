@@ -49,7 +49,7 @@ export abstract class UI_Element<C extends PropController = any> {
     scopedToolId: string;
     isInteractive: boolean = true;
 
-    readonly uniqueId: string;
+    uniqueId: string;
     readonly controller: FormController;
     paramController: C;
     readonly parent: UI_Element;

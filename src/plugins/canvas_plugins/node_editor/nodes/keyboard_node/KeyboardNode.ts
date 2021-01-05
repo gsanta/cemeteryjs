@@ -1,14 +1,11 @@
-import { NodeObj, NodeObjType, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
+import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
-import { IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
-import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
-import { GameViewerPanelId } from "../../../game_viewer/registerGameViewer";
-import { GameTool, GameToolId } from "../../../game_viewer/tools/GameTool";
+import { getKeyFromKeyCode, IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
 import { INodeListener } from "../../node/INodeListener";
 import { AbstractNodeFactory } from "../AbstractNode";
-import { KeyboardNodeControllers, KeyControl, KEY_REGEX } from "./KeyboardNodeController";
+import { KeyboardNodeControllers } from "./KeyboardNodeController";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
@@ -37,7 +34,6 @@ export class KeyboardNode extends AbstractNodeFactory {
         const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, {displayName: this.displayName});
         const params = new KeyboardNodeParams(obj);
         obj.setParams(params);
-        // obj.executor = new KeyboardNodeExecutor(this.registry, params, obj);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 
@@ -79,10 +75,19 @@ export class KeyDownNodeParam extends NodeParam {
 
     listener: INodeListener = {
         onKeyDown: (e: IKeyboardEvent) => {
-            if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+            if (this.isModifierMatch(e) && this.params.key.val === getKeyFromKeyCode(e.keyCode)) {
                 this.callConnectedPorts();
             }
         }
+    }
+
+    private isModifierMatch(e: IKeyboardEvent) {
+        return (
+            this.params.modifier.getVal() === undefined ||
+            this.params.modifier.getVal() === "" ||
+            e.isCtrlDown && this.params.modifier.getVal() === 'Ctrl' ||
+            e.isShiftDown && this.params.modifier.getVal() === 'Shift'
+        );
     }
 }
 
@@ -129,30 +134,3 @@ export class KeyboardModifierNodeParam extends NodeParam {
         super(nodeObj);
     }
 }
-
-// export class KeyboardNodeExecutor extends AbstractNodeExecutor<KeyboardNodeParams> {
-//     private registry: Registry;
-//     private keyboardNodeParams: KeyboardNodeParams;
-
-//     constructor(registry: Registry, keyboardNodeParams: KeyboardNodeParams, nodeObj: NodeObj) {
-//         super(nodeObj);
-//         this.registry = registry;
-//         this.keyboardNodeParams = keyboardNodeParams;
-//     }
-
-//     execute() {
-//         const keyParams = this.getKeyParams(this.nodeObj);
-//         const gameTool = <GameTool> this.registry.ui.canvas.getCanvas(GameViewerPanelId).toolController.getToolById(GameToolId);
-//         const param = keyParams.find(param => param.val === gameTool.lastExecutedKey);
-
-//         if (param) {
-//             this.keyboardNodeParams[param.name].callConnectedPorts();
-//         }
-//     }
-
-//     executeStop() {}
-
-//     private getKeyParams(nodeObj: NodeObj): NodeParam[] {
-//         return nodeObj.getParams().filter(param => param.name.match(KEY_REGEX));
-//     }
-// }

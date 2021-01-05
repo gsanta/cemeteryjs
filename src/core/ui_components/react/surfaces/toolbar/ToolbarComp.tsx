@@ -30,6 +30,7 @@ const expandMoreIcon = require('../../../../../../assets/images/icons/expand_mor
 const lightIcon = require('../../../../../../assets/images/icons/light.svg');
 const gridIcon = require('../../../../../../assets/images/icons/grid.svg');
 const rotateIcon = require('../../../../../../assets/images/icons/rotate.svg');
+const editModeIcon = require('../../../../../../assets/images/icons/edit_mode.svg');
 
 const ToolbarStyled = styled.div`
     position: absolute;
@@ -177,6 +178,10 @@ const ToolbarStyled = styled.div`
 
         &.rotate-icon {
             background-image: url(${rotateIcon});
+        }
+
+        &.edit-mode-icon {
+            background-image: url(${editModeIcon});
         }
     }
 

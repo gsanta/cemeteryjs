@@ -56,7 +56,7 @@ export abstract class NodeParam<D = any> {
     val?: D;
     getVal?(): D {
         const port = this.nodeObj.getPort(this.name);
-        if (port.hasConnectedPort()) {
+        if (port && port.hasConnectedPort()) {
             const otherPort = port.getConnectedPorts()[0];
             const otherParam = otherPort.getNodeParam();
             // TODO this is legacy only getVal should remain

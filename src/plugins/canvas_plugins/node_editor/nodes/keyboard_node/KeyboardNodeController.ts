@@ -3,18 +3,20 @@ import { NodeView } from "../../../../../core/models/views/NodeView";
 import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
-import { KeyboardNodeParam, KeyboardNodeParams } from "./KeyboardNode";
+import { getAllKeys, Keyboard } from "../../../../../core/services/input/KeyboardService";
+import { KeyboardNodeParams } from "./KeyboardNode";
 
 export const KEY_REGEX = /key(\d*)/;
+
+// const modifierKeys = [Keyboard.Shift[Keyboard.Shift], Keyboard.Ctrl[Keyboard.Ctrl]];
 
 export class KeyboardNodeControllers extends ParamControllers {
 
     constructor(registry: Registry, nodeView: NodeView) {
         super();
 
-        this.key = new KeyControl(registry, this, nodeView, 'key');
-        this.modifier = new KeyControl(registry, this, nodeView, 'modifier');
+        this.key = new KeyControl(registry, nodeView, 'key', getAllKeys());
+        this.modifier = new KeyControl(registry, nodeView, 'modifier', ['Ctrl', 'Shift']);
     }
 
     key: KeyControl;
@@ -23,24 +25,18 @@ export class KeyboardNodeControllers extends ParamControllers {
 
 export class KeyControl extends PropController {
     private nodeObj: NodeObj<KeyboardNodeParams>;
-    private nodeView: NodeView;
     private paramName: string;
-    private controllers: KeyboardNodeControllers;
+    private keys: string[] = [];
 
-    constructor(registry: Registry, controllers: KeyboardNodeControllers, nodeView: NodeView, paramName: string) {
+    constructor(registry: Registry, nodeView: NodeView, paramName: string, keys: string[]) {
         super(registry);
         this.nodeObj = nodeView.getObj();
-        this.nodeView = nodeView;
         this.paramName = paramName;
-        this.controllers = controllers;
-    }
-
-    acceptedProps() {
-        return this.nodeObj.getParams().filter(param => param.name.match(KEY_REGEX)).map(param => param.name);
+        this.keys = keys;
     }
 
     values() {
-        return getAllKeys();
+        return this.keys;
     }
 
     val() {
@@ -50,29 +46,6 @@ export class KeyControl extends PropController {
     change(val) {
         this.nodeObj.param[this.paramName].val = val;
         this.registry.services.history.createSnapshot();
-
-        // this.createNewKeyParam();
-
-        this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
-    }
-
-    private createNewKeyParam() {
-        const keys = this.nodeObj.getParams().filter(param => param.name.match(KEY_REGEX));
-        let newIndex = 2;
-
-        const keyIndexes = keys.map(key => parseInt(key.name.match(KEY_REGEX)[1], 10));
-        keyIndexes.sort((a, b) => b - a);
-
-        if (keyIndexes.length > 0) {
-            newIndex = keyIndexes[0] + 1;
-        }
-
-        const keyName = `key${newIndex}`;
-        
-        this.nodeObj.param[keyName] = new KeyboardNodeParam(keyName, this.nodeObj);
-        this.controllers[keyName] = new KeyControl(this.registry, this.controllers, this.nodeView, keyName);
-        this.nodeObj.initParams();
-        this.nodeView.setup();
     }
 }

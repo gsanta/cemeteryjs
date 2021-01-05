@@ -33,6 +33,11 @@ export function calcOffsetFromDom(element: HTMLElement): Point {
     return new Point(0, 0);
 }
 
+export enum InteractionMode {
+    Edit = 'Edit',
+    Execution = 'Execution'
+}
+
 export abstract class AbstractCanvasPanel extends UI_Panel {
     readonly displayName: string;
 
@@ -45,6 +50,8 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
     private camera: ICamera;
     
     readonly toolController: ToolController;
+
+    interactionMode = InteractionMode.Edit;
 
     constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {
         super(registry, region, id, displayName);
