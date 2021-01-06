@@ -32,7 +32,7 @@ export class TriggerZoneNode extends AbstractNodeFactory {
 
     createObj(): NodeObj {
         const obj = new NodeObj<TriggerZoneNodeParams>(this.nodeType, {displayName: this.displayName});
-        obj.setParams(new TriggerZoneNodeParams());
+        obj.setParams(new TriggerZoneNodeParams(obj));
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
         
@@ -41,6 +41,13 @@ export class TriggerZoneNode extends AbstractNodeFactory {
 }
 
 export class TriggerZoneNodeParams extends NodeParams {
+
+    constructor(nodeObj: NodeObj) {
+        super();
+
+        this.signal = new SignalNodeObj(nodeObj, this);
+    }
+
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
         field: NodeParamField.List,
@@ -69,14 +76,24 @@ export class TriggerZoneNodeParams extends NodeParams {
         }
     }
     
-    readonly signal: NodeParam = {
-        name: 'signal',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push,
-        },
-        listener: new MeshIntersectionListener(this)
+    readonly signal: NodeParam;
+}
+
+class SignalNodeObj extends NodeParam {
+
+    constructor(nodeObj: NodeObj, params: TriggerZoneNodeParams) {
+        super(nodeObj);
+
+        this.listener = new MeshIntersectionListener(params);
     }
+
+    name = 'signal';
+    port = {
+        direction: PortDirection.Output,
+        dataFlow: PortDataFlow.Push,
+    }
+
+    listener: MeshIntersectionListener;
 }
 
 class MeshIntersectionListener implements INodeListener {

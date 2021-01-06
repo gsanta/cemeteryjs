@@ -47,6 +47,7 @@ export class RayCasterNodeParams extends NodeParams {
         super();
         this.when = new WhenNodeParam(registry, nodeObj, this);
         this.helper = new HelperNodeParam(nodeObj);
+        this.signal = new SignalNodeParam(nodeObj);
     }
 
     readonly mesh: NodeParam<MeshObj> = {
@@ -83,13 +84,7 @@ export class RayCasterNodeParams extends NodeParams {
     readonly when: WhenNodeParam;
     readonly helper: HelperNodeParam;
 
-    readonly signal: NodeParam = {
-        name: 'signal',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
-    }
+    readonly signal: NodeParam;
     
     readonly pickedMesh: NodeParam = {
         name: 'pickedMesh',
@@ -98,6 +93,14 @@ export class RayCasterNodeParams extends NodeParams {
             direction: PortDirection.Output,
             dataFlow: PortDataFlow.Pull
         }
+    }
+}
+
+class SignalNodeParam extends NodeParam {
+    name = 'signal';
+    port = {
+        direction: PortDirection.Output,
+        dataFlow: PortDataFlow.Push
     }
 }
 

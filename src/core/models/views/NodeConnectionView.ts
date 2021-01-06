@@ -2,6 +2,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../Registry";
 import { IObj } from "../objs/IObj";
+import { PortDataFlow, PortDirection } from "../objs/node_obj/NodeParam";
 import { NodePortView } from "./child_views/NodePortView";
 import { NodeView } from "./NodeView";
 import { View, ViewFactoryAdapter, ViewJson } from './View';
@@ -38,6 +39,8 @@ export class NodeConnectionView extends View {
     private nodePortView1: NodePortView;
     private nodePortview2: NodePortView;
 
+    color
+
     updateDimensions() {
         if (this.point1 && this.point2) {
             this.bounds = Rectangle.fromTwoPoints(this.point1, this.point2);
@@ -62,6 +65,7 @@ export class NodeConnectionView extends View {
 
     setNodePortView1(nodePortView: NodePortView) {
         this.nodePortView1 = nodePortView;
+        this.initColor();
     }
 
     getNodePortView1(): NodePortView {
@@ -94,9 +98,21 @@ export class NodeConnectionView extends View {
         this.bounds = rectangle;
     }
 
+    getDirection() {
+        this.nodePortView1.getObj().getNodeParam().port.direction;
+    }
+
     dispose() {
         this.nodePortView1.removeConnection(this);
         this.nodePortview2.removeConnection(this);
+    }
+
+    private initColor() {
+        if (this.nodePortView1.getObj().getNodeParam().port.dataFlow === PortDataFlow.Pull) {
+            this.color = 'red';
+        } else {
+            this.color = 'green';
+        }
     }
 
     toJson(): NodeConnectionViewJson {

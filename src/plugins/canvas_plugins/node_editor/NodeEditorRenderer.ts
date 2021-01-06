@@ -95,7 +95,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
             line.y2 = connection.point2.y;
             line.css = {
                 pointerEvents: 'none',
-                stroke: colors.grey1,
+                stroke: connection.color,
                 strokeWidth: "3"
             }
 
@@ -109,6 +109,20 @@ export class NodeEditorRenderer implements ICanvasRenderer {
             line2.y1 = connection.point1.y;
             line2.x2 = connection.point2.x;
             line2.y2 = connection.point2.y;
+
+            // const marker = line.marker({key: `abcd`, uniqueId: `efgh`});
+            // marker.refX = 5;
+            // marker.refY = 5;
+            // marker.markerWidth = 5;
+            // marker.markerHeight = 5;
+            // marker.viewBox = "0 0 10 10";
+    
+            // const path = marker.path();
+            // path.d = "M 0 0 A 1 1 0 0 1 0 10";
+    
+            // path.css = {
+            //     fill: 'red',
+            // }
         });
     }
 }
