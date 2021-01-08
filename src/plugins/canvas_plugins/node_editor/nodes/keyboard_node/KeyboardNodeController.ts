@@ -1,9 +1,9 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeView } from "../../../../../core/models/views/NodeView";
 import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { getAllKeys, Keyboard } from "../../../../../core/services/input/KeyboardService";
+import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
+import { NodeView } from "../../views/NodeView";
 import { KeyboardNodeParams } from "./KeyboardNode";
 
 export const KEY_REGEX = /key(\d*)/;

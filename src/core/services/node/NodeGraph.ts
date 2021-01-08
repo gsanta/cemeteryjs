@@ -1,5 +1,5 @@
- import { NodeObj } from '../../models/objs/node_obj/NodeObj';
-import { NodeView, NodeViewType } from '../../models/views/NodeView';
+ import { NodeView, NodeViewType } from '../../../plugins/canvas_plugins/node_editor/views/NodeView';
+import { NodeObj } from '../../models/objs/node_obj/NodeObj';
 import { Registry } from '../../Registry';
 
 export class NodeGraph {

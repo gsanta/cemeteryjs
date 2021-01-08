@@ -1,6 +1,5 @@
 import { NodeParam, NodeParamField, PortDirection } from '../../../core/models/objs/node_obj/NodeParam';
 import { NodePortView } from '../../../core/models/views/child_views/NodePortView';
-import { NodeHeightCalc, NodeView } from '../../../core/models/views/NodeView';
 import { ViewRenderer, ViewTag } from '../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../core/plugin/AbstractCanvasPanel';
 import { MultiSelectController } from '../../../core/plugin/controller/FormController';
@@ -9,6 +8,7 @@ import { UI_SvgGroup } from '../../../core/ui_components/elements/svg/UI_SvgGrou
 import { UI_Column } from '../../../core/ui_components/elements/UI_Column';
 import { UI_SvgCanvas } from '../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../core/ui_components/react/styles';
+import { NodeHeightCalc, NodeView } from './views/NodeView';
 
 export class NodeRenderer implements ViewRenderer {
     private joinPointsHeight: number;

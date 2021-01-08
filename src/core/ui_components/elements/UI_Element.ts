@@ -23,6 +23,9 @@ export interface UI_Element_Css {
     height?: string;
     padding?: string;
     margin?: string;
+    markerMid?: string;
+    markerStart?: string;
+    markerEnd?: string;
 }
 
 export interface UI_ElementConfig {

@@ -7,7 +7,6 @@ export const colors = {
     lightPink: '#FFB6C1',
     darkorchid: '#9932CC',
 
-
     textColor: '#EDF0EE',
     textColorDark: '#1c1d1f',
     active: '#F2F1ED',
@@ -29,6 +28,11 @@ export const colors = {
         stroke: 'black',
         delete: 'red',
     },
+
+    nodes: {
+        connectionGreen: '#96D671',
+        connectionRed: '#FD7E7E'
+    }
 }
 
 export const sizes = {

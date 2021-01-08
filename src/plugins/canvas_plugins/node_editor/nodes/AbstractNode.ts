@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
-import { NodeView } from "../../../../core/models/views/NodeView";
+import { NodeView } from "../views/NodeView";
 
 
 export abstract class AbstractNodeFactory {

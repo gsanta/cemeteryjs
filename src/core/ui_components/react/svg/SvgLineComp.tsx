@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UI_ComponentProps } from "../UI_ComponentProps";
 import { UI_SvgLine } from '../../elements/svg/UI_SvgLine';
+import { UI_ComponentProps } from "../UI_ComponentProps";
 
 export const SvgLineComp = (props: UI_ComponentProps<UI_SvgLine>) => {
     
@@ -15,7 +15,8 @@ export const SvgLineComp = (props: UI_ComponentProps<UI_SvgLine>) => {
             x2: props.element.x2,
             y1: props.element.y1,
             y2: props.element.y2,
-            markerEnd: props.element.markerEnd,
+            markerEnd: props.element.markerMid,
+            markerMid: props.element.markerMid,
             onMouseEnter: e => {
                 props.element.mouseEnter(props.registry, e.nativeEvent, props.element.data)
             },

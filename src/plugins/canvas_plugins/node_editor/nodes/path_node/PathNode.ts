@@ -1,5 +1,5 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeView } from "../../../../../core/models/views/NodeView";
+import { NodeView } from "../../views/NodeView";
 import { PathViewType } from "../../../scene_editor/views/PathView";
 import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";

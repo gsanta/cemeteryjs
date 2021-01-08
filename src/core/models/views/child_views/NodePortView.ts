@@ -3,10 +3,10 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
 import { NodePortObj } from "../../objs/NodePortObj";
 import { PortDirection } from "../../objs/node_obj/NodeParam";
-import { NodeConnectionView } from "../NodeConnectionView";
-import { NodeView } from "../NodeView";
+import { NodeConnectionView } from "../../../../plugins/canvas_plugins/node_editor/views/NodeConnectionView";
 import { View, ViewJson } from "../View";
 import { ContainedView } from "./ChildView";
+import { NodeView } from "../../../../plugins/canvas_plugins/node_editor/views/NodeView";
 
 export function isJoinPointView(view: View) {
     return view && view.viewType === NodePortViewType;
@@ -49,7 +49,7 @@ export class NodePortView extends ContainedView {
     move(delta: Point) {
         const portDirection = this.obj.getNodeParam().port.direction;
         this.connections.forEach(connection => {
-            portDirection === PortDirection.Input ? connection.setPoint1(this.getAbsolutePosition()) : connection.setPoint2(this.getAbsolutePosition());
+            portDirection === PortDirection.Input ? connection.setInputPoint(this.getAbsolutePosition()) : connection.setOutputPoint(this.getAbsolutePosition());
         });
     }
 

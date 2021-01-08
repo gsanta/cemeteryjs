@@ -1,7 +1,7 @@
-import { NodeView } from "../../../core/models/views/NodeView";
 import { DragAndDropController, ParamControllers } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
+import { NodeView } from "./views/NodeView";
 
 export class NodeEditorSettingsControllers extends ParamControllers {
     constructor(registry: Registry) {

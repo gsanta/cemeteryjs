@@ -1,11 +1,12 @@
-import { Point } from "../../../utils/geometry/shapes/Point";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { Registry } from "../../Registry";
-import { IObj } from "../objs/IObj";
-import { PortDataFlow, PortDirection } from "../objs/node_obj/NodeParam";
-import { NodePortView } from "./child_views/NodePortView";
+import { Point } from "../../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
+import { Registry } from "../../../../core/Registry";
+import { IObj } from "../../../../core/models/objs/IObj";
+import { PortDataFlow } from "../../../../core/models/objs/node_obj/NodeParam";
+import { NodePortView } from "../../../../core/models/views/child_views/NodePortView";
 import { NodeView } from "./NodeView";
-import { View, ViewFactoryAdapter, ViewJson } from './View';
+import { View, ViewFactoryAdapter, ViewJson } from '../../../../core/models/views/View';
+import { colors } from "../../../../core/ui_components/react/styles";
 
 export const NodeConnectionViewType = 'node-connection-view';
 
@@ -33,8 +34,8 @@ export class NodeConnectionViewFactory extends ViewFactoryAdapter {
 export class NodeConnectionView extends View {
     readonly  viewType = NodeConnectionViewType;
 
-    point1: Point;
-    point2: Point;
+    inputPoint: Point;
+    outputPoint: Point;
 
     private nodePortView1: NodePortView;
     private nodePortview2: NodePortView;
@@ -42,8 +43,8 @@ export class NodeConnectionView extends View {
     color
 
     updateDimensions() {
-        if (this.point1 && this.point2) {
-            this.bounds = Rectangle.fromTwoPoints(this.point1, this.point2);
+        if (this.inputPoint && this.outputPoint) {
+            this.bounds = Rectangle.fromTwoPoints(this.inputPoint, this.outputPoint);
         }
     }
 
@@ -53,30 +54,30 @@ export class NodeConnectionView extends View {
 
     move() {}
 
-    setPoint1(point: Point) {
-        this.point1 = point;
+    setInputPoint(point: Point) {
+        this.inputPoint = point;
         this.updateDimensions();
     }
 
-    setPoint2(point: Point) {
-        this.point2 = point;
+    setOutputPoint(point: Point) {
+        this.outputPoint = point;
         this.updateDimensions();
     }
 
-    setNodePortView1(nodePortView: NodePortView) {
+    setInputPort(nodePortView: NodePortView) {
         this.nodePortView1 = nodePortView;
         this.initColor();
     }
 
-    getNodePortView1(): NodePortView {
+    getInputPort(): NodePortView {
         return this.nodePortView1;
     }
 
-    setNodePortView2(nodePortView: NodePortView) {
+    setOutputPort(nodePortView: NodePortView) {
         this.nodePortview2 = nodePortView;
     }
 
-    getNodePortView2(): NodePortView {
+    getOutputPort(): NodePortView {
         return this.nodePortview2;
     }
 
@@ -109,19 +110,19 @@ export class NodeConnectionView extends View {
 
     private initColor() {
         if (this.nodePortView1.getObj().getNodeParam().port.dataFlow === PortDataFlow.Pull) {
-            this.color = 'red';
+            this.color = colors.nodes.connectionRed;
         } else {
-            this.color = 'green';
+            this.color = colors.nodes.connectionGreen;
         }
     }
 
     toJson(): NodeConnectionViewJson {
         return {
             ...super.toJson(),
-            point1X: this.point1.x,
-            point1Y: this.point1.y,
-            point2X: this.point2.x,
-            point2Y: this.point2.y,
+            point1X: this.inputPoint.x,
+            point1Y: this.inputPoint.y,
+            point2X: this.outputPoint.x,
+            point2Y: this.outputPoint.y,
             joinPoint1: {
                 nodeId: this.nodePortView1.containerView.id,
                 joinPointName: this.nodePortView1.getObj().getNodeParam().name
@@ -137,12 +138,12 @@ export class NodeConnectionView extends View {
         super.fromJson(json, registry);
         const nodeView1 = (<NodeView> registry.data.view.node.getById(json.joinPoint1.nodeId));
         const nodeView2 = (<NodeView> registry.data.view.node.getById(json.joinPoint2.nodeId))
-        this.nodePortView1 = <NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName);
-        this.nodePortview2 = <NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName);
+        this.setInputPort(<NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName));
+        this.setOutputPort(<NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName));
         this.nodePortView1.addConnection(this);
         this.nodePortview2.addConnection(this);
-        this.point1 = new Point(json.point1X, json.point1Y);
-        this.point2 = new Point(json.point2X, json.point2Y);
+        this.inputPoint = new Point(json.point1X, json.point1Y);
+        this.outputPoint = new Point(json.point2X, json.point2Y);
 
         this.updateDimensions();
     }

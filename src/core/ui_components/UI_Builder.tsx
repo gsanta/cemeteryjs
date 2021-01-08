@@ -209,9 +209,6 @@ export class UI_Builder {
             case UI_ElementType.DialogFooter:
                 const dialogFooter = element as UI_DialogFooter;
                 return <DialogFooterComp registry={this.registry} element={dialogFooter}>{this.buildChildren(element)}</DialogFooterComp>;
-            case UI_ElementType.SvgLine:
-                const line = element as UI_SvgLine;
-                return <SvgLineComp registry={this.registry} element={line}/>;
         }
     }
 
@@ -353,6 +350,9 @@ export class UI_Builder {
             case UI_ElementType.SvgText:
                 const svgText = element as UI_SvgText;
                 return <SvgTextComp registry={this.registry} element={svgText}/>;
+            case UI_ElementType.SvgLine:
+                const line = element as UI_SvgLine;
+                return <SvgLineComp registry={this.registry} element={line}/>;
             case UI_ElementType.Toolbar:
                 const toolbar = element as UI_Toolbar;
                 return this.buildToolbar(toolbar);

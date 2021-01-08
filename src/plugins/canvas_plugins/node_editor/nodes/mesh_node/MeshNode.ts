@@ -1,8 +1,8 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../../../../../core/models/views/NodeView";
 import { Registry } from "../../../../../core/Registry";
+import { NodeView } from "../../views/NodeView";
 import { AbstractNodeFactory } from "../AbstractNode";
 import { MeshNodeControllers } from "./MeshNodeControllers";
 

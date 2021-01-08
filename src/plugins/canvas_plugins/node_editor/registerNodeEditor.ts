@@ -1,7 +1,7 @@
 
 
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
-import { NodeConnectionViewFactory, NodeConnectionView, NodeConnectionViewType } from "../../../core/models/views/NodeConnectionView";
+import { NodeConnectionViewFactory, NodeConnectionView, NodeConnectionViewType } from "./views/NodeConnectionView";
 import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
