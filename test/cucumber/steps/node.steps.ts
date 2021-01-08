@@ -3,16 +3,16 @@ import { NodeObj } from "../../../src/core/models/objs/node_obj/NodeObj";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { UI_Container } from "../../../src/core/ui_components/elements/UI_Container";
 import { UI_Factory } from "../../../src/core/ui_components/UI_Factory";
-import { NodeListPanelId } from "../../../src/plugins/canvas_plugins/node_editor/registerNodeListPanel";
+import { NodeListPanelId } from "../../../src/plugins/sidepanel_plugins/node_selector/registerNodeSelectorPlugin";
 import { Point } from "../../../src/utils/geometry/shapes/Point";
 import { ModelDumper } from "./common/ModelDumper";
 import expect from 'expect';
-import { NodeEditorSettingsControllers } from "../../../src/plugins/canvas_plugins/node_editor/NodeEditorSettingsControllers";
+import { NodeSelectorController } from "../../../src/plugins/sidepanel_plugins/node_selector/NodeSelectorController";
 
 When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
     const nodeListPanel = this.registry.ui.panel.getPanel(NodeListPanelId);
-    const nodeEditorSettingsController = <NodeEditorSettingsControllers> nodeListPanel.paramController;
+    const nodeEditorSettingsController = <NodeSelectorController> nodeListPanel.paramController;
     nodeEditorSettingsController.dragNode.onDndStart(nodeType);
 
     const element = UI_Factory.listItem(<UI_Container> { children: [] }, { key: nodeType, controller: nodeListPanel.controller, dropTargetPlugin: canvasPanel});

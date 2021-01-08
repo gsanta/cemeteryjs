@@ -3,10 +3,10 @@ import { AbstractCanvasPanel } from "../../../../src/core/plugin/AbstractCanvasP
 import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
 import { FormController } from "../../../../src/core/plugin/controller/FormController";
 import { UI_Element } from "../../../../src/core/ui_components/elements/UI_Element";
-import { MoveAxisToolId } from "../../../../src/plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
-import { ScaleAxisToolId } from "../../../../src/plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
-import { MoveAxisViewType } from "../../../../src/plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
-import { ScaleAxisViewType } from "../../../../src/plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
+import { MoveAxisToolId } from "../../../../src/plugins/canvas_plugins/scene_editor/controllers/tools/MoveAxisTool";
+import { ScaleAxisToolId } from "../../../../src/plugins/canvas_plugins/scene_editor/controllers/tools/ScaleAxisTool";
+import { MoveAxisViewType } from "../../../../src/plugins/canvas_plugins/scene_editor/models/views/edit/MoveAxisView";
+import { ScaleAxisViewType } from "../../../../src/plugins/canvas_plugins/scene_editor/models/views/edit/ScaleAxisView";
 
 export interface FakeUIElementConfig {
     key?: string;

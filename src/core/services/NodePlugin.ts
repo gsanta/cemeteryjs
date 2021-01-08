@@ -1,6 +1,6 @@
-import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/nodes/animation_node/AnimationNode';
-import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode';
-import { NodeView, NodeViewType } from '../../plugins/canvas_plugins/node_editor/views/NodeView';
+import { AnimationNodeType } from '../../plugins/canvas_plugins/node_editor/models/nodes/AnimationNode';
+import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/models/nodes/RouteNode';
+import { NodeView, NodeViewType } from '../../plugins/canvas_plugins/node_editor/models/views/NodeView';
 import { NodeObj } from '../models/objs/node_obj/NodeObj';
 import { View } from '../models/views/View';
 import { FormController } from '../plugin/controller/FormController';

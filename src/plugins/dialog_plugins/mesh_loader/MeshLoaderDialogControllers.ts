@@ -5,7 +5,7 @@ import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { ApplicationError } from "../../../core/services/ErrorService";
 import { TreeController, TreeData } from "../../../core/ui_components/elements/complex/tree/TreeController";
-import { MeshView } from "../../canvas_plugins/scene_editor/views/MeshView";
+import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
 import { MeshLoaderPreviewCanvas } from "./MeshLoaderPreviewCanvas";
 
 export class MeshLoaderDialogControllers extends ParamControllers {

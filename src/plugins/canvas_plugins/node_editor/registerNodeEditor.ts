@@ -1,7 +1,7 @@
 
 
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
-import { NodeConnectionViewFactory, NodeConnectionView, NodeConnectionViewType } from "./views/NodeConnectionView";
+import { NodeConnectionViewFactory, NodeConnectionView, NodeConnectionViewType } from "./models/views/NodeConnectionView";
 import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
@@ -12,8 +12,8 @@ import { SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { NodeEditorRenderer } from "./NodeEditorRenderer";
-import { JoinTool } from "./tools/JoinTool";
+import { NodeEditorRenderer } from "./renderers/NodeEditorRenderer";
+import { JoinTool } from "./controllers/tools/JoinTool";
 
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 

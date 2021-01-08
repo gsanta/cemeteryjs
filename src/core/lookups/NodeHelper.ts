@@ -1,4 +1,4 @@
-import { AbstractNodeFactory } from "../../plugins/canvas_plugins/node_editor/nodes/AbstractNode";
+import { AbstractNodeFactory } from "../../plugins/canvas_plugins/node_editor/api/AbstractNode";
 import { NodeObj } from "../models/objs/node_obj/NodeObj";
 import { Registry } from "../Registry";
 import { NodeGraph } from "../services/node/NodeGraph";

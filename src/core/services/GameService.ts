@@ -1,4 +1,4 @@
-import { RouteNodeObjType } from "../../plugins/canvas_plugins/node_editor/nodes/route_node/RouteNode";
+import { RouteNodeObjType } from "../../plugins/canvas_plugins/node_editor/models/nodes/RouteNode";
 import { NodeObj, NodeParams } from "../models/objs/node_obj/NodeObj";
 import { NodeParam } from "../models/objs/node_obj/NodeParam";
 import { Registry } from "../Registry";

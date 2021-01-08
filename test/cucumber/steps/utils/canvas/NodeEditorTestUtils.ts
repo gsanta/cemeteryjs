@@ -1,6 +1,6 @@
 import { TableDefinition } from "cucumber";
 import { Registry } from "../../../../../src/core/Registry";
-import { NodeView } from "../../../../../src/plugins/canvas_plugins/node_editor/views/NodeView";
+import { NodeView } from "../../../../../src/plugins/canvas_plugins/node_editor/models/views/NodeView";
 import { Point } from "../../../../../src/utils/geometry/shapes/Point";
 import { collectViewTableProps, ViewTableProp } from "../../common/viewTestUtils";
 

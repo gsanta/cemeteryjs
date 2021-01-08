@@ -1,8 +1,8 @@
 import Split from 'split.js';
 import { GameViewerPanelId } from '../../plugins/canvas_plugins/game_viewer/registerGameViewer';
 import { NodeEditorPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeEditor';
-import { NodeListPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeListPanel';
-import { ObjectSettingsPanelId } from '../../plugins/canvas_plugins/scene_editor/registerObjectSettingsPanel';
+import { NodeListPanelId } from '../../plugins/sidepanel_plugins/node_selector/registerNodeSelectorPlugin';
+import { ObjectSettingsPanelId } from '../../plugins/sidepanel_plugins/scene_obj_settings/registerObjSettings';
 import { SceneEditorPanelId } from '../../plugins/canvas_plugins/scene_editor/registerSceneEditor';
 import { FileSettingsPanelId } from '../../plugins/sidepanel_plugins/file_settings/registerFileSettingsPanel';
 import { LayoutSettingsPanelId } from '../../plugins/sidepanel_plugins/layout_settings/registerLayoutSettingsPanel';

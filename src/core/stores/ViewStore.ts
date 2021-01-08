@@ -1,10 +1,10 @@
-import { MoveAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/MoveAxisView";
-import { RotateAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/RotateAxisView";
-import { ScaleAxisViewType } from "../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/views/ScaleAxisView";
-import { NodeViewType } from "../../plugins/canvas_plugins/node_editor/views/NodeView";
-import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/views/LightView';
-import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/views/MeshView";
-import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/views/SpriteView";
+import { MoveAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/MoveAxisView";
+import { RotateAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/RotateAxisView";
+import { ScaleAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/ScaleAxisView";
+import { NodeViewType } from "../../plugins/canvas_plugins/node_editor/models/views/NodeView";
+import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/models/views/LightView';
+import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/MeshView";
+import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/SpriteView";
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";

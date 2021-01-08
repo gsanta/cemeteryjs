@@ -1,4 +1,4 @@
- import { NodeView, NodeViewType } from '../../../plugins/canvas_plugins/node_editor/views/NodeView';
+ import { NodeView, NodeViewType } from '../../../plugins/canvas_plugins/node_editor/models/views/NodeView';
 import { NodeObj } from '../../models/objs/node_obj/NodeObj';
 import { Registry } from '../../Registry';
 

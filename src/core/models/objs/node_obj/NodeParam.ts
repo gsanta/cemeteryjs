@@ -1,4 +1,4 @@
-import { INodeListener } from "../../../../plugins/canvas_plugins/node_editor/node/INodeListener";
+import { INodeListener } from "../../../../plugins/canvas_plugins/node_editor/api/INodeListener";
 import { PropController } from "../../../plugin/controller/FormController";
 import { Registry } from "../../../Registry";
 import { NodeObj } from "./NodeObj";

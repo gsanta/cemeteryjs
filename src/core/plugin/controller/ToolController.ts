@@ -7,17 +7,17 @@ import { Tool } from "../tools/Tool";
 import { View } from "../../models/views/View";
 import { PropController, PropContext } from "./FormController";
 import { SelectToolId } from "../tools/SelectTool";
-import { MeshToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/MeshTool";
+import { MeshToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/MeshTool";
 import { DeleteToolId } from "../tools/DeleteTool";
 import { CameraToolId } from "../tools/CameraTool";
-import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SpriteTool";
-import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/PathTool";
-import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/CubeTool";
-import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/SphereTool";
-import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/ScaleAxisTool";
-import { MoveAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/MoveAxisTool";
-import { LightToolId } from "../../../plugins/canvas_plugins/scene_editor/tools/LightTool";
-import { RotateAxisToolId } from "../../../plugins/canvas_plugins/canvas_utility_plugins/canvas_mesh_transformations/tools/RotateAxisTool";
+import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/SpriteTool";
+import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/PathTool";
+import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/CubeTool";
+import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/SphereTool";
+import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/ScaleAxisTool";
+import { MoveAxisToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/MoveAxisTool";
+import { LightToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/LightTool";
+import { RotateAxisToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/RotateAxisTool";
 
 export class CommonToolController extends PropController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }

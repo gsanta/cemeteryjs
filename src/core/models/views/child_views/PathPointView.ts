@@ -2,7 +2,7 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
 import { PathObj } from "../../objs/PathObj";
-import { PathView } from "../../../../plugins/canvas_plugins/scene_editor/views/PathView";
+import { PathView } from "../../../../plugins/canvas_plugins/scene_editor/models/views/PathView";
 import { View, ViewJson } from "../View";
 import { ContainedView } from "./ChildView";
 

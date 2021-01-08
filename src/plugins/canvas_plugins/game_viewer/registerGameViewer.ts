@@ -11,10 +11,9 @@ import { Registry } from "../../../core/Registry";
 import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
 import { AxisGizmo } from "../../canvas/gizmos/axis_gizmo/AxisGizmo";
 import { onScreenCastGizmoKeyDown, ScreenCastKeysGizmoRenderer } from "../../canvas/gizmos/screencast_keys_gizmo/ScreenCastKeysGizmo";
-import { GameViewerToolController, StopController } from "./GameViewerControllers";
-import { EditModeController, InteractionModeController, PlayController } from "./GameViewerProps";
-import { GameViewerRenderer } from "./GameViewerRenderer";
-import { GameTool } from "./tools/GameTool";
+import { EditModeController, GameViewerToolController, InteractionModeController, PlayController, StopController } from "./controllers/GameViewerToolbarController";
+import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
+import { GameTool } from "./controllers/tools/GameTool";
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPanelId = 'game-viewer'; 

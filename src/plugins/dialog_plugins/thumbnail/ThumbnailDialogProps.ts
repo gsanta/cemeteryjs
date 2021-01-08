@@ -1,6 +1,6 @@
 import { Tools } from "babylonjs";
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
-import { MeshView } from "../../canvas_plugins/scene_editor/views/MeshView";
+import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
 import { UI_Region } from "../../../core/plugin/UI_Panel";
