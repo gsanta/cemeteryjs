@@ -14,6 +14,7 @@ import { Registry } from "../../../core/Registry";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { NodeEditorRenderer } from "./renderers/NodeEditorRenderer";
 import { JoinTool } from "./controllers/tools/JoinTool";
+import { NodeEditorToolbarController } from "./controllers/NodeEditorToolbarController";
 
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
@@ -40,10 +41,12 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new JoinTool(canvas, registry.data.view.node, registry)
     ];
 
-    canvas.setController(new FormController(canvas, registry, propControllers));
+    const controller = new NodeEditorToolbarController(registry);
+
+    canvas.setController(new FormController(canvas, registry, [], controller));
     canvas.setCamera(cameraInitializer(NodeEditorPanelId, registry));
     canvas.setViewStore(registry.data.view.node);
-    canvas.renderer = new NodeEditorRenderer(registry, canvas);
+    canvas.renderer = new NodeEditorRenderer(registry, canvas, controller);
     tools.forEach(tool => canvas.addTool(tool));
 
     registry.data.view.node.registerViewType(NodeConnectionViewType, new NodeConnectionViewFactory());

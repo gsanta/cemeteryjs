@@ -1,9 +1,8 @@
 
 
-import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { FormController } from "../../../core/plugin/controller/FormController";
-import { CommonToolController } from "../../../core/plugin/controller/ToolController";
 import { GizmoPlugin } from "../../../core/plugin/IGizmo";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
@@ -11,9 +10,9 @@ import { Registry } from "../../../core/Registry";
 import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
 import { AxisGizmo } from "../../canvas/gizmos/axis_gizmo/AxisGizmo";
 import { onScreenCastGizmoKeyDown, ScreenCastKeysGizmoRenderer } from "../../canvas/gizmos/screencast_keys_gizmo/ScreenCastKeysGizmo";
-import { EditModeController, GameViewerToolController, InteractionModeController, PlayController, StopController } from "./controllers/GameViewerToolbarController";
-import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
+import { GameViewerToolbarController } from "./controllers/GameViewerToolbarController";
 import { GameTool } from "./controllers/tools/GameTool";
+import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPanelId = 'game-viewer'; 
@@ -49,25 +48,15 @@ function registerGizmos(canvas: AbstractCanvasPanel, registry: Registry) {
 function createCanvas(registry: Registry): AbstractCanvasPanel {
     const canvas = new Canvas3dPanel(registry, UI_Region.Canvas2, GameViewerPanelId, 'Game viewer');
 
-    const propControllers = [
-        new ZoomInController(registry),
-        new ZoomOutController(registry),
-        new PlayController(registry),
-        new StopController(registry),
-        new CommonToolController(registry),
-        new GameViewerToolController(registry),
-        new EditModeController(registry),
-        new InteractionModeController(registry),
-    ];
-
     const tools = [
         new GameTool(canvas, registry),
         new CameraTool(canvas, registry)
     ];
     
-    canvas.setController(new FormController(canvas, registry, propControllers));
+    const controller = new GameViewerToolbarController(registry);
+    canvas.setController(new FormController(canvas, registry, [], controller));
     canvas.setCamera(registry.engine.getCamera());
-    canvas.renderer = new GameViewerRenderer(registry, canvas);
+    canvas.renderer = new GameViewerRenderer(canvas, controller);
     tools.forEach(tool => canvas.addTool(tool));
 
     canvas.onMounted(() => {

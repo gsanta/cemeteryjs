@@ -6,7 +6,6 @@ import { colors } from "../../../../core/ui_components/react/styles";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { NodeConnectionView, NodeConnectionViewType } from "../models/views/NodeConnectionView";
 
-
 export class NodeConnectionRenderer implements IRenderer<UI_SvgCanvas> {
     private registry: Registry;
     private arrowRedRenderer: ArrowMarkerRenderer;

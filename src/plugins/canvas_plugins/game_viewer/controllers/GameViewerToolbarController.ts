@@ -1,5 +1,7 @@
-import { AbstractCanvasPanel, InteractionMode } from "../../../../core/plugin/AbstractCanvasPanel";
-import { PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { AbstractCanvasPanel, InteractionMode, ZoomInController, ZoomOutController } from "../../../../core/plugin/AbstractCanvasPanel";
+import { ParamControllers, PropContext, PropController } from "../../../../core/plugin/controller/FormController";
+import { CommonToolController } from "../../../../core/plugin/controller/ToolController";
+import { Registry } from "../../../../core/Registry";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { GameToolId } from "./tools/GameTool";
 
@@ -8,6 +10,27 @@ export enum GameViewerProps {
     Stop = 'Stop',
     EditMode = 'EditMode',
     ExecutionMode = 'ExecutionMode'
+}
+
+export class GameViewerToolbarController extends ParamControllers {
+
+    constructor(registry: Registry) {
+        super();
+
+        this.editMode = new EditModeController(registry);
+        this.interactionMode = new InteractionModeController(registry);
+        this.gameViewerTool = new GameViewerToolController(registry);
+        this.commonTool = new CommonToolController(registry);
+        this.zoomIn = new ZoomInController(registry);
+        this.zoomOut = new ZoomOutController(registry);
+    }
+    
+    editMode: PropController;
+    interactionMode: PropController;
+    gameViewerTool: PropController;
+    commonTool: PropController;
+    zoomIn: PropController;
+    zoomOut: PropController;
 }
 
 export class PlayController extends PropController {
@@ -19,7 +42,7 @@ export class PlayController extends PropController {
     }
 }
 
-export class EditModeController extends PropController {
+class EditModeController extends PropController {
     acceptedProps() { return [GameViewerProps.EditMode]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -28,7 +51,7 @@ export class EditModeController extends PropController {
     }
 }
 
-export class InteractionModeController extends PropController {
+class InteractionModeController extends PropController {
     acceptedProps() { return [GameViewerProps.ExecutionMode]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -37,16 +60,7 @@ export class InteractionModeController extends PropController {
     }
 }
 
-export class StopController extends PropController {
-    acceptedProps() { return [GameViewerProps.Stop]; }
-
-    click(context: PropContext) {
-        context.registry.stores.game.gameState = 'paused';
-        context.registry.services.render.reRenderAll();
-    }
-}
-
-export class GameViewerToolController extends PropController<any> {
+class GameViewerToolController extends PropController<any> {
     acceptedProps() { return [GameToolId]; }
 
     click(context: PropContext, element: UI_Element) {

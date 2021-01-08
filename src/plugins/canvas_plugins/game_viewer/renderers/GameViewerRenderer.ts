@@ -1,17 +1,16 @@
 import { AbstractCanvasPanel, InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
-import { Registry } from "../../../../core/Registry";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
-import { GameViewerProps } from "../controllers/GameViewerToolbarController";
+import { GameViewerProps, GameViewerToolbarController } from "../controllers/GameViewerToolbarController";
 
 export class GameViewerRenderer implements ICanvasRenderer {
     private canvas: AbstractCanvasPanel;
-    private registry: Registry;
+    private controllers: GameViewerToolbarController;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
+    constructor(canvas: AbstractCanvasPanel, controllers: GameViewerToolbarController) {
         this.canvas = canvas;
-        this.registry = registry;
+        this.controllers = controllers;
     }
 
     renderInto(htmlCanvas: UI_HtmlCanvas): void { 
@@ -20,6 +19,7 @@ export class GameViewerRenderer implements ICanvasRenderer {
         const toolbar = htmlCanvas.toolbar();
 
         let tool = toolbar.tool({key: CameraToolId});
+        tool.paramController = this.controllers.commonTool;
         tool.isActive = selectedTool.id === CameraToolId;
         tool.uniqueId = `${CameraToolId}-${this.canvas.id}`;
         tool.icon = 'pan';
@@ -33,16 +33,19 @@ export class GameViewerRenderer implements ICanvasRenderer {
         separator.placement = 'left';
 
         let actionIcon = toolbar.actionIcon({key: ZoomInProp, uniqueId: `${ZoomInProp}-${this.canvas.id}`});
+        actionIcon.paramController = this.controllers.zoomIn;
         actionIcon.icon = 'zoom-in';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom in';
 
         actionIcon = toolbar.actionIcon({key: ZoomOutProp, uniqueId: `${ZoomOutProp}-${this.canvas.id}`});
+        actionIcon.paramController = this.controllers.zoomOut;
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
 
         tool = toolbar.tool({key: GameViewerProps.EditMode});
+        tool.paramController = this.controllers.editMode;
         tool.uniqueId = `${GameViewerProps.EditMode}-${this.canvas.id}`;
         tool.isActive = this.canvas.interactionMode === InteractionMode.Edit;
         tool.icon = 'edit-mode';
@@ -51,6 +54,7 @@ export class GameViewerRenderer implements ICanvasRenderer {
         tooltip.label = 'Edit mode';
 
         tool = toolbar.tool({key: GameViewerProps.ExecutionMode});
+        tool.paramController = this.controllers.interactionMode;
         tool.uniqueId = `${GameViewerProps.ExecutionMode}-${this.canvas.id}`;
         tool.isActive = this.canvas.interactionMode === InteractionMode.Execution;
         tool.icon = 'games';
@@ -60,21 +64,6 @@ export class GameViewerRenderer implements ICanvasRenderer {
 
         separator = toolbar.iconSeparator();
         separator.placement = 'middle';
-
-        actionIcon = toolbar.actionIcon({key: GameViewerProps.Play, uniqueId: `${GameViewerProps.Play}-${this.canvas.id}`});
-        actionIcon.icon = 'play';
-        actionIcon.placement = 'middle';
-        actionIcon.isActivated = this.registry.stores.game.gameState === 'running';
-        tooltip = actionIcon.tooltip();
-        tooltip.label = 'Play';
-
-        actionIcon = toolbar.actionIcon({key: GameViewerProps.Stop, uniqueId: `${GameViewerProps.Stop}-${this.canvas.id}`});
-        actionIcon.icon = 'stop';
-        actionIcon.placement = 'middle';
-        actionIcon.isActivated = this.registry.stores.game.gameState === 'paused';
-        tooltip = actionIcon.tooltip();
-        tooltip.label = 'Stop';
-
 
         const gizmoLayer = htmlCanvas.gizmoLayer({});
         
