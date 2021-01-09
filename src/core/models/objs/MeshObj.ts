@@ -4,6 +4,7 @@ import { Registry } from '../../Registry';
 import { AssetObj } from './AssetObj';
 import { IGameObj } from './IGameObj';
 import { IObj, ObjFactoryAdapter, ObjJson } from './IObj';
+import { PhysicsImpostorObj } from './PhysicsImpostorObj';
 
 export const MeshObjType = 'mesh-obj';
 
@@ -83,6 +84,7 @@ export class MeshObj implements IGameObj {
     color: string;
     modelObj: AssetObj;
     textureObj: AssetObj;
+    physicsImpostorObj: PhysicsImpostorObj;
     routeId: string;
 
     meshAdapter: IMeshAdapter;

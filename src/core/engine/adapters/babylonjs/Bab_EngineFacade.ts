@@ -1,4 +1,4 @@
-import { Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
+import { CannonJSPlugin, Color3, Engine, HemisphericLight, Light, Scene, Vector3 } from "babylonjs";
 import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
 import { Bab_LightAdapter } from "./Bab_LightAdapter";
@@ -11,6 +11,7 @@ import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
 import { Bab_Sprites } from "./Bab_Sprites";
 import { IAnimationAdapter } from "../../IAnimationAdapter";
 import { Bab_AnimationAdapter } from "./Bab_AnimationAdapter";
+import { Bab_PhysicsAdapter } from "./Bab_PhysicsAdapter";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -27,6 +28,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     meshFactory: Bab_MeshFactory;
     lights: Bab_LightAdapter;
     rays: Bab_RayCasterAdapter;
+    physics: Bab_PhysicsAdapter;
     animatons: IAnimationAdapter;
 
     private renderLoops: (() => void)[] = [];
@@ -44,6 +46,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.meshFactory = new Bab_MeshFactory(this.registry, this);
         this.lights = new Bab_LightAdapter(this.registry, this);
         this.rays = new Bab_RayCasterAdapter(this.registry, this);
+        this.physics = new Bab_PhysicsAdapter(this.registry, this);
         this.animatons = new Bab_AnimationAdapter(this.registry, this);
     }
 
@@ -53,7 +56,12 @@ export class Bab_EngineFacade implements IEngineFacade {
 
     setup(canvas: HTMLCanvasElement) {
         this.engine = new Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+        const gravityVector = new Vector3(0,-9.81, 0);
+        const physicsPlugin = new CannonJSPlugin();
+
         this.scene = new Scene(this.engine);
+        this.scene.enablePhysics(gravityVector, physicsPlugin);
         this.engine.getInputElement = () => canvas;
         this.camera.setEngine(this);
         this.light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);

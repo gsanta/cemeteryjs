@@ -4,7 +4,7 @@ import { LightSettingsRenderer } from "./renderers/LightSettingsRenderer";
 import { LightViewType } from "../../canvas_plugins/scene_editor/models/views/LightView";
 import { LightSettingsController } from "./controllers/LightSettingsController";
 import { MeshSettingsRenderer } from "./renderers/MeshSettingsRenderer";
-import { MeshViewType } from "../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshView, MeshViewType } from "../../canvas_plugins/scene_editor/models/views/MeshView";
 import { MeshSettingsController } from "./controllers/MeshSettingsController";
 import { SpriteSettingsRenderer } from "./renderers/SpriteSettingsRenderer";
 import { SpriteViewType } from "../../canvas_plugins/scene_editor/models/views/SpriteView";
@@ -33,7 +33,7 @@ function createPanel(registry: Registry): UI_Panel {
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {
                 case MeshViewType:
-                    const meshSettingsController = new MeshSettingsController(registry)
+                    const meshSettingsController = new MeshSettingsController(registry, selectedViews[0] as MeshView);
                     panel.paramController = meshSettingsController;
                     panel.renderer = new MeshSettingsRenderer(registry, meshSettingsController);
                 break;

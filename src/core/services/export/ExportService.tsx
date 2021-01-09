@@ -55,5 +55,6 @@ export class ExportService {
         appJson.objs = {};
         this.registry.stores.objStore.exportInto(appJson);
         this.registry.stores.assetStore.exportInto(appJson);
+        this.registry.data.obj.feature.exportInto(appJson);
     }
 }

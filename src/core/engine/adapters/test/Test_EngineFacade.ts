@@ -12,6 +12,7 @@ import { ISpriteLoaderAdapter } from "../../ISpriteLoaderAdapter";
 import { Test_AnimationAdapter } from "./Test_AnimatonAdapter";
 import { Test_LightAdapter } from "./Test_LightAdapter";
 import { Test_MeshAdapter } from "./Test_MeshAdapter";
+import { Test_PhysicsAdapter } from "./Test_PhysicsAdapter";
 import { Test_RayCasterAdapter } from "./Test_RayCasterAdapter";
 
 export class Test_EngineFacade implements IEngineFacade {
@@ -26,6 +27,7 @@ export class Test_EngineFacade implements IEngineFacade {
     meshFactory: IMeshFactory;
     lights: ILightAdapter;
     rays: IRayCasterAdapter;
+    physics: Test_PhysicsAdapter;
     animatons: IAnimationAdapter;
 
     constructor(registry: Registry) {
@@ -34,6 +36,7 @@ export class Test_EngineFacade implements IEngineFacade {
         this.lights = new Test_LightAdapter(this.registry, this);
         this.meshes = new Test_MeshAdapter(this.registry, this);
         this.rays = new Test_RayCasterAdapter();
+        this.physics = new Test_PhysicsAdapter();
         this.animatons = new Test_AnimationAdapter();
     }
 

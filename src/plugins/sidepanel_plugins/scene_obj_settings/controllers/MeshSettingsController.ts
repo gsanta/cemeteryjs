@@ -1,6 +1,6 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
-import { MeshBoxConfig } from '../../../../core/models/objs/MeshObj';
+import { MeshBoxConfig, MeshObj } from '../../../../core/models/objs/MeshObj';
 import { ParamControllers, PropController } from '../../../../core/plugin/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
@@ -9,16 +9,19 @@ import { toDegree, toRadian } from '../../../../utils/geometry/Measurements';
 import { MeshLoaderDialogId } from '../../../dialog_plugins/mesh_loader/registerMeshLoaderDialog';
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
 import { MeshView } from '../../../canvas_plugins/scene_editor/models/views/MeshView';
+import { PhysicsImpostorObj } from '../../../../core/models/objs/PhysicsImpostorObj';
 
 export class MeshSettingsController extends ParamControllers {
-    constructor(registry: Registry) {
+    constructor(registry: Registry, meshView: MeshView) {
         super();
+
+        const meshObj = meshView.getObj();
 
         this.meshId = new MeshIdController(registry);
         this.layer = new LayerController(registry);
-        this.scaleX = new ScaleController(registry, CanvasAxis.X);
-        this.scaleY = new ScaleController(registry, CanvasAxis.Y);
-        this.scaleZ = new ScaleController(registry, CanvasAxis.Z);
+        this.scaleX = new ScaleController(registry, meshObj, CanvasAxis.X);
+        this.scaleY = new ScaleController(registry, meshObj, CanvasAxis.Y);
+        this.scaleZ = new ScaleController(registry, meshObj, CanvasAxis.Z);
         this.rotateX = new RotationController(registry, CanvasAxis.X);
         this.rotateY = new RotationController(registry, CanvasAxis.Y);
         this.rotateZ = new RotationController(registry, CanvasAxis.Z);
@@ -35,6 +38,7 @@ export class MeshSettingsController extends ParamControllers {
         this.color = new ColorController(registry);
         this.visibility = new MeshVisibilityController(registry);
         this.name = new MeshNameController(registry);
+        this.physics = new PhysicsController(registry, meshObj);
     }
 
     meshId: MeshIdController;
@@ -58,6 +62,7 @@ export class MeshSettingsController extends ParamControllers {
     color: ColorController;
     visibility: MeshVisibilityController;
     name: MeshNameController;
+    physics: PhysicsController;
 }
 
 export class MeshIdController extends PropController<string> {
@@ -98,18 +103,19 @@ export class LayerController extends PropController<number> {
 export class ScaleController extends PropController {
     private axis: CanvasAxis;
     private tempVal: string;
+    private meshObj: MeshObj;
 
-    constructor(registry: Registry, axis: CanvasAxis) {
+    constructor(registry: Registry, meshObj: MeshObj, axis: CanvasAxis) {
         super(registry);
         this.axis = axis;
+        this.meshObj = meshObj;
     }
 
     val() {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-            return CanvasAxis.getAxisVal(meshView.getObj().getScale(), this.axis);
+            return CanvasAxis.getAxisVal(this.meshObj.getScale(), this.axis);
         }
     }
 
@@ -119,14 +125,12 @@ export class ScaleController extends PropController {
     }
 
     blur() {
-        const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-        
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                const scale = meshView.getObj().getScale();
+                const scale = this.meshObj.getScale();
                 const axisScale = parseFloat(this.tempVal);
                 CanvasAxis.setAxisVal(scale, this.axis, axisScale);
-                meshView.getObj().setScale(scale);
+                this.meshObj.setScale(scale);
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -294,6 +298,21 @@ export class ModelController extends PropController {
     click() {
         const dialog = this.registry.ui.panel.getPanel(MeshLoaderDialogId);
         this.registry.ui.helper.setDialogPanel(dialog);
+        this.registry.services.render.reRenderAll();
+    }
+}
+
+export class PhysicsController extends PropController {
+    private meshObj: MeshObj;
+
+    constructor(registry: Registry, meshObj: MeshObj) {
+        super(registry);
+        this.meshObj = meshObj;
+    }
+
+    click() {
+        this.meshObj.physicsImpostorObj = new PhysicsImpostorObj(this.registry.engine.physics);
+        this.registry.engine.physics.applyImpostor(this.meshObj.physicsImpostorObj, this.meshObj);
         this.registry.services.render.reRenderAll();
     }
 }

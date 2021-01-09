@@ -1,10 +1,9 @@
 import { Registry } from "../Registry";
 import { AssetStore } from "./AssetStore";
-import { LevelStore } from "./LevelStore";
+import { GameStore } from "./GameStore";
 import { IdGenerator } from "./IdGenerator";
-import { ViewStore } from "./ViewStore";
+import { LevelStore } from "./LevelStore";
 import { ObjStore } from "./ObjStore";
-import { GameState, GameStore } from "./GameStore";
 
 export const SceneStoreId = 'scene-store';
 export const SpriteStoreId = 'sprite-store';

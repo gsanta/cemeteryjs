@@ -141,6 +141,12 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         modelButton.label = 'Load model';
         modelButton.width = '200px';
 
+        row = accordion.row({ key: 'physics-row' });
+        const physicsButton = row.button('physics');
+        physicsButton.paramController = this.controller.physics;
+        physicsButton.label = 'Add impostor';
+        physicsButton.width = '200px';
+
         row = accordion.row({ key: 'texture-row' });
         const textureTextField = row.textField({ key: 'texture' });
         textureTextField.paramController = this.controller.texture;

@@ -8,6 +8,7 @@ import { Wrap_LightAdapter } from "./Wrap_LightAdapter";
 import { Wrap_Meshes } from "./Wrap_MeshAdapter";
 import { Wrap_MeshFactory } from "./Wrap_MeshFactory";
 import { Wrap_MeshLoader } from "./Wrap_MeshLoader";
+import { Wrap_PhysicsAdapter } from "./Wrap_PhysicsAdapter";
 import { Wrap_RayCasterAdapter } from "./Wrap_RayCasterAdapter";
 import { Wrap_SpriteLoader } from "./Wrap_SpriteLoader";
 import { Wrap_Sprites } from "./Wrap_Sprites";
@@ -24,6 +25,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     meshFactory: Wrap_MeshFactory;
     lights: Wrap_LightAdapter;
     rays: Wrap_RayCasterAdapter;
+    physics: Wrap_PhysicsAdapter;
     animatons: IAnimationAdapter;
 
     engines: IEngineFacade[] = [];
@@ -48,6 +50,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
         this.meshFactory = new Wrap_MeshFactory(this.registry, this);
         this.lights = new Wrap_LightAdapter(this.registry, this);
         this.rays = new Wrap_RayCasterAdapter(this.registry, this);
+        this.physics = new Wrap_PhysicsAdapter(this);
         this.animatons = new Wrap_AnimationAdapter(this.registry, this);
     }
 
