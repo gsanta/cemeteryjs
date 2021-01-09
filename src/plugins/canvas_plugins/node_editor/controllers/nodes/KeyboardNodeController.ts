@@ -1,16 +1,17 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
 import { NodeView } from "../../models/views/NodeView";
 import { KeyboardNodeParams } from "../../models/nodes/KeyboardNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
 export const KEY_REGEX = /key(\d*)/;
 
 // const modifierKeys = [Keyboard.Shift[Keyboard.Shift], Keyboard.Ctrl[Keyboard.Ctrl]];
 
-export class KeyboardNodeControllers extends ParamControllers {
+export class KeyboardNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeView: NodeView) {
         super();
@@ -23,7 +24,7 @@ export class KeyboardNodeControllers extends ParamControllers {
     modifier: KeyControl;
 }
 
-export class KeyControl extends PropController {
+export class KeyControl extends ParamController {
     private nodeObj: NodeObj<KeyboardNodeParams>;
     private paramName: string;
     private keys: string[] = [];

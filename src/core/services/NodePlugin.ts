@@ -3,7 +3,7 @@ import { RouteNodeObjType } from '../../plugins/canvas_plugins/node_editor/model
 import { NodeView, NodeViewType } from '../../plugins/canvas_plugins/node_editor/models/views/NodeView';
 import { NodeObj } from '../models/objs/node_obj/NodeObj';
 import { View } from '../models/views/View';
-import { FormController } from '../plugin/controller/FormController';
+import { FormController } from '../controller/FormController';
 import { Registry } from '../Registry';
 import { GameState, GameStoreHook } from '../stores/GameStore';
 import { EmptyViewStoreHook } from '../stores/ViewStore';

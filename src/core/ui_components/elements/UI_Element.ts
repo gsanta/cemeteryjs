@@ -1,6 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
-import { FormController, ParamControllers, PropController } from '../../plugin/controller/FormController';
+import { FormController, ParamController } from '../../controller/FormController';
 import { UI_Panel } from '../../plugin/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
@@ -33,13 +33,13 @@ export interface UI_ElementConfig {
     controller?: FormController;
 }
 
-export interface UI_ControlledElementConfig<C extends PropController> {
+export interface UI_ControlledElementConfig<C extends ParamController> {
     key?: string;
     controller: C;
     parent: UI_Element;
 }
 
-export abstract class UI_Element<C extends PropController = any> {
+export abstract class UI_Element<C extends ParamController = any> {
     elementType: UI_ElementType;
     readonly key: string;
 

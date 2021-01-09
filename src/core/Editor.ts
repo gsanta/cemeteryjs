@@ -26,6 +26,7 @@ import { Registry } from './Registry';
 import { NodeGraphHook } from './services/NodePlugin';
 import { ObjLifeCycleHook } from './stores/ObjStore';
 import { AxisControlHook, ViewLifeCycleHook } from './stores/ViewStore';
+import { registerPhysicsImpostorDialog } from '../plugins/dialog_plugins/physics_impostor/registerPhysicsImpostorDialog';
 
 export class Editor {
     registry: Registry;
@@ -59,6 +60,7 @@ export class Editor {
         registerThumbnaildialog(this.registry);
         registerSpriteSheetManagerDialog(this.registry);
         registerMeshLoaderDialog(this.registry);
+        registerPhysicsImpostorDialog(this.registry);
 
         registerSceneEditor(this.registry);
         registerNodeEditor(this.registry);

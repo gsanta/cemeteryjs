@@ -2,7 +2,7 @@
 
 import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
-import { FormController } from "../../../core/plugin/controller/FormController";
+import { FormController } from "../../../core/controller/FormController";
 import { GizmoPlugin } from "../../../core/plugin/IGizmo";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";

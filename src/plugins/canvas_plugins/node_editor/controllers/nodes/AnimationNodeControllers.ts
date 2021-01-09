@@ -1,11 +1,12 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshController } from "./MeshNodeControllers";
 import { AnimationNodeParams } from "../../models/nodes/AnimationNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class AnimationNodeControllers extends ParamControllers {
+export class AnimationNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -19,7 +20,7 @@ export class AnimationNodeControllers extends ParamControllers {
     readonly endFrame: EndFrameController;
 }
 
-export class StartFrameController extends PropController<string> {
+export class StartFrameController extends ParamController<string> {
     private nodeObj: NodeObj<AnimationNodeParams>;
     private tempVal: string;
 
@@ -49,7 +50,7 @@ export class StartFrameController extends PropController<string> {
     }
 }
 
-export class EndFrameController extends PropController<string> {
+export class EndFrameController extends ParamController<string> {
     private nodeObj: NodeObj<AnimationNodeParams>;
     private tempVal: string;
 

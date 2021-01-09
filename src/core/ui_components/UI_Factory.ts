@@ -41,7 +41,7 @@ import { UI_Tooltip } from './elements/UI_Tooltip';
 import { UI_ToolbarDropdown } from './elements/toolbar/UI_ToolbarDropdown';
 import { UI_ToolDropdownHeader } from './elements/toolbar/UI_ToolDropdownHeader';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
-import { GlobalControllerProps, PropController } from '../plugin/controller/FormController';
+import { GlobalControllerProps, ParamController } from '../controller/FormController';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { UI_PopupMultiSelect } from './elements/UI_PopupMultiSelect';
 import { UI_Tree } from './elements/complex/tree/UI_Tree';

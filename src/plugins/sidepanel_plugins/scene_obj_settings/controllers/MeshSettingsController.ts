@@ -1,7 +1,7 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { MeshBoxConfig, MeshObj } from '../../../../core/models/objs/MeshObj';
-import { ParamControllers, PropController } from '../../../../core/plugin/controller/FormController';
+import { ParamController } from '../../../../core/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
@@ -10,8 +10,10 @@ import { MeshLoaderDialogId } from '../../../dialog_plugins/mesh_loader/register
 import { ThumbnailDialogPanelId } from '../../../dialog_plugins/thumbnail/registerThumbnailDialog';
 import { MeshView } from '../../../canvas_plugins/scene_editor/models/views/MeshView';
 import { PhysicsImpostorObj } from '../../../../core/models/objs/PhysicsImpostorObj';
+import { PhysicsImpostorDialogDialogId } from '../../../dialog_plugins/physics_impostor/registerPhysicsImpostorDialog';
+import { UIController } from '../../../../core/controller/UIController';
 
-export class MeshSettingsController extends ParamControllers {
+export class MeshSettingsController extends UIController {
     constructor(registry: Registry, meshView: MeshView) {
         super();
 
@@ -38,7 +40,7 @@ export class MeshSettingsController extends ParamControllers {
         this.color = new ColorController(registry);
         this.visibility = new MeshVisibilityController(registry);
         this.name = new MeshNameController(registry);
-        this.physics = new PhysicsController(registry, meshObj);
+        this.physics = new PhysicsController(registry);
     }
 
     meshId: MeshIdController;
@@ -65,7 +67,7 @@ export class MeshSettingsController extends ParamControllers {
     physics: PhysicsController;
 }
 
-export class MeshIdController extends PropController<string> {
+export class MeshIdController extends ParamController<string> {
     private tempVal: string;
 
     val() {
@@ -85,7 +87,7 @@ export class MeshIdController extends PropController<string> {
     }    
 }
 
-export class LayerController extends PropController<number> {
+export class LayerController extends ParamController<number> {
     val() {
         const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
 
@@ -100,7 +102,7 @@ export class LayerController extends PropController<number> {
     }
 }
 
-export class ScaleController extends PropController {
+export class ScaleController extends ParamController {
     private axis: CanvasAxis;
     private tempVal: string;
     private meshObj: MeshObj;
@@ -143,7 +145,7 @@ export class ScaleController extends PropController {
     }
 }
 
-export class RotationController extends PropController {
+export class RotationController extends ParamController {
     private axis: CanvasAxis;
     private tempVal: string;
 
@@ -195,7 +197,7 @@ export class RotationController extends PropController {
     }
 }
 
-export class PositionController extends PropController {
+export class PositionController extends ParamController {
     private axis: CanvasAxis;
     private tempVal: string;
 
@@ -240,7 +242,7 @@ export class PositionController extends PropController {
     }
 }
 
-export class TextureController extends PropController {
+export class TextureController extends ParamController {
     private tempVal: string;
 
     val() {
@@ -272,7 +274,7 @@ export class TextureController extends PropController {
     }
 }
 
-export class ThumbnailController extends PropController {
+export class ThumbnailController extends ParamController {
     click() {
         const dialog = this.registry.ui.panel.getPanel(ThumbnailDialogPanelId);
         this.registry.ui.helper.setDialogPanel(dialog);
@@ -280,7 +282,7 @@ export class ThumbnailController extends PropController {
     }
 }
 
-export class CloneController extends PropController {
+export class CloneController extends ParamController {
     click() {
         const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
         meshView.deepClone(this.registry);
@@ -290,7 +292,7 @@ export class CloneController extends PropController {
     }
 }
 
-export class ModelController extends PropController {
+export class ModelController extends ParamController {
     constructor(registry: Registry) {
         super(registry);
     }
@@ -302,22 +304,19 @@ export class ModelController extends PropController {
     }
 }
 
-export class PhysicsController extends PropController {
-    private meshObj: MeshObj;
-
-    constructor(registry: Registry, meshObj: MeshObj) {
+export class PhysicsController extends ParamController {
+    constructor(registry: Registry) {
         super(registry);
-        this.meshObj = meshObj;
     }
 
     click() {
-        this.meshObj.physicsImpostorObj = new PhysicsImpostorObj(this.registry.engine.physics);
-        this.registry.engine.physics.applyImpostor(this.meshObj.physicsImpostorObj, this.meshObj);
+        const dialog = this.registry.ui.panel.getPanel(PhysicsImpostorDialogDialogId);
+        this.registry.ui.helper.setDialogPanel(dialog);
         this.registry.services.render.reRenderAll();
     }
 }
 
-export class WidthController extends PropController {
+export class WidthController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -359,7 +358,7 @@ export class WidthController extends PropController {
     }
 }
 
-export class HeightController extends PropController {
+export class HeightController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -401,7 +400,7 @@ export class HeightController extends PropController {
     }
 }
 
-export class DepthController extends PropController {
+export class DepthController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -444,7 +443,7 @@ export class DepthController extends PropController {
     }
 }
 
-export class ColorController extends PropController {
+export class ColorController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -484,7 +483,7 @@ export class ColorController extends PropController {
     }
 }
 
-export class MeshVisibilityController extends PropController {
+export class MeshVisibilityController extends ParamController {
     private tempVal: string;
     constructor(registry: Registry) {
         super(registry);
@@ -523,7 +522,7 @@ export class MeshVisibilityController extends PropController {
     }
 }
 
-export class MeshNameController extends PropController<string> {
+export class MeshNameController extends ParamController<string> {
     private tempVal: string;
 
     val() {

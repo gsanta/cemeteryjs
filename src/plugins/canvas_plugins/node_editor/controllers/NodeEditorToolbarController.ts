@@ -1,9 +1,10 @@
 import { ZoomInController, ZoomOutController } from "../../../../core/plugin/AbstractCanvasPanel";
-import { ParamControllers, PropController } from "../../../../core/plugin/controller/FormController";
-import { CommonToolController } from "../../../../core/plugin/controller/ToolController";
+import { ParamController } from "../../../../core/controller/FormController";
+import { CommonToolController } from "../../../../core/controller/ToolController";
 import { Registry } from "../../../../core/Registry";
+import { UIController } from "../../../../core/controller/UIController";
 
-export class NodeEditorToolbarController extends ParamControllers {
+export class NodeEditorToolbarController extends UIController {
 
     constructor(registry: Registry) {
         super();
@@ -13,7 +14,7 @@ export class NodeEditorToolbarController extends ParamControllers {
         this.zoomOut = new ZoomOutController(registry);
     }
     
-    commonTool: PropController;
-    zoomIn: PropController;
-    zoomOut: PropController;
+    commonTool: ParamController;
+    zoomIn: ParamController;
+    zoomOut: ParamController;
 }

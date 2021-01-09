@@ -1,12 +1,13 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
 import { MeshController } from "./MeshNodeControllers";
 import { MoveDirection, MoveNodeParams } from "../../models/nodes/MoveNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class MoveNodeControllers extends ParamControllers {
+export class MoveNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -22,7 +23,7 @@ export class MoveNodeControllers extends ParamControllers {
     readonly key: KeyControl;
 }
 
-export class MeshMoveController extends PropController<string> {
+export class MeshMoveController extends ParamController<string> {
     private nodeObj: NodeObj<MoveNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -45,7 +46,7 @@ export class MeshMoveController extends PropController<string> {
     }
 }
 
-export class MeshSpeedController extends PropController<string> {
+export class MeshSpeedController extends ParamController<string> {
     private nodeObj: NodeObj<MoveNodeParams>;
     private tempVal: string;
 
@@ -74,7 +75,7 @@ export class MeshSpeedController extends PropController<string> {
     }
 }
 
-export class KeyControl extends PropController {
+export class KeyControl extends ParamController {
     private nodeObj: NodeObj<MoveNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

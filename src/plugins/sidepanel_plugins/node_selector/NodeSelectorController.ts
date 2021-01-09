@@ -1,9 +1,10 @@
-import { DragAndDropController, ParamControllers } from "../../../core/plugin/controller/FormController";
+import { DragAndDropController } from "../../../core/controller/FormController";
+import { UIController } from "../../../core/controller/UIController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { NodeView } from "../../canvas_plugins/node_editor/models/views/NodeView";
 
-export class NodeSelectorController extends ParamControllers {
+export class NodeSelectorController extends UIController {
     constructor(registry: Registry) {
         super();
 

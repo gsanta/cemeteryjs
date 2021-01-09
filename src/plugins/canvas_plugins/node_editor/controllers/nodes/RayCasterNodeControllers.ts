@@ -1,11 +1,12 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshController } from "./MeshNodeControllers";
 import { RayCasterNodeParams } from "../../models/nodes/RayCasterNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class RayCasterNodeControllers extends ParamControllers {
+export class RayCasterNodeControllers extends UIController {
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
         this.mesh = new MeshController(registry, nodeObj);
@@ -16,7 +17,7 @@ export class RayCasterNodeControllers extends ParamControllers {
     readonly length: RayLengthController;
 }
 
-export class RayLengthController extends PropController<string> {
+export class RayLengthController extends ParamController<string> {
     private nodeObj: NodeObj<RayCasterNodeParams>;
     private tempVal: string;
 

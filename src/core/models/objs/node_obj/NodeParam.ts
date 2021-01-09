@@ -1,5 +1,5 @@
 import { INodeListener } from "../../../../plugins/canvas_plugins/node_editor/api/INodeListener";
-import { PropController } from "../../../plugin/controller/FormController";
+import { ParamController } from "../../../controller/FormController";
 import { Registry } from "../../../Registry";
 import { NodeObj } from "./NodeObj";
 
@@ -50,7 +50,7 @@ export abstract class NodeParam<D = any> {
     field?: NodeParamField;
     fieldDisabled?: boolean;
     port?: PortConfig;
-    controller?: PropController;
+    controller?: ParamController;
     listener?: INodeListener;
 
     val?: D;

@@ -1,5 +1,5 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { MousePointer } from "../../../plugin/controller/ToolController";
+import { MousePointer } from "../../../controller/ToolController";
 
 export interface ICamera {
     zoomIn(): boolean;

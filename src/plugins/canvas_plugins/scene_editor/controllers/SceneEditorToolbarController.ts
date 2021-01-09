@@ -1,5 +1,5 @@
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
-import { PropController, PropContext } from "../../../../core/plugin/controller/FormController";
+import { ParamController, PropContext } from "../../../../core/controller/FormController";
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { SceneEditorRenderer } from "../renderers/SceneEditorRenderer";
@@ -12,7 +12,7 @@ export enum SceneEditorToolbarProps {
     OpenDropdown = 'open-dropdown'
 }
 
-export class PrimitiveShapeDropdownMenuOpenControl extends PropController<any> {
+export class PrimitiveShapeDropdownMenuOpenControl extends ParamController<any> {
     acceptedProps() { return [SceneEditorToolbarProps.OpenDropdown]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -22,7 +22,7 @@ export class PrimitiveShapeDropdownMenuOpenControl extends PropController<any> {
     }
 }
 
-export class PrimitiveShapeDropdownControl extends PropController<any> {
+export class PrimitiveShapeDropdownControl extends ParamController<any> {
     acceptedProps() { return [CubeToolId, SphereToolId, GroundToolId]; }
 
     click(context: PropContext, element: UI_Element) {

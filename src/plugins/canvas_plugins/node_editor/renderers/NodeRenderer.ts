@@ -2,7 +2,7 @@ import { NodeParam, NodeParamField, PortDirection } from '../../../../core/model
 import { NodePortView } from '../../../../core/models/views/child_views/NodePortView';
 import { ViewRenderer, ViewTag } from '../../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
-import { MultiSelectController } from '../../../../core/plugin/controller/FormController';
+import { MultiSelectController } from '../../../../core/controller/FormController';
 import { UI_SvgForeignObject } from '../../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_Column } from '../../../../core/ui_components/elements/UI_Column';

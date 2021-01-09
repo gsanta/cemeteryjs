@@ -1,10 +1,11 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshPropertyNodeParams } from "../../models/nodes/MeshPropertyNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class MeshPropertyNodeControllers extends ParamControllers {
+export class MeshPropertyNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -15,7 +16,7 @@ export class MeshPropertyNodeControllers extends ParamControllers {
     readonly visible: MeshVisibilityController;
 }
 
-export class MeshVisibilityController extends PropController {
+export class MeshVisibilityController extends ParamController {
     private nodeObj: NodeObj<MeshPropertyNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

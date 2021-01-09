@@ -1,10 +1,11 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { PathViewType } from "../../../scene_editor/models/views/PathView";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class PathNodeControllers extends ParamControllers {
+export class PathNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -15,7 +16,7 @@ export class PathNodeControllers extends ParamControllers {
     readonly path: PathController;
 }
 
-export class PathController extends PropController<string> {
+export class PathController extends ParamController<string> {
     private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

@@ -1,6 +1,7 @@
+import { ParamController } from "../../../core/controller/FormController";
+import { DialogController } from "../../../core/controller/UIController";
 import { AssetObj, AssetType } from "../../../core/models/objs/AssetObj";
 import { MeshObj, MeshTreeNode } from "../../../core/models/objs/MeshObj";
-import { ParamControllers, PropController } from "../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { ApplicationError } from "../../../core/services/ErrorService";
@@ -8,9 +9,9 @@ import { TreeController, TreeData } from "../../../core/ui_components/elements/c
 import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
 import { MeshLoaderPreviewCanvas } from "./MeshLoaderPreviewCanvas";
 
-export class MeshLoaderDialogControllers extends ParamControllers {
+export class MeshLoaderDialogControllers extends DialogController {
     constructor(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj) {
-        super();
+        super(registry);
 
         const clone = meshObj.clone(registry);
 
@@ -23,14 +24,12 @@ export class MeshLoaderDialogControllers extends ParamControllers {
         this.animations = new AnimationGroupTreeController(registry, this, canvas, clone);
         this.save = new SaveController(registry, this, clone);
         this.model = new ModelController(registry, this, canvas, clone);
-        this.cancel = new CancelController(registry);
     }
 
     tree: MeshHierarchyTreeController;
     texture: TextureController;
     model: ModelController;
     save: SaveController;
-    cancel: CancelController;
     animations: AnimationGroupTreeController;
 }
 
@@ -172,7 +171,7 @@ export class AnimationGroupTreeController extends TreeController {
     }
 }
 
-export class ModelController extends PropController {
+export class ModelController extends ParamController {
     private canvas: MeshLoaderPreviewCanvas
     private tempVal: string;
     private meshObj: MeshObj;
@@ -224,7 +223,7 @@ export class ModelController extends PropController {
 }
 
 
-export class TextureController extends PropController {
+export class TextureController extends ParamController {
     private tempVal: string;
     private meshObj: MeshObj;
     private canvas: MeshLoaderPreviewCanvas;
@@ -265,7 +264,7 @@ export class TextureController extends PropController {
     }
 }
 
-export class SaveController extends PropController {
+export class SaveController extends ParamController {
     private controllers: MeshLoaderDialogControllers;
     private meshObj: MeshObj;
     constructor(registry: Registry, controllers: MeshLoaderDialogControllers, meshObj: MeshObj) {
@@ -300,13 +299,6 @@ export class SaveController extends PropController {
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.ui.helper.setDialogPanel(undefined);
-        this.registry.services.render.reRenderAll();
-    }
-}
-
-export class CancelController extends PropController {
-    click() {
         this.registry.ui.helper.setDialogPanel(undefined);
         this.registry.services.render.reRenderAll();
     }

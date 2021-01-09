@@ -1,9 +1,10 @@
 import { AbstractCanvasPanel, InteractionMode, ZoomInController, ZoomOutController } from "../../../../core/plugin/AbstractCanvasPanel";
-import { ParamControllers, PropContext, PropController } from "../../../../core/plugin/controller/FormController";
-import { CommonToolController } from "../../../../core/plugin/controller/ToolController";
+import { PropContext, ParamController } from "../../../../core/controller/FormController";
+import { CommonToolController } from "../../../../core/controller/ToolController";
 import { Registry } from "../../../../core/Registry";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { GameToolId } from "./tools/GameTool";
+import { UIController } from "../../../../core/controller/UIController";
 
 export enum GameViewerProps {
     Play = 'Play',
@@ -12,7 +13,7 @@ export enum GameViewerProps {
     ExecutionMode = 'ExecutionMode'
 }
 
-export class GameViewerToolbarController extends ParamControllers {
+export class GameViewerToolbarController extends UIController {
 
     constructor(registry: Registry) {
         super();
@@ -25,15 +26,15 @@ export class GameViewerToolbarController extends ParamControllers {
         this.zoomOut = new ZoomOutController(registry);
     }
     
-    editMode: PropController;
-    interactionMode: PropController;
-    gameViewerTool: PropController;
-    commonTool: PropController;
-    zoomIn: PropController;
-    zoomOut: PropController;
+    editMode: ParamController;
+    interactionMode: ParamController;
+    gameViewerTool: ParamController;
+    commonTool: ParamController;
+    zoomIn: ParamController;
+    zoomOut: ParamController;
 }
 
-export class PlayController extends PropController {
+export class PlayController extends ParamController {
     acceptedProps() { return [GameViewerProps.Play]; }
 
     click(context) {
@@ -42,7 +43,7 @@ export class PlayController extends PropController {
     }
 }
 
-class EditModeController extends PropController {
+class EditModeController extends ParamController {
     acceptedProps() { return [GameViewerProps.EditMode]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -51,7 +52,7 @@ class EditModeController extends PropController {
     }
 }
 
-class InteractionModeController extends PropController {
+class InteractionModeController extends ParamController {
     acceptedProps() { return [GameViewerProps.ExecutionMode]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -60,7 +61,7 @@ class InteractionModeController extends PropController {
     }
 }
 
-class GameViewerToolController extends PropController<any> {
+class GameViewerToolController extends ParamController<any> {
     acceptedProps() { return [GameToolId]; }
 
     click(context: PropContext, element: UI_Element) {

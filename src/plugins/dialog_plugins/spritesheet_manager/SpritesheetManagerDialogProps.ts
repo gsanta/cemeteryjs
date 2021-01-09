@@ -1,6 +1,6 @@
 import { AssetObj, AssetType } from '../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../core/models/objs/SpriteSheetObj';
-import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
+import { PropContext, ParamController } from '../../../core/controller/FormController';
 import { UI_Panel, UI_Region } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
@@ -19,7 +19,7 @@ enum DataKeys {
     SpriteSheetImgUrl = 'SpriteSheetImgUrl'
 }
 
-export class SpriteSheetJsonPathControl extends PropController<{data: string, path: string}> {
+export class SpriteSheetJsonPathControl extends ParamController<{data: string, path: string}> {
     private uiPanel: UI_Panel;
 
     constructor(registry: Registry, uiPanel: UI_Panel) {
@@ -37,7 +37,7 @@ export class SpriteSheetJsonPathControl extends PropController<{data: string, pa
     }
 }
 
-export class SpriteSheetImgController extends PropController<string> {
+export class SpriteSheetImgController extends ParamController<string> {
     private uiPanel: UI_Panel;
 
     constructor(registry: Registry, uiPanel: UI_Panel) {
@@ -63,7 +63,7 @@ export class SpriteSheetImgController extends PropController<string> {
     }
 }
 
-export class AddSpriteSheetController extends PropController<string> {
+export class AddSpriteSheetController extends ParamController<string> {
     private uiPanel: UI_Panel;
 
     constructor(registry: Registry, uiPanel: UI_Panel) {

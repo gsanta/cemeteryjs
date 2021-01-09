@@ -2,7 +2,7 @@ import { Tools } from "babylonjs";
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
-import { PropController, PropContext } from '../../../core/plugin/controller/FormController';
+import { ParamController, PropContext } from '../../../core/controller/FormController';
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { UI_Element } from "../../../core/ui_components/elements/UI_Element";
 
@@ -12,7 +12,7 @@ export enum ThumbnailMakerControllerProps {
     ClearThumbnail = 'ClearThumbnail'
 }
 
-export class ThumbnailCreateControl extends PropController<any> {
+export class ThumbnailCreateControl extends ParamController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailCreate]; }
     
     async click(context: PropContext, element: UI_Element) {
@@ -27,7 +27,7 @@ export class ThumbnailCreateControl extends PropController<any> {
     }
 }
 
-export class ThumbnailUploadControl extends PropController<any> {
+export class ThumbnailUploadControl extends ParamController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailUpload]; }
 
     change(val, context) {
@@ -39,7 +39,7 @@ export class ThumbnailUploadControl extends PropController<any> {
     }
 }
 
-export class ClearThumbnailControl extends PropController<any> {
+export class ClearThumbnailControl extends ParamController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ClearThumbnail]; }
 
     change(val, context) {

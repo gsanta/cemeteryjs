@@ -1,5 +1,5 @@
 import { CanvasAxis } from '../../../../core/models/misc/CanvasAxis';
-import { FormController, ParamControllers, PropController } from '../../../../core/plugin/controller/FormController';
+import { FormController, ParamController } from '../../../../core/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
@@ -7,8 +7,9 @@ import { toDegree } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
 import { LightView } from '../../../canvas_plugins/scene_editor/models/views/LightView';
 import { MeshView, MeshViewType } from '../../../canvas_plugins/scene_editor/models/views/MeshView';
+import { UIController } from '../../../../core/controller/UIController';
 
-export class LightSettingsController extends ParamControllers {
+export class LightSettingsController extends UIController {
     constructor(registry: Registry) {
         super();
         this.posY = new LightYPosController(registry);
@@ -29,7 +30,7 @@ export class LightSettingsController extends ParamControllers {
     parent: LightParentMeshController;
 }
 
-export class LightYPosController extends PropController {
+export class LightYPosController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -70,7 +71,7 @@ export class LightYPosController extends PropController {
     }
 }
 
-export class LightDirController extends PropController {
+export class LightDirController extends ParamController {
     private tempVal: string;
     private axis: CanvasAxis;
 
@@ -137,7 +138,7 @@ export class LightDirController extends PropController {
     }
 }
 
-export class LightAngleController extends PropController {
+export class LightAngleController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -176,7 +177,7 @@ export class LightAngleController extends PropController {
     }
 }
 
-export class LightDiffuseColorController extends PropController {
+export class LightDiffuseColorController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -215,7 +216,7 @@ export class LightDiffuseColorController extends PropController {
     }
 }
 
-export class LightParentMeshController extends PropController {
+export class LightParentMeshController extends ParamController {
     values() {
         return this.registry.data.view.scene.getViewsByType(MeshViewType).map(obj => obj.id)
     }

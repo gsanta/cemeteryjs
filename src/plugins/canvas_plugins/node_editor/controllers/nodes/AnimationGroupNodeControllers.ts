@@ -1,12 +1,12 @@
-import { MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { ParamController } from "../../../../../core/controller/FormController";
+import { UIController } from "../../../../../core/controller/UIController";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { MeshController } from "./MeshNodeControllers";
 import { AnimationGroupNodeParams } from "../../models/nodes/AnimationGroupNode";
+import { MeshController } from "./MeshNodeControllers";
 
-export class AnimationGroupNodeControllers extends ParamControllers {
+export class AnimationGroupNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -18,7 +18,7 @@ export class AnimationGroupNodeControllers extends ParamControllers {
     readonly animation: AnimationController;
 }
 
-export class AnimationController extends PropController<string> {
+export class AnimationController extends ParamController<string> {
     private nodeObj: NodeObj<AnimationGroupNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj<AnimationGroupNodeParams>) {

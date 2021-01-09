@@ -1,13 +1,14 @@
 import { SpriteSheetObjType } from '../../../../core/models/objs/SpriteSheetObj';
-import { ParamControllers, PropController } from '../../../../core/plugin/controller/FormController';
+import { ParamController } from '../../../../core/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { SpriteSheetManagerDialogId } from '../../../dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
 import { SpriteView } from '../../../canvas_plugins/scene_editor/models/views/SpriteView';
+import { UIController } from '../../../../core/controller/UIController';
 
-export class SpriteSettingsController extends ParamControllers {
+export class SpriteSettingsController extends UIController {
     constructor(registry: Registry) {
         super();
 
@@ -25,7 +26,7 @@ export class SpriteSettingsController extends ParamControllers {
     scaleY: ScaleYController;
 }
 
-export class FrameNameController extends PropController {
+export class FrameNameController extends ParamController {
     private tempVal: string;
 
     val() {
@@ -47,7 +48,7 @@ export class FrameNameController extends PropController {
     }
 }
 
-export class SelectSpriteSheetController extends PropController {
+export class SelectSpriteSheetController extends ParamController {
 
     val() {
         return (<SpriteView> this.registry.data.view.scene.getOneSelectedView()).getObj().spriteSheetId;
@@ -66,7 +67,7 @@ export class SelectSpriteSheetController extends PropController {
     }
 }
 
-export class ManageSpriteSheetsController extends PropController {
+export class ManageSpriteSheetsController extends ParamController {
     click() {
         const dialog = this.registry.ui.panel.getPanel(SpriteSheetManagerDialogId);
         this.registry.ui.helper.setDialogPanel(dialog);
@@ -74,7 +75,7 @@ export class ManageSpriteSheetsController extends PropController {
     }
 }
 
-export class ScaleXController extends PropController {
+export class ScaleXController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {
@@ -119,7 +120,7 @@ export class ScaleXController extends PropController {
 }
 
 
-export class ScaleYController extends PropController {
+export class ScaleYController extends ParamController {
     private tempVal: string;
 
     constructor(registry: Registry) {

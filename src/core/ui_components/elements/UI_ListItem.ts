@@ -1,4 +1,4 @@
-import { DragAndDropController } from '../../plugin/controller/FormController';
+import { DragAndDropController } from '../../controller/FormController';
 import { UI_Panel } from '../../plugin/UI_Panel';
 import { UI_Element } from './UI_Element';
 import { UI_ElementType } from './UI_ElementType';

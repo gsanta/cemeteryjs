@@ -1,4 +1,4 @@
-import { PropController } from "../../../../plugin/controller/FormController";
+import { ParamController } from "../../../../controller/FormController";
 
 export interface TreeData {
     name: string;
@@ -7,7 +7,7 @@ export interface TreeData {
     children?: TreeData[];
 }
 
-export abstract class TreeController extends PropController {
+export abstract class TreeController extends ParamController {
     abstract getData(): TreeData[];
     abstract check(data: TreeData): void;
 }

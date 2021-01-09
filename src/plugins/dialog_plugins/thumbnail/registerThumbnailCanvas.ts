@@ -6,7 +6,7 @@ import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_En
 import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
 import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
-import { FormController } from "../../../core/plugin/controller/FormController";
+import { FormController } from "../../../core/controller/FormController";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";

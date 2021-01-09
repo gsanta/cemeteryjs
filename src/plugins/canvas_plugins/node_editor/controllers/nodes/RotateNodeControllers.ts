@@ -1,12 +1,13 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
 import { MeshController } from "./MeshNodeControllers";
 import { RotateNodeParams } from "../../models/nodes/RotateNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class RotateNodeControllers extends ParamControllers {
+export class RotateNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -20,7 +21,7 @@ export class RotateNodeControllers extends ParamControllers {
     readonly key: KeyControl;
 }
 
-export class MeshRotateController extends PropController<string> {
+export class MeshRotateController extends ParamController<string> {
     private nodeObj: NodeObj<RotateNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -43,7 +44,7 @@ export class MeshRotateController extends PropController<string> {
     }
 }
 
-export class KeyControl extends PropController {
+export class KeyControl extends ParamController {
     private nodeObj: NodeObj<RotateNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

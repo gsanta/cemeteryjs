@@ -3,7 +3,7 @@
 import { UI_ElementType } from "../../UI_ElementType";
 import { UI_Layout } from '../../UI_Layout';
 import { Registry } from "../../../../Registry";
-import { GlobalControllerProps } from "../../../../plugin/controller/FormController";
+import { GlobalControllerProps } from "../../../../controller/FormController";
 import { UI_ElementConfig } from "../../UI_Element";
 import { UI_Factory } from "../../../UI_Factory";
 import { UI_DialogFooter } from "./UI_DialogFooter";

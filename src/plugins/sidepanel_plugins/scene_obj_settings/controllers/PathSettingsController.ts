@@ -1,5 +1,5 @@
 import { PathView } from '../../../canvas_plugins/scene_editor/models/views/PathView';
-import { PropController } from '../../../../core/plugin/controller/FormController';
+import { ParamController } from '../../../../core/controller/FormController';
 import { UI_Region } from '../../../../core/plugin/UI_Panel';
 
 export enum PathViewControllerParam {
@@ -8,7 +8,7 @@ export enum PathViewControllerParam {
 
 export const PathSettingsControllerId = 'path-settings-controller';
 
-export class PathIdController extends PropController<any> {
+export class PathIdController extends ParamController<any> {
     acceptedProps() { return [PathViewControllerParam.PathId]; }
 
     change(val, context) {

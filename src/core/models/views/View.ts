@@ -2,7 +2,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
-import { FormController, ParamControllers } from "../../plugin/controller/FormController";
+import { FormController } from "../../controller/FormController";
 import { IControlledModel } from "../../plugin/IControlledModel";
 import { Registry } from "../../Registry";
 import { ViewStore } from "../../stores/ViewStore";
@@ -10,6 +10,7 @@ import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../objs/IObj";
 import { ChildViewContext } from "./ChildViewContext";
 import { ContainedView } from "./child_views/ChildView";
+import { UIController } from "../../controller/UIController";
 
 export interface ViewJson {
     id: string;
@@ -60,7 +61,7 @@ export abstract class View implements IControlledModel {
     childViews: View[] = [];
 
     controller: FormController = undefined;
-    paramController: ParamControllers;
+    paramController: UIController;
     renderer: ViewRenderer;
 
     deleteConstraiedViews: ChildViewContext = new ChildViewContext();

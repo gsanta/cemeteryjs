@@ -1,25 +1,25 @@
-import { Registry } from "../../Registry";
-import { Point } from '../../../utils/geometry/shapes/Point';
-import { IPointerEvent } from "../../services/input/PointerService";
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { UI_Element } from "../../ui_components/elements/UI_Element";
-import { Tool } from "../tools/Tool";
-import { View } from "../../models/views/View";
-import { PropController, PropContext } from "./FormController";
-import { SelectToolId } from "../tools/SelectTool";
-import { MeshToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/MeshTool";
-import { DeleteToolId } from "../tools/DeleteTool";
-import { CameraToolId } from "../tools/CameraTool";
-import { SpriteToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/SpriteTool";
-import { PathToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/PathTool";
-import { CubeToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/CubeTool";
-import { SphereToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/SphereTool";
-import { ScaleAxisToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/ScaleAxisTool";
-import { MoveAxisToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/MoveAxisTool";
-import { LightToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/LightTool";
-import { RotateAxisToolId } from "../../../plugins/canvas_plugins/scene_editor/controllers/tools/RotateAxisTool";
+import { Registry } from "../Registry";
+import { Point } from '../../utils/geometry/shapes/Point';
+import { IPointerEvent } from "../services/input/PointerService";
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { UI_Element } from "../ui_components/elements/UI_Element";
+import { Tool } from "../plugin/tools/Tool";
+import { View } from "../models/views/View";
+import { ParamController, PropContext } from "./FormController";
+import { SelectToolId } from "../plugin/tools/SelectTool";
+import { MeshToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/MeshTool";
+import { DeleteToolId } from "../plugin/tools/DeleteTool";
+import { CameraToolId } from "../plugin/tools/CameraTool";
+import { SpriteToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/SpriteTool";
+import { PathToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/PathTool";
+import { CubeToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/CubeTool";
+import { SphereToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/SphereTool";
+import { ScaleAxisToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/ScaleAxisTool";
+import { MoveAxisToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/MoveAxisTool";
+import { LightToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/LightTool";
+import { RotateAxisToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/RotateAxisTool";
 
-export class CommonToolController extends PropController<any> {
+export class CommonToolController extends ParamController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -28,7 +28,7 @@ export class CommonToolController extends PropController<any> {
     }
 }
 
-export class SceneEditorToolController extends PropController<any> {
+export class SceneEditorToolController extends ParamController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId, LightToolId]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -37,7 +37,7 @@ export class SceneEditorToolController extends PropController<any> {
     }
 }
 
-export class CanvasContextDependentToolController extends PropController<any> {
+export class CanvasContextDependentToolController extends ParamController<any> {
     acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId, RotateAxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {

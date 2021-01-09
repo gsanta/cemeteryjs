@@ -1,7 +1,7 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { View } from "../../models/views/View";
 import { Registry } from "../../Registry";
-import { MousePointer, ToolController } from "../../plugin/controller/ToolController";
+import { MousePointer, ToolController } from "../../controller/ToolController";
 import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../../plugin/tools/Tool";
 

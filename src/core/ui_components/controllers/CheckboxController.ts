@@ -1,6 +1,6 @@
-import { PropController } from "../../plugin/controller/FormController";
+import { ParamController } from "../../controller/FormController";
 
-export abstract class CheckboxController extends PropController {
+export abstract class CheckboxController extends ParamController {
 
     check() {}
     unCheck() {}

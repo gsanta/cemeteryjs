@@ -1,6 +1,6 @@
 import { UI_InputElement } from "./UI_InputElement";
 import { UI_ElementType } from "./UI_ElementType";
-import { FormController, MultiSelectController } from "../../plugin/controller/FormController";
+import { FormController, MultiSelectController } from "../../controller/FormController";
 import { UI_Element } from "./UI_Element";
 
 export class UI_PopupMultiSelect extends UI_InputElement<MultiSelectController> {

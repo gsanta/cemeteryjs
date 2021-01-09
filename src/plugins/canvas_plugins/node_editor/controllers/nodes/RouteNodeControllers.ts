@@ -1,11 +1,12 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { RouteNodeParams } from "../../models/nodes/RouteNode";
 import { RouteWalker } from "../../domain/RouteWalker";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class RouteNodeControllers extends ParamControllers {
+export class RouteNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -15,7 +16,7 @@ export class RouteNodeControllers extends ParamControllers {
     readonly speed: SpeedControl;
 }
 
-export class SpeedControl extends PropController<string> {
+export class SpeedControl extends ParamController<string> {
     private nodeObj: NodeObj<RouteNodeParams>;
     private tempVal: string;
 

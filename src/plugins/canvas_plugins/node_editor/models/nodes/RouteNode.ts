@@ -3,7 +3,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { NodeView } from "../views/NodeView";
-import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
+import { PropContext, ParamController } from '../../../../../core/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";

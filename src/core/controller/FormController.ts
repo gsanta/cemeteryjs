@@ -1,7 +1,8 @@
-import { Registry } from '../../Registry';
-import { UI_Element } from '../../ui_components/elements/UI_Element';
-import { UI_ListItem } from '../../ui_components/elements/UI_ListItem';
-import { UI_Panel } from '../UI_Panel';
+import { Registry } from '../Registry';
+import { UI_Element } from '../ui_components/elements/UI_Element';
+import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
+import { UI_Panel } from '../plugin/UI_Panel';
+import { UIController } from './UIController';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -15,7 +16,7 @@ export enum InputParamType {
     Checkbox = 'Checkbox'
 }
 
-export abstract class PropController<T = any> {
+export abstract class ParamController<T = any> {
     paramType: InputParamType;
     protected context: PropContext;
     protected registry: Registry;
@@ -37,7 +38,7 @@ export abstract class PropController<T = any> {
     selectedValues?(element: UI_Element): T[] { return []; }
 }
 
-export abstract class MultiSelectController extends PropController {
+export abstract class MultiSelectController extends ParamController {
     protected tempVal: string[];
     paramType = InputParamType.MultiSelect;
     isPopupOpen: boolean = false;
@@ -49,13 +50,9 @@ export abstract class MultiSelectController extends PropController {
     remove(val: string) {}
 }
 
-export abstract class DragAndDropController extends PropController {
+export abstract class DragAndDropController extends ParamController {
     abstract onDndStart(dropId: string);
     abstract onDndEnd();
-}
-
-export abstract class ParamControllers {
-    [id: string] : PropController;
 }
 
 export class PropContext<T = any> {
@@ -87,15 +84,15 @@ export class PropContext<T = any> {
 }
 
 export class FormController {
-    private propControllers: PropController<any>[] = [];
-    private propContexts: Map<PropController, PropContext> = new Map();
+    private propControllers: ParamController<any>[] = [];
+    private propContexts: Map<ParamController, PropContext> = new Map();
 
     protected registry: Registry;
     panel: UI_Panel;
 
-    param: ParamControllers;
+    param: UIController;
 
-    constructor(panel: UI_Panel, registry: Registry, propControls: PropController<any>[], paramControllers?: ParamControllers) {
+    constructor(panel: UI_Panel, registry: Registry, propControls: ParamController<any>[], paramControllers?: UIController) {
         this.panel = <UI_Panel> panel;
         this.registry = registry;
         this.param = paramControllers;
@@ -192,11 +189,11 @@ export class FormController {
         return [];
     }
 
-    private findController(element: UI_Element): PropController {
+    private findController(element: UI_Element): ParamController {
         return this.propControllers.find(controller => controller.acceptedProps(this.propContexts.get(controller), element).includes(element.key));
     }
 
-    registerPropControl(propController: PropController<any>) {
+    registerPropControl(propController: ParamController<any>) {
         const propContext = new PropContext(this.registry);
 
         this.propContexts.set(propController, propContext);
@@ -212,7 +209,7 @@ export class FormController {
     }
 }
 
-class CloseDialogController extends PropController {
+class CloseDialogController extends ParamController {
     acceptedProps() { return [GlobalControllerProps.CloseDialog]; }
 
     click(context: PropContext) {

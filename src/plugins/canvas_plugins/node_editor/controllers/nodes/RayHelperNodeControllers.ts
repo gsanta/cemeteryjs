@@ -1,10 +1,11 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { RayHelperNodeParams } from "../../models/nodes/RayHelperNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class RayHelperNodeControllers extends ParamControllers {
+export class RayHelperNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -15,7 +16,7 @@ export class RayHelperNodeControllers extends ParamControllers {
     readonly remove: RemoveTimerController;
 }
 
-export class RemoveTimerController extends PropController<string> {
+export class RemoveTimerController extends ParamController<string> {
     private nodeObj: NodeObj<RayHelperNodeParams>;
     private tempVal: string;
 

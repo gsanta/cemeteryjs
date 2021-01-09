@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import { PropContext, PropController } from '../../../core/plugin/controller/FormController';
+import { PropContext, ParamController } from '../../../core/controller/FormController';
 
 export enum FileSettingsProps {
     Export = 'Export',
@@ -7,7 +7,7 @@ export enum FileSettingsProps {
     NewProject = 'NewProject'
 }
 
-export class ExportFileController extends PropController<string> {
+export class ExportFileController extends ParamController<string> {
     acceptedProps() { return [FileSettingsProps.Export]; }
 
     click(context: PropContext) {
@@ -17,7 +17,7 @@ export class ExportFileController extends PropController<string> {
     }
 }
 
-export class ImportFileController extends PropController<{ data: string }> {
+export class ImportFileController extends ParamController<{ data: string }> {
     acceptedProps() { return [FileSettingsProps.Import]; }
 
     change(val: {data: string}, context: PropContext) {
@@ -28,7 +28,7 @@ export class ImportFileController extends PropController<{ data: string }> {
     }
 }
 
-export class NewProjectController extends PropController {
+export class NewProjectController extends ParamController {
     acceptedProps() { return [FileSettingsProps.NewProject]; }
 
     click(context: PropContext) {

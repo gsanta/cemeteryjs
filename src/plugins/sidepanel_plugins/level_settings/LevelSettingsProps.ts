@@ -1,4 +1,4 @@
-import { PropContext, PropController } from "../../../core/plugin/controller/FormController";
+import { PropContext, ParamController } from "../../../core/controller/FormController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 
 export enum LevelSettingsProps {
@@ -7,7 +7,7 @@ export enum LevelSettingsProps {
     ClearLevel = 'ClearLevel'
 }
 
-export class LevelController extends PropController {
+export class LevelController extends ParamController {
     acceptedProps() { return [LevelSettingsProps.Level]; }
 
     defaultVal(context: PropContext) {
@@ -19,7 +19,7 @@ export class LevelController extends PropController {
     }
 }
 
-export class LevelNameController extends PropController {
+export class LevelNameController extends ParamController {
     acceptedProps() { return [LevelSettingsProps.LevelName]; }
 
     defaultVal(context: PropContext) {
@@ -37,7 +37,7 @@ export class LevelNameController extends PropController {
     }
 }
 
-export class ClearLevelController extends PropController {
+export class ClearLevelController extends ParamController {
     acceptedProps() { return [LevelSettingsProps.ClearLevel]; }
 
     click(context: PropContext) {

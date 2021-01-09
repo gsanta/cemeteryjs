@@ -1,7 +1,7 @@
 import { Registry } from "../Registry";
 import { UI_Row } from "../ui_components/elements/UI_Row";
 import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
-import { FormController } from "./controller/FormController";
+import { FormController } from "../controller/FormController";
 import { IRenderer } from "./IRenderer";
 
 export interface IGizmoFactory {

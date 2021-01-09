@@ -1,11 +1,12 @@
-import { ParamControllers, PropController } from '../../../core/plugin/controller/FormController';
+import { ParamController } from '../../../core/controller/FormController';
+import { UIController } from '../../../core/controller/UIController';
 import { Registry } from '../../../core/Registry';
 
 export enum LayoutSettingsProps {
     Layout = 'SelectedLayout'
 }
 
-export class LayoutSettingsControllers extends ParamControllers {
+export class LayoutSettingsControllers extends UIController {
     constructor(registry: Registry) {
         super();
         this.layout = new LayoutControl(registry);
@@ -15,7 +16,7 @@ export class LayoutSettingsControllers extends ParamControllers {
 }
 
 
-export class LayoutControl extends PropController<string> {
+export class LayoutControl extends ParamController<string> {
     acceptedProps() { return [LayoutSettingsProps.Layout]; }
 
     val() {

@@ -1,4 +1,4 @@
-import { FormController } from "../../../core/plugin/controller/FormController";
+import { FormController } from "../../../core/controller/FormController";
 import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AssetManagerControllers } from "./AssetManagerProps";

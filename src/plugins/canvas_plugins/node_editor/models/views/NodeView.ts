@@ -2,13 +2,14 @@ import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, NodeParamField } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodePortView, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortView";
 import { ViewJson, View } from "../../../../../core/models/views/View";
-import { ParamControllers, FormController } from "../../../../../core/plugin/controller/FormController";
+import { FormController } from "../../../../../core/controller/FormController";
 import { Registry } from "../../../../../core/Registry";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
 import { sizes } from "../../../../../core/ui_components/react/styles";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { NodeRenderer } from "../../renderers/NodeRenderer";
+import { UIController } from "../../../../../core/controller/UIController";
 
 export const NodeViewType = 'node-view';
 
@@ -64,7 +65,7 @@ export class NodeView extends View {
         this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
     }
 
-    addParamControllers(paramControllers: ParamControllers) {
+    addParamControllers(paramControllers: UIController) {
         this.paramController = paramControllers;
         this.controller = new FormController(undefined, this.registry, [], paramControllers);
     }

@@ -5,8 +5,8 @@ import { Registry } from '../Registry';
 import { KeyboardService } from '../services/input/KeyboardService';
 import { UI_Element } from '../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { FormController, PropContext, PropController } from './controller/FormController';
-import { ToolController } from './controller/ToolController';
+import { FormController, PropContext, ParamController } from '../controller/FormController';
+import { ToolController } from '../controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
@@ -108,7 +108,7 @@ export abstract class AbstractCanvasPanel extends UI_Panel {
 }
 
 export const ZoomInProp = 'zoom-in';
-export class ZoomInController extends PropController {
+export class ZoomInController extends ParamController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -118,7 +118,7 @@ export class ZoomInController extends PropController {
 }
 
 export const ZoomOutProp = 'zoom-out';
-export class ZoomOutController extends PropController {
+export class ZoomOutController extends ParamController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext, element: UI_Element) {
@@ -128,7 +128,7 @@ export class ZoomOutController extends PropController {
 }
 
 export const UndoProp = 'undo';
-export class UndoController extends PropController<any> {
+export class UndoController extends ParamController<any> {
     acceptedProps() { return [UndoProp]; }
 
     click(context: PropContext) {
@@ -138,7 +138,7 @@ export class UndoController extends PropController<any> {
 
 export const RedoProp = 'redo';
 
-export class RedoController extends PropController<any> {
+export class RedoController extends ParamController<any> {
     acceptedProps() { return [RedoProp]; }
 
     click(context: PropContext) {

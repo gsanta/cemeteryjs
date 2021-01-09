@@ -1,9 +1,8 @@
+import { FormController } from '../controller/FormController';
+import { UIController } from '../controller/UIController';
 import { Registry } from '../Registry';
-import { UI_Container } from '../ui_components/elements/UI_Container';
-import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { IDataExporter } from '../services/export/IDataExporter';
-import { FormController, ParamControllers } from './controller/FormController';
-import { ToolController } from './controller/ToolController';
+import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { IRenderer } from './IRenderer';
 
 export enum UI_Region {
@@ -54,7 +53,7 @@ export class UI_Panel {
 
     renderer: IRenderer;
     controller: FormController;
-    paramController: ParamControllers;
+    paramController: UIController;
     data: Map<string, any> = new Map();
 
     private onMountedFunc: () => void;

@@ -1,7 +1,7 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeView } from "../views/NodeView";
 import { PathViewType } from "../../../scene_editor/models/views/PathView";
-import { PropContext, PropController } from '../../../../../core/plugin/controller/FormController';
+import { PropContext, ParamController } from '../../../../../core/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";

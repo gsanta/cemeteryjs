@@ -1,10 +1,11 @@
 import { AssetObj } from '../../../core/models/objs/AssetObj';
-import { ParamControllers, PropContext, PropController } from '../../../core/plugin/controller/FormController';
+import { PropContext, ParamController } from '../../../core/controller/FormController';
 import { UI_Region } from '../../../core/plugin/UI_Panel';
 import { Registry } from '../../../core/Registry';
 import { UI_Element } from '../../../core/ui_components/elements/UI_Element';
 import { UI_InputElement } from '../../../core/ui_components/elements/UI_InputElement';
 import { AssetManagerDialogRenderer } from './AssetManagerDialogRenderer';
+import { UIController } from '../../../core/controller/UIController';
 
 export enum AssetManagerDialogProps {
     DeleteAsset = 'DeleteAsset',
@@ -15,7 +16,7 @@ export enum AssetManagerDialogProps {
     CancelEdit = 'CancelEdit'
 }
 
-export class AssetManagerControllers extends ParamControllers {
+export class AssetManagerControllers extends UIController {
 
     constructor(registry: Registry) {
         super();
@@ -36,7 +37,7 @@ export class AssetManagerControllers extends ParamControllers {
     cancelEditControl: CancelEditControl;
 }
 
-export class DeleteAssetControl extends PropController<any> {
+export class DeleteAssetControl extends ParamController<any> {
     acceptedProps() { return [AssetManagerDialogProps.DeleteAsset]; }
 
     click(context: PropContext, element) {
@@ -46,7 +47,7 @@ export class DeleteAssetControl extends PropController<any> {
     }
 }
 
-export class EnterEditModeControl extends PropController<any> {
+export class EnterEditModeControl extends ParamController<any> {
     editedAsset: AssetObj;
 
     constructor(registry: Registry) {
@@ -62,7 +63,7 @@ export class EnterEditModeControl extends PropController<any> {
     }
 }
 
-export class AssetNameControl extends PropController<any> {
+export class AssetNameControl extends ParamController<any> {
     private controllers: AssetManagerControllers;
     tempAssetName: string;
 
@@ -87,7 +88,7 @@ export class AssetNameControl extends PropController<any> {
     }
 }
 
-export class AssetPathControl extends PropController<any> {
+export class AssetPathControl extends ParamController<any> {
     private controllers: AssetManagerControllers;
     tempAssetPath: string;
 
@@ -113,7 +114,7 @@ export class AssetPathControl extends PropController<any> {
     }
 }
 
-export class SaveEditControl extends PropController<any> {
+export class SaveEditControl extends ParamController<any> {
     private controllers: AssetManagerControllers;
 
     constructor(registry: Registry, controllers: AssetManagerControllers) {
@@ -133,7 +134,7 @@ export class SaveEditControl extends PropController<any> {
     }
 }
 
-export class CancelEditControl extends PropController<any> {
+export class CancelEditControl extends ParamController<any> {
     private controllers: AssetManagerControllers;
 
     constructor(registry: Registry, controllers: AssetManagerControllers) {

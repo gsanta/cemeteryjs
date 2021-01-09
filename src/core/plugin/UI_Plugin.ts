@@ -1,6 +1,6 @@
 import { UI_Panel, UI_Region } from './UI_Panel';
-import { FormController } from './controller/FormController';
-import { ToolController } from './controller/ToolController';
+import { FormController } from '../controller/FormController';
+import { ToolController } from '../controller/ToolController';
 import { UI_Model } from "./UI_Model";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { Camera2D } from "../models/misc/camera/Camera2D";

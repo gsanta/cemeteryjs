@@ -6,7 +6,7 @@ import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 import { Registry } from '../../Registry';
 import { UI_GizmoLayer } from './gizmo/UI_GizmoLayer';
-import { FormController } from '../../plugin/controller/FormController';
+import { FormController } from '../../controller/FormController';
 import { UI_Element, UI_ElementConfig } from './UI_Element';
 
 export class UI_SvgCanvas extends UI_SvgGroup {

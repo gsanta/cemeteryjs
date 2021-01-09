@@ -1,11 +1,12 @@
 import { MeshObjType, MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { MultiSelectController, ParamControllers, PropController } from "../../../../../core/plugin/controller/FormController";
+import { MultiSelectController, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshNodeParams } from "../../models/nodes/MeshNode";
+import { UIController } from "../../../../../core/controller/UIController";
 
-export class MeshNodeControllers extends ParamControllers {
+export class MeshNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
@@ -15,7 +16,7 @@ export class MeshNodeControllers extends ParamControllers {
     readonly mesh: MeshController;
 }
 
-export class MeshController extends PropController<string> {
+export class MeshController extends ParamController<string> {
     private nodeObj: NodeObj<MeshNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj<MeshNodeParams>) {

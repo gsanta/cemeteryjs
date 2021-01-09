@@ -11,7 +11,7 @@ import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
 import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ControlledElementConfig, UI_ElementConfig } from './UI_Element';
-import { PropController } from '../../plugin/controller/FormController';
+import { ParamController } from '../../controller/FormController';
 import { TreeController } from './complex/tree/TreeController';
 
 export class UI_DefaultContainer extends UI_Container {
