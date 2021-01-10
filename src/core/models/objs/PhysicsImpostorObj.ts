@@ -6,6 +6,8 @@ export const PhysicsImpostorObjType = 'physics-impostor-obj';
 
 export interface PhysicsImpostorObjJson extends ObjJson {
     mass: number;
+    friction: number;
+    restitution: number;
 }
 
 export class PhysicsImpostorObjFactory extends ObjFactoryAdapter {
@@ -27,6 +29,8 @@ export class PhysicsImpostorObj implements IObj {
     id: string;
     name: string;
     mass: number = 1;
+    friction = 0.9;
+    restitution = 0.2;
 
     private physicsAdapter: IPhysicsAdapter;
 
@@ -43,7 +47,9 @@ export class PhysicsImpostorObj implements IObj {
             objType: this.objType,
             id: this.id,
             name: this.name,
-            mass: this.mass
+            mass: this.mass,
+            friction: this.friction,
+            restitution: this.restitution
         }
     }
 
@@ -51,6 +57,8 @@ export class PhysicsImpostorObj implements IObj {
         this.id = json.id;
         this.name = json.name;
         this.mass = json.mass;
+        this.friction= json.friction;
+        this.restitution = json.restitution;
     }
 
     clone(): IObj {

@@ -13,15 +13,34 @@ export class PhysicsImpostorDialogRenderer implements IRenderer<UI_Dialog> {
     }
 
     renderInto(dialog: UI_Dialog): void {
-        dialog.width = '530px';
+        dialog.width = '300px';
 
         let row = dialog.row({key: 'mass-row'});
-        const modelTextField = row.textField({ key: 'mass' });
-        modelTextField.paramController = this.controller.mass;
-        modelTextField.layout = 'horizontal';
-        modelTextField.label = 'Mass';
-        modelTextField.type = 'number';
+        const msasTextField = row.textField({ key: 'mass' });
+        msasTextField.paramController = this.controller.mass;
+        msasTextField.layout = 'horizontal';
+        msasTextField.label = 'Mass (kg)';
+        msasTextField.type = 'number';
 
+        row = dialog.row({key: 'friction-row'});
+        row.css = {
+            margin: '10px 0 0 0'
+        }
+        const frictionTextField = row.textField({ key: 'friction' });
+        frictionTextField.paramController = this.controller.friction;
+        frictionTextField.layout = 'horizontal';
+        frictionTextField.label = 'Friction';
+        frictionTextField.type = 'number';
+
+        row = dialog.row({key: 'restitution-row'});
+        row.css = {
+            margin: '10px 0 0 0'
+        }
+        const restitutionTextField = row.textField({ key: 'restitution' });
+        restitutionTextField.paramController = this.controller.restitution;
+        restitutionTextField.layout = 'horizontal';
+        restitutionTextField.label = 'Restitution';
+        restitutionTextField.type = 'number';
 
         const footer = dialog.footer({key: 'footer'});
         row = footer.row({key: 'button-row'});

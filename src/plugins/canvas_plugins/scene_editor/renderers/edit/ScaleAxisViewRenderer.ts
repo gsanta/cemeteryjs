@@ -58,11 +58,11 @@ export class ScaleAxisViewRenderer implements ViewRenderer {
         const center = scaleView.containerView.getBounds().getBoundingCenter();
         
         const line = group.line();
-        line.markerEnd = `url(#${scaleView.viewType}-${scaleView.axis})`;
         line.css = {
             pointerEvents: 'none',
             stroke: getAxisColor(scaleView.axis, this.registry),
-            strokeWidth: "3"
+            strokeWidth: "3",
+            markerEnd: `url(#${scaleView.viewType}-${scaleView.axis})`
         }
 
         const x1 = center.x + axisLineBounds[scaleView.axis].point1.x;

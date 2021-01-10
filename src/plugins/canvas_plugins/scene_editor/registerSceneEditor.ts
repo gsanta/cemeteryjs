@@ -31,13 +31,22 @@ import { PathViewFactory } from "./models/factories/PathViewFactory";
 import { GroundTool } from "./controllers/tools/GroundTool";
 import { RotateAxisViewFactory, RotateAxisViewType } from "./models/views/edit/RotateAxisView";
 import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
+import { UIModule } from "../../../core/services/ModuleService";
+import { SceneEditorExporter } from "./io/SceneEditorExporter";
 
 export const SceneEditorPanelId = 'scene-editor';
 
 export function registerSceneEditor(registry: Registry) {
     const canvas = createCanvas(registry);
 
-    registry.ui.canvas.registerCanvas(canvas);
+    const module: UIModule = {
+        moduleName: SceneEditorPanelId,
+        panels: [canvas],
+        exporter: new SceneEditorExporter(registry)
+    }
+
+    registry.services.module.registerUIModule(module);
+
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {

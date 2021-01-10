@@ -1,8 +1,6 @@
 import { FormController } from '../controller/FormController';
 import { UIController } from '../controller/UIController';
 import { Registry } from '../Registry';
-import { IDataExporter } from '../services/export/IDataExporter';
-import { AbstractPluginImporter } from '../services/import/AbstractPluginImporter';
 import { IRenderer } from './IRenderer';
 
 export enum UI_Region {
@@ -47,9 +45,6 @@ export class UI_Panel {
     isGlobalPanel = true;
 
     htmlElement: HTMLElement;
-
-    importer: AbstractPluginImporter;
-    exporter: IDataExporter;
 
     renderer: IRenderer;
     controller: FormController;

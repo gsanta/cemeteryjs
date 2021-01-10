@@ -2,8 +2,8 @@ import { IPluginJson } from '../../plugin/IPluginExporter';
 import { Registry } from '../../Registry';
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
-import { IDataExporter } from './IDataExporter';
 import { ViewJson } from '../../models/views/View';
+import { AbstractModuleExporter } from './IModuleExporter';
 
 export interface ViewExporter {
     export(): string;
@@ -27,22 +27,33 @@ export interface AppJson {
 
 export class ExportService {
     private registry: Registry;
-    private exporters: IDataExporter[] = []
+
+    private moduleExporters: Map<string, AbstractModuleExporter> = new Map();
 
     constructor(registry: Registry) {
         this.registry = registry;
     }
 
+    registerExporter(moduleName: string, exporter: AbstractModuleExporter) {
+        this.moduleExporters.set(moduleName, exporter);
+    }
+
+    unRegisterExporter(moduleName: string) {
+        this.moduleExporters.delete(moduleName);
+    }
+
     export(): string {
-        const appJson: Partial<AppJson> = {};
+        // const appJson: Partial<AppJson> = {};
+        const json = {
+            modules: {}
+        };
 
-        this.exporters.forEach(exporter => exporter.export(appJson));
+        Array.from(this.moduleExporters.entries()).forEach(([name, exporter]) => json.modules[name] = exporter.export());
 
-        this.exportObjs(appJson);
-        this.exportViews(appJson);
+        // this.exportObjs(appJson);
+        // this.exportViews(appJson);
 
-        this.registry.plugins.getAll().filter(plugin => plugin.exporter).map(plugin => plugin.exporter.export(appJson));
-        return JSON.stringify(appJson);
+        return JSON.stringify(json);
     }
 
     private exportViews(appJson: Partial<AppJson>) {

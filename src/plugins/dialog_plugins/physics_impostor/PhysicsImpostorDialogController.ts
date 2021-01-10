@@ -1,4 +1,4 @@
-import { ParamController } from "../../../core/controller/FormController";
+import { ParamController, TextFieldController } from "../../../core/controller/FormController";
 import { DialogController } from "../../../core/controller/UIController";
 import { MeshObj } from "../../../core/models/objs/MeshObj";
 import { PhysicsImpostorObj, PhysicsImpostorObjType } from "../../../core/models/objs/PhysicsImpostorObj";
@@ -14,9 +14,13 @@ export class PhysicsImpostorDialogController extends DialogController {
 
         this.mass = new MassController(registry, impostorObj);
         this.save = new SaveController(registry, meshObj, impostorObj);
+        this.friction = new FrictionController(registry, impostorObj);
+        this.restitution = new RestitutionController(registry, impostorObj);
     }
 
     mass: MassController;
+    friction: FrictionController;
+    restitution: RestitutionController;
     save: SaveController;
 }
 
@@ -43,7 +47,6 @@ export class MassController extends ParamController {
     }
 
     async blur() {
-        
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
                 this.impostorObj.mass = parseFloat(this.tempVal);
@@ -54,6 +57,30 @@ export class MassController extends ParamController {
             this.tempVal = undefined;
         }
     }
+}
+
+export class FrictionController extends TextFieldController {
+    private impostorObj: PhysicsImpostorObj;
+
+    constructor(registry: Registry, impostorObj: PhysicsImpostorObj) {
+        super(registry, 'number', UI_Region.Dialog);
+        this.impostorObj = impostorObj;
+    }
+
+    initialVal() { return this.impostorObj.friction; }
+    finish(val: number) { this.impostorObj.friction = val; }
+}
+
+export class RestitutionController extends TextFieldController {
+    private impostorObj: PhysicsImpostorObj;
+
+    constructor(registry: Registry, impostorObj: PhysicsImpostorObj) {
+        super(registry, 'number', UI_Region.Dialog);
+        this.impostorObj = impostorObj;
+    }
+
+    initialVal() { return this.impostorObj.restitution; }
+    finish(val: number) { this.impostorObj.restitution = val; }
 }
 
 export class SaveController extends ParamController {

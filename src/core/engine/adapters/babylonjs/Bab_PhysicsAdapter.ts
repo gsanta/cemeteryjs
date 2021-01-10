@@ -20,6 +20,11 @@ export class Bab_PhysicsAdapter implements IPhysicsAdapter {
         if (!meshData) { return; }
         const mesh = meshData.meshes[0];
 
-        new PhysicsImpostor(mesh, PhysicsImpostor.SphereImpostor, { mass: impostorObj.mass, restitution: 0.9 }, this.engineFacade.scene);
+        new PhysicsImpostor(
+            mesh,
+            PhysicsImpostor.BoxImpostor,
+            { mass: impostorObj.mass, restitution: impostorObj.restitution, friction: impostorObj.friction },
+            this.engineFacade.scene
+        );
     }
 }

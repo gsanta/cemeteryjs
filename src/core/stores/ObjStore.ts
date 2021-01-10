@@ -48,7 +48,7 @@ export class ObjStore {
             let afterAllObjsDeserialized: AfterAllObjsDeserialized;
             if (obj.objType === NodeObjType) {
                 objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type);
-                objInstance.deserialize(obj, this.registry);
+            objInstance.deserialize(obj, this.registry);
             } else if (obj.objType === LightObjType) {
                 [objInstance, afterAllObjsDeserialized] = this.registry.services.objService.getObjFactory(LightObjType).insantiateFromJson(obj); 
                 afterAllObjsDeserializedFuncs.push(afterAllObjsDeserialized);

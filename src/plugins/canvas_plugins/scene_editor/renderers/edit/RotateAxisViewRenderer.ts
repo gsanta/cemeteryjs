@@ -58,11 +58,11 @@ export class RotateAxisViewRenderer implements ViewRenderer {
         const center = axisView.containerView.getBounds().getBoundingCenter();
         
         const line = group.line();
-        line.markerEnd = `url(#${RotateAxisToolId}-${axisView.axis})`;
         line.css = {
             pointerEvents: 'none',
             stroke: getAxisColor(axisView.axis, this.registry),
-            strokeWidth: "3"
+            strokeWidth: "3",
+            markerEnd: `url(#${RotateAxisToolId}-${axisView.axis})`
         }
 
         const x1 = center.x + axisLineBounds[axisView.axis].point1.x;

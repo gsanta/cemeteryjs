@@ -1,8 +1,10 @@
 import { Registry } from '../Registry';
 import { UI_Element } from '../ui_components/elements/UI_Element';
 import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { UI_Panel } from '../plugin/UI_Panel';
+import { UI_Panel, UI_Region } from '../plugin/UI_Panel';
 import { UIController } from './UIController';
+import { UI_Renderer } from '../plugin/UI_PluginFactory';
+import { ApplicationError } from '../services/ErrorService';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'
@@ -48,6 +50,51 @@ export abstract class MultiSelectController extends ParamController {
     cancel() {}
     select(val: string) {}
     remove(val: string) {}
+}
+
+export abstract class TextFieldController extends ParamController {
+    private tempVal: string;
+    private inputType: 'number' | 'text';
+    private region:  UI_Region;
+
+    constructor(registry: Registry, inputType: 'number' | 'text', region:  UI_Region) {
+        super(registry);
+        this.inputType = inputType;
+        this.region = region;
+    }
+
+    abstract initialVal(): any;
+    abstract finish(val: any): void;
+
+    val() {
+        if (this.tempVal !== undefined) {
+            return this.tempVal;
+        } else {
+            return this.initialVal();
+        }
+    }
+
+    change(val: string) {
+        this.tempVal = val;
+        this.registry.services.render.reRender(this.region);
+    }
+
+    async blur() {
+        const val = this.inputType === 'number' ? this.parseNumber() : this.tempVal;
+        this.tempVal = undefined;
+
+        this.finish(val);
+        this.registry.services.render.reRenderAll();
+    }
+
+    private parseNumber() {
+        try {
+            return parseFloat(this.tempVal);
+        } catch(e) {
+            this.registry.services.error.setError(new ApplicationError(e));
+            return this.initialVal();
+        }
+    }
 }
 
 export abstract class DragAndDropController extends ParamController {

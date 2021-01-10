@@ -15,6 +15,8 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { NodeEditorRenderer } from "./renderers/NodeEditorRenderer";
 import { JoinTool } from "./controllers/tools/JoinTool";
 import { NodeEditorToolbarController } from "./controllers/NodeEditorToolbarController";
+import { NodeEditorExporter } from "./io/NodeEditorExporter";
+import { UIModule } from "../../../core/services/ModuleService";
 
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
@@ -22,7 +24,14 @@ export const NodeEditorToolControllerId = 'node-editor-tool-controller';
 export function registerNodeEditor(registry: Registry) {
     const canvas = createCanvas(registry);
 
-    registry.ui.canvas.registerCanvas(canvas);
+    const module: UIModule = {
+        moduleName: NodeEditorPanelId,
+        panels: [canvas],
+        exporter: new NodeEditorExporter(registry)
+    }
+
+    registry.services.module.registerUIModule(module);
+
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {

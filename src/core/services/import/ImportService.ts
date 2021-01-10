@@ -15,11 +15,6 @@ export class ImportService {
             this.importObjs(json);
             this.importViews(json);
 
-            const plugins = this.registry.plugins.getAll().filter(plugin => plugin.importer);
-        
-            for (let i = 0; i < plugins.length; i++) {
-                await plugins[i].importer.import(json);
-            }
         } catch (e) {
             console.error(e);
         }

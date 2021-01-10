@@ -22,7 +22,7 @@ export function registerGameViewer(registry: Registry) {
     const canvas = createCanvas(registry);
     // registerGizmos(canvas, registry);
 
-    registry.ui.canvas.registerCanvas(canvas);
+    registry.services.module.registerUIModule({ moduleName: GameViewerPanelId, panels: [canvas]});
 }
 
 function registerGizmos(canvas: AbstractCanvasPanel, registry: Registry) {

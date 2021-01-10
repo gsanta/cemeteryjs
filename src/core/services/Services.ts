@@ -12,6 +12,7 @@ import { KeyboardService } from './input/KeyboardService';
 import { PointerService } from './input/PointerService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
+import { ModuleService } from "./ModuleService";
 import { NodeService } from "./NodeService";
 import { ObjService } from "./ObjService";
 import { RenderService } from "./RenderServices";
@@ -36,6 +37,7 @@ export class Services {
     node: NodeService;
     dragAndDropService: DragAndDropService;
     event: EventService;
+    module: ModuleService;
 
     ui: UI_Service;
 
@@ -64,7 +66,7 @@ export class Services {
         this.node = new NodeService(this.registry);
         this.dragAndDropService = new DragAndDropService();
         this.event = new EventService();
-
+        this.module = new ModuleService(this.registry);
         // TODO: find a better place to register general hotkeys
         this.hotkey.registerHotkey(this.gamepad);
     }
