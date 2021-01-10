@@ -33,6 +33,7 @@ import { RotateAxisViewFactory, RotateAxisViewType } from "./models/views/edit/R
 import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
 import { UIModule } from "../../../core/services/ModuleService";
 import { SceneEditorExporter } from "./io/SceneEditorExporter";
+import { SceneEditorImporter } from "./io/SceneEditorImporter";
 
 export const SceneEditorPanelId = 'scene-editor';
 
@@ -42,7 +43,8 @@ export function registerSceneEditor(registry: Registry) {
     const module: UIModule = {
         moduleName: SceneEditorPanelId,
         panels: [canvas],
-        exporter: new SceneEditorExporter(registry)
+        exporter: new SceneEditorExporter(registry),
+        importer: new SceneEditorImporter(registry)
     }
 
     registry.services.module.registerUIModule(module);

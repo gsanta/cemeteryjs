@@ -39,7 +39,6 @@ export class PhysicsImpostorObj implements IObj {
     }
 
     dispose(): void {
-        throw new Error("Method not implemented.");
     }
 
     serialize(): PhysicsImpostorObjJson {

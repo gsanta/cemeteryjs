@@ -18,19 +18,6 @@ export class AssetStore {
         this.registry = registry;
     }
 
-    
-    exportInto(appjson: Partial<AppJson>) {
-        appjson.objs.assets = this.objs.map(obj => obj.serialize());
-    }
-
-    async importFrom(appJson: AppJson) {
-        appJson.objs.assets.forEach(obj => {
-            const objInstance = this.registry.services.objService.createObj(obj.objType);
-            objInstance.deserialize(obj, this.registry);
-            this.addObj(objInstance as AssetObj);
-        });
-    }
-
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
             throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);

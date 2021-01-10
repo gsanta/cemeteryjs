@@ -1,17 +1,13 @@
 import { MoveAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/MoveAxisView";
 import { RotateAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/RotateAxisView";
 import { ScaleAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/ScaleAxisView";
-import { NodeViewType } from "../../plugins/canvas_plugins/node_editor/models/views/NodeView";
-import { LightViewType } from '../../plugins/canvas_plugins/scene_editor/models/views/LightView';
 import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/MeshView";
 import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/SpriteView";
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
-import { NodeObj } from "../models/objs/node_obj/NodeObj";
-import { AfterAllViewsDeserialized, View, ViewFactory, ViewTag } from '../models/views/View';
+import { View, ViewFactory, ViewTag } from '../models/views/View';
 import { Registry } from "../Registry";
-import { AppJson } from "../services/export/ExportService";
 import { IdGenerator } from "./IdGenerator";
 
 export const sceneAndGameViewRatio = 10;
@@ -58,34 +54,6 @@ export class ViewStore {
         this.canvasId = canvasId;
         this.registry = registry;
         this.setIdGenerator(new IdGenerator());
-    }
-
-    exportInto(appjson: Partial<AppJson>) {
-        appjson.canvas[this.canvasId] = this.views.map(view => view.toJson());
-    }
-
-    importFrom(appJson: AppJson) {
-        const afterAllViewsDeserializedFuncs: AfterAllViewsDeserialized[] = [];
-
-        appJson.canvas[this.canvasId].forEach(viewJson => {
-            let viewInstance: View;
-            let afterAllViewsDeserialized: AfterAllViewsDeserialized;
-        
-            if (viewJson.type === NodeViewType) {
-                const nodeObj = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId));
-                viewInstance = this.registry.data.helper.node.createView(nodeObj.type, nodeObj)
-                viewInstance.fromJson(viewJson, this.registry);
-            } else if (viewJson.type === MeshViewType || viewJson.type === LightViewType) {
-                [viewInstance, afterAllViewsDeserialized] = this.getViewFactory(viewJson.type).instantiateFromJson(viewJson);
-                afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
-            } else {
-                viewInstance = this.getViewFactory(viewJson.type).instantiate();
-                viewInstance.fromJson(viewJson, this.registry);
-            }
-            this.addView(viewInstance);
-        });
-
-        afterAllViewsDeserializedFuncs.forEach(func => func());
     }
 
     setIdGenerator(idGenerator: IdGenerator) {

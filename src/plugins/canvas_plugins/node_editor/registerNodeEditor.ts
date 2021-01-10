@@ -1,22 +1,23 @@
 
 
-import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
-import { NodeConnectionViewFactory, NodeConnectionView, NodeConnectionViewType } from "./models/views/NodeConnectionView";
-import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/controller/FormController";
 import { CommonToolController } from "../../../core/controller/ToolController";
+import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
+import { AbstractCanvasPanel, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
-import { Point } from "../../../utils/geometry/shapes/Point";
-import { NodeEditorRenderer } from "./renderers/NodeEditorRenderer";
-import { JoinTool } from "./controllers/tools/JoinTool";
-import { NodeEditorToolbarController } from "./controllers/NodeEditorToolbarController";
-import { NodeEditorExporter } from "./io/NodeEditorExporter";
 import { UIModule } from "../../../core/services/ModuleService";
+import { Point } from "../../../utils/geometry/shapes/Point";
+import { NodeEditorToolbarController } from "./controllers/NodeEditorToolbarController";
+import { JoinTool } from "./controllers/tools/JoinTool";
+import { NodeEditorExporter } from "./io/NodeEditorExporter";
+import { NodeEditorImporter } from "./io/NodeEditorImporter";
+import { NodeConnectionViewFactory, NodeConnectionViewType } from "./models/views/NodeConnectionView";
+import { NodeEditorRenderer } from "./renderers/NodeEditorRenderer";
 
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller'; 
@@ -27,7 +28,8 @@ export function registerNodeEditor(registry: Registry) {
     const module: UIModule = {
         moduleName: NodeEditorPanelId,
         panels: [canvas],
-        exporter: new NodeEditorExporter(registry)
+        exporter: new NodeEditorExporter(registry),
+        importer: new NodeEditorImporter(registry)
     }
 
     registry.services.module.registerUIModule(module);

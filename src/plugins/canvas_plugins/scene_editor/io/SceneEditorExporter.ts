@@ -4,13 +4,14 @@ import { MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { PathObjType } from "../../../../core/models/objs/PathObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteObjType } from "../../../../core/models/objs/SpriteObj";
+import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
 import { ViewJson } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
-import { AbstractModuleExporter } from "../../../../core/services/export/IModuleExporter";
+import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 
 export class SceneEditorExporter extends AbstractModuleExporter {
     private registry: Registry;
-    private acceptedObjTypes: string[] = [MeshObjType, SpriteObjType, PathObjType, LightObjType, PhysicsImpostorObjType]
+    private acceptedObjTypes: string[] = [MeshObjType, SpriteObjType, PathObjType, LightObjType, PhysicsImpostorObjType, SpriteSheetObjType]
 
     constructor(registry: Registry) {
         super();

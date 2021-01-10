@@ -24,6 +24,7 @@ export interface MeshObjJson extends ObjJson {
     posZ: number;
     modelId: string;
     textureId: string;
+    physicsImpostorId: string;
     routeId: string;
     color: string;
     shapeConfig: MeshShapeConfig;
@@ -185,6 +186,7 @@ export class MeshObj implements IGameObj {
             rotation: this.getRotation(),
             modelId: this.modelObj ? this.modelObj.id : undefined,
             textureId: this.textureObj ? this.textureObj.id : undefined,
+            physicsImpostorId: this.physicsImpostorObj ? this.physicsImpostorObj.id : undefined,
             routeId: this.routeId,
             color: this.color,
             shapeConfig: this.shapeConfig,
@@ -201,6 +203,7 @@ export class MeshObj implements IGameObj {
 
         this.modelObj = json.modelId ? registry.stores.assetStore.getAssetById(json.modelId) : undefined;
         this.textureObj = json.textureId ? registry.stores.assetStore.getAssetById(json.textureId) : undefined;
+        this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> registry.stores.objStore.getByNameOrId(json.textureId) : undefined;
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;

@@ -4,7 +4,7 @@ import { NodePortObjType } from "../../../../core/models/objs/NodePortObj";
 import { NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
 import { ViewJson } from "../../../../core/models/views/View";
 import { Registry } from "../../../../core/Registry";
-import { AbstractModuleExporter } from "../../../../core/services/export/IModuleExporter";
+import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 
 export class NodeEditorExporter extends AbstractModuleExporter {
     private registry: Registry;
