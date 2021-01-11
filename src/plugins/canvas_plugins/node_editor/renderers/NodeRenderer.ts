@@ -65,6 +65,7 @@ export class NodeRenderer implements ViewRenderer {
                     break;
                     case NodeParamField.Checkbox:
                         const checkbox = row.checkbox({key: param.name, target: nodeView.id});
+                        checkbox.paramController = nodeView.controller.param[param.name];
                         checkbox.layout = 'horizontal';
                         checkbox.label = param.name;
                         if (this.isFieldDisabled(param, nodeView)) {

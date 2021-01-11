@@ -120,6 +120,28 @@ class KeyUpParam extends NodeParam {
     }
 }
 
+class CollisionParam extends NodeParam {
+    private meshMover: MeshMover;
+    private params: MoveNodeParams;
+
+    constructor(nodeObj: NodeObj, params: MoveNodeParams, meshMover: MeshMover) {
+        super(nodeObj);
+
+        this.meshMover = meshMover;
+        this.params = params;
+    }
+
+    name = 'collision';
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Pull
+    };
+    execute() {
+        this.meshMover.stop();
+        this.params.stop.callConnectedPorts();
+    }
+}
+
 class StartNodeParam extends NodeParam {
     name = 'start';
     port = {

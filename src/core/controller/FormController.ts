@@ -30,7 +30,7 @@ export abstract class ParamController<T = any> {
 
     acceptedProps(context: PropContext, element: UI_Element): string[] { return []; }
 
-    change?(val: T, context: PropContext<any>, element: UI_Element) {}
+    change?(val: T, context?: PropContext<any>, element?: UI_Element) {}
     click?(context: PropContext<T>, element: UI_Element) {}
     focus?(context: PropContext<T>, element: UI_Element) {}
     blur?(context: PropContext<T>, element: UI_Element) {}

@@ -29,6 +29,7 @@ export interface MeshObjJson extends ObjJson {
     color: string;
     shapeConfig: MeshShapeConfig;
     visibility: number;
+    isCheckIntersection: boolean;
 }
 
 export class MeshObjFactory extends ObjFactoryAdapter {
@@ -87,6 +88,7 @@ export class MeshObj implements IGameObj {
     textureObj: AssetObj;
     physicsImpostorObj: PhysicsImpostorObj;
     routeId: string;
+    isCheckIntersection: boolean = false;
 
     meshAdapter: IMeshAdapter;
 
@@ -190,7 +192,8 @@ export class MeshObj implements IGameObj {
             routeId: this.routeId,
             color: this.color,
             shapeConfig: this.shapeConfig,
-            visibility: this.getVisibility()
+            visibility: this.getVisibility(),
+            isCheckIntersection: this.isCheckIntersection
         }
     }
     
@@ -208,5 +211,6 @@ export class MeshObj implements IGameObj {
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;
         this.setVisibility(json.visibility);
+        this.isCheckIntersection = json.isCheckIntersection;
     }
 }

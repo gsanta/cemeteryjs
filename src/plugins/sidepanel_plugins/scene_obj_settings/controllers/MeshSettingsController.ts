@@ -30,7 +30,6 @@ export class MeshSettingsController extends UIController {
         this.posX = new PositionController(registry, CanvasAxis.X);
         this.posY = new PositionController(registry, CanvasAxis.Y);
         this.posZ = new PositionController(registry, CanvasAxis.Z);
-        this.texture = new TextureController(registry);
         this.thumbnail = new ThumbnailController(registry);
         this.clone = new CloneController(registry);
         this.model = new ModelController(registry);
@@ -41,6 +40,7 @@ export class MeshSettingsController extends UIController {
         this.visibility = new MeshVisibilityController(registry);
         this.name = new MeshNameController(registry);
         this.physics = new PhysicsController(registry);
+        this.checkIntersection = new CheckIntersectionController(registry, meshObj);
     }
 
     meshId: MeshIdController;
@@ -54,7 +54,6 @@ export class MeshSettingsController extends UIController {
     posX: PositionController;
     posY: PositionController;
     posZ: PositionController;
-    texture: TextureController;
     thumbnail: ThumbnailController;
     clone: CloneController;
     model: ModelController;
@@ -65,6 +64,7 @@ export class MeshSettingsController extends UIController {
     visibility: MeshVisibilityController;
     name: MeshNameController;
     physics: PhysicsController;
+    checkIntersection: CheckIntersectionController;
 }
 
 export class MeshIdController extends ParamController<string> {
@@ -239,38 +239,6 @@ export class PositionController extends ParamController {
         }
 
         this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
-    }
-}
-
-export class TextureController extends ParamController {
-    private tempVal: string;
-
-    val() {
-        if (this.tempVal !== undefined) {
-            return this.tempVal;
-        } else {
-            const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-    
-            if (meshView.getObj().textureObj) {
-                return meshView.getObj().textureObj.path;
-            }
-        }
-    }
-
-    change(val: string) {
-        this.tempVal = val;
-        this.registry.services.render.reRender(UI_Region.Sidepanel);
-    }
-
-    async blur() {
-        const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
-        const val = this.tempVal;
-        this.tempVal = undefined;
-
-        const asset = new AssetObj({path: val, assetType: AssetType.Texture});
-        meshView.getObj().textureObj = asset;
-        this.registry.engine.meshes.createMaterial(meshView.getObj());
-        this.registry.services.history.createSnapshot();
     }
 }
 
@@ -540,4 +508,24 @@ export class MeshNameController extends ParamController<string> {
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }    
+}
+
+export class CheckIntersectionController extends ParamController {
+    private meshObj: MeshObj;
+
+    constructor(registry: Registry, meshObj: MeshObj) {
+        super(registry);
+        this.meshObj = meshObj;
+    }
+
+    val() {
+        return this.meshObj.isCheckIntersection; 
+    }
+
+    change(val: boolean) {
+        this.meshObj.isCheckIntersection = val;
+
+        this.registry.services.history.createSnapshot();
+        this.registry.services.render.reRender(UI_Region.Sidepanel);
+    }
 }

@@ -138,27 +138,26 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         row = accordion.row({ key: 'model-row' });
         const modelButton = row.button('model');
         modelButton.paramController = this.controller.model;
-        modelButton.label = 'Load model';
+        modelButton.label = 'Model/Texture';
         modelButton.width = '200px';
 
         row = accordion.row({ key: 'physics-row' });
         const physicsButton = row.button('physics');
         physicsButton.paramController = this.controller.physics;
-        physicsButton.label = 'Add impostor';
+        physicsButton.label = 'Physics';
         physicsButton.width = '200px';
-
-        row = accordion.row({ key: 'texture-row' });
-        const textureTextField = row.textField({ key: 'texture' });
-        textureTextField.paramController = this.controller.texture;
-        textureTextField.layout = 'horizontal';
-        textureTextField.label = 'Texture path';
-        textureTextField.type = 'text';
 
         row = accordion.row({ key: 'thumbnail-row' });
         const changeThumbnailButton = row.button('thumbnail');
         changeThumbnailButton.paramController = this.controller.thumbnail;
-        changeThumbnailButton.label = 'Change thumbnail';
+        changeThumbnailButton.label = 'Thumbnail';
         changeThumbnailButton.width = '200px';
+
+        row = accordion.row({ key: 'checkbox-row' });
+        const collisionCheckbox = row.checkbox({ key: 'collision' });
+        collisionCheckbox.paramController = this.controller.checkIntersection;
+        collisionCheckbox.layout = 'horizontal';
+        collisionCheckbox.label = 'Check collision';
     }
 
     private renderBoxSettings(layout: UI_Accordion) {

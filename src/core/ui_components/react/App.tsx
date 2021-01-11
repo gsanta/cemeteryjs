@@ -39,6 +39,8 @@ const StyledApp = styled.div`
 
         .input {
             width: 70%;
+            display: flex;
+            justify-content: flex-end;
         }
     }
 `;

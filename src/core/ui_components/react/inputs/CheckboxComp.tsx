@@ -4,12 +4,13 @@ import { UI_ComponentProps } from "../UI_ComponentProps";
 import * as React from 'react';
 
 export function CheckboxComp(props: UI_ComponentProps<UI_Checkbox>) {
+    const val = props.element.paramController.val();
     const checkboxComponent = (
         <Form.Check
             required
             name="terms"
-            onChange={e => props.element.change(!props.element.val(props.registry), props.registry)}
-            checked={props.element.val(props.registry)}
+            onChange={e => props.element.paramController.change(!val)}
+            checked={val}
         />
     );
 
@@ -28,10 +29,10 @@ export function CheckboxComp(props: UI_ComponentProps<UI_Checkbox>) {
         }
 
         return (
-            <div style={style} className={`ce-labeled-input ${props.element.layout}`}>
+            <label style={style} className={`ce-labeled-input ${props.element.layout}`}>
                 <div className="label">{props.element.label}</div>
-                <div className="input">{checkboxComponent}</div>
-            </div>
+                {checkboxComponent}
+            </label>
         )
     } else {
         return checkboxComponent;
