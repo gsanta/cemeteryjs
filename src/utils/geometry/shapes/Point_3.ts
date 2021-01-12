@@ -36,6 +36,10 @@ export class Point_3 extends Point {
         return new Point_3(this.x, this.y, -this.z);
     }
 
+    clone(): Point_3 {
+        return new Point_3(this.x, this.y, this.z);
+    }
+
     toString(): string {
         return `${this.x}:${this.y}:${this.z}`;
     }

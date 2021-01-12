@@ -19,17 +19,17 @@ export class CollisionConstraint {
         this.isEnabled = isEnabled;
     }
 
-    isPositionValid(point: Point_3) {
+    isPositionValid(meshObj: MeshObj) {
         const meshObjs = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType);
 
-        const intersectingMeshObj = meshObjs.find(meshObj => {
-            if (meshObj.isCheckIntersection && meshObj !== this.meshObj) {
-                if (meshObj.intersectsMeshObj(this.meshObj)) {
+        const intersectingMeshObj = meshObjs.find(obj => {
+            if (obj !== meshObj) {
+                if (obj.intersectsMeshObj(meshObj)) {
                     return true;
                 }
             }
         });
 
-        return !!intersectingMeshObj;
+        return !intersectingMeshObj;
     }
 }

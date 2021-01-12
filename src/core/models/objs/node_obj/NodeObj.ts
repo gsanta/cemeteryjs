@@ -94,7 +94,13 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     pullData(portName: string): any {
         // TODO check that port is output port
         if (this.getPort(portName).hasConnectedPort()) {
-            return this.getPort(portName).getConnectedPorts()[0].getNodeParam().val;
+            const param = this.getPort(portName).getConnectedPorts()[0].getNodeParam();
+
+            if (param.getVal) {
+                return param.getVal();
+            } else {
+                return param.val;
+            }
         }
     }
 

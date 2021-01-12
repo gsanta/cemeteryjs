@@ -1,10 +1,9 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { NodeView } from "../views/NodeView";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { MeshNodeControllers } from "../../controllers/nodes/MeshNodeControllers";
 import { CollisionNodeControllers } from "../../controllers/nodes/CollisionNodeControllers";
 import { CollisionConstraint } from "../../domain/CollisionConstraint";
 
@@ -33,7 +32,7 @@ export class CollisionNode extends AbstractNodeFactory {
 
     createObj(): NodeObj {
         const obj = new NodeObj<CollisionNodeParams>(this.nodeType, {displayName: this.displayName});
-        obj.setParams(new CollisionNodeParams(obj));
+        obj.setParams(new CollisionNodeParams(this.registry, obj));
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
         
@@ -48,7 +47,7 @@ export class CollisionNodeParams extends NodeParams {
 
         const collisionConstraint = new CollisionConstraint(registry);
 
-        this.pull = new PullNodeParam(nodeObj, collisionConstraint);
+        this.pull = new PullNodeParam(nodeObj, this, collisionConstraint);
     }
 
     readonly pull: NodeParam;
@@ -60,38 +59,41 @@ export class CollisionNodeParams extends NodeParams {
     }
 }
 
-class CollisionNodeParam extends NodeParam<boolean> {
-    private collisionContraint: CollisionConstraint;
+// class CollisionNodeParam extends NodeParam<CollisionConstraint> {
+//     private collisionContraint: CollisionConstraint;
 
-    constructor(nodeObj: NodeObj, collisionContraint: CollisionConstraint) {
-        super(nodeObj);
+//     constructor(nodeObj: NodeObj, collisionContraint: CollisionConstraint) {
+//         super(nodeObj);
 
-        this.collisionContraint = collisionContraint;
-    }
+//         this.collisionContraint = collisionContraint;
+//     }
     
-    name = 'collision';
-    field = NodeParamField.Checkbox;
-    setVal(val: boolean) {
-        this.val = val;
-        this.collisionContraint
-    }
-    getVal() {
-        return this.val;
-    }
-}
+//     name = 'collision';
+//     field = NodeParamField.Checkbox;
+//     setVal(val: CollisionConstraint) {
+
+//     }
+//     getVal() {
+//         return this.collisionContraint;
+//     }
+// }
 
 class PullNodeParam extends NodeParam<CollisionConstraint> {
     private collisionContraint: CollisionConstraint;
+    private params: CollisionNodeParams;
 
-    constructor(nodeObj: NodeObj, collisionContraint: CollisionConstraint) {
+    constructor(nodeObj: NodeObj, params: CollisionNodeParams, collisionContraint: CollisionConstraint) {
         super(nodeObj);
 
+        this.params = params;
         this.collisionContraint = collisionContraint;
     }
 
     name = 'pull'
     getVal() {
-        return this.collisionContraint;
+        if (this.params.collision.val) {
+            return this.collisionContraint;
+        }
     }
     port = {
         direction: PortDirection.Output,

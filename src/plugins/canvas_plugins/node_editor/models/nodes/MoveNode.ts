@@ -8,6 +8,8 @@ import { INodeListener } from "../../api/INodeListener";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { MeshMover } from "../../domain/MeshMover";
 import { MoveNodeControllers } from "../../controllers/nodes/MoveNodeControllers";
+import { CollisionNodeParams, CollisionNodeType } from "./CollisionNode";
+import { CollisionConstraint } from "../../domain/CollisionConstraint";
 
 export const MoveNodeType = 'move-node-obj';
 
@@ -49,12 +51,14 @@ export class MoveNode extends AbstractNodeFactory {
     }
 }
 
+let id = 1;
+
 export class MoveNodeParams extends NodeParams {
 
     constructor(nodeObj: NodeObj) {
         super();
 
-        const meshMover = new MeshMover();
+        const meshMover = new MeshMover((id++).toString());
 
         this.keyDown = new KeyDownParam(nodeObj, this, meshMover);
         this.keyUp = new KeyUpParam(nodeObj, this, meshMover);
@@ -64,6 +68,7 @@ export class MoveNodeParams extends NodeParams {
         this.speed = new SpeedNodeParam(nodeObj, meshMover);
         this.start = new StartNodeParam(nodeObj);
         this.stop = new StopNodeParam(nodeObj);
+        this.collision = new CollisionParam(nodeObj, this, meshMover);
     }
 
     readonly keyDown: KeyDownParam;
@@ -74,6 +79,7 @@ export class MoveNodeParams extends NodeParams {
     readonly speed: SpeedNodeParam;
     readonly start: NodeParam;
     readonly stop: NodeParam;
+    readonly collision: NodeParam;
 }
 
 class KeyDownParam extends NodeParam {
@@ -129,6 +135,8 @@ class CollisionParam extends NodeParam {
 
         this.meshMover = meshMover;
         this.params = params;
+
+        this.meshMover.onMove(() => this.onMoveConstraint())
     }
 
     name = 'collision';
@@ -136,6 +144,18 @@ class CollisionParam extends NodeParam {
         direction: PortDirection.Input,
         dataFlow: PortDataFlow.Pull
     };
+
+    private onMoveConstraint(): boolean {
+        const constraint = <CollisionConstraint> this.nodeObj.pullData('collision');
+        const meshObj = this.params.mesh.val;
+
+        if (constraint) {
+            return constraint.isPositionValid(this.params.mesh.val);
+            // constraint.isPositionValid()
+        }
+
+        return true;
+    }
     execute() {
         this.meshMover.stop();
         this.params.stop.callConnectedPorts();
