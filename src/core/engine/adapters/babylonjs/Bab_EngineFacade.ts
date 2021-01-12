@@ -61,6 +61,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         const physicsPlugin = new CannonJSPlugin();
 
         this.scene = new Scene(this.engine);
+        this.scene.collisionsEnabled = true;
         this.scene.enablePhysics(gravityVector, physicsPlugin);
         this.engine.getInputElement = () => canvas;
         this.camera.setEngine(this);

@@ -76,7 +76,7 @@ export class KeyDownNodeParam extends NodeParam {
     listener: INodeListener = {
         onKeyDown: (e: IKeyboardEvent) => {
             if (this.isModifierMatch(e) && this.params.key.val === getKeyFromKeyCode(e.keyCode)) {
-                this.callConnectedPorts();
+                this.push();
             }
         }
     }
@@ -108,7 +108,7 @@ export class KeyUpNodeParam extends NodeParam {
     listener: INodeListener = {
         onKeyUp: (e: IKeyboardEvent) => {
             if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
-                this.callConnectedPorts();
+                this.push();
             }
         }
     }

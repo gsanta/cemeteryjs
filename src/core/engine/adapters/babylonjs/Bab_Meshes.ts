@@ -64,9 +64,11 @@ export  class Bab_Meshes implements IMeshAdapter {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
-        meshData.meshes[0].translate(Axis.X, delta.x, isGlobal ? Space.WORLD : Space.LOCAL);
-        meshData.meshes[0].translate(Axis.Y, delta.y, isGlobal ? Space.WORLD : Space.LOCAL);
-        meshData.meshes[0].translate(Axis.Z, delta.z, isGlobal ? Space.WORLD : Space.LOCAL);
+        meshData.meshes[0].moveWithCollisions(toVector3(delta))
+
+        // meshData.meshes[0].translate(Axis.X, delta.x, isGlobal ? Space.WORLD : Space.LOCAL);
+        // meshData.meshes[0].translate(Axis.Y, delta.y, isGlobal ? Space.WORLD : Space.LOCAL);
+        // meshData.meshes[0].translate(Axis.Z, delta.z, isGlobal ? Space.WORLD : Space.LOCAL);
     }
 
     setRotation(meshObj: MeshObj, rot: Point_3): void {

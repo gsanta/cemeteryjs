@@ -2,7 +2,6 @@ import { NodeObj, NodeObjJson } from "./NodeObj";
 import { NodePortObjJson } from "../NodePortObj";
 import { NodeParam, NodeParamJson } from "./NodeParam";
 
-
 export class NodeObjSerializer {
     private nodeObj: NodeObj;
 
@@ -11,7 +10,9 @@ export class NodeObjSerializer {
     }
 
     serialize(): NodeObjJson {
-        const params = this.nodeObj.getParams().map(param => param.toJson ? param.toJson() : this.defaultNodeParamSerializer(param));
+        const params = this.nodeObj.getParams()
+            .filter(param => !param.doNotSerialize)
+            .map(param => param.toJson ? param.toJson() : this.defaultNodeParamSerializer(param));
 
         const portJsons = this.nodeObj.getPorts().map(port => {
             let portJson: NodePortObjJson = { name: port.getNodeParam().name };

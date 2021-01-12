@@ -117,7 +117,7 @@ class MeshIntersectionListener implements INodeListener {
         }
 
         if (this.lastIntersectedMesh && lastIntersectedMesh !== this.lastIntersectedMesh) {
-            this.nodeParams.signal.callConnectedPorts();
+            this.nodeParams.signal.push();
         }
     }
 

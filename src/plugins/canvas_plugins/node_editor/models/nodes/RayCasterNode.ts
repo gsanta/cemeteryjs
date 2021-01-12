@@ -127,11 +127,11 @@ class WhenNodeParam extends NodeParam {
             rayObj.meshObj = meshObj;
             rayObj.rayLength = this.nodeObj.param.length.val;
             this.registry.engine.rays.createInstance(rayObj);
-            this.rayCasterNodeParams.helper.callConnectedPorts();
+            this.rayCasterNodeParams.helper.push();
 
             if (rayObj.pickedMeshObj) {
                 this.nodeObj.param.pickedMesh.val = rayObj.pickedMeshObj;
-                this.rayCasterNodeParams.signal.callConnectedPorts();
+                this.rayCasterNodeParams.signal.push();
             }
         }
     }

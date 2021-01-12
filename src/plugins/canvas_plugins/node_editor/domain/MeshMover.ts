@@ -6,17 +6,12 @@ export class MeshMover {
     private time = undefined;
     private meshObj: MeshObj;
     private speed: number;
-    private direction: MoveDirection;
+    private directions: MoveDirection[] = [];
     private isStopped = true;
     private onMoveCallbacks: (() => boolean)[] = [];
-    private id: string;
-
-    constructor(id: string) {
-        this.id = id;
-    }
 
     tick() {
-        if (this.isStopped || this.meshObj === undefined || this.direction === undefined || this.speed === undefined) {
+        if (this.isStopped || this.meshObj === undefined || this.speed === undefined) {
             return;
         }
 
@@ -29,7 +24,6 @@ export class MeshMover {
             if (!isValid) {
                 this.meshObj.setPosition(currentPos);
             }
-            // this.meshObj.translate(nextPos);
         }
         this.time = currentTime;
     }
@@ -63,35 +57,29 @@ export class MeshMover {
         this.speed = speed;
     }
 
-    setDirection(direction: MoveDirection) {
-        this.direction = direction;
+    setDirections(directions: MoveDirection[]) {
+        this.directions = directions;
     }
 
     private move(deltaTime: number): void {
         const speed = deltaTime * 0.01 * this.speed;
 
-        const currentPos = this.meshObj.getPosition().clone();
-
-        switch(this.direction) {
-            case MoveDirection.Forward:
-                // currentPos.add(new Point_3(0, 0, speed));
-                this.meshObj.translate(new Point_3(0, 0, speed));
-                break;
-            case MoveDirection.Backward:
-                // currentPos.add(new Point_3(0, 0, -speed));
-                this.meshObj.translate(new Point_3(0, 0, -speed));
-                break;
-            case MoveDirection.Left:
-                // currentPos.add(new Point_3(-speed, 0, 0));
-                this.meshObj.translate(new Point_3(-speed, 0, 0));
-                break;
-            case MoveDirection.Right:
-                // currentPos.add(new Point_3(speed, 0, 0));
-                this.meshObj.translate(new Point_3(speed, 0, 0));
-                break;    
-        }
-
-        // return currentPos;
+        this.directions.forEach(direction => {
+            switch(direction) {
+                case MoveDirection.Forward:
+                    this.meshObj.translate(new Point_3(0, 0, speed));
+                    break;
+                case MoveDirection.Backward:
+                    this.meshObj.translate(new Point_3(0, 0, -speed));
+                    break;
+                case MoveDirection.Left:
+                    this.meshObj.translate(new Point_3(-speed, 0, 0));
+                    break;
+                case MoveDirection.Right:
+                    this.meshObj.translate(new Point_3(speed, 0, 0));
+                    break;    
+            }
+        });
     }
 }
 

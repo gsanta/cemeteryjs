@@ -16,8 +16,9 @@ export class Bab_MeshFactory implements IMeshFactory {
 
     box(obj: MeshObj): void {
         const config = <MeshBoxConfig> obj.shapeConfig;
-        console.log(config);
         const mesh = MeshBuilder.CreateBox(obj.id, config, this.engineFacade.scene);
+        mesh.ellipsoid = new Vector3(config.width / 2, config.height / 2, config.depth / 2);
+        mesh.checkCollisions = true;
         this.createMaterial(obj, mesh);
 
         const pos = obj.getPosition();

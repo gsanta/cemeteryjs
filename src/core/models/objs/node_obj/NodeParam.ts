@@ -52,8 +52,10 @@ export abstract class NodeParam<D = any> {
     port?: PortConfig;
     controller?: ParamController;
     listener?: INodeListener;
-
     val?: D;
+
+    doNotSerialize? = false;
+
     getVal?(): D {
         const port = this.nodeObj.getPort(this.name);
         if (port && port.hasConnectedPort()) {
@@ -73,7 +75,30 @@ export abstract class NodeParam<D = any> {
 
     execute?(): void {}
 
-    callConnectedPorts?() {
+    pull?(): D[] {
+            if (this.port.direction !== PortDirection.Input) {
+                throw new Error('Pull should only be called for Input ports');
+            }
+
+            if (this.port.dataFlow !== PortDataFlow.Pull) {
+                throw new Error('Pull should only be called for ports with "pull" data flow');
+            }
+
+            const portObj = this.nodeObj.getPort(this.name);
+            if (portObj.hasConnectedPort()) {
+                const ports = portObj.getConnectedPorts();
+
+                return ports.map(port => {
+                    if (port.getNodeParam().getVal) {
+                        return port.getNodeParam().getVal();
+                    } else {
+                        return port.getNodeParam().val;
+                    }
+                });
+            }
+    }
+
+    push?() {
         this.nodeObj.getPort(this.name).getConnectedPorts().forEach(portObj => {
             //TODO temporary, all executors should be migrated to be on the port rather than on the obj
             if (portObj.getNodeParam().execute) {

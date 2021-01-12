@@ -41,6 +41,7 @@ export class RectangleFactory  {
             },
             scene
         );
+        mesh.checkCollisions = true;
 
 
         const scale = obj.getScale();
