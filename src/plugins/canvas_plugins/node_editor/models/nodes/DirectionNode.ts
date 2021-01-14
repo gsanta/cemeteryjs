@@ -85,6 +85,7 @@ class OnNodeParam extends NodeParam {
         dataFlow: PortDataFlow.Push
     }
     execute() {
+        this.params.isOn.val = this.params.direction.val;
         // this.meshMover.start();
         // this.params.start.callConnectedPorts();
     }
@@ -105,12 +106,13 @@ class OffNodeParam extends NodeParam {
         dataFlow: PortDataFlow.Push
     };
     execute() {
+        this.params.isOn.val = undefined;
         // this.meshMover.stop();
         // this.params.stop.callConnectedPorts();
     }
 }
 
-class IsOnNodeParam extends NodeParam {
+class IsOnNodeParam extends NodeParam<MoveDirection> {
     private params: DirectionNodeParams;
 
     constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
@@ -124,6 +126,7 @@ class IsOnNodeParam extends NodeParam {
         direction: PortDirection.Output,
         dataFlow: PortDataFlow.Pull
     };
+    val: undefined
     execute() {
         // this.meshMover.stop();
         // this.params.stop.callConnectedPorts();

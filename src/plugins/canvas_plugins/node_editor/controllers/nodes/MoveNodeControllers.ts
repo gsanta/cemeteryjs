@@ -36,11 +36,11 @@ export class MeshMoveController extends ParamController<string> {
     }
 
     val() {
-        return this.nodeObj.param.move.val;
+        return this.nodeObj.param.direction.val;
     }
 
     change(val) {
-        this.nodeObj.param.move.setVal(val);
+        this.nodeObj.param.direction.setVal(val);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

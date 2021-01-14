@@ -68,6 +68,15 @@ export abstract class NodeParam<D = any> {
         }
     }
 
+    getValues?(): D[] {
+        const port = this.nodeObj.getPort(this.name);
+        if (this.port.direction === PortDirection.Input && this.port.dataFlow === PortDataFlow.Pull) {
+            return this.pull();
+        } else {
+            return [this.val];
+        }
+    }
+
     setVal?(val: D);
 
     toJson?(): NodeParamJson;

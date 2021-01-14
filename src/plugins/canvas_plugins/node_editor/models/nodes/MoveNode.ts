@@ -61,7 +61,7 @@ export class MoveNodeParams extends NodeParams {
         this.keyUp = new KeyUpParam(nodeObj, this);
         this.mesh = new MeshNodeParam(nodeObj, this);
         this.key = new KeyboardNodeParam(nodeObj, 'key', this);
-        this.move = new MoveNodeParam(nodeObj, this);
+        this.direction = new DirectionNodeParam(nodeObj, this);
         this.speed = new SpeedNodeParam(nodeObj, this);
         this.start = new StartNodeParam(nodeObj);
         this.stop = new StopNodeParam(nodeObj);
@@ -72,7 +72,7 @@ export class MoveNodeParams extends NodeParams {
     readonly keyUp: KeyUpParam;
     readonly mesh: MeshNodeParam;
     readonly key: KeyboardNodeParam;
-    readonly move: MoveNodeParam;
+    readonly direction: DirectionNodeParam;
     readonly speed: SpeedNodeParam;
     readonly start: NodeParam;
     readonly stop: NodeParam;
@@ -174,7 +174,7 @@ class StopNodeParam extends NodeParam {
     }
 }
 
-class MoveNodeParam extends NodeParam {
+class DirectionNodeParam extends NodeParam {
     private params: MoveNodeParams;
 
     constructor(nodeObj: NodeObj, params: MoveNodeParams) {
@@ -183,9 +183,14 @@ class MoveNodeParam extends NodeParam {
         this.setVal(this.val);
     }
     
-    name = 'move'
+    name = 'direction'
     field = NodeParamField.List;
     val = MoveDirection.Forward;
+
+    port = {
+        direction: PortDirection.Input,
+        dataFlow: PortDataFlow.Pull
+    }
     
     setVal(val: MoveDirection) {
         this.val = val;
