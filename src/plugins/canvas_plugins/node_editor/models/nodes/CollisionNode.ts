@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { NodeView } from "../views/NodeView";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
@@ -54,29 +54,9 @@ export class CollisionNodeParams extends NodeParams {
 
     readonly collision: NodeParam<boolean> = {
         name: 'collision',
-        field: NodeParamField.Checkbox,
-        val: undefined,
+        ownVal: undefined,
     }
 }
-
-// class CollisionNodeParam extends NodeParam<CollisionConstraint> {
-//     private collisionContraint: CollisionConstraint;
-
-//     constructor(nodeObj: NodeObj, collisionContraint: CollisionConstraint) {
-//         super(nodeObj);
-
-//         this.collisionContraint = collisionContraint;
-//     }
-    
-//     name = 'collision';
-//     field = NodeParamField.Checkbox;
-//     setVal(val: CollisionConstraint) {
-
-//     }
-//     getVal() {
-//         return this.collisionContraint;
-//     }
-// }
 
 class PullNodeParam extends NodeParam<CollisionConstraint> {
     private collisionContraint: CollisionConstraint;
@@ -91,12 +71,10 @@ class PullNodeParam extends NodeParam<CollisionConstraint> {
 
     name = 'pull'
     getVal() {
-        if (this.params.collision.val) {
+        if (this.params.collision.ownVal) {
             return this.collisionContraint;
         }
     }
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Pull
-    }
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Pull;
 }

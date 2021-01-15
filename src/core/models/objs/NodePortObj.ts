@@ -10,7 +10,7 @@ export interface NodePortObjJson {
 
 
 export const NodePortObjType = 'node-port-obj';
-export class NodePortObj extends AbstractObj {
+export class NodePortObj<D = any> extends AbstractObj {
     objType: string = NodePortObjType;
     id: string;
     name: string;
@@ -19,13 +19,13 @@ export class NodePortObj extends AbstractObj {
     private readonly nodeObj: NodeObj;
     private readonly param: NodeParam;
 
-    constructor(nodeObj: NodeObj, param: NodeParam) {
+    constructor(nodeObj: NodeObj, param: NodeParam<D>) {
         super();
         this.id = param.name;
         this.nodeObj = nodeObj;
         this.param = param;
 
-        if (!param.port) {
+        if (!param.portDirection) {
             throw new Error(`NodeParam '${param.name}' is not a port.`);
         }
     }
@@ -33,7 +33,6 @@ export class NodePortObj extends AbstractObj {
     addConnectedPort(otherPortObj: NodePortObj) {
         if (!this.connectedPortObjs.includes(otherPortObj)) {
             this.connectedPortObjs.push(otherPortObj);        
-            this.param.fieldDisabled = true;
             if (!otherPortObj.getConnectedPorts().includes(this)) {
                 otherPortObj.addConnectedPort(this);
             }
@@ -74,14 +73,49 @@ export class NodePortObj extends AbstractObj {
     }
 
     isInputPort() {
-        return this.param.port.direction === PortDirection.Input;
+        return this.param.portDirection === PortDirection.Input;
     }
 
     isPushPort() {
-        return this.param.port.dataFlow === PortDataFlow.Push;
+        return this.param.portDataFlow === PortDataFlow.Push;
     }
 
     dispose(): void {
         this.connectedPortObjs.forEach(portObj => this.removeConnectedPort(portObj));
+    }
+
+    pull(): D[] {
+        if (this.param.portDirection !== PortDirection.Input) {
+            throw new Error('Pull should only be called for Input ports');
+        }
+
+        if (this.param.portDataFlow !== PortDataFlow.Pull) {
+            throw new Error('Pull should only be called for ports with "pull" data flow');
+        }
+
+        if (this.hasConnectedPort()) {
+            const ports = this.getConnectedPorts();
+
+            return ports.map(port => {
+                if (port.getNodeParam().getPortOrOwnVal) {
+                    return port.getNodeParam().getPortOrOwnVal();
+                } else {
+                    return port.getNodeParam().ownVal;
+                }
+            });
+        }
+
+        this.param.onPull && this.param.onPull();
+    }
+
+    push() {
+        this.getConnectedPorts().forEach(portObj => {
+            //TODO temporary, all executors should be migrated to be on the port rather than on the obj
+            if (portObj.getNodeParam().execute) {
+                portObj.getNodeParam().execute();
+            } else {
+                portObj.getNodeObj().executor.execute();
+            }
+        });
     }
 }

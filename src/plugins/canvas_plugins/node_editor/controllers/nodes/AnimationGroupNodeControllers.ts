@@ -1,4 +1,4 @@
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UIController } from "../../../../../core/controller/UIController";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
@@ -19,6 +19,7 @@ export class AnimationGroupNodeControllers extends UIController {
 }
 
 export class AnimationController extends ParamController<string> {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<AnimationGroupNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj<AnimationGroupNodeParams>) {
@@ -27,7 +28,7 @@ export class AnimationController extends ParamController<string> {
     }
 
     values() {
-        const meshObj = this.nodeObj.param.mesh.getVal();
+        const meshObj = this.nodeObj.param.mesh.getPortOrOwnVal()[0];
         if (meshObj) {
             return this.registry.engine.animatons.getAnimationGroups(meshObj);
         } else {
@@ -36,11 +37,11 @@ export class AnimationController extends ParamController<string> {
     }
 
     val() {
-        return this.nodeObj.param.animation.val;
+        return this.nodeObj.param.animation.ownVal;
     }
 
     change(val: string) {
-        this.nodeObj.param.animation.val = val;
+        this.nodeObj.param.animation.ownVal = val;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

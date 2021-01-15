@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { INodeListener } from "../../api/INodeListener";
@@ -50,30 +50,25 @@ export class TriggerZoneNodeParams extends NodeParams {
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
+        ownVal: undefined,
         toJson: () => {
             return {
                 name: this.mesh.name,
-                field: this.mesh.field,
-                val: this.mesh.val ? this.mesh.val.id : undefined
+                val: this.mesh.ownVal ? this.mesh.ownVal.id : undefined
             }
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.name = nodeParamJson.name;
-            this.mesh.field = nodeParamJson.field;
             if (nodeParamJson.val) {
-                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+                this.mesh.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
             }
         }
     }
 
     readonly pickableMesh: NodeParam = {
         name: 'pickableMesh',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Pull,
-        }
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Pull,
     }
     
     readonly signal: NodeParam;
@@ -88,10 +83,8 @@ class SignalNodeObj extends NodeParam {
     }
 
     name = 'signal';
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Push,
-    }
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
 
     listener: MeshIntersectionListener;
 }
@@ -108,7 +101,7 @@ class MeshIntersectionListener implements INodeListener {
         const lastIntersectedMesh = this.lastIntersectedMesh;
         this.lastIntersectedMesh = undefined;
         
-        const triggerZoneMeshObj = this.nodeParams.mesh.val;
+        const triggerZoneMeshObj = this.nodeParams.mesh.ownVal;
         const pickableMeshObj = this.getPickableMesh(nodeObj, registry);
         const intersection = this.checkIntersection(triggerZoneMeshObj, pickableMeshObj);
 
@@ -117,13 +110,13 @@ class MeshIntersectionListener implements INodeListener {
         }
 
         if (this.lastIntersectedMesh && lastIntersectedMesh !== this.lastIntersectedMesh) {
-            this.nodeParams.signal.push();
+            nodeObj.getPortForParam(this.nodeParams.signal).push();
         }
     }
 
     private getPickableMesh(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('pickableMesh').hasConnectedPort()) {
-            return nodeObj.pullData('pickableMesh');
+            return this.nodeParams.pickableMesh.getPortOrOwnVal()[0];
         }
     }
 

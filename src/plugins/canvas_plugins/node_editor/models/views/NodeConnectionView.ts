@@ -100,7 +100,7 @@ export class NodeConnectionView extends View {
     }
 
     getDirection() {
-        this.nodePortView1.getObj().getNodeParam().port.direction;
+        this.nodePortView1.getObj().getNodeParam().portDirection;
     }
 
     dispose() {
@@ -109,7 +109,7 @@ export class NodeConnectionView extends View {
     }
 
     private initColor() {
-        if (this.nodePortView1.getObj().getNodeParam().port.dataFlow === PortDataFlow.Pull) {
+        if (this.nodePortView1.getObj().getNodeParam().portDataFlow === PortDataFlow.Pull) {
             this.color = colors.nodes.connectionRed;
         } else {
             this.color = colors.nodes.connectionGreen;

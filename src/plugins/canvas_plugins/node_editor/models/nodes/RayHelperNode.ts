@@ -1,12 +1,11 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParamField, PortDirection, PortDataFlow, NodeParam } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../../core/models/objs/RayObj";
-import { NodeView } from "../views/NodeView";
 import { Registry } from "../../../../../core/Registry";
-import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { RayCasterNodeParams } from "./RayCasterNode";
 import { RayHelperNodeControllers } from "../../controllers/nodes/RayHelperNodeControllers";
+import { NodeView } from "../views/NodeView";
+import { RayCasterNodeParams } from "./RayCasterNode";
 
 export const RayHelperNodeType = 'ray-helper-node-obj';
 
@@ -51,8 +50,7 @@ export class RayHelperNodeParams extends NodeParams {
 
     readonly remove: NodeParam = {
         name: 'remove',
-        field: NodeParamField.NumberField,
-        val: -1
+        ownVal: -1
     }
     
     readonly rayCaster: RayCasterNodeParam;
@@ -68,15 +66,13 @@ class RayCasterNodeParam extends NodeParam {
     }
 
     name = 'rayCaster';
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
 
     execute() {
         if (this.nodeObj.getPort('rayCaster').hasConnectedPort()) {
             const rayCasterNodeParams = this.nodeObj.getPort('rayCaster').getConnectedPorts()[0].getNodeObj().param as RayCasterNodeParams;
-            const rayObj = <RayObj> rayCasterNodeParams.ray.val;
+            const rayObj = <RayObj> rayCasterNodeParams.ray.ownVal;
 
             this.registry.engine.rays.createHelper(rayObj);
             

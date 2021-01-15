@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { NodeView } from "../views/NodeView";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
@@ -43,29 +43,25 @@ export class FilterMeshNodeParams extends NodeParams {
     constructor(nodeObj: NodeObj) {
         super();
 
-        this.output = new OutputParam(nodeObj);
+        this.output = new OutputParam(nodeObj, this);
     }
 
     readonly input: NodeParam<MeshObj> = {
         name: 'input',
-        val: undefined,
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Pull
-        }
+        ownVal: undefined,
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Pull
     }
 
     readonly output: NodeParam;
     
     readonly mesh: NodeParam<MeshObj[]> = {
         name: 'mesh',
-        field: NodeParamField.MultiList,
-        val: [],
+        ownVal: [],
         toJson: () => {
-            const val = this.mesh.val.map(meshObj => meshObj.id).join(', ');
+            const val = this.mesh.ownVal.map(meshObj => meshObj.id).join(', ');
             return {
                 name: this.mesh.name,
-                field: this.mesh.field,
                 val: val
             }
         },
@@ -73,31 +69,27 @@ export class FilterMeshNodeParams extends NodeParams {
             const ids = (nodeParamJson.val as string).split(', ');
             const meshObjs = <MeshObj[]> ids.map(id => registry.stores.objStore.getById(id));
             this.mesh.name = nodeParamJson.name;
-            this.mesh.field = nodeParamJson.field
-            this.mesh.val = meshObjs;
+            this.mesh.ownVal = meshObjs;
         }
     }
 }
 
 class OutputParam extends NodeParam {
-    constructor(nodeObj: NodeObj) {
+    private params: FilterMeshNodeParams;
+
+    constructor(nodeObj: NodeObj, params: FilterMeshNodeParams) {
         super(nodeObj);
+        this.params = params;
     }
 
     name = 'output'
-    val = undefined
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Pull
-    }
+    ownVal = undefined
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Pull;
 
-    getVal(): MeshObj {
-        const port = this.nodeObj.getPort('input');
-        if (port.hasConnectedPort()) {
-            port.getConnectedPorts()[0].getNodeObj().pullData(port.getConnectedPorts()[0].getNodeParam().name);
-        }
-
-        const inputMesh = this.nodeObj.pullData('input');
+    onPull(): MeshObj {
+        this.portVal
+        const inputMesh = this.params.input.getPortOrOwnVal()[0];
         const acceptedMeshes = this.nodeObj.param.mesh.val;
 
         if(acceptedMeshes.includes(inputMesh)) {

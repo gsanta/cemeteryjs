@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../../core/models/objs/RayObj";
 import { Registry } from "../../../../../core/Registry";
 import { RayCasterNodeControllers } from "../../controllers/nodes/RayCasterNodeControllers";
@@ -51,33 +51,29 @@ export class RayCasterNodeParams extends NodeParams {
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
+        ownVal: undefined,
         toJson: () => {
             return {
                 name: this.mesh.name,
-                field: this.mesh.field,
-                val: this.mesh.val ? this.mesh.val.id : undefined
+                val: this.mesh.ownVal ? this.mesh.ownVal.id : undefined
             }
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.name = nodeParamJson.name;
-            this.mesh.field = nodeParamJson.field;
             if (nodeParamJson.val) {
-                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+                this.mesh.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
             }
         }
     }
     
     readonly length: NodeParam = {
         name: 'length',
-        field: NodeParamField.NumberField,
-        val: 100,
+        ownVal: 100,
     }
     
     readonly ray: NodeParam = {
         name: 'ray',
-        val: new RayObj
+        ownVal: new RayObj
     }
     
     readonly when: WhenNodeParam;
@@ -87,20 +83,16 @@ export class RayCasterNodeParams extends NodeParams {
     
     readonly pickedMesh: NodeParam = {
         name: 'pickedMesh',
-        val: undefined,
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Pull
-        }
+        ownVal: undefined,
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Pull
     }
 }
 
 class SignalNodeParam extends NodeParam {
     name = 'signal';
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
 }
 
 class WhenNodeParam extends NodeParam {
@@ -114,10 +106,8 @@ class WhenNodeParam extends NodeParam {
     }
 
     name = 'when';
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
 
     execute() {
         const meshObj = this.nodeObj.param.mesh.val;
@@ -127,11 +117,11 @@ class WhenNodeParam extends NodeParam {
             rayObj.meshObj = meshObj;
             rayObj.rayLength = this.nodeObj.param.length.val;
             this.registry.engine.rays.createInstance(rayObj);
-            this.rayCasterNodeParams.helper.push();
+            this.nodeObj.getPortForParam(this.rayCasterNodeParams.helper).push();
 
             if (rayObj.pickedMeshObj) {
                 this.nodeObj.param.pickedMesh.val = rayObj.pickedMeshObj;
-                this.rayCasterNodeParams.signal.push();
+                this.nodeObj.getPortForParam(this.rayCasterNodeParams.signal).push();
             }
         }
     }
@@ -139,8 +129,6 @@ class WhenNodeParam extends NodeParam {
 
 class HelperNodeParam extends NodeParam {
     name = 'helper';
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
 }

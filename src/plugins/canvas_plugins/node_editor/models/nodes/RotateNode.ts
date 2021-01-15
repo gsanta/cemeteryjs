@@ -1,14 +1,12 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
-import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { INodeListener } from "../../api/INodeListener";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { MeshNode } from "./MeshNode";
 import { RotateNodeControllers } from "../../controllers/nodes/RotateNodeControllers";
 
 export const RotateNodeType = 'rotate-node-obj';
@@ -60,10 +58,8 @@ export class RotateNodeParams extends NodeParams {
 
     readonly input: NodeParam = {
         name: 'input',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push
     }
 }
 
@@ -76,32 +72,27 @@ class MeshNodeParam extends NodeParam<MeshObj> {
     }
 
     name = 'mesh';
-    field = NodeParamField.List;
-    val = undefined;
+    ownVal = undefined;
 
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Pull
-    };
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Pull;
 
     toJson() {
         return {
             name: this.name,
-            field: this.field,
-            val: this.val ? this.val.id : undefined
+            val: this.ownVal ? this.ownVal.id : undefined
         }
     }
 
     fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
         this.name = nodeParamJson.name;
-        this.field = nodeParamJson.field;
         if (nodeParamJson.val) {
             this.setVal(<MeshObj> registry.stores.objStore.getById(nodeParamJson.val));
         }
     }
 
     setVal(val: MeshObj) {
-        this.val = val;
+        this.ownVal = val;
         this.meshRotator.setMeshObj(val);
     }
 }
@@ -112,23 +103,21 @@ class RotationNodeParam extends NodeParam {
     constructor(nodeObj: NodeObj, meshRotator: MeshRotator) {
         super(nodeObj);
         this.meshRotator = meshRotator;
-        this.setVal(this.val as 'left');
+        this.setVal(this.ownVal as 'left');
     }
     
     name = 'rotate';
-    field = NodeParamField.List;
-    val = 'left';
+    ownVal = 'left';
     
     setVal(val: 'left' | 'right') {
-        this.val = val;
+        this.ownVal = val;
         this.meshRotator.setDirection(val);
     }
 }
 
 class KeyboardNodeParam extends NodeParam {
     name: string;
-    val = '';
-    field = NodeParamField.List;
+    ownVal = '';
 
     constructor(nodeObj: NodeObj, name: string, params: RotateNodeParams, meshRotator: MeshRotator) {
         super(nodeObj);
@@ -137,7 +126,7 @@ class KeyboardNodeParam extends NodeParam {
     }
 
     setVal(val: string) {
-        this.val = val;
+        this.ownVal = val;
     }
 
     listener: INodeListener;
@@ -163,8 +152,8 @@ class KeyboardListener implements INodeListener {
     }
 
     onBeforeRender() {
-        if (this.keys.has(this.rotateNodeParams.key.val)) {
-            this.meshRotator.setMeshObj(this.rotateNodeParams.mesh.getVal());
+        if (this.keys.has(this.rotateNodeParams.key.ownVal)) {
+            this.meshRotator.setMeshObj(this.rotateNodeParams.mesh.getPortOrOwnVal()[0]);
             this.meshRotator.tick();
         }
     }

@@ -1,4 +1,4 @@
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UIController } from "../../../../../core/controller/UIController";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
@@ -19,6 +19,7 @@ export class DirectionNodeControllers extends UIController {
 
 
 export class DirectionController extends ParamController<string> {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<DirectionNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -31,7 +32,7 @@ export class DirectionController extends ParamController<string> {
     }
 
     val() {
-        return this.nodeObj.param.direction.val;
+        return this.nodeObj.param.direction.ownVal;
     }
 
     change(val) {

@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { RayHelperNodeParams } from "../../models/nodes/RayHelperNode";
@@ -17,6 +17,7 @@ export class RayHelperNodeControllers extends UIController {
 }
 
 export class RemoveTimerController extends ParamController<string> {
+    paramType = InputParamType.NumberField;
     private nodeObj: NodeObj<RayHelperNodeParams>;
     private tempVal: string;
 
@@ -26,7 +27,7 @@ export class RemoveTimerController extends ParamController<string> {
     }
 
     val() {
-        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.remove.val;
+        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.remove.ownVal;
     }
 
     change(val) {
@@ -36,7 +37,7 @@ export class RemoveTimerController extends ParamController<string> {
 
     blur() {
         try {
-            this.nodeObj.param.remove.val = this.tempVal;
+            this.nodeObj.param.remove.ownVal = this.tempVal;
             this.tempVal = undefined;
             this.registry.services.history.createSnapshot();
         } finally {

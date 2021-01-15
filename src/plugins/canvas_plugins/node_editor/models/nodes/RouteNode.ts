@@ -1,16 +1,13 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
-import { NodeView } from "../views/NodeView";
-import { PropContext, ParamController } from '../../../../../core/controller/FormController';
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
-import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { RouteNodeControllers } from "../../controllers/nodes/RouteNodeControllers";
 import { RouteWalker } from "../../domain/RouteWalker";
+import { NodeView } from "../views/NodeView";
 
 export const RouteNodeObjType = 'route-node-obj';
 
@@ -49,61 +46,48 @@ export class RouteNode extends AbstractNodeFactory {
 export class RouteNodeParams extends NodeParams {
     readonly speed: NodeParam = {
         name: 'speed',
-        field: NodeParamField.NumberField,
-        val: 1,
+        ownVal: 1,
     }
 
     readonly routeWalker: NodeParam = {
         name: 'routeWalker',
-        val: undefined
+        ownVal: undefined
     }
     
     readonly onStart: NodeParam = {
         name: 'onStart',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
     
-    readonly onTurnStart = {
+    readonly onTurnStart: NodeParam = {
         name: 'onTurnStart',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
     
-    readonly onTurnEnd = {
+    readonly onTurnEnd: NodeParam = {
         name: 'onTurnEnd',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
     
-    readonly onFinish = {
+    readonly onFinish: NodeParam = {
         name: 'onFinish',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
     
-    readonly mesh = {
+    readonly mesh: NodeParam = {
         name: 'mesh',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push
     }
     
-    readonly path = {
+    readonly path: NodeParam = {
         name: 'path',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push
     }
 }
 
@@ -121,30 +105,30 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
 
         if (!meshObj || !pathObj) { return; }
 
-        if (!this.nodeObj.param.routeWalker.val) {
+        if (!this.nodeObj.param.routeWalker.ownVal) {
             this.nodeObj.setParamVal('routeWalker', new RouteWalker(meshObj, pathObj));
         }
 
-        const routeWalker = <RouteWalker> this.nodeObj.param.routeWalker.val;
+        const routeWalker = <RouteWalker> this.nodeObj.param.routeWalker.ownVal;
         routeWalker.step();
     }
 
     executeStart() {
-        const routeWalker = <RouteWalker> this.nodeObj.param.routeWalker.val;
+        const routeWalker = <RouteWalker> this.nodeObj.param.routeWalker.ownVal;
         routeWalker && routeWalker.start();
     }
 
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('mesh').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('mesh').getConnectedPorts()[0].getNodeParam();
-            return <MeshObj> registry.data.view.node.getById(nodeParam.val)?.getObj();
+            return <MeshObj> registry.data.view.node.getById(nodeParam.ownVal)?.getObj();
         }
     }
 
     private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
         if (nodeObj.getPort('path').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('path').getConnectedPorts()[0].getNodeParam();
-            return <PathObj> registry.stores.objStore.getById(nodeParam.val);
+            return <PathObj> registry.stores.objStore.getById(nodeParam.ownVal);
         }
     }
 }

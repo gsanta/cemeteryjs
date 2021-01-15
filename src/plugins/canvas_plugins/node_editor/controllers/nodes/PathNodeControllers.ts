@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { PathViewType } from "../../../scene_editor/models/views/PathView";
@@ -17,6 +17,7 @@ export class PathNodeControllers extends UIController {
 }
 
 export class PathController extends ParamController<string> {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

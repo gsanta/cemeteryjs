@@ -1,5 +1,5 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { getKeyFromKeyCode, IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
 import { INodeListener } from "../../api/INodeListener";
@@ -68,25 +68,23 @@ export class KeyDownNodeParam extends NodeParam {
     }
 
     name = 'keyDown';
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
 
     listener: INodeListener = {
         onKeyDown: (e: IKeyboardEvent) => {
-            if (this.isModifierMatch(e) && this.params.key.val === getKeyFromKeyCode(e.keyCode)) {
-                this.push();
+            if (this.isModifierMatch(e) && this.params.key.ownVal === getKeyFromKeyCode(e.keyCode)) {
+                this.nodeObj.getPortForParam(this).push();
             }
         }
     }
 
     private isModifierMatch(e: IKeyboardEvent) {
         return (
-            this.params.modifier.getVal() === undefined ||
-            this.params.modifier.getVal() === "" ||
-            e.isCtrlDown && this.params.modifier.getVal() === 'Ctrl' ||
-            e.isShiftDown && this.params.modifier.getVal() === 'Shift'
+            this.params.modifier.ownVal === undefined ||
+            this.params.modifier.ownVal === "" ||
+            e.isCtrlDown && this.params.modifier.ownVal === 'Ctrl' ||
+            e.isShiftDown && this.params.modifier.ownVal === 'Shift'
         );
     }
 }
@@ -100,15 +98,13 @@ export class KeyUpNodeParam extends NodeParam {
     }
 
     name = 'keyUp';
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
 
     listener: INodeListener = {
         onKeyUp: (e: IKeyboardEvent) => {
-            if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
-                this.push();
+            if (this.params.key.ownVal === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+                this.nodeObj.getPortForParam(this).push();
             }
         }
     }
@@ -116,8 +112,7 @@ export class KeyUpNodeParam extends NodeParam {
 
 export class KeyboardNodeParam extends NodeParam {
     name: string;
-    val = '';
-    field = NodeParamField.List;
+    ownVal = '';
 
     constructor(name: string, nodeObj: NodeObj) {
         super(nodeObj);
@@ -127,8 +122,7 @@ export class KeyboardNodeParam extends NodeParam {
 
 export class KeyboardModifierNodeParam extends NodeParam {
     name: string = 'modifier'
-    val = '';
-    field = NodeParamField.List;
+    ownVal = '';
 
     constructor(nodeObj: NodeObj) {
         super(nodeObj);

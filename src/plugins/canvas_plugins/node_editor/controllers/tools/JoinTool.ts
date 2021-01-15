@@ -71,7 +71,7 @@ export class JoinTool extends PointerTool {
         if (!endPortView || !startPortView) { return false; }
         if (startPortView.viewType !== NodePortViewType || endPortView.viewType !== NodePortViewType) { return false; }
 
-        if (startPortView.getObj().getNodeParam().port.direction === endPortView.getObj().getNodeParam().port.direction) { return false }
+        if (startPortView.getObj().getNodeParam().portDirection === endPortView.getObj().getNodeParam().portDirection) { return false }
 
         return true;
     }

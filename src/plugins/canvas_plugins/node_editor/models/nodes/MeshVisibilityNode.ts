@@ -3,7 +3,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { MeshVisibilityNodeControllers } from "../../controllers/nodes/MeshVisibilityNodeControllers";
 import { NodeView } from "../views/NodeView";
 
@@ -44,12 +44,10 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
 export class MeshVisibilityNodeParams extends NodeParams {    
     readonly 'signal on': NodeParam = {
         name: 'signal on',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        },
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push,
         execute: () => {
-            const meshObj = this.mesh.val;
+            const meshObj = this.mesh.ownVal;
 
             if (meshObj) {
                 meshObj.setVisibility(1);
@@ -59,10 +57,8 @@ export class MeshVisibilityNodeParams extends NodeParams {
 
     readonly 'signal off': NodeParam = {
         name: 'signal off',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push,
-        },
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push,
         execute() {
             const meshObj = this.mesh.val;
 
@@ -74,24 +70,19 @@ export class MeshVisibilityNodeParams extends NodeParams {
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Pull
-        },
+        ownVal: undefined,
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Pull,
         toJson: () => {
             return {
                 name: this.mesh.name,
-                field: this.mesh.field,
-                val: this.mesh.val ? this.mesh.val.id : undefined
+                val: this.mesh.ownVal ? this.mesh.ownVal.id : undefined
             }
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.name = nodeParamJson.name;
-            this.mesh.field = nodeParamJson.field;
             if (nodeParamJson.val) {
-                this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+                this.mesh.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
             }
         }
     }
@@ -106,14 +97,9 @@ export class MeshVisibilityNodeExecutor extends AbstractNodeExecutor<MeshVisibil
     }
 
     execute() {
-        const visibility: number = this.nodeObj.param.visible.val;
+        const visibility: number = this.nodeObj.param.visible.ownVal;
 
-        let meshObj: MeshObj;
-        if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
-            meshObj = this.nodeObj.pullData('mesh');
-        } else {
-            meshObj =  this.nodeObj.param.mesh.val;
-        }
+        let meshObj: MeshObj = this.nodeObj.param.mesh.getPortOrOwnVal()[0];
 
         if (meshObj) {
             meshObj.setVisibility(visibility);

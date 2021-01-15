@@ -47,7 +47,7 @@ export class NodePortView extends ContainedView {
     }
 
     move(delta: Point) {
-        const portDirection = this.obj.getNodeParam().port.direction;
+        const portDirection = this.obj.getNodeParam().portDirection;
         this.connections.forEach(connection => {
             portDirection === PortDirection.Input ? connection.setInputPoint(this.getAbsolutePosition()) : connection.setOutputPoint(this.getAbsolutePosition());
         });

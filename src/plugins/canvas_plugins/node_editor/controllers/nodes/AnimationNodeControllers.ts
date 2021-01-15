@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshController } from "./MeshNodeControllers";
@@ -21,6 +21,7 @@ export class AnimationNodeControllers extends UIController {
 }
 
 export class StartFrameController extends ParamController<string> {
+    paramType = InputParamType.NumberField;
     private nodeObj: NodeObj<AnimationNodeParams>;
     private tempVal: string;
 
@@ -30,7 +31,7 @@ export class StartFrameController extends ParamController<string> {
     }
 
     val() {
-        return this.tempVal ? this.tempVal : this.nodeObj.param.startFrame.val;
+        return this.tempVal ? this.tempVal : this.nodeObj.param.startFrame.ownVal;
     }
 
     change(val) {
@@ -41,7 +42,7 @@ export class StartFrameController extends ParamController<string> {
     blur() {
         try {
             const val = parseFloat(this.tempVal);
-            this.nodeObj.param.startFrame.val = val;
+            this.nodeObj.param.startFrame.ownVal = val;
             this.tempVal = undefined;
         } finally {
             this.registry.services.history.createSnapshot();
@@ -51,6 +52,7 @@ export class StartFrameController extends ParamController<string> {
 }
 
 export class EndFrameController extends ParamController<string> {
+    paramType = InputParamType.NumberField;
     private nodeObj: NodeObj<AnimationNodeParams>;
     private tempVal: string;
 
@@ -60,7 +62,7 @@ export class EndFrameController extends ParamController<string> {
     }
 
     val() {
-        return this.tempVal ? this.tempVal : this.nodeObj.param.endFrame.val;
+        return this.tempVal ? this.tempVal : this.nodeObj.param.endFrame.ownVal;
     }
 
     change(val: string) {
@@ -71,7 +73,7 @@ export class EndFrameController extends ParamController<string> {
     blur() {
         try {
             const val = parseFloat(this.tempVal);
-            this.nodeObj.param.endFrame.val = val;
+            this.nodeObj.param.endFrame.ownVal = val;
             this.tempVal = undefined;
         } finally {
             this.registry.services.history.createSnapshot();

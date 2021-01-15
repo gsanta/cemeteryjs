@@ -1,5 +1,5 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { NodeView } from "../views/NodeView";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
@@ -42,27 +42,22 @@ export class AnimationNode extends AbstractNodeFactory {
 export class AnimationNodeParams extends NodeParams {
     readonly mesh: NodeParam = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: '',
+        ownVal: '',
     }
 
     readonly startFrame: NodeParam = {
         name: 'startFrame',
-        field: NodeParamField.NumberField,
-        val: 0,
+        ownVal: 0,
     }
     
     readonly endFrame: NodeParam = {
         name: 'endFrame',
-        field: NodeParamField.NumberField,
-        val: 0,
+        ownVal: 0,
     }
     
     readonly action: NodeParam = {
         name: 'action',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
 }

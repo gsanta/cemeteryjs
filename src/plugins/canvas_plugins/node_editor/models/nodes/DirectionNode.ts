@@ -1,5 +1,5 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { DirectionNodeControllers } from "../../controllers/nodes/DirectionNodeControllers";
@@ -80,12 +80,10 @@ class OnNodeParam extends NodeParam {
     }
     
     name = 'on';
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Push
-    }
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
     execute() {
-        this.params.isOn.val = this.params.direction.val;
+        this.params.isOn.ownVal = this.params.direction.ownVal;
         // this.meshMover.start();
         // this.params.start.callConnectedPorts();
     }
@@ -101,12 +99,10 @@ class OffNodeParam extends NodeParam {
     }
 
     name = 'off';
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Push
-    };
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
     execute() {
-        this.params.isOn.val = undefined;
+        this.params.isOn.ownVal = undefined;
         // this.meshMover.stop();
         // this.params.stop.callConnectedPorts();
     }
@@ -122,11 +118,9 @@ class IsOnNodeParam extends NodeParam<MoveDirection> {
     }
 
     name = 'isOn';
-    port = {
-        direction: PortDirection.Output,
-        dataFlow: PortDataFlow.Pull
-    };
-    val: undefined
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Pull;
+    ownVal: undefined
     execute() {
         // this.meshMover.stop();
         // this.params.stop.callConnectedPorts();
@@ -136,196 +130,13 @@ class IsOnNodeParam extends NodeParam<MoveDirection> {
 class DirectionNodeParam extends NodeParam {
     constructor(nodeObj: NodeObj) {
         super(nodeObj)
-        this.setVal(this.val);
+        this.setVal(this.ownVal);
     }
     
     name = 'direction'
-    field = NodeParamField.List;
-    val = undefined;
+    ownVal = undefined;
     
     setVal(val: MoveDirection) {
-        this.val = val;
+        this.ownVal = val;
     }
 }
-
-// class CollisionParam extends NodeParam {
-//     private meshMover: MeshMover;
-//     private params: MoveNodeParams;
-
-//     constructor(nodeObj: NodeObj, params: MoveNodeParams, meshMover: MeshMover) {
-//         super(nodeObj);
-
-//         this.meshMover = meshMover;
-//         this.params = params;
-
-//         this.meshMover.onMove(() => this.onMoveConstraint())
-//     }
-
-//     name = 'collision';
-//     port = {
-//         direction: PortDirection.Input,
-//         dataFlow: PortDataFlow.Pull
-//     };
-
-//     private onMoveConstraint(): boolean {
-//         const constraint = <CollisionConstraint> this.nodeObj.pullData('collision');
-//         const meshObj = this.params.mesh.val;
-
-//         if (constraint) {
-//             return constraint.isPositionValid(this.params.mesh.val);
-//             // constraint.isPositionValid()
-//         }
-
-//         return true;
-//     }
-//     execute() {
-//         this.meshMover.stop();
-//         this.params.stop.callConnectedPorts();
-//     }
-// }
-
-// class StartNodeParam extends NodeParam {
-//     name = 'start';
-//     port = {
-//         direction: PortDirection.Output,
-//         dataFlow: PortDataFlow.Push
-//     }
-// }
-
-// class StopNodeParam extends NodeParam {
-//     name = 'stop';
-//     port = {
-//         direction: PortDirection.Output,
-//         dataFlow: PortDataFlow.Push
-//     }
-// }
-
-// class MoveNodeParam extends NodeParam {
-//     private meshMover: MeshMover;
-
-//     constructor(nodeObj: NodeObj, meshMover: MeshMover) {
-//         super(nodeObj)
-//         this.meshMover = meshMover;
-//         this.setVal(this.val);
-//     }
-    
-//     name = 'move'
-//     field = NodeParamField.List;
-//     val = MoveDirection.Forward;
-    
-//     setVal(val: MoveDirection) {
-//         this.val = val;
-//         this.meshMover.setDirection(val);
-//     }
-// }
-
-// class SpeedNodeParam extends NodeParam {
-//     private meshMover: MeshMover;
-
-//     constructor(nodeObj: NodeObj, meshMover: MeshMover) {
-//         super(nodeObj);
-//         this.meshMover = meshMover;
-//         this.setVal(this.val);
-//     }
-    
-//     name = 'speed';
-//     field = NodeParamField.NumberField;
-//     val = 0.5;
-    
-//     setVal(val: number) {
-//         this.val = val;
-//         this.meshMover.setSpeed(val);
-//     }
-// }
-
-// class MeshNodeParam extends NodeParam<MeshObj> {
-//     private meshMover: MeshMover;
-
-//     constructor(nodeObj: NodeObj, meshMover: MeshMover) {
-//         super(nodeObj);
-//         this.meshMover = meshMover;
-//     }
-
-//     name = 'mesh';
-//     field = NodeParamField.List;
-//     val = undefined;
-
-//     port = {
-//         direction: PortDirection.Input,
-//         dataFlow: PortDataFlow.Pull
-//     };
-
-//     toJson() {
-//         return {
-//             name: this.name,
-//             field: this.field,
-//             val: this.val ? this.val.id : undefined
-//         }
-//     }
-
-//     fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
-//         this.name = nodeParamJson.name;
-//         this.field = nodeParamJson.field;
-//         if (nodeParamJson.val) {
-//             this.setVal(<MeshObj> registry.stores.objStore.getById(nodeParamJson.val));
-//         }
-//     }
-
-//     setVal(val: MeshObj) {
-//         this.val = val;
-//         this.meshMover.setMeshObj(val);
-//     }
-// }
-
-// class KeyboardNodeParam extends NodeParam {
-//     name: string;
-//     val = '';
-//     field = NodeParamField.List;
-
-//     constructor(nodeObj: NodeObj, name: string, params: MoveNodeParams, meshMover: MeshMover) {
-//         super(nodeObj);
-//         this.name = name;
-//         this.listener = new KeyboardListener(params, meshMover, nodeObj);
-//     }
-
-//     setVal(val: string) {
-//         this.val = val;
-//     }
-
-//     listener: INodeListener;
-// }
-
-// class KeyboardListener implements INodeListener {
-//     private params: MoveNodeParams;
-//     private meshMover: MeshMover;
-//     private nodeObj: NodeObj;
-//     private isKeyDown: boolean = false;
-
-//     constructor(moveNodeParams: MoveNodeParams, meshMover: MeshMover, nodeObj: NodeObj) {
-//         this.params = moveNodeParams;
-//         this.meshMover = meshMover;
-//         this.nodeObj = nodeObj;
-//     }
-
-//     onKeyDown(e: IKeyboardEvent) {
-//         if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
-//             this.isKeyDown = true;
-//             this.params.start.callConnectedPorts();
-//         }
-//     }
-
-//     onKeyUp(e: IKeyboardEvent) {
-//         if (this.params.key.val === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
-//             this.isKeyDown = false;
-//             this.meshMover.reset();
-//             this.params.stop.callConnectedPorts();
-//         }
-//     }
-
-//     onBeforeRender() {
-//         // if (this.isKeyDown) {
-//             this.meshMover.setMeshObj(this.params.mesh.getVal());
-//             this.meshMover.tick();
-//         // }
-//     }
-// }

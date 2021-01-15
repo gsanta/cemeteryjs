@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { RouteNodeParams } from "../../models/nodes/RouteNode";
@@ -17,6 +17,7 @@ export class RouteNodeControllers extends UIController {
 }
 
 export class SpeedControl extends ParamController<string> {
+    paramType = InputParamType.NumberField;
     private nodeObj: NodeObj<RouteNodeParams>;
     private tempVal: string;
 
@@ -26,7 +27,7 @@ export class SpeedControl extends ParamController<string> {
     }
 
     val() {
-        return this.tempVal ? this.tempVal : this.nodeObj.param.speed.val;
+        return this.tempVal ? this.tempVal : this.nodeObj.param.speed.ownVal;
     }
     
     change(val) {
@@ -37,11 +38,11 @@ export class SpeedControl extends ParamController<string> {
     blur() {
         try {
             const speedNum = parseFloat(this.tempVal);
-            this.nodeObj.param.speed.val = speedNum;
+            this.nodeObj.param.speed.ownVal = speedNum;
         } finally {
-            const routeWalker = this.nodeObj.param.routeWalker.val as RouteWalker;
+            const routeWalker = this.nodeObj.param.routeWalker.ownVal as RouteWalker;
             if (routeWalker) {
-                routeWalker.setSpeed(this.nodeObj.param.speed.val);
+                routeWalker.setSpeed(this.nodeObj.param.speed.ownVal);
             }
     
             this.registry.services.history.createSnapshot();

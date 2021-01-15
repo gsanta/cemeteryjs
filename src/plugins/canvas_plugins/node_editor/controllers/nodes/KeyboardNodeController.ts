@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
@@ -25,6 +25,7 @@ export class KeyboardNodeControllers extends UIController {
 }
 
 export class KeyControl extends ParamController {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<KeyboardNodeParams>;
     private paramName: string;
     private keys: string[] = [];
@@ -41,11 +42,11 @@ export class KeyControl extends ParamController {
     }
 
     val() {
-        return this.nodeObj.param[this.paramName].val;
+        return this.nodeObj.param[this.paramName].ownVal;
     }
 
     change(val) {
-        this.nodeObj.param[this.paramName].val = val;
+        this.nodeObj.param[this.paramName].ownVal = val;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

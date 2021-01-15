@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
@@ -22,6 +22,7 @@ export class RotateNodeControllers extends UIController {
 }
 
 export class MeshRotateController extends ParamController<string> {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<RotateNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -34,7 +35,7 @@ export class MeshRotateController extends ParamController<string> {
     }
 
     val() {
-        return this.nodeObj.param.rotate.val;
+        return this.nodeObj.param.rotate.ownVal;
     }
 
     change(val) {
@@ -45,6 +46,7 @@ export class MeshRotateController extends ParamController<string> {
 }
 
 export class KeyControl extends ParamController {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<RotateNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -57,7 +59,7 @@ export class KeyControl extends ParamController {
     }
 
     val() {
-        return this.nodeObj.param.key.val;
+        return this.nodeObj.param.key.ownVal;
     }
 
     change(val) {

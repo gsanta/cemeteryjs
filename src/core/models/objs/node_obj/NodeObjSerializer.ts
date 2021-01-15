@@ -38,20 +38,11 @@ export class NodeObjSerializer {
     private defaultNodeParamSerializer(param: NodeParam): NodeParamJson {
         const json: NodeParamJson = {
             name: param.name,
-            val: param.val,
-            field: param.field,
+            val: param.ownVal,
         }
-    
-        if (param.field) {
-            json.field = param.field;
-        }
-    
-        if (param.port) {
-            json.port = {
-                direction: param.port.direction,
-                dataFlow: param.port.dataFlow
-            }
-        }
+
+        json.portDataflow = param.portDataFlow;
+        json.portDirection = param.portDirection;
     
         return json;
     }

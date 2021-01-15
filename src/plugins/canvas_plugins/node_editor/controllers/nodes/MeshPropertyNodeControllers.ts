@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshPropertyNodeParams } from "../../models/nodes/MeshPropertyNode";
@@ -17,6 +17,7 @@ export class MeshPropertyNodeControllers extends UIController {
 }
 
 export class MeshVisibilityController extends ParamController {
+    paramType = InputParamType.Checkbox;
     private nodeObj: NodeObj<MeshPropertyNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

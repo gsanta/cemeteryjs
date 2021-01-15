@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshController } from "./MeshNodeControllers";
@@ -18,6 +18,7 @@ export class RayCasterNodeControllers extends UIController {
 }
 
 export class RayLengthController extends ParamController<string> {
+    paramType = InputParamType.NumberField;
     private nodeObj: NodeObj<RayCasterNodeParams>;
     private tempVal: string;
 
@@ -27,7 +28,7 @@ export class RayLengthController extends ParamController<string> {
     }
 
     val() {
-        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.length.val;
+        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.length.ownVal;
     }
 
     change(val: string) {
@@ -37,7 +38,7 @@ export class RayLengthController extends ParamController<string> {
 
     blur() {
         try {
-            this.nodeObj.param.length.val = parseFloat(this.tempVal);
+            this.nodeObj.param.length.ownVal = parseFloat(this.tempVal);
             this.tempVal = undefined;
         } finally {
             this.registry.services.render.reRenderAll();

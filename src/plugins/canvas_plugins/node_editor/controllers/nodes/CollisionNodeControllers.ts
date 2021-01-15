@@ -1,4 +1,4 @@
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UIController } from "../../../../../core/controller/UIController";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
@@ -18,6 +18,7 @@ export class CollisionNodeControllers extends UIController {
 }
 
 export class CollisionController extends ParamController {
+    paramType = InputParamType.Checkbox;
     private nodeObj: NodeObj<CollisionNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj<CollisionNodeParams>) {
@@ -26,11 +27,11 @@ export class CollisionController extends ParamController {
     }
 
     val() {
-        return this.nodeObj.param.collision.val;
+        return this.nodeObj.param.collision.ownVal;
     }
 
     change(val: boolean) {
-        this.nodeObj.param.collision.val = val;
+        this.nodeObj.param.collision.ownVal = val;
 
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);

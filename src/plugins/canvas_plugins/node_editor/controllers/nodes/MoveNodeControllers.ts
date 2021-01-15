@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
@@ -12,18 +12,19 @@ export class MoveNodeControllers extends UIController {
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
         this.mesh = new MeshController(registry, nodeObj);
-        this.move = new MeshMoveController(registry, nodeObj);
+        this.direction = new MoveDirectionController(registry, nodeObj);
         this.speed = new MeshSpeedController(registry, nodeObj);
         this.key = new KeyControl(registry, nodeObj);
     }
 
     readonly mesh: MeshController;
-    readonly move: MeshMoveController;
+    readonly direction: MoveDirectionController;
     readonly speed: MeshSpeedController;
     readonly key: KeyControl;
 }
 
-export class MeshMoveController extends ParamController<string> {
+export class MoveDirectionController extends ParamController<string> {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<MoveNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -36,7 +37,7 @@ export class MeshMoveController extends ParamController<string> {
     }
 
     val() {
-        return this.nodeObj.param.direction.val;
+        return this.nodeObj.param.direction.ownVal;
     }
 
     change(val) {
@@ -47,6 +48,7 @@ export class MeshMoveController extends ParamController<string> {
 }
 
 export class MeshSpeedController extends ParamController<string> {
+    paramType = InputParamType.NumberField;
     private nodeObj: NodeObj<MoveNodeParams>;
     private tempVal: string;
 
@@ -56,7 +58,7 @@ export class MeshSpeedController extends ParamController<string> {
     }
 
     val() {
-        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.speed.val.toString();
+        return this.tempVal !== undefined ? this.tempVal : this.nodeObj.param.speed.ownVal.toString();
     }
 
     change(val) {
@@ -76,6 +78,7 @@ export class MeshSpeedController extends ParamController<string> {
 }
 
 export class KeyControl extends ParamController {
+    paramType = InputParamType.List;
     private nodeObj: NodeObj<MoveNodeParams>;
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -88,7 +91,7 @@ export class KeyControl extends ParamController {
     }
 
     val() {
-        return this.nodeObj.param.key.val;
+        return this.nodeObj.param.key.ownVal;
     }
 
     change(val) {

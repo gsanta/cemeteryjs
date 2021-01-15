@@ -1,6 +1,6 @@
 import { MeshObjType, MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { MultiSelectController, ParamController } from "../../../../../core/controller/FormController";
+import { InputParamType, MultiSelectController, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshNodeParams } from "../../models/nodes/MeshNode";
@@ -18,6 +18,7 @@ export class MeshNodeControllers extends UIController {
 
 export class MeshController extends ParamController<string> {
     private nodeObj: NodeObj<MeshNodeParams>;
+    paramType = InputParamType.List;
 
     constructor(registry: Registry, nodeObj: NodeObj<MeshNodeParams>) {
         super(registry);
@@ -29,7 +30,7 @@ export class MeshController extends ParamController<string> {
     }
 
     val() {
-        const meshObj = this.nodeObj.param.mesh.val;
+        const meshObj = this.nodeObj.param.mesh.ownVal;
         if (meshObj) {
             return meshObj.name ? meshObj.name : meshObj.id;
         }
@@ -39,7 +40,7 @@ export class MeshController extends ParamController<string> {
         if (this.nodeObj.param.mesh.setVal) {
             this.nodeObj.param.mesh.setVal(this.registry.stores.objStore.getByNameOrId(val) as MeshObj);
         } else {
-            this.nodeObj.param.mesh.val = this.registry.stores.objStore.getByNameOrId(val) as MeshObj;
+            this.nodeObj.param.mesh.ownVal = this.registry.stores.objStore.getByNameOrId(val) as MeshObj;
         }
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
@@ -47,6 +48,7 @@ export class MeshController extends ParamController<string> {
 }
 
 export class MultiMeshController extends MultiSelectController {
+    paramType = InputParamType.MultiSelect;
     private nodeObj: NodeObj;
 
     constructor(registry: Registry, nodeObj: NodeObj) {

@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { NodeView } from "../views/NodeView";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
@@ -53,48 +53,33 @@ export class AnimationGroupNodeParams extends NodeParams {
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Pull
-        },
+        ownVal: undefined,
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Pull,
         toJson: () => {
             return {
                 name: this.mesh.name,
-                field: this.mesh.field,
-                val: this.mesh.val ? this.mesh.val.id : undefined
+                val: this.mesh.ownVal ? this.mesh.ownVal.id : undefined
             }
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
-            this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            this.mesh.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
         },
-        getVal() {
-            return this.val;
-        }
     }
 
     readonly animation: NodeParam<string> = {
         name: 'animation',
-        field: NodeParamField.List,
-        val: undefined,
-        // port: {
-        //     direction: PortDirection.Input,
-        //     dataFlow: PortDataFlow.Pull
-        // },
+        ownVal: undefined,
         toJson() {
             return {
                 name: this.name,
                 field: this.field,
-                val: this.val
+                val: this.ownVal
             }
         },
         fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
-            this.val = nodeParamJson.val;
+            this.ownVal = nodeParamJson.val;
         },
-        getVal() {
-            return this.mesh.val;
-        }
     }
 }
 
@@ -110,14 +95,12 @@ class SignalStartNode extends NodeParam {
     }
 
     name = 'signalStart';
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Push,
-    }
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
 
     execute() {
-        const meshObj = this.params.mesh.getVal();
-        const animation = this.params.animation.val;
+        const meshObj = this.params.mesh.getPortOrOwnVal()[0];
+        const animation = this.params.animation.ownVal;
         if (meshObj && animation) {
             this.registry.engine.animatons.startAnimation(meshObj, animation)
         }
@@ -136,14 +119,12 @@ class SignalStopNode extends NodeParam {
     }
 
     name = 'signalStop';
-    port = {
-        direction: PortDirection.Input,
-        dataFlow: PortDataFlow.Push,
-    }
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
 
     execute() {
-        const meshObj = this.params.mesh.getVal();
-        const animation = this.params.animation.val;
+        const meshObj = this.params.mesh.getPortOrOwnVal()[0]
+        const animation = this.params.animation.ownVal;
         if (meshObj && animation) {
             this.registry.engine.animatons.stopAnimation(meshObj, animation)
         }

@@ -44,14 +44,14 @@ export class NodeObjDeserialize {
 
         if (this.nodeObj.param[json.name]) {
             param = this.nodeObj.param[json.name];
-            param.val = json.val;
-            param.setVal ? param.setVal(json.val) : param.val = json.val;
+            param.ownVal = json.val;
+            param.setVal ? param.setVal(json.val) : param.ownVal = json.val;
         } else {
             param = { 
                 name: json.name,
-                val: json.val,
-                field: json.field,
-                port: json.port
+                ownVal: json.val,
+                portDirection: json.portDirection,
+                portDataFlow: json.portDataflow
             }
             this.nodeObj.param[json.name] = param;
         }

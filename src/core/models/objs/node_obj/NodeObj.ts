@@ -80,29 +80,34 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     }
 
     setParamVal(name: string, value: any) {
-        this.param[name].val = value;
+        this.param[name].ownVal = value;
     }
 
     getPort(portName: string): NodePortObj {
         return this.ports.get(portName);
     }
 
+    getPortForParam(param: NodeParam): NodePortObj {
+        return this.getPorts().find(port => port.getNodeParam() === param);
+    }
+
+
     getPorts(): NodePortObj[] {
         return Array.from(this.ports.values());
     }
 
-    pullData(portName: string): any {
-        // TODO check that port is output port
-        if (this.getPort(portName).hasConnectedPort()) {
-            const param = this.getPort(portName).getConnectedPorts()[0].getNodeParam();
+    // pullData(portName: string): any {
+    //     // TODO check that port is output port
+    //     if (this.getPort(portName).hasConnectedPort()) {
+    //         const param = this.getPort(portName).getConnectedPorts()[0].getNodeParam();
 
-            if (param.getVal) {
-                return param.getVal();
-            } else {
-                return param.val;
-            }
-        }
-    }
+    //         if (param.getVal) {
+    //             return param.getVal();
+    //         } else {
+    //             return param.ownVal;
+    //         }
+    //     }
+    // }
 
     dispose() {
         this.getPorts().forEach(portObj => portObj.dispose());
@@ -127,14 +132,16 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
         const currentPorts = this.ports;
         this.ports = new Map();
 
-        this.paramList.filter(param => param.port).forEach(port => {
-            if (currentPorts.has(port.name)) {
-                this.ports.set(port.name, currentPorts.get(port.name));
-                currentPorts.delete(port.name);
-            } else {
-                this.ports.set(port.name, new NodePortObj(this, port))
-            }
-        });
+        this.paramList
+            .filter(param => param.portDirection)
+            .forEach(port => {
+                if (currentPorts.has(port.name)) {
+                    this.ports.set(port.name, currentPorts.get(port.name));
+                    currentPorts.delete(port.name);
+                } else {
+                    this.ports.set(port.name, new NodePortObj(this, port))
+                }
+            });
         Array.from(currentPorts.values()).forEach(port => port.dispose());
     }
 }

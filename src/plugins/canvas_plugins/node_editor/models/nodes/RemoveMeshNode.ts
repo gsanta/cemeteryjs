@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDirection, PortDataFlow, NodeParamField, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../views/NodeView";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
@@ -44,37 +44,29 @@ export class RemoveMeshNode extends AbstractNodeFactory {
 export class RemoveMeshNodeParams extends NodeParams {
     readonly action: NodeParam = {
         name: 'action',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
     
     readonly signal: NodeParam = {
         name: 'signal',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push
     }
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Pull
-        },
+        ownVal: undefined,
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Pull,
         toJson: () => {
             return {
                 name: this.mesh.name,
-                field: this.mesh.field,
-                val: this.mesh.val ? this.mesh.val.id : undefined
+                val: this.mesh.ownVal ? this.mesh.ownVal.id : undefined
             }
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
-            this.mesh.val = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            this.mesh.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
         }
     }
 }
@@ -88,12 +80,7 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
     }
 
     execute() {
-        let meshObj: MeshObj;
-        if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
-            meshObj = this.registry.services.node.pullData(this.nodeObj, 'mesh');
-        } else {
-            meshObj = this.nodeObj.param.mesh.val;
-        }
+        let meshObj: MeshObj = this.nodeObj.getPort('mesh').getNodeParam().getPortOrOwnVal()[0];
 
         if (meshObj) {
             this.registry.stores.objStore.removeObj(meshObj);

@@ -1,8 +1,8 @@
-import { NodeParam, NodeParamField, PortDirection } from '../../../../core/models/objs/node_obj/NodeParam';
+import { NodeParam, PortDirection } from '../../../../core/models/objs/node_obj/NodeParam';
 import { NodePortView } from '../../../../core/models/views/child_views/NodePortView';
 import { ViewRenderer, ViewTag } from '../../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
-import { MultiSelectController } from '../../../../core/controller/FormController';
+import { InputParamType, MultiSelectController } from '../../../../core/controller/FormController';
 import { UI_SvgForeignObject } from '../../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../../core/ui_components/elements/svg/UI_SvgGroup';
 import { UI_Column } from '../../../../core/ui_components/elements/UI_Column';
@@ -29,28 +29,30 @@ export class NodeRenderer implements ViewRenderer {
     }
 
     private renderInputsInto(column: UI_Column, nodeView: NodeView, panel: AbstractCanvasPanel) {
-        NodeParam.getFieldParams(nodeView.getObj())
+        nodeView.getFieldParams()
             .map(param => {
                 let row = column.row({key: param.name});
-                row.height = NodeHeightCalc.getFieldHeight(param) + 'px';
+                row.height = NodeHeightCalc.getFieldHeight(nodeView, param) + 'px';
 
-                switch(param.field) {
-                    case NodeParamField.NumberField:
-                    case NodeParamField.TextField:
+                const paramController = nodeView.controller.param[param.name];
+
+                switch(paramController.paramType) {
+                    case InputParamType.NumberField:
+                    case InputParamType.TextField:
                         const inputfieldController = nodeView.controller.param[param.name];
 
                         const textField = row.textField({key: param.name, target: nodeView.id});
                         textField.paramController = inputfieldController;
 
                         textField.layout = 'horizontal';
-                        textField.type = param.field === NodeParamField.TextField ? 'text' : 'number';
+                        textField.type = paramController.paramType === InputParamType.TextField ? 'text' : 'number';
                         textField.label = param.name;
                         textField.isBold = true;
                         if (this.isFieldDisabled(param, nodeView)) {
                             textField.isDisabled = true
                         }
                     break;
-                    case NodeParamField.List:
+                    case InputParamType.List:
                         const listController = nodeView.controller.param[param.name];
 
                         const select = row.select({key: param.name, target: nodeView.id});
@@ -63,7 +65,7 @@ export class NodeRenderer implements ViewRenderer {
                             select.isDisabled = true
                         }
                     break;
-                    case NodeParamField.Checkbox:
+                    case InputParamType.Checkbox:
                         const checkbox = row.checkbox({key: param.name, target: nodeView.id});
                         checkbox.paramController = nodeView.controller.param[param.name];
                         checkbox.layout = 'horizontal';
@@ -72,7 +74,7 @@ export class NodeRenderer implements ViewRenderer {
                             select.isDisabled = true
                         }
                     break;
-                    case NodeParamField.MultiList:
+                    case InputParamType.MultiSelect:
                         const controller = <MultiSelectController> nodeView.controller.param[param.name];
 
                         const popupMultiSelect = row.popupMultiSelect({key: param.name, anchorElementKey: panel.region})
@@ -86,7 +88,7 @@ export class NodeRenderer implements ViewRenderer {
     }
 
     private isFieldDisabled(param: NodeParam, nodeView: NodeView) {
-        return param.port && param.port.direction === PortDirection.Input && nodeView.getObj().getPort(param.name).hasConnectedPort()
+        return param.portDirection === PortDirection.Input && nodeView.getObj().getPort(param.name).hasConnectedPort()
     }
 
     private renderRect(group: UI_SvgGroup, nodeView: NodeView) {
@@ -141,7 +143,7 @@ export class NodeRenderer implements ViewRenderer {
 
         nodeView.getPortViews()
             .forEach((portView: NodePortView) => {
-                if (NodeParam.isStandalonePort(portView.getObj().getNodeParam())) {
+                if (nodeView.isStandalonePort(portView.getObj().getNodeParam())) {
                     portView.getObj().isInputPort() ? (inputs++) : (outputs++);
                 }
                 this.renderPortInto(svgGroup, nodeView, portView);
@@ -165,15 +167,15 @@ export class NodeRenderer implements ViewRenderer {
         }
 
         const nodeParam = portView.getObj().getNodeParam();
-        if (NodeParam.isStandalonePort(nodeParam)) {
+        if (nodeView.isStandalonePort(nodeParam)) {
             const text = svgGroup.svgText({key: nodeParam.name});
             text.text = nodeParam.name;
-            const textOffsetX = nodeParam.port.direction === PortDirection.Input ? 10 : -10;
+            const textOffsetX = nodeParam.portDirection === PortDirection.Input ? 10 : -10;
             text.x = portView.point.x + textOffsetX;
             text.y = portView.point.y + 5;
             text.fontSize = '12px';
             text.isBold = true;
-            nodeParam.port.direction === PortDirection.Output && (text.anchor = 'end');
+            nodeParam.portDirection === PortDirection.Output && (text.anchor = 'end');
         }
 
     }

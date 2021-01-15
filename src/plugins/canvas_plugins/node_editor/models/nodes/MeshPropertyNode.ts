@@ -1,6 +1,6 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamField, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
 import { NodeView } from "../views/NodeView";
@@ -44,25 +44,19 @@ export class MeshPropertyNode extends AbstractNodeFactory {
 export class MeshPropertyNodeParams extends NodeParams {    
     readonly signal: NodeParam = {
         name: 'signal',
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Push
     }
 
     readonly mesh: NodeParam<MeshObj> = {
         name: 'mesh',
-        field: NodeParamField.List,
-        val: undefined,
-        port: {
-            direction: PortDirection.Input,
-            dataFlow: PortDataFlow.Pull
-        }
+        ownVal: undefined,
+        portDirection: PortDirection.Input,
+        portDataFlow: PortDataFlow.Pull
     }
 
     readonly visible = {
         name: 'visible',
-        field: NodeParamField.Checkbox,
         val: 1,
     }
 }
@@ -78,12 +72,7 @@ export class MeshPropertyNodeExecutor extends AbstractNodeExecutor<MeshPropertyN
     execute() {
         const visibility: number = this.nodeObj.param.visible.val;
 
-        let meshObj: MeshObj;
-        if (this.nodeObj.getPort('mesh').hasConnectedPort()) {
-            meshObj = this.nodeObj.pullData('mesh');
-        } else {
-            meshObj = this.nodeObj.param.mesh.val;
-        }
+        let meshObj: MeshObj = this.nodeObj.getPort('mesh').getNodeParam().getPortOrOwnVal()[0];
 
         if (meshObj) {
             meshObj.setVisibility(visibility);

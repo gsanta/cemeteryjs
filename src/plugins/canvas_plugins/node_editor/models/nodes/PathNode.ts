@@ -1,12 +1,9 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeView } from "../views/NodeView";
-import { PathViewType } from "../../../scene_editor/models/views/PathView";
-import { PropContext, ParamController } from '../../../../../core/controller/FormController';
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { NodeParam, NodeParamField, PortDirection, PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { PathNodeControllers } from "../../controllers/nodes/PathNodeControllers";
+import { NodeView } from "../views/NodeView";
 
 export const PathNodeType = 'path-node-obj';
 
@@ -25,8 +22,8 @@ export class PathNode extends AbstractNodeFactory {
     createView(obj: NodeObj): NodeView {
         const nodeView = new NodeView(this.registry);
         nodeView.setObj(obj);
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
         nodeView.addParamControllers(new PathNodeControllers(this.registry, obj));
+        nodeView.id = this.registry.data.view.node.generateId(nodeView);
 
         return nodeView;
     }
@@ -44,15 +41,12 @@ export class PathNode extends AbstractNodeFactory {
 export class PathNodeParams extends NodeParams {
     readonly path: NodeParam = {
         name: 'path',
-        field: NodeParamField.List,
-        val: '',
+        ownVal: '',
     }
     
     readonly action: NodeParam = {
         name: 'action',
-        port: {
-            direction: PortDirection.Output,
-            dataFlow: PortDataFlow.Push
-        }
+        portDirection: PortDirection.Output,
+        portDataFlow: PortDataFlow.Push
     }
 }
