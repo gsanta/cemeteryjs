@@ -7,6 +7,9 @@ export const colors = {
     lightPink: '#FFB6C1',
     darkorchid: '#9932CC',
 
+    defaultRed: '#FF6B6B',
+    defaultBlue: '#6188E4', 
+
     textColor: '#EDF0EE',
     textColorDark: '#1c1d1f',
     active: '#F2F1ED',

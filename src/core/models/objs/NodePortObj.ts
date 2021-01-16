@@ -109,12 +109,12 @@ export class NodePortObj<D = any> extends AbstractObj {
     push() {
         this.getConnectedPorts().forEach(portObj => {
             //TODO temporary, all executors should be migrated to be on the port rather than on the obj
+            portObj.getNodeParam().portVal = this.getNodeParam().getPortOrOwnVal();
             if (portObj.getNodeParam().execute) {
                 portObj.getNodeParam().execute();
             } else {
                 portObj.getNodeObj().executor.execute();
             }
-            portObj.getNodeParam().portVal = this.getNodeParam().getPortOrOwnVal();
             const nodeObj = portObj.getNodeObj();
             nodeObj.listener && nodeObj.listener.onNodeParamChange && nodeObj.listener.onNodeParamChange(portObj.getNodeParam());
         });

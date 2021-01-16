@@ -9,11 +9,20 @@ import { colors } from '../../styles';
 import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
+import { DeleteToolId } from '../../../../plugin/tools/DeleteTool';
 
 const SelectionComponentStyled = styled.rect`
-    stroke: red;
+    fill-opacity: 0.3;
     stroke-width: 1px;
-    fill: transparent;
+    stroke: ${colors.defaultBlue};
+    fill: ${colors.defaultBlue};
+
+    &.ce-red {
+        stroke: ${colors.defaultRed};
+        fill: ${colors.defaultRed};
+    } 
+
+    /* fill: transparent; */
 `;
 
 export interface CanvasCompProps extends UI_ComponentProps<UI_SvgCanvas | UI_HtmlCanvas> {
@@ -131,9 +140,12 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
 
     private renderFeedbacks(): JSX.Element {
         const activeTool = this.props.element.canvasPanel.toolController.getActiveTool();
+        const color = activeTool.id === DeleteToolId ? 'ce-red' : 'ce-blue';
+        // TODO generalize
         if (activeTool.rectangleSelection) {
             return (
-                <SelectionComponentStyled 
+                <SelectionComponentStyled
+                    className={color}
                     x={activeTool.rectangleSelection.topLeft.x}
                     y={activeTool.rectangleSelection.topLeft.y}
                     width={activeTool.rectangleSelection.getWidth()}

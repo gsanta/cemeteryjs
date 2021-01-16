@@ -50,6 +50,7 @@ export class ArrayNodeParams extends NodeParams {
         this.input3 = new InputNodeParam('input3', nodeObj);
         this.input4 = new InputNodeParam('input4', nodeObj);
         this.output = new OutputNodeParam(nodeObj);
+        this.hasAny = new HasAnyNodeParam(nodeObj);
     }
 
     readonly input1: InputNodeParam;
@@ -57,6 +58,7 @@ export class ArrayNodeParams extends NodeParams {
     readonly input3: InputNodeParam;
     readonly input4: InputNodeParam;
     readonly output: OutputNodeParam;
+    readonly hasAny: HasAnyNodeParam;
 }
 
 class InputNodeParam extends NodeParam {
@@ -75,6 +77,16 @@ class OutputNodeParam extends NodeParam {
     }
 
     name = 'output';
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
+}
+
+class HasAnyNodeParam extends NodeParam {
+    constructor(nodeObj: NodeObj) {
+        super(nodeObj);
+    }
+
+    name = 'hasAny';
     portDirection = PortDirection.Output;
     portDataFlow = PortDataFlow.Push;
 }
@@ -105,13 +117,17 @@ class ArrayNodeListener implements INodeListener {
     onNodeParamChange(param: NodeParam) {
 
         if (param.name.startsWith('input')) {
-            this.updateArray();
+            const values = this.updateArray();
+            this.params.output.ownVal = values;
+            this.params.hasAny.ownVal = values.length > 0;
         }
 
         this.params.output.getHandler().push();
+        this.params.hasAny.getHandler().push();
+
     }
 
-    private updateArray() {
+    private updateArray(): any[] {
         let values: any[] = [];
 
         for (const [key, value] of Object.entries(this.params)) {
@@ -121,7 +137,7 @@ class ArrayNodeListener implements INodeListener {
         }
         
         values = values.filter(value => value !== undefined);
-        this.params.output.ownVal = values;
+        return values;
     }
 
     onInit() {

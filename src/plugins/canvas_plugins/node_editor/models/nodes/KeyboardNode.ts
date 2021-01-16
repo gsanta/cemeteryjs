@@ -1,5 +1,5 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { getKeyFromKeyCode, IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
 import { INodeListener } from "../../api/INodeListener";
@@ -46,6 +46,7 @@ export class KeyboardNodeParams extends NodeParams {
     constructor(nodeObj: NodeObj) {
         super();
 
+        this.isKeyDown = new IsKeyDownNodeParam(nodeObj, this);
         this.keyDown = new KeyDownNodeParam(nodeObj, this);
         this.keyUp = new KeyUpNodeParam(nodeObj, this);
         this.key = new KeyboardNodeParam('key', nodeObj);
@@ -53,6 +54,7 @@ export class KeyboardNodeParams extends NodeParams {
 
     }
 
+    readonly isKeyDown: IsKeyDownNodeParam;
     readonly keyDown: KeyDownNodeParam;
     readonly keyUp: KeyUpNodeParam;
     readonly key: NodeParam;
@@ -107,6 +109,44 @@ export class KeyUpNodeParam extends NodeParam {
                 this.nodeObj.getPortForParam(this).push();
             }
         }
+    }
+}
+
+export class IsKeyDownNodeParam extends NodeParam {
+    private params: KeyboardNodeParams;
+
+    constructor(nodeObj: NodeObj, params: KeyboardNodeParams) {
+        super(nodeObj);
+        this.params = params;
+    }
+
+    name = 'isKeyDown';
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
+    portValueType = PortValueType.Boolean;
+
+    listener: INodeListener = {
+        onKeyDown: (e: IKeyboardEvent) => {
+            if (this.isModifierMatch(e) && this.params.key.ownVal === getKeyFromKeyCode(e.keyCode)) {
+                this.ownVal = true;
+                this.nodeObj.getPortForParam(this).push();
+            }
+        },
+        onKeyUp: (e: IKeyboardEvent) => {
+            if (this.params.key.ownVal === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+                this.ownVal = false;
+                this.nodeObj.getPortForParam(this).push();
+            }
+        }
+    }
+
+    private isModifierMatch(e: IKeyboardEvent) {
+        return (
+            this.params.modifier.ownVal === undefined ||
+            this.params.modifier.ownVal === "" ||
+            e.isCtrlDown && this.params.modifier.ownVal === 'Ctrl' ||
+            e.isShiftDown && this.params.modifier.ownVal === 'Shift'
+        );
     }
 }
 

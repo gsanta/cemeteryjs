@@ -1,5 +1,5 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { INodeListener } from "../../api/INodeListener";
@@ -47,25 +47,12 @@ export class DirectionNodeParams extends NodeParams {
         super();
 
         this.on = new OnNodeParam(nodeObj, this);
-        this.off = new OffNodeParam(nodeObj, this);
-        this.signalChange = new SignalChange(nodeObj, this);
         this.dirOrUndef = new DirectionOrUndef(nodeObj, this);
-        this.isOn = new IsOnNodeParam(nodeObj, this);
         this.direction = new DirectionNodeParam(nodeObj);
-        // this.mesh = new MeshNodeParam(nodeObj, meshMover);
-        // this.key = new KeyboardNodeParam(nodeObj, 'key', this, meshMover);
-        // this.move = new MoveNodeParam(nodeObj, meshMover);
-        // this.speed = new SpeedNodeParam(nodeObj, meshMover);
-        // this.start = new StartNodeParam(nodeObj);
-        // this.stop = new StopNodeParam(nodeObj);
-        // this.collision = new CollisionParam(nodeObj, this, meshMover);
     }
 
     readonly on: OnNodeParam;
-    readonly off: OffNodeParam;
-    readonly signalChange: SignalChange;
     readonly dirOrUndef: DirectionOrUndef;
-    readonly isOn: IsOnNodeParam;
     readonly direction: DirectionNodeParam;
 
     readonly state: NodeParam<boolean> = {
@@ -73,28 +60,6 @@ export class DirectionNodeParams extends NodeParams {
         doNotSerialize: true,
         ownVal: false
     }
-    // readonly mesh: MeshNodeParam;
-    // readonly key: KeyboardNodeParam;
-    // readonly move: MoveNodeParam;
-    // readonly speed: SpeedNodeParam;
-    // readonly start: NodeParam;
-    // readonly stop: NodeParam;
-    // readonly collision: NodeParam;
-}
-
-
-class SignalChange extends NodeParam {
-    private params: DirectionNodeParams;
-
-    constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
-        super(nodeObj);
-
-        this.params = params;
-    }
-    
-    name = 'signalChange';
-    portDirection = PortDirection.Output;
-    portDataFlow = PortDataFlow.Push;
 }
 
 class DirectionOrUndef extends NodeParam<MoveDirection> {
@@ -123,50 +88,9 @@ class OnNodeParam extends NodeParam {
     name = 'on';
     portDirection = PortDirection.Input;
     portDataFlow = PortDataFlow.Push;
+    portValueType = PortValueType.Boolean;
     execute() {
-        this.params.state.ownVal = true;
         this.params.signalChange.getHandler().push();
-        // this.params.start.callConnectedPorts();
-    }
-}
-
-class OffNodeParam extends NodeParam {
-    private params: DirectionNodeParams;
-
-    constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
-        super(nodeObj);
-
-        this.params = params;
-    }
-
-    name = 'off';
-    portDirection = PortDirection.Input;
-    portDataFlow = PortDataFlow.Push;
-    execute() {
-        this.params.state.ownVal = false;
-        this.params.signalChange.getHandler().push();
-        // this.params.isOn.ownVal = undefined;
-        // this.meshMover.stop();
-        // this.params.stop.callConnectedPorts();
-    }
-}
-
-class IsOnNodeParam extends NodeParam<MoveDirection> {
-    private params: DirectionNodeParams;
-
-    constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
-        super(nodeObj);
-
-        this.params = params;
-    }
-
-    name = 'isOn';
-    portDirection = PortDirection.Output;
-    portDataFlow = PortDataFlow.Pull;
-    ownVal: undefined
-    execute() {
-        // this.meshMover.stop();
-        // this.params.stop.callConnectedPorts();
     }
 }
 
@@ -197,10 +121,11 @@ class DirectionNodeListener implements INodeListener {
         switch(param) {
             case this.params.on:
             case this.params.direction:
-                this.params.dirOrUndef.ownVal = this.params.direction.ownVal;
-            break;
-            case this.params.off:
-                this.params.dirOrUndef.ownVal = undefined;
+                if (this.params.on.getPortOrOwnVal() === true) {
+                    this.params.dirOrUndef.ownVal = this.params.direction.ownVal;
+                } else {
+                    this.params.dirOrUndef.ownVal = undefined;
+                }
             break;
         }
 

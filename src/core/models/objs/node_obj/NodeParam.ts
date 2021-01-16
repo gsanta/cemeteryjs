@@ -1,5 +1,6 @@
 import { INodeListener } from "../../../../plugins/canvas_plugins/node_editor/api/INodeListener";
 import { Registry } from "../../../Registry";
+import { colors } from "../../../ui_components/react/styles";
 import { NodeObj } from "./NodeObj";
 
 export enum NodePortType {
@@ -11,9 +12,30 @@ export enum PortDirection {
     Input = 'Input',
     Output = 'Output'
 }
+
 export enum PortDataFlow {
     Pull = 'Pull',
     Push = 'Push'
+}
+
+export enum PortValueType {
+    Any = 'Any',
+    Boolean = 'Boolean',
+    GameObject = 'GameObject'
+}
+
+export namespace PortValueType {
+
+    export function getColor(portValueType: PortValueType) {
+        switch(portValueType) {
+            case PortValueType.Any:
+                return colors.grey1;
+            case PortValueType.Boolean:
+                return colors.green;
+            case PortValueType.GameObject:
+                return colors.darkorchid;
+        }
+    }
 }
 
 export interface NodeParamJson {
@@ -37,6 +59,7 @@ export abstract class NodeParam<D = any> {
     name: string;
     portDirection?: PortDirection;
     portDataFlow?: PortDataFlow;
+    portValueType?: PortValueType = PortValueType.Any;
     listener?: INodeListener;
     portVal?: D;
     ownVal?: D;

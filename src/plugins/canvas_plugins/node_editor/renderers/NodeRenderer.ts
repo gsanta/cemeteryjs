@@ -1,4 +1,4 @@
-import { NodeParam, PortDirection } from '../../../../core/models/objs/node_obj/NodeParam';
+import { NodeParam, PortDirection, PortValueType } from '../../../../core/models/objs/node_obj/NodeParam';
 import { NodePortView } from '../../../../core/models/views/child_views/NodePortView';
 import { ViewRenderer, ViewTag } from '../../../../core/models/views/View';
 import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
@@ -159,7 +159,7 @@ export class NodeRenderer implements ViewRenderer {
         circle.cx = portView.point.x;
         circle.cy = portView.point.y;
         circle.r =  portView.isHovered() ? 7 : 5;
-        circle.fillColor = colors.grey1
+        circle.fillColor = PortValueType.getColor(portView.getObj().getNodeParam().portValueType);
         circle.data = portView;
         circle.strokeColor = portView.isHovered() ? 'blue' : colors.panelBackground;
         circle.css = {
