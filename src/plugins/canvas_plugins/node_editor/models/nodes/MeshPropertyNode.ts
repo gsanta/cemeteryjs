@@ -72,7 +72,7 @@ export class MeshPropertyNodeExecutor extends AbstractNodeExecutor<MeshPropertyN
     execute() {
         const visibility: number = this.nodeObj.param.visible.val;
 
-        let meshObj: MeshObj = this.nodeObj.getPort('mesh').getNodeParam().getPortOrOwnVal()[0];
+        let meshObj: MeshObj = this.nodeObj.getPort('mesh').getNodeParam().getPortOrOwnVal();
 
         if (meshObj) {
             meshObj.setVisibility(visibility);

@@ -116,7 +116,7 @@ class MeshIntersectionListener implements INodeListener {
 
     private getPickableMesh(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('pickableMesh').hasConnectedPort()) {
-            return this.nodeParams.pickableMesh.getPortOrOwnVal()[0];
+            return this.nodeParams.pickableMesh.getPortOrOwnVal();
         }
     }
 

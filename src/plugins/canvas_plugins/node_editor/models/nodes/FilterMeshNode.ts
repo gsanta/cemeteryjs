@@ -89,7 +89,7 @@ class OutputParam extends NodeParam {
 
     onPull(): MeshObj {
         this.portVal
-        const inputMesh = this.params.input.getPortOrOwnVal()[0];
+        const inputMesh = this.params.input.getPortOrOwnVal();
         const acceptedMeshes = this.nodeObj.param.mesh.val;
 
         if(acceptedMeshes.includes(inputMesh)) {

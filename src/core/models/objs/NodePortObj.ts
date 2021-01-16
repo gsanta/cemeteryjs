@@ -84,7 +84,7 @@ export class NodePortObj<D = any> extends AbstractObj {
         this.connectedPortObjs.forEach(portObj => this.removeConnectedPort(portObj));
     }
 
-    pull(): D[] {
+    pull(): D {
         if (this.param.portDirection !== PortDirection.Input) {
             throw new Error('Pull should only be called for Input ports');
         }
@@ -94,15 +94,13 @@ export class NodePortObj<D = any> extends AbstractObj {
         }
 
         if (this.hasConnectedPort()) {
-            const ports = this.getConnectedPorts();
+            const port = this.getConnectedPorts()[0];
 
-            return ports.map(port => {
-                if (port.getNodeParam().getPortOrOwnVal) {
-                    return port.getNodeParam().getPortOrOwnVal();
-                } else {
-                    return port.getNodeParam().ownVal;
-                }
-            });
+            if (port.getNodeParam().getVal) {
+                return port.getNodeParam().getVal();
+            } else {
+                return port.getNodeParam().ownVal;
+            }
         }
 
         this.param.onPull && this.param.onPull();
@@ -116,6 +114,9 @@ export class NodePortObj<D = any> extends AbstractObj {
             } else {
                 portObj.getNodeObj().executor.execute();
             }
+            portObj.getNodeParam().portVal = this.getNodeParam().getPortOrOwnVal();
+            const nodeObj = portObj.getNodeObj();
+            nodeObj.listener && nodeObj.listener.onNodeParamChange && nodeObj.listener.onNodeParamChange(portObj.getNodeParam());
         });
     }
 }

@@ -2,6 +2,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
+import { INodeListener } from "../../api/INodeListener";
 import { DirectionNodeControllers } from "../../controllers/nodes/DirectionNodeControllers";
 import { NodeView } from "../views/NodeView";
 import { MoveDirection } from "./MoveNode";
@@ -32,6 +33,7 @@ export class DirectionNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new DirectionNodeParams(obj));
+        obj.listener = new DirectionNodeListener(obj, obj.param);
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 
@@ -46,6 +48,8 @@ export class DirectionNodeParams extends NodeParams {
 
         this.on = new OnNodeParam(nodeObj, this);
         this.off = new OffNodeParam(nodeObj, this);
+        this.signalChange = new SignalChange(nodeObj, this);
+        this.dirOrUndef = new DirectionOrUndef(nodeObj, this);
         this.isOn = new IsOnNodeParam(nodeObj, this);
         this.direction = new DirectionNodeParam(nodeObj);
         // this.mesh = new MeshNodeParam(nodeObj, meshMover);
@@ -59,8 +63,16 @@ export class DirectionNodeParams extends NodeParams {
 
     readonly on: OnNodeParam;
     readonly off: OffNodeParam;
+    readonly signalChange: SignalChange;
+    readonly dirOrUndef: DirectionOrUndef;
     readonly isOn: IsOnNodeParam;
     readonly direction: DirectionNodeParam;
+
+    readonly state: NodeParam<boolean> = {
+        name: 'state',
+        doNotSerialize: true,
+        ownVal: false
+    }
     // readonly mesh: MeshNodeParam;
     // readonly key: KeyboardNodeParam;
     // readonly move: MoveNodeParam;
@@ -68,6 +80,35 @@ export class DirectionNodeParams extends NodeParams {
     // readonly start: NodeParam;
     // readonly stop: NodeParam;
     // readonly collision: NodeParam;
+}
+
+
+class SignalChange extends NodeParam {
+    private params: DirectionNodeParams;
+
+    constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
+        super(nodeObj);
+
+        this.params = params;
+    }
+    
+    name = 'signalChange';
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
+}
+
+class DirectionOrUndef extends NodeParam<MoveDirection> {
+    private params: DirectionNodeParams;
+
+    constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
+        super(nodeObj);
+
+        this.params = params;
+    }
+
+    name = 'dirOrUndef';
+    portDirection = PortDirection.Output;
+    portDataFlow = PortDataFlow.Push;
 }
 
 class OnNodeParam extends NodeParam {
@@ -83,8 +124,8 @@ class OnNodeParam extends NodeParam {
     portDirection = PortDirection.Input;
     portDataFlow = PortDataFlow.Push;
     execute() {
-        this.params.isOn.ownVal = this.params.direction.ownVal;
-        // this.meshMover.start();
+        this.params.state.ownVal = true;
+        this.params.signalChange.getHandler().push();
         // this.params.start.callConnectedPorts();
     }
 }
@@ -102,7 +143,9 @@ class OffNodeParam extends NodeParam {
     portDirection = PortDirection.Input;
     portDataFlow = PortDataFlow.Push;
     execute() {
-        this.params.isOn.ownVal = undefined;
+        this.params.state.ownVal = false;
+        this.params.signalChange.getHandler().push();
+        // this.params.isOn.ownVal = undefined;
         // this.meshMover.stop();
         // this.params.stop.callConnectedPorts();
     }
@@ -138,5 +181,38 @@ class DirectionNodeParam extends NodeParam {
     
     setVal(val: MoveDirection) {
         this.ownVal = val;
+    }
+}
+
+class DirectionNodeListener implements INodeListener {
+    private params: DirectionNodeParams;
+    private nodeObj: NodeObj;
+
+    constructor(nodeObj: NodeObj, params: DirectionNodeParams) {
+        this.params = params;
+        this.nodeObj = nodeObj;
+    }
+
+    onNodeParamChange(param: NodeParam) {
+        switch(param) {
+            case this.params.on:
+            case this.params.direction:
+                this.params.dirOrUndef.ownVal = this.params.direction.ownVal;
+            break;
+            case this.params.off:
+                this.params.dirOrUndef.ownVal = undefined;
+            break;
+        }
+
+        this.params.dirOrUndef.getHandler().push();
+    }
+
+    onInit() {
+        const mover = this.params.mover.ownVal;
+
+        mover.setDirections(this.params.direction.getPortOrOwnVal());
+        mover.setSpeed(this.params.speed.ownVal);
+        mover.setMeshObj(this.params.mesh.ownVal);
+        // this.params.mover.owv)
     }
 }

@@ -30,24 +30,31 @@ export abstract class NodeParam<D = any> {
         this.nodeObj = nodeObj;
     }
 
+    getHandler?() {
+        return this.nodeObj.getPort(this.name);
+    }
+
     name: string;
     portDirection?: PortDirection;
     portDataFlow?: PortDataFlow;
     listener?: INodeListener;
-    portVal?: D[];
-
+    portVal?: D;
     ownVal?: D;
 
     doNotSerialize? = false;
 
     onPull?(): void;
 
-    getPortOrOwnVal?(): D[] {
+    getVal?(): D;
+
+    getPortOrOwnVal?(): D {
         if (this.portDirection === PortDirection.Input && this.portDataFlow === PortDataFlow.Pull && this.nodeObj.getPortForParam(this).hasConnectedPort()) {
             this.portVal = this.nodeObj.getPortForParam(this).pull();
             return this.portVal;
+        } else if (this.portDirection === PortDirection.Input && this.nodeObj.getPortForParam(this).hasConnectedPort()) {
+            return this.portVal;
         } else {
-            return [this.ownVal];
+            return this.ownVal;
         }
     }
 

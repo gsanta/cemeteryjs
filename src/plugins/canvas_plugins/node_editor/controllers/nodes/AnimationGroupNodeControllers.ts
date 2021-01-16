@@ -28,7 +28,7 @@ export class AnimationController extends ParamController<string> {
     }
 
     values() {
-        const meshObj = this.nodeObj.param.mesh.getPortOrOwnVal()[0];
+        const meshObj = this.nodeObj.param.mesh.getPortOrOwnVal();
         if (meshObj) {
             return this.registry.engine.animatons.getAnimationGroups(meshObj);
         } else {

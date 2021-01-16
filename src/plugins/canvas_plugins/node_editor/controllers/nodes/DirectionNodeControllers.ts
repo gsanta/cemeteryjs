@@ -6,7 +6,6 @@ import { Registry } from "../../../../../core/Registry";
 import { DirectionNodeParams } from "../../models/nodes/DirectionNode";
 import { MoveDirection } from "../../models/nodes/MoveNode";
 
-
 export class DirectionNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
@@ -36,7 +35,8 @@ export class DirectionController extends ParamController<string> {
     }
 
     change(val) {
-        this.nodeObj.param.direction.setVal(val);
+        this.nodeObj.param.direction.ownVal = val;
+        this.nodeObj.listener.onNodeParamChange(this.nodeObj.param.direction);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

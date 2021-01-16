@@ -61,7 +61,7 @@ export abstract class View implements IControlledModel {
     childViews: View[] = [];
 
     controller: FormController = undefined;
-    paramController: UIController;
+    paramController: UIController = {};
     renderer: ViewRenderer;
 
     deleteConstraiedViews: ChildViewContext = new ChildViewContext();

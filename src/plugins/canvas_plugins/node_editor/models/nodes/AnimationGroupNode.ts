@@ -99,7 +99,7 @@ class SignalStartNode extends NodeParam {
     portDataFlow = PortDataFlow.Push;
 
     execute() {
-        const meshObj = this.params.mesh.getPortOrOwnVal()[0];
+        const meshObj = this.params.mesh.getPortOrOwnVal();
         const animation = this.params.animation.ownVal;
         if (meshObj && animation) {
             this.registry.engine.animatons.startAnimation(meshObj, animation)
@@ -123,7 +123,7 @@ class SignalStopNode extends NodeParam {
     portDataFlow = PortDataFlow.Push;
 
     execute() {
-        const meshObj = this.params.mesh.getPortOrOwnVal()[0]
+        const meshObj = this.params.mesh.getPortOrOwnVal();
         const animation = this.params.animation.ownVal;
         if (meshObj && animation) {
             this.registry.engine.animatons.stopAnimation(meshObj, animation)

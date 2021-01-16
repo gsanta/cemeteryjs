@@ -80,7 +80,7 @@ export class RemoveMeshNodeExecutor extends AbstractNodeExecutor<RemoveMeshNodeP
     }
 
     execute() {
-        let meshObj: MeshObj = this.nodeObj.getPort('mesh').getNodeParam().getPortOrOwnVal()[0];
+        let meshObj: MeshObj = this.nodeObj.getPort('mesh').getNodeParam().getPortOrOwnVal();
 
         if (meshObj) {
             this.registry.stores.objStore.removeObj(meshObj);

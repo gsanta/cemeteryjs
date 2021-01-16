@@ -29,6 +29,7 @@ import { AxisControlHook, ViewLifeCycleHook } from './stores/ViewStore';
 import { registerPhysicsImpostorDialog } from '../plugins/dialog_plugins/physics_impostor/registerPhysicsImpostorDialog';
 import { CollisionNode } from '../plugins/canvas_plugins/node_editor/models/nodes/CollisionNode';
 import { DirectionNode } from '../plugins/canvas_plugins/node_editor/models/nodes/DirectionNode';
+import { ArrayNode } from '../plugins/canvas_plugins/node_editor/models/nodes/ArrayNode';
 
 export class Editor {
     registry: Registry;
@@ -87,6 +88,7 @@ export class Editor {
         this.registry.data.helper.node.registerNode(new AnimationGroupNode(this.registry));
         this.registry.data.helper.node.registerNode(new CollisionNode(this.registry));
         this.registry.data.helper.node.registerNode(new DirectionNode(this.registry));
+        this.registry.data.helper.node.registerNode(new ArrayNode(this.registry));
     }
 
     setup() {

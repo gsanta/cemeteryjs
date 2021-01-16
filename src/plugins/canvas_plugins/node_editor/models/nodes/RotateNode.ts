@@ -153,7 +153,7 @@ class KeyboardListener implements INodeListener {
 
     onBeforeRender() {
         if (this.keys.has(this.rotateNodeParams.key.ownVal)) {
-            this.meshRotator.setMeshObj(this.rotateNodeParams.mesh.getPortOrOwnVal()[0]);
+            this.meshRotator.setMeshObj(this.rotateNodeParams.mesh.getPortOrOwnVal());
             this.meshRotator.tick();
         }
     }

@@ -55,7 +55,9 @@ export class NodeEditorImporter extends AbstractModuleImporter {
             let afterAllObjsDeserialized: AfterAllObjsDeserialized;
             if (obj.objType === NodeObjType) {
                 objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type);
+                const nodeObj = <NodeObj> objInstance;
                 objInstance.deserialize(obj, this.registry);
+                nodeObj.listener && nodeObj.listener.onInit && nodeObj.listener.onInit();
             } else if (obj.objType === LightObjType) {
                 [objInstance, afterAllObjsDeserialized] = this.registry.services.objService.getObjFactory(LightObjType).insantiateFromJson(obj); 
                 afterAllObjsDeserializedFuncs.push(afterAllObjsDeserialized);

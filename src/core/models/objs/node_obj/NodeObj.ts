@@ -6,6 +6,7 @@ import { NodeObjDeserialize } from './NodeObjDeserializer';
 import { NodeObjSerializer } from './NodeObjSerializer';
 import { NodePortObj, NodePortObjJson } from '../NodePortObj';
 import { NodeParamJson, NodeParam } from './NodeParam';
+import { INodeListener } from '../../../../plugins/canvas_plugins/node_editor/api/INodeListener';
 
 export const NodeObjType = 'node-obj';
 
@@ -40,6 +41,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     color: string;
 
     param: P;
+    listener: INodeListener;
     paramList: NodeParam[];
 
     isExecutionStopped = true;

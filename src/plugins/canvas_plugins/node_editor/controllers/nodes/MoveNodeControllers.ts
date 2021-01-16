@@ -37,11 +37,14 @@ export class MoveDirectionController extends ParamController<string> {
     }
 
     val() {
-        return this.nodeObj.param.direction.ownVal;
+        if (this.nodeObj.param.direction.ownVal.length > 0) {
+            return this.nodeObj.param.direction.ownVal[0];
+        }
     }
 
     change(val) {
-        this.nodeObj.param.direction.setVal(val);
+        this.nodeObj.param.direction.ownVal = [val];
+        this.nodeObj.listener.onNodeParamChange(this.nodeObj.param.direction);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }
