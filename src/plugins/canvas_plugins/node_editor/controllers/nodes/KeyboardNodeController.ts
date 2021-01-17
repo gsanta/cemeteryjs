@@ -47,6 +47,7 @@ export class KeyControl extends ParamController {
 
     change(val) {
         this.nodeObj.param[this.paramName].ownVal = val;
+        this.nodeObj.listener.onNodeParamChange(this.nodeObj.param.direction);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

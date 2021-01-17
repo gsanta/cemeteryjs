@@ -6,22 +6,23 @@ import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
 import { MeshController } from "./MeshNodeControllers";
 import { RotateNodeParams } from "../../models/nodes/RotateNode";
 import { UIController } from "../../../../../core/controller/UIController";
+import { MoveDirection } from "../../models/nodes/MoveNode";
 
 export class RotateNodeControllers extends UIController {
 
     constructor(registry: Registry, nodeObj: NodeObj) {
         super();
         this.mesh = new MeshController(registry, nodeObj);
-        this.rotate = new MeshRotateController(registry, nodeObj);
+        this.direction = new DirectionController(registry, nodeObj);
         this.key = new KeyControl(registry, nodeObj);
     }
 
     readonly mesh: MeshController;
-    readonly rotate: MeshRotateController;
+    readonly direction: DirectionController;
     readonly key: KeyControl;
 }
 
-export class MeshRotateController extends ParamController<string> {
+export class DirectionController extends ParamController<string> {
     paramType = InputParamType.List;
     private nodeObj: NodeObj<RotateNodeParams>;
 
@@ -31,15 +32,18 @@ export class MeshRotateController extends ParamController<string> {
     }
 
     values() {
-        return ['left', 'right'];
+        return [MoveDirection.Left, MoveDirection.Right];
     }
 
     val() {
-        return this.nodeObj.param.rotate.ownVal;
+        if (this.nodeObj.param.direction.ownVal.length > 0) {
+            return this.nodeObj.param.direction.ownVal[0];
+        }
     }
 
     change(val) {
-        this.nodeObj.param.rotate.setVal(val);
+        this.nodeObj.param.direction.ownVal = [val];
+        this.nodeObj.listener.onNodeParamChange(this.nodeObj.param.direction);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }
@@ -63,7 +67,7 @@ export class KeyControl extends ParamController {
     }
 
     change(val) {
-        this.nodeObj.param.key.setVal(val);
+        this.nodeObj.param.key.ownVal = val;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

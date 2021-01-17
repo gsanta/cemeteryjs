@@ -17,15 +17,17 @@ export class ImportService {
         this.moduleImporters.delete(moduleName);
     }
 
-    async import(file: string): Promise<void> {
-        try {
-            
+    import(file: string): void {
+        // try {
             const json = JSON.parse(file);
-            Array.from(this.moduleImporters.entries()).forEach(([name, importer]) => importer.import(json.modules[name]));
-
-        } catch (e) {
-            console.error(e);
-        }
+            const entries = Array.from(this.moduleImporters.entries());
+            for (let i = 0; i < entries.length; i++) {
+                const [name, importer] = entries[i];
+                importer.import(json.modules[name]);
+            }
+        // } catch (e) {
+        //     console.error(e);
+        // }
 
         this.registry.services.render.reRenderAll();
     }

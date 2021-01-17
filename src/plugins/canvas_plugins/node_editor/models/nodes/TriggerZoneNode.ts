@@ -3,7 +3,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { NodeView } from "../views/NodeView";
 import { Registry } from "../../../../../core/Registry";
-import { INodeListener } from "../../api/INodeListener";
+import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { TriggerZoneNodeControllers } from "../../controllers/nodes/TriggerZoneNodeControllers";
 
@@ -89,11 +89,12 @@ class SignalNodeObj extends NodeParam {
     listener: MeshIntersectionListener;
 }
 
-class MeshIntersectionListener implements INodeListener {
+class MeshIntersectionListener extends AbstractNodeListener {
     private lastIntersectedMesh: MeshObj;
     private nodeParams: TriggerZoneNodeParams;
 
     constructor(nodeParams: TriggerZoneNodeParams) {
+        super();
         this.nodeParams = nodeParams;
     }
 

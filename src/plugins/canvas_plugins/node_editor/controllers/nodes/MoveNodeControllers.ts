@@ -33,7 +33,7 @@ export class MoveDirectionController extends ParamController<string> {
     }
 
     values() {
-        return [MoveDirection.Forward, MoveDirection.Backward, MoveDirection.Left, MoveDirection.Right];
+    return [MoveDirection.Forward, MoveDirection.Backward, MoveDirection.Left, MoveDirection.Right];
     }
 
     val() {

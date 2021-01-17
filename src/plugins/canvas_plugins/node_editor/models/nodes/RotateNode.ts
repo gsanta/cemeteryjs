@@ -1,13 +1,14 @@
 import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodeParam, NodeParamJson, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { NodeView } from "../views/NodeView";
+import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { INodeListener } from "../../api/INodeListener";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
+import { AbstractNodeListener } from "../../api/INodeListener";
 import { RotateNodeControllers } from "../../controllers/nodes/RotateNodeControllers";
+import { NodeView } from "../views/NodeView";
+import { MeshNodeParam, MoveDirection } from "./MoveNode";
 
 export const RotateNodeType = 'rotate-node-obj';
 
@@ -35,6 +36,7 @@ export class RotateNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new RotateNodeParams(obj));
+        obj.listener = new RotateNodeListener(obj.param, new MeshRotator());
         obj.id = this.registry.stores.objStore.generateId(obj.type);
         obj.graph = this.registry.data.helper.node.graph;
 
@@ -46,130 +48,167 @@ export class RotateNodeParams extends NodeParams {
 
     constructor(nodeObj: NodeObj) {
         super();
-        const rotator = new MeshRotator();
-        this.key = new KeyboardNodeParam(nodeObj, 'key', this, rotator);
-        this.mesh = new MeshNodeParam(nodeObj, rotator);
-        this.rotate = new RotationNodeParam(nodeObj, rotator);
+        this.on = new OnNodeParam(nodeObj);
+        this.mesh = new MeshNodeParam(nodeObj);
+        this.direction = new DirectionNodeParam(nodeObj);
+        this.key = new KeyboardNodeParam(nodeObj);
     }
 
-    readonly key: KeyboardNodeParam;
+    readonly on: OnNodeParam;
     readonly mesh: MeshNodeParam;
-    readonly rotate: RotationNodeParam;
-
-    readonly input: NodeParam = {
-        name: 'input',
-        portDirection: PortDirection.Input,
-        portDataFlow: PortDataFlow.Push
-    }
+    readonly direction: DirectionNodeParam;
+    readonly key: KeyboardNodeParam;
 }
 
-class MeshNodeParam extends NodeParam<MeshObj> {
-    private meshRotator: MeshRotator;
+class OnNodeParam extends NodeParam<boolean> {
+    name = 'on';
+    portDirection = PortDirection.Input;
+    portDataFlow = PortDataFlow.Push;
+    portValueType = PortValueType.Boolean;
+}
 
-    constructor(nodeObj: NodeObj, meshRotator: MeshRotator) {
-        super(nodeObj);
-        this.meshRotator = meshRotator;
+class DirectionNodeParam extends NodeParam<MoveDirection[]> {
+
+    constructor(nodeObj: NodeObj) {
+        super(nodeObj)
     }
-
-    name = 'mesh';
-    ownVal = undefined;
+    
+    name = 'direction'
+    ownVal = [MoveDirection.Left];
 
     portDirection = PortDirection.Input;
-    portDataFlow = PortDataFlow.Pull;
-
-    toJson() {
-        return {
-            name: this.name,
-            val: this.ownVal ? this.ownVal.id : undefined
-        }
-    }
-
-    fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
-        this.name = nodeParamJson.name;
-        if (nodeParamJson.val) {
-            this.setVal(<MeshObj> registry.stores.objStore.getById(nodeParamJson.val));
-        }
-    }
-
-    setVal(val: MeshObj) {
-        this.ownVal = val;
-        this.meshRotator.setMeshObj(val);
-    }
-}
-
-class RotationNodeParam extends NodeParam {
-    private meshRotator: MeshRotator;
-
-    constructor(nodeObj: NodeObj, meshRotator: MeshRotator) {
-        super(nodeObj);
-        this.meshRotator = meshRotator;
-        this.setVal(this.ownVal as 'left');
-    }
-    
-    name = 'rotate';
-    ownVal = 'left';
-    
-    setVal(val: 'left' | 'right') {
-        this.ownVal = val;
-        this.meshRotator.setDirection(val);
-    }
+    portDataFlow = PortDataFlow.Push;
 }
 
 class KeyboardNodeParam extends NodeParam {
-    name: string;
+    name: string = 'key';
     ownVal = '';
-
-    constructor(nodeObj: NodeObj, name: string, params: RotateNodeParams, meshRotator: MeshRotator) {
-        super(nodeObj);
-        this.name = name;
-        this.listener = new KeyboardListener(params, meshRotator);
-    }
-
-    setVal(val: string) {
-        this.ownVal = val;
-    }
-
-    listener: INodeListener;
 }
 
-class KeyboardListener implements INodeListener {
+// export class RotateNodeListener implements INodeListener {
+//     private params: RotateNodeParams;
+//     private nodeObj: NodeObj;
+//     private meshRotator: MeshRotator;
+
+//     constructor(nodeObj: NodeObj, moveNodeParams: RotateNodeParams, meshRotator: MeshRotator) {
+//         this.params = moveNodeParams;
+//         this.nodeObj = nodeObj;
+//         this.meshRotator = meshRotator;
+//     }
+
+//     onKeyDown(e: IKeyboardEvent) {
+//         if (this.params.key.ownVal === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+//             this.nodeObj.getPortForParam(this.params.start).push();
+//         }
+//     }
+
+//     onKeyUp(e: IKeyboardEvent) {
+//         if (this.params.key.ownVal === String.fromCharCode(e.keyCode).toLocaleLowerCase()) {
+//             this.params.mover.ownVal.reset();
+//             this.nodeObj.getPortForParam(this.params.stop).push();
+//         }
+//     }
+
+//     onBeforeRender() {
+//         this.params.mover.ownVal.setMeshObj(this.params.mesh.getPortOrOwnVal());
+//         this.params.mover.ownVal.tick();
+//     }
+
+//     onNodeParamChange(param: NodeParam) {
+//         switch(param) {
+//             case this.params.direction:
+//             case this.params.checkChange:
+//                 this.params.mover.ownVal.setDirections(this.params.direction.getPortOrOwnVal());
+//             break;
+//             case this.params.on:
+//                 if (this.params.on.getPortOrOwnVal() === true) {
+//                     this.params.mover.ownVal.start();
+//                 } else {
+//                     this.meshRotator.stop();
+//                 }
+//             break;
+//         }
+//     }
+
+//     onInit() {
+//         this.meshRotator.setDirection(this.params.direction.getPortOrOwnVal());
+//         this.meshRotator.setMeshObj(this.params.mesh.getPortOrOwnVal());
+//         // this.params.mover.owv)
+//     }
+// }
+
+class RotateNodeListener extends AbstractNodeListener {
     private keys: Set<string> = new Set();
-    private rotateNodeParams: RotateNodeParams;
+    private params: RotateNodeParams;
     private meshRotator: MeshRotator;
 
-    constructor(rotateNodeParams: RotateNodeParams, meshRotator: MeshRotator) {
-        this.rotateNodeParams = rotateNodeParams;
+    constructor(params: RotateNodeParams, meshRotator: MeshRotator) {
+        super();
+        this.params = params;
         this.meshRotator = meshRotator;
     }
 
     onKeyDown(e: IKeyboardEvent) {
-        this.keys.add(String.fromCharCode(e.keyCode).toLocaleLowerCase());
+        if (String.fromCharCode(e.keyCode) === this.params.key.ownVal) {
+            this.meshRotator.start();
+        }
     }
 
     onKeyUp(e: IKeyboardEvent) {
-        this.keys.delete(String.fromCharCode(e.keyCode).toLocaleLowerCase());
-        this.meshRotator.reset();
+        if (String.fromCharCode(e.keyCode) === this.params.key.ownVal) {
+            this.meshRotator.stop();
+        }
+    }
+
+    onNodeParamChange(param: NodeParam) {
+        switch(param) {
+            case this.params.direction:
+                this.meshRotator.setDirections(this.params.direction.getPortOrOwnVal());
+            break;
+            case this.params.mesh:
+                this.meshRotator.setMeshObj(this.params.mesh.getPortOrOwnVal())
+            break;
+            case this.params.on:
+                if (this.params.on.getPortOrOwnVal() === true) {
+                    this.meshRotator.start();
+                } else {
+                    this.meshRotator.stop();
+                }
+            break;
+        }
     }
 
     onBeforeRender() {
-        if (this.keys.has(this.rotateNodeParams.key.ownVal)) {
-            this.meshRotator.setMeshObj(this.rotateNodeParams.mesh.getPortOrOwnVal());
-            this.meshRotator.tick();
-        }
+        this.meshRotator.setMeshObj(this.params.mesh.getPortOrOwnVal());
+        this.meshRotator.tick();
     }
 }
 
 class MeshRotator {
     private time = undefined;
-    private direction: 'left' | 'right';
+    private directions: MoveDirection[] = [];
     private meshObj: MeshObj;
+    private isStopped = true;
 
     tick() {
+        if (this.isStopped || this.meshObj === undefined) {
+            return;
+        }
+
         const currentTime = Date.now();
         if (this.time !== undefined) {
             this.rotate(currentTime - this.time);
         }
         this.time = currentTime;
+    }
+
+    stop() {
+        this.isStopped = true;
+        this.reset();
+    }
+
+    start() {
+        this.isStopped = false;
     }
 
     reset() {
@@ -180,17 +219,19 @@ class MeshRotator {
         this.meshObj = meshObj;
     }
 
-    setDirection(dir: 'left' | 'right') {
-        this.direction = dir;
+    setDirections(directions: MoveDirection[]) {
+        this.directions = directions;
     }
 
     private rotate(deltaTime: number) {
         const speed = deltaTime * 0.005;
 
         const rotation = this.meshObj.getRotation();
-        if (this.direction === 'left') {
+        if (this.directions.includes(MoveDirection.Left)) {
             this.meshObj.setRotation(new Point_3(rotation.x, rotation.y - speed, rotation.z));
-        } else if (this.direction === 'right') {
+        }
+        
+        if (this.directions.includes(MoveDirection.Right)) {
             this.meshObj.setRotation(new Point_3(rotation.x, rotation.y + speed, rotation.z));
         }
     }

@@ -34,7 +34,6 @@ export class MoveNodeListener implements INodeListener {
     onNodeParamChange(param: NodeParam) {
         switch(param) {
             case this.params.direction:
-            case this.params.checkChange:
                 this.params.mover.ownVal.setDirections(this.params.direction.getPortOrOwnVal());
             break;
             case this.params.on:

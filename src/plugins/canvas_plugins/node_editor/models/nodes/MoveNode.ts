@@ -2,7 +2,6 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, NodeParamJson, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
-import { IKeyboardEvent, Keyboard } from "../../../../../core/services/input/KeyboardService";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { INodeListener } from "../../api/INodeListener";
 import { MoveNodeControllers } from "../../controllers/nodes/MoveNodeControllers";
@@ -61,8 +60,8 @@ export class MoveNodeParams extends NodeParams {
         this.mover.ownVal = new MeshMover();
 
         this.on = new OnNodeParam(nodeObj, this);
-        this.mesh = new MeshNodeParam(nodeObj, this);
-        this.key = new KeyboardNodeParam(nodeObj, 'key', this);
+        this.mesh = new MeshNodeParam(nodeObj);
+        this.key = new KeyboardNodeParam(nodeObj);
         this.direction = new DirectionNodeParam(nodeObj);
         this.speed = new SpeedNodeParam(nodeObj);
         this.start = new StartNodeParam(nodeObj);
@@ -162,24 +161,11 @@ class DirectionNodeParam extends NodeParam<MoveDirection[]> {
 }
 
 class SpeedNodeParam extends NodeParam {
-    
-    constructor(nodeObj: NodeObj) {
-        super(nodeObj);
-        this.setVal(this.ownVal);
-    }
-    
     name = 'speed';
     ownVal = 0.5;
 }
 
-class MeshNodeParam extends NodeParam<MeshObj> {
-    private params: MoveNodeParams;
-
-    constructor(nodeObj: NodeObj, params: MoveNodeParams) {
-        super(nodeObj);
-        this.params = params;
-    }
-
+export class MeshNodeParam extends NodeParam<MeshObj> {
     name = 'mesh';
     ownVal = undefined;
 
@@ -197,29 +183,12 @@ class MeshNodeParam extends NodeParam<MeshObj> {
     fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
         this.name = nodeParamJson.name;
         if (nodeParamJson.val) {
-            this.setVal(<MeshObj> registry.stores.objStore.getById(nodeParamJson.val));
+            this.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
         }
-    }
-
-    setVal(val: MeshObj) {
-        this.ownVal = val;
-        this.params.mover.ownVal.setMeshObj(val);
     }
 }
 
 class KeyboardNodeParam extends NodeParam {
     name: string;
-    ownVal = '';
-
-    constructor(nodeObj: NodeObj, name: string, params: MoveNodeParams) {
-        super(nodeObj);
-        this.name = name;
-        this.listener = new MoveNodeListener(nodeObj, params);
-    }
-
-    setVal(val: string) {
-        this.ownVal = val;
-    }
-
-    listener: INodeListener;
+    ownVal = 'key';
 }

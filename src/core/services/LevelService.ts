@@ -13,6 +13,10 @@ export class LevelService {
 
         if (this.registry.stores.levelStore.hasLevel(level)) {
             return this.registry.services.localStore.loadLevel(level)
+                .catch(e => {
+                    1
+                    console.log(e);
+                })
                 .finally(() => {
                     this.registry.stores.levelStore.setCurrentLevel(level)
                     this.registry.services.render.reRenderAll();

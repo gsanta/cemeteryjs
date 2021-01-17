@@ -21,42 +21,19 @@ export class GameService {
         const routeNodes = this.registry.data.helper.node.graph.getNodesByType(RouteNodeObjType);
         routeNodes.forEach(routeNode => routeNode.getObj().execute());
 
-        // const nodes = this.registry.data.helper.node.graph.getAllNodes();
-        // nodes.forEach((node) => {
-        //     node.getParams()
-        //         .forEach(port => {
-        //             if (port.hasListener() && port.getListener().onBeforeRender) {
-        //                 port.getListener().onBeforeRender(port.getNodeObj(), this.registry);
-        //             }
-        //         });
-        // });
+        const nodeObjs = this.registry.data.helper.node.graph.getAllNodes();
+        nodeObjs.forEach(nodeObj => nodeObj.listener && nodeObj.listener.onBeforeRender && nodeObj.listener.onBeforeRender(nodeObj, this.registry))
 
-        this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
-            if (param.listener && param.listener.onBeforeRender) {
-                param.listener.onBeforeRender(nodeObj, this.registry);
-            }
-        })
     }
 
     executeKeyDown(e: IKeyboardEvent) {
-        this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
-            if (param.listener && param.listener.onKeyDown) {
-                param.listener.onKeyDown(e, nodeObj, this.registry);
-            }
-        })
+        const nodeObjs = this.registry.data.helper.node.graph.getAllNodes();
+        nodeObjs.forEach(nodeObj => nodeObj.listener && nodeObj.listener.onKeyDown && nodeObj.listener.onKeyDown(e, nodeObj, this.registry))
     }
 
     executeKeyUp(e: IKeyboardEvent) {
-        this.iterateNodeParams((nodeObj: NodeObj, param: NodeParam) => {
-            if (param.listener && param.listener.onKeyUp) {
-                param.listener.onKeyUp(e, nodeObj, this.registry);
-            }
-        })
-    }
-
-    private iterateNodeParams(callback: (nodeObj: NodeObj, param: NodeParam) => void) {
-        const nodes = this.registry.data.helper.node.graph.getAllNodes();
-        nodes.forEach((node) => node.getParams().forEach(param => callback(node, param)));
+        const nodeObjs = this.registry.data.helper.node.graph.getAllNodes();
+        nodeObjs.forEach(nodeObj => nodeObj.listener && nodeObj.listener.onKeyUp && nodeObj.listener.onKeyUp(e, nodeObj, this.registry))
     }
 
     // setPlaying(isPlaying: boolean) {

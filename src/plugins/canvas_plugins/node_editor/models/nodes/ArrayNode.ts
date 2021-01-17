@@ -2,7 +2,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { INodeListener } from "../../api/INodeListener";
+import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
 import { NodeView } from "../views/NodeView";
 import { MoveDirection } from "./MoveNode";
 
@@ -90,26 +90,12 @@ class HasAnyNodeParam extends NodeParam {
     portDirection = PortDirection.Output;
     portDataFlow = PortDataFlow.Push;
 }
-
-class DirectionOrUndef extends NodeParam<MoveDirection> {
-    private params: ArrayNodeParams;
-
-    constructor(nodeObj: NodeObj, params: ArrayNodeParams) {
-        super(nodeObj);
-
-        this.params = params;
-    }
-
-    name = 'dirOrUndef';
-    portDirection = PortDirection.Output;
-    portDataFlow = PortDataFlow.Push;
-}
-
-class ArrayNodeListener implements INodeListener {
+class ArrayNodeListener extends AbstractNodeListener {
     private params: ArrayNodeParams;
     private nodeObj: NodeObj;
 
     constructor(nodeObj: NodeObj, params: ArrayNodeParams) {
+        super();
         this.params = params;
         this.nodeObj = nodeObj;
     }
@@ -138,14 +124,5 @@ class ArrayNodeListener implements INodeListener {
         
         values = values.filter(value => value !== undefined);
         return values;
-    }
-
-    onInit() {
-        const mover = this.params.mover.ownVal;
-
-        mover.setDirections(this.params.direction.getPortOrOwnVal());
-        mover.setSpeed(this.params.speed.ownVal);
-        mover.setMeshObj(this.params.mesh.ownVal);
-        // this.params.mover.owv)
     }
 }
