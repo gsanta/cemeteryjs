@@ -13,6 +13,7 @@ import { onScreenCastGizmoKeyDown, ScreenCastKeysGizmoRenderer } from "../../can
 import { GameViewerToolbarController } from "./controllers/GameViewerToolbarController";
 import { GameTool } from "./controllers/tools/GameTool";
 import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
+import { GameViewerModel } from "./GameViewerModel";
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPanelId = 'game-viewer'; 
@@ -45,15 +46,16 @@ function registerGizmos(canvas: AbstractCanvasPanel, registry: Registry) {
     canvas.addGizmo(screenCastGizmo);
 }
 
-function createCanvas(registry: Registry): AbstractCanvasPanel {
+function createCanvas(registry: Registry): AbstractCanvasPanel<GameViewerModel> {
     const canvas = new Canvas3dPanel(registry, UI_Region.Canvas2, GameViewerPanelId, 'Game viewer');
+    canvas.model = new GameViewerModel();
 
     const tools = [
         new GameTool(canvas, registry),
         new CameraTool(canvas, registry)
     ];
     
-    const controller = new GameViewerToolbarController(registry);
+    const controller = new GameViewerToolbarController(registry, canvas);
     canvas.setController(new FormController(canvas, registry, [], controller));
     canvas.setCamera(registry.engine.getCamera());
     canvas.renderer = new GameViewerRenderer(canvas, controller);

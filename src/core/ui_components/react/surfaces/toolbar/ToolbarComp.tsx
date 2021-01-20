@@ -20,6 +20,7 @@ const insertPhotoIcon = require('../../../../../../assets/images/icons/insert_ph
 const videogameAssetIcon = require('../../../../../../assets/images/icons/videogame_asset.svg');
 const meshIcon = require('../../../../../../assets/images/icons/mesh.svg');
 const spriteIcon = require('../../../../../../assets/images/icons/sprite.svg');
+const bIcon = require('../../../../../../assets/images/icons/b.svg');
 const playIcon = require('../../../../../../assets/images/icons/play.svg');
 const stopIcon = require('../../../../../../assets/images/icons/stop.svg');
 const cubeIcon = require('../../../../../../assets/images/icons/cube.png');
@@ -134,6 +135,10 @@ const ToolbarStyled = styled.div`
 
         &.sprite-icon {
             background-image: url(${spriteIcon});
+        }
+
+        &.b-icon {
+            background-image: url(${bIcon});
         }
         
         &.games-icon {

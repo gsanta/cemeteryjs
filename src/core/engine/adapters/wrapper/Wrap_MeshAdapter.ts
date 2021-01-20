@@ -48,6 +48,12 @@ export  class Wrap_Meshes implements IMeshAdapter {
         return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getVisibility(meshObj));
     }
 
+    showBoundingBoxes(meshObj: MeshObj, show: boolean) {
+        this.engineFacade.realEngine.meshes.showBoundingBoxes(meshObj, show);
+        this.engineFacade.testEngine.meshes.showBoundingBoxes(meshObj, show);
+
+    }
+
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.intersectsMesh(meshObj, otherMeshObj));
     }

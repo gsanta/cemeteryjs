@@ -27,6 +27,8 @@ export interface IMeshAdapter {
      */
     getVisibility(meshObj: MeshObj): number;
 
+    showBoundingBoxes(meshObj: MeshObj, show: boolean);
+
     /**
      * Determines if two meshes intersect
      * @param meshObj the first mesh for intersection check

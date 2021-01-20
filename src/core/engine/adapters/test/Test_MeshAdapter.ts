@@ -67,6 +67,10 @@ export  class Test_MeshAdapter implements IMeshAdapter {
         return this.visibilityMap.get(meshObj) !== undefined ? this.visibilityMap.get(meshObj) : 1;
     }
 
+    showBoundingBoxes(meshObj: MeshObj, show: boolean) {
+    
+    }
+
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         return false;
     }

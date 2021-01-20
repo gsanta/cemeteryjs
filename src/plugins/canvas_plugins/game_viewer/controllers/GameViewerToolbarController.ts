@@ -5,17 +5,21 @@ import { Registry } from "../../../../core/Registry";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { GameToolId } from "./tools/GameTool";
 import { UIController } from "../../../../core/controller/UIController";
+import { GameViewerModel } from "../GameViewerModel";
+import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 
 export enum GameViewerProps {
     Play = 'Play',
     Stop = 'Stop',
     EditMode = 'EditMode',
-    ExecutionMode = 'ExecutionMode'
+    ExecutionMode = 'ExecutionMode',
+    ShowBoundingBoxes = 'ShowBoundingBoxes' 
 }
 
 export class GameViewerToolbarController extends UIController {
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<GameViewerModel>) {
         super();
 
         this.editMode = new EditModeController(registry);
@@ -24,6 +28,7 @@ export class GameViewerToolbarController extends UIController {
         this.commonTool = new CommonToolController(registry);
         this.zoomIn = new ZoomInController(registry);
         this.zoomOut = new ZoomOutController(registry);
+        this.showBoundingBox = new ShowBoundingBoxController(registry, canvas);
     }
     
     editMode: ParamController;
@@ -32,6 +37,7 @@ export class GameViewerToolbarController extends UIController {
     commonTool: ParamController;
     zoomIn: ParamController;
     zoomOut: ParamController;
+    showBoundingBox: ParamController;
 }
 
 export class PlayController extends ParamController {
@@ -67,5 +73,25 @@ class GameViewerToolController extends ParamController<any> {
     click(context: PropContext, element: UI_Element) {
         element.canvasPanel.toolController.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
+    }
+}
+
+class ShowBoundingBoxController extends ParamController<boolean> {
+    // acceptedProps() { return [GameToolId]; }
+    canvas: AbstractCanvasPanel<GameViewerModel>;
+
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<GameViewerModel>) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        const show = !this.canvas.model.showBoundingBoxes;
+        this.canvas.model.showBoundingBoxes = show;
+        
+        const meshObjs = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType);
+        meshObjs.forEach(meshObj => this.registry.engine.meshes.showBoundingBoxes(meshObj, show));
+
+        this.registry.services.render.reRender(UI_Region.Canvas2);
     }
 }

@@ -138,6 +138,13 @@ export  class Bab_Meshes implements IMeshAdapter {
         return meshData.meshes[0].visibility;
     }
 
+    showBoundingBoxes(meshObj: MeshObj, show: boolean) {
+        const meshData = this.meshes.get(meshObj);
+        if (!meshData) { return undefined; }
+
+        return meshData.meshes[0].showBoundingBox = show;
+    }
+
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         const meshData1 = this.meshes.get(meshObj);
         if (!meshData1) { return undefined; }

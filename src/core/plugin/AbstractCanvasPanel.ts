@@ -38,7 +38,8 @@ export enum InteractionMode {
     Execution = 'Execution'
 }
 
-export abstract class AbstractCanvasPanel extends UI_Panel {
+export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
+    model: M;
     readonly displayName: string;
 
     protected gizmos: GizmoPlugin[] = [];

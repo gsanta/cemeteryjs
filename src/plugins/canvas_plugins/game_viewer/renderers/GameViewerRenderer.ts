@@ -3,12 +3,13 @@ import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps, GameViewerToolbarController } from "../controllers/GameViewerToolbarController";
+import { GameViewerModel } from "../GameViewerModel";
 
 export class GameViewerRenderer implements ICanvasRenderer {
-    private canvas: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel<GameViewerModel>;
     private controllers: GameViewerToolbarController;
 
-    constructor(canvas: AbstractCanvasPanel, controllers: GameViewerToolbarController) {
+    constructor(canvas: AbstractCanvasPanel<GameViewerModel>, controllers: GameViewerToolbarController) {
         this.canvas = canvas;
         this.controllers = controllers;
     }
@@ -29,9 +30,6 @@ export class GameViewerRenderer implements ICanvasRenderer {
         let separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        separator = toolbar.iconSeparator();
-        separator.placement = 'left';
-
         let actionIcon = toolbar.actionIcon({key: ZoomInProp, uniqueId: `${ZoomInProp}-${this.canvas.id}`});
         actionIcon.paramController = this.controllers.zoomIn;
         actionIcon.icon = 'zoom-in';
@@ -43,6 +41,16 @@ export class GameViewerRenderer implements ICanvasRenderer {
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
+
+        separator = toolbar.iconSeparator();
+        separator.placement = 'left';
+
+        actionIcon = toolbar.actionIcon({key: GameViewerProps.ShowBoundingBoxes, uniqueId: `${GameViewerProps.ShowBoundingBoxes}-${this.canvas.id}` });
+        actionIcon.icon = 'b';
+        actionIcon.paramController = this.controllers.showBoundingBox;
+        actionIcon.isActivated = this.canvas.model.showBoundingBoxes;
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Show bounding boxes';
 
         tool = toolbar.tool({key: GameViewerProps.EditMode});
         tool.paramController = this.controllers.editMode;
