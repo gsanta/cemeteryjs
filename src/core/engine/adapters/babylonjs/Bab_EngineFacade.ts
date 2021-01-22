@@ -13,7 +13,7 @@ import { IAnimationAdapter } from "../../IAnimationAdapter";
 import { Bab_AnimationAdapter } from "./Bab_AnimationAdapter";
 import { Bab_PhysicsAdapter } from "./Bab_PhysicsAdapter";
 import { Bab_GizmoAdapter } from "./Bab_GizmoAdapter";
-import { AxisGizmo } from "./gizmos/AxisGizmo";
+import { Bab_AxisGizmo } from "./gizmos/Bab_AxisGizmo";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -87,7 +87,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     }
 
     private registerGizmos() {
-        this.gizmos.registerGizmo(new AxisGizmo(this.scene, this.camera.camera));
+        this.gizmos.registerGizmo(new Bab_AxisGizmo(this.scene, this.camera.camera));
     }
 
     clear() {

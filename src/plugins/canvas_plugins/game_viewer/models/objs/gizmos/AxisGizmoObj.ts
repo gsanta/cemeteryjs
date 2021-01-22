@@ -1,4 +1,4 @@
-import { AxisGizmoType } from "../../../../../../core/engine/adapters/babylonjs/gizmos/AxisGizmo";
+import { AxisGizmoType } from "../../../../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
 import { IAxisGizmo } from "../../../../../../core/engine/gizmos/IAxisGizmo";
 import { IEngineFacade } from "../../../../../../core/engine/IEngineFacade";
 import { Registry } from "../../../../../../core/Registry";

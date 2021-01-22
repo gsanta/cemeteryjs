@@ -6,6 +6,7 @@ import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
+import { Point } from "../../../utils/geometry/shapes/Point";
 import { GameViewerToolbarController } from "./controllers/GameViewerToolbarController";
 import { GameTool } from "./controllers/tools/GameTool";
 import { GameViewerModel } from "./GameViewerModel";
@@ -20,6 +21,11 @@ export function registerGameViewer(registry: Registry) {
     // registerGizmos(canvas, registry);
 
     registry.services.module.registerUIModule({ moduleName: GameViewerPanelId, panels: [canvas]});
+
+    registry.engine.onReady(() => {
+        canvas.model.axisGizmoObj.show();
+        canvas.model.axisGizmoObj.setPosition(new Point(2.5, 3.2));
+    });
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel<GameViewerModel> {

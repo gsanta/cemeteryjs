@@ -1,17 +1,26 @@
-import { ArcRotateCamera, Axis, Color3, Color4, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from "babylonjs";
+import { ArcRotateCamera, Axis, Color3, Color4, Mesh, MeshBuilder, Quaternion, Scene, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture,TextBlock } from 'babylonjs-gui';
-import { IBabylonGizmo } from "./IBabylonGizmo";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
+import { IAxisGizmo } from "../../../gizmos/IAxisGizmo";
 
 export const AxisGizmoType = 'axis-gizmo';
-export class AxisGizmo implements IBabylonGizmo {
+export class Bab_AxisGizmo implements IAxisGizmo {
     private camera: ArcRotateCamera;
     private scene: Scene;
     gizmoType = AxisGizmoType;
+    private centerMesh: Mesh;
 
     constructor(scene: Scene, camera: ArcRotateCamera) {
         this.camera = camera;
         this.scene = scene;
+    }
 
+    setPosition(point: Point) {
+        this.centerMesh.position.x = point.x;
+        this.centerMesh.position.y = point.y;
+    }
+
+    show(): void {
         this.init();
     }
 
@@ -31,11 +40,16 @@ export class AxisGizmo implements IBabylonGizmo {
         greenMat.diffuseColor = new Color3(0, 1, 0);
         greenMat.specularColor = new Color3(0, 1, 0);
         greenMat.emissiveColor = new Color3(0, 1, 0);
+        var grayMat = new StandardMaterial("gray", scene);
+        grayMat.diffuseColor = new Color3(0.5, 0.5, 0.5);
+        grayMat.specularColor = new Color3(0.5, 0.5, 0.5);
+        grayMat.emissiveColor = new Color3(0.5, 0.5, 0.5);
 
-        var mesh = MeshBuilder.CreateBox("box", {size: 0.1}, scene);
-        mesh.updateFacetData();
-        var positions = mesh.getFacetLocalPositions();
-        var normals = mesh.getFacetLocalNormals();
+        this.centerMesh = MeshBuilder.CreateBox("box", {size: 0.1}, scene);
+        this.centerMesh.material = grayMat;
+        this.centerMesh.updateFacetData();
+        var positions = this.centerMesh.getFacetLocalPositions();
+        var normals = this.centerMesh.getFacetLocalNormals();
 
         var lines = [];
         for (var i = 0; i < positions.length; i+=2) {
@@ -73,40 +87,40 @@ export class AxisGizmo implements IBabylonGizmo {
             ],
         ];
         var lineSystem = MeshBuilder.CreateLineSystem("ls", {lines: lines, colors: colors}, scene);
-        lineSystem.parent = mesh;
+        lineSystem.parent = this.centerMesh;
 
-        mesh.position.z += 10;
-        mesh.position.x -= 3;
-        mesh.position.y += 3;
-        mesh.parent = camera;
+        this.centerMesh.position.z += 10;
+        this.centerMesh.position.x -= 3;
+        this.centerMesh.position.y += 3;
+        this.centerMesh.parent = camera;
 
         var sphere1X = MeshBuilder.CreateSphere("sphere1X", {diameter: 0.18}, scene);
-        sphere1X.parent = mesh;
+        sphere1X.parent = this.centerMesh;
         sphere1X.translate(Axis.X, 0.5, Space.LOCAL);
         sphere1X.material = redMat;
 
         var sphere2X = MeshBuilder.CreateSphere("sphere2X", {diameter: 0.18}, scene);
-        sphere2X.parent = mesh;
+        sphere2X.parent = this.centerMesh;
         sphere2X.translate(Axis.X, -0.5, Space.LOCAL);
         sphere2X.material = redMat;
 
         var sphere1Y = MeshBuilder.CreateSphere("sphere1Y", {diameter: 0.18}, scene);
-        sphere1Y.parent = mesh;
+        sphere1Y.parent = this.centerMesh;
         sphere1Y.translate(Axis.Y, 0.5, Space.LOCAL);
         sphere1Y.material = blueMat;
 
         var sphere2Y = MeshBuilder.CreateSphere("sphere2Y", {diameter: 0.18}, scene);
-        sphere2Y.parent = mesh;
+        sphere2Y.parent = this.centerMesh;
         sphere2Y.translate(Axis.Y, -0.5, Space.LOCAL);
         sphere2Y.material = blueMat;
 
         var sphere1Z = MeshBuilder.CreateSphere("sphere1Z", {diameter: 0.18}, scene);
-        sphere1Z.parent = mesh;
+        sphere1Z.parent = this.centerMesh;
         sphere1Z.translate(Axis.Z, 0.5, Space.LOCAL);
         sphere1Z.material = greenMat;
 
         var sphere2Z = MeshBuilder.CreateSphere("sphere2Z", {diameter: 0.18}, scene);
-        sphere2Z.parent = mesh;
+        sphere2Z.parent = this.centerMesh;
         sphere2Z.translate(Axis.Z, -0.5, Space.LOCAL);
         sphere2Z.material = greenMat;
 
@@ -137,35 +151,36 @@ export class AxisGizmo implements IBabylonGizmo {
         advancedTexture.addControl(labelZ);
         labelZ.linkWithMesh(sphere1X)
 
-        setInterval(() => {
-            mesh.rotation = new Vector3(camera.beta, camera.alpha, 0);
-        }, 10)
-
+        scene.registerBeforeRender(() => {        
+            const q = camera.absoluteRotation
+            this.centerMesh.rotationQuaternion = new Quaternion(q.x, q.y, q.z, -q.w)
+        });
+    
         scene.onPointerDown = function (evt, pickResult) {
             switch(pickResult.pickedMesh) {
                 case sphere1Y:
-                    camera.beta = Math.PI;
+                    camera.beta = 0;
                     camera.alpha = 0;
                 break;
                 case sphere2Y:
-                    camera.beta = Math.PI / 2;
-                    camera.alpha = 0;
+                    camera.beta = Math.PI;
+                    camera.alpha = Math.PI;
                 break;
                 case sphere1X:
-                    camera.alpha = Math.PI / 2;
-                    camera.beta = 0;
+                    camera.alpha = 0;
+                    camera.beta = Math.PI / 2;
                 break;
                 case sphere2X:
-                    camera.alpha = -Math.PI / 2;
-                    camera.beta = 0;
+                    camera.alpha = Math.PI;
+                    camera.beta = Math.PI / 2;
                 break;
                 case sphere1Z:
-                    camera.alpha = 0;
-                    camera.beta = Math.PI;
+                    camera.alpha = Math.PI / 2;
+                    camera.beta = Math.PI / 2;
                 break;
                 case sphere2Z:
-                    camera.alpha = 0;
-                    camera.beta = 0;
+                    camera.alpha = - Math.PI / 2;
+                    camera.beta = Math.PI / 2;
                 break;
             }
         };
