@@ -8,6 +8,7 @@ import { ILightAdapter } from "./ILightAdapter";
 import { IRayCasterAdapter } from "./IRayCasterAdapter";
 import { IAnimationAdapter } from "./IAnimationAdapter";
 import { IPhysicsAdapter } from "./IPhysicsAdapter";
+import { IGizmoAdapter } from "./IGizmoAdapter";
 
 export interface IEngineFacade {
     spriteLoader: ISpriteLoaderAdapter;
@@ -19,6 +20,7 @@ export interface IEngineFacade {
     meshLoader: IMeshLoader;
     meshFactory: IMeshFactory;
     animatons: IAnimationAdapter;
+    gizmos: IGizmoAdapter;
     
     setup(canvas: HTMLCanvasElement): void;
     clear(): void;

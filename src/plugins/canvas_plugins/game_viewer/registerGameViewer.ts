@@ -1,19 +1,15 @@
 
 
+import { FormController } from "../../../core/controller/FormController";
 import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
-import { FormController } from "../../../core/controller/FormController";
-import { GizmoPlugin } from "../../../core/plugin/IGizmo";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
-import { IKeyboardEvent } from "../../../core/services/input/KeyboardService";
-import { AxisGizmo } from "../../canvas/gizmos/axis_gizmo/AxisGizmo";
-import { onScreenCastGizmoKeyDown, ScreenCastKeysGizmoRenderer } from "../../canvas/gizmos/screencast_keys_gizmo/ScreenCastKeysGizmo";
 import { GameViewerToolbarController } from "./controllers/GameViewerToolbarController";
 import { GameTool } from "./controllers/tools/GameTool";
-import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
 import { GameViewerModel } from "./GameViewerModel";
+import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
 (<any> window).earcut = require('earcut');
 
 export const GameViewerPanelId = 'game-viewer'; 
@@ -26,29 +22,9 @@ export function registerGameViewer(registry: Registry) {
     registry.services.module.registerUIModule({ moduleName: GameViewerPanelId, panels: [canvas]});
 }
 
-function registerGizmos(canvas: AbstractCanvasPanel, registry: Registry) {
-    const gizmo = new GizmoPlugin(registry, 100, 100);
-        
-    gizmo.onMount(() => {
-        const axisGizmo = new AxisGizmo(canvas, registry);
-        axisGizmo.mount();
-    });
-
-    canvas.addGizmo(gizmo);
-
-    const screenCastGizmo = new GizmoPlugin(registry, 100, 100);
-
-    gizmo.renderer = new ScreenCastKeysGizmoRenderer(gizmo);
-    canvas.keyboard.onKeyDown((event: IKeyboardEvent) => {
-        onScreenCastGizmoKeyDown(event, gizmo, canvas, registry);
-    });
-
-    canvas.addGizmo(screenCastGizmo);
-}
-
 function createCanvas(registry: Registry): AbstractCanvasPanel<GameViewerModel> {
     const canvas = new Canvas3dPanel(registry, UI_Region.Canvas2, GameViewerPanelId, 'Game viewer');
-    canvas.model = new GameViewerModel();
+    canvas.model = new GameViewerModel(registry);
 
     const tools = [
         new GameTool(canvas, registry),

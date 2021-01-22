@@ -1,33 +1,23 @@
-import { ArcRotateCamera, Axis, Color3, Color4, MeshBuilder, Space, StandardMaterial, Vector3 } from "babylonjs";
-import { Bab_EngineFacade } from "../Bab_EngineFacade";
+import { ArcRotateCamera, Axis, Color3, Color4, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture,TextBlock } from 'babylonjs-gui';
+import { IBabylonGizmo } from "./IBabylonGizmo";
 
-export class AxisGizmo {
+export const AxisGizmoType = 'axis-gizmo';
+export class AxisGizmo implements IBabylonGizmo {
     private camera: ArcRotateCamera;
-    private engineFacade: Bab_EngineFacade;
+    private scene: Scene;
+    gizmoType = AxisGizmoType;
 
-    constructor(engineFacade: Bab_EngineFacade, camera: ArcRotateCamera) {
-        this.engineFacade = engineFacade;
+    constructor(scene: Scene, camera: ArcRotateCamera) {
         this.camera = camera;
+        this.scene = scene;
 
         this.init();
     }
 
     private init() {
-        const scene = this.engineFacade.scene;
+        const scene = this.scene;
         const camera = this.camera;
-
-        var redMesh = MeshBuilder.CreateBox("red-box", {size: 1}, scene);
-        redMesh.position.x -= 1;
-        var redBoxMat = new StandardMaterial("red-box-mat", scene);
-        redBoxMat.diffuseColor = new Color3(1, 0, 0);
-        redMesh.material = redBoxMat;
-
-        var blueMesh = MeshBuilder.CreateBox("blue-box", {size: 1}, scene);
-        blueMesh.position.x += 1;
-        var blueBoxMat = new StandardMaterial("red-box-mat", scene);
-        blueBoxMat.diffuseColor = new Color3(0, 0, 1);
-        blueMesh.material = blueBoxMat;
 
         var redMat = new StandardMaterial("red", scene);
         redMat.diffuseColor = new Color3(1, 0, 0);

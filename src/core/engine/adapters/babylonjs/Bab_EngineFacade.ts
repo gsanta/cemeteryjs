@@ -12,6 +12,8 @@ import { Bab_Sprites } from "./Bab_Sprites";
 import { IAnimationAdapter } from "../../IAnimationAdapter";
 import { Bab_AnimationAdapter } from "./Bab_AnimationAdapter";
 import { Bab_PhysicsAdapter } from "./Bab_PhysicsAdapter";
+import { Bab_GizmoAdapter } from "./Bab_GizmoAdapter";
+import { AxisGizmo } from "./gizmos/AxisGizmo";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -29,7 +31,8 @@ export class Bab_EngineFacade implements IEngineFacade {
     lights: Bab_LightAdapter;
     rays: Bab_RayCasterAdapter;
     physics: Bab_PhysicsAdapter;
-    animatons: IAnimationAdapter;
+    animatons: Bab_AnimationAdapter;
+    gizmos: Bab_GizmoAdapter;
 
     private renderLoops: (() => void)[] = [];
     private onReadyFuncs: (() => void)[] = [];
@@ -48,6 +51,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.rays = new Bab_RayCasterAdapter(this.registry, this);
         this.physics = new Bab_PhysicsAdapter(this.registry, this);
         this.animatons = new Bab_AnimationAdapter(this.registry, this);
+        this.gizmos = new Bab_GizmoAdapter(this);
     }
 
     getCamera(): Camera3D {
@@ -71,6 +75,8 @@ export class Bab_EngineFacade implements IEngineFacade {
         // this.light.specular = new Color3(0, 0, 0);
         this.light.intensity = 0.2;
 
+        this.registerGizmos();
+
         this.engine.runRenderLoop(() => {
             this.scene.render();
         });
@@ -78,6 +84,10 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.isReady = true;
         this.onReadyFuncs.forEach(onReadyFunc => onReadyFunc());
         this.renderLoops.forEach(renderLoop => this.engine.runRenderLoop(renderLoop));
+    }
+
+    private registerGizmos() {
+        this.gizmos.registerGizmo(new AxisGizmo(this.scene, this.camera.camera));
     }
 
     clear() {
