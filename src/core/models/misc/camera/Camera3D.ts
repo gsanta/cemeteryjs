@@ -23,6 +23,7 @@ export class Camera3D implements ICamera {
         this.engine = engine;
 
         this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), this.engine.scene);
+        this.camera.attachControl(false);
 
         this.startY = this.camera.position.y;
         this.camera.inertia = 0.7;

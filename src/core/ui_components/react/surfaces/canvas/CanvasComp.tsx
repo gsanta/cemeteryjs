@@ -65,7 +65,6 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
             >
                 {this.props.toolbar}
                 {this.props.dropLayer}
-                {this.props.gizmoLayer}
                 {this.props.element.elementType === UI_ElementType.SvgCanvas ? this.renderSvgCanvas() : this.renderHtmlCanvas()}
 
             </div>
@@ -107,7 +106,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     private renderHtmlCanvas() {
         return (
             <React.Fragment>
-                <div
+                {/* <div
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -117,6 +116,9 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                         backgroundColor: 'transparent'
                     }}
                     tabIndex={0}
+
+                /> */}
+                <canvas
                     onMouseDown={(e) => this.props.element.mouseDown(this.props.registry, e.nativeEvent)}
                     onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}
                     onMouseUp={(e) => this.props.element.mouseUp(this.props.registry, e.nativeEvent)}
@@ -127,8 +129,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                     onKeyUp={e => this.props.element.keyUp(this.props.registry, e.nativeEvent)}
                     onMouseOver={(e) => this.props.element.mouseOver(this.props.registry, e.nativeEvent)}
                     onMouseOut={(e) => this.props.element.mouseOut(this.props.registry, e.nativeEvent)}
-                />
-                <canvas
+                    tabIndex={0}
                     style={{
                         width: this.props.element.width ? this.props.element.width :'100%',
                         height: this.props.element.height ? this.props.element.height :'100%',
