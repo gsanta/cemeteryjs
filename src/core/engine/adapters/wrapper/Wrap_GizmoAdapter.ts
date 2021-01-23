@@ -1,3 +1,4 @@
+import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IGizmoAdapter } from "../../IGizmoAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
 
@@ -8,7 +9,11 @@ export class Wrap_GizmoAdapter implements IGizmoAdapter {
         this.engineFacade = engineFacade;
     }
 
-    getGizmo(gizmoType: string) {
-        return this.engineFacade.realEngine.gizmos.getGizmo(gizmoType);
+    showGizmo(gizmoType: string) {
+        this.engineFacade.realEngine.gizmos.showGizmo(gizmoType);
+    }
+
+    setGizmoPosition(gizmoType: string, point: Point) {
+        this.engineFacade.realEngine.gizmos.setGizmoPosition(gizmoType, point);
     }
 }

@@ -1,6 +1,5 @@
-
-
 import { FormController } from "../../../core/controller/FormController";
+import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
 import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
@@ -18,13 +17,12 @@ export const GameViewerPluginControllerId = 'game-viewer-plugin-controller';
 
 export function registerGameViewer(registry: Registry) {
     const canvas = createCanvas(registry);
-    // registerGizmos(canvas, registry);
 
     registry.services.module.registerUIModule({ moduleName: GameViewerPanelId, panels: [canvas]});
 
     registry.engine.onReady(() => {
-        canvas.model.axisGizmoObj.show();
-        canvas.model.axisGizmoObj.setPosition(new Point(2.5, 3.2));
+        registry.engine.gizmos.showGizmo(AxisGizmoType);
+        registry.engine.gizmos.setGizmoPosition(AxisGizmoType, new Point(2.5, 3.2));
     });
 }
 

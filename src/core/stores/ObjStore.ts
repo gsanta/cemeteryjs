@@ -21,12 +21,6 @@ export class ObjStore {
     private hooks: ObjStoreHook[] = [];
     id: string;
 
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
             throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
