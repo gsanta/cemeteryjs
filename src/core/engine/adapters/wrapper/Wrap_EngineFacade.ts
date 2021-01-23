@@ -13,6 +13,7 @@ import { Wrap_PhysicsAdapter } from "./Wrap_PhysicsAdapter";
 import { Wrap_RayCasterAdapter } from "./Wrap_RayCasterAdapter";
 import { Wrap_SpriteLoader } from "./Wrap_SpriteLoader";
 import { Wrap_Sprites } from "./Wrap_Sprites";
+import { Wrap_ToolAdapter } from "./Wrap_ToolAdapter";
 
 export class Wrap_EngineFacade implements IEngineFacade {
     private registry: Registry;
@@ -29,6 +30,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     physics: Wrap_PhysicsAdapter;
     animatons: Wrap_AnimationAdapter;
     gizmos: Wrap_GizmoAdapter;
+    tools: Wrap_ToolAdapter;
 
     engines: IEngineFacade[] = [];
 
@@ -55,6 +57,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
         this.physics = new Wrap_PhysicsAdapter(this);
         this.animatons = new Wrap_AnimationAdapter(this.registry, this);
         this.gizmos = new Wrap_GizmoAdapter(this);
+        this.tools = new Wrap_ToolAdapter(this);
     }
 
     getCamera(): Camera3D {

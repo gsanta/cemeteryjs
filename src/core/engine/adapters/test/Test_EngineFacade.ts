@@ -30,6 +30,7 @@ export class Test_EngineFacade implements IEngineFacade {
     physics: Test_PhysicsAdapter;
     animatons: IAnimationAdapter;
     gizmos: undefined;
+    tools: undefined;
 
     constructor(registry: Registry) {
         this.registry = registry;

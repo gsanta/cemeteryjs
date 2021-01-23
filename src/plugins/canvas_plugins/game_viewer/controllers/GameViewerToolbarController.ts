@@ -8,6 +8,9 @@ import { UIController } from "../../../../core/controller/UIController";
 import { GameViewerModel } from "../GameViewerModel";
 import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
+import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_ScaleTool";
+import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_RotationTool";
+import { _3DMoveTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_MoveTool";
 
 export enum GameViewerProps {
     Play = 'Play',
@@ -29,6 +32,9 @@ export class GameViewerToolbarController extends UIController {
         this.zoomIn = new ZoomInController(registry);
         this.zoomOut = new ZoomOutController(registry);
         this.showBoundingBox = new ShowBoundingBoxController(registry, canvas);
+        this.moveTool = new MoveToolController(registry, canvas);
+        this.scaleTool = new ScaleToolController(registry, canvas);
+        this.rotationTool = new RotationToolController(registry, canvas);
     }
     
     editMode: ParamController;
@@ -38,6 +44,9 @@ export class GameViewerToolbarController extends UIController {
     zoomIn: ParamController;
     zoomOut: ParamController;
     showBoundingBox: ParamController;
+    moveTool: ParamController;
+    scaleTool: ParamController;
+    rotationTool: ParamController;
 }
 
 export class PlayController extends ParamController {
@@ -92,6 +101,54 @@ class ShowBoundingBoxController extends ParamController<boolean> {
         const meshObjs = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType);
         meshObjs.forEach(meshObj => this.registry.engine.meshes.showBoundingBoxes(meshObj, show));
 
+        this.registry.services.render.reRender(UI_Region.Canvas2);
+    }
+}
+
+class ScaleToolController extends ParamController<boolean> {
+    canvas: AbstractCanvasPanel<GameViewerModel>;
+
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<GameViewerModel>) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        this.registry.engine.tools.selectTool(_3DScaleTool);
+        this.canvas.model.selectedTool = _3DScaleTool;
+        
+        this.registry.services.render.reRender(UI_Region.Canvas2);
+    }
+}
+
+class RotationToolController extends ParamController<boolean> {
+    canvas: AbstractCanvasPanel<GameViewerModel>;
+
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<GameViewerModel>) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        this.registry.engine.tools.selectTool(_3DRotationTool);
+        this.canvas.model.selectedTool = _3DRotationTool;
+        
+        this.registry.services.render.reRender(UI_Region.Canvas2);
+    }
+}
+
+class MoveToolController extends ParamController<boolean> {
+    canvas: AbstractCanvasPanel<GameViewerModel>;
+
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<GameViewerModel>) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        this.registry.engine.tools.selectTool(_3DMoveTool);
+        this.canvas.model.selectedTool = _3DMoveTool;
+        
         this.registry.services.render.reRender(UI_Region.Canvas2);
     }
 }

@@ -7,6 +7,7 @@ import { Bab_ScaleTool } from "./tools/Bab_ScaleTool";
 
 export class Bab_ToolService {
     private readonly engineFacade: Bab_EngineFacade;
+    tools: IEngineTool[] = [];
 
     moveTool: Bab_MoveTool;
     scaleTool: Bab_ScaleTool;
@@ -18,7 +19,17 @@ export class Bab_ToolService {
         this.moveTool = new Bab_MoveTool(this.engineFacade);
         this.scaleTool = new Bab_ScaleTool(this.engineFacade);
         this.rotationTool = new Bab_RotationTool(this.engineFacade);
-        this.selectedTool = this.rotationTool;
+        this.tools.push(
+            this.moveTool,
+            this.scaleTool,
+            this.rotationTool
+        );
+
+        this.selectedTool = this.moveTool;
+    }
+
+    setSelectedTool(toolType: string) {
+        this.selectedTool = this.tools.find(tool => tool.toolType === toolType);
     }
 
     selectedTool: IEngineTool;

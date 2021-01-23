@@ -19,6 +19,7 @@ import { Bab_PositionGizmo } from "./gizmos/Bab_PositionGizmo";
 import { Bab_PointerService } from "./Bab_PointerService";
 import { Bab_ScaleGizmo } from "./gizmos/Bab_ScaleGizmo";
 import { Bab_RotationGizmo } from "./gizmos/Bab_RotationGizmo";
+import { Bab_ToolAdapter } from "./Bab_ToolAdapter";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -38,9 +39,10 @@ export class Bab_EngineFacade implements IEngineFacade {
     physics: Bab_PhysicsAdapter;
     animatons: Bab_AnimationAdapter;
     gizmos: Bab_GizmoAdapter;
+    tools: Bab_ToolAdapter;
 
-    tools: Bab_ToolService;
-    pointers: Bab_PointerService;
+    toolService: Bab_ToolService;
+    pointerService: Bab_PointerService;
 
     private renderLoops: (() => void)[] = [];
     private onReadyFuncs: (() => void)[] = [];
@@ -60,9 +62,10 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.physics = new Bab_PhysicsAdapter(this.registry, this);
         this.animatons = new Bab_AnimationAdapter(this.registry, this);
         this.gizmos = new Bab_GizmoAdapter(this);
+        this.tools = new Bab_ToolAdapter(this);
 
-        this.tools = new Bab_ToolService(this);
-        this.pointers = new Bab_PointerService(this);
+        this.toolService = new Bab_ToolService(this);
+        this.pointerService = new Bab_PointerService(this);
     }
 
     getCamera(): Camera3D {

@@ -12,7 +12,7 @@ export class Bab_PointerService {
     }
 
     private init() {
-        const tools = this.engineFacade.tools;
+        const tools = this.engineFacade.toolService;
 
         this.engineFacade.scene.onPointerObservable.add((eventData) => {
             switch(eventData.type) {
