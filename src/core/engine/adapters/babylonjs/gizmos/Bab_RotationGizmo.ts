@@ -8,6 +8,7 @@ export class Bab_RotationGizmo {
 
     private utilLayer: UtilityLayerRenderer;
     private gizmo: RotationGizmo;
+    private onDragFuncs: (() => void)[] = [];
 
     constructor(engineFacade: Bab_EngineFacade) {
         this.engineFacade = engineFacade;
@@ -20,6 +21,10 @@ export class Bab_RotationGizmo {
     
         this.gizmo.updateGizmoRotationToMatchAttachedMesh = false;
         this.gizmo.updateGizmoPositionToMatchAttachedMesh = true;
+
+        this.gizmo.onDragEndObservable.add(() => {
+            this.onDragFuncs.forEach(func => func())
+        });
     }
 
     detach() {
@@ -30,5 +35,13 @@ export class Bab_RotationGizmo {
         if (this.gizmo) {
             this.gizmo.dispose();
         }
+    }
+
+    onDrag(callback: () => void) {
+        this.onDragFuncs.push(callback);
+    }
+
+    offDrag(callback: () => void) {
+        this.onDragFuncs = this.onDragFuncs.filter(func => func !== callback);
     }
 }

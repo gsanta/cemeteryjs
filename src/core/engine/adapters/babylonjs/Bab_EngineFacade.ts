@@ -9,7 +9,6 @@ import { Bab_MeshLoader } from "./Bab_MeshLoader";
 import { Bab_RayCasterAdapter } from "./Bab_RayCasterAdapter";
 import { Bab_SpriteLoader } from "./Bab_SpriteLoader";
 import { Bab_Sprites } from "./Bab_Sprites";
-import { IAnimationAdapter } from "../../IAnimationAdapter";
 import { Bab_AnimationAdapter } from "./Bab_AnimationAdapter";
 import { Bab_PhysicsAdapter } from "./Bab_PhysicsAdapter";
 import { Bab_GizmoAdapter } from "./Bab_GizmoAdapter";
@@ -64,7 +63,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.gizmos = new Bab_GizmoAdapter(this);
         this.tools = new Bab_ToolAdapter(this);
 
-        this.toolService = new Bab_ToolService(this);
+        this.toolService = new Bab_ToolService(registry, this);
         this.pointerService = new Bab_PointerService(this);
     }
 

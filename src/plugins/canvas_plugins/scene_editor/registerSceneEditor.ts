@@ -34,6 +34,7 @@ import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
 import { UIModule } from "../../../core/services/ModuleService";
 import { SceneEditorExporter } from "./io/SceneEditorExporter";
 import { SceneEditorImporter } from "./io/SceneEditorImporter";
+import { SceneEditorSynchronizer } from "./SceneEditorSynchronizer";
 
 export const SceneEditorPanelId = 'scene-editor';
 
@@ -96,6 +97,8 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     registry.data.view.scene.registerViewType(ScaleAxisViewType, new ScaleAxisViewFactory(registry));
     registry.data.view.scene.registerViewType(RotateAxisViewType, new RotateAxisViewFactory(registry));
     registry.data.view.scene.registerViewType(PathViewType, new PathViewFactory(registry));
+
+    new SceneEditorSynchronizer(registry);
 
     return canvas;
 }

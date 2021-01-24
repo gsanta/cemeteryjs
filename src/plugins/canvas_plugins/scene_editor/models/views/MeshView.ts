@@ -71,6 +71,13 @@ export class MeshView extends View {
         this.childViews.forEach(boundView => boundView.calcBounds());
     }
 
+    moveTo(point: Point) {
+        this.bounds.moveCenterTo(point);
+
+        this.containedViews.forEach(child => child.calcBounds());
+        this.childViews.forEach(boundView => boundView.calcBounds());
+    }
+
     getBounds(): Rectangle {
         return this.bounds;
     }

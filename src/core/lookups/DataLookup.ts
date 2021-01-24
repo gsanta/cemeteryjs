@@ -1,3 +1,4 @@
+import { ObjObservable } from "../models/ObjObservable";
 import { Registry } from "../Registry";
 import { ObjSelectionStore } from "../stores/ObjSelectionStore";
 import { ObjStore } from "../stores/ObjStore";
@@ -10,6 +11,7 @@ export class DataLookup {
     obj: ObjLookup;
     scene: {
         selection: ObjSelectionStore;
+        observable: ObjObservable;
     }
     
     private _registry: Registry;
@@ -20,7 +22,8 @@ export class DataLookup {
         this.obj = new ObjLookup(registry);
 
         this.scene = {
-            selection: new ObjSelectionStore()
+            selection: new ObjSelectionStore(),
+            observable: new ObjObservable()
         }
 
         this._registry = registry;
