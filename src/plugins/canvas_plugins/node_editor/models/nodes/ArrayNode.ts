@@ -3,7 +3,7 @@ import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/mode
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { MoveDirection } from "./MoveNode";
 
 export const ArrayNodeType = 'array-node-obj';
@@ -20,11 +20,11 @@ export class ArrayNode extends AbstractNodeFactory {
     displayName = 'Array';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers({});
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

@@ -1,33 +1,33 @@
 import { without } from "../../utils/geometry/Functions";
-import { View, ViewTag } from '../models/views/View';
+import { AbstractShape, ShapeTag } from '../models/views/AbstractShape';
 
 export class SelectionStore {
-    items: View[] = [];
+    items: AbstractShape[] = [];
 
-    addSelectedView(...items: View[]) {
-        items.forEach(item => item.tags.add(ViewTag.Selected));
+    addSelectedView(...items: AbstractShape[]) {
+        items.forEach(item => item.tags.add(ShapeTag.Selected));
         this.items.push(...items);
     }
 
-    removeSelectedView(item: View) {
-        item.tags.delete(ViewTag.Selected)
+    removeSelectedView(item: AbstractShape) {
+        item.tags.delete(ShapeTag.Selected)
         this.items = without(this.items, item);
     }
 
-    getSelectedViews(): View[] {
+    getSelectedViews(): AbstractShape[] {
         return this.items;
     }
 
-    getSelectedViewsByType(type: string): View[] {
+    getSelectedViewsByType(type: string): AbstractShape[] {
         return this.items.filter(view => view.viewType === type);
     }
 
-    getOneSelectedView(): View {
+    getOneSelectedView(): AbstractShape {
         return this.items.length > 0 && this.items[0];
     }
 
     clearSelection() {
-        this.items.forEach(item => item.tags.delete(ViewTag.Selected));
+        this.items.forEach(item => item.tags.delete(ShapeTag.Selected));
         this.items = [];
     }
 }

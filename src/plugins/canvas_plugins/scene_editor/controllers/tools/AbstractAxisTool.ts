@@ -4,14 +4,14 @@ import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { MeshView } from "../../models/views/MeshView";
-import { MoveAxisView } from "../../models/views/edit/MoveAxisView";
-import { RotateAxisView } from "../../models/views/edit/RotateAxisView";
-import { ScaleAxisView } from "../../models/views/edit/ScaleAxisView";
+import { MeshShape } from "../../models/shapes/MeshShape";
+import { MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
+import { RotateAxisView } from "../../models/shapes/edit/RotateAxisShape";
+import { ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
 
 export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter {
     protected downView: T;
-    protected meshView: MeshView;
+    protected meshView: MeshShape;
     protected hoveredView: T;
     private viewType: string;
 
@@ -36,7 +36,7 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
     down() {
         if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === this.viewType) {
             this.downView = <T> this.registry.services.pointer.hoveredView;
-            this.meshView = <MeshView> this.downView.containerView;
+            this.meshView = <MeshShape> this.downView.containerView;
         }
     }
 

@@ -1,20 +1,20 @@
 import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { PathPointView, PathPointViewType } from "../../../../../core/models/views/child_views/PathPointView";
-import { PathView, PathViewType } from "../../models/views/PathView";
-import { View } from "../../../../../core/models/views/View";
+import { PathPoinShape, PathPointViewType } from "../../../../../core/models/views/child_views/PathPointShape";
+import { PathShape, PathShapeType } from "../../models/shapes/PathShape";
+import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
 import { IHotkeyEvent } from "../../../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../../../core/services/input/KeyboardService";
 import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
-import { ViewStore } from "../../../../../core/stores/ViewStore";
+import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 
 export const PathToolId = 'path-tool';
 export class PathTool extends PointerTool<Canvas2dPanel> {
-    acceptedViews = [PathViewType, PathPointViewType]
+    acceptedViews = [PathShapeType, PathPointViewType]
 
-    constructor(panel: Canvas2dPanel, viewStore: ViewStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
         super(PathToolId, panel, viewStore, registry);
     }
 
@@ -36,14 +36,14 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
         }
     }
 
-    over(item: View) {
+    over(item: AbstractShape) {
         let hover = false;
-        if (item.viewType === PathViewType) {
+        if (item.viewType === PathShapeType) {
             hover = true;
         }
 
         if (item.viewType === PathPointViewType) {
-            if (item.containerView.viewType === PathViewType) {
+            if (item.containerView.viewType === PathShapeType) {
                 hover = true;
             }
         }
@@ -54,13 +54,13 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
         }
     }
 
-    out(item: View) {
+    out(item: AbstractShape) {
         super.out(item);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
     private drawPath() {
-        const pathes = <PathView[]> this.viewStore.getSelectedViewsByType(PathViewType);
+        const pathes = <PathShape[]> this.viewStore.getSelectedShapesByType(PathShapeType);
 
         if (pathes.length > 1) { return }
 
@@ -76,14 +76,14 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
         this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
     }
 
-    private continuePath(path: PathView) {
+    private continuePath(path: PathShape) {
         const pointer = this.registry.services.pointer.pointer;
-        const newEditPoint = new PathPointView(path, new Point(pointer.down.x, pointer.down.y));
+        const newEditPoint = new PathPoinShape(path, new Point(pointer.down.x, pointer.down.y));
         path.addPathPoint(newEditPoint);
     }
 
     private startNewPath() {
-        return this.panel.getViewStore().getViewFactory(PathViewType).instantiateOnCanvas(this.panel, undefined);
+        return this.panel.getViewStore().getViewFactory(PathShapeType).instantiateOnCanvas(this.panel, undefined);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

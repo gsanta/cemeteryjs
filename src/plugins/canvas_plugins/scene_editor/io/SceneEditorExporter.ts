@@ -5,7 +5,7 @@ import { PathObjType } from "../../../../core/models/objs/PathObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { ViewJson } from "../../../../core/models/views/View";
+import { ShapeJson } from "../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 
@@ -42,8 +42,8 @@ export class SceneEditorExporter extends AbstractModuleExporter {
         return data;
     }
 
-    exportViews(): ViewJson[] {
-        return this.registry.data.view.scene.getAllViews().map(view => view.toJson());
+    exportViews(): ShapeJson[] {
+        return this.registry.data.shape.scene.getAllShapes().map(view => view.toJson());
     }
 
     exportObjs(): ObjJson[] {

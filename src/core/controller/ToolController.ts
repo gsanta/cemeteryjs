@@ -4,7 +4,7 @@ import { IPointerEvent } from "../services/input/PointerService";
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { UI_Element } from "../ui_components/elements/UI_Element";
 import { Tool } from "../plugin/tools/Tool";
-import { View } from "../models/views/View";
+import { AbstractShape } from "../models/views/AbstractShape";
 import { ParamController, PropContext } from "./FormController";
 import { SelectToolId } from "../plugin/tools/SelectTool";
 import { MeshToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/MeshTool";
@@ -88,7 +88,7 @@ export class MousePointer {
 }
 
 export class ToolController {
-    controlledView: View;
+    controlledView: AbstractShape;
     private scopedTool: Tool;
 
     private registry: Registry;
@@ -144,11 +144,11 @@ export class ToolController {
         this.registry.services.render.reRenderAll();
     }
 
-    mouseLeave(e: MouseEvent, data: View, element: UI_Element): void {
+    mouseLeave(e: MouseEvent, data: AbstractShape, element: UI_Element): void {
         this.registry.services.pointer.pointerLeave(this, this.convertEvent(e, false), data, element);
     }
 
-    mouseEnter(e: MouseEvent, data: View, element: UI_Element): void {
+    mouseEnter(e: MouseEvent, data: AbstractShape, element: UI_Element): void {
         this.registry.services.pointer.pointerEnter(this, this.convertEvent(e, false), data, element);
     }
 

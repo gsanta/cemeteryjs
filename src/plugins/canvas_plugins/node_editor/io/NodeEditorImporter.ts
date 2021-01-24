@@ -2,13 +2,13 @@ import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models
 import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { NodeObj, NodeObjJson, NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { View, ViewJson } from "../../../../core/models/views/View";
+import { AbstractShape, ShapeJson } from "../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
-import { NodeViewType } from "../models/views/NodeView";
+import { NodeShapeType } from "../models/shapes/NodeShape";
 
 interface ImportData {
-    views?: ViewJson[];
+    views?: ShapeJson[];
     objs?: ObjJson[];
 }
 
@@ -25,13 +25,13 @@ export class NodeEditorImporter extends AbstractModuleImporter {
         this.importViews(data.views || []);
     }
 
-    private importViews(viewJsons: ViewJson[]) {
-        const store = this.registry.data.view.node;
+    private importViews(viewJsons: ShapeJson[]) {
+        const store = this.registry.data.shape.node;
 
         viewJsons.forEach(viewJson => {
-            let viewInstance: View;
+            let viewInstance: AbstractShape;
         
-            if (viewJson.type === NodeViewType) {
+            if (viewJson.type === NodeShapeType) {
                 const nodeObj = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId));
                 viewInstance = this.registry.data.helper.node.createView(nodeObj.type, nodeObj)
                 viewInstance.fromJson(viewJson, this.registry);
@@ -39,7 +39,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
                 viewInstance = store.getViewFactory(viewJson.type).instantiate();
                 viewInstance.fromJson(viewJson, this.registry);
             }
-            store.addView(viewInstance);
+            store.addShape(viewInstance);
         });
 
     }

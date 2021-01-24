@@ -4,14 +4,14 @@ import * as turfHelpers from '@turf/helpers';
 import polylabel from 'polylabel';
 import { Point } from './Point';
 import { LineSegment } from './LineSegment';
-import { BoundingInfo, Shape, ShapeOrigin } from './Shape';
+import { BoundingInfo, GeometryPrimitive, ShapeOrigin } from './Shape';
 import { Angle } from './Angle';
 import { Measurements } from '../Measurements';
 import { minBy, maxBy, every } from '../Functions';
 import { Rectangle } from './Rectangle';
 
 
-export class Polygon implements Shape {
+export class Polygon implements GeometryPrimitive {
     protected points: Point[];
     protected orederedPoints: Point[];
 

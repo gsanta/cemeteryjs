@@ -1,14 +1,14 @@
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { MoveAxisView, MoveAxisViewType } from "../../models/views/edit/MoveAxisView";
+import { MoveAxisView, MoveAxisShapeType } from "../../models/shapes/edit/MoveAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const MoveAxisToolId = 'move-axis-tool';
 
 export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     constructor(panel: AbstractCanvasPanel, registry: Registry) {
-        super(MoveAxisToolId, panel, registry, MoveAxisViewType);
+        super(MoveAxisToolId, panel, registry, MoveAxisShapeType);
     }
  
     protected updateX() {

@@ -1,15 +1,15 @@
 
-import { ViewRenderer } from "../../../../../core/models/views/View";
+import { ShapeRenderer } from "../../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
 import { RotateAxisToolId } from "../../controllers/tools/RotateAxisTool";
-import { axisLineBounds, getAxisColor } from "../../models/views/edit/axisUtils";
-import { RotateAxisView, RotateAxisViewType } from "../../models/views/edit/RotateAxisView";
+import { axisLineBounds, getAxisColor } from "../../models/shapes/edit/axisUtils";
+import { RotateAxisView, RotateAxisShapeType } from "../../models/shapes/edit/RotateAxisShape";
 
-export class RotateAxisViewRenderer implements ViewRenderer {
-    id = RotateAxisViewType;
+export class RotateAxisViewRenderer implements ShapeRenderer {
+    id = RotateAxisShapeType;
 
     private registry: Registry;
 

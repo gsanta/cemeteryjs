@@ -1,8 +1,8 @@
-import { NodePortViewType } from '../../models/views/child_views/NodePortView';
-import { View, ViewTag } from '../../models/views/View';
+import { NodePortViewType } from '../../models/views/child_views/NodePortShape';
+import { AbstractShape, ShapeTag } from '../../models/views/AbstractShape';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { ViewStore } from '../../stores/ViewStore';
+import { ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { ToolAdapter } from "./ToolAdapter";
@@ -11,11 +11,11 @@ import { ToolType } from "./Tool";
 export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> extends ToolAdapter<P> {
     acceptedViews: string[] = [];
 
-    protected movingItem: View = undefined;
+    protected movingItem: AbstractShape = undefined;
     private isDragStart = true;
-    protected viewStore: ViewStore;
+    protected viewStore: ShapeStore;
 
-    constructor(type: string, panel: P, store: ViewStore, registry: Registry) {
+    constructor(type: string, panel: P, store: ShapeStore, registry: Registry) {
         super(type, panel, registry);
         this.viewStore = store;
     }
@@ -27,13 +27,13 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         if (hoveredItem.isContainedView()) {
             if (!hoveredItem.containerView.isSelected()) {
                 this.viewStore.clearSelection();
-                this.viewStore.addSelectedView(hoveredItem.containerView);
+                this.viewStore.addSelectedShape(hoveredItem.containerView);
             }
             hoveredItem.containerView.setActiveContainedView(hoveredItem);
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         } else {
             this.viewStore.clearSelection();
-            this.viewStore.addSelectedView(hoveredItem);
+            this.viewStore.addSelectedShape(hoveredItem);
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         }
     }
@@ -72,24 +72,24 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         this.movingItem = undefined;
     }
 
-    over(view: View) {
+    over(view: AbstractShape) {
         if (view.viewType === NodePortViewType) {
             this.panel.toolController.setPriorityTool(ToolType.Join);
         }
         
-        view.tags.add(ViewTag.Hovered);
-        view.containerView?.tags.add(ViewTag.Hovered);
+        view.tags.add(ShapeTag.Hovered);
+        view.containerView?.tags.add(ShapeTag.Hovered);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
-    out(view: View) {
+    out(view: AbstractShape) {
         if (!this.registry.services.pointer.isDown && view.viewType === NodePortViewType) {
             this.panel.toolController.removePriorityTool(ToolType.Join);
 
         } 
         
-        view.tags.delete(ViewTag.Hovered);
-        view.containerView?.tags.delete(ViewTag.Hovered);
+        view.tags.delete(ShapeTag.Hovered);
+        view.containerView?.tags.delete(ShapeTag.Hovered);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
@@ -107,7 +107,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         if (this.movingItem.isContainedView()) {
             this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
         } else {
-            const views = this.viewStore.getSelectedViews();
+            const views = this.viewStore.getSelectedShapes();
             views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
         }
         this.registry.services.render.scheduleRendering(this.panel.region);

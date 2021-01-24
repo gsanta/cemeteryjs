@@ -1,4 +1,4 @@
- import { NodeView, NodeViewType } from '../../../plugins/canvas_plugins/node_editor/models/views/NodeView';
+ import { NodeShape, NodeShapeType } from '../../../plugins/canvas_plugins/node_editor/models/shapes/NodeShape';
 import { NodeObj } from '../../models/objs/node_obj/NodeObj';
 import { Registry } from '../../Registry';
 
@@ -39,7 +39,7 @@ export class NodeGraph {
     }
 
     getNodesByType(nodeType: string) {
-        return (<NodeView[]> this.registry.data.view.node.getViewsByType(NodeViewType)).filter(node => node.getObj().type === nodeType);
+        return (<NodeShape[]> this.registry.data.shape.node.getShapesByType(NodeShapeType)).filter(node => node.getObj().type === nodeType);
     }
 
     findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {

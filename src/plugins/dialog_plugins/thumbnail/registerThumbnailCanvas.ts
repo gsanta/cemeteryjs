@@ -3,7 +3,7 @@
 
 
 import { Bab_EngineFacade } from "../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
-import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshShape } from "../../canvas_plugins/scene_editor/models/shapes/MeshShape";
 import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { FormController } from "../../../core/controller/FormController";
@@ -44,7 +44,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
 
 
     canvas.onMounted(() => {
-        const meshView = registry.data.view.scene.getOneSelectedView() as MeshView;
+        const meshView = registry.data.shape.scene.getOneSelectedShape() as MeshShape;
 
         engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]);
 

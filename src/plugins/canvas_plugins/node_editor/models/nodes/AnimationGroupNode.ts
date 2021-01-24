@@ -3,7 +3,7 @@ import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/mode
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AnimationGroupNodeControllers } from "../../controllers/nodes/AnimationGroupNodeControllers";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { AnimationGroupNodeListener } from "./listeners/AnimationGroupNodeListener";
 import { MeshNodeParam } from "./MoveNode";
 
@@ -21,11 +21,11 @@ export class AnimationGroupNode extends AbstractNodeFactory {
     displayName = 'Animation Group';
     category = 'Mesh';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new AnimationGroupNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

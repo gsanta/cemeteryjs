@@ -2,7 +2,7 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { CollisionNodeControllers } from "../../controllers/nodes/CollisionNodeControllers";
 import { CollisionConstraint } from "../../domain/CollisionConstraint";
@@ -21,11 +21,11 @@ export class CollisionNode extends AbstractNodeFactory {
     displayName = 'Collision';
     category = 'Mesh';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new CollisionNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

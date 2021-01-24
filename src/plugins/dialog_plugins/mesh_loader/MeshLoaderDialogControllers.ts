@@ -6,7 +6,7 @@ import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { ApplicationError } from "../../../core/services/ErrorService";
 import { TreeController, TreeData } from "../../../core/ui_components/elements/complex/tree/TreeController";
-import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshShape } from "../../canvas_plugins/scene_editor/models/shapes/MeshShape";
 import { MeshLoaderPreviewCanvas } from "./MeshLoaderPreviewCanvas";
 
 export class MeshLoaderDialogControllers extends DialogController {
@@ -276,7 +276,7 @@ export class SaveController extends ParamController {
 
     async click() {
         const { modelObj } = this.meshObj;
-        const meshView = <MeshView> this.registry.data.view.scene.getOneSelectedView();
+        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
         const meshObj = meshView.getObj();
         const assetObj = new AssetObj({path: modelObj.path, name: modelObj.name, assetType: modelObj.assetType});
         

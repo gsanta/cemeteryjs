@@ -1,7 +1,7 @@
-import { LightViewType } from "./models/views/LightView";
-import { MeshViewType } from "./models/views/MeshView";
-import { PathViewType } from "./models/views/PathView";
-import { SpriteViewType } from "./models/views/SpriteView";
+import { LightShapeType } from "./models/shapes/LightShape";
+import { MeshShapeType } from "./models/shapes/MeshShape";
+import { PathShapeType } from "./models/shapes/PathShape";
+import { SpriteShapeType } from "./models/shapes/SpriteShape";
 import { AbstractCanvasPanel, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { FormController } from "../../../core/controller/FormController";
@@ -14,8 +14,8 @@ import { cameraInitializer } from "../../../core/plugin/UI_Plugin";
 import { Registry } from "../../../core/Registry";
 import { MoveAxisTool } from "./controllers/tools/MoveAxisTool";
 import { ScaleAxisTool } from "./controllers/tools/ScaleAxisTool";
-import { MoveAxisViewFactory, MoveAxisViewType } from "./models/views/edit/MoveAxisView";
-import { ScaleAxisViewFactory, ScaleAxisViewType } from "./models/views/edit/ScaleAxisView";
+import { MoveAxisShapeFactory, MoveAxisShapeType } from "./models/shapes/edit/MoveAxisShape";
+import { ScaleAxisShapeFactory, ScaleAxisShapeType } from "./models/shapes/edit/ScaleAxisShape";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "./controllers/SceneEditorToolbarController";
 import { SceneEditorRenderer } from "./renderers/SceneEditorRenderer";
 import { CubeTool } from "./controllers/tools/CubeTool";
@@ -29,7 +29,7 @@ import { LightViewFactory } from "./models/factories/LightViewFactory";
 import { SpriteViewFactory } from "./models/factories/SpriteViewFactory";
 import { PathViewFactory } from "./models/factories/PathViewFactory";
 import { GroundTool } from "./controllers/tools/GroundTool";
-import { RotateAxisViewFactory, RotateAxisViewType } from "./models/views/edit/RotateAxisView";
+import { RotateAxisShapeFactory, RotateAxisShapeType } from "./models/shapes/edit/RotateAxisShape";
 import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
 import { UIModule } from "../../../core/services/ModuleService";
 import { SceneEditorExporter } from "./io/SceneEditorExporter";
@@ -68,17 +68,17 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const tools = [
-        new MeshTool(canvas, registry.data.view.scene, registry),
-        new SpriteTool(canvas, registry.data.view.scene, registry),
-        new LightTool(canvas,  registry.data.view.scene, registry),
-        new PathTool(canvas, registry.data.view.scene, registry),
-        new SelectTool(canvas, registry.data.view.scene, registry),
-        new DeleteTool(canvas, registry.data.view.scene, registry),
+        new MeshTool(canvas, registry.data.shape.scene, registry),
+        new SpriteTool(canvas, registry.data.shape.scene, registry),
+        new LightTool(canvas,  registry.data.shape.scene, registry),
+        new PathTool(canvas, registry.data.shape.scene, registry),
+        new SelectTool(canvas, registry.data.shape.scene, registry),
+        new DeleteTool(canvas, registry.data.shape.scene, registry),
         new CameraTool(canvas, registry),
         new MoveAxisTool(canvas, registry),
-        new CubeTool(canvas, registry.data.view.scene, registry),
-        new SphereTool(canvas, registry.data.view.scene, registry),
-        new GroundTool(canvas, registry.data.view.scene, registry),
+        new CubeTool(canvas, registry.data.shape.scene, registry),
+        new SphereTool(canvas, registry.data.shape.scene, registry),
+        new GroundTool(canvas, registry.data.shape.scene, registry),
         new ScaleAxisTool(canvas, registry),
         new RotateAxisTool(canvas, registry)
     ];
@@ -86,17 +86,17 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     canvas.renderer = new SceneEditorRenderer(registry, canvas);
     canvas.setController(new FormController(undefined, registry, propControllers))
     canvas.setCamera(cameraInitializer(SceneEditorPanelId, registry));
-    canvas.setViewStore(registry.data.view.scene);
+    canvas.setViewStore(registry.data.shape.scene);
     tools.forEach(tool => canvas.addTool(tool));
 
-    registry.data.view.scene.registerViewType(MeshViewType, new MeshViewFactory(registry));
-    registry.data.view.scene.registerViewType(SpriteViewType, new SpriteViewFactory(registry));
-    registry.data.view.scene.registerViewType(LightViewType, new LightViewFactory(registry));
+    registry.data.shape.scene.registerViewType(MeshShapeType, new MeshViewFactory(registry));
+    registry.data.shape.scene.registerViewType(SpriteShapeType, new SpriteViewFactory(registry));
+    registry.data.shape.scene.registerViewType(LightShapeType, new LightViewFactory(registry));
 
-    registry.data.view.scene.registerViewType(MoveAxisViewType, new MoveAxisViewFactory(registry));
-    registry.data.view.scene.registerViewType(ScaleAxisViewType, new ScaleAxisViewFactory(registry));
-    registry.data.view.scene.registerViewType(RotateAxisViewType, new RotateAxisViewFactory(registry));
-    registry.data.view.scene.registerViewType(PathViewType, new PathViewFactory(registry));
+    registry.data.shape.scene.registerViewType(MoveAxisShapeType, new MoveAxisShapeFactory(registry));
+    registry.data.shape.scene.registerViewType(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry));
+    registry.data.shape.scene.registerViewType(RotateAxisShapeType, new RotateAxisShapeFactory(registry));
+    registry.data.shape.scene.registerViewType(PathShapeType, new PathViewFactory(registry));
 
     new SceneEditorSynchronizer(registry);
 

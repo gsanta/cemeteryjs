@@ -1,11 +1,11 @@
-import { ViewRenderer, ViewTag } from "../../../../core/models/views/View";
+import { ShapeRenderer, ShapeTag } from "../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
-import { SpriteView, SpriteViewType } from "../models/views/SpriteView";
+import { SpriteView, SpriteShapeType } from "../models/shapes/SpriteShape";
 
-export class SpriteViewRenderer implements ViewRenderer {
-    id: string = SpriteViewType;
+export class SpriteShapeRenderer implements ShapeRenderer {
+    id: string = SpriteShapeType;
 
     renderInto(canvas: UI_SvgCanvas, view: SpriteView, panel: AbstractCanvasPanel): void {
         const group = canvas.group(view.id);
@@ -16,7 +16,7 @@ export class SpriteViewRenderer implements ViewRenderer {
         rect.height = view.getBounds().getHeight();
         rect.fillColor = view.color;
 
-        rect.strokeColor = view.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+        rect.strokeColor = view.tags.has(ShapeTag.Selected) ? colors.views.highlight : 'black';
 
         view.containedViews.forEach(child => child.renderer.renderInto(canvas, child, panel));
     }

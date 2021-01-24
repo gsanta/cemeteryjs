@@ -1,21 +1,21 @@
 import { CanvasAxis } from "../../../../../../core/models/misc/CanvasAxis";
 import { IObj } from "../../../../../../core/models/objs/IObj";
 import { PathObj } from "../../../../../../core/models/objs/PathObj";
-import { ContainedView } from "../../../../../../core/models/views/child_views/ChildView";
-import { ViewJson, ViewFactoryAdapter, View } from "../../../../../../core/models/views/View";
+import { ChildShape } from "../../../../../../core/models/views/child_views/ChildShape";
+import { ShapeJson, ShapeFactoryAdapter, AbstractShape } from "../../../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../../../core/Registry";
 import { Point } from "../../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../utils/geometry/shapes/Rectangle";
 import { MoveAxisViewRenderer } from "../../../renderers/edit/MoveAxisViewRenderer";
 
-export interface AxisViewJson extends ViewJson {
+export interface AxisShapeJson extends ShapeJson {
     point: string;
     parentId: string; 
 }
 
-export const MoveAxisViewType = 'move-axis-view';
+export const MoveAxisShapeType = 'move-axis-shape';
 
-export class MoveAxisViewFactory extends ViewFactoryAdapter {
+export class MoveAxisShapeFactory extends ShapeFactoryAdapter {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -28,7 +28,7 @@ export class MoveAxisViewFactory extends ViewFactoryAdapter {
         return new MoveAxisView(this.registry, CanvasAxis.X);
     }
 
-    instantiateOnSelection(parentView: View) {
+    instantiateOnSelection(parentView: AbstractShape) {
         let moveAxisView = new MoveAxisView(this.registry, CanvasAxis.X);
         moveAxisView.setContainerView(parentView);
         parentView.addContainedView(moveAxisView);
@@ -43,19 +43,19 @@ export class MoveAxisViewFactory extends ViewFactoryAdapter {
     }
 }
 
-export class MoveAxisView extends ContainedView {
+export class MoveAxisView extends ChildShape {
     readonly id: string;
     readonly axis: CanvasAxis;
-    readonly viewType = MoveAxisViewType;
+    readonly viewType = MoveAxisShapeType;
     point: Point;
-    readonly containerView: View;
+    readonly containerView: AbstractShape;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super();
         this.axis = axis;
         this.bounds = new Rectangle(new Point(0, 0), new Point(40, 5));
         this.renderer = new MoveAxisViewRenderer(registry);
-        this.id = `${MoveAxisViewType}-${this.axis}`.toLowerCase();
+        this.id = `${MoveAxisShapeType}-${this.axis}`.toLowerCase();
     }
 
     getObj(): IObj {
@@ -89,7 +89,7 @@ export class MoveAxisView extends ContainedView {
         return `${this.viewType}`;
     }
 
-    toJson(): AxisViewJson {
+    toJson(): AxisShapeJson {
         return {
             ...super.toJson(),
             point: this.point.toString(),
@@ -97,7 +97,7 @@ export class MoveAxisView extends ContainedView {
         }
     }
 
-    fromJson(json: AxisViewJson, registry: Registry) {
+    fromJson(json: AxisShapeJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
     }

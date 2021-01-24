@@ -4,7 +4,7 @@ import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { INodeListener } from "../../api/INodeListener";
 import { DirectionNodeControllers } from "../../controllers/nodes/DirectionNodeControllers";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { DirectionNodeListener } from "./listeners/DirectionNodeListener";
 import { MoveDirection } from "./MoveNode";
 
@@ -22,11 +22,11 @@ export class DirectionNode extends AbstractNodeFactory {
     displayName = 'Direction';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new DirectionNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

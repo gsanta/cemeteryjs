@@ -17,7 +17,7 @@ export function registerMeshLoaderDialog(registry: Registry) {
         const canvas = new MeshLoaderPreviewCanvas(registry);
         registry.ui.canvas.registerCanvas(canvas.getCanvas());
 
-        const selectedViews = registry.data.view.scene.getSelectedViews();
+        const selectedViews = registry.data.shape.scene.getSelectedShapes();
         const meshObj = selectedViews[0].getObj() as MeshObj;
 
         const controller = new MeshLoaderDialogControllers(registry, canvas, meshObj);

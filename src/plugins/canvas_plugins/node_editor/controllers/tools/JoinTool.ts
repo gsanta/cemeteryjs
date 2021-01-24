@@ -1,26 +1,26 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodePortView, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortView";
-import { View } from "../../../../../core/models/views/View";
+import { NodePortShape, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortShape";
+import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../../core/Registry";
-import { ViewStore } from "../../../../../core/stores/ViewStore";
+import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { NodeConnectionView, NodeConnectionViewType } from "../../models/views/NodeConnectionView";
+import { NodeConnectionShape, NodeConnectionShapeType } from "../../models/shapes/NodeConnectionShape";
 
 export class JoinTool extends PointerTool {
     startPoint: Point;
     endPoint: Point;
-    nodePortView1: NodePortView;
+    nodePortView1: NodePortShape;
 
-    constructor(plugin: AbstractCanvasPanel, viewStore: ViewStore,  registry: Registry) {
+    constructor(plugin: AbstractCanvasPanel, viewStore: ShapeStore,  registry: Registry) {
         super(ToolType.Join, plugin, viewStore, registry);
     }
 
     down() {
         this.startPoint = this.registry.services.pointer.pointer.curr;
-        this.nodePortView1 = <NodePortView> this.registry.services.pointer.hoveredView;
+        this.nodePortView1 = <NodePortShape> this.registry.services.pointer.hoveredView;
         this.endPoint = this.registry.services.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
@@ -39,10 +39,10 @@ export class JoinTool extends PointerTool {
 
 
         if (this.checkConnectionValidity()) {
-            let inputPort = <NodePortView> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.registry.services.pointer.hoveredView);
-            let outputPort = <NodePortView> (inputPort === this.nodePortView1 ? this.registry.services.pointer.hoveredView : this.nodePortView1);
+            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.registry.services.pointer.hoveredView);
+            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.registry.services.pointer.hoveredView : this.nodePortView1);
 
-            const connectionView = <NodeConnectionView> this.registry.data.view.node.getViewFactory(NodeConnectionViewType).instantiate();
+            const connectionView = <NodeConnectionShape> this.registry.data.shape.node.getViewFactory(NodeConnectionShapeType).instantiate();
             inputPort.addConnection(connectionView);
             outputPort.addConnection(connectionView);
             connectionView.setInputPort(inputPort);
@@ -51,7 +51,7 @@ export class JoinTool extends PointerTool {
 
             connectionView.setInputPoint(inputPort.getAbsolutePosition());
             connectionView.setOutputPoint(outputPort.getAbsolutePosition());
-            this.registry.data.view.node.addView(connectionView);
+            this.registry.data.shape.node.addShape(connectionView);
 
             this.registry.services.history.createSnapshot();
 
@@ -66,7 +66,7 @@ export class JoinTool extends PointerTool {
 
     private checkConnectionValidity() {
         const startPortView = this.nodePortView1;
-        const endPortView = <NodePortView> this.registry.services.pointer.hoveredView;
+        const endPortView = <NodePortShape> this.registry.services.pointer.hoveredView;
 
         if (!endPortView || !startPortView) { return false; }
         if (startPortView.viewType !== NodePortViewType || endPortView.viewType !== NodePortViewType) { return false; }
@@ -76,7 +76,7 @@ export class JoinTool extends PointerTool {
         return true;
     }
 
-    out(view: View) {
+    out(view: AbstractShape) {
         super.out(view);
         if (!this.registry.services.pointer.isDown) {
             this.panel.toolController.removePriorityTool(this.id);

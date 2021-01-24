@@ -5,8 +5,8 @@ import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { toDegree } from '../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../utils/geometry/shapes/Point_3';
-import { LightView } from '../../../canvas_plugins/scene_editor/models/views/LightView';
-import { MeshView, MeshViewType } from '../../../canvas_plugins/scene_editor/models/views/MeshView';
+import { LightShape } from '../../../canvas_plugins/scene_editor/models/shapes/LightShape';
+import { MeshShape, MeshShapeType } from '../../../canvas_plugins/scene_editor/models/shapes/MeshShape';
 import { UIController } from '../../../../core/controller/UIController';
 
 export class LightSettingsController extends UIController {
@@ -41,7 +41,7 @@ export class LightYPosController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
     
             return lightView.getObj().getPosition().y;
         }
@@ -53,7 +53,7 @@ export class LightYPosController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
         
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
@@ -84,7 +84,7 @@ export class LightDirController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
     
             return this.getVal(lightView);
         }
@@ -96,7 +96,7 @@ export class LightDirController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
@@ -111,7 +111,7 @@ export class LightDirController extends ParamController {
 
     }
 
-    private setVal(view: LightView, val: string) {
+    private setVal(view: LightShape, val: string) {
         const currDir = view.getObj().getDirection();
 
         const valNum = FormController.parseFloat(val);
@@ -126,7 +126,7 @@ export class LightDirController extends ParamController {
         }
     }
 
-    private getVal(view: LightView) {
+    private getVal(view: LightShape) {
         switch(this.axis) {
             case CanvasAxis.X:
                 return view.getObj().getDirection().x;
@@ -149,7 +149,7 @@ export class LightAngleController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
     
             return toDegree(lightView.getObj().getAngle());
         }
@@ -161,7 +161,7 @@ export class LightAngleController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
@@ -188,7 +188,7 @@ export class LightDiffuseColorController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
     
             return lightView.getObj().getDiffuseColor();
         }
@@ -200,7 +200,7 @@ export class LightDiffuseColorController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
@@ -218,17 +218,17 @@ export class LightDiffuseColorController extends ParamController {
 
 export class LightParentMeshController extends ParamController {
     values() {
-        return this.registry.data.view.scene.getViewsByType(MeshViewType).map(obj => obj.id)
+        return this.registry.data.shape.scene.getShapesByType(MeshShapeType).map(obj => obj.id)
     }
 
     val() {
-        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
+        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
         return lightView.getParent() && lightView.getParent().id;
     }
 
     change(val: string) {
-        const lightView = <LightView> this.registry.data.view.scene.getOneSelectedView();
-        const meshView = <MeshView> this.registry.data.view.scene.getById(val);
+        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshView = <MeshShape> this.registry.data.shape.scene.getById(val);
 
         if (meshView) {
             lightView.setParent(meshView);

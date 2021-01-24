@@ -3,17 +3,17 @@ import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { ToolAdapter, createRectFromMousePointer } from './ToolAdapter';
 import { UI_Region } from '../UI_Panel';
-import { View } from '../../models/views/View';
+import { AbstractShape } from '../../models/views/AbstractShape';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { ViewStore } from '../../stores/ViewStore';
+import { ShapeStore } from '../../stores/ShapeStore';
 
 export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolAdapter<P> {
     protected rectangleFeedback: Rectangle;
-    protected tmpView: View;
-    protected viewStore: ViewStore;
+    protected tmpView: AbstractShape;
+    protected viewStore: ShapeStore;
     protected rectRadius = 50;
 
-    constructor(type: string, panel: P, store: ViewStore, registry: Registry) {
+    constructor(type: string, panel: P, store: ShapeStore, registry: Registry) {
         super(type, panel, registry);
         this.viewStore = store;
     }
@@ -25,7 +25,7 @@ export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolA
         const view = this.createView(rect);
 
         this.viewStore.clearSelection()
-        this.viewStore.addSelectedView(view);
+        this.viewStore.addSelectedShape(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();
@@ -61,6 +61,6 @@ export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolA
         return true;
     }
 
-    protected abstract createView(rect: Rectangle): View;
+    protected abstract createView(rect: Rectangle): AbstractShape;
     protected abstract removeTmpView();
 }

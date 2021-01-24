@@ -1,8 +1,8 @@
 import { Point } from './Point';
 import { Rectangle } from './Rectangle';
-import { Shape } from './Shape';
+import { GeometryPrimitive } from './Shape';
 
-export class LineSegment implements Shape {
+export class LineSegment implements GeometryPrimitive {
     point1: Point;
     point2: Point;
     
@@ -11,13 +11,13 @@ export class LineSegment implements Shape {
         this.point2 = point2;
     }
 
-    public translate(point: Point): Shape {
+    public translate(point: Point): GeometryPrimitive {
         const point0 = this.point1.addX(point.x).addY(point.y);
         const point1 = this.point2.addX(point.x).addY(point.y);
         return new LineSegment(point0, point1);
     }
 
-    public clone(): Shape {
+    public clone(): GeometryPrimitive {
         return new LineSegment(this.point1, this.point2);
     }
 

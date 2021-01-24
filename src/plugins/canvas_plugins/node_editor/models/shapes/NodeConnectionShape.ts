@@ -3,14 +3,14 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../../../core/Registry";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { NodePortView } from "../../../../../core/models/views/child_views/NodePortView";
-import { NodeView } from "./NodeView";
-import { View, ViewFactoryAdapter, ViewJson } from '../../../../../core/models/views/View';
+import { NodePortShape } from "../../../../../core/models/views/child_views/NodePortShape";
+import { NodeShape } from "./NodeShape";
+import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from '../../../../../core/models/views/AbstractShape';
 import { colors } from "../../../../../core/ui_components/react/styles";
 
-export const NodeConnectionViewType = 'node-connection-view';
+export const NodeConnectionShapeType = 'node-connection-shape';
 
-export interface NodeConnectionViewJson extends ViewJson {
+export interface NodeConnectionShapeJson extends ShapeJson {
     point1X: number;
     point1Y: number;
     point2X: number;
@@ -25,20 +25,20 @@ export interface NodeConnectionViewJson extends ViewJson {
     }
 }
 
-export class NodeConnectionViewFactory extends ViewFactoryAdapter {
+export class NodeConnectionShapeFactory extends ShapeFactoryAdapter {
     instantiate() {
-        return new NodeConnectionView();
+        return new NodeConnectionShape();
     }
 }
 
-export class NodeConnectionView extends View {
-    readonly  viewType = NodeConnectionViewType;
+export class NodeConnectionShape extends AbstractShape {
+    readonly  viewType = NodeConnectionShapeType;
 
     inputPoint: Point;
     outputPoint: Point;
 
-    private nodePortView1: NodePortView;
-    private nodePortview2: NodePortView;
+    private nodePortView1: NodePortShape;
+    private nodePortview2: NodePortShape;
 
     color
 
@@ -64,24 +64,24 @@ export class NodeConnectionView extends View {
         this.updateDimensions();
     }
 
-    setInputPort(nodePortView: NodePortView) {
+    setInputPort(nodePortView: NodePortShape) {
         this.nodePortView1 = nodePortView;
         this.initColor();
     }
 
-    getInputPort(): NodePortView {
+    getInputPort(): NodePortShape {
         return this.nodePortView1;
     }
 
-    setOutputPort(nodePortView: NodePortView) {
+    setOutputPort(nodePortView: NodePortShape) {
         this.nodePortview2 = nodePortView;
     }
 
-    getOutputPort(): NodePortView {
+    getOutputPort(): NodePortShape {
         return this.nodePortview2;
     }
 
-    getOtherPortView(portView: NodePortView) {
+    getOtherPortView(portView: NodePortShape) {
         if (portView === this.nodePortView1) {
             return this.nodePortview2;
         } else if (portView === this.nodePortview2) {
@@ -116,7 +116,7 @@ export class NodeConnectionView extends View {
         }
     }
 
-    toJson(): NodeConnectionViewJson {
+    toJson(): NodeConnectionShapeJson {
         return {
             ...super.toJson(),
             point1X: this.inputPoint.x,
@@ -134,12 +134,12 @@ export class NodeConnectionView extends View {
         };
     }
 
-    fromJson(json: NodeConnectionViewJson, registry: Registry) {
+    fromJson(json: NodeConnectionShapeJson, registry: Registry) {
         super.fromJson(json, registry);
-        const nodeView1 = (<NodeView> registry.data.view.node.getById(json.joinPoint1.nodeId));
-        const nodeView2 = (<NodeView> registry.data.view.node.getById(json.joinPoint2.nodeId))
-        this.setInputPort(<NodePortView> nodeView1.findJoinPointView(json.joinPoint1.joinPointName));
-        this.setOutputPort(<NodePortView> nodeView2.findJoinPointView(json.joinPoint2.joinPointName));
+        const nodeView1 = (<NodeShape> registry.data.shape.node.getById(json.joinPoint1.nodeId));
+        const nodeView2 = (<NodeShape> registry.data.shape.node.getById(json.joinPoint2.nodeId))
+        this.setInputPort(<NodePortShape> nodeView1.findJoinPointView(json.joinPoint1.joinPointName));
+        this.setOutputPort(<NodePortShape> nodeView2.findJoinPointView(json.joinPoint2.joinPointName));
         this.nodePortView1.addConnection(this);
         this.nodePortview2.addConnection(this);
         this.inputPoint = new Point(json.point1X, json.point1Y);

@@ -6,7 +6,7 @@ import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanv
 import { colors } from "../../../../core/ui_components/react/styles";
 import { NodeEditorToolbarController } from "../controllers/NodeEditorToolbarController";
 import { JoinTool } from "../controllers/tools/JoinTool";
-import { NodeView, NodeViewType } from "../models/views/NodeView";
+import { NodeShape, NodeShapeType } from "../models/shapes/NodeShape";
 import { NodeConnectionRenderer } from "./NodeConnectionRenderer";
 import { NodeEditorToolbarRenderer } from "./NodeEditorToolbarRenderer";
 
@@ -46,7 +46,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        (<NodeView[]> this.registry.data.view.node.getViewsByType(NodeViewType)).forEach(nodeView => {
+        (<NodeShape[]> this.registry.data.shape.node.getShapesByType(NodeShapeType)).forEach(nodeView => {
             nodeView.renderer.renderInto(canvas, nodeView, this.canvas);
         });
     }

@@ -1,7 +1,7 @@
 import { TableDefinition } from "cucumber";
-import { View } from "../../../../src/core/models/views/View";
+import { AbstractShape } from "../../../../src/core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
-import { ViewStore } from "../../../../src/core/stores/ViewStore";
+import { ShapeStore } from "../../../../src/core/stores/ShapeStore";
 
 export enum ViewTableProp {
     Id = 'Id',
@@ -19,7 +19,7 @@ export enum ViewTableProp {
     Parent = 'Parent'
 }
 
-export function getViewProperty(view: View, prop: ViewTableProp) {
+export function getViewProperty(view: AbstractShape, prop: ViewTableProp) {
     switch(prop) {
         case ViewTableProp.Id:
             return  view.id;
@@ -37,13 +37,13 @@ export function getViewProperty(view: View, prop: ViewTableProp) {
             return '';
     }
 }
-export function setViewProperty(canvasPanel: Canvas2dPanel, view: View, prop: ViewTableProp, val: string) {
+export function setViewProperty(canvasPanel: Canvas2dPanel, view: AbstractShape, prop: ViewTableProp, val: string) {
     switch(prop) {
         case ViewTableProp.Selected:
             if (isViewPropTrue(val)) {
-                canvasPanel.getViewStore().addSelectedView(view);
+                canvasPanel.getViewStore().addSelectedShape(view);
             } else {
-                canvasPanel.getViewStore().removeSelectedView(view);
+                canvasPanel.getViewStore().removeSelectedShape(view);
             }
         break;
     }
@@ -53,10 +53,10 @@ function isViewPropTrue(val: string) {
     return val.toLowerCase() === 'true'
 }
 
-export function findViewOrContainedView(viewStore: ViewStore, viewId: string): View {
+export function findViewOrContainedView(viewStore: ShapeStore, viewId: string): AbstractShape {
     const invalidPathMessage = `View for id ${viewId} could not be found.`;
     
-    let view: View;
+    let view: AbstractShape;
 
     if (viewId.indexOf('.') !== -1) {
         const ids = viewId.split('.');

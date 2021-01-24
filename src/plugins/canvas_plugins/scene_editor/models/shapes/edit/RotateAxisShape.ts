@@ -1,21 +1,21 @@
 import { CanvasAxis } from "../../../../../../core/models/misc/CanvasAxis";
 import { IObj } from "../../../../../../core/models/objs/IObj";
 import { PathObj } from "../../../../../../core/models/objs/PathObj";
-import { ContainedView } from "../../../../../../core/models/views/child_views/ChildView";
-import { View, ViewFactoryAdapter, ViewJson } from "../../../../../../core/models/views/View";
+import { ChildShape } from "../../../../../../core/models/views/child_views/ChildShape";
+import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../../../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../../../core/Registry";
 import { Point } from "../../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../utils/geometry/shapes/Rectangle";
-import { ScaleAxisViewRenderer } from "../../../renderers/edit/ScaleAxisViewRenderer";
+import { RotateAxisViewRenderer } from "../../../renderers/edit/RotateAxisViewRenderer";
 
-export interface AxisViewJson extends ViewJson {
+export interface AxisShapeJson extends ShapeJson {
     point: string;
     parentId: string; 
 }
 
-export const ScaleAxisViewType = 'scale-axis-view';
+export const RotateAxisShapeType = 'rotate-axis-shape';
 
-export class ScaleAxisViewFactory extends ViewFactoryAdapter {
+export class RotateAxisShapeFactory extends ShapeFactoryAdapter {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -25,41 +25,37 @@ export class ScaleAxisViewFactory extends ViewFactoryAdapter {
 
     instantiate() {
         // TODO: does not make sense to create only one of the axis
-        return new ScaleAxisView(this.registry, CanvasAxis.X);
+        return new RotateAxisView(this.registry, CanvasAxis.X);
     }
 
-    instantiateOnSelection(parentView: View) {
-        let axisView = new ScaleAxisView(this.registry, CanvasAxis.X);
-        axisView.setContainerView(parentView);
-        parentView.addContainedView(axisView);
+    instantiateOnSelection(parentView: AbstractShape) {
+        let scaleView = new RotateAxisView(this.registry, CanvasAxis.X);
+        scaleView.setContainerView(parentView);
+        parentView.addContainedView(scaleView);
 
-        axisView = new ScaleAxisView(this.registry, CanvasAxis.Y);
-        axisView.setContainerView(parentView);
-        parentView.addContainedView(axisView);
+        scaleView = new RotateAxisView(this.registry, CanvasAxis.Y);
+        scaleView.setContainerView(parentView);
+        parentView.addContainedView(scaleView);
 
-        axisView = new ScaleAxisView(this.registry, CanvasAxis.Z);
-        axisView.setContainerView(parentView);
-        parentView.addContainedView(axisView);
+        scaleView = new RotateAxisView(this.registry, CanvasAxis.Z);
+        scaleView.setContainerView(parentView);
+        parentView.addContainedView(scaleView);
     }
 }
 
-
-export interface ArrowBounds {
-    [axis: string]: Rectangle;
-}
-export class ScaleAxisView extends ContainedView {
+export class RotateAxisView extends ChildShape {
     readonly id: string;
-    viewType = ScaleAxisViewType;
-    point: Point;
     readonly axis: CanvasAxis;
-    readonly containerView: View;
+    readonly viewType = RotateAxisShapeType;
+    point: Point;
+    readonly containerView: AbstractShape;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super();
         this.axis = axis;
-        this.bounds = new Rectangle(new Point(0, 0), new Point(0, 0));
-        this.renderer = new ScaleAxisViewRenderer(registry);
-        this.id = `${ScaleAxisViewType}-${this.axis}`.toLowerCase();
+        this.bounds = new Rectangle(new Point(0, 0), new Point(40, 5));
+        this.renderer = new RotateAxisViewRenderer(registry);
+        this.id = `${RotateAxisShapeType}-${this.axis}`.toLowerCase();
     }
 
     getObj(): IObj {
@@ -93,7 +89,7 @@ export class ScaleAxisView extends ContainedView {
         return `${this.viewType}`;
     }
 
-    toJson(): AxisViewJson {
+    toJson(): AxisShapeJson {
         return {
             ...super.toJson(),
             point: this.point.toString(),
@@ -101,7 +97,7 @@ export class ScaleAxisView extends ContainedView {
         }
     }
 
-    fromJson(json: AxisViewJson, registry: Registry) {
+    fromJson(json: AxisShapeJson, registry: Registry) {
         super.fromJson(json, registry);
         this.point = Point.fromString(json.point);
     }

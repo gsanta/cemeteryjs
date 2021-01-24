@@ -1,18 +1,18 @@
-import { View } from "../../../../src/core/models/views/View";
+import { AbstractShape } from "../../../../src/core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../src/core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
 import { FormController } from "../../../../src/core/controller/FormController";
 import { UI_Element } from "../../../../src/core/ui_components/elements/UI_Element";
 import { MoveAxisToolId } from "../../../../src/plugins/canvas_plugins/scene_editor/controllers/tools/MoveAxisTool";
 import { ScaleAxisToolId } from "../../../../src/plugins/canvas_plugins/scene_editor/controllers/tools/ScaleAxisTool";
-import { MoveAxisViewType } from "../../../../src/plugins/canvas_plugins/scene_editor/models/views/edit/MoveAxisView";
-import { ScaleAxisViewType } from "../../../../src/plugins/canvas_plugins/scene_editor/models/views/edit/ScaleAxisView";
+import { MoveAxisShapeType } from "../../../../src/plugins/canvas_plugins/scene_editor/models/shapes/edit/MoveAxisShape";
+import { ScaleAxisShapeType } from "../../../../src/plugins/canvas_plugins/scene_editor/models/shapes/edit/ScaleAxisShape";
 
 export interface FakeUIElementConfig {
     key?: string;
     controller?: FormController;
     canvasPanel?: AbstractCanvasPanel;
-    view?: View;
+    view?: AbstractShape;
     scopedToolId?: string;
 }
 
@@ -27,7 +27,7 @@ export function createFakeUIElement(config: FakeUIElementConfig): UI_Element {
     return element;
 }
 
-export function createFakeUIElementForView(view: View, canvasPanel: Canvas2dPanel, config: FakeUIElementConfig): UI_Element {
+export function createFakeUIElementForView(view: AbstractShape, canvasPanel: Canvas2dPanel, config: FakeUIElementConfig): UI_Element {
     const element: UI_Element = <UI_Element> {
         canvasPanel: config.canvasPanel,
         data: config.view,
@@ -35,9 +35,9 @@ export function createFakeUIElementForView(view: View, canvasPanel: Canvas2dPane
         key: config.key,
     }
 
-    if (view.viewType === MoveAxisViewType) {
+    if (view.viewType === MoveAxisShapeType) {
         element.scopedToolId = MoveAxisToolId;
-    } else if (view.viewType === ScaleAxisViewType) {
+    } else if (view.viewType === ScaleAxisShapeType) {
         element.scopedToolId = ScaleAxisToolId;
     }
 

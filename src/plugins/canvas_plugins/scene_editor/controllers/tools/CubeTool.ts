@@ -1,22 +1,22 @@
 import { MeshBoxConfig } from "../../../../../core/models/objs/MeshObj";
-import { View } from "../../../../../core/models/views/View";
+import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
-import { sceneAndGameViewRatio, ViewStore } from "../../../../../core/stores/ViewStore";
+import { sceneAndGameViewRatio, ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { MeshViewType } from "../../models/views/MeshView";
+import { MeshShapeType } from "../../models/shapes/MeshShape";
 
 export const CubeToolId = 'cube-tool';
 export class CubeTool extends RectangleTool<Canvas2dPanel> {
     icon = 'cube';
     displayName = 'Cube';
 
-    constructor(panel: Canvas2dPanel, viewStore: ViewStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
         super(CubeToolId, panel, viewStore, registry);
     }
 
-    protected createView(rect: Rectangle): View {
+    protected createView(rect: Rectangle): AbstractShape {
 
         const config = <MeshBoxConfig> {
             shapeType: 'Box',
@@ -25,12 +25,12 @@ export class CubeTool extends RectangleTool<Canvas2dPanel> {
             depth: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const cube = this.panel.getViewStore().getViewFactory(MeshViewType).instantiateOnCanvas(this.panel, rect, config);
+        const cube = this.panel.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.panel, rect, config);
 
         return cube;
     }
     
     protected removeTmpView() {
-        this.viewStore.removeView(this.tmpView);
+        this.viewStore.removeShape(this.tmpView);
     }
 }

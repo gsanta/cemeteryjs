@@ -4,14 +4,14 @@ import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { NodeObjType, NodeObjJson } from "../../../../core/models/objs/node_obj/NodeObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { AfterAllViewsDeserialized, View, ViewJson } from "../../../../core/models/views/View";
+import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from "../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
-import { LightViewType } from "../models/views/LightView";
-import { MeshViewType } from "../models/views/MeshView";
+import { LightShapeType } from "../models/shapes/LightShape";
+import { MeshShapeType } from "../models/shapes/MeshShape";
 
 interface ImportData {
-    views?: ViewJson[];
+    views?: ShapeJson[];
     objs?: ObjJson[];
     assets?: ObjJson[];
 }
@@ -30,23 +30,23 @@ export class SceneEditorImporter extends AbstractModuleImporter {
         this.importViews(data.views || []);
     }
 
-    private importViews(viewJsons: ViewJson[]) {
-        const store = this.registry.data.view.scene;
+    private importViews(viewJsons: ShapeJson[]) {
+        const store = this.registry.data.shape.scene;
 
         const afterAllViewsDeserializedFuncs: AfterAllViewsDeserialized[] = [];
 
         viewJsons.forEach(viewJson => {
-            let viewInstance: View;
+            let viewInstance: AbstractShape;
             let afterAllViewsDeserialized: AfterAllViewsDeserialized;
         
-            if (viewJson.type === MeshViewType || viewJson.type === LightViewType) {
+            if (viewJson.type === MeshShapeType || viewJson.type === LightShapeType) {
                 [viewInstance, afterAllViewsDeserialized] = store.getViewFactory(viewJson.type).instantiateFromJson(viewJson);
                 afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
             } else {
                 viewInstance = store.getViewFactory(viewJson.type).instantiate();
                 viewInstance.fromJson(viewJson, this.registry);
             }
-            store.addView(viewInstance);
+            store.addShape(viewInstance);
         });
 
         afterAllViewsDeserializedFuncs.forEach(func => func());

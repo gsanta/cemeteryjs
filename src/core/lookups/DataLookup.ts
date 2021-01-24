@@ -3,11 +3,11 @@ import { Registry } from "../Registry";
 import { ObjSelectionStore } from "../stores/ObjSelectionStore";
 import { ObjStore } from "../stores/ObjStore";
 import { DataHelperLookup } from "./DataHelperLookup";
-import { ViewLookup } from "./ViewLookup";
+import { ShapeLookup } from "./ShapeLookup";
 
 export class DataLookup {
     helper: DataHelperLookup;
-    view: ViewLookup;
+    shape: ShapeLookup;
     obj: ObjLookup;
     scene: {
         selection: ObjSelectionStore;
@@ -18,7 +18,7 @@ export class DataLookup {
 
     constructor(registry: Registry) {
         this.helper = new DataHelperLookup(registry);
-        this.view = new ViewLookup(registry);
+        this.shape = new ShapeLookup(registry);
         this.obj = new ObjLookup(registry);
 
         this.scene = {
@@ -30,8 +30,8 @@ export class DataLookup {
     }
 
     clearData() {
-        this.view.scene.clear();
-        this.view.node.clear();
+        this.shape.scene.clear();
+        this.shape.node.clear();
         this.obj.feature.clear();
 
         this._registry.stores.objStore.clear();

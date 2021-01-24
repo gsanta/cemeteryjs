@@ -3,7 +3,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExecutor";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { MeshPropertyNodeControllers } from "../../controllers/nodes/MeshPropertyNodeControllers";
 
@@ -21,11 +21,11 @@ export class MeshPropertyNode extends AbstractNodeFactory {
     displayName = 'Mesh Property';
     category = 'Mesh';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MeshPropertyNodeControllers(this.registry, nodeView.getObj()));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

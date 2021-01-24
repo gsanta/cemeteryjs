@@ -5,7 +5,7 @@ import { Registry } from '../../../../core/Registry';
 import { ApplicationError } from '../../../../core/services/ErrorService';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { SpriteSheetManagerDialogId } from '../../../dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
-import { SpriteView } from '../../../canvas_plugins/scene_editor/models/views/SpriteView';
+import { SpriteView } from '../../../canvas_plugins/scene_editor/models/shapes/SpriteShape';
 import { UIController } from '../../../../core/controller/UIController';
 
 export class SpriteSettingsController extends UIController {
@@ -30,7 +30,7 @@ export class FrameNameController extends ParamController {
     private tempVal: string;
 
     val() {
-        return this.tempVal ? this.tempVal : (<SpriteView> this.registry.data.view.scene.getOneSelectedView()).getObj().frameName || '';
+        return this.tempVal ? this.tempVal : (<SpriteView> this.registry.data.shape.scene.getOneSelectedShape()).getObj().frameName || '';
     }
 
     change(val: string) {
@@ -39,7 +39,7 @@ export class FrameNameController extends ParamController {
     }
 
     blur() {
-        const spriteView = (<SpriteView> this.registry.data.view.scene.getOneSelectedView());
+        const spriteView = (<SpriteView> this.registry.data.shape.scene.getOneSelectedShape());
         spriteView.getObj().frameName = this.tempVal;
         this.tempVal = undefined;
         this.registry.services.history.createSnapshot();
@@ -51,11 +51,11 @@ export class FrameNameController extends ParamController {
 export class SelectSpriteSheetController extends ParamController {
 
     val() {
-        return (<SpriteView> this.registry.data.view.scene.getOneSelectedView()).getObj().spriteSheetId;
+        return (<SpriteView> this.registry.data.shape.scene.getOneSelectedShape()).getObj().spriteSheetId;
     }
 
     change(val: string) {
-        const spriteView = (<SpriteView> this.registry.data.view.scene.getOneSelectedView());
+        const spriteView = (<SpriteView> this.registry.data.shape.scene.getOneSelectedShape());
         spriteView.getObj().spriteSheetId = val;
         this.registry.services.history.createSnapshot();
         this.registry.engine.sprites.updateInstance(spriteView.getObj());
@@ -86,7 +86,7 @@ export class ScaleXController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const spriteView = <SpriteView> this.registry.data.view.scene.getOneSelectedView();
+            const spriteView = <SpriteView> this.registry.data.shape.scene.getOneSelectedShape();
     
             return spriteView.getObj().getScale().x;
         }
@@ -98,7 +98,7 @@ export class ScaleXController extends ParamController {
     }
 
     blur() {
-        const spriteView = <SpriteView> this.registry.data.view.scene.getOneSelectedView();
+        const spriteView = <SpriteView> this.registry.data.shape.scene.getOneSelectedShape();
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
@@ -131,7 +131,7 @@ export class ScaleYController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const spriteView = <SpriteView> this.registry.data.view.scene.getOneSelectedView();
+            const spriteView = <SpriteView> this.registry.data.shape.scene.getOneSelectedShape();
     
             return spriteView.getObj().getScale().y;
         }
@@ -143,7 +143,7 @@ export class ScaleYController extends ParamController {
     }
 
     blur() {
-        const spriteView = <SpriteView> this.registry.data.view.scene.getOneSelectedView();
+        const spriteView = <SpriteView> this.registry.data.shape.scene.getOneSelectedShape();
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {

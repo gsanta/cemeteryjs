@@ -7,7 +7,7 @@ import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AbstractNodeListener } from "../../api/INodeListener";
 import { RotateNodeControllers } from "../../controllers/nodes/RotateNodeControllers";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { MeshNodeParam, MoveDirection } from "./MoveNode";
 
 export const RotateNodeType = 'rotate-node-obj';
@@ -24,11 +24,11 @@ export class RotateNode extends AbstractNodeFactory {
     displayName = 'Rotate';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RotateNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

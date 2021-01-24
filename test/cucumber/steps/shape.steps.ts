@@ -1,6 +1,6 @@
 import { Given, TableDefinition, Then, World } from "cucumber";
 import expect from 'expect';
-import { View } from "../../../src/core/models/views/View";
+import { AbstractShape } from "../../../src/core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../src/plugins/canvas_plugins/node_editor/registerNodeEditor";
 import { SceneEditorPanelId } from "../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor";
@@ -23,31 +23,31 @@ Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: Table
 Then('canvas contains:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getAllViews(), true);
+    canvasContains(tableDef, canvasPanel.getViewStore().getAllShapes(), true);
 });
 
 Then('canvas contains some of:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getAllViews(), false);
+    canvasContains(tableDef, canvasPanel.getViewStore().getAllShapes(), false);
 });
 
 Then('canvas is empty', function () {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
 
-    expect(canvasPanel.getViewStore().getAllViews().length).toEqual(0);
+    expect(canvasPanel.getViewStore().getAllShapes().length).toEqual(0);
 });
 
 Then('canvas selection contains:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedViews(), true);
+    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedShapes(), true);
 });
 
 Then('canvas selection contains some of:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedViews(), true);
+    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedShapes(), true);
 });
 
 Then('contained views of \'{word}\' are:', function(viewId: string, tableDef: TableDefinition) {
@@ -94,11 +94,11 @@ Then('view properties are:', function (tableDef: TableDefinition) {
 Then('dump views:', function(tableDef: TableDefinition) {
     const viewTableProps = collectViewTableProps(tableDef);
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
-    new ModelDumper().dumpViews(viewTableProps, canvasPanel.getViewStore().getAllViews());
+    new ModelDumper().dumpViews(viewTableProps, canvasPanel.getViewStore().getAllShapes());
 });
 
 function viewPropertiesAre(world: World, tableDef: TableDefinition) {
-    const views = world.registry.data.view.scene.getAllViews();
+    const views = world.registry.data.shape.scene.getAllShapes();
     const viewTableProps = collectViewTableProps(tableDef);
 
     if (viewTableProps[0] !== ViewTableProp.Id) {
@@ -106,7 +106,7 @@ function viewPropertiesAre(world: World, tableDef: TableDefinition) {
     }
 
     tableDef.rows().forEach((row: string[]) => {
-        const viewToCheck: View = views.find((v: View) => v.id === row[0]);
+        const viewToCheck: AbstractShape = views.find((v: AbstractShape) => v.id === row[0]);
 
         if (!viewToCheck) {
             throw new Error(`View with id '${row[0]}' was expected, but not found.`);
@@ -119,7 +119,7 @@ function viewPropertiesAre(world: World, tableDef: TableDefinition) {
     });
 }
 
-function canvasContains(tableDef: TableDefinition, views: View[], exactMatch: boolean) {
+function canvasContains(tableDef: TableDefinition, views: AbstractShape[], exactMatch: boolean) {
     const viewTableProps = collectViewTableProps(tableDef);
 
     if (exactMatch) {
@@ -127,7 +127,7 @@ function canvasContains(tableDef: TableDefinition, views: View[], exactMatch: bo
     }
 
     tableDef.rows().forEach((row: string[]) => {
-        const viewToCheck: View = views.find((v: View) => v.id === row[0]);
+        const viewToCheck: AbstractShape = views.find((v: AbstractShape) => v.id === row[0]);
 
         if (!viewToCheck) {
             throw new Error(`View with id '${row[0]}' was expected, but not found.`);

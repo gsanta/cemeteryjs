@@ -1,17 +1,15 @@
+import { PathObj } from "../../../../../core/models/objs/PathObj";
+import { AbstractShape, ShapeJson } from "../../../../../core/models/views/AbstractShape";
+import { EditPointViewJson, PathPoinShape } from '../../../../../core/models/views/child_views/PathPointShape';
+import { Registry } from "../../../../../core/Registry";
 import { maxBy, minBy } from "../../../../../utils/geometry/Functions";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
-import { Registry } from "../../../../../core/Registry";
-import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
-import { PathObj, PathObjType } from "../../../../../core/models/objs/PathObj";
-import { EditPointViewJson, PathPointView } from '../../../../../core/models/views/child_views/PathPointView';
-import { View, ViewFactoryAdapter, ViewJson, ViewRenderer } from "../../../../../core/models/views/View";
-import { PathViewRenderer } from "../../renderers/PathViewRenderer";
+import { PathShapeRenderer } from "../../renderers/PathShapeRenderer";
 
 const NULL_BOUNDING_BOX = new Rectangle(new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER), new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER));
 
-export const PathViewType = 'path-view';
+export const PathShapeType = 'path-shape';
 
 export interface PathProps {
     editPoints: {
@@ -21,22 +19,22 @@ export interface PathProps {
     }[];
 }
 
-export interface PathViewJson extends ViewJson {
+export interface PathShapeJson extends ShapeJson {
     editPoints: EditPointViewJson[];
 }
 
-export class PathView extends View {
-    viewType = PathViewType;
+export class PathShape extends AbstractShape {
+    viewType = PathShapeType;
 
     protected obj: PathObj;
-    containedViews: PathPointView[];
+    containedViews: PathPoinShape[];
     id: string;
     radius = 5;
     str: string;
 
     constructor() {
         super();
-        this.renderer = new PathViewRenderer();
+        this.renderer = new PathShapeRenderer();
     }
 
     getObj(): PathObj {
@@ -47,7 +45,7 @@ export class PathView extends View {
         this.obj = obj;
     }
 
-    addPathPoint(pathPoint: PathPointView) {
+    addPathPoint(pathPoint: PathPoinShape) {
         pathPoint.id = `${this.id}-path-point-this.children.length`;
         this.containedViews.push(pathPoint);
         this.bounds = this.calcBoundingBox();
@@ -63,15 +61,15 @@ export class PathView extends View {
     private calcBoundingBox() {
         if (this.containedViews.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
-        const maxX = maxBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.x - b.point.x).point.x;
-        const minY = minBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
-        const maxY = maxBy<PathPointView>(this.containedViews as PathPointView[], (a, b) => a.point.y - b.point.y).point.y;
+        const minX = minBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.x - b.point.x).point.x;
+        const maxX = maxBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.x - b.point.x).point.x;
+        const minY = minBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.y - b.point.y).point.y;
+        const maxY = maxBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.y - b.point.y).point.y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
 
-    deleteContainedView(editPoint: PathPointView): void {
+    deleteContainedView(editPoint: PathPoinShape): void {
         super.deleteContainedView(editPoint);
         this.str = undefined;
     }
@@ -81,11 +79,11 @@ export class PathView extends View {
 
         this.str = '';
         
-        let pathPoint = <PathPointView> this.containedViews[0];
+        let pathPoint = <PathPoinShape> this.containedViews[0];
         this.str += `M ${pathPoint.point.x} ${pathPoint.point.y}`;
 
         for (let i = 1; i < this.containedViews.length; i++) {
-            pathPoint = <PathPointView> this.containedViews[i];
+            pathPoint = <PathPoinShape> this.containedViews[i];
             this.str += `L ${pathPoint.point.x} ${pathPoint.point.y}`;
         }
 
@@ -93,7 +91,7 @@ export class PathView extends View {
     }
 
     move(point: Point) {
-        this.containedViews.forEach((p: PathPointView) => p.point.add(point));
+        this.containedViews.forEach((p: PathPoinShape) => p.point.add(point));
 
         this.str = undefined;
     }
@@ -108,21 +106,21 @@ export class PathView extends View {
 
     dispose() {}
 
-    clone(): PathView {
+    clone(): PathShape {
         throw new Error('not implemented')
     }
 
-    toJson(): PathViewJson {
+    toJson(): PathShapeJson {
         return {
             ...super.toJson(),
             editPoints: this.containedViews.map(ep => ep.toJson()),
         }
     }
 
-    fromJson(json: PathViewJson, registry: Registry) {
+    fromJson(json: PathShapeJson, registry: Registry) {
         super.fromJson(json, registry);
         json.editPoints.forEach((ep) => {
-            const epView = new PathPointView(this);
+            const epView = new PathPoinShape(this);
             epView.fromJson(ep, registry);
             this.addPathPoint(epView);
         });

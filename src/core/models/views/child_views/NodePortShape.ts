@@ -3,31 +3,31 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
 import { NodePortObj } from "../../objs/NodePortObj";
 import { PortDirection } from "../../objs/node_obj/NodeParam";
-import { NodeConnectionView } from "../../../../plugins/canvas_plugins/node_editor/models/views/NodeConnectionView";
-import { View, ViewJson } from "../View";
-import { ContainedView } from "./ChildView";
-import { NodeView } from "../../../../plugins/canvas_plugins/node_editor/models/views/NodeView";
+import { NodeConnectionShape } from "../../../../plugins/canvas_plugins/node_editor/models/shapes/NodeConnectionShape";
+import { AbstractShape, ShapeJson } from "../AbstractShape";
+import { ChildShape } from "./ChildShape";
+import { NodeShape } from "../../../../plugins/canvas_plugins/node_editor/models/shapes/NodeShape";
 
-export function isJoinPointView(view: View) {
+export function isJoinPointView(view: AbstractShape) {
     return view && view.viewType === NodePortViewType;
 }
 
-export interface NoePortViewJson extends ViewJson {
+export interface NoePortViewJson extends ShapeJson {
     point: string;
     connectionIds: string[];
 }
 
 export const NodePortViewType = 'NodePortViewType';
-export class NodePortView extends ContainedView {
+export class NodePortShape extends ChildShape {
     viewType = NodePortViewType;
     id: string;
     point: Point;
-    containerView: NodeView;
-    private connections: NodeConnectionView[] = [];
+    containerView: NodeShape;
+    private connections: NodeConnectionShape[] = [];
     protected obj: NodePortObj;
     bounds: Rectangle;
 
-    constructor(parent: NodeView, obj: NodePortObj) {
+    constructor(parent: NodeShape, obj: NodePortObj) {
         super();
         this.containerView = parent;
         this.obj = obj;
@@ -63,14 +63,14 @@ export class NodePortView extends ContainedView {
 
     dispose() {}
 
-    removeConnection(connection: NodeConnectionView) {
+    removeConnection(connection: NodeConnectionShape) {
         const otherPortView = connection.getOtherPortView(this);
         this.obj.removeConnectedPort(otherPortView.getObj());
         this.containerView.deleteConstraiedViews.removeView(connection);
         this.connections = this.connections.filter(conn => conn !== connection);
     }
 
-    addConnection(connection: NodeConnectionView) {
+    addConnection(connection: NodeConnectionShape) {
         if (!this.connections.includes(connection)) {
             this.connections.push(connection);
             this.containerView.deleteConstraiedViews.addView(connection);

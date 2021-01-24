@@ -3,7 +3,7 @@ import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../
 import { Registry } from "../../../../../core/Registry";
 import { getKeyFromKeyCode, IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
 import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { KeyboardNodeControllers } from "../../controllers/nodes/KeyboardNodeController";
 
@@ -21,11 +21,11 @@ export class KeyboardNode extends AbstractNodeFactory {
     displayName = 'Keyboard';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new KeyboardNodeControllers(this.registry, nodeView));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

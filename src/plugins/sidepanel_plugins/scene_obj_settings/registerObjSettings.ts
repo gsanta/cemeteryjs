@@ -1,13 +1,13 @@
 import { UI_Panel, UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { LightSettingsRenderer } from "./renderers/LightSettingsRenderer";
-import { LightViewType } from "../../canvas_plugins/scene_editor/models/views/LightView";
+import { LightShapeType } from "../../canvas_plugins/scene_editor/models/shapes/LightShape";
 import { LightSettingsController } from "./controllers/LightSettingsController";
 import { MeshSettingsRenderer } from "./renderers/MeshSettingsRenderer";
-import { MeshView, MeshViewType } from "../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshShape, MeshShapeType } from "../../canvas_plugins/scene_editor/models/shapes/MeshShape";
 import { MeshSettingsController } from "./controllers/MeshSettingsController";
 import { SpriteSettingsRenderer } from "./renderers/SpriteSettingsRenderer";
-import { SpriteViewType } from "../../canvas_plugins/scene_editor/models/views/SpriteView";
+import { SpriteShapeType } from "../../canvas_plugins/scene_editor/models/shapes/SpriteShape";
 import { SpriteSettingsController } from "./controllers/SpriteSettingsController";
 
 export const ObjectSettingsPanelId = 'object-settings-panel'; 
@@ -27,21 +27,21 @@ function createPanel(registry: Registry): UI_Panel {
     const spriteSettingsRenderer = new SpriteSettingsRenderer(spriteSettingsController);
 
     registry.services.event.select.on(() => {
-        const selectedViews = registry.data.view.scene.getSelectedViews();
+        const selectedViews = registry.data.shape.scene.getSelectedShapes();
         panel.renderer = undefined;
         panel.paramController = undefined;
         if (selectedViews.length === 1) {
             switch(selectedViews[0].viewType) {
-                case MeshViewType:
-                    const meshSettingsController = new MeshSettingsController(registry, selectedViews[0] as MeshView);
+                case MeshShapeType:
+                    const meshSettingsController = new MeshSettingsController(registry, selectedViews[0] as MeshShape);
                     panel.paramController = meshSettingsController;
                     panel.renderer = new MeshSettingsRenderer(registry, meshSettingsController);
                 break;
-                case SpriteViewType:
+                case SpriteShapeType:
                     panel.renderer = spriteSettingsRenderer;
                     panel.paramController = spriteSettingsController;
                 break;
-                case LightViewType:
+                case LightShapeType:
                     panel.renderer = lightSettingsRenderer;
                     panel.paramController = lightSettingsController;
                 break;

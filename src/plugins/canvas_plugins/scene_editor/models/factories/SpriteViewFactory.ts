@@ -1,13 +1,13 @@
 import { SpriteObj, SpriteObjType } from "../../../../../core/models/objs/SpriteObj";
-import { ViewFactoryAdapter } from "../../../../../core/models/views/View";
+import { ShapeFactoryAdapter } from "../../../../../core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
 import { colors } from "../../../../../core/ui_components/react/styles";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { SpriteView } from "../views/SpriteView";
+import { SpriteView } from "../shapes/SpriteShape";
 
-export class SpriteViewFactory extends ViewFactoryAdapter {
+export class SpriteViewFactory extends ShapeFactoryAdapter {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -30,7 +30,7 @@ export class SpriteViewFactory extends ViewFactoryAdapter {
         spriteObj.setScale(new Point(3, 3));
         spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y);
 
-        panel.getViewStore().addView(spriteView);
+        panel.getViewStore().addShape(spriteView);
         this.registry.stores.objStore.addObj(spriteObj);
 
         return spriteView;

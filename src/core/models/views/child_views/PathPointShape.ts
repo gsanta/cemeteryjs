@@ -2,23 +2,23 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
 import { PathObj } from "../../objs/PathObj";
-import { PathView } from "../../../../plugins/canvas_plugins/scene_editor/models/views/PathView";
-import { View, ViewJson } from "../View";
-import { ContainedView } from "./ChildView";
+import { PathShape } from "../../../../plugins/canvas_plugins/scene_editor/models/shapes/PathShape";
+import { AbstractShape, ShapeJson } from "../AbstractShape";
+import { ChildShape } from "./ChildShape";
 
-export interface EditPointViewJson extends ViewJson {
+export interface EditPointViewJson extends ShapeJson {
     point: string;
     parentId: string; 
 }
 
 export const PathPointViewType = 'PathPointViewType';
-export class PathPointView extends ContainedView {
+export class PathPoinShape extends ChildShape {
     id: string;
     viewType = PathPointViewType;
     point: Point;
-    readonly containerView: PathView;
+    readonly containerView: PathShape;
 
-    constructor(parent: PathView, point?: Point) {
+    constructor(parent: PathShape, point?: Point) {
         super();
         this.point = point;
         this.containerView = parent;
@@ -48,7 +48,7 @@ export class PathPointView extends ContainedView {
 
     dispose() {}
 
-    clone(): PathPointView {
+    clone(): PathPoinShape {
         throw new Error('not implemented')
     }
 

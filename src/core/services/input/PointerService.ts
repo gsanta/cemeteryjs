@@ -1,5 +1,5 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { View } from "../../models/views/View";
+import { AbstractShape } from "../../models/views/AbstractShape";
 import { Registry } from "../../Registry";
 import { MousePointer, ToolController } from "../../controller/ToolController";
 import { UI_Element } from "../../ui_components/elements/UI_Element";
@@ -28,7 +28,7 @@ export class PointerService {
     wheelState: number = 0;
     prevWheelState: number = 0;
     wheelDiff: number = undefined;
-    hoveredView: View;
+    hoveredView: AbstractShape;
     dropType: string;
 
     // hoveredPlugin: AbstractCanvasPlugin;
@@ -90,7 +90,7 @@ export class PointerService {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element): void {
+    pointerLeave(controller: ToolController, e: IPointerEvent, data: AbstractShape, element: UI_Element): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
             this.determineTool(controller, element).out(data);
 
@@ -98,7 +98,7 @@ export class PointerService {
             this.hoveredView = undefined;
     }
 
-    pointerEnter(controller: ToolController, e: IPointerEvent, data: View, element: UI_Element) {
+    pointerEnter(controller: ToolController, e: IPointerEvent, data: AbstractShape, element: UI_Element) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.hoveredView = data;
 

@@ -1,15 +1,15 @@
-import { ViewRenderer } from "../../../../../core/models/views/View";
+import { ShapeRenderer } from "../../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
-import { MoveAxisViewType, MoveAxisView } from "../../models/views/edit/MoveAxisView";
+import { MoveAxisShapeType, MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { MoveAxisToolId } from "../../controllers/tools/MoveAxisTool";
-import { axisLineBounds, getAxisColor } from "../../models/views/edit/axisUtils";
-import { ScaleAxisView } from "../../models/views/edit/ScaleAxisView";
+import { axisLineBounds, getAxisColor } from "../../models/shapes/edit/axisUtils";
+import { ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
 
-export class MoveAxisViewRenderer implements ViewRenderer {
-    id = MoveAxisViewType;
+export class MoveAxisViewRenderer implements ShapeRenderer {
+    id = MoveAxisShapeType;
 
     private registry: Registry;
 

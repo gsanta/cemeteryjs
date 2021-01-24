@@ -1,23 +1,23 @@
-import { View } from "../../../../../core/models/views/View";
+import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
-import { ViewStore } from "../../../../../core/stores/ViewStore";
+import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { SpriteViewType } from "../../models/views/SpriteView";
+import { SpriteShapeType } from "../../models/shapes/SpriteShape";
 
 export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool<Canvas2dPanel> {
 
-    constructor(panel: Canvas2dPanel, viewStore: ViewStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
         super(SpriteToolId, panel, viewStore, registry);
     }
 
-    protected createView(rect: Rectangle): View {
-        return this.panel.getViewStore().getViewFactory(SpriteViewType).instantiateOnCanvas(this.panel, rect);
+    protected createView(rect: Rectangle): AbstractShape {
+        return this.panel.getViewStore().getViewFactory(SpriteShapeType).instantiateOnCanvas(this.panel, rect);
     }
     
     protected removeTmpView() {
-        this.viewStore.removeView(this.tmpView);
+        this.viewStore.removeShape(this.tmpView);
     }
 }

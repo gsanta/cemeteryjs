@@ -1,10 +1,10 @@
-import { ViewTag } from "../../../../core/models/views/View";
+import { ShapeTag } from "../../../../core/models/views/AbstractShape";
 import { IRenderer } from "../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { NodeConnectionView, NodeConnectionViewType } from "../models/views/NodeConnectionView";
+import { NodeConnectionShape, NodeConnectionShapeType } from "../models/shapes/NodeConnectionShape";
 
 export class NodeConnectionRenderer implements IRenderer<UI_SvgCanvas> {
     private registry: Registry;
@@ -34,7 +34,7 @@ class ConnectionRenderer implements IRenderer<UI_SvgCanvas> {
     }
 
     renderInto(svgCanvas: UI_SvgCanvas): void {
-        this.registry.data.view.node.getViewsByType(NodeConnectionViewType).forEach((connection: NodeConnectionView) => {
+        this.registry.data.shape.node.getShapesByType(NodeConnectionShapeType).forEach((connection: NodeConnectionShape) => {
             const pathCss = {
                 pointerEvents: 'none' as 'none',
                 stroke: connection.color,
@@ -53,7 +53,7 @@ class ConnectionRenderer implements IRenderer<UI_SvgCanvas> {
             const line2 = svgCanvas.line();
             line2.data = connection;
             line2.css = {
-                stroke: connection.tags.has(ViewTag.Hovered) || connection.tags.has(ViewTag.Selected) ? colors.views.highlight : 'transparent',
+                stroke: connection.tags.has(ShapeTag.Hovered) || connection.tags.has(ShapeTag.Selected) ? colors.views.highlight : 'transparent',
                 strokeWidth: "6"
             }
             line2.x1 = connection.outputPoint.x;

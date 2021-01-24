@@ -1,9 +1,9 @@
-import { ViewRenderer } from "../../../../core/models/views/View";
+import { ShapeRenderer } from "../../../../core/models/views/AbstractShape";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
-import { PathView } from "../models/views/PathView";
+import { PathShape } from "../models/shapes/PathShape";
 
-export class PathViewRenderer implements ViewRenderer {
-    renderInto(canvas: UI_SvgCanvas, pathView: PathView) {
+export class PathShapeRenderer implements ShapeRenderer {
+    renderInto(canvas: UI_SvgCanvas, pathView: PathShape) {
         const group = canvas.group(pathView.id);
         group.isInteractive = false;
 

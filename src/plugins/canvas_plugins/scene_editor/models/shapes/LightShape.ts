@@ -1,29 +1,28 @@
 import { IGameObj } from "../../../../../core/models/objs/IGameObj";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { LightObj } from "../../../../../core/models/objs/LightObj";
-import { AfterAllViewsDeserialized, View, ViewJson } from '../../../../../core/models/views/View';
+import { AbstractShape, AfterAllViewsDeserialized, ShapeJson } from '../../../../../core/models/views/AbstractShape';
 import { Registry } from "../../../../../core/Registry";
-import { sceneAndGameViewRatio } from '../../../../../core/stores/ViewStore';
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from '../../../../../utils/geometry/shapes/Rectangle';
-import { LightViewRenderer } from "../../renderers/LightViewRenderer";
+import { LightShapeRenderer } from "../../renderers/LightShapeRenderer";
 
-export const LightViewType = 'light-view';
+export const LightShapeType = 'light-shape';
 
-export interface LightViewJson extends ViewJson {
+export interface LightShapeJson extends ShapeJson {
 
 }
 
-export class LightView extends View {
-    viewType = LightViewType;
+export class LightShape extends AbstractShape {
+    viewType = LightShapeType;
 
     protected obj: LightObj;
     private relativeParentPos: Point;
 
     constructor() {
         super();
-        this.renderer = new LightViewRenderer();
+        this.renderer = new LightShapeRenderer();
     }
 
     getObj(): LightObj {
@@ -60,20 +59,20 @@ export class LightView extends View {
         }
     }
 
-    toJson(): LightViewJson {
+    toJson(): LightShapeJson {
         return {
             ...super.toJson(),
         }
     }
 
-    setParent(parent: View) {
+    setParent(parent: AbstractShape) {
         super.setParent(parent);
         this.obj.setParent(parent.getObj() as (IObj & IGameObj));
         this.calcRelativePos();
     }
 
-    static fromJson(json: ViewJson, registry: Registry): [View, AfterAllViewsDeserialized] {
-        const lightView = new LightView();
+    static fromJson(json: ShapeJson, registry: Registry): [AbstractShape, AfterAllViewsDeserialized] {
+        const lightView = new LightShape();
         lightView.id = json.id;
         lightView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
@@ -81,8 +80,8 @@ export class LightView extends View {
         lightView.setObj(obj);
         
         const afterAllViewsDeserialized: AfterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => lightView.addChildView(registry.data.view.scene.getById(id)));
-            json.parentId && lightView.setParent(registry.data.view.scene.getById(json.parentId));
+            json.childViewIds.map(id => lightView.addChildView(registry.data.shape.scene.getById(id)));
+            json.parentId && lightView.setParent(registry.data.shape.scene.getById(json.parentId));
         }
 
         return [lightView, afterAllViewsDeserialized];

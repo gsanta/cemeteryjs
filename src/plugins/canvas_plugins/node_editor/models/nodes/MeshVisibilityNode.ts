@@ -5,7 +5,7 @@ import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExe
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { MeshVisibilityNodeControllers } from "../../controllers/nodes/MeshVisibilityNodeControllers";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 
 export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
 
@@ -21,11 +21,11 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
     displayName = 'Mesh Visibility';
     category = 'Mesh';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MeshVisibilityNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

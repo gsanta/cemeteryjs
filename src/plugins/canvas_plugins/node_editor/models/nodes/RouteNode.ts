@@ -7,7 +7,7 @@ import { AbstractNodeExecutor } from "../../../../../core/services/node/INodeExe
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { RouteNodeControllers } from "../../controllers/nodes/RouteNodeControllers";
 import { RouteWalker } from "../../domain/RouteWalker";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 
 export const RouteNodeObjType = 'route-node-obj';
 
@@ -23,11 +23,11 @@ export class RouteNode extends AbstractNodeFactory {
     displayName = 'Route';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RouteNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }
@@ -121,7 +121,7 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('mesh').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('mesh').getConnectedPorts()[0].getNodeParam();
-            return <MeshObj> registry.data.view.node.getById(nodeParam.ownVal)?.getObj();
+            return <MeshObj> registry.data.shape.node.getById(nodeParam.ownVal)?.getObj();
         }
     }
 

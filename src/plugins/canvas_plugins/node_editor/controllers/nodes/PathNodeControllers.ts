@@ -2,7 +2,7 @@ import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { PathViewType } from "../../../scene_editor/models/views/PathView";
+import { PathShapeType } from "../../../scene_editor/models/shapes/PathShape";
 import { UIController } from "../../../../../core/controller/UIController";
 
 export class PathNodeControllers extends UIController {
@@ -26,7 +26,7 @@ export class PathController extends ParamController<string> {
     }
 
     values() {
-        return this.registry.data.view.scene.getViewsByType(PathViewType).map(pathView => pathView.id);
+        return this.registry.data.shape.scene.getShapesByType(PathShapeType).map(pathView => pathView.id);
     }
 
     val() {

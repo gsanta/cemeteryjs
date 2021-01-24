@@ -3,7 +3,7 @@ import { InputParamType, ParamController } from "../../../../../core/controller/
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
-import { NodeView } from "../../models/views/NodeView";
+import { NodeShape } from "../../models/shapes/NodeShape";
 import { KeyboardNodeParams } from "../../models/nodes/KeyboardNode";
 import { UIController } from "../../../../../core/controller/UIController";
 
@@ -13,7 +13,7 @@ export const KEY_REGEX = /key(\d*)/;
 
 export class KeyboardNodeControllers extends UIController {
 
-    constructor(registry: Registry, nodeView: NodeView) {
+    constructor(registry: Registry, nodeView: NodeShape) {
         super();
 
         this.key = new KeyControl(registry, nodeView, 'key', getAllKeys());
@@ -30,7 +30,7 @@ export class KeyControl extends ParamController {
     private paramName: string;
     private keys: string[] = [];
 
-    constructor(registry: Registry, nodeView: NodeView, paramName: string, keys: string[]) {
+    constructor(registry: Registry, nodeView: NodeShape, paramName: string, keys: string[]) {
         super(registry);
         this.nodeObj = nodeView.getObj();
         this.paramName = paramName;

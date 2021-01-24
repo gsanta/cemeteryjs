@@ -2,7 +2,7 @@ import { IRenderer } from "../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { UI_Accordion } from "../../../../core/ui_components/elements/surfaces/UI_Accordion";
 import { UI_Layout } from "../../../../core/ui_components/elements/UI_Layout";
-import { MeshView } from "../../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshShape } from "../../../canvas_plugins/scene_editor/models/shapes/MeshShape";
 import { MeshSettingsController } from "../controllers/MeshSettingsController";
 
 export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
@@ -15,8 +15,8 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
     }
 
     renderInto(layout: UI_Layout): void {
-        const selectedViews = this.registry.data.view.scene.getSelectedViews();
-        const meshView = <MeshView> selectedViews[0];
+        const selectedViews = this.registry.data.shape.scene.getSelectedShapes();
+        const meshView = <MeshShape> selectedViews[0];
 
         let row = layout.row({ key: 'id-row' });
 
@@ -37,7 +37,7 @@ export class MeshSettingsRenderer implements IRenderer<UI_Layout> {
         grid.paramController = this.controller.layer; 
         grid.label = 'Layer';
         const filledIndexes = new Set<number>();
-        this.registry.data.view.scene.getAllViews().forEach(view => filledIndexes.add(view.layer));
+        this.registry.data.shape.scene.getAllShapes().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
         row = layout.row({ key: 'clone-row' });

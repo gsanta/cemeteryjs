@@ -2,7 +2,7 @@ import { IPluginJson } from '../../plugin/IPluginExporter';
 import { Registry } from '../../Registry';
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
-import { ViewJson } from '../../models/views/View';
+import { ShapeJson } from '../../models/views/AbstractShape';
 import { AbstractModuleExporter } from './AbstractModuleExporter';
 
 export interface ViewExporter {
@@ -15,10 +15,10 @@ export interface AppJson {
 
     viewsByType: {
         viewType: string;
-        views: ViewJson[];
+        views: ShapeJson[];
     }[];
 
-    canvas: {[id: string]: ViewJson[]}
+    canvas: {[id: string]: ShapeJson[]}
 
     objs: {[id: string]: ObjJson[]}
 

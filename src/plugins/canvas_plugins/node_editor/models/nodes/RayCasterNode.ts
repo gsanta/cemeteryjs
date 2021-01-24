@@ -5,7 +5,7 @@ import { RayObj } from "../../../../../core/models/objs/RayObj";
 import { Registry } from "../../../../../core/Registry";
 import { RayCasterNodeControllers } from "../../controllers/nodes/RayCasterNodeControllers";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 
 export const RayCasterNodeType = 'ray-caster-node-obj';
 
@@ -21,11 +21,11 @@ export class RayCasterNode extends AbstractNodeFactory {
     displayName = 'RayCaster';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RayCasterNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

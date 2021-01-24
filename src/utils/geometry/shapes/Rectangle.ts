@@ -1,8 +1,8 @@
 import { Point } from './Point';
 import { Polygon } from './Polygon';
-import { Shape } from './Shape';
+import { GeometryPrimitive } from './Shape';
 
-export class Rectangle implements Shape {
+export class Rectangle implements GeometryPrimitive {
     topLeft: Point;
     bottomRight: Point;
 

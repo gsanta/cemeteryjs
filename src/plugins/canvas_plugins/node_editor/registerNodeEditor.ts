@@ -16,7 +16,7 @@ import { NodeEditorToolbarController } from "./controllers/NodeEditorToolbarCont
 import { JoinTool } from "./controllers/tools/JoinTool";
 import { NodeEditorExporter } from "./io/NodeEditorExporter";
 import { NodeEditorImporter } from "./io/NodeEditorImporter";
-import { NodeConnectionViewFactory, NodeConnectionViewType } from "./models/views/NodeConnectionView";
+import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "./models/shapes/NodeConnectionShape";
 import { NodeEditorRenderer } from "./renderers/NodeEditorRenderer";
 
 export const NodeEditorPanelId = 'node-editor'; 
@@ -46,21 +46,21 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     ];
 
     const tools = [
-        new SelectTool(canvas, registry.data.view.node, registry),
-        new DeleteTool(canvas, registry.data.view.node, registry),
+        new SelectTool(canvas, registry.data.shape.node, registry),
+        new DeleteTool(canvas, registry.data.shape.node, registry),
         new CameraTool(canvas, registry),
-        new JoinTool(canvas, registry.data.view.node, registry)
+        new JoinTool(canvas, registry.data.shape.node, registry)
     ];
 
     const controller = new NodeEditorToolbarController(registry);
 
     canvas.setController(new FormController(canvas, registry, [], controller));
     canvas.setCamera(cameraInitializer(NodeEditorPanelId, registry));
-    canvas.setViewStore(registry.data.view.node);
+    canvas.setViewStore(registry.data.shape.node);
     canvas.renderer = new NodeEditorRenderer(registry, canvas, controller);
     tools.forEach(tool => canvas.addTool(tool));
 
-    registry.data.view.node.registerViewType(NodeConnectionViewType, new NodeConnectionViewFactory());
+    registry.data.shape.node.registerViewType(NodeConnectionShapeType, new NodeConnectionShapeFactory());
     // registry.data.view.scene.registerViewType(MoveAxisViewType, () => new MoveAxisView(registry));
     // registry.data.view.scene.registerViewType(ScaleAxisViewType, () => new ScaleAxisView(registry));
 

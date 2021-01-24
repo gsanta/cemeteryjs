@@ -1,14 +1,14 @@
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { RotateAxisView, RotateAxisViewType } from "../../models/views/edit/RotateAxisView";
+import { RotateAxisView, RotateAxisShapeType } from "../../models/shapes/edit/RotateAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const RotateAxisToolId = 'rotate-axis-tool';
 
 export class RotateAxisTool extends AbstractAxisTool<RotateAxisView> {
     constructor(panel: AbstractCanvasPanel, registry: Registry) {
-        super(RotateAxisToolId, panel, registry, RotateAxisViewType);
+        super(RotateAxisToolId, panel, registry, RotateAxisShapeType);
     }
  
     protected updateX() {

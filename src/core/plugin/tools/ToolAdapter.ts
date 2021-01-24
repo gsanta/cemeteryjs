@@ -1,6 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { View } from '../../models/views/View';
+import { AbstractShape } from '../../models/views/AbstractShape';
 import { Registry } from '../../Registry';
 import { IHotkeyEvent } from '../../services/input/HotkeyService';
 import { IKeyboardEvent } from '../../services/input/KeyboardService';
@@ -47,8 +47,8 @@ export class ToolAdapter<P extends AbstractCanvasPanel = AbstractCanvasPanel> im
     wheelEnd() {}
     keydown(e: IKeyboardEvent) { }
     keyup(e: IKeyboardEvent){ }
-    over(item: View) { }
-    out(item: View) { }
+    over(item: AbstractShape) { }
+    out(item: AbstractShape) { }
     
     /**
      * Called when the mouse leaves the canvas.

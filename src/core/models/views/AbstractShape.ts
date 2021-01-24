@@ -5,14 +5,14 @@ import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
 import { FormController } from "../../controller/FormController";
 import { IControlledModel } from "../../plugin/IControlledModel";
 import { Registry } from "../../Registry";
-import { ViewStore } from "../../stores/ViewStore";
+import { ShapeStore } from "../../stores/ShapeStore";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../objs/IObj";
-import { ChildViewContext } from "./ChildViewContext";
-import { ContainedView } from "./child_views/ChildView";
+import { ChildShapeContext } from "./ChildShapeContext";
+import { ChildShape } from "./child_views/ChildShape";
 import { UIController } from "../../controller/UIController";
 
-export interface ViewJson {
+export interface ShapeJson {
     id: string;
     type: string;
     dimensions: string;
@@ -21,7 +21,7 @@ export interface ViewJson {
     childViewIds: string[];
 }
 
-export enum ViewTag {
+export enum ShapeTag {
     Selected = 'Selected',
     Hovered = 'Hovered'
 }
@@ -30,62 +30,63 @@ export interface AfterAllViewsDeserialized {
 (): void;
 }
 
-export interface ViewFactory {
-    instantiate(): View;
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): View;
-    instantiateOnSelection(parentView: View): void;
-    instantiateFromJson(json: ViewJson): [View, AfterAllViewsDeserialized];
+export interface ShapeFactory {
+    instantiate(): AbstractShape;
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): AbstractShape;
+    instantiateOnSelection(parentView: AbstractShape): void;
+    instantiateFromJson(json: ShapeJson): [AbstractShape, AfterAllViewsDeserialized];
 }
 
-export abstract class ViewFactoryAdapter implements ViewFactory {
+export abstract class ShapeFactoryAdapter implements ShapeFactory {
     instantiate() { return undefined; }
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): View { return undefined; }
-    instantiateOnSelection(parentView: View): void {  }
-    instantiateFromJson(json: ViewJson) { return undefined; };
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): AbstractShape { return undefined; }
+    instantiateOnSelection(parentView: AbstractShape): void {  }
+    instantiateFromJson(json: ShapeJson) { return undefined; };
 }
 
-export interface ViewRenderer {
-    renderInto(container: UI_SvgCanvas, view: View, panel: AbstractCanvasPanel);
+export interface ShapeRenderer {
+    renderInto(container: UI_SvgCanvas, view: AbstractShape, panel: AbstractCanvasPanel);
 }
 
-export abstract class View implements IControlledModel {
+
+export abstract class AbstractShape implements IControlledModel {
     id: string;
     viewType: string;
-    tags: Set<ViewTag> = new Set();
+    tags: Set<ShapeTag> = new Set();
     layer: number = 10;
 
-    containerView: View;
-    containedViews: View[] = [];
+    containerView: AbstractShape;
+    containedViews: AbstractShape[] = [];
 
-    parentView: View;
-    childViews: View[] = [];
+    parentView: AbstractShape;
+    childViews: AbstractShape[] = [];
 
     controller: FormController = undefined;
     paramController: UIController = {};
-    renderer: ViewRenderer;
+    renderer: ShapeRenderer;
 
-    deleteConstraiedViews: ChildViewContext = new ChildViewContext();
+    deleteConstraiedViews: ChildShapeContext = new ChildShapeContext();
 
     protected obj: IObj;
 
     protected bounds: Rectangle;
     move(delta: Point): void {}
 
-    private activeContainedView: View;
+    private activeContainedView: AbstractShape;
 
     abstract getObj(): IObj;
     abstract setObj(obj: IObj);
 
     isHovered() {
-        return this.tags.has(ViewTag.Hovered);
+        return this.tags.has(ShapeTag.Hovered);
     }
 
     isSelected() {
-        return this.tags.has(ViewTag.Selected);
+        return this.tags.has(ShapeTag.Selected);
     }
 
     
-    setActiveContainedView(containedview: ContainedView) {
+    setActiveContainedView(containedview: ChildShape) {
         this.activeContainedView = containedview;
     }
     
@@ -97,43 +98,43 @@ export abstract class View implements IControlledModel {
         return !!this.containerView;
     }
 
-    addContainedView(child: ContainedView) {
+    addContainedView(child: ChildShape) {
         this.containedViews.push(child);
         child.calcBounds();
     }
 
-    deleteContainedView(child: View) {
+    deleteContainedView(child: AbstractShape) {
         this.containedViews.splice(this.containedViews.indexOf(child), 1);    
     }
 
-    setContainerView(parent: View) {
+    setContainerView(parent: AbstractShape) {
         this.containerView = parent;
     }
 
-    getChildViews(): View[] {
+    getChildViews(): AbstractShape[] {
         return this.childViews;
     }
 
-    getDeleteOnCascadeViews(): View[] {
+    getDeleteOnCascadeViews(): AbstractShape[] {
         return [];
     }
 
-    addChildView(view: View) {
+    addChildView(view: AbstractShape) {
         this.childViews = Array.from(new Set([...this.childViews, view]));
         if (view.parentView !== this) {
             view.setParent(this);
         }
     }
 
-    removeChildView(view: View) {
+    removeChildView(view: AbstractShape) {
         this.childViews.splice(this.childViews.indexOf(view), 1);
     }
 
-    getParent(): View {
+    getParent(): AbstractShape {
         return this.parentView;
     }
 
-    setParent(view: View) {
+    setParent(view: AbstractShape) {
         this.parentView = view;
         if (view.getChildViews().indexOf(this) === -1) {
             view.addChildView(this);
@@ -151,9 +152,9 @@ export abstract class View implements IControlledModel {
     getYPos() { return undefined; }
 
     abstract dispose(): void;
-    clone(registry: Registry): View { throw new Error('Not implemented'); }
+    clone(registry: Registry): AbstractShape { throw new Error('Not implemented'); }
 
-    toJson(): ViewJson {
+    toJson(): ShapeJson {
         return {
             id: this.id,
             type: this.viewType,
@@ -164,7 +165,7 @@ export abstract class View implements IControlledModel {
         };
     }
 
-    fromJson(json: ViewJson, registry: Registry) {
+    fromJson(json: ShapeJson, registry: Registry) {
         this.id = json.id;
         this.viewType = json.type;
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
@@ -174,8 +175,8 @@ export abstract class View implements IControlledModel {
     }
 }
 
-export function sortViewsByLayer(views: View[]): void {
-    const layerSorter = (a: View, b: View) => b.layer - a.layer;
+export function sortViewsByLayer(views: AbstractShape[]): void {
+    const layerSorter = (a: AbstractShape, b: AbstractShape) => b.layer - a.layer;
 
     views.sort(layerSorter);
 }

@@ -1,8 +1,8 @@
-import { ViewJson } from "../models/views/View";
+import { ShapeJson } from "../models/views/AbstractShape";
 
 export interface ViewGroupJson {
     viewType: string;
-    views: ViewJson[];
+    views: ShapeJson[];
 }
 
 export interface IPluginJson {

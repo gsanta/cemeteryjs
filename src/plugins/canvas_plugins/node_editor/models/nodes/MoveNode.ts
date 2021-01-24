@@ -7,7 +7,7 @@ import { INodeListener } from "../../api/INodeListener";
 import { MoveNodeControllers } from "../../controllers/nodes/MoveNodeControllers";
 import { CollisionConstraint } from "../../domain/CollisionConstraint";
 import { MeshMover } from "../../domain/MeshMover";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { MoveNodeListener } from "./listeners/MoveNodeListener";
 
 export const MoveNodeType = 'move-node-obj';
@@ -31,11 +31,11 @@ export class MoveNode extends AbstractNodeFactory {
     displayName = 'Move';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MoveNodeControllers(this.registry, obj))
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

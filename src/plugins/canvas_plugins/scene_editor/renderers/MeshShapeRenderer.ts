@@ -1,11 +1,11 @@
-import { ViewRenderer, ViewTag } from "../../../../core/models/views/View";
+import { ShapeRenderer, ShapeTag } from "../../../../core/models/views/AbstractShape";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
 import { toDegree } from "../../../../utils/geometry/Measurements";
-import { MeshView } from "../models/views/MeshView";
+import { MeshShape } from "../models/shapes/MeshShape";
 
-export class MeshViewRenderer implements ViewRenderer {
-    renderInto(canvas: UI_SvgCanvas, meshView: MeshView) {
+export class MeshShapeRenderer implements ShapeRenderer {
+    renderInto(canvas: UI_SvgCanvas, meshView: MeshShape) {
         const group = canvas.group(meshView.id);
         group.data = meshView;
 
@@ -21,7 +21,7 @@ export class MeshViewRenderer implements ViewRenderer {
             fill: meshView.color
         }    
 
-        rect.strokeColor = meshView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+        rect.strokeColor = meshView.tags.has(ShapeTag.Selected) ? colors.views.highlight : 'black';
 
         if (meshView.thumbnailData) {
             const image = group.image();

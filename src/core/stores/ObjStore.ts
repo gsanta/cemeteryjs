@@ -153,9 +153,9 @@ export class ObjLifeCycleHook implements ObjStoreHook {
     }
 
     removeObjHook(obj: IObj) {
-        const view = this.registry.data.view.scene.getByObjId(obj.id);
+        const view = this.registry.data.shape.scene.getByObjId(obj.id);
         if (view) {
-            this.registry.data.view.scene.removeView(view);
+            this.registry.data.shape.scene.removeShape(view);
         }
     }
 }

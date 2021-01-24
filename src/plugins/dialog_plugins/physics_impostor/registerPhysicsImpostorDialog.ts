@@ -11,7 +11,7 @@ export function registerPhysicsImpostorDialog(registry: Registry) {
     const panel = new UI_Panel(registry, UI_Region.Dialog, PhysicsImpostorDialogDialogId, 'Physics Impostor');
     
     panel.onOpen(() => {
-        const selectedViews = registry.data.view.scene.getSelectedViews();
+        const selectedViews = registry.data.shape.scene.getSelectedShapes();
         const meshObj = selectedViews[0].getObj() as MeshObj;
 
         const controller = new PhysicsImpostorDialogController(registry, meshObj);

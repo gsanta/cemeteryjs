@@ -1,4 +1,4 @@
-import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshShape } from "../../canvas_plugins/scene_editor/models/shapes/MeshShape";
 import { IRenderer } from "../../../core/plugin/IRenderer";
 import { Registry } from "../../../core/Registry";
 import { UI_Dialog } from "../../../core/ui_components/elements/surfaces/dialog/UI_Dialog";
@@ -14,7 +14,7 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
     }
 
     renderInto(dialog: UI_Dialog) {
-        const meshView = this.registry.data.view.scene.getOneSelectedView() as MeshView;
+        const meshView = this.registry.data.shape.scene.getOneSelectedShape() as MeshShape;
         dialog.width = '560px';
 
         let row = dialog.row({key: '1'});

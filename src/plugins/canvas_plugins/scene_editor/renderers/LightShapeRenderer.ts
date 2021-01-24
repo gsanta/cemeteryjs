@@ -1,13 +1,13 @@
-import { ViewRenderer, View, ViewTag } from "../../../../core/models/views/View";
+import { ShapeRenderer, AbstractShape, ShapeTag } from "../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
-import { LightViewType } from "../models/views/LightView";
+import { LightShapeType } from "../models/shapes/LightShape";
 
-export class LightViewRenderer implements ViewRenderer {
-    id: string = LightViewType;
+export class LightShapeRenderer implements ShapeRenderer {
+    id: string = LightShapeType;
 
-    renderInto(canvas: UI_SvgCanvas, lightView: View, panel: AbstractCanvasPanel): void {
+    renderInto(canvas: UI_SvgCanvas, lightView: AbstractShape, panel: AbstractCanvasPanel): void {
         const group = canvas.group(lightView.id);
         group.data = lightView;
 
@@ -22,7 +22,7 @@ export class LightViewRenderer implements ViewRenderer {
             strokeWidth: lightView.isSelected() ? '2' : '1',
             fill: 'none'
         }    
-        rect.strokeColor = lightView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'transparent';
+        rect.strokeColor = lightView.tags.has(ShapeTag.Selected) ? colors.views.highlight : 'transparent';
 
         const image = group.image(lightView.id);
         // TODO cucumber tests fail when requiring static asstes, so it is put here

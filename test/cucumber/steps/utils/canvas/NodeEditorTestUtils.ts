@@ -1,6 +1,6 @@
 import { TableDefinition } from "cucumber";
 import { Registry } from "../../../../../src/core/Registry";
-import { NodeView } from "../../../../../src/plugins/canvas_plugins/node_editor/models/views/NodeView";
+import { NodeShape } from "../../../../../src/plugins/canvas_plugins/node_editor/models/shapes/NodeShape";
 import { Point } from "../../../../../src/utils/geometry/shapes/Point";
 import { collectViewTableProps, ViewTableProp } from "../../common/viewTestUtils";
 
@@ -26,9 +26,9 @@ export class NodeEditorTestUtils {
         tableDef.rows().forEach((row: string[]) => {
             const nodeType = row[nodeTypeIndex]
             const nodeObj = registry.data.helper.node.createObj(nodeType);
-            const nodeView: NodeView = registry.data.helper.node.createView(nodeType, nodeObj);
+            const nodeView: NodeShape = registry.data.helper.node.createView(nodeType, nodeObj);
             
-            registry.data.view.node.addView(nodeView);
+            registry.data.shape.node.addShape(nodeView);
             registry.stores.objStore.addObj(nodeObj);
     
             nodeView.getBounds().moveTo(Point.fromString(row[posColumnIndex]));

@@ -1,7 +1,7 @@
 import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
 import { Keyboard } from '../../services/input/KeyboardService';
-import { getIntersectingViews, ViewStore } from '../../stores/ViewStore';
+import { getIntersectingViews, ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './ToolAdapter';
@@ -12,7 +12,7 @@ export const DeleteToolId = 'delete-tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(panel: AbstractCanvasPanel, viewStore: ViewStore,  registry: Registry) {
+    constructor(panel: AbstractCanvasPanel, viewStore: ShapeStore,  registry: Registry) {
         super(DeleteToolId, panel, viewStore, registry);
     }
 
@@ -29,7 +29,7 @@ export class DeleteTool extends PointerTool {
         if (hoveredItem.isContainedView()) {
             hoveredItem.containerView.deleteContainedView(hoveredItem);
         } else {
-            this.viewStore.removeView(hoveredItem);
+            this.viewStore.removeShape(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -42,7 +42,7 @@ export class DeleteTool extends PointerTool {
     
     draggedUp() {
         const intersectingViews = getIntersectingViews(this.viewStore, this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.viewStore.removeView(view));
+        intersectingViews.forEach(view =>  this.viewStore.removeShape(view));
 
         this.rectangleSelection = undefined;
 

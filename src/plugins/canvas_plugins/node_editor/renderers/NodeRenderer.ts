@@ -1,6 +1,6 @@
 import { NodeParam, PortDirection, PortValueType } from '../../../../core/models/objs/node_obj/NodeParam';
-import { NodePortView } from '../../../../core/models/views/child_views/NodePortView';
-import { ViewRenderer, ViewTag } from '../../../../core/models/views/View';
+import { NodePortShape } from '../../../../core/models/views/child_views/NodePortShape';
+import { ShapeRenderer, ShapeTag } from '../../../../core/models/views/AbstractShape';
 import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
 import { InputParamType, MultiSelectController } from '../../../../core/controller/FormController';
 import { UI_SvgForeignObject } from '../../../../core/ui_components/elements/svg/UI_SvgForeignObject';
@@ -8,17 +8,17 @@ import { UI_SvgGroup } from '../../../../core/ui_components/elements/svg/UI_SvgG
 import { UI_Column } from '../../../../core/ui_components/elements/UI_Column';
 import { UI_SvgCanvas } from '../../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../../core/ui_components/react/styles';
-import { NodeHeightCalc, NodeView } from '../models/views/NodeView';
+import { NodeHeightCalc, NodeShape } from '../models/shapes/NodeShape';
 
-export class NodeRenderer implements ViewRenderer {
+export class NodeRenderer implements ShapeRenderer {
     private joinPointsHeight: number;
-    private nodeView: NodeView;
+    private nodeView: NodeShape;
 
-    constructor(nodeView: NodeView) {
+    constructor(nodeView: NodeShape) {
         this.nodeView = nodeView;
     }
 
-    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeView, panel: AbstractCanvasPanel): void {
+    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeShape, panel: AbstractCanvasPanel): void {
         const group = svgCanvas.group(nodeView.id);
         group.transform = `translate(${nodeView.getBounds().topLeft.x} ${nodeView.getBounds().topLeft.y})`;
 
@@ -28,7 +28,7 @@ export class NodeRenderer implements ViewRenderer {
         this.renderInputsInto(column, nodeView, panel);
     }
 
-    private renderInputsInto(column: UI_Column, nodeView: NodeView, panel: AbstractCanvasPanel) {
+    private renderInputsInto(column: UI_Column, nodeView: NodeShape, panel: AbstractCanvasPanel) {
         nodeView.getFieldParams()
             .map(param => {
                 let row = column.row({key: param.name});
@@ -87,24 +87,24 @@ export class NodeRenderer implements ViewRenderer {
             });
     }
 
-    private isFieldDisabled(param: NodeParam, nodeView: NodeView) {
+    private isFieldDisabled(param: NodeParam, nodeView: NodeShape) {
         return param.portDirection === PortDirection.Input && nodeView.getObj().getPort(param.name).hasConnectedPort()
     }
 
-    private renderRect(group: UI_SvgGroup, nodeView: NodeView) {
+    private renderRect(group: UI_SvgGroup, nodeView: NodeShape) {
         const rect = group.rect();
         rect.x = 0;
         rect.y = 0;
         rect.width = nodeView.getBounds().getWidth();
         rect.height = nodeView.getBounds().getHeight();
-        rect.strokeColor = nodeView.tags.has(ViewTag.Selected) ? colors.views.highlight : 'black';
+        rect.strokeColor = nodeView.tags.has(ShapeTag.Selected) ? colors.views.highlight : 'black';
         rect.fillColor = nodeView.getObj().color || 'white';
         rect.css = {
-            strokeWidth: nodeView.tags.has(ViewTag.Selected) ? '3' : '1'
+            strokeWidth: nodeView.tags.has(ShapeTag.Selected) ? '3' : '1'
         }
     }
 
-    private renderContent(group: UI_SvgGroup, nodeView: NodeView): UI_Column {
+    private renderContent(group: UI_SvgGroup, nodeView: NodeShape): UI_Column {
         const foreignObject = group.foreignObject({key: nodeView.id, controller: nodeView.controller});
         foreignObject.width = nodeView.getBounds().getWidth();
         foreignObject.height = nodeView.getBounds().getHeight();
@@ -123,7 +123,7 @@ export class NodeRenderer implements ViewRenderer {
         return column;
     }
     
-    private renderTitle(foreignObject: UI_SvgForeignObject, nodeView: NodeView) {
+    private renderTitle(foreignObject: UI_SvgForeignObject, nodeView: NodeShape) {
         const header = foreignObject.row({key: 'header-row'});
         header.height = sizes.nodes.headerHeight + 'px';
         header.padding = '2px 5px';
@@ -135,14 +135,14 @@ export class NodeRenderer implements ViewRenderer {
         title.color = colors.textColor;
     }
     
-    private renderPortsInto(svgGroup: UI_SvgGroup, nodeView: NodeView) {
+    private renderPortsInto(svgGroup: UI_SvgGroup, nodeView: NodeShape) {
         let inputs: number = 0;
         let outputs: number = 0;
     
         let rowHeight = 20;
 
         nodeView.getPortViews()
-            .forEach((portView: NodePortView) => {
+            .forEach((portView: NodePortShape) => {
                 if (nodeView.isStandalonePort(portView.getObj().getNodeParam())) {
                     portView.getObj().isInputPort() ? (inputs++) : (outputs++);
                 }
@@ -152,7 +152,7 @@ export class NodeRenderer implements ViewRenderer {
         this.joinPointsHeight = inputs > outputs ? inputs * rowHeight : outputs * rowHeight;
     }
     
-    private renderPortInto(svgGroup: UI_SvgGroup, nodeView: NodeView, portView: NodePortView) {
+    private renderPortInto(svgGroup: UI_SvgGroup, nodeView: NodeShape, portView: NodePortShape) {
         const circle = svgGroup.circle();
         svgGroup.data = nodeView;
 

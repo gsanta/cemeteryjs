@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { NodePortView, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortView";
-import { ViewJson, View } from "../../../../../core/models/views/View";
+import { NodePortShape, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortShape";
+import { ShapeJson, AbstractShape } from "../../../../../core/models/views/AbstractShape";
 import { FormController, InputParamType } from "../../../../../core/controller/FormController";
 import { Registry } from "../../../../../core/Registry";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";
@@ -11,14 +11,14 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { NodeRenderer } from "../../renderers/NodeRenderer";
 import { UIController } from "../../../../../core/controller/UIController";
 
-export const NodeViewType = 'node-view';
+export const NodeShapeType = 'node-shape';
 
-export const defaultNodeViewConfig = {
+export const defaultNodeShapeConfig = {
     width: 200,
     height: 120
 }
 
-export interface NodeViewJson extends ViewJson {
+export interface NodeShapeJson extends ShapeJson {
 }
 
 const HEADER_HIGHT = 30;
@@ -27,7 +27,7 @@ const INPUT_HEIGHT = 35;
 const NODE_PADDING = 10;
 
 export class NodeHeightCalc {
-    static getFieldHeights(nodeView: NodeView) {
+    static getFieldHeights(nodeView: NodeShape) {
         const fieldParams = nodeView.getFieldParams();
         let sum = NODE_PADDING * 2;
 
@@ -36,7 +36,7 @@ export class NodeHeightCalc {
         return sum;
     }
 
-    static getFieldHeight(nodeView: NodeView, nodeParam: NodeParam): number {
+    static getFieldHeight(nodeView: NodeShape, nodeParam: NodeParam): number {
 
         switch(nodeView.paramController[nodeParam.name].paramType) {
             case InputParamType.MultiSelect:
@@ -47,8 +47,8 @@ export class NodeHeightCalc {
     }
 }
 
-export class NodeView extends View {
-    readonly  viewType = NodeViewType;
+export class NodeShape extends AbstractShape {
+    readonly  viewType = NodeShapeType;
     id: string;
     protected obj: NodeObj;
     nodeGraph: NodeGraph;
@@ -62,7 +62,7 @@ export class NodeView extends View {
         
         this.registry = registry;
         this.renderer = new NodeRenderer(this);
-        this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeViewConfig.width, 0));
+        this.bounds = new Rectangle(new Point(0, 0), new Point(defaultNodeShapeConfig.width, 0));
     }
 
     addParamControllers(paramControllers: UIController) {
@@ -71,13 +71,13 @@ export class NodeView extends View {
         this.setup();
     }
 
-    getPortViews(): NodePortView[] {
-        return <NodePortView[]> this.containedViews.filter((view: View) => view.viewType === NodePortViewType)
+    getPortViews(): NodePortShape[] {
+        return <NodePortShape[]> this.containedViews.filter((view: AbstractShape) => view.viewType === NodePortViewType)
     }
 
     setup() {
         this.obj.getPorts()
-            .map(portObj => new NodePortView(this, portObj))
+            .map(portObj => new NodePortShape(this, portObj))
             .forEach(portView => this.addContainedView(portView))
         this.updateDimensions();
     }
@@ -99,8 +99,8 @@ export class NodeView extends View {
         const outputPorts =  this.getStandaloneOutputPorts();
         
         this.containedViews
-            .filter((portView: NodePortView) => this.isStandalonePort(portView.getObj().getNodeParam()))
-            .forEach((portView: NodePortView) => {
+            .filter((portView: NodePortShape) => this.isStandalonePort(portView.getObj().getNodeParam()))
+            .forEach((portView: NodePortShape) => {
                 const x = portView.getObj().isInputPort() ? 0 : this.bounds.getWidth();
 
                 let portIndex: number;
@@ -117,8 +117,8 @@ export class NodeView extends View {
 
     private initPortsWithFieldPositions() {
         this.containedViews
-            .filter((portView: NodePortView) => this.paramController[portView.getObj().getNodeParam().name])
-            .forEach((portView: NodePortView) => {
+            .filter((portView: NodePortShape) => this.paramController[portView.getObj().getNodeParam().name])
+            .forEach((portView: NodePortShape) => {
                 const x = portView.getObj().isInputPort() ? 0 : this.bounds.getWidth();
                 const fieldParams = this.getFieldParams();
                 const paramIndex = fieldParams.findIndex(param => param.name === portView.getObj().getNodeParam().name);
@@ -155,10 +155,10 @@ export class NodeView extends View {
     }
 
     findJoinPointView(name: string) {
-        return this.containedViews.find((nodePortview: NodePortView) => nodePortview.getObj().getNodeParam().name === name);
+        return this.containedViews.find((nodePortview: NodePortShape) => nodePortview.getObj().getNodeParam().name === name);
     }
 
-    getDeleteOnCascadeViews(): View[] {
+    getDeleteOnCascadeViews(): AbstractShape[] {
         return [];
     }
 
@@ -190,17 +190,17 @@ export class NodeView extends View {
         return param.portDirection;
     }
     
-    toJson(): NodeViewJson  {
+    toJson(): NodeShapeJson  {
         return {
             ...super.toJson(),
         }
     }
 
-    fromJson(json: NodeViewJson, registry: Registry) {
+    fromJson(json: NodeShapeJson, registry: Registry) {
         super.fromJson(json, registry);
     }
 
-    private getJoinPointViews(): NodePortView[] {
-        return <NodePortView[]> this.containedViews.filter(v => v.viewType === NodePortViewType);
+    private getJoinPointViews(): NodePortShape[] {
+        return <NodePortShape[]> this.containedViews.filter(v => v.viewType === NodePortViewType);
     }
 }

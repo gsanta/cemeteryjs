@@ -2,7 +2,7 @@ import { DragAndDropController } from "../../../core/controller/FormController";
 import { UIController } from "../../../core/controller/UIController";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
-import { NodeView } from "../../canvas_plugins/node_editor/models/views/NodeView";
+import { NodeShape } from "../../canvas_plugins/node_editor/models/shapes/NodeShape";
 
 export class NodeSelectorController extends UIController {
     constructor(registry: Registry) {
@@ -39,10 +39,10 @@ export class DragNodeController extends DragAndDropController {
     private onDrop() {
         const nodeType = this.dropId;
         const nodeObj = this.registry.data.helper.node.createObj(nodeType);
-        const nodeView: NodeView = this.registry.data.helper.node.createView(nodeType, nodeObj);
+        const nodeView: NodeShape = this.registry.data.helper.node.createView(nodeType, nodeObj);
 
         this.registry.stores.objStore.addObj(nodeObj);
-        this.registry.data.view.node.addView(nodeView);
+        this.registry.data.shape.node.addShape(nodeView);
 
         nodeView.getBounds().moveTo(this.registry.services.pointer.pointer.curr);
         this.registry.services.history.createSnapshot();

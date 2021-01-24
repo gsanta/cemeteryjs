@@ -2,7 +2,7 @@ import { MeshHookAdapter } from "../../../../core/engine/hooks/IMeshHook";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { Registry } from "../../../../core/Registry";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { MeshView } from "../models/views/MeshView";
+import { MeshShape } from "../models/shapes/MeshShape";
 
 
 export class ObjRotationHook extends MeshHookAdapter {
@@ -14,7 +14,7 @@ export class ObjRotationHook extends MeshHookAdapter {
     }
 
     hook_setRotation(obj: MeshObj, rot: Point_3) {
-        const view = <MeshView> this.registry.data.view.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
         view.setRotation(rot.y);
     }
 }

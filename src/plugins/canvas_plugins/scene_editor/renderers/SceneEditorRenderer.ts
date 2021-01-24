@@ -1,4 +1,4 @@
-import { sortViewsByLayer, View } from "../../../../core/models/views/View";
+import { sortViewsByLayer, AbstractShape } from "../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
@@ -136,14 +136,14 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Redo';
 
-        const views = this.registry.data.view.scene.getAllViews();
+        const views = this.registry.data.shape.scene.getAllShapes();
 
         sortViewsByLayer(views);
 
         this.renderViews(uiSvgCanvas, views);
     }
 
-    private renderViews(canvas: UI_SvgCanvas, views: View[]) {
+    private renderViews(canvas: UI_SvgCanvas, views: AbstractShape[]) {
         views.forEach(view => {
             view.renderer.renderInto(canvas, view, canvas.canvasPanel);
             view.containedViews.forEach(child => child.renderer && child.renderer.renderInto(canvas, child, canvas.canvasPanel));

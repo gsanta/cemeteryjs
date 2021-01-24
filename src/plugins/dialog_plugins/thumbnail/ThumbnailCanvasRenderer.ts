@@ -1,4 +1,4 @@
-import { MeshView } from "../../canvas_plugins/scene_editor/models/views/MeshView";
+import { MeshShape } from "../../canvas_plugins/scene_editor/models/shapes/MeshShape";
 import { IRenderer } from "../../../core/plugin/IRenderer";
 import { Registry } from "../../../core/Registry";
 import { UI_HtmlCanvas } from "../../../core/ui_components/elements/UI_HtmlCanvas";

@@ -1,15 +1,15 @@
 import { NodeEditorPanelId } from "../../plugins/canvas_plugins/node_editor/registerNodeEditor";
 import { SceneEditorPanelId } from "../../plugins/canvas_plugins/scene_editor/registerSceneEditor";
 import { Registry } from "../Registry";
-import { ViewStore } from "../stores/ViewStore";
+import { ShapeStore } from "../stores/ShapeStore";
 
 
-export class ViewLookup {
-    scene: ViewStore;
-    node: ViewStore;
+export class ShapeLookup {
+    scene: ShapeStore;
+    node: ShapeStore;
 
     constructor(registry: Registry) {
-        this.scene = new ViewStore(SceneEditorPanelId, registry);
-        this.node = new ViewStore(NodeEditorPanelId, registry);
+        this.scene = new ShapeStore(SceneEditorPanelId, registry);
+        this.node = new ShapeStore(NodeEditorPanelId, registry);
     }
 }

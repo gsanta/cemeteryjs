@@ -2,7 +2,7 @@ import { ObjJson } from "../../../../core/models/objs/IObj";
 import { NodeConnectionObjType } from "../../../../core/models/objs/NodeConnectionObj";
 import { NodePortObjType } from "../../../../core/models/objs/NodePortObj";
 import { NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
-import { ViewJson } from "../../../../core/models/views/View";
+import { ShapeJson } from "../../../../core/models/views/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 
@@ -33,8 +33,8 @@ export class NodeEditorExporter extends AbstractModuleExporter {
         return data;
     }
 
-    exportViews(): ViewJson[] {
-        return this.registry.data.view.node.getAllViews().map(view => view.toJson());
+    exportViews(): ShapeJson[] {
+        return this.registry.data.shape.node.getAllShapes().map(view => view.toJson());
     }
 
     exportObjs(): ObjJson[] {

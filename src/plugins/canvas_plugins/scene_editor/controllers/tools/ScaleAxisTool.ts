@@ -2,7 +2,7 @@ import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPa
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { ScaleAxisView, ScaleAxisViewType } from "../../models/views/edit/ScaleAxisView";
+import { ScaleAxisView, ScaleAxisShapeType } from "../../models/shapes/edit/ScaleAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const ScaleAxisToolId = 'scale-axis-tool';
@@ -12,7 +12,7 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     private initialBounds: Rectangle;
 
     constructor(panel: AbstractCanvasPanel, registry: Registry) {
-        super(ScaleAxisToolId, panel, registry, ScaleAxisViewType);
+        super(ScaleAxisToolId, panel, registry, ScaleAxisShapeType);
     }
 
     down() {

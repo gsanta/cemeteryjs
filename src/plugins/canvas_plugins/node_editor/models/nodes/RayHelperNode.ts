@@ -4,7 +4,7 @@ import { RayObj } from "../../../../../core/models/objs/RayObj";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { RayHelperNodeControllers } from "../../controllers/nodes/RayHelperNodeControllers";
-import { NodeView } from "../views/NodeView";
+import { NodeShape } from "../shapes/NodeShape";
 import { RayCasterNodeParams } from "./RayCasterNode";
 
 export const RayHelperNodeType = 'ray-helper-node-obj';
@@ -21,11 +21,11 @@ export class RayHelperNode extends AbstractNodeFactory {
     displayName = 'RayHelper';
     category = 'Default';
 
-    createView(obj: NodeObj): NodeView {
-        const nodeView = new NodeView(this.registry);
+    createView(obj: NodeObj): NodeShape {
+        const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RayHelperNodeControllers(this.registry, nodeView.getObj()));
-        nodeView.id = this.registry.data.view.node.generateId(nodeView);
+        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
 
         return nodeView;
     }

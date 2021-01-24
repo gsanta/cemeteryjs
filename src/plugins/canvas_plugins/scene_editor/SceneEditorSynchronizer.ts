@@ -1,9 +1,9 @@
 import { ObjEventType } from "../../../core/models/ObjObservable";
 import { MeshObj } from "../../../core/models/objs/MeshObj";
 import { Registry } from "../../../core/Registry";
-import { sceneAndGameViewRatio } from "../../../core/stores/ViewStore";
+import { sceneAndGameViewRatio } from "../../../core/stores/ShapeStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { MeshView } from "./models/views/MeshView";
+import { MeshShape } from "./models/shapes/MeshShape";
 
 export class SceneEditorSynchronizer {
     private registry: Registry;
@@ -28,7 +28,7 @@ export class SceneEditorSynchronizer {
     }
 
     private syncPosition(obj: MeshObj) {
-        const view = <MeshView> this.registry.data.view.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
 
         const position = this.registry.engine.meshes.getPosition(obj);
 
@@ -40,7 +40,7 @@ export class SceneEditorSynchronizer {
     }
 
     private syncScale(obj: MeshObj) {
-        const view = <MeshView> this.registry.data.view.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
 
         const dimensions = this.registry.engine.meshes.getDimensions(obj);
 
@@ -52,7 +52,7 @@ export class SceneEditorSynchronizer {
     }
 
     private syncRotation(obj: MeshObj) {
-        const view = <MeshView> this.registry.data.view.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
 
         const rotation = this.registry.engine.meshes.getRotation(obj);
         

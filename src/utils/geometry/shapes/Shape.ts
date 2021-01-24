@@ -1,6 +1,5 @@
 import { Point } from "./Point";
 import { Rectangle } from "./Rectangle";
-import { LineSegment } from "./LineSegment";
 
 export enum ShapeOrigin {
     CENTER
@@ -12,13 +11,13 @@ export interface BoundingInfo {
     extent: [number, number];
 }
 
-export interface Shape {
-    scale(point: Point): Shape;
-    translate(point: Point): Shape;
+export interface GeometryPrimitive {
+    scale(point: Point): GeometryPrimitive;
+    translate(point: Point): GeometryPrimitive;
 
     getBoundingCenter(): Point;
     getBoundingRectangle(): Rectangle;
 
-    clone(): Shape;
+    clone(): GeometryPrimitive;
     toString(): string;
 }

@@ -1,6 +1,6 @@
 import { IHotkey, IHotkeyEvent } from "../../services/input/HotkeyService";
 import { IKeyboardEvent } from "../../services/input/KeyboardService";
-import { View } from "../../models/views/View";
+import { AbstractShape } from "../../models/views/AbstractShape";
 import { IPointerEvent } from "../../services/input/PointerService";
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 
@@ -48,8 +48,8 @@ export interface Tool extends IHotkey {
     leave(): void;
     keydown(e: IKeyboardEvent): void;
     keyup(e: IKeyboardEvent): void;
-    over(item: View): void;
-    out(item: View): void;
+    over(item: AbstractShape): void;
+    out(item: AbstractShape): void;
     wheel(): void;
     wheelEnd(): void;
 

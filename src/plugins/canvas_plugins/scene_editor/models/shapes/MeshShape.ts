@@ -1,24 +1,24 @@
 import { MeshObj } from '../../../../../core/models/objs/MeshObj';
-import { AfterAllViewsDeserialized, View, ViewJson } from '../../../../../core/models/views/View';
+import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from '../../../../../core/models/views/AbstractShape';
 import { Registry } from '../../../../../core/Registry';
-import { sceneAndGameViewRatio } from '../../../../../core/stores/ViewStore';
+import { sceneAndGameViewRatio } from '../../../../../core/stores/ShapeStore';
 import { colors } from '../../../../../core/ui_components/react/styles';
 import { Point } from '../../../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../../../utils/geometry/shapes/Rectangle';
-import { MeshViewRenderer } from '../../renderers/MeshViewRenderer';
+import { MeshShapeRenderer } from '../../renderers/MeshShapeRenderer';
 
-export const MeshViewType = 'mesh-view';
+export const MeshShapeType = 'mesh-shape';
 
-export interface MeshViewJson extends ViewJson {
+export interface MeshShapeJson extends ShapeJson {
     rotation: number;
     thumbnailData: string;
     color: string;
     layer: number; 
 }
 
-export class MeshView extends View {
-    viewType = MeshViewType;
+export class MeshShape extends AbstractShape {
+    viewType = MeshShapeType;
 
     protected obj: MeshObj;
 
@@ -32,7 +32,7 @@ export class MeshView extends View {
 
     constructor() {
         super();
-        this.renderer = new MeshViewRenderer();
+        this.renderer = new MeshShapeRenderer();
     }
 
     getObj(): MeshObj {
@@ -101,8 +101,8 @@ export class MeshView extends View {
         // TODO: later when ObjStores are correctly introduced, dispose obj only when removing from obj store.
     }
 
-    clone(registry: Registry): View {
-        const [clone] = MeshView.fromJson(this.toJson(), registry);
+    clone(registry: Registry): AbstractShape {
+        const [clone] = MeshShape.fromJson(this.toJson(), registry);
         clone.obj = undefined;
         clone.id = undefined;
         clone.bounds = undefined;
@@ -110,7 +110,7 @@ export class MeshView extends View {
     }
 
     deepClone(registry: Registry) {
-        const meshView = <MeshView> registry.data.view.scene.getOneSelectedView();
+        const meshView = <MeshShape> registry.data.shape.scene.getOneSelectedShape();
         const meshObj = meshView.getObj();
         let bounds = meshView.getBounds().clone();
         bounds = bounds.moveTo(bounds.getBoundingCenter());
@@ -131,10 +131,10 @@ export class MeshView extends View {
         meshClone.setBounds(bounds);
 
         registry.stores.objStore.addObj(meshObjClone);
-        registry.data.view.scene.addView(meshClone);
+        registry.data.shape.scene.addShape(meshClone);
     }
 
-    toJson(): MeshViewJson {
+    toJson(): MeshShapeJson {
         return {
             ...super.toJson(),
             rotation: this.rotation,
@@ -144,8 +144,8 @@ export class MeshView extends View {
         }
     }
 
-    static fromJson(json: MeshViewJson, registry: Registry): [MeshView, AfterAllViewsDeserialized] {
-        const meshView = new MeshView();
+    static fromJson(json: MeshShapeJson, registry: Registry): [MeshShape, AfterAllViewsDeserialized] {
+        const meshView = new MeshShape();
         meshView.id = json.id;
         meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
@@ -160,8 +160,8 @@ export class MeshView extends View {
         meshView.layer = json.layer;
 
         const afterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => meshView.addChildView(registry.data.view.scene.getById(id)));
-            json.parentId && meshView.setParent(registry.data.view.scene.getById(json.parentId));
+            json.childViewIds.map(id => meshView.addChildView(registry.data.shape.scene.getById(id)));
+            json.parentId && meshView.setParent(registry.data.shape.scene.getById(json.parentId));
         }
 
         return [meshView, afterAllViewsDeserialized];

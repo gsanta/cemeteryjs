@@ -1,14 +1,14 @@
-import { ViewRenderer } from "../../../../../core/models/views/View";
+import { ShapeRenderer } from "../../../../../core/models/views/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
 import { ScaleAxisToolId } from "../../controllers/tools/ScaleAxisTool";
-import { axisLineBounds, getAxisColor } from "../../models/views/edit/axisUtils";
-import { ScaleAxisViewType, ScaleAxisView } from "../../models/views/edit/ScaleAxisView";
+import { axisLineBounds, getAxisColor } from "../../models/shapes/edit/axisUtils";
+import { ScaleAxisShapeType, ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
 
-export class ScaleAxisViewRenderer implements ViewRenderer {
-    id = ScaleAxisViewType;
+export class ScaleAxisViewRenderer implements ShapeRenderer {
+    id = ScaleAxisShapeType;
 
     private registry: Registry;
 

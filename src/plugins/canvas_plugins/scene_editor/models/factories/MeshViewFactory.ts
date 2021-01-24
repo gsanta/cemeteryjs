@@ -1,13 +1,13 @@
 import { MeshObj, MeshObjType, MeshShapeConfig, MeshSphereConfig } from "../../../../../core/models/objs/MeshObj";
-import { AfterAllViewsDeserialized, View, ViewFactoryAdapter } from "../../../../../core/models/views/View";
+import { AfterAllViewsDeserialized, AbstractShape, ShapeFactoryAdapter } from "../../../../../core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
 import { colors } from "../../../../../core/ui_components/react/styles";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { MeshView, MeshViewJson } from "../views/MeshView";
+import { MeshShape, MeshShapeJson } from "../shapes/MeshShape";
 
-export class MeshViewFactory extends ViewFactoryAdapter {
+export class MeshViewFactory extends ShapeFactoryAdapter {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -16,7 +16,7 @@ export class MeshViewFactory extends ViewFactoryAdapter {
     }
 
     instantiate() {
-        return new MeshView();
+        return new MeshShape();
     }
 
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config: MeshShapeConfig) {
@@ -24,18 +24,18 @@ export class MeshViewFactory extends ViewFactoryAdapter {
         meshObj.color = colors.darkorchid;
         meshObj.shapeConfig = config;
 
-        const meshView: MeshView = <MeshView> this.instantiate();
+        const meshView: MeshShape = <MeshShape> this.instantiate();
         meshView.setObj(meshObj);
         meshView.setBounds(dimensions);
         meshView.setRotation(0);
     
         this.registry.stores.objStore.addObj(meshObj);
-        panel.getViewStore().addView(meshView);
+        panel.getViewStore().addShape(meshView);
     
         return meshView;
     }
 
-    instantiateFromJson(json: MeshViewJson): [View, AfterAllViewsDeserialized] {
-        return MeshView.fromJson(json, this.registry);
+    instantiateFromJson(json: MeshShapeJson): [AbstractShape, AfterAllViewsDeserialized] {
+        return MeshShape.fromJson(json, this.registry);
     }
 }

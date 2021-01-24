@@ -1,18 +1,18 @@
-import { MoveAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/MoveAxisView";
-import { RotateAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/RotateAxisView";
-import { ScaleAxisViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/edit/ScaleAxisView";
-import { MeshViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/MeshView";
-import { SpriteViewType } from "../../plugins/canvas_plugins/scene_editor/models/views/SpriteView";
+import { MoveAxisShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/edit/MoveAxisShape";
+import { RotateAxisShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/edit/RotateAxisShape";
+import { ScaleAxisShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/edit/ScaleAxisShape";
+import { MeshShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/MeshShape";
+import { SpriteShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/SpriteShape";
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
-import { View, ViewFactory, ViewTag } from '../models/views/View';
+import { AbstractShape, ShapeFactory, ShapeTag } from '../models/views/AbstractShape';
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 
 export const sceneAndGameViewRatio = 10;
 
-export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): View[] {
+export function getIntersectingViews(store: ShapeStore, rectangle: Rectangle): AbstractShape[] {
     const x = rectangle.topLeft.x;
     const y = rectangle.topLeft.y;
     const width = Math.floor(rectangle.bottomRight.x - rectangle.topLeft.x);
@@ -20,32 +20,32 @@ export function getIntersectingViews(store: ViewStore, rectangle: Rectangle): Vi
 
     const polygon = Polygon.createRectangle(x, y, width, height);
 
-    return store.getAllViews().filter(item => polygon.contains(item.getBounds().toPolygon()));
+    return store.getAllShapes().filter(item => polygon.contains(item.getBounds().toPolygon()));
 }
 
-export interface ViewStoreHook {
-    addViewHook(view: View);
-    removeViewHook(view: View);
-    addSelectionHook(views: View[]);
-    removeSelectionHook(views: View[]);
+export interface ShapeStoreHook {
+    addViewHook(view: AbstractShape);
+    removeViewHook(view: AbstractShape);
+    addSelectionHook(views: AbstractShape[]);
+    removeSelectionHook(views: AbstractShape[]);
 }
 
-export abstract class EmptyViewStoreHook implements ViewStoreHook {
-    addViewHook(view: View) {}
-    removeViewHook(view: View) {}
-    addSelectionHook(views: View[]) {}
-    removeSelectionHook(views: View[]) {}
+export abstract class EmptyShapeStoreHook implements ShapeStoreHook {
+    addViewHook(view: AbstractShape) {}
+    removeViewHook(view: AbstractShape) {}
+    addSelectionHook(views: AbstractShape[]) {}
+    removeSelectionHook(views: AbstractShape[]) {}
 }
 
-export class ViewStore {
-    protected views: View[] = [];
-    private selectedViews: View[] = [];
-    protected idMap: Map<string, View> = new Map();
-    protected byObjIdMap: Map<string, View> = new Map();
-    private viewsByType: Map<string, View[]> = new Map();
+export class ShapeStore {
+    protected shapes: AbstractShape[] = [];
+    private selectedViews: AbstractShape[] = [];
+    protected idMap: Map<string, AbstractShape> = new Map();
+    protected byObjIdMap: Map<string, AbstractShape> = new Map();
+    private viewsByType: Map<string, AbstractShape[]> = new Map();
     protected idGenerator: IdGenerator;
-    private hooks: ViewStoreHook[] = [];
-    private viewFactories: Map<string, ViewFactory> = new Map();
+    private hooks: ShapeStoreHook[] = [];
+    private viewFactories: Map<string, ShapeFactory> = new Map();
 
     readonly canvasId: string;
     private registry: Registry;
@@ -63,33 +63,33 @@ export class ViewStore {
         this.idGenerator = idGenerator;
     }
 
-    generateId(view: View): string {
+    generateId(view: AbstractShape): string {
         return this.idGenerator.generateId(view.viewType);
     }
 
-    addHook(hook: ViewStoreHook) {
+    addHook(hook: ShapeStoreHook) {
         this.hooks.push(hook);
     }
 
-    removeHook(hook: ViewStoreHook) {
+    removeHook(hook: ShapeStoreHook) {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
-    registerViewType(viewType: string, viewFactory: ViewFactory) {
+    registerViewType(viewType: string, viewFactory: ShapeFactory) {
         this.viewFactories.set(viewType, viewFactory);
     }
 
-    getViewFactory(viewType: string): ViewFactory {
+    getViewFactory(viewType: string): ShapeFactory {
         return this.viewFactories.get(viewType);
     }
 
-    addView(view: View) {
+    addShape(view: AbstractShape) {
         if (!view.id) {
             view.id = this.generateId(view);
         }
         this.idGenerator.registerExistingIdForPrefix(view.viewType, view.id);
 
-        this.views.push(view);
+        this.shapes.push(view);
         this.idMap.set(view.id, view);
         view.getObj() && this.byObjIdMap.set(view.getObj().id, view);
 
@@ -102,12 +102,12 @@ export class ViewStore {
         this.hooks.forEach(hook => hook.addViewHook(view));
     }
 
-    removeView(view: View) {
+    removeShape(view: AbstractShape) {
         if (view.isSelected()) {
-            this.removeSelectedView(view);
+            this.removeSelectedShape(view);
         }
 
-        view.deleteConstraiedViews.getViews().forEach(v => this.removeView(v));
+        view.deleteConstraiedViews.getViews().forEach(v => this.removeShape(v));
 
         this.idGenerator.unregisterExistingIdForPrefix(view.viewType, view.id);
         this.idMap.delete(view.id);
@@ -117,26 +117,26 @@ export class ViewStore {
 
         const thisViewTypes = this.viewsByType.get(view.viewType);
         thisViewTypes.splice(thisViewTypes.indexOf(view), 1);
-        this.views.splice(this.views.indexOf(view), 1);
+        this.shapes.splice(this.shapes.indexOf(view), 1);
         this.selectedViews.indexOf(view) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(view), 1);
         view.dispose();
 
         this.hooks.forEach(hook => hook.removeViewHook(view));
     }
 
-    hasView(id: string): boolean {
+    hasShape(id: string): boolean {
         return this.idMap.has(id);
     }
 
-    getById(id: string): View {
+    getById(id: string): AbstractShape {
         return this.idMap.get(id);
     }
 
-    getByObjId(objId: string): View {
+    getByObjId(objId: string): AbstractShape {
         return this.byObjIdMap.get(objId);
     }
 
-    getViewsByType(type: string): View[] {
+    getShapesByType(type: string): AbstractShape[] {
         return this.viewsByType.get(type) || [];
     }
 
@@ -144,46 +144,46 @@ export class ViewStore {
         return Array.from(this.viewsByType.keys());
     }
 
-    getAllViews(): View[]  {
-        return this.views;
+    getAllShapes(): AbstractShape[]  {
+        return this.shapes;
     }
 
-    addSelectedView(...items: View[]) {
-        items.forEach(item => item.tags.add(ViewTag.Selected));
+    addSelectedShape(...items: AbstractShape[]) {
+        items.forEach(item => item.tags.add(ShapeTag.Selected));
         this.selectedViews.push(...items);
 
         this.hooks.forEach(hook => hook.addSelectionHook(items));
         this.registry.services.event.select.emit();
     }
 
-    removeSelectedView(item: View) {
-        item.tags.delete(ViewTag.Selected)
+    removeSelectedShape(item: AbstractShape) {
+        item.tags.delete(ShapeTag.Selected)
         this.selectedViews = without(this.selectedViews, item);
 
         this.hooks.forEach(hook => hook.removeSelectionHook([item]));
         this.registry.services.event.select.emit();
     }
 
-    getSelectedViews(): View[] {
+    getSelectedShapes(): AbstractShape[] {
         return this.selectedViews;
     }
 
-    getSelectedViewsByType(type: string): View[] {
+    getSelectedShapesByType(type: string): AbstractShape[] {
         return this.selectedViews.filter(view => view.viewType === type);
     }
 
-    getOneSelectedView(): View {
+    getOneSelectedShape(): AbstractShape {
         return this.selectedViews.length > 0 && this.selectedViews[0];
     }
 
     clearSelection() {
-        this.selectedViews.forEach(item => this.removeSelectedView(item));
+        this.selectedViews.forEach(item => this.removeSelectedShape(item));
         this.selectedViews = [];
     }
 
     clear() {
-        while(this.views.length > 0) {
-            this.removeView(this.views[0]);
+        while(this.shapes.length > 0) {
+            this.removeShape(this.shapes[0]);
         }
         this.idMap = new Map();
         this.viewsByType = new Map();
@@ -192,15 +192,15 @@ export class ViewStore {
         this.clearSelection();
     }
 
-    static newInstance(canvasId: string, registry: Registry): ViewStore {
-        const viewStore = new ViewStore(canvasId, registry);
+    static newInstance(canvasId: string, registry: Registry): ShapeStore {
+        const viewStore = new ShapeStore(canvasId, registry);
         const proxy = new Proxy(viewStore, handler);
         return proxy;
     }
 }
 
 const handler = {
-    get: function(target: ViewStore, prop, receiver) {
+    get: function(target: ShapeStore, prop, receiver) {
 		var propValue = target[prop];
         if (typeof propValue != "function") {
 			return target.getById(prop);
@@ -214,7 +214,7 @@ const handler = {
     }
 };
 
-export class ViewLifeCycleHook extends EmptyViewStoreHook {
+export class ShapeLifeCycleHook extends EmptyShapeStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -222,12 +222,12 @@ export class ViewLifeCycleHook extends EmptyViewStoreHook {
         this.registry = registry;
     }
 
-    removeViewHook(view: View) {
+    removeViewHook(view: AbstractShape) {
         view.getObj() && this.registry.stores.objStore.removeObj(view.getObj());
     }
 }
 
-export class AxisControlHook extends EmptyViewStoreHook {
+export class AxisControlHook extends EmptyShapeStoreHook {
     private registry: Registry;
 
     constructor(registry: Registry) {
@@ -235,19 +235,19 @@ export class AxisControlHook extends EmptyViewStoreHook {
         this.registry = registry;
     }
 
-    addSelectionHook(views: View[]) {
-        if (views.length === 1 && (views[0].viewType === SpriteViewType || views[0].viewType === MeshViewType)) {
-            this.registry.data.view.scene.getViewFactory(MoveAxisViewType).instantiateOnSelection(views[0])
-            this.registry.data.view.scene.getViewFactory(ScaleAxisViewType).instantiateOnSelection(views[0])
-            this.registry.data.view.scene.getViewFactory(RotateAxisViewType).instantiateOnSelection(views[0])
+    addSelectionHook(views: AbstractShape[]) {
+        if (views.length === 1 && (views[0].viewType === SpriteShapeType || views[0].viewType === MeshShapeType)) {
+            this.registry.data.shape.scene.getViewFactory(MoveAxisShapeType).instantiateOnSelection(views[0])
+            this.registry.data.shape.scene.getViewFactory(ScaleAxisShapeType).instantiateOnSelection(views[0])
+            this.registry.data.shape.scene.getViewFactory(RotateAxisShapeType).instantiateOnSelection(views[0])
         }
     }
 
-    removeSelectionHook(views: View[]) {
+    removeSelectionHook(views: AbstractShape[]) {
         views.forEach(view => {
-            view.containedViews.filter(view => view.viewType === MoveAxisViewType).forEach(child => view.deleteContainedView(child));
-            view.containedViews.filter(view => view.viewType === ScaleAxisViewType).forEach(child => view.deleteContainedView(child));
-            view.containedViews.filter(view => view.viewType === RotateAxisViewType).forEach(child => view.deleteContainedView(child));
+            view.containedViews.filter(view => view.viewType === MoveAxisShapeType).forEach(child => view.deleteContainedView(child));
+            view.containedViews.filter(view => view.viewType === ScaleAxisShapeType).forEach(child => view.deleteContainedView(child));
+            view.containedViews.filter(view => view.viewType === RotateAxisShapeType).forEach(child => view.deleteContainedView(child));
         });
     }
 }

@@ -25,7 +25,7 @@ import { registerLevelSettingsPanel } from '../plugins/sidepanel_plugins/level_s
 import { Registry } from './Registry';
 import { NodeGraphHook } from './services/NodePlugin';
 import { ObjLifeCycleHook } from './stores/ObjStore';
-import { AxisControlHook, ViewLifeCycleHook } from './stores/ViewStore';
+import { AxisControlHook, ShapeLifeCycleHook } from './stores/ShapeStore';
 import { registerPhysicsImpostorDialog } from '../plugins/dialog_plugins/physics_impostor/registerPhysicsImpostorDialog';
 import { CollisionNode } from '../plugins/canvas_plugins/node_editor/models/nodes/CollisionNode';
 import { DirectionNode } from '../plugins/canvas_plugins/node_editor/models/nodes/DirectionNode';
@@ -44,11 +44,11 @@ export class Editor {
 
         // hooks
         this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
-        this.registry.data.view.scene.addHook(new ViewLifeCycleHook(this.registry));
-        this.registry.data.view.node.addHook(new ViewLifeCycleHook(this.registry));
-        this.registry.data.view.node.addHook(new NodeGraphHook(this.registry));
+        this.registry.data.shape.scene.addHook(new ShapeLifeCycleHook(this.registry));
+        this.registry.data.shape.node.addHook(new ShapeLifeCycleHook(this.registry));
+        this.registry.data.shape.node.addHook(new NodeGraphHook(this.registry));
         
-        this.registry.data.view.scene.addHook(new AxisControlHook(this.registry));
+        this.registry.data.shape.scene.addHook(new AxisControlHook(this.registry));
 
         // side panels
         registerAssetManagerPanel(this.registry);

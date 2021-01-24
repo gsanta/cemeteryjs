@@ -1,11 +1,11 @@
 import { NodeObj } from "../../../../src/core/models/objs/node_obj/NodeObj";
-import { View } from "../../../../src/core/models/views/View";
+import { AbstractShape } from "../../../../src/core/models/views/AbstractShape";
 import { Registry } from "../../../../src/core/Registry";
 import { getObjProperty, ObjTableProp } from "./objTestUtils";
 import { getViewProperty, ViewTableProp } from "./viewTestUtils";
 
 export class ModelDumper {
-    dumpViews(viewTableProps: ViewTableProp[], views: View[]) {
+    dumpViews(viewTableProps: ViewTableProp[], views: AbstractShape[]) {
         console.log(viewTableProps.join(', '))
         const columns: string[][] = [];
 
