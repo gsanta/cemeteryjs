@@ -1,31 +1,35 @@
 import { Mesh, ScaleGizmo, UtilityLayerRenderer } from "babylonjs";
-import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Bab_EngineFacade } from "../Bab_EngineFacade";
-import { IBabylonGizmo } from "./IBabylonGizmo";
 
 export const ScaleGizmoType = 'scale-gizmo';
-export class Bab_ScaleGizmo implements IBabylonGizmo {
+export class Bab_ScaleGizmo {
     private engineFacade: Bab_EngineFacade;
     gizmoType = ScaleGizmoType;
+
+    private utilLayer: UtilityLayerRenderer;
+    private gizmo: ScaleGizmo;
 
     constructor(engineFacade: Bab_EngineFacade) {
         this.engineFacade = engineFacade;
     }
 
-    show(): void {
-        throw new Error("Method not implemented.");
-    }
-    setPosition(point: Point) {
-        throw new Error("Method not implemented.");
-    }
-
     attachTo(mesh: Mesh) {
-        var utilLayer = new UtilityLayerRenderer(this.engineFacade.scene);
+        this.utilLayer = new UtilityLayerRenderer(this.engineFacade.scene);
 
-        var gizmo = new ScaleGizmo(utilLayer);
-        gizmo.attachedMesh = mesh;
+        this.gizmo = new ScaleGizmo(this.utilLayer);
+        this.gizmo.attachedMesh = mesh;
     
-        gizmo.updateGizmoRotationToMatchAttachedMesh = false;
-        gizmo.updateGizmoPositionToMatchAttachedMesh = true;
+        this.gizmo.updateGizmoRotationToMatchAttachedMesh = false;
+        this.gizmo.updateGizmoPositionToMatchAttachedMesh = true;
+    }
+
+    detach() {
+        if (this.utilLayer) {
+            this.utilLayer.dispose();
+        }
+
+        if (this.gizmo) {
+            this.gizmo.dispose();
+        }
     }
 }

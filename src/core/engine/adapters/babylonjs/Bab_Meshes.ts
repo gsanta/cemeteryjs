@@ -32,6 +32,10 @@ export  class Bab_Meshes implements IMeshAdapter {
         this.meshCreator = new MeshCreator(registry, engineFacade);
     }
 
+    hasMesh(mesh: Mesh) {
+        return Array.from(this.meshes.values()).find(meshData => meshData.meshes[0] === mesh);
+    }
+
     setPosition(meshObj: MeshObj, pos: Point_3): void {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }

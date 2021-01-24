@@ -9,9 +9,10 @@ export class Bab_ToolService {
     private readonly engineFacade: Bab_EngineFacade;
     tools: IEngineTool[] = [];
 
-    moveTool: Bab_MoveTool;
-    scaleTool: Bab_ScaleTool;
-    rotationTool: Bab_RotationTool;
+    private moveTool: Bab_MoveTool;
+    private scaleTool: Bab_ScaleTool;
+    private rotationTool: Bab_RotationTool;
+    private selectedTool: IEngineTool;
 
     constructor(engineFacade: Bab_EngineFacade) {
         this.engineFacade = engineFacade;
@@ -25,12 +26,18 @@ export class Bab_ToolService {
             this.rotationTool
         );
 
-        this.selectedTool = this.moveTool;
+        this.setSelectedTool(this.moveTool.toolType);
     }
 
     setSelectedTool(toolType: string) {
+        if (this.selectedTool) {
+            this.selectedTool.deselect();
+        }
+
         this.selectedTool = this.tools.find(tool => tool.toolType === toolType);
     }
 
-    selectedTool: IEngineTool;
+    getSelectedTool() {
+        return this.selectedTool;
+    }
 } 

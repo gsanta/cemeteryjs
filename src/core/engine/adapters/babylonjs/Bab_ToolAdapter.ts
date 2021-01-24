@@ -14,6 +14,6 @@ export class Bab_ToolAdapter implements IToolAdapter {
     }
 
     getSelectedTool(): string {
-        return this.engineFacade.toolService.selectedTool.toolType;
+        return this.engineFacade.toolService.getSelectedTool().toolType;
     }
 }

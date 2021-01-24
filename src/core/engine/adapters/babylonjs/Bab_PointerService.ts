@@ -17,7 +17,7 @@ export class Bab_PointerService {
         this.engineFacade.scene.onPointerObservable.add((eventData) => {
             switch(eventData.type) {
                 case PointerEventTypes.POINTERUP:
-                    tools.selectedTool.up(eventData);
+                    tools.getSelectedTool().up(eventData);
                 break;
             }
         });
