@@ -2,7 +2,7 @@ import { Editor } from "../../../src/core/Editor";
 import { Test_EngineFacade } from "../../../src/core/engine/adapters/test/Test_EngineFacade";
 import { Wrap_EngineFacade } from "../../../src/core/engine/adapters/wrapper/Wrap_EngineFacade";
 import { UI_Region } from "../../../src/core/plugin/UI_Panel";
-import { SceneEditorPanelId } from "../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor";
+import { SketchEditorPanelId } from "../../../src/modules/sketch_editor/main/registerSketchEditor";
 
 class FakeRenderer {
 
@@ -32,7 +32,7 @@ export class EditorExt extends Editor {
     }
 
     setup() {
-        this.registry.ui.canvas.getCanvas(SceneEditorPanelId).mounted(undefined);
+        this.registry.ui.canvas.getCanvas(SketchEditorPanelId).mounted(undefined);
         this.registry.services.render.setRenderer(UI_Region.Canvas1, () => this.fakeRenderer.renderPanel1());
         this.registry.services.render.setRenderer(UI_Region.Canvas2, () => this.fakeRenderer.renderPanel2());
         this.registry.services.render.setRenderer(UI_Region.Sidepanel, () => this.fakeRenderer.renderSidePanel());

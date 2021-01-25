@@ -1,4 +1,4 @@
- import { NodeShape, NodeShapeType } from '../../../plugins/canvas_plugins/node_editor/models/shapes/NodeShape';
+ import { NodeShape, NodeShapeType } from '../../../modules/graph_editor/main/models/shapes/NodeShape';
 import { NodeObj } from '../../models/objs/node_obj/NodeObj';
 import { Registry } from '../../Registry';
 

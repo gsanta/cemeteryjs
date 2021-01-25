@@ -7,17 +7,17 @@ import { Tool } from "../plugin/tools/Tool";
 import { AbstractShape } from "../models/views/AbstractShape";
 import { ParamController, PropContext } from "./FormController";
 import { SelectToolId } from "../plugin/tools/SelectTool";
-import { MeshToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/MeshTool";
+import { MeshToolId } from "../../modules/sketch_editor/main/controllers/tools/MeshTool";
 import { DeleteToolId } from "../plugin/tools/DeleteTool";
 import { CameraToolId } from "../plugin/tools/CameraTool";
-import { SpriteToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/SpriteTool";
-import { PathToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/PathTool";
-import { CubeToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/CubeTool";
-import { SphereToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/SphereTool";
-import { ScaleAxisToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/ScaleAxisTool";
-import { MoveAxisToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/MoveAxisTool";
-import { LightToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/LightTool";
-import { RotateAxisToolId } from "../../plugins/canvas_plugins/scene_editor/controllers/tools/RotateAxisTool";
+import { SpriteToolId } from "../../modules/sketch_editor/main/controllers/tools/SpriteTool";
+import { PathToolId } from "../../modules/sketch_editor/main/controllers/tools/PathTool";
+import { CubeToolId } from "../../modules/sketch_editor/main/controllers/tools/CubeTool";
+import { SphereToolId } from "../../modules/sketch_editor/main/controllers/tools/SphereTool";
+import { ScaleAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool";
+import { MoveAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/MoveAxisTool";
+import { LightToolId } from "../../modules/sketch_editor/main/controllers/tools/LightTool";
+import { RotateAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/RotateAxisTool";
 
 export class CommonToolController extends ParamController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }

@@ -6,13 +6,13 @@ import { createFakeMouseEvent } from './common/inputTestUtils';
 import { createFakeUIElement, createFakeUIElementForView } from './common/uiTestHelpers';
 import { findViewOrContainedView } from './common/viewTestUtils';
 import expect from 'expect';
-import { SceneEditorPanelId } from '../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor';
-import { NodeEditorPanelId } from '../../../src/plugins/canvas_plugins/node_editor/registerNodeEditor';
+import { SketchEditorPanelId } from '../../../src/modules/sketch_editor/main/registerSketchEditor';
+import { NodeEditorPanelId } from '../../../src/modules/graph_editor/registerNodeEditor';
 import { NodeEditorPerspectiveName, SceneEditorPerspectiveName } from '../../../src/core/services/UI_PerspectiveService';
 
 When('change canvas to \'{word}\'', function(panelId: string) {
     switch(panelId) {
-        case SceneEditorPanelId:
+        case SketchEditorPanelId:
             this.registry.services.uiPerspective.activatePerspective(SceneEditorPerspectiveName);
         break;
         case NodeEditorPanelId:

@@ -1,5 +1,5 @@
-import { NodeEditorPanelId } from "../../plugins/canvas_plugins/node_editor/registerNodeEditor";
-import { SceneEditorPanelId } from "../../plugins/canvas_plugins/scene_editor/registerSceneEditor";
+import { NodeEditorPanelId } from "../../modules/graph_editor/registerNodeEditor";
+import { SketchEditorPanelId } from "../../modules/sketch_editor/main/registerSketchEditor";
 import { Registry } from "../Registry";
 import { ShapeStore } from "../stores/ShapeStore";
 
@@ -9,7 +9,7 @@ export class ShapeLookup {
     node: ShapeStore;
 
     constructor(registry: Registry) {
-        this.scene = new ShapeStore(SceneEditorPanelId, registry);
+        this.scene = new ShapeStore(SketchEditorPanelId, registry);
         this.node = new ShapeStore(NodeEditorPanelId, registry);
     }
 }

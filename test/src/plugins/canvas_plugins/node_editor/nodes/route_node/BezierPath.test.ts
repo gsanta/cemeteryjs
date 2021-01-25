@@ -1,6 +1,6 @@
 import { PathObj } from "../../../../../../../src/core/models/objs/PathObj";
 import { Point } from "../../../../../../../src/utils/geometry/shapes/Point";
-import { BezierCurvePath } from "../../../../../../../src/plugins/canvas_plugins/node_editor/models/BezierCurvePath";
+import { BezierCurvePath } from "../../../../../../../src/modules/graph_editor/main/models/BezierCurvePath";
 
 
 

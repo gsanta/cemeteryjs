@@ -3,10 +3,10 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../Registry";
 import { NodePortObj } from "../../objs/NodePortObj";
 import { PortDirection } from "../../objs/node_obj/NodeParam";
-import { NodeConnectionShape } from "../../../../plugins/canvas_plugins/node_editor/models/shapes/NodeConnectionShape";
+import { NodeConnectionShape } from "../../../../modules/graph_editor/main/models/shapes/NodeConnectionShape";
 import { AbstractShape, ShapeJson } from "../AbstractShape";
 import { ChildShape } from "./ChildShape";
-import { NodeShape } from "../../../../plugins/canvas_plugins/node_editor/models/shapes/NodeShape";
+import { NodeShape } from "../../../../modules/graph_editor/main/models/shapes/NodeShape";
 
 export function isJoinPointView(view: AbstractShape) {
     return view && view.viewType === NodePortViewType;

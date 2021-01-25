@@ -6,7 +6,7 @@ import { NodeObjDeserialize } from './NodeObjDeserializer';
 import { NodeObjSerializer } from './NodeObjSerializer';
 import { NodePortObj, NodePortObjJson } from '../NodePortObj';
 import { NodeParamJson, NodeParam } from './NodeParam';
-import { INodeListener } from '../../../../plugins/canvas_plugins/node_editor/api/INodeListener';
+import { INodeListener } from '../../../../modules/graph_editor/main/api/INodeListener';
 
 export const NodeObjType = 'node-obj';
 

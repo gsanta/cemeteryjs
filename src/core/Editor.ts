@@ -1,35 +1,35 @@
-import { registerGameViewer } from '../plugins/canvas_plugins/game_viewer/registerGameViewer';
-import { AnimationGroupNode } from '../plugins/canvas_plugins/node_editor/models/nodes/AnimationGroupNode';
-import { FilterMeshNode } from '../plugins/canvas_plugins/node_editor/models/nodes/FilterMeshNode';
-import { KeyboardNode } from '../plugins/canvas_plugins/node_editor/models/nodes/KeyboardNode';
-import { MeshNode } from '../plugins/canvas_plugins/node_editor/models/nodes/MeshNode';
-import { MeshVisibilityNode } from '../plugins/canvas_plugins/node_editor/models/nodes/MeshVisibilityNode';
-import { MoveNode } from '../plugins/canvas_plugins/node_editor/models/nodes/MoveNode';
-import { RayCasterNode } from '../plugins/canvas_plugins/node_editor/models/nodes/RayCasterNode';
-import { RayHelperNode } from '../plugins/canvas_plugins/node_editor/models/nodes/RayHelperNode';
-import { RemoveMeshNode } from '../plugins/canvas_plugins/node_editor/models/nodes/RemoveMeshNode';
-import { RotateNode } from '../plugins/canvas_plugins/node_editor/models/nodes/RotateNode';
-import { TriggerZoneNode } from '../plugins/canvas_plugins/node_editor/models/nodes/TriggerZoneNode';
-import { registerNodeEditor } from '../plugins/canvas_plugins/node_editor/registerNodeEditor';
-import { registerNodeSelectorPlugin } from '../plugins/sidepanel_plugins/node_selector/registerNodeSelectorPlugin';
-import { registerObjSettings } from '../plugins/sidepanel_plugins/scene_obj_settings/registerObjSettings';
-import { registerSceneEditor } from '../plugins/canvas_plugins/scene_editor/registerSceneEditor';
-import { registerMeshLoaderDialog } from '../plugins/dialog_plugins/mesh_loader/registerMeshLoaderDialog';
-import { registerSpriteSheetManagerDialog } from '../plugins/dialog_plugins/spritesheet_manager/registerSpriteSheetManagerDialog';
-import { registerThumbnailCanvas } from '../plugins/dialog_plugins/thumbnail/registerThumbnailCanvas';
-import { registerThumbnaildialog } from '../plugins/dialog_plugins/thumbnail/registerThumbnailDialog';
-import { registerAssetManagerPanel } from '../plugins/sidepanel_plugins/asset_manager/registerAssetManagerPanel';
-import { registerFileSettingsPanel } from '../plugins/sidepanel_plugins/file_settings/registerFileSettingsPanel';
-import { registerLayoutSettingsPanel } from '../plugins/sidepanel_plugins/layout_settings/registerLayoutSettingsPanel';
-import { registerLevelSettingsPanel } from '../plugins/sidepanel_plugins/level_settings/registerLevelSettingsPlugin';
+import { registerSceneEditor } from '../modules/scene_editor/main/registerSceneEditor';
+import { AnimationGroupNode } from '../modules/graph_editor/main/models/nodes/AnimationGroupNode';
+import { FilterMeshNode } from '../modules/graph_editor/main/models/nodes/FilterMeshNode';
+import { KeyboardNode } from '../modules/graph_editor/main/models/nodes/KeyboardNode';
+import { MeshNode } from '../modules/graph_editor/main/models/nodes/MeshNode';
+import { MeshVisibilityNode } from '../modules/graph_editor/main/models/nodes/MeshVisibilityNode';
+import { MoveNode } from '../modules/graph_editor/main/models/nodes/MoveNode';
+import { RayCasterNode } from '../modules/graph_editor/main/models/nodes/RayCasterNode';
+import { RayHelperNode } from '../modules/graph_editor/main/models/nodes/RayHelperNode';
+import { RemoveMeshNode } from '../modules/graph_editor/main/models/nodes/RemoveMeshNode';
+import { RotateNode } from '../modules/graph_editor/main/models/nodes/RotateNode';
+import { TriggerZoneNode } from '../modules/graph_editor/main/models/nodes/TriggerZoneNode';
+import { registerNodeEditor } from '../modules/graph_editor/registerNodeEditor';
+import { registerNodeSelectorPlugin } from '../modules/graph_editor/contribs/side_panel/node_library/registerNodeLibraryPlugin';
+import { registerObjProperties } from '../modules/sketch_editor/contribs/side_panel/obj_properties/registerObjProperties';
+import { registerSketchEditor } from '../modules/sketch_editor/main/registerSketchEditor';
+import { registerMeshLoaderDialog } from '../modules/contribs/dialogs/mesh_loader/registerMeshLoaderDialog';
+import { registerSpriteSheetManagerDialog } from '../modules/contribs/dialogs/spritesheet_manager/registerSpriteSheetManagerDialog';
+import { registerThumbnailCanvas } from '../modules/sketch_editor/contribs/dialog/thumbnail/registerThumbnailCanvas';
+import { registerThumbnaildialog } from '../modules/sketch_editor/contribs/dialog/thumbnail/registerThumbnailDialog';
+import { registerAssetManagerPanel } from '../modules/contribs/side_panel/asset_manager/registerAssetManagerPanel';
+import { registerFileSettingsPanel } from '../modules/contribs/side_panel/file_settings/registerFileSettingsPanel';
+import { registerLayoutSettingsPanel } from '../modules/contribs/side_panel/layout_settings/registerLayoutSettingsPanel';
+import { registerLevelSettingsPanel } from '../modules/contribs/side_panel/level_settings/registerLevelSettingsPlugin';
 import { Registry } from './Registry';
 import { NodeGraphHook } from './services/NodePlugin';
 import { ObjLifeCycleHook } from './stores/ObjStore';
 import { AxisControlHook, ShapeLifeCycleHook } from './stores/ShapeStore';
-import { registerPhysicsImpostorDialog } from '../plugins/dialog_plugins/physics_impostor/registerPhysicsImpostorDialog';
-import { CollisionNode } from '../plugins/canvas_plugins/node_editor/models/nodes/CollisionNode';
-import { DirectionNode } from '../plugins/canvas_plugins/node_editor/models/nodes/DirectionNode';
-import { ArrayNode } from '../plugins/canvas_plugins/node_editor/models/nodes/ArrayNode';
+import { registerPhysicsImpostorDialog } from '../modules/contribs/dialogs/physics_impostor/registerPhysicsImpostorDialog';
+import { CollisionNode } from '../modules/graph_editor/main/models/nodes/CollisionNode';
+import { DirectionNode } from '../modules/graph_editor/main/models/nodes/DirectionNode';
+import { ArrayNode } from '../modules/graph_editor/main/models/nodes/ArrayNode';
 
 export class Editor {
     registry: Registry;
@@ -56,7 +56,7 @@ export class Editor {
         registerAssetManagerPanel(this.registry);
         registerFileSettingsPanel(this.registry);
         registerLayoutSettingsPanel(this.registry);
-        registerObjSettings(this.registry);
+        registerObjProperties(this.registry);
         registerLevelSettingsPanel(this.registry)
 
         // dialogs
@@ -65,9 +65,9 @@ export class Editor {
         registerMeshLoaderDialog(this.registry);
         registerPhysicsImpostorDialog(this.registry);
 
-        registerSceneEditor(this.registry);
+        registerSketchEditor(this.registry);
         registerNodeEditor(this.registry);
-        registerGameViewer(this.registry);
+        registerSceneEditor(this.registry);
         registerThumbnailCanvas(this.registry);
     
         // nodes

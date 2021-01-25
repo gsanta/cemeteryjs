@@ -1,8 +1,8 @@
-import { MoveAxisShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/edit/MoveAxisShape";
-import { RotateAxisShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/edit/RotateAxisShape";
-import { ScaleAxisShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/edit/ScaleAxisShape";
-import { MeshShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/MeshShape";
-import { SpriteShapeType } from "../../plugins/canvas_plugins/scene_editor/models/shapes/SpriteShape";
+import { MoveAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape";
+import { RotateAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape";
+import { ScaleAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape";
+import { MeshShapeType } from "../../modules/sketch_editor/main/models/shapes/MeshShape";
+import { SpriteShapeType } from "../../modules/sketch_editor/main/models/shapes/SpriteShape";
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";

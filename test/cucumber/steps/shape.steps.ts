@@ -2,8 +2,8 @@ import { Given, TableDefinition, Then, World } from "cucumber";
 import expect from 'expect';
 import { AbstractShape } from "../../../src/core/models/views/AbstractShape";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../src/plugins/canvas_plugins/node_editor/registerNodeEditor";
-import { SceneEditorPanelId } from "../../../src/plugins/canvas_plugins/scene_editor/registerSceneEditor";
+import { NodeEditorPanelId } from "../../../src/modules/graph_editor/registerNodeEditor";
+import { SketchEditorPanelId } from "../../../src/modules/sketch_editor/main/registerSketchEditor";
 import { ModelDumper } from "./common/ModelDumper";
 import { collectViewTableProps, getViewProperty, ViewTableProp } from "./common/viewTestUtils";
 import { NodeEditorTestUtils } from "./utils/canvas/NodeEditorTestUtils";
@@ -14,7 +14,7 @@ Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: Table
         case NodeEditorPanelId:
             NodeEditorTestUtils.createViewsFromTable(this.registry, tableDef);
             break;
-        case SceneEditorPanelId:
+        case SketchEditorPanelId:
             SceneEditorTestUtils.createViewsFromTable(this.registry, tableDef);
             break;
     }

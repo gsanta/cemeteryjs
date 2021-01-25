@@ -1,11 +1,11 @@
 import Split from 'split.js';
-import { GameViewerPanelId } from '../../plugins/canvas_plugins/game_viewer/registerGameViewer';
-import { NodeEditorPanelId } from '../../plugins/canvas_plugins/node_editor/registerNodeEditor';
-import { NodeListPanelId } from '../../plugins/sidepanel_plugins/node_selector/registerNodeSelectorPlugin';
-import { ObjectSettingsPanelId } from '../../plugins/sidepanel_plugins/scene_obj_settings/registerObjSettings';
-import { SceneEditorPanelId } from '../../plugins/canvas_plugins/scene_editor/registerSceneEditor';
-import { FileSettingsPanelId } from '../../plugins/sidepanel_plugins/file_settings/registerFileSettingsPanel';
-import { LayoutSettingsPanelId } from '../../plugins/sidepanel_plugins/layout_settings/registerLayoutSettingsPanel';
+import { SceneEditorPanelId } from '../../modules/scene_editor/main/registerSceneEditor';
+import { NodeEditorPanelId } from '../../modules/graph_editor/registerNodeEditor';
+import { NodeListPanelId } from '../../modules/graph_editor/contribs/side_panel/node_library/registerNodeLibraryPlugin';
+import { ObjectPropertiesPanelId } from '../../modules/sketch_editor/contribs/side_panel/obj_properties/registerObjProperties';
+import { SketchEditorPanelId } from '../../modules/sketch_editor/main/registerSketchEditor';
+import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_settings/registerFileSettingsPanel';
+import { LayoutSettingsPanelId } from '../../modules/contribs/side_panel/layout_settings/registerLayoutSettingsPanel';
 import { UI_Region } from '../plugin/UI_Panel';
 import { Registry } from '../Registry';
 
@@ -131,19 +131,19 @@ export class UI_PerspectiveService {
 
         this.perspectives.push({
             name: SceneEditorPerspectiveName,
-            canvas1Plugin: SceneEditorPanelId,
-            canvas2Plugin: GameViewerPanelId,
+            canvas1Plugin: SketchEditorPanelId,
+            canvas2Plugin: SceneEditorPanelId,
             sidepanelPlugins: [
                 FileSettingsPanelId,
                 LayoutSettingsPanelId,
-                ObjectSettingsPanelId,
+                ObjectPropertiesPanelId,
             ]
         });
 
         this.perspectives.push({
             name: NodeEditorPerspectiveName,
             canvas1Plugin: NodeEditorPanelId,
-            canvas2Plugin: GameViewerPanelId,
+            canvas2Plugin: SceneEditorPanelId,
             sidepanelPlugins: [
                 FileSettingsPanelId,
                 LayoutSettingsPanelId,

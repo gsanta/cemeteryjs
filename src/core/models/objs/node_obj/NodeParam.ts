@@ -1,4 +1,4 @@
-import { INodeListener } from "../../../../plugins/canvas_plugins/node_editor/api/INodeListener";
+import { INodeListener } from "../../../../modules/graph_editor/main/api/INodeListener";
 import { Registry } from "../../../Registry";
 import { colors } from "../../../ui_components/react/styles";
 import { NodeObj } from "./NodeObj";
