@@ -22,6 +22,7 @@ export class Bab_PositionGizmo {
     
         this.gizmo.updateGizmoRotationToMatchAttachedMesh = false;
         this.gizmo.updateGizmoPositionToMatchAttachedMesh = true;
+        this.gizmo.snapDistance = 10;
 
         this.gizmo.onDragEndObservable.add(() => {
             this.onDragFuncs.forEach(func => func())

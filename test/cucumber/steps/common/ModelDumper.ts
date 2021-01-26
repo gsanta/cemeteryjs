@@ -1,5 +1,5 @@
 import { NodeObj } from "../../../../src/core/models/objs/node_obj/NodeObj";
-import { AbstractShape } from "../../../../src/core/models/views/AbstractShape";
+import { AbstractShape } from "../../../../src/core/models/shapes/AbstractShape";
 import { Registry } from "../../../../src/core/Registry";
 import { getObjProperty, ObjTableProp } from "./objTestUtils";
 import { getViewProperty, ViewTableProp } from "./viewTestUtils";

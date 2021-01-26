@@ -1,3 +1,4 @@
+import { ShapeObservable } from "../../../../../core/models/ShapeObservable";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
@@ -11,8 +12,8 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     private initialScale: Point_3;
     private initialBounds: Rectangle;
 
-    constructor(panel: AbstractCanvasPanel, registry: Registry) {
-        super(ScaleAxisToolId, panel, registry, ScaleAxisShapeType);
+    constructor(panel: AbstractCanvasPanel, registry: Registry, shapeObservable: ShapeObservable) {
+        super(ScaleAxisToolId, panel, registry, shapeObservable, ScaleAxisShapeType);
     }
 
     down() {
@@ -54,8 +55,6 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
         const scale = this.meshView.getObj().getScale();
 
         scale.y = this.initialScale.y * this.getDiffRatio().len();
-
-        const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
 
         this.meshView.getObj().setScale(scale);
     }

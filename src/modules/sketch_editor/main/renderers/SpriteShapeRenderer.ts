@@ -1,4 +1,4 @@
-import { ShapeRenderer, ShapeTag } from "../../../../core/models/views/AbstractShape";
+import { ShapeRenderer, ShapeTag } from "../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";

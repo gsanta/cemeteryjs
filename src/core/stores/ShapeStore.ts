@@ -6,7 +6,7 @@ import { SpriteShapeType } from "../../modules/sketch_editor/main/models/shapes/
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
-import { AbstractShape, ShapeFactory, ShapeTag } from '../models/views/AbstractShape';
+import { AbstractShape, ShapeFactory, ShapeTag } from '../models/shapes/AbstractShape';
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 

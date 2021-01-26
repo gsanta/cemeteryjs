@@ -1,6 +1,6 @@
 import { PathObj, PathObjType } from "../../../../../core/models/objs/PathObj";
-import { PathPoinShape } from "../../../../../core/models/views/child_views/PathPointShape";
-import { ShapeFactoryAdapter } from "../../../../../core/models/views/AbstractShape";
+import { PathPoinShape } from "../../../../../core/models/shapes/child_views/PathPointShape";
+import { ShapeFactoryAdapter } from "../../../../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";

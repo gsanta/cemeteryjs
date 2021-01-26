@@ -3,7 +3,7 @@ import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { ToolAdapter, createRectFromMousePointer } from './ToolAdapter';
 import { UI_Region } from '../UI_Panel';
-import { AbstractShape } from '../../models/views/AbstractShape';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { ShapeStore } from '../../stores/ShapeStore';
 

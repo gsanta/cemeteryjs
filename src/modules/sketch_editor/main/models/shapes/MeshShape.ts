@@ -1,5 +1,5 @@
 import { MeshObj } from '../../../../../core/models/objs/MeshObj';
-import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from '../../../../../core/models/views/AbstractShape';
+import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from '../../../../../core/models/shapes/AbstractShape';
 import { Registry } from '../../../../../core/Registry';
 import { sceneAndGameViewRatio } from '../../../../../core/stores/ShapeStore';
 import { colors } from '../../../../../core/ui_components/react/styles';
@@ -54,8 +54,6 @@ export class MeshShape extends AbstractShape {
 
     setRotation(angle: number) {
         this.rotation = angle;
-        const objRot = this.obj.getRotation();
-        this.obj.setRotation(new Point_3(objRot.x, angle, objRot.z));
     }
     
     selectHoveredSubview() {}
@@ -63,10 +61,6 @@ export class MeshShape extends AbstractShape {
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
 
-        const center = this.bounds.getBoundingCenter();
-        const objPos = center.div(sceneAndGameViewRatio).negateY();
-        const objPos3 = this.obj.getPosition();
-        this.obj.setPosition(new Point_3(objPos.x, objPos3.y, objPos.y))
         this.containedViews.forEach(child => child.calcBounds());
         this.childViews.forEach(boundView => boundView.calcBounds());
     }

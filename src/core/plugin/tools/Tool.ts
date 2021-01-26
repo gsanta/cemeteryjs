@@ -1,6 +1,6 @@
 import { IHotkey, IHotkeyEvent } from "../../services/input/HotkeyService";
 import { IKeyboardEvent } from "../../services/input/KeyboardService";
-import { AbstractShape } from "../../models/views/AbstractShape";
+import { AbstractShape } from "../../models/shapes/AbstractShape";
 import { IPointerEvent } from "../../services/input/PointerService";
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 

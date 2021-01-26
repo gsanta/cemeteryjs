@@ -1,5 +1,5 @@
 import { TableDefinition } from "cucumber";
-import { AbstractShape } from "../../../../src/core/models/views/AbstractShape";
+import { AbstractShape } from "../../../../src/core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
 import { ShapeStore } from "../../../../src/core/stores/ShapeStore";
 

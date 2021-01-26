@@ -1,4 +1,4 @@
-import { ShapeJson } from "../models/views/AbstractShape";
+import { ShapeJson } from "../models/shapes/AbstractShape";
 
 export interface ViewGroupJson {
     viewType: string;

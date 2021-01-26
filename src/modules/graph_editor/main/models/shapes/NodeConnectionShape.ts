@@ -3,9 +3,9 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { Registry } from "../../../../../core/Registry";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { PortDataFlow } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { NodePortShape } from "../../../../../core/models/views/child_views/NodePortShape";
+import { NodePortShape } from "../../../../../core/models/shapes/child_views/NodePortShape";
 import { NodeShape } from "./NodeShape";
-import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from '../../../../../core/models/views/AbstractShape';
+import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from '../../../../../core/models/shapes/AbstractShape';
 import { colors } from "../../../../../core/ui_components/react/styles";
 
 export const NodeConnectionShapeType = 'node-connection-shape';

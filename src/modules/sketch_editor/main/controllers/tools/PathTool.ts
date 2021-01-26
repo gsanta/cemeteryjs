@@ -1,7 +1,7 @@
 import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { PathPoinShape, PathPointViewType } from "../../../../../core/models/views/child_views/PathPointShape";
+import { PathPoinShape, PathPointViewType } from "../../../../../core/models/shapes/child_views/PathPointShape";
 import { PathShape, PathShapeType } from "../../models/shapes/PathShape";
-import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
 import { IHotkeyEvent } from "../../../../../core/services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from "../../../../../core/services/input/KeyboardService";

@@ -1,5 +1,5 @@
 import { SpriteObj, SpriteObjJson } from "../../../../../core/models/objs/SpriteObj";
-import { AbstractShape, ShapeJson } from "../../../../../core/models/views/AbstractShape";
+import { AbstractShape, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
 import { colors } from "../../../../../core/ui_components/react/styles";
 import { Point } from "../../../../../utils/geometry/shapes/Point";

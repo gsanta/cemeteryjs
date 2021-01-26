@@ -1,5 +1,5 @@
 import { MeshShapeType } from "../../models/shapes/MeshShape";
-import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";

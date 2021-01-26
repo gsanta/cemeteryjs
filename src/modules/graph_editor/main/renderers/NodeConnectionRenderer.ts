@@ -1,4 +1,4 @@
-import { ShapeTag } from "../../../../core/models/views/AbstractShape";
+import { ShapeTag } from "../../../../core/models/shapes/AbstractShape";
 import { IRenderer } from "../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";

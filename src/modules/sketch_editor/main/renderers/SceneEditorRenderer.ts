@@ -1,4 +1,4 @@
-import { sortViewsByLayer, AbstractShape } from "../../../../core/models/views/AbstractShape";
+import { sortViewsByLayer, AbstractShape } from "../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";

@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
-import { NodePortShape, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortShape";
-import { ShapeJson, AbstractShape } from "../../../../../core/models/views/AbstractShape";
+import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
+import { ShapeJson, AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { FormController, InputParamType } from "../../../../../core/controller/FormController";
 import { Registry } from "../../../../../core/Registry";
 import { NodeGraph } from "../../../../../core/services/node/NodeGraph";

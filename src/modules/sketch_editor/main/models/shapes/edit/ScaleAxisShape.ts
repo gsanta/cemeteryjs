@@ -1,8 +1,8 @@
 import { CanvasAxis } from "../../../../../../core/models/misc/CanvasAxis";
 import { IObj } from "../../../../../../core/models/objs/IObj";
 import { PathObj } from "../../../../../../core/models/objs/PathObj";
-import { ChildShape } from "../../../../../../core/models/views/child_views/ChildShape";
-import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../../../../../../core/models/views/AbstractShape";
+import { ChildShape } from "../../../../../../core/models/shapes/child_views/ChildShape";
+import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../../core/Registry";
 import { Point } from "../../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../utils/geometry/shapes/Rectangle";

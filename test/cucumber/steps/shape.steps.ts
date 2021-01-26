@@ -1,6 +1,6 @@
 import { Given, TableDefinition, Then, World } from "cucumber";
 import expect from 'expect';
-import { AbstractShape } from "../../../src/core/models/views/AbstractShape";
+import { AbstractShape } from "../../../src/core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../src/modules/graph_editor/registerNodeEditor";
 import { SketchEditorPanelId } from "../../../src/modules/sketch_editor/main/registerSketchEditor";

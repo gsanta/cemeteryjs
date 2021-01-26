@@ -4,7 +4,7 @@ import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { NodeObjType, NodeObjJson } from "../../../../core/models/objs/node_obj/NodeObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from "../../../../core/models/views/AbstractShape";
+import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 import { LightShapeType } from "../models/shapes/LightShape";

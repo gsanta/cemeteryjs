@@ -5,7 +5,7 @@ import { PathObjType } from "../../../../core/models/objs/PathObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { ShapeJson } from "../../../../core/models/views/AbstractShape";
+import { ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 

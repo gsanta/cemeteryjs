@@ -2,7 +2,7 @@ import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models
 import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { NodeObj, NodeObjJson, NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { AbstractShape, ShapeJson } from "../../../../core/models/views/AbstractShape";
+import { AbstractShape, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 import { NodeShapeType } from "../models/shapes/NodeShape";

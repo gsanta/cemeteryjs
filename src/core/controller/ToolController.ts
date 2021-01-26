@@ -4,7 +4,7 @@ import { IPointerEvent } from "../services/input/PointerService";
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { UI_Element } from "../ui_components/elements/UI_Element";
 import { Tool } from "../plugin/tools/Tool";
-import { AbstractShape } from "../models/views/AbstractShape";
+import { AbstractShape } from "../models/shapes/AbstractShape";
 import { ParamController, PropContext } from "./FormController";
 import { SelectToolId } from "../plugin/tools/SelectTool";
 import { MeshToolId } from "../../modules/sketch_editor/main/controllers/tools/MeshTool";

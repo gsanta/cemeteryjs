@@ -1,7 +1,7 @@
 import { IGameObj } from "../../../../../core/models/objs/IGameObj";
 import { IObj } from "../../../../../core/models/objs/IObj";
 import { LightObj } from "../../../../../core/models/objs/LightObj";
-import { AbstractShape, AfterAllViewsDeserialized, ShapeJson } from '../../../../../core/models/views/AbstractShape';
+import { AbstractShape, AfterAllViewsDeserialized, ShapeJson } from '../../../../../core/models/shapes/AbstractShape';
 import { Registry } from "../../../../../core/Registry";
 import { LightShapeRenderer } from "../../renderers/LightShapeRenderer";
 import { Point } from "../../../../../utils/geometry/shapes/Point";

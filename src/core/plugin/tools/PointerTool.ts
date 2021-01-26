@@ -1,5 +1,5 @@
-import { NodePortViewType } from '../../models/views/child_views/NodePortShape';
-import { AbstractShape, ShapeTag } from '../../models/views/AbstractShape';
+import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
+import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { ShapeStore } from '../../stores/ShapeStore';

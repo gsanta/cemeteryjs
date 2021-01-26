@@ -1,5 +1,5 @@
 import { without } from "../../utils/geometry/Functions";
-import { AbstractShape, ShapeTag } from '../models/views/AbstractShape';
+import { AbstractShape, ShapeTag } from '../models/shapes/AbstractShape';
 
 export class SelectionStore {
     items: AbstractShape[] = [];

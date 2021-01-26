@@ -1,4 +1,4 @@
-import { ShapeRenderer } from "../../../../core/models/views/AbstractShape";
+import { ShapeRenderer } from "../../../../core/models/shapes/AbstractShape";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { PathShape } from "../models/shapes/PathShape";
 

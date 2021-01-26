@@ -5,7 +5,7 @@ import { sceneAndGameViewRatio } from "../../../core/stores/ShapeStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { MeshShape } from "./models/shapes/MeshShape";
 
-export class SketchEditorSynchronizer {
+export class SceneToSketchSynchronizer {
     private registry: Registry;
 
     constructor(registry: Registry) {

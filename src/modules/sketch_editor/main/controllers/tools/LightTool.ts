@@ -1,6 +1,6 @@
 import { MeshObj, MeshObjType } from "../../../../../core/models/objs/MeshObj";
 import { MeshShape, MeshShapeType } from "../../models/shapes/MeshShape";
-import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";

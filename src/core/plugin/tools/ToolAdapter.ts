@@ -1,6 +1,6 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { AbstractShape } from '../../models/views/AbstractShape';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
 import { IHotkeyEvent } from '../../services/input/HotkeyService';
 import { IKeyboardEvent } from '../../services/input/KeyboardService';

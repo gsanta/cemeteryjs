@@ -1,5 +1,5 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { AbstractShape } from "../../models/views/AbstractShape";
+import { AbstractShape } from "../../models/shapes/AbstractShape";
 import { Registry } from "../../Registry";
 import { MousePointer, ToolController } from "../../controller/ToolController";
 import { UI_Element } from "../../ui_components/elements/UI_Element";

@@ -2,7 +2,7 @@ import { IPluginJson } from '../../plugin/IPluginExporter';
 import { Registry } from '../../Registry';
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
-import { ShapeJson } from '../../models/views/AbstractShape';
+import { ShapeJson } from '../../models/shapes/AbstractShape';
 import { AbstractModuleExporter } from './AbstractModuleExporter';
 
 export interface ViewExporter {

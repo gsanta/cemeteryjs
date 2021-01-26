@@ -8,16 +8,19 @@ import { MeshShape } from "../../models/shapes/MeshShape";
 import { MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { RotateAxisView } from "../../models/shapes/edit/RotateAxisShape";
 import { ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
+import { ShapeObservable } from "../../../../../core/models/ShapeObservable";
 
 export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter {
     protected downView: T;
     protected meshView: MeshShape;
     protected hoveredView: T;
-    private viewType: string;
+    protected shapeObservable: ShapeObservable;
+    private shapeType: string;
 
-    constructor(id: string, panel: AbstractCanvasPanel, registry: Registry, viewType: string) {
+    constructor(id: string, panel: AbstractCanvasPanel, registry: Registry, shapeObservable: ShapeObservable,  shapeType: string) {
         super(id, panel, registry);
-        this.viewType = viewType;
+        this.shapeObservable = shapeObservable;
+        this.shapeType = shapeType;
     }
 
     over(view: T) {
@@ -34,7 +37,7 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === this.viewType) {
+        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === this.shapeType) {
             this.downView = <T> this.registry.services.pointer.hoveredView;
             this.meshView = <MeshShape> this.downView.containerView;
         }

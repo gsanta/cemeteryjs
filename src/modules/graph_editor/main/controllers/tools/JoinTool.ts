@@ -1,6 +1,6 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodePortShape, NodePortViewType } from "../../../../../core/models/views/child_views/NodePortShape";
-import { AbstractShape } from "../../../../../core/models/views/AbstractShape";
+import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../../core/plugin/tools/Tool';

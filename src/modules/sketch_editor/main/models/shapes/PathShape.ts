@@ -1,6 +1,6 @@
 import { PathObj } from "../../../../../core/models/objs/PathObj";
-import { AbstractShape, ShapeJson } from "../../../../../core/models/views/AbstractShape";
-import { EditPointViewJson, PathPoinShape } from '../../../../../core/models/views/child_views/PathPointShape';
+import { AbstractShape, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
+import { EditPointViewJson, PathPoinShape } from '../../../../../core/models/shapes/child_views/PathPointShape';
 import { Registry } from "../../../../../core/Registry";
 import { maxBy, minBy } from "../../../../../utils/geometry/Functions";
 import { Point } from "../../../../../utils/geometry/shapes/Point";

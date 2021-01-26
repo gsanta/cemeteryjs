@@ -34,7 +34,9 @@ import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
 import { UIModule } from "../../../core/services/ModuleService";
 import { SceneEditorExporter } from "./io/SceneEditorExporter";
 import { SceneEditorImporter } from "./io/SceneEditorImporter";
-import { SketchEditorSynchronizer } from "./SketchEditorSynchronizer";
+import { SceneToSketchSynchronizer } from "./SceneToSketchSynchronizer";
+import { ShapeObservable } from "../../../core/models/ShapeObservable";
+import { SketchToSceneSynchronizer } from "./SketchToSceneSynchronizer";
 
 export const SketchEditorPanelId = 'sketch-editor';
 
@@ -54,6 +56,9 @@ export function registerSketchEditor(registry: Registry) {
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {
     const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SketchEditorPanelId, 'Scene editor');
+
+    const observable = new ShapeObservable();
+    const sketchToSceneSynchronizer = new SketchToSceneSynchronizer(registry, observable);
 
     const propControllers = [
         new ZoomInController(registry),
@@ -75,12 +80,12 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
         new SelectTool(canvas, registry.data.shape.scene, registry),
         new DeleteTool(canvas, registry.data.shape.scene, registry),
         new CameraTool(canvas, registry),
-        new MoveAxisTool(canvas, registry),
+        new MoveAxisTool(canvas, registry, observable),
         new CubeTool(canvas, registry.data.shape.scene, registry),
         new SphereTool(canvas, registry.data.shape.scene, registry),
         new GroundTool(canvas, registry.data.shape.scene, registry),
-        new ScaleAxisTool(canvas, registry),
-        new RotateAxisTool(canvas, registry)
+        new ScaleAxisTool(canvas, registry, observable),
+        new RotateAxisTool(canvas, registry, observable)
     ];
 
     canvas.renderer = new SceneEditorRenderer(registry, canvas);
@@ -98,7 +103,7 @@ function createCanvas(registry: Registry): AbstractCanvasPanel {
     registry.data.shape.scene.registerViewType(RotateAxisShapeType, new RotateAxisShapeFactory(registry));
     registry.data.shape.scene.registerViewType(PathShapeType, new PathViewFactory(registry));
 
-    new SketchEditorSynchronizer(registry);
+    new SceneToSketchSynchronizer(registry);
 
     return canvas;
 }
