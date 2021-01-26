@@ -37,6 +37,7 @@ export  class Bab_Meshes implements IMeshAdapter {
     }
 
     setPosition(meshObj: MeshObj, pos: Point_3): void {
+        console.log('bab setposition')
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
@@ -65,6 +66,7 @@ export  class Bab_Meshes implements IMeshAdapter {
     } 
 
     translate(meshObj: MeshObj, delta: Point_3, isGlobal: boolean): void {
+        console.log('bab translate')
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return; }
 
@@ -153,11 +155,16 @@ export  class Bab_Meshes implements IMeshAdapter {
         const meshData = this.meshes.get(meshObj);
         if (!meshData) { return undefined; }
 
-        const mesh = meshData[0];
+        const mesh = meshData.meshes[0];
 
         mesh.updateFacetData();
-        const positions = mesh.getFacetLocalPositions();
+
         const normals = mesh.getFacetLocalNormals();
+        
+        const positions: Vector3[] = [];
+        for (let i = 0; i < 12; i++) {
+            positions.push(mesh.getFacetPosition(i));
+        }
         
         const sideInfos: MeshSideInfo[] = [];
 
