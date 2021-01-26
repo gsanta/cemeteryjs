@@ -1,14 +1,14 @@
+import { AnimationGroup, Color3, Skeleton, StandardMaterial, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
-import { Axis, Space, Vector3, StandardMaterial, Texture, Skeleton, Color3, AnimationGroup } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { IMeshAdapter } from "../../IMeshAdapter";
-import { BasicShapeType, MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
+import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { BasicShapeType, MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
 import { RectangleFactory } from "../../../stores/RectangleFactory";
-import { Bab_EngineFacade } from "./Bab_EngineFacade";
-import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { toHexString } from "../../../ui_components/react/colorUtils";
-import { toVector3 } from "./Bab_Utils";
+import { IMeshAdapter, MeshSideInfo } from "../../IMeshAdapter";
+import { Bab_EngineFacade } from "./Bab_EngineFacade";
+import { toPoint3, toVector3 } from "./Bab_Utils";
 import { MeshCreator } from "./mesh/MeshCreator";
 
 export interface MeshData {
@@ -147,6 +147,32 @@ export  class Bab_Meshes implements IMeshAdapter {
         if (!meshData) { return undefined; }
 
         return meshData.meshes[0].showBoundingBox = show;
+    }
+
+    getBoundingBoxSideInfo(meshObj: MeshObj): MeshSideInfo[] {
+        const meshData = this.meshes.get(meshObj);
+        if (!meshData) { return undefined; }
+
+        const mesh = meshData[0];
+
+        mesh.updateFacetData();
+        const positions = mesh.getFacetLocalPositions();
+        const normals = mesh.getFacetLocalNormals();
+        
+        const sideInfos: MeshSideInfo[] = [];
+
+        for (let i = 0; i < positions.length; i+=2) {
+            const center = positions[i].clone().add(positions[i + 1]).scale(0.5);
+            const normal = normals[i];
+
+            sideInfos.push({
+                sideCenter: toPoint3(center),
+                normal: toPoint3(normal),
+                meshObj
+            });
+        }
+
+        return sideInfos;
     }
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {

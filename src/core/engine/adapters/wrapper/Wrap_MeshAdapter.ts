@@ -1,8 +1,8 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
-import { MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
+import { MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
-import { IMeshAdapter } from "../../IMeshAdapter";
+import { IMeshAdapter, MeshSideInfo } from "../../IMeshAdapter";
 import { Wrap_EngineFacade } from "./Wrap_EngineFacade";
 import { executeEnginesUntilValReturned } from "./Wrap_Utils";
 
@@ -73,6 +73,10 @@ export  class Wrap_Meshes implements IMeshAdapter {
 
     getDimensions(meshObj: MeshObj): Point {
         return executeEnginesUntilValReturned(this.engineFacade, (index: number) => this.engineFacade.engines[index].meshes.getDimensions(meshObj));
+    }
+
+    getBoundingBoxSideInfo(meshObj: MeshObj): MeshSideInfo[] {
+        return this.engineFacade.realEngine.meshes.getBoundingBoxSideInfo(meshObj);
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

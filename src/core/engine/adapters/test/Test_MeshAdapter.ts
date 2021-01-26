@@ -2,7 +2,7 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { MeshObj, MeshTreeNode } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
-import { IMeshAdapter } from "../../IMeshAdapter";
+import { IMeshAdapter, MeshSideInfo } from "../../IMeshAdapter";
 import { Test_EngineFacade } from "./Test_EngineFacade";
 
 export  class Test_MeshAdapter implements IMeshAdapter {
@@ -73,6 +73,10 @@ export  class Test_MeshAdapter implements IMeshAdapter {
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         return false;
+    }
+
+    getBoundingBoxSideInfo(meshObj: MeshObj): MeshSideInfo[] {
+        return undefined;
     }
 
     async createInstance(meshObj: MeshObj): Promise<boolean> {

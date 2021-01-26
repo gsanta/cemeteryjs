@@ -2,6 +2,12 @@ import { MeshObj } from "../models/objs/MeshObj";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../utils/geometry/shapes/Point_3";
 
+export interface MeshSideInfo {
+    sideCenter: Point_3;
+    normal: Point_3;
+    meshObj: MeshObj;
+}
+
 export interface IMeshAdapter {
     translate(meshObj: MeshObj, delta: Point_3, isGlobal: boolean): void;
     setRotation(meshObj: MeshObj, rot: Point_3): void;
@@ -38,6 +44,7 @@ export interface IMeshAdapter {
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean;
 
     getDimensions(meshObj: MeshObj): Point;
+    getBoundingBoxSideInfo(meshObj: MeshObj): MeshSideInfo[];
     createInstance(meshObj: MeshObj): Promise<boolean>;
     deleteInstance(meshObj: MeshObj): void;
 
