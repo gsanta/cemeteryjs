@@ -39,7 +39,7 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
     down() {
         if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === this.shapeType) {
             this.downView = <T> this.registry.services.pointer.hoveredView;
-            this.meshView = <MeshShape> this.downView.containerView;
+            this.meshView = <MeshShape> this.downView.containerShape;
         }
     }
 

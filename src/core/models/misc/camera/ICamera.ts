@@ -1,5 +1,5 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { MousePointer } from "../../../controller/ToolController";
+import { PointerTracker } from "../../../controller/ToolController";
 
 export interface ICamera {
     zoomIn(): boolean;
@@ -9,7 +9,7 @@ export interface ICamera {
     getCenterPoint(): Point;
     getScale(): number;
     getTranslate(): Point;
-    pan(pointer: MousePointer): void;
-    rotate(pointer: MousePointer): void;
+    pan(pointer: PointerTracker): void;
+    rotate(pointer: PointerTracker): void;
     resize(screenSize: Point): void;
 }

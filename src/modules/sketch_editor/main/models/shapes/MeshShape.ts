@@ -61,15 +61,15 @@ export class MeshShape extends AbstractShape {
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
 
-        this.containedViews.forEach(child => child.calcBounds());
-        this.childViews.forEach(boundView => boundView.calcBounds());
+        this.containedShapes.forEach(child => child.calcBounds());
+        this.childShapes.forEach(boundView => boundView.calcBounds());
     }
 
     moveTo(point: Point) {
         this.bounds.moveCenterTo(point);
 
-        this.containedViews.forEach(child => child.calcBounds());
-        this.childViews.forEach(boundView => boundView.calcBounds());
+        this.containedShapes.forEach(child => child.calcBounds());
+        this.childShapes.forEach(boundView => boundView.calcBounds());
     }
 
     getBounds(): Rectangle {
@@ -87,7 +87,7 @@ export class MeshShape extends AbstractShape {
         if (!this.bounds.getBoundingCenter().equalTo(center)) {
             this.obj.setPosition(new Point_3(pos2.x, objPos ? objPos.y : 0, pos2.y));
         }
-        this.containedViews.forEach(child => child.calcBounds());
+        this.containedShapes.forEach(child => child.calcBounds());
     }
 
 

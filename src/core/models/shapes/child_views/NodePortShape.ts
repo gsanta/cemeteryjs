@@ -22,14 +22,14 @@ export class NodePortShape extends ChildShape {
     viewType = NodePortViewType;
     id: string;
     point: Point;
-    containerView: NodeShape;
+    containerShape: NodeShape;
     private connections: NodeConnectionShape[] = [];
     protected obj: NodePortObj;
     bounds: Rectangle;
 
     constructor(parent: NodeShape, obj: NodePortObj) {
         super();
-        this.containerView = parent;
+        this.containerShape = parent;
         this.obj = obj;
         this.id = obj.id;
     }
@@ -43,7 +43,7 @@ export class NodePortShape extends ChildShape {
     }
 
     getAbsolutePosition() {
-        return new Point(this.containerView.getBounds().topLeft.x + this.point.x, this.containerView.getBounds().topLeft.y + this.point.y); 
+        return new Point(this.containerShape.getBounds().topLeft.x + this.point.x, this.containerShape.getBounds().topLeft.y + this.point.y); 
     }
 
     move(delta: Point) {
@@ -66,19 +66,19 @@ export class NodePortShape extends ChildShape {
     removeConnection(connection: NodeConnectionShape) {
         const otherPortView = connection.getOtherPortView(this);
         this.obj.removeConnectedPort(otherPortView.getObj());
-        this.containerView.deleteConstraiedViews.removeView(connection);
+        this.containerShape.deleteConstraiedViews.removeView(connection);
         this.connections = this.connections.filter(conn => conn !== connection);
     }
 
     addConnection(connection: NodeConnectionShape) {
         if (!this.connections.includes(connection)) {
             this.connections.push(connection);
-            this.containerView.deleteConstraiedViews.addView(connection);
+            this.containerShape.deleteConstraiedViews.addView(connection);
         }
     }
 
     toString() {
-        return `${this.viewType}: ${this.containerView.id} ${this.point.toString()}`;
+        return `${this.viewType}: ${this.containerShape.id} ${this.point.toString()}`;
     }
 
     toJson(): NoePortViewJson {

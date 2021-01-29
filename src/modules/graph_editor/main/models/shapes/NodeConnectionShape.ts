@@ -124,11 +124,11 @@ export class NodeConnectionShape extends AbstractShape {
             point2X: this.outputPoint.x,
             point2Y: this.outputPoint.y,
             joinPoint1: {
-                nodeId: this.nodePortView1.containerView.id,
+                nodeId: this.nodePortView1.containerShape.id,
                 joinPointName: this.nodePortView1.getObj().getNodeParam().name
             },
             joinPoint2: {
-                nodeId: this.nodePortview2.containerView.id,
+                nodeId: this.nodePortview2.containerShape.id,
                 joinPointName: this.nodePortview2.getObj().getNodeParam().name
             }
         };

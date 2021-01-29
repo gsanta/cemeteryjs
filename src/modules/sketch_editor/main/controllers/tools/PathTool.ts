@@ -43,7 +43,7 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
         }
 
         if (item.viewType === PathPointViewType) {
-            if (item.containerView.viewType === PathShapeType) {
+            if (item.containerShape.viewType === PathShapeType) {
                 hover = true;
             }
         }

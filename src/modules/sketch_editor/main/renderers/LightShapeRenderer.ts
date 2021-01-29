@@ -31,6 +31,6 @@ export class LightShapeRenderer implements ShapeRenderer {
         image.width = lightView.getBounds().getWidth();
         image.height = lightView.getBounds().getHeight();
 
-        lightView.containedViews.forEach(child => child.renderer.renderInto(canvas, child, panel));
+        lightView.containedShapes.forEach(child => child.renderer.renderInto(canvas, child, panel));
     }
 }

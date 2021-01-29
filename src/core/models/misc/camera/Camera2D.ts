@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { MousePointer } from "../../../controller/ToolController";
+import { PointerTracker } from "../../../controller/ToolController";
 import { RenderTask } from "../../../services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
@@ -29,7 +29,7 @@ export class Camera2D implements ICamera {
         this.setCenter(centerPoint, scale);
     }
 
-    pan(pointer: MousePointer) {
+    pan(pointer: PointerTracker) {
         const delta = pointer.getScreenDiff().div(this.getScale());
         this.setViewBox(this.viewBox.clone().translate(new Point(-delta.x, -delta.y)));
     }
@@ -147,7 +147,7 @@ export class Camera2D implements ICamera {
         return false;
     }
 
-    rotate(pointer: MousePointer): void { throw new Error("Rotation is for 3d cameras, this camera does not support it."); }
+    rotate(pointer: PointerTracker): void { throw new Error("Rotation is for 3d cameras, this camera does not support it."); }
 
     private getNextManualZoomStep(): number {
         let currentStep = this.calcLogarithmicStep(this.getScale());

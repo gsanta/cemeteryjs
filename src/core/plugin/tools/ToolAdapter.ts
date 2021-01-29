@@ -6,10 +6,10 @@ import { IHotkeyEvent } from '../../services/input/HotkeyService';
 import { IKeyboardEvent } from '../../services/input/KeyboardService';
 import { IPointerEvent } from '../../services/input/PointerService';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { MousePointer } from '../../controller/ToolController';
+import { PointerTracker } from '../../controller/ToolController';
 import { Cursor, Tool } from './Tool';
 
-export function createRectFromMousePointer(pointer: MousePointer): Rectangle {
+export function createRectFromMousePointer(pointer: PointerTracker): Rectangle {
     const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
     const minY = pointer.down.y < pointer.curr.y ? pointer.down.y : pointer.curr.y;
     const maxX = pointer.down.x >= pointer.curr.x ? pointer.down.x : pointer.curr.x;

@@ -31,7 +31,7 @@ export class RotateAxisViewRenderer implements ShapeRenderer {
     }
 
     private renderBoundingRect(group: UI_SvgGroup, axisView: RotateAxisView) {
-        const center = axisView.containerView.getBounds().getBoundingCenter();
+        const center = axisView.containerShape.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.css = {
@@ -55,7 +55,7 @@ export class RotateAxisViewRenderer implements ShapeRenderer {
     }
 
     private renderArrowLine(group: UI_SvgGroup, axisView: RotateAxisView) {
-        const center = axisView.containerView.getBounds().getBoundingCenter();
+        const center = axisView.containerShape.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.css = {

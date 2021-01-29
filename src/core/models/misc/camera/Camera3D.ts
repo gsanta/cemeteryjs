@@ -2,7 +2,7 @@ import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonj
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineFacade';
-import { MousePointer } from '../../../controller/ToolController';
+import { PointerTracker } from '../../../controller/ToolController';
 import { Registry } from '../../../Registry';
 import { ICamera } from './ICamera';
 
@@ -47,7 +47,7 @@ export class Camera3D implements ICamera {
         this.engine && this.engine.engine && this.engine.engine.resize();
     }
 
-    pan(pointer: MousePointer) {
+    pan(pointer: PointerTracker) {
         const directionToZoomLocation = pointer.down.subtract(pointer.curr);
         const panningX = directionToZoomLocation.x * (1-this.camera.inertia);
         const panningY = directionToZoomLocation.y * (1-this.camera.inertia);
@@ -124,7 +124,7 @@ export class Camera3D implements ICamera {
         return new Rectangle(new Point(0, 0), new Point(this.engine.engine.getRenderWidth(), this.engine.engine.getRenderHeight()));
     }
 
-    rotate(pointer: MousePointer) {
+    rotate(pointer: PointerTracker) {
         const offsetX = pointer.currScreen.x - pointer.prevScreen.x;
         const offsetY = pointer.currScreen.y - pointer.prevScreen.y;
         this.changeInertialAlphaBetaFromOffsets(offsetX, offsetY, this.camera);

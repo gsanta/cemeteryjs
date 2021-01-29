@@ -64,7 +64,7 @@ export class CanvasContextDependentToolController extends ParamController<any> {
 }
 
 
-export class MousePointer {
+export class PointerTracker {
     down: Point;
     curr: Point;
     prev: Point;

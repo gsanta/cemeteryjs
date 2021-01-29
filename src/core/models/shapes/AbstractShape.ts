@@ -55,11 +55,11 @@ export abstract class AbstractShape implements IControlledModel {
     tags: Set<ShapeTag> = new Set();
     layer: number = 10;
 
-    containerView: AbstractShape;
-    containedViews: AbstractShape[] = [];
+    containerShape: AbstractShape;
+    containedShapes: AbstractShape[] = [];
 
     parentView: AbstractShape;
-    childViews: AbstractShape[] = [];
+    childShapes: AbstractShape[] = [];
 
     controller: FormController = undefined;
     paramController: UIController = {};
@@ -95,24 +95,24 @@ export abstract class AbstractShape implements IControlledModel {
     }
 
     isContainedView(): boolean {
-        return !!this.containerView;
+        return !!this.containerShape;
     }
 
     addContainedView(child: ChildShape) {
-        this.containedViews.push(child);
+        this.containedShapes.push(child);
         child.calcBounds();
     }
 
     deleteContainedView(child: AbstractShape) {
-        this.containedViews.splice(this.containedViews.indexOf(child), 1);    
+        this.containedShapes.splice(this.containedShapes.indexOf(child), 1);    
     }
 
     setContainerView(parent: AbstractShape) {
-        this.containerView = parent;
+        this.containerShape = parent;
     }
 
     getChildViews(): AbstractShape[] {
-        return this.childViews;
+        return this.childShapes;
     }
 
     getDeleteOnCascadeViews(): AbstractShape[] {
@@ -120,14 +120,14 @@ export abstract class AbstractShape implements IControlledModel {
     }
 
     addChildView(view: AbstractShape) {
-        this.childViews = Array.from(new Set([...this.childViews, view]));
+        this.childShapes = Array.from(new Set([...this.childShapes, view]));
         if (view.parentView !== this) {
             view.setParent(this);
         }
     }
 
     removeChildView(view: AbstractShape) {
-        this.childViews.splice(this.childViews.indexOf(view), 1);
+        this.childShapes.splice(this.childShapes.indexOf(view), 1);
     }
 
     getParent(): AbstractShape {
@@ -159,9 +159,9 @@ export abstract class AbstractShape implements IControlledModel {
             id: this.id,
             type: this.viewType,
             dimensions: this.bounds ? this.bounds.toString() : undefined,
-            objId: this.obj ? this.obj.id : (this.containerView && this.containerView.obj) ? this.containerView.obj.id : undefined,
+            objId: this.obj ? this.obj.id : (this.containerShape && this.containerShape.obj) ? this.containerShape.obj.id : undefined,
             parentId: this.parentView && this.parentView.id,
-            childViewIds: this.childViews.map(view => view.id)
+            childViewIds: this.childShapes.map(view => view.id)
         };
     }
 

@@ -25,11 +25,11 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         if (!hoveredItem) { return; }
 
         if (hoveredItem.isContainedView()) {
-            if (!hoveredItem.containerView.isSelected()) {
+            if (!hoveredItem.containerShape.isSelected()) {
                 this.viewStore.clearSelection();
-                this.viewStore.addSelectedShape(hoveredItem.containerView);
+                this.viewStore.addSelectedShape(hoveredItem.containerShape);
             }
-            hoveredItem.containerView.setActiveContainedView(hoveredItem);
+            hoveredItem.containerShape.setActiveContainedView(hoveredItem);
             this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
         } else {
             this.viewStore.clearSelection();
@@ -78,7 +78,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         }
         
         view.tags.add(ShapeTag.Hovered);
-        view.containerView?.tags.add(ShapeTag.Hovered);
+        view.containerShape?.tags.add(ShapeTag.Hovered);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 
@@ -89,7 +89,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         } 
         
         view.tags.delete(ShapeTag.Hovered);
-        view.containerView?.tags.delete(ShapeTag.Hovered);
+        view.containerShape?.tags.delete(ShapeTag.Hovered);
         this.registry.services.render.scheduleRendering(this.panel.region);
     }
 

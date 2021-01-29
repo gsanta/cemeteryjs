@@ -64,7 +64,7 @@ export function findViewOrContainedView(viewStore: ShapeStore, viewId: string): 
 
         if (!view) { throw new Error(invalidPathMessage); }
 
-        view = view.containedViews.find(v => v.id === ids[1]);
+        view = view.containedShapes.find(v => v.id === ids[1]);
     } else {
         view = viewStore.getById(viewId);
     } 

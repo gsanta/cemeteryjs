@@ -55,7 +55,7 @@ export class JoinTool extends PointerTool {
 
             this.registry.services.history.createSnapshot();
 
-            console.log((inputPort.containerView.getObj() as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
+            console.log((inputPort.containerShape.getObj() as NodeObj).getPorts().map(port => `${port.getNodeParam().name} ${port.hasConnectedPort()}`).join(', '))
 
         }
 

@@ -59,7 +59,7 @@ Then('contained views of \'{word}\' are:', function(viewId: string, tableDef: Ta
         throw new Error(`View with id '${viewId}' not found on canvas '${canvasPanel.id}'`);1
     }
 
-    canvasContains(tableDef, view.containedViews, true);
+    canvasContains(tableDef, view.containedShapes, true);
 });
 
 Then('contained views of \'{word}\' partially are:', function(viewId: string, tableDef: TableDefinition) {
@@ -71,7 +71,7 @@ Then('contained views of \'{word}\' partially are:', function(viewId: string, ta
         throw new Error(`View with id '${viewId}' not found on canvas '${canvasPanel.id}'`);1
     }
 
-    canvasContains(tableDef, view.containedViews, false);
+    canvasContains(tableDef, view.containedShapes, false);
 });
 
 Then('dump contained views of \'{word}\':', function(viewId: string, tableDef: TableDefinition) {
@@ -84,7 +84,7 @@ Then('dump contained views of \'{word}\':', function(viewId: string, tableDef: T
     
     const viewTableProps = collectViewTableProps(tableDef);
     
-    new ModelDumper().dumpViews(viewTableProps, view.containedViews);
+    new ModelDumper().dumpViews(viewTableProps, view.containedShapes);
 });
 
 Then('view properties are:', function (tableDef: TableDefinition) {

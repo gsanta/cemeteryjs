@@ -1,7 +1,7 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { AbstractShape } from "../../models/shapes/AbstractShape";
 import { Registry } from "../../Registry";
-import { MousePointer, ToolController } from "../../controller/ToolController";
+import { PointerTracker, ToolController } from "../../controller/ToolController";
 import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../../plugin/tools/Tool";
 
@@ -33,7 +33,7 @@ export class PointerService {
 
     // hoveredPlugin: AbstractCanvasPlugin;
 
-    pointer: MousePointer = new MousePointer();
+    pointer: PointerTracker = new PointerTracker();
 
     private registry: Registry;
 

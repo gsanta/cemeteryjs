@@ -18,6 +18,6 @@ export class SpriteShapeRenderer implements ShapeRenderer {
 
         rect.strokeColor = view.tags.has(ShapeTag.Selected) ? colors.views.highlight : 'black';
 
-        view.containedViews.forEach(child => child.renderer.renderInto(canvas, child, panel));
+        view.containedShapes.forEach(child => child.renderer.renderInto(canvas, child, panel));
     }
 }

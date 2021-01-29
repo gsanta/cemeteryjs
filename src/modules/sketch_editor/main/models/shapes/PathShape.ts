@@ -27,7 +27,7 @@ export class PathShape extends AbstractShape {
     viewType = PathShapeType;
 
     protected obj: PathObj;
-    containedViews: PathPoinShape[];
+    containedShapes: PathPoinShape[];
     id: string;
     radius = 5;
     str: string;
@@ -47,24 +47,24 @@ export class PathShape extends AbstractShape {
 
     addPathPoint(pathPoint: PathPoinShape) {
         pathPoint.id = `${this.id}-path-point-this.children.length`;
-        this.containedViews.push(pathPoint);
+        this.containedShapes.push(pathPoint);
         this.bounds = this.calcBoundingBox();
         this.setActiveContainedView(pathPoint);
         this.update();
     }
 
     update() {
-        this.obj.points = this.containedViews.map(point => point.point.clone().divX(9.3).divY(10).negateY());
+        this.obj.points = this.containedShapes.map(point => point.point.clone().divX(9.3).divY(10).negateY());
         this.str = undefined;
     }
 
     private calcBoundingBox() {
-        if (this.containedViews.length === 0) { return NULL_BOUNDING_BOX; }
+        if (this.containedShapes.length === 0) { return NULL_BOUNDING_BOX; }
 
-        const minX = minBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.x - b.point.x).point.x;
-        const maxX = maxBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.x - b.point.x).point.x;
-        const minY = minBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.y - b.point.y).point.y;
-        const maxY = maxBy<PathPoinShape>(this.containedViews as PathPoinShape[], (a, b) => a.point.y - b.point.y).point.y;
+        const minX = minBy<PathPoinShape>(this.containedShapes as PathPoinShape[], (a, b) => a.point.x - b.point.x).point.x;
+        const maxX = maxBy<PathPoinShape>(this.containedShapes as PathPoinShape[], (a, b) => a.point.x - b.point.x).point.x;
+        const minY = minBy<PathPoinShape>(this.containedShapes as PathPoinShape[], (a, b) => a.point.y - b.point.y).point.y;
+        const maxY = maxBy<PathPoinShape>(this.containedShapes as PathPoinShape[], (a, b) => a.point.y - b.point.y).point.y;
 
         return new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
     }
@@ -79,11 +79,11 @@ export class PathShape extends AbstractShape {
 
         this.str = '';
         
-        let pathPoint = <PathPoinShape> this.containedViews[0];
+        let pathPoint = <PathPoinShape> this.containedShapes[0];
         this.str += `M ${pathPoint.point.x} ${pathPoint.point.y}`;
 
-        for (let i = 1; i < this.containedViews.length; i++) {
-            pathPoint = <PathPoinShape> this.containedViews[i];
+        for (let i = 1; i < this.containedShapes.length; i++) {
+            pathPoint = <PathPoinShape> this.containedShapes[i];
             this.str += `L ${pathPoint.point.x} ${pathPoint.point.y}`;
         }
 
@@ -91,7 +91,7 @@ export class PathShape extends AbstractShape {
     }
 
     move(point: Point) {
-        this.containedViews.forEach((p: PathPoinShape) => p.point.add(point));
+        this.containedShapes.forEach((p: PathPoinShape) => p.point.add(point));
 
         this.str = undefined;
     }
@@ -113,7 +113,7 @@ export class PathShape extends AbstractShape {
     toJson(): PathShapeJson {
         return {
             ...super.toJson(),
-            editPoints: this.containedViews.map(ep => ep.toJson()),
+            editPoints: this.containedShapes.map(ep => ep.toJson()),
         }
     }
 

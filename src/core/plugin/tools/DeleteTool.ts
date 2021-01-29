@@ -27,7 +27,7 @@ export class DeleteTool extends PointerTool {
         if (!hoveredItem) { return; }
 
         if (hoveredItem.isContainedView()) {
-            hoveredItem.containerView.deleteContainedView(hoveredItem);
+            hoveredItem.containerShape.deleteContainedView(hoveredItem);
         } else {
             this.viewStore.removeShape(hoveredItem);
         }

@@ -1,9 +1,9 @@
 import { AbstractShape } from "../AbstractShape";
 
 export abstract class ChildShape extends AbstractShape {
-    containerView: AbstractShape;
+    containerShape: AbstractShape;
 
     isSelected() {
-        return this.containerView.isSelected();
+        return this.containerShape.isSelected();
     }
 }

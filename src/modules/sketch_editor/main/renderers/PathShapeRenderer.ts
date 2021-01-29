@@ -7,7 +7,7 @@ export class PathShapeRenderer implements ShapeRenderer {
         const group = canvas.group(pathView.id);
         group.isInteractive = false;
 
-        if (pathView.containedViews.length > 1) {
+        if (pathView.containedShapes.length > 1) {
             const highlightPath = group.path();
             highlightPath.d = pathView.serializePath();
             highlightPath.data = pathView;
@@ -30,7 +30,7 @@ export class PathShapeRenderer implements ShapeRenderer {
             }
         }
 
-        pathView.containedViews.forEach(editPoint => {
+        pathView.containedShapes.forEach(editPoint => {
             const circle = group.circle();
 
             circle.cx = editPoint.point.x;

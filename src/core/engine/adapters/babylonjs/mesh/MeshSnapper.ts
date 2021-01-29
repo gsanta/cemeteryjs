@@ -1,23 +1,87 @@
+import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { PointerTracker } from "../../../../controller/ToolController";
 import { MeshObj, MeshObjType } from "../../../../models/objs/MeshObj";
 import { Registry } from "../../../../Registry";
+import { sceneAndGameViewRatio } from "../../../../stores/ShapeStore";
 import { MeshSideInfo } from "../../../IMeshAdapter";
 
 export class MeshSnapper {
     private registry: Registry;
+    private currSnapInfo: [MeshSideInfo, MeshSideInfo] = undefined;
+    private currPointerAfterSnap: Point;
+    private snapTurnedOff = false;
 
     constructor(registry: Registry) {
         this.registry = registry;
     }
 
-    snap(guest: MeshSideInfo, host: MeshSideInfo): Point_3 {
+    isSnapped(): boolean {
+        return !!this.currSnapInfo
+    }
+
+    /**
+     * If the meshObj is snapped it will test if it should be unsnapped and unsnaps it if needed,
+     * otherwise it tests for snap and performs it if needed.
+     * @param meshObj The meshObj to snap
+     * @param pointerTracker the current mouse/touch pointer
+     * @returns whether a snap or unsnap was performed
+     */
+    trySnapOrUnsnap(meshObj: MeshObj, pointerTracker: PointerTracker): boolean {
+        if (!this.currSnapInfo) {
+            return this.trySnap(meshObj, pointerTracker);
+        } else {
+            return this.tryUnsnap(pointerTracker);
+        }
+    }
+
+    trySnap(meshObj: MeshObj, pointerTracker: PointerTracker) {
+        if (this.snapTurnedOff) {
+            return false;
+        }
+
+        const snapInfo = this.testForSnap(meshObj);
+        if (snapInfo) {
+            this.snap(...snapInfo);
+            this.currSnapInfo = snapInfo;
+            this.currPointerAfterSnap = pointerTracker.curr.clone();
+            // this.registry.data.scene.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
+
+            return true;
+        }
+
+        return false;
+    }
+
+    tryUnsnap(pointerTracker: PointerTracker): boolean {
+        if (this.snapTurnedOff) {
+            return false;
+        }
+
+        let pointerDiff = pointerTracker.curr.clone().subtract(this.currPointerAfterSnap);
+        const pointerDiff3 = new Point_3(pointerDiff.x, 0, -pointerDiff.y).div(sceneAndGameViewRatio);
+        const unsnapped = this.unsnap(this.currSnapInfo[0], this.currSnapInfo[1], pointerDiff3);
+        if (unsnapped) {
+            this.currSnapInfo = undefined;
+            this.currPointerAfterSnap = undefined;
+            this.snapTurnedOff = true;
+
+            setTimeout(() => this.snapTurnedOff = false , 100);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private snap(guest: MeshSideInfo, host: MeshSideInfo): Point_3 {
         const diff = host.sideCenter.clone().subtract(guest.sideCenter);
         
         guest.meshObj.translate(diff);
         return diff;
     }
 
-    unsnap(side1Info: MeshSideInfo, side2Info: MeshSideInfo, pointerOffset: Point_3): boolean {
+    private unsnap(side1Info: MeshSideInfo, side2Info: MeshSideInfo, pointerOffset: Point_3): boolean {
         const side1Center = side1Info.sideCenter.clone().add(pointerOffset);
         const side2Center = side2Info.sideCenter;
 
@@ -29,18 +93,18 @@ export class MeshSnapper {
         return false;
     }
 
-    getSnapInfo(meshObj: MeshObj): [MeshSideInfo, MeshSideInfo] {
+    private testForSnap(meshObj: MeshObj): [MeshSideInfo, MeshSideInfo] {
         const allMeshes = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType).filter(obj => obj !== meshObj);
 
         for (let targetMesh of allMeshes) {
-            const snapInfo = this.shouldSnap(meshObj, targetMesh);
+            const snapInfo = this.testForUnsnap(meshObj, targetMesh);
             if (snapInfo) {
                 return snapInfo;
             }
         }
     }
 
-    private shouldSnap(meshObj1: MeshObj, meshObj2: MeshObj): [MeshSideInfo, MeshSideInfo] {
+    private testForUnsnap(meshObj1: MeshObj, meshObj2: MeshObj): [MeshSideInfo, MeshSideInfo] {
         const mesh1SideInfo = this.registry.engine.meshes.getBoundingBoxSideInfo(meshObj1); 
         const mesh2SideInfo = this.registry.engine.meshes.getBoundingBoxSideInfo(meshObj2);
         
@@ -56,11 +120,11 @@ export class MeshSnapper {
     private shouldSnapSides(mesh1SideInfo: MeshSideInfo, mesh2SideInfo: MeshSideInfo) {
         return (
             mesh1SideInfo.normal.equalTo(mesh2SideInfo.normal.negate()) &&
-            this.isWithinSnapDistance(mesh1SideInfo.sideCenter, mesh2SideInfo.sideCenter)
+            this.isSnapDistanceReached(mesh1SideInfo.sideCenter, mesh2SideInfo.sideCenter)
         );
     }
 
-    private isWithinSnapDistance(side1Center: Point_3, side2Center: Point_3) {
+    private isSnapDistanceReached(side1Center: Point_3, side2Center: Point_3) {
         return side1Center.distanceTo(side2Center) < 3;
     }
 

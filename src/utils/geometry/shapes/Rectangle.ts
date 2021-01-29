@@ -21,6 +21,7 @@ export class Rectangle implements GeometryPrimitive {
     translate(point: Point): Rectangle {
         const topLeft = this.topLeft.addX(point.x).addY(point.y);
         const bottomRight = this.bottomRight.addX(point.x).addY(point.y);
+        this.recalc();
         return new Rectangle(topLeft, bottomRight);
     }
 
@@ -65,6 +66,7 @@ export class Rectangle implements GeometryPrimitive {
     scale(amount: Point): Rectangle {
         this.setWidth(this.getWidth() * amount.x);
         this.setHeight(this.getHeight() * amount.y);
+        this.recalc();
         return this;
     }
 
@@ -76,6 +78,7 @@ export class Rectangle implements GeometryPrimitive {
         const diff = pos.subtract(this.topLeft);
         const topLeft = this.topLeft.add(diff);
         const bottomRight = this.bottomRight.add(diff);
+        this.recalc();
         return new Rectangle(topLeft, bottomRight);
     }
 
@@ -88,6 +91,7 @@ export class Rectangle implements GeometryPrimitive {
         const h = this.getHeight();
         this.topLeft = this.topLeft.setX(pos.x - h / 2).setY(pos.y - w / 2);
         this.bottomRight = this.bottomRight.setX(this.topLeft.x + w).setY(this.topLeft.y + h);
+        this.recalc();
     }
 
     div(num: number): Rectangle {

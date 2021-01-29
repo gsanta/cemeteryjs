@@ -16,26 +16,26 @@ export class PathPoinShape extends ChildShape {
     id: string;
     viewType = PathPointViewType;
     point: Point;
-    readonly containerView: PathShape;
+    readonly containerShape: PathShape;
 
     constructor(parent: PathShape, point?: Point) {
         super();
         this.point = point;
-        this.containerView = parent;
+        this.containerShape = parent;
     }
 
     getObj(): PathObj {
-        return this.containerView.getObj();
+        return this.containerShape.getObj();
     }
 
     setObj(obj: PathObj) {
-        this.containerView.setObj(obj);
+        this.containerShape.setObj(obj);
     }
 
     move(delta: Point) {
         this.point.add(delta);
-        this.containerView.str = undefined;
-        this.containerView.update();
+        this.containerShape.str = undefined;
+        this.containerShape.update();
     }
 
     getBounds(): Rectangle {
@@ -53,14 +53,14 @@ export class PathPoinShape extends ChildShape {
     }
 
     toString() {
-        return `EditPoint: ${this.containerView.id} ${this.point.toString()}`
+        return `EditPoint: ${this.containerShape.id} ${this.point.toString()}`
     }
 
     toJson(): EditPointViewJson {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            parentId: this.containerView.id,
+            parentId: this.containerShape.id,
         }
     }
 

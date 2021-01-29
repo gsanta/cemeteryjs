@@ -52,7 +52,7 @@ export class ScaleAxisView extends ChildShape {
     viewType = ScaleAxisShapeType;
     point: Point;
     readonly axis: CanvasAxis;
-    readonly containerView: AbstractShape;
+    readonly containerShape: AbstractShape;
 
     constructor(registry: Registry, axis: CanvasAxis) {
         super();
@@ -63,11 +63,11 @@ export class ScaleAxisView extends ChildShape {
     }
 
     getObj(): IObj {
-        return this.containerView.getObj();
+        return this.containerShape.getObj();
     }
 
     setObj(obj: PathObj) {
-        this.containerView.setObj(obj);
+        this.containerShape.setObj(obj);
     }
 
     move(delta: Point) {
@@ -83,7 +83,7 @@ export class ScaleAxisView extends ChildShape {
     }
 
     calcBounds() {
-        const center = this.containerView.getBounds().getBoundingCenter();
+        const center = this.containerShape.getBounds().getBoundingCenter();
         this.setBounds(new Rectangle(new Point(center.x - 8, center.y - 60), new Point(center.x + 8, center.y)));
     }
 
@@ -97,7 +97,7 @@ export class ScaleAxisView extends ChildShape {
         return {
             ...super.toJson(),
             point: this.point.toString(),
-            parentId: this.containerView.id,
+            parentId: this.containerShape.id,
         }
     }
 

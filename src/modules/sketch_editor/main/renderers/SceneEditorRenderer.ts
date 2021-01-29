@@ -146,7 +146,7 @@ export class SceneEditorRenderer implements ICanvasRenderer {
     private renderViews(canvas: UI_SvgCanvas, views: AbstractShape[]) {
         views.forEach(view => {
             view.renderer.renderInto(canvas, view, canvas.canvasPanel);
-            view.containedViews.forEach(child => child.renderer && child.renderer.renderInto(canvas, child, canvas.canvasPanel));
+            view.containedShapes.forEach(child => child.renderer && child.renderer.renderInto(canvas, child, canvas.canvasPanel));
         });
     }
 

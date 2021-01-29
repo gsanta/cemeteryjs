@@ -245,9 +245,9 @@ export class AxisControlHook extends EmptyShapeStoreHook {
 
     removeSelectionHook(views: AbstractShape[]) {
         views.forEach(view => {
-            view.containedViews.filter(view => view.viewType === MoveAxisShapeType).forEach(child => view.deleteContainedView(child));
-            view.containedViews.filter(view => view.viewType === ScaleAxisShapeType).forEach(child => view.deleteContainedView(child));
-            view.containedViews.filter(view => view.viewType === RotateAxisShapeType).forEach(child => view.deleteContainedView(child));
+            view.containedShapes.filter(view => view.viewType === MoveAxisShapeType).forEach(child => view.deleteContainedView(child));
+            view.containedShapes.filter(view => view.viewType === ScaleAxisShapeType).forEach(child => view.deleteContainedView(child));
+            view.containedShapes.filter(view => view.viewType === RotateAxisShapeType).forEach(child => view.deleteContainedView(child));
         });
     }
 }

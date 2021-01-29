@@ -72,7 +72,7 @@ export class NodeShape extends AbstractShape {
     }
 
     getPortViews(): NodePortShape[] {
-        return <NodePortShape[]> this.containedViews.filter((view: AbstractShape) => view.viewType === NodePortViewType)
+        return <NodePortShape[]> this.containedShapes.filter((view: AbstractShape) => view.viewType === NodePortViewType)
     }
 
     setup() {
@@ -98,7 +98,7 @@ export class NodeShape extends AbstractShape {
         const inputPorts = this.getStandaloneInputPorts();
         const outputPorts =  this.getStandaloneOutputPorts();
         
-        this.containedViews
+        this.containedShapes
             .filter((portView: NodePortShape) => this.isStandalonePort(portView.getObj().getNodeParam()))
             .forEach((portView: NodePortShape) => {
                 const x = portView.getObj().isInputPort() ? 0 : this.bounds.getWidth();
@@ -116,7 +116,7 @@ export class NodeShape extends AbstractShape {
     }
 
     private initPortsWithFieldPositions() {
-        this.containedViews
+        this.containedShapes
             .filter((portView: NodePortShape) => this.paramController[portView.getObj().getNodeParam().name])
             .forEach((portView: NodePortShape) => {
                 const x = portView.getObj().isInputPort() ? 0 : this.bounds.getWidth();
@@ -138,7 +138,7 @@ export class NodeShape extends AbstractShape {
 
     move(point: Point) {
         this.bounds = this.bounds.translate(point);
-        this.containedViews.forEach(joinPointView => joinPointView.move(point));
+        this.containedShapes.forEach(joinPointView => joinPointView.move(point));
     }
 
     getBounds(): Rectangle {
@@ -155,7 +155,7 @@ export class NodeShape extends AbstractShape {
     }
 
     findJoinPointView(name: string) {
-        return this.containedViews.find((nodePortview: NodePortShape) => nodePortview.getObj().getNodeParam().name === name);
+        return this.containedShapes.find((nodePortview: NodePortShape) => nodePortview.getObj().getNodeParam().name === name);
     }
 
     getDeleteOnCascadeViews(): AbstractShape[] {
@@ -201,6 +201,6 @@ export class NodeShape extends AbstractShape {
     }
 
     private getJoinPointViews(): NodePortShape[] {
-        return <NodePortShape[]> this.containedViews.filter(v => v.viewType === NodePortViewType);
+        return <NodePortShape[]> this.containedShapes.filter(v => v.viewType === NodePortViewType);
     }
 }

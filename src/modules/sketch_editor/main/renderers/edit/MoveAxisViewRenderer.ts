@@ -31,7 +31,7 @@ export class MoveAxisViewRenderer implements ShapeRenderer {
     }
 
     private renderBoundingRect(group: UI_SvgGroup, scaleView: ScaleAxisView) {
-        const center = scaleView.containerView.getBounds().getBoundingCenter();
+        const center = scaleView.containerShape.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.css = {
@@ -55,7 +55,7 @@ export class MoveAxisViewRenderer implements ShapeRenderer {
         line.y2 = y2;
     }
     private renderArrowLine(group: UI_SvgGroup, axisView: ScaleAxisView) {
-        const center = axisView.containerView.getBounds().getBoundingCenter();
+        const center = axisView.containerShape.getBounds().getBoundingCenter();
         
         const line = group.line();
         line.css = {
