@@ -32,7 +32,7 @@ export class EditorExt extends Editor {
     }
 
     setup() {
-        this.registry.ui.canvas.getCanvas(SketchEditorPanelId).mounted(undefined);
+        this.registry.services.module.ui.getCanvas(SketchEditorPanelId).mounted(undefined);
         this.registry.services.render.setRenderer(UI_Region.Canvas1, () => this.fakeRenderer.renderPanel1());
         this.registry.services.render.setRenderer(UI_Region.Canvas2, () => this.fakeRenderer.renderPanel2());
         this.registry.services.render.setRenderer(UI_Region.Sidepanel, () => this.fakeRenderer.renderSidePanel());

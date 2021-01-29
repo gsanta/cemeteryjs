@@ -5,7 +5,7 @@ import { NodeListPanelId } from '../../modules/graph_editor/contribs/side_panel/
 import { ObjectPropertiesPanelId } from '../../modules/sketch_editor/contribs/side_panel/obj_properties/registerObjProperties';
 import { SketchEditorPanelId } from '../../modules/sketch_editor/main/registerSketchEditor';
 import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_settings/registerFileSettingsPanel';
-import { LayoutSettingsPanelId } from '../../modules/contribs/side_panel/layout_settings/registerLayoutSettingsPanel';
+import { LayoutSettingsPanelId } from '../../modules/contribs/side_panel/layout_settings/LayoutSettingsModule';
 import { UI_Region } from '../plugin/UI_Panel';
 import { Registry } from '../Registry';
 
@@ -156,9 +156,9 @@ export class UI_PerspectiveService {
         const perspective = this.perspectives.find(perspective => perspective.name === name);
         this.activePerspective = perspective;
 
-        const panel1 = this.registry.ui.canvas.getCanvas(perspective.canvas1Plugin);
-        const panel2 = this.registry.ui.canvas.getCanvas(perspective.canvas2Plugin);
-        const sidepanels = perspective.sidepanelPlugins.map(panelId => this.registry.ui.panel.getPanel(panelId))
+        const panel1 = this.registry.services.module.ui.getCanvas(perspective.canvas1Plugin);
+        const panel2 = this.registry.services.module.ui.getCanvas(perspective.canvas2Plugin);
+        const sidepanels = perspective.sidepanelPlugins.map(panelId => this.registry.services.module.ui.getPanel(panelId))
 
         this.registry.ui.helper.setPanel1(panel1);
         this.registry.ui.helper.setPanel2(panel2);

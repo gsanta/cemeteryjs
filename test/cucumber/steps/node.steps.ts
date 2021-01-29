@@ -11,7 +11,7 @@ import { NodeLibraryController } from "../../../src/modules/graph_editor/contrib
 
 When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
-    const nodeListPanel = this.registry.ui.panel.getPanel(NodeListPanelId);
+    const nodeListPanel = this.registry.services.module.ui.getPanel(NodeListPanelId);
     const nodeEditorSettingsController = <NodeLibraryController> nodeListPanel.paramController;
     nodeEditorSettingsController.dragNode.onDndStart(nodeType);
 

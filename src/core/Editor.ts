@@ -20,7 +20,6 @@ import { registerThumbnailCanvas } from '../modules/sketch_editor/contribs/dialo
 import { registerThumbnaildialog } from '../modules/sketch_editor/contribs/dialog/thumbnail/registerThumbnailDialog';
 import { registerAssetManagerPanel } from '../modules/contribs/side_panel/asset_manager/registerAssetManagerPanel';
 import { registerFileSettingsPanel } from '../modules/contribs/side_panel/file_settings/registerFileSettingsPanel';
-import { registerLayoutSettingsPanel } from '../modules/contribs/side_panel/layout_settings/registerLayoutSettingsPanel';
 import { registerLevelSettingsPanel } from '../modules/contribs/side_panel/level_settings/registerLevelSettingsPlugin';
 import { Registry } from './Registry';
 import { NodeGraphHook } from './services/NodePlugin';
@@ -30,6 +29,7 @@ import { registerPhysicsImpostorDialog } from '../modules/contribs/dialogs/physi
 import { CollisionNode } from '../modules/graph_editor/main/models/nodes/CollisionNode';
 import { DirectionNode } from '../modules/graph_editor/main/models/nodes/DirectionNode';
 import { ArrayNode } from '../modules/graph_editor/main/models/nodes/ArrayNode';
+import { LayoutSettingsModule } from '../modules/contribs/side_panel/layout_settings/LayoutSettingsModule';
 
 export class Editor {
     registry: Registry;
@@ -55,7 +55,8 @@ export class Editor {
         registerNodeSelectorPlugin(this.registry);
         registerAssetManagerPanel(this.registry);
         registerFileSettingsPanel(this.registry);
-        registerLayoutSettingsPanel(this.registry);
+        this.registry.services.module.ui.registerPanel(new LayoutSettingsModule(this.registry));
+
         registerObjProperties(this.registry);
         registerLevelSettingsPanel(this.registry)
 

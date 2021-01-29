@@ -18,5 +18,5 @@ export function registerPhysicsImpostorDialog(registry: Registry) {
         panel.renderer = new PhysicsImpostorDialogRenderer(registry, controller);
     });
 
-    registry.ui.panel.registerPanel(panel);
+    registry.services.module.ui.registerPanel(panel);
 }

@@ -8,7 +8,7 @@ export const AssetManagerDialogId = 'asset-manager-dialog';
 export function registerAssetManagerDialog(registry: Registry) {
     const panel = createDialog(registry);
 
-    registry.ui.panel.registerPanel(panel);
+    registry.services.module.ui.registerPanel(panel);
 }
 
 function createDialog(registry: Registry): UI_Panel {

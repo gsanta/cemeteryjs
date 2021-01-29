@@ -19,7 +19,7 @@ export const ThumbnailCanvasId = 'thumbnail-canvas';
 export function registerThumbnailCanvas(registry: Registry) {
     const canvas = createCanvas(registry);
 
-    registry.ui.canvas.registerCanvas(canvas);
+    registry.services.module.ui.registerCanvas(canvas);
 }
 
 function createCanvas(registry: Registry): AbstractCanvasPanel {

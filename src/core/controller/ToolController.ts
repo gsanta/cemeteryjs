@@ -116,16 +116,16 @@ export class ToolController {
     mouseDown(e: MouseEvent, element: UI_Element): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.registry.services.pointer.pointerDown(this, this.convertEvent(e, true), element);
+        this.registry.services.pointer.pointerDown(this, this.convertEvent(e, true), element.scopedToolId);
     }
     
     mouseMove(e: MouseEvent, element: UI_Element): void {
-        this.registry.services.pointer.pointerMove(this, this.convertEvent(e, this.registry.services.pointer.isDown), element);
+        this.registry.services.pointer.pointerMove(this, this.convertEvent(e, this.registry.services.pointer.isDown), element.scopedToolId);
     }    
 
     mouseUp(e: MouseEvent, element: UI_Element): void {
         if (this.isLeftButton(e)) {
-            this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
+            this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element.scopedToolId);
         }
 
         this.registry.services.hotkey.focus();
@@ -133,7 +133,7 @@ export class ToolController {
 
     dndDrop(point: Point, element: UI_Element) {
         const e = <MouseEvent> {x: point.x, y: point.y};
-        this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element);
+        this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element.scopedToolId);
 
         this.registry.services.dragAndDropService.emitDrop();
         // if (this.plugin.dropItem) {
@@ -145,11 +145,11 @@ export class ToolController {
     }
 
     mouseLeave(e: MouseEvent, data: AbstractShape, element: UI_Element): void {
-        this.registry.services.pointer.pointerLeave(this, this.convertEvent(e, false), data, element);
+        this.registry.services.pointer.pointerLeave(this, data, element.scopedToolId);
     }
 
     mouseEnter(e: MouseEvent, data: AbstractShape, element: UI_Element): void {
-        this.registry.services.pointer.pointerEnter(this, this.convertEvent(e, false), data, element);
+        this.registry.services.pointer.pointerEnter(this, data, element.scopedToolId);
     }
 
     mouseWheel(e: WheelEvent): void {

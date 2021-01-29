@@ -55,8 +55,6 @@ export class UI_Panel {
     private onUnmountedFunc: () => void;
     private onOpenFunc: () => void;
 
-    getFormController(controllerId: string): FormController { return undefined; }
-
     protected registry: Registry;
 
     constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {

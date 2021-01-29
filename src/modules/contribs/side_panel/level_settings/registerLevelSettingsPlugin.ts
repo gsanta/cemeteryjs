@@ -9,7 +9,7 @@ export const LevelSettingsPanelId = 'level-settings-panel';
 export function registerLevelSettingsPanel(registry: Registry) {
     const panel = createPanel(registry);
 
-    registry.ui.panel.registerPanel(panel);
+    registry.services.module.ui.registerPanel(panel);
 }
 
 function createPanel(registry: Registry): UI_Panel {

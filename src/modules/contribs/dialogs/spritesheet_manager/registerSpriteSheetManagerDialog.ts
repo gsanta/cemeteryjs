@@ -9,7 +9,7 @@ export const SpriteSheetManagerDialogId = 'spritesheet-manager-dialog';
 export function registerSpriteSheetManagerDialog(registry: Registry) {
     const panel = createDialog(registry);
 
-    registry.ui.panel.registerPanel(panel);
+    registry.services.module.ui.registerPanel(panel);
 }
 
 function createDialog(registry: Registry): UI_Panel {

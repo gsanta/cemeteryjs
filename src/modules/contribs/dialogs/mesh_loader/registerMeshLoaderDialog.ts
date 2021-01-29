@@ -12,10 +12,10 @@ export function registerMeshLoaderDialog(registry: Registry) {
     const panel = new UI_Panel(registry, UI_Region.Dialog, MeshLoaderDialogId, 'Mesh Loader');
     
     panel.onOpen(() => {
-        registry.ui.canvas.unregisterCanvas(MeshLoaderPreviewCanvasId);
+        registry.services.module.ui.unregisterCanvas(MeshLoaderPreviewCanvasId);
         
         const canvas = new MeshLoaderPreviewCanvas(registry);
-        registry.ui.canvas.registerCanvas(canvas.getCanvas());
+        registry.services.module.ui.registerCanvas(canvas.getCanvas());
 
         const selectedViews = registry.data.shape.scene.getSelectedShapes();
         const meshObj = selectedViews[0].getObj() as MeshObj;
@@ -25,5 +25,5 @@ export function registerMeshLoaderDialog(registry: Registry) {
     });
 
     // panel.controller = new FormController(undefined, registry, []);
-    registry.ui.panel.registerPanel(panel);
+    registry.services.module.ui.registerPanel(panel);
 }

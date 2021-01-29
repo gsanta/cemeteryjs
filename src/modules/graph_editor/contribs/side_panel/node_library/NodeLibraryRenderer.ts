@@ -26,7 +26,7 @@ export class NodeSelectorRenderer implements IRenderer<UI_Layout> {
             nodeTypesByCategory.get(node.category).push(node);
         });
 
-        const nodeEditorPlugin = this.registry.ui.canvas.getCanvas(NodeEditorPanelId);
+        const nodeEditorPlugin = this.registry.services.module.ui.getCanvas(NodeEditorPanelId);
 
         Array.from(nodeTypesByCategory.values()).forEach((nodes: AbstractNodeFactory[]) => {
             const accordion = container.accordion({});

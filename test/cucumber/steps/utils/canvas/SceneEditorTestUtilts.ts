@@ -15,7 +15,7 @@ export class SceneEditorTestUtils {
             throw new Error('To register views the the table must contain a \'Type\' column');
         }
 
-        const canvasPanel = <Canvas2dPanel> registry.ui.canvas.getCanvas(SketchEditorPanelId);
+        const canvasPanel = <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId);
 
         tableDef.rows().forEach((row: string[]) => {
             const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Bounds);

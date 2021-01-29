@@ -24,11 +24,11 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
         row = dialog.row({key: '2'});
         row.vAlign = 'center';
 
-        const canvas = row.htmlCanvas({canvasPanel:  this.registry.ui.canvas.getCanvas(ThumbnailCanvasId)});
+        const canvas = row.htmlCanvas({canvasPanel:  this.registry.services.module.ui.getCanvas(ThumbnailCanvasId)});
         canvas.width = '300px';
         canvas.height = '300px';
 
-        this.registry.ui.canvas.getCanvas(ThumbnailCanvasId).renderer.renderInto(canvas);
+        this.registry.services.module.ui.getCanvas(ThumbnailCanvasId).renderer.renderInto(canvas);
 
         const column = row.column({ key: 'column1' });
         const button = column.button(ThumbnailMakerControllerProps.ClearThumbnail);

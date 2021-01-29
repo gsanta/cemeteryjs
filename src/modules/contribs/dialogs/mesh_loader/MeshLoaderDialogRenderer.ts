@@ -55,7 +55,7 @@ export class MeshLoaderDialogRenderer implements IRenderer<UI_Dialog> {
         row.vAlign = 'center';
         row.hAlign = 'space-around';
 
-        const canvas = row.htmlCanvas({canvasPanel:  this.registry.ui.canvas.getCanvas(MeshLoaderPreviewCanvasId)});
+        const canvas = row.htmlCanvas({canvasPanel:  this.registry.services.module.ui.getCanvas(MeshLoaderPreviewCanvasId)});
         canvas.width = '300px';
         canvas.height = '300px';
 

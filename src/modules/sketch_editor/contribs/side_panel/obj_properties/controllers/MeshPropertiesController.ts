@@ -242,7 +242,7 @@ export class PositionController extends ParamController {
 
 export class ThumbnailController extends ParamController {
     click() {
-        const dialog = this.registry.ui.panel.getPanel(ThumbnailDialogPanelId);
+        const dialog = this.registry.services.module.ui.getPanel(ThumbnailDialogPanelId);
         this.registry.ui.helper.setDialogPanel(dialog);
         this.registry.services.render.reRender(UI_Region.Dialog);
     }
@@ -264,7 +264,7 @@ export class ModelController extends ParamController {
     }
 
     click() {
-        const dialog = this.registry.ui.panel.getPanel(MeshLoaderDialogId);
+        const dialog = this.registry.services.module.ui.getPanel(MeshLoaderDialogId);
         this.registry.ui.helper.setDialogPanel(dialog);
         this.registry.services.render.reRenderAll();
     }
@@ -276,7 +276,7 @@ export class PhysicsController extends ParamController {
     }
 
     click() {
-        const dialog = this.registry.ui.panel.getPanel(PhysicsImpostorDialogDialogId);
+        const dialog = this.registry.services.module.ui.getPanel(PhysicsImpostorDialogDialogId);
         this.registry.ui.helper.setDialogPanel(dialog);
         this.registry.services.render.reRenderAll();
     }

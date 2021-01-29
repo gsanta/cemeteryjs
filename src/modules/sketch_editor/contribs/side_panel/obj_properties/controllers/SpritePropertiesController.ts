@@ -69,7 +69,7 @@ export class SelectSpriteSheetController extends ParamController {
 
 export class ManageSpriteSheetsController extends ParamController {
     click() {
-        const dialog = this.registry.ui.panel.getPanel(SpriteSheetManagerDialogId);
+        const dialog = this.registry.services.module.ui.getPanel(SpriteSheetManagerDialogId);
         this.registry.ui.helper.setDialogPanel(dialog);
         this.registry.services.render.reRenderAll();
     }

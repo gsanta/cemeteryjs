@@ -22,7 +22,7 @@ When('change canvas to \'{word}\'', function(panelId: string) {
 });
 
 When('hover over canvas \'{word}\'', function(panelId: string) {
-    this.registry.ui.helper.hoveredPanel = this.registry.ui.canvas.getCanvas(panelId); 
+    this.registry.ui.helper.hoveredPanel = this.registry.services.module.ui.getCanvas(panelId); 
 });
 
 When('mouse down at \'{int}:{int}\'', function(x: number, y: number) {

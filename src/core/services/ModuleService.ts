@@ -11,13 +11,14 @@ export interface UIModule {
     importer?: AbstractModuleImporter;
 }
 
-
 export class ModuleService {
     private registry: Registry;
     private uiModules: UIModule[] = [];
+    ui: UI_Modules;
 
     constructor(registry: Registry) {
         this.registry = registry;
+        this.ui = new UI_Modules();
     }
 
     registerUIModule(uiModule: UIModule) {
@@ -36,10 +37,10 @@ export class ModuleService {
             switch(panel.region) {
                 case UI_Region.Canvas1:
                 case UI_Region.Canvas2:
-                    this.registry.ui.canvas.registerCanvas(<AbstractCanvasPanel> panel);
+                    this.ui.registerCanvas(<AbstractCanvasPanel> panel);
                     break;
                 default:
-                    this.registry.ui.panel.registerPanel(panel);
+                    this.ui.registerPanel(panel);
                     break;
             }
         });
@@ -51,5 +52,30 @@ export class ModuleService {
 
     private registerImporter(moduleName: string, importer: AbstractModuleImporter) {
         this.registry.services.import.registerImporter(moduleName, importer);
+    }
+}
+
+export class UI_Modules {
+    private canvases: Map<string, AbstractCanvasPanel> = new Map();
+    private panels: Map<string, UI_Panel> = new Map();
+
+    registerCanvas(canvas: AbstractCanvasPanel) {
+        this.canvases.set(canvas.id, canvas);
+    }
+
+    unregisterCanvas(id: string) {
+        this.canvases.delete(id);
+    }
+
+    registerPanel(panel: UI_Panel) {
+        this.panels.set(panel.id, panel);
+    }
+
+    getPanel(id: string) {
+        return this.panels.get(id);
+    }
+
+    getCanvas(id: string) {
+        return this.canvases.get(id);
     }
 }

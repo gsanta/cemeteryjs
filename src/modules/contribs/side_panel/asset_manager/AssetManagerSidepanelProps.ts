@@ -9,7 +9,7 @@ export class IsAssetManagerDialogOpenController extends ParamController {
     acceptedProps() { return [AssetManagerSidepanelControllerProps.IsAssetManagerDialogOpen]; }
 
     click(context: PropContext) {
-        const dialog = context.registry.ui.panel.getPanel(AssetManagerDialogId);
+        const dialog = context.registry.services.module.ui.getPanel(AssetManagerDialogId);
         context.registry.ui.helper.setDialogPanel(dialog);
     }
 }

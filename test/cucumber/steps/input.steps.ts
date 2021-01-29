@@ -4,7 +4,7 @@ import { createFakeKeyboardEventFromString } from "./common/inputTestUtils";
 import { createFakeUIElement } from "./common/uiTestHelpers";
 
 When('change param to \'{word}\' in controller \'{word}\' of panel \'{word}\'', function(newVal: string, controllerKey: string, panelId: string) {
-    const panel = this.registry.ui.panel.getPanel(panelId);
+    const panel = this.registry.services.module.ui.getPanel(panelId);
     panel.paramController[controllerKey].change(newVal, null, null);
     panel.paramController[controllerKey].blur(null, null);
 });
@@ -18,7 +18,7 @@ When('change param to \'{word}\' in controller \'{word}\' of view \'{word}\'', f
 });
 
 When('click button \'{word}\' in panel \'{word}\'', function(paramName: string, panelId: string) {
-    const panel = this.registry.ui.panel.getPanel(panelId);
+    const panel = this.registry.services.module.ui.getPanel(panelId);
     
     const fakeUIElement = createFakeUIElement({ controller: panel.controller, key: paramName });
     
