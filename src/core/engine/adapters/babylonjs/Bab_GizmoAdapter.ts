@@ -1,4 +1,4 @@
-import { PositionGizmo } from "babylonjs";
+import { GizmoManager, PositionGizmo, UtilityLayerRenderer } from "babylonjs";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IGizmoAdapter } from "../../IGizmoAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
@@ -15,8 +15,16 @@ export class Bab_GizmoAdapter implements IGizmoAdapter {
     scaleGizmo: Bab_ScaleGizmo;
     rotationGizmo: Bab_RotationGizmo;
 
+    gizmoManager: GizmoManager;
+    utilityLayer: UtilityLayerRenderer;
+
     constructor(engineFacade: Bab_EngineFacade) {
         this.engineFacade = engineFacade;
+
+        this.engineFacade.onReady(() => {
+            this.utilityLayer = new UtilityLayerRenderer(this.engineFacade.scene);
+            this.gizmoManager = new GizmoManager(this.engineFacade.scene, 2, this.utilityLayer);
+        });
     }
 
     showGizmo(gizmoType: string) {

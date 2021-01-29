@@ -1,4 +1,4 @@
-import { Mesh, PositionGizmo, UtilityLayerRenderer } from "babylonjs";
+import { Mesh, Observer } from "babylonjs";
 import { Bab_EngineFacade } from "../Bab_EngineFacade";
 
 export const PositionGizmoType = 'position-gizmo';
@@ -6,44 +6,75 @@ export class Bab_PositionGizmo {
     private engineFacade: Bab_EngineFacade;
     gizmoType = PositionGizmoType;
 
-    private utilLayer: UtilityLayerRenderer;
-    private gizmo: PositionGizmo;
+    private onDragEndFuncs: (() => void)[] = [];
     private onDragFuncs: (() => void)[] = [];
+    private dragIntervalToken: any;
+    private dragStartObserver: Observer<any>;
+    private dragEndObserver: Observer<any>;
 
     constructor(engineFacade: Bab_EngineFacade) {
         this.engineFacade = engineFacade;
+        this.dragStart.bind(this);
+        this.dragEnd.bind(this);
     }
 
     attachTo(mesh: Mesh) {
-        this.utilLayer = new UtilityLayerRenderer(this.engineFacade.scene);
-
-        this.gizmo = new PositionGizmo(this.utilLayer);
-        this.gizmo.attachedMesh = mesh;
+        const gizmoManager = this.engineFacade.gizmos.gizmoManager;
+        gizmoManager.positionGizmoEnabled = true;
+        gizmoManager.attachToMesh(mesh);
     
-        this.gizmo.updateGizmoRotationToMatchAttachedMesh = false;
-        this.gizmo.updateGizmoPositionToMatchAttachedMesh = true;
-        this.gizmo.snapDistance = 10;
+        this.dragStartObserver = gizmoManager.gizmos.positionGizmo.onDragStartObservable.add(() => this.dragStart());
+        this.dragEndObserver = gizmoManager.gizmos.positionGizmo.onDragEndObservable.add(() => this.dragEnd());
+    }
 
-        this.gizmo.onDragEndObservable.add(() => {
-            this.onDragFuncs.forEach(func => func())
-        });
+    disable() {
+        const gizmoManager = this.engineFacade.gizmos.gizmoManager;
+        gizmoManager.gizmos.positionGizmo.xGizmo.dragBehavior.enabled = false;
+    }
+
+    enable() {
+        const gizmoManager = this.engineFacade.gizmos.gizmoManager;
+        gizmoManager.gizmos.positionGizmo.xGizmo.dragBehavior.enabled = true;
     }
 
     detach() {
-        if (this.utilLayer) {
-            this.utilLayer.dispose();
+        const gizmoManager = this.engineFacade.gizmos.gizmoManager;
+        gizmoManager.positionGizmoEnabled = false;
+
+        if (this.dragStartObserver) {
+            gizmoManager.gizmos.positionGizmo.onDragStartObservable.remove(this.dragStartObserver);
         }
 
-        if (this.gizmo) {
-            this.gizmo.dispose();
+        if (this.dragEndObserver) {
+            gizmoManager.gizmos.positionGizmo.onDragStartObservable.remove(this.dragEndObserver);
         }
+
+        this.dragStartObserver = undefined;
+        this.dragEndObserver = undefined;
     }
 
     onDrag(callback: () => void) {
         this.onDragFuncs.push(callback);
     }
 
-    offDrag(callback: () => void) {
-        this.onDragFuncs = this.onDragFuncs.filter(func => func !== callback);
+    onDragEnd(callback: () => void) {
+        this.onDragEndFuncs.push(callback);
+    }
+
+    offDragEnd(callback: () => void) {
+        this.onDragEndFuncs = this.onDragEndFuncs.filter(func => func !== callback);
+    }
+
+    private dragStart() {
+        this.dragIntervalToken = setInterval(() => this.emitDrag(), 50);
+    }
+
+    private dragEnd() {
+        clearTimeout(this.dragIntervalToken);
+        this.onDragEndFuncs.forEach(func => func());
+    }
+
+    private emitDrag() {
+        this.onDragFuncs.forEach(func => func());
     }
 }

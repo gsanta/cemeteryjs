@@ -120,7 +120,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 /> */}
                 <canvas
                     onMouseDown={(e) => this.props.element.mouseDown(this.props.registry, e.nativeEvent)}
-                    onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}
+                    // onMouseMove={(e) => this.props.element.mouseMove(this.props.registry, e.nativeEvent)}
                     onMouseUp={(e) => this.props.element.mouseUp(this.props.registry, e.nativeEvent)}
                     onMouseLeave={(e) => this.props.element.mouseLeave(this.props.registry, e.nativeEvent)}
                     onMouseEnter={(e) => this.props.element.mouseEnter(this.props.registry, e.nativeEvent)}

@@ -44,7 +44,7 @@ export class MeshSnapper {
         if (snapInfo) {
             this.snap(...snapInfo);
             this.currSnapInfo = snapInfo;
-            this.currPointerAfterSnap = pointerTracker.curr.clone();
+            this.currPointerAfterSnap = pointerTracker.currScreen.clone();
             // this.registry.data.scene.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
 
             return true;
@@ -58,10 +58,11 @@ export class MeshSnapper {
             return false;
         }
 
-        let pointerDiff = pointerTracker.curr.clone().subtract(this.currPointerAfterSnap);
+        let pointerDiff = pointerTracker.currScreen.clone().subtract(this.currPointerAfterSnap);
         const pointerDiff3 = new Point_3(pointerDiff.x, 0, -pointerDiff.y).div(sceneAndGameViewRatio);
         const unsnapped = this.unsnap(this.currSnapInfo[0], this.currSnapInfo[1], pointerDiff3);
         if (unsnapped) {
+            console.log('unsnap');
             this.currSnapInfo = undefined;
             this.currPointerAfterSnap = undefined;
             this.snapTurnedOff = true;

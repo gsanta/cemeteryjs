@@ -64,7 +64,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.tools = new Bab_ToolAdapter(this);
 
         this.toolService = new Bab_ToolService(registry, this);
-        this.pointerService = new Bab_PointerService(this);
+        this.pointerService = new Bab_PointerService(registry, this);
     }
 
     getCamera(): Camera3D {

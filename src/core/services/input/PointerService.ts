@@ -60,13 +60,16 @@ export class PointerService {
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
 
-        const tool = this.determineTool(controller, element);
-
-        if (this.isDown && this.pointer.getDownDiff().len() > 2) {
-            this.isDrag = true;
-            tool.drag(e);
-        } else {
-            tool.move();
+        // TODO: babylonjs still uses native tools, maybe it could be abstracted and used in a unified way so this condition wont be needed
+        if (controller) {
+            const tool = this.determineTool(controller, element);
+    
+            if (this.isDown && this.pointer.getDownDiff().len() > 2) {
+                this.isDrag = true;
+                tool.drag(e);
+            } else {
+                tool.move();
+            }
         }
         this.registry.services.hotkey.executeHotkey(e);
         this.registry.services.render.reRenderScheduled();
