@@ -1,4 +1,3 @@
-import { Mesh } from "babylonjs";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { MeshObj, MeshObjType } from "../../../../models/objs/MeshObj";
 import { Registry } from "../../../../Registry";
@@ -11,18 +10,19 @@ export class MeshSnapper {
         this.registry = registry;
     }
 
-    snap(guest: MeshSideInfo, host: MeshSideInfo) {
+    snap(guest: MeshSideInfo, host: MeshSideInfo): Point_3 {
         const diff = host.sideCenter.clone().subtract(guest.sideCenter);
         
         guest.meshObj.translate(diff);
+        return diff;
     }
 
     unsnap(side1Info: MeshSideInfo, side2Info: MeshSideInfo, pointerOffset: Point_3): boolean {
         const side1Center = side1Info.sideCenter.clone().add(pointerOffset);
         const side2Center = side2Info.sideCenter;
 
-        if (!this.isWithinSnapDistance(side1Center, side2Center)) {
-            side1Info.meshObj.translate(pointerOffset.negate());
+        if (this.isUnsnapDistanceReached(side1Center, side2Center)) {
+            side1Info.meshObj.translate(pointerOffset);
             return true;
         }
 
@@ -62,5 +62,9 @@ export class MeshSnapper {
 
     private isWithinSnapDistance(side1Center: Point_3, side2Center: Point_3) {
         return side1Center.distanceTo(side2Center) < 3;
+    }
+
+    private isUnsnapDistanceReached(side1Center: Point_3, side2Center: Point_3) {
+        return side1Center.distanceTo(side2Center) > 4;
     }
 }
