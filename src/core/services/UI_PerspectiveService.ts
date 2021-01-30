@@ -1,10 +1,10 @@
 import Split from 'split.js';
-import { SceneEditorPanelId } from '../../modules/scene_editor/main/registerSceneEditor';
-import { NodeEditorPanelId } from '../../modules/graph_editor/registerNodeEditor';
-import { NodeListPanelId } from '../../modules/graph_editor/contribs/side_panel/node_library/registerNodeLibraryPlugin';
-import { ObjectPropertiesPanelId } from '../../modules/sketch_editor/contribs/side_panel/obj_properties/registerObjProperties';
-import { SketchEditorPanelId } from '../../modules/sketch_editor/main/registerSketchEditor';
-import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_settings/registerFileSettingsPanel';
+import { SceneEditorPanelId } from '../../modules/scene_editor/main/SceneEditorModule';
+import { NodeEditorPanelId } from '../../modules/graph_editor/NodeEditorModule';
+import { NodeListPanelId } from '../../modules/graph_editor/contribs/side_panel/node_library/NodeLibraryModule';
+import { ObjectPropertiesPanelId } from '../../modules/sketch_editor/contribs/side_panel/obj_properties/ObjPropertiesModule';
+import { SketchEditorPanelId } from '../../modules/sketch_editor/main/SketchEditorModule';
+import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_settings/FileSettingsModule';
 import { LayoutSettingsPanelId } from '../../modules/contribs/side_panel/layout_settings/LayoutSettingsModule';
 import { UI_Region } from '../plugin/UI_Panel';
 import { Registry } from '../Registry';

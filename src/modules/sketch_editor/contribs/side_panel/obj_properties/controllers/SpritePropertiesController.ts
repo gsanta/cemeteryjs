@@ -4,7 +4,7 @@ import { UI_Region } from '../../../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../../../core/Registry';
 import { ApplicationError } from '../../../../../../core/services/ErrorService';
 import { Point } from '../../../../../../utils/geometry/shapes/Point';
-import { SpriteSheetManagerDialogId } from '../../../../../contribs/dialogs/spritesheet_manager/registerSpriteSheetManagerDialog';
+import { SpriteSheetManagerDialogId } from '../../../../../contribs/dialogs/spritesheet_manager/SpriteSheetManagerDialogModule';
 import { SpriteShape } from '../../../../main/models/shapes/SpriteShape';
 import { UIController } from '../../../../../../core/controller/UIController';
 

@@ -1,4 +1,3 @@
-import { registerSceneEditor } from '../modules/scene_editor/main/registerSceneEditor';
 import { AnimationGroupNode } from '../modules/graph_editor/main/models/nodes/AnimationGroupNode';
 import { FilterMeshNode } from '../modules/graph_editor/main/models/nodes/FilterMeshNode';
 import { KeyboardNode } from '../modules/graph_editor/main/models/nodes/KeyboardNode';
@@ -10,26 +9,27 @@ import { RayHelperNode } from '../modules/graph_editor/main/models/nodes/RayHelp
 import { RemoveMeshNode } from '../modules/graph_editor/main/models/nodes/RemoveMeshNode';
 import { RotateNode } from '../modules/graph_editor/main/models/nodes/RotateNode';
 import { TriggerZoneNode } from '../modules/graph_editor/main/models/nodes/TriggerZoneNode';
-import { registerNodeEditor } from '../modules/graph_editor/registerNodeEditor';
-import { registerNodeSelectorPlugin } from '../modules/graph_editor/contribs/side_panel/node_library/registerNodeLibraryPlugin';
-import { registerObjProperties } from '../modules/sketch_editor/contribs/side_panel/obj_properties/registerObjProperties';
-import { registerSketchEditor } from '../modules/sketch_editor/main/registerSketchEditor';
-import { registerMeshLoaderDialog } from '../modules/contribs/dialogs/mesh_loader/registerMeshLoaderDialog';
-import { registerSpriteSheetManagerDialog } from '../modules/contribs/dialogs/spritesheet_manager/registerSpriteSheetManagerDialog';
-import { registerThumbnailCanvas } from '../modules/sketch_editor/contribs/dialog/thumbnail/registerThumbnailCanvas';
-import { registerThumbnaildialog } from '../modules/sketch_editor/contribs/dialog/thumbnail/registerThumbnailDialog';
-import { registerAssetManagerPanel } from '../modules/contribs/side_panel/asset_manager/registerAssetManagerPanel';
-import { registerFileSettingsPanel } from '../modules/contribs/side_panel/file_settings/registerFileSettingsPanel';
-import { registerLevelSettingsPanel } from '../modules/contribs/side_panel/level_settings/registerLevelSettingsPlugin';
+import { ThumbnailCanvasModule } from '../modules/sketch_editor/contribs/dialog/thumbnail/ThumbnailCanvasModule';
 import { Registry } from './Registry';
 import { NodeGraphHook } from './services/NodePlugin';
 import { ObjLifeCycleHook } from './stores/ObjStore';
 import { AxisControlHook, ShapeLifeCycleHook } from './stores/ShapeStore';
-import { registerPhysicsImpostorDialog } from '../modules/contribs/dialogs/physics_impostor/registerPhysicsImpostorDialog';
 import { CollisionNode } from '../modules/graph_editor/main/models/nodes/CollisionNode';
 import { DirectionNode } from '../modules/graph_editor/main/models/nodes/DirectionNode';
 import { ArrayNode } from '../modules/graph_editor/main/models/nodes/ArrayNode';
 import { LayoutSettingsModule } from '../modules/contribs/side_panel/layout_settings/LayoutSettingsModule';
+import { FileSettingsModule } from '../modules/contribs/side_panel/file_settings/FileSettingsModule';
+import { NodeLibraryModule } from '../modules/graph_editor/contribs/side_panel/node_library/NodeLibraryModule';
+import { AssetManagerModule } from '../modules/contribs/side_panel/asset_manager/AssetManagerModule';
+import { ObjPropertiesModule } from '../modules/sketch_editor/contribs/side_panel/obj_properties/ObjPropertiesModule';
+import { LevelSettingsModule } from '../modules/contribs/side_panel/level_settings/LevelSettingsModule';
+import { ThumbnailDialogModule } from '../modules/sketch_editor/contribs/dialog/thumbnail/ThumbnailDialogModule';
+import { SpriteSheetManagerDialogModule } from '../modules/contribs/dialogs/spritesheet_manager/SpriteSheetManagerDialogModule';
+import { MeshLoaderDialogModule } from '../modules/contribs/dialogs/mesh_loader/MeshLoaderDialogModule';
+import { PhysicsImpostorDialogModule } from '../modules/contribs/dialogs/physics_impostor/PhysicsImpostorDialogModule';
+import { SketchEditorModule } from '../modules/sketch_editor/main/SketchEditorModule';
+import { NodeEditorModule } from '../modules/graph_editor/NodeEditorModule';
+import { SceneEditorModule } from '../modules/scene_editor/main/SceneEditorModule';
 
 export class Editor {
     registry: Registry;
@@ -51,25 +51,24 @@ export class Editor {
         this.registry.data.shape.scene.addHook(new AxisControlHook(this.registry));
 
         // side panels
-        registerAssetManagerPanel(this.registry);
-        registerNodeSelectorPlugin(this.registry);
-        registerAssetManagerPanel(this.registry);
-        registerFileSettingsPanel(this.registry);
+        this.registry.services.module.ui.registerPanel(new NodeLibraryModule(this.registry))
+        this.registry.services.module.ui.registerPanel(new AssetManagerModule(this.registry))
+        this.registry.services.module.ui.registerPanel(new FileSettingsModule(this.registry))
         this.registry.services.module.ui.registerPanel(new LayoutSettingsModule(this.registry));
 
-        registerObjProperties(this.registry);
-        registerLevelSettingsPanel(this.registry)
+        this.registry.services.module.ui.registerPanel(new ObjPropertiesModule(this.registry));
+        this.registry.services.module.ui.registerPanel(new LevelSettingsModule(this.registry));
 
         // dialogs
-        registerThumbnaildialog(this.registry);
-        registerSpriteSheetManagerDialog(this.registry);
-        registerMeshLoaderDialog(this.registry);
-        registerPhysicsImpostorDialog(this.registry);
+        this.registry.services.module.ui.registerPanel(new ThumbnailDialogModule(this.registry));
+        this.registry.services.module.ui.registerPanel(new SpriteSheetManagerDialogModule(this.registry));
+        this.registry.services.module.ui.registerPanel(new MeshLoaderDialogModule(this.registry));
+        this.registry.services.module.ui.registerPanel(new PhysicsImpostorDialogModule(this.registry));
 
-        registerSketchEditor(this.registry);
-        registerNodeEditor(this.registry);
-        registerSceneEditor(this.registry);
-        registerThumbnailCanvas(this.registry);
+        this.registry.services.module.ui.registerCanvas(new SketchEditorModule(this.registry));
+        this.registry.services.module.ui.registerCanvas(new NodeEditorModule(this.registry));
+        this.registry.services.module.ui.registerCanvas(new SceneEditorModule(this.registry));
+        this.registry.services.module.ui.registerCanvas(new ThumbnailCanvasModule(this.registry));
     
         // nodes
         this.registry.data.helper.node.registerNode(new KeyboardNode(this.registry));

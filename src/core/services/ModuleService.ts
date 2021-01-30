@@ -23,8 +23,6 @@ export class ModuleService {
 
     registerUIModule(uiModule: UIModule) {
         this.registerPanels(uiModule.panels);
-        uiModule.exporter && this.registerExporter(uiModule.moduleName, uiModule.exporter);
-        uiModule.importer && this.registerImporter(uiModule.moduleName, uiModule.importer);
         this.uiModules.push(uiModule);
     }
 
@@ -45,14 +43,6 @@ export class ModuleService {
             }
         });
     }
-
-    private registerExporter(moduleName: string, exporter: AbstractModuleExporter) {
-        this.registry.services.export.registerExporter(moduleName, exporter);
-    }
-
-    private registerImporter(moduleName: string, importer: AbstractModuleImporter) {
-        this.registry.services.import.registerImporter(moduleName, importer);
-    }
 }
 
 export class UI_Modules {
@@ -67,15 +57,19 @@ export class UI_Modules {
         this.canvases.delete(id);
     }
 
+    getCanvas(id: string) {
+        return this.canvases.get(id);
+    }
+
+    getAllCanvases(): AbstractCanvasPanel[] {
+        return Array.from(this.canvases.values());
+    }
+
     registerPanel(panel: UI_Panel) {
         this.panels.set(panel.id, panel);
     }
 
     getPanel(id: string) {
         return this.panels.get(id);
-    }
-
-    getCanvas(id: string) {
-        return this.canvases.get(id);
     }
 }

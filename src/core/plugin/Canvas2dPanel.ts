@@ -2,7 +2,7 @@ import { Camera2D } from "../models/misc/camera/Camera2D";
 import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
 import { ShapeStore } from '../stores/ShapeStore';
 
-export class Canvas2dPanel extends AbstractCanvasPanel {
+export abstract class Canvas2dPanel extends AbstractCanvasPanel {
     private viewStore: ShapeStore;
 
     setCamera(camera: Camera2D) {

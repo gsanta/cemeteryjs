@@ -2,7 +2,7 @@ import { MeshShape } from "../../../main/models/shapes/MeshShape";
 import { IRenderer } from "../../../../../core/plugin/IRenderer";
 import { Registry } from "../../../../../core/Registry";
 import { UI_Dialog } from "../../../../../core/ui_components/elements/surfaces/dialog/UI_Dialog";
-import { ThumbnailCanvasId } from "./registerThumbnailCanvas";
+import { ThumbnailCanvasId } from "./ThumbnailCanvasModule";
 import { ThumbnailMakerControllerProps } from "./ThumbnailDialogProps";
 
 

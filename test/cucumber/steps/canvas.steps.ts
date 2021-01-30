@@ -6,8 +6,8 @@ import { createFakeMouseEvent } from './common/inputTestUtils';
 import { createFakeUIElement, createFakeUIElementForView } from './common/uiTestHelpers';
 import { findViewOrContainedView } from './common/viewTestUtils';
 import expect from 'expect';
-import { SketchEditorPanelId } from '../../../src/modules/sketch_editor/main/registerSketchEditor';
-import { NodeEditorPanelId } from '../../../src/modules/graph_editor/registerNodeEditor';
+import { SketchEditorPanelId } from '../../../src/modules/sketch_editor/main/SketchEditorModule';
+import { NodeEditorPanelId } from '../../../src/modules/graph_editor/NodeEditorModule';
 import { NodeEditorPerspectiveName, SceneEditorPerspectiveName } from '../../../src/core/services/UI_PerspectiveService';
 
 When('change canvas to \'{word}\'', function(panelId: string) {

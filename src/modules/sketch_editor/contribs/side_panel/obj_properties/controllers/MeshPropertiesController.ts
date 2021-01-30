@@ -5,9 +5,9 @@ import { MeshBoxConfig, MeshObj } from '../../../../../../core/models/objs/MeshO
 import { UI_Region } from '../../../../../../core/plugin/UI_Panel';
 import { Registry } from '../../../../../../core/Registry';
 import { ApplicationError } from '../../../../../../core/services/ErrorService';
-import { MeshLoaderDialogId } from '../../../../../contribs/dialogs/mesh_loader/registerMeshLoaderDialog';
-import { PhysicsImpostorDialogDialogId } from '../../../../../contribs/dialogs/physics_impostor/registerPhysicsImpostorDialog';
-import { ThumbnailDialogPanelId } from '../../../dialog/thumbnail/registerThumbnailDialog';
+import { MeshLoaderDialogId } from '../../../../../contribs/dialogs/mesh_loader/MeshLoaderDialogModule';
+import { PhysicsImpostorDialogDialogId } from '../../../../../contribs/dialogs/physics_impostor/PhysicsImpostorDialogModule';
+import { ThumbnailDialogPanelId } from '../../../dialog/thumbnail/ThumbnailDialogModule';
 import { toDegree, toRadian } from '../../../../../../utils/geometry/Measurements';
 import { MeshShape } from '../../../../main/models/shapes/MeshShape';
 

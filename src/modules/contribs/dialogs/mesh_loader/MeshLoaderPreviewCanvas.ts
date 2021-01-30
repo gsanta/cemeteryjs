@@ -12,6 +12,8 @@ import { UI_Region } from "../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
+import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
+import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 
 export const MeshLoaderPreviewCanvasId = 'mesh-loader-preview-canvas';
 
@@ -24,7 +26,7 @@ export class MeshLoaderPreviewCanvas {
         this.registry = registry;
         this.engine = new Wrap_EngineFacade(registry, new Bab_EngineFacade(registry, 'Mesh Loader Engine'));
 
-        this.canvas = createCanvas(registry, this.engine);
+        this.canvas = new MeshLoaderCanvas(registry, this.engine);
     }
 
     async setMesh(meshObj: MeshObj, assetObj: AssetObj) {
@@ -43,28 +45,52 @@ export class MeshLoaderPreviewCanvas {
     }
 }
 
-function createCanvas(registry: Registry, engine: IEngineFacade): AbstractCanvasPanel {
-    const canvas = new Canvas3dPanel(registry, UI_Region.Dialog, MeshLoaderPreviewCanvasId, 'Preview canvas');
+//  TODO merge this together with MeshLoaderPreviewCanvas (and make a module out of it)
+class MeshLoaderCanvas extends Canvas3dPanel {
 
-    const tools = [
-        new CameraTool(canvas, registry)
-    ];
+    exporter: AbstractModuleExporter;
+    importer: AbstractModuleImporter;
 
-    canvas.engine = engine;
-    canvas.setController(new FormController(canvas, registry, []));
-    canvas.setCamera(engine.getCamera());
-    canvas.renderer = new MeshLoaderCanvasRenderer(registry);
-    tools.forEach(tool => canvas.addTool(tool));
+    constructor(registry: Registry, engine: IEngineFacade) {
+        super(registry, UI_Region.Dialog, MeshLoaderPreviewCanvasId, 'Preview canvas');
 
-
-    canvas.onMounted(() => engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]));
-
-    canvas.onUnmounted(() => {
-        // engine.engine.dispose();
-    });
-
-    return canvas;
+        const tools = [
+            new CameraTool(this, registry)
+        ];
+    
+        this.engine = engine;
+        this.setController(new FormController(this, registry, []));
+        this.setCamera(engine.getCamera());
+        this.renderer = new MeshLoaderCanvasRenderer(registry);
+        tools.forEach(tool => this.addTool(tool));
+    
+    
+        this.onMounted(() => engine.setup(this.htmlElement.getElementsByTagName('canvas')[0]));
+    }
 }
+
+// function createCanvas(registry: Registry, engine: IEngineFacade): AbstractCanvasPanel {
+//     const canvas = new Canvas3dPanel(registry, UI_Region.Dialog, MeshLoaderPreviewCanvasId, 'Preview canvas');
+
+//     const tools = [
+//         new CameraTool(canvas, registry)
+//     ];
+
+//     canvas.engine = engine;
+//     canvas.setController(new FormController(canvas, registry, []));
+//     canvas.setCamera(engine.getCamera());
+//     canvas.renderer = new MeshLoaderCanvasRenderer(registry);
+//     tools.forEach(tool => canvas.addTool(tool));
+
+
+//     canvas.onMounted(() => engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]));
+
+//     canvas.onUnmounted(() => {
+//         // engine.engine.dispose();
+//     });
+
+//     return canvas;
+// }
 
 class MeshLoaderCanvasRenderer implements IRenderer {
     private registry: Registry;

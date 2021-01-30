@@ -1,5 +1,5 @@
-import { NodeEditorPanelId } from "../../modules/graph_editor/registerNodeEditor";
-import { SketchEditorPanelId } from "../../modules/sketch_editor/main/registerSketchEditor";
+import { NodeEditorPanelId } from "../../modules/graph_editor/NodeEditorModule";
+import { SketchEditorPanelId } from "../../modules/sketch_editor/main/SketchEditorModule";
 import { Registry } from "../Registry";
 import { ShapeStore } from "../stores/ShapeStore";
 

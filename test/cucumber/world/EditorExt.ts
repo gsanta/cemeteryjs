@@ -2,7 +2,7 @@ import { Editor } from "../../../src/core/Editor";
 import { Test_EngineFacade } from "../../../src/core/engine/adapters/test/Test_EngineFacade";
 import { Wrap_EngineFacade } from "../../../src/core/engine/adapters/wrapper/Wrap_EngineFacade";
 import { UI_Region } from "../../../src/core/plugin/UI_Panel";
-import { SketchEditorPanelId } from "../../../src/modules/sketch_editor/main/registerSketchEditor";
+import { SketchEditorPanelId } from "../../../src/modules/sketch_editor/main/SketchEditorModule";
 
 class FakeRenderer {
 

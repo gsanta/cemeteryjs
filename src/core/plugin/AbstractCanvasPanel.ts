@@ -11,6 +11,8 @@ import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
 import { UI_Panel, UI_Region } from './UI_Panel';
+import { AbstractModuleExporter } from '../services/export/AbstractModuleExporter';
+import { AbstractModuleImporter } from '../services/import/AbstractModuleImporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -53,6 +55,9 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
     readonly toolController: ToolController;
 
     interactionMode = InteractionMode.Edit;
+
+    abstract exporter: AbstractModuleExporter;
+    abstract importer: AbstractModuleImporter;
 
     constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {
         super(registry, region, id, displayName);

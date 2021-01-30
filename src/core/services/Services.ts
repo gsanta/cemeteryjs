@@ -53,7 +53,7 @@ export class Services {
         this.level = new LevelService(this.registry);
         this.render = new RenderService(this.registry);
         this.import = new ImportService(this.registry);
-        this.export = new ExportService();
+        this.export = new ExportService(this.registry);
         this.history = new HistoryService(this.registry);
         this.pointer = new PointerService(this.registry);
         this.keyboard = new KeyboardService(this.registry);

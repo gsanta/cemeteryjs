@@ -4,7 +4,7 @@ import { Registry } from '../../../../../core/Registry';
 import { UI_Layout } from '../../../../../core/ui_components/elements/UI_Layout';
 import { NodeLibraryController } from './NodeLibraryController';
 import { AbstractNodeFactory } from '../../../main/api/AbstractNode';
-import { NodeEditorPanelId } from '../../../registerNodeEditor';
+import { NodeEditorPanelId } from '../../../NodeEditorModule';
 
 export class NodeSelectorRenderer implements IRenderer<UI_Layout> {
     private registry: Registry;
