@@ -3,13 +3,14 @@ import { IKeyboardEvent } from "../../../../../core/controller/KeyboardHandler";
 import { Registry } from "../../../../../core/Registry";
 import { KeyboardNodeType } from "../../../../graph_editor/main/models/nodes/KeyboardNode";
 import { AbstractCanvasPanel, InteractionMode } from "../../../../../core/plugin/AbstractCanvasPanel";
+import { IObj } from "../../../../../core/models/objs/IObj";
 
 export const GameToolId = 'game-tool';
-export class GameTool extends ToolAdapter {
+export class GameTool extends ToolAdapter<IObj> {
     // TODO: not a good place for it
     lastExecutedKey: string;
 
-    constructor(panel: AbstractCanvasPanel, registry: Registry) {
+    constructor(panel: AbstractCanvasPanel<IObj>, registry: Registry) {
         super(GameToolId, panel, registry);
     }
 

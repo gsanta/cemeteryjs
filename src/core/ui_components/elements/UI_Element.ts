@@ -43,7 +43,7 @@ export abstract class UI_Element<C extends ParamController = any> {
     elementType: UI_ElementType;
     readonly key: string;
 
-    canvasPanel: AbstractCanvasPanel;
+    canvasPanel: AbstractCanvasPanel<any>;
     panel: UI_Panel;
     
     isBold: boolean;

@@ -1,7 +1,8 @@
 import { TableDefinition } from "cucumber";
+import { IObj } from "../../../../../src/core/models/objs/IObj";
 import { Canvas2dPanel } from "../../../../../src/core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../../src/core/Registry";
-import { SketchEditorPanelId } from "../../../../../src/modules/sketch_editor/main/SketchEditorModule";
+import { SketchEditorModule, SketchEditorPanelId } from "../../../../../src/modules/sketch_editor/main/SketchEditorModule";
 import { Point } from "../../../../../src/utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../src/utils/geometry/shapes/Rectangle";
 import { collectViewTableProps, setViewProperty, ViewTableProp } from "../../common/viewTestUtils";
@@ -15,7 +16,7 @@ export class SceneEditorTestUtils {
             throw new Error('To register views the the table must contain a \'Type\' column');
         }
 
-        const canvasPanel = <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId);
+        const canvasPanel = <SketchEditorModule> registry.services.module.ui.getCanvas(SketchEditorPanelId);
 
         tableDef.rows().forEach((row: string[]) => {
             const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Bounds);

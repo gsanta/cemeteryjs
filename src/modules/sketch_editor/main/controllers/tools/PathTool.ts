@@ -9,6 +9,7 @@ import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
+import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const PathToolId = 'path-tool';
 export class PathTool extends PointerTool {
@@ -83,7 +84,9 @@ export class PathTool extends PointerTool {
     }
 
     private startNewPath() {
-        return this.canvas.getViewStore().getViewFactory(PathShapeType).instantiateOnCanvas(this.canvas, undefined);
+        const canvas = <SketchEditorModule> this.canvas;
+        
+        return canvas.getViewStore().getViewFactory(PathShapeType).instantiateOnCanvas(canvas, undefined);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

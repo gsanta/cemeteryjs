@@ -6,13 +6,14 @@ import { Registry } from "../../../../../core/Registry";
 import { sceneAndGameViewRatio, ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { MeshShapeType } from "../../models/shapes/MeshShape";
+import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const CubeToolId = 'cube-tool';
-export class CubeTool extends RectangleTool<Canvas2dPanel> {
+export class CubeTool extends RectangleTool<AbstractShape> {
     icon = 'cube';
     displayName = 'Cube';
 
-    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
         super(CubeToolId, panel, viewStore, registry);
     }
 
@@ -25,7 +26,9 @@ export class CubeTool extends RectangleTool<Canvas2dPanel> {
             depth: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const cube = this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect, config);
+        const canvas = <SketchEditorModule> this.canvas;
+
+        const cube = canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(canvas, rect, config);
 
         return cube;
     }

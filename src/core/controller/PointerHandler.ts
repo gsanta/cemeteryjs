@@ -24,8 +24,6 @@ export interface IPointerEvent {
 export class PointerHandler<D> {
     isDown = false;
     isDrag = false;
-    wheelState: number = 0;
-    prevWheelState: number = 0;
     hoveredView: D;
     dropType: string;
 
@@ -119,9 +117,9 @@ export class PointerHandler<D> {
     }
 
     pointerWheel(controller: ToolHandler<D>, e: IPointerEvent): void {
-        this.prevWheelState = this.wheelState;
-        this.wheelState += e.deltaY;
-        this.pointer.wheelDiff = this.wheelState - this.prevWheelState;
+        this.pointer.prevWheelState = this.pointer.wheelState;
+        this.pointer.wheelState += e.deltaY;
+        this.pointer.wheelDiff = this.pointer.wheelState - this.pointer.prevWheelState;
         this.pointer.lastPointerEvent = e;
 
         if (e.deltaY < 0) {

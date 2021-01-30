@@ -1,5 +1,5 @@
 
-import { ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
@@ -17,7 +17,7 @@ export class RotateAxisViewRenderer implements ShapeRenderer {
         this.registry = registry;
     }
 
-    renderInto(canvas: UI_SvgCanvas, axisView: RotateAxisView, canvasPanel: AbstractCanvasPanel) {
+    renderInto(canvas: UI_SvgCanvas, axisView: RotateAxisView, canvasPanel: AbstractCanvasPanel<AbstractShape>) {
         if (!canvasPanel.tool.getToolById(RotateAxisToolId).isSelected) {
             return null;
         }

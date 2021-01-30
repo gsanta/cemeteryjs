@@ -5,14 +5,15 @@ import { DeleteToolId } from "../../../../core/plugin/tools/DeleteTool";
 import { SelectToolId } from "../../../../core/plugin/tools/SelectTool";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
+import { NodeEditorModule } from "../../NodeEditorModule";
 import { NodeEditorToolbarController } from "../controllers/NodeEditorToolbarController";
 
 export class NodeEditorToolbarRenderer implements IRenderer<UI_SvgCanvas> {
     private registry: Registry;
     private controller: NodeEditorToolbarController;
-    private canvas: AbstractCanvasPanel;
+    private canvas: NodeEditorModule;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel, controller: NodeEditorToolbarController) {
+    constructor(registry: Registry, canvas: NodeEditorModule, controller: NodeEditorToolbarController) {
         this.registry = registry;
         this.canvas = canvas;
         this.controller = controller;

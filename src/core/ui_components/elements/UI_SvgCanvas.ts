@@ -18,7 +18,7 @@ export class UI_SvgCanvas extends UI_SvgGroup {
     width: string;
     height: string;
 
-    constructor(config: {controller: FormController, canvasPanel: AbstractCanvasPanel, key?: string, parent?: UI_Element, target?: string, uniqueId?: string}) {
+    constructor(config: {controller: FormController, canvasPanel: AbstractCanvasPanel<any>, key?: string, parent?: UI_Element, target?: string, uniqueId?: string}) {
         super(config);
 
         this.canvasPanel = this.canvasPanel;

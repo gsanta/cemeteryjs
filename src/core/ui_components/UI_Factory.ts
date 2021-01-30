@@ -108,7 +108,7 @@ export class UI_Factory {
         return element;
     }
 
-    static htmlCanvas(parent: UI_Container, config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_HtmlCanvas {
+    static htmlCanvas(parent: UI_Container, config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel<any> }): UI_HtmlCanvas {
         const element = new UI_HtmlCanvas({controller: config.controller || parent.controller, parent, ...config});
         parent.children.push(element);
 
@@ -117,7 +117,7 @@ export class UI_Factory {
         return element;
     }
 
-    static svgCanvas(parent: UI_Container, config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_SvgCanvas {
+    static svgCanvas(parent: UI_Container, config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel<any> }): UI_SvgCanvas {
         const element = new UI_SvgCanvas({controller: config.controller || parent.controller, parent, ...config});
         parent.children.push(element);
 
@@ -191,7 +191,7 @@ export class UI_Factory {
         return element;
     }
 
-    static listItem(parent: UI_Container, config: UI_ElementConfig & {dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
+    static listItem(parent: UI_Container, config: UI_ElementConfig & {dropTargetPlugin: AbstractCanvasPanel<any>}): UI_ListItem {
         const element = new UI_ListItem({controller: config.controller || parent.controller, parent, ...config});
 
         if (config) {

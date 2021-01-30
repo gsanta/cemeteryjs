@@ -2,23 +2,23 @@
 
 
 
-import { Bab_EngineFacade } from "../../../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
-import { MeshShape } from "../../../main/models/shapes/MeshShape";
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
-import { Canvas3dPanel } from "../../../../../core/plugin/Canvas3dPanel";
 import { FormController } from "../../../../../core/controller/FormController";
+import { Bab_EngineFacade } from "../../../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
+import { IObj } from "../../../../../core/models/objs/IObj";
+import { Canvas3dPanel } from "../../../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
+import { AbstractModuleExporter } from "../../../../../core/services/export/AbstractModuleExporter";
+import { AbstractModuleImporter } from "../../../../../core/services/import/AbstractModuleImporter";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { MeshShape } from "../../../main/models/shapes/MeshShape";
 import { ThumbnailCanvasRenderer } from "./ThumbnailCanvasRenderer";
 import { ClearThumbnailControl, ThumbnailCreateControl, ThumbnailUploadControl } from "./ThumbnailDialogProps";
-import { AbstractModuleImporter } from "../../../../../core/services/import/AbstractModuleImporter";
-import { AbstractModuleExporter } from "../../../../../core/services/export/AbstractModuleExporter";
 
 export const ThumbnailCanvasId = 'thumbnail-canvas';
 
-export class ThumbnailCanvasModule extends Canvas3dPanel {
+export class ThumbnailCanvasModule extends Canvas3dPanel<IObj> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;

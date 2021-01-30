@@ -1,4 +1,4 @@
-import { ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
@@ -17,7 +17,7 @@ export class MoveAxisViewRenderer implements ShapeRenderer {
         this.registry = registry;
     }
 
-    renderInto(canvas: UI_SvgCanvas, axisView: MoveAxisView, canvasPanel: AbstractCanvasPanel) {
+    renderInto(canvas: UI_SvgCanvas, axisView: MoveAxisView, canvasPanel: AbstractCanvasPanel<AbstractShape>) {
         if (!canvasPanel.tool.getToolById(MoveAxisToolId).isSelected) {
             return null;
         }

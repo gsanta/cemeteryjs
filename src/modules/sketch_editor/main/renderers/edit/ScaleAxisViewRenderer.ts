@@ -1,4 +1,4 @@
-import { ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
@@ -16,7 +16,7 @@ export class ScaleAxisViewRenderer implements ShapeRenderer {
         this.registry = registry;
     }
     
-    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleAxisView, canvasPanel: AbstractCanvasPanel): void {
+    renderInto(canvas: UI_SvgCanvas, scaleView: ScaleAxisView, canvasPanel: AbstractCanvasPanel<AbstractShape>): void {
         if (!canvasPanel.tool.getToolById(ScaleAxisToolId).isSelected) {
             return null;
         }

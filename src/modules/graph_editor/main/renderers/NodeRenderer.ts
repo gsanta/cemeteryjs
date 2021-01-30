@@ -9,6 +9,7 @@ import { UI_Column } from '../../../../core/ui_components/elements/UI_Column';
 import { UI_SvgCanvas } from '../../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../../core/ui_components/react/styles';
 import { NodeHeightCalc, NodeShape } from '../models/shapes/NodeShape';
+import { NodeEditorModule } from '../../NodeEditorModule';
 
 export class NodeRenderer implements ShapeRenderer {
     private joinPointsHeight: number;
@@ -18,17 +19,17 @@ export class NodeRenderer implements ShapeRenderer {
         this.nodeView = nodeView;
     }
 
-    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeShape, panel: AbstractCanvasPanel): void {
+    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeShape, canvas: NodeEditorModule): void {
         const group = svgCanvas.group(nodeView.id);
         group.transform = `translate(${nodeView.getBounds().topLeft.x} ${nodeView.getBounds().topLeft.y})`;
 
         this.renderRect(group, nodeView);
         const column = this.renderContent(group, nodeView);
         column.data = nodeView;
-        this.renderInputsInto(column, nodeView, panel);
+        this.renderInputsInto(column, nodeView, canvas);
     }
 
-    private renderInputsInto(column: UI_Column, nodeView: NodeShape, panel: AbstractCanvasPanel) {
+    private renderInputsInto(column: UI_Column, nodeView: NodeShape, canvas: NodeEditorModule) {
         nodeView.getFieldParams()
             .map(param => {
                 let row = column.row({key: param.name});
@@ -77,7 +78,7 @@ export class NodeRenderer implements ShapeRenderer {
                     case InputParamType.MultiSelect:
                         const controller = <MultiSelectController> nodeView.controller.param[param.name];
 
-                        const popupMultiSelect = row.popupMultiSelect({key: param.name, anchorElementKey: panel.region})
+                        const popupMultiSelect = row.popupMultiSelect({key: param.name, anchorElementKey: canvas.region})
                         popupMultiSelect.popupWidth = '200px';
                         popupMultiSelect.paramController = controller;
                         popupMultiSelect.label = param.name;

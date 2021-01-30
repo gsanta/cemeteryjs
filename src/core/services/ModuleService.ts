@@ -35,7 +35,7 @@ export class ModuleService {
             switch(panel.region) {
                 case UI_Region.Canvas1:
                 case UI_Region.Canvas2:
-                    this.ui.registerCanvas(<AbstractCanvasPanel> panel);
+                    this.ui.registerCanvas(<AbstractCanvasPanel<any>> panel);
                     break;
                 default:
                     this.ui.registerPanel(panel);
@@ -46,10 +46,10 @@ export class ModuleService {
 }
 
 export class UI_Modules {
-    private canvases: Map<string, AbstractCanvasPanel> = new Map();
+    private canvases: Map<string, AbstractCanvasPanel<any>> = new Map();
     private panels: Map<string, UI_Panel> = new Map();
 
-    registerCanvas(canvas: AbstractCanvasPanel) {
+    registerCanvas(canvas: AbstractCanvasPanel<any>) {
         this.canvases.set(canvas.id, canvas);
     }
 
@@ -61,7 +61,7 @@ export class UI_Modules {
         return this.canvases.get(id);
     }
 
-    getAllCanvases(): AbstractCanvasPanel[] {
+    getAllCanvases(): AbstractCanvasPanel<any>[] {
         return Array.from(this.canvases.values());
     }
 

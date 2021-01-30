@@ -21,11 +21,11 @@ export class UI_Layout<C extends ParamController = any> extends UI_Container<C> 
         return UI_Factory.accordion(this, config);
     }
 
-    svgCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_SvgCanvas {
+    svgCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel<any> }): UI_SvgCanvas {
         return UI_Factory.svgCanvas(this, config);
     }
 
-    htmlCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_HtmlCanvas {
+    htmlCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel<any> }): UI_HtmlCanvas {
         return UI_Factory.htmlCanvas(this, config);
     }
 }

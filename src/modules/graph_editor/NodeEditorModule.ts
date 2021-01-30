@@ -67,9 +67,9 @@ export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
     private cameraInitializer(canvasId: string, registry: Registry) {
         const screenSize = this.getScreenSize(canvasId);
         if (screenSize) {
-            return new Camera2D(registry, this, new Point(screenSize.x, screenSize.y));
+            return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
         } else {
-            return new Camera2D(registry, this, new Point(100, 100));
+            return new Camera2D(registry, new Point(100, 100));
         }
     }
 

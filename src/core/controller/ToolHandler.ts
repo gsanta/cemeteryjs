@@ -75,6 +75,8 @@ export class PointerTracker {
     droppedItemType: string;
     wheel: Wheel = Wheel.IDLE;
     wheelDiff: number = undefined;
+    wheelState: number = 0;
+    prevWheelState: number = 0;
     lastPointerEvent: IPointerEvent;
 
     getDiff() {

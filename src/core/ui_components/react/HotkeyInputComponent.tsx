@@ -11,7 +11,7 @@ const HotkeyStyled = styled.input`
     left: -100;
 `;
 
-export class HotkeyInputComponent extends React.Component<{registry: Registry, canvas: AbstractCanvasPanel}> {
+export class HotkeyInputComponent extends React.Component<{registry: Registry, canvas: AbstractCanvasPanel<any>}> {
 
     private readonly inputRef = React.createRef<HTMLInputElement>();
 

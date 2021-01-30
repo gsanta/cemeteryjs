@@ -1,18 +1,18 @@
 import { _3DMoveTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_MoveTool";
 import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_RotationTool";
 import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_ScaleTool";
-import { AbstractCanvasPanel, InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
+import { InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
-import { GameViewerProps, GameViewerToolbarController } from "../../contribs/toolbar/GameViewerToolbarController";
-import { GameViewerModel } from "../models/GameViewerModel";
+import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
+import { SceneEditorModule } from "../SceneEditorModule";
 
-export class GameViewerRenderer implements ICanvasRenderer {
-    private canvas: AbstractCanvasPanel<GameViewerModel>;
-    private controllers: GameViewerToolbarController;
+export class SceneEditorRenderer implements ICanvasRenderer {
+    private canvas: SceneEditorModule;
+    private controllers: SceneEditorToolbarController;
 
-    constructor(canvas: AbstractCanvasPanel<GameViewerModel>, controllers: GameViewerToolbarController) {
+    constructor(canvas: SceneEditorModule, controllers: SceneEditorToolbarController) {
         this.canvas = canvas;
         this.controllers = controllers;
     }
@@ -51,7 +51,7 @@ export class GameViewerRenderer implements ICanvasRenderer {
         actionIcon = toolbar.actionIcon({key: GameViewerProps.ShowBoundingBoxes, uniqueId: `${GameViewerProps.ShowBoundingBoxes}-${this.canvas.id}` });
         actionIcon.icon = 'b';
         actionIcon.paramController = this.controllers.showBoundingBox;
-        actionIcon.isActivated = this.canvas.model.showBoundingBoxes;
+        actionIcon.isActivated = this.canvas.showBoundingBoxes;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Show bounding boxes';
 
@@ -61,21 +61,21 @@ export class GameViewerRenderer implements ICanvasRenderer {
         actionIcon = toolbar.actionIcon({key: 'move', uniqueId: `${'move'}-${this.canvas.id}`});
         actionIcon.icon = 'move';
         actionIcon.paramController = this.controllers.moveTool;
-        actionIcon.isActivated = this.canvas.model.selectedTool === _3DMoveTool;
+        actionIcon.isActivated = this.canvas.selectedTool === _3DMoveTool;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Move';
 
         actionIcon = toolbar.actionIcon({key: 'rotate', uniqueId: `${'rotate'}-${this.canvas.id}`});
         actionIcon.icon = 'rotate';
         actionIcon.paramController = this.controllers.rotationTool;
-        actionIcon.isActivated = this.canvas.model.selectedTool === _3DRotationTool;
+        actionIcon.isActivated = this.canvas.selectedTool === _3DRotationTool;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Rotate';
 
         actionIcon = toolbar.actionIcon({key: 'scale', uniqueId: `${'scale'}-${this.canvas.id}`});
         actionIcon.icon = 'scale';
         actionIcon.paramController = this.controllers.scaleTool;
-        actionIcon.isActivated = this.canvas.model.selectedTool === _3DScaleTool;
+        actionIcon.isActivated = this.canvas.selectedTool === _3DScaleTool;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Scale';
 

@@ -18,16 +18,17 @@ import { MeshToolId } from "../controllers/tools/MeshTool";
 import { PathToolId } from "../controllers/tools/PathTool";
 import { SphereToolId } from "../controllers/tools/SphereTool";
 import { SpriteToolId } from "../controllers/tools/SpriteTool";
+import { SketchEditorModule } from "../SketchEditorModule";
 
-export class SceneEditorRenderer implements ICanvasRenderer {
-    private canvas: AbstractCanvasPanel;
+export class SketchEditorRenderer implements ICanvasRenderer {
+    private canvas: SketchEditorModule;
     private registry: Registry;
 
     // TODO: temporary fields, should be in UI_Model
     activeShapeToolId: string = CubeToolId;
     isShapeDropdownOpen = false;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
+    constructor(registry: Registry, canvas: SketchEditorModule) {
         this.canvas = canvas;
         this.registry = registry;
     }

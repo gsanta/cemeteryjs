@@ -5,6 +5,7 @@ import { Canvas3dPanel } from "../../../../../core/plugin/Canvas3dPanel";
 import { ParamController, PropContext } from '../../../../../core/controller/FormController';
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
+import { IObj } from "../../../../../core/models/objs/IObj";
 
 export enum ThumbnailMakerControllerProps {
     ThumbnailCreate = 'ThumbnailFromModel',
@@ -16,7 +17,7 @@ export class ThumbnailCreateControl extends ParamController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailCreate]; }
     
     async click(context: PropContext, element: UI_Element) {
-        const engine = (<Canvas3dPanel> element.canvasPanel).engine;
+        const engine = (<Canvas3dPanel<IObj>> element.canvasPanel).engine;
         const meshView = context.registry.data.shape.scene.getOneSelectedShape() as MeshShape;
 
         // TODO: should not cast to Bab_EngineFacade

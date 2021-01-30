@@ -5,6 +5,7 @@ import { AbstractCanvasPanel } from "../../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../../Registry";
 import { IPointerEvent } from "../../../controller/PointerHandler";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
+import { IObj } from "../../../models/objs/IObj";
 
 export class Bab_PointerService {
     private engineFacade: Bab_EngineFacade;
@@ -19,7 +20,7 @@ export class Bab_PointerService {
 
     private init() {
         // TODO: find a better solution
-        const canvas: AbstractCanvasPanel = this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const canvas: AbstractCanvasPanel<IObj> = this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
         const tools = this.engineFacade.toolService;
 
         this.engineFacade.scene.onPointerObservable.add((pointerInfo) => {

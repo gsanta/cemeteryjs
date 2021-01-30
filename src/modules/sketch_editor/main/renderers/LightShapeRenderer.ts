@@ -7,7 +7,7 @@ import { LightShapeType } from "../models/shapes/LightShape";
 export class LightShapeRenderer implements ShapeRenderer {
     id: string = LightShapeType;
 
-    renderInto(canvas: UI_SvgCanvas, lightView: AbstractShape, panel: AbstractCanvasPanel): void {
+    renderInto(canvas: UI_SvgCanvas, lightView: AbstractShape, panel: AbstractCanvasPanel<AbstractShape>): void {
         const group = canvas.group(lightView.id);
         group.data = lightView;
 

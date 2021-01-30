@@ -37,7 +37,7 @@ import { LightShapeType } from "./models/shapes/LightShape";
 import { MeshShapeType } from "./models/shapes/MeshShape";
 import { PathShapeType } from "./models/shapes/PathShape";
 import { SpriteShapeType } from "./models/shapes/SpriteShape";
-import { SceneEditorRenderer } from "./renderers/SceneEditorRenderer";
+import { SketchEditorRenderer } from "./renderers/SketchEditorRenderer";
 import { SceneToSketchSynchronizer } from "./SceneToSketchSynchronizer";
 import { SketchToSceneSynchronizer } from "./SketchToSceneSynchronizer";
 
@@ -87,7 +87,7 @@ export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
             new RotateAxisTool(this, registry, observable)
         ];
     
-        this.renderer = new SceneEditorRenderer(registry, this);
+        this.renderer = new SketchEditorRenderer(registry, this);
         this.setController(new FormController(undefined, registry, propControllers))
         this.setCamera(this.cameraInitializer(SketchEditorPanelId, registry));
         this.setViewStore(registry.data.shape.scene);
@@ -108,9 +108,9 @@ export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
     private cameraInitializer(canvasId: string, registry: Registry) {
         const screenSize = this.getScreenSize(canvasId);
         if (screenSize) {
-            return new Camera2D(registry, this, new Point(screenSize.x, screenSize.y));
+            return new Camera2D(registry, new Point(screenSize.x, screenSize.y));
         } else {
-            return new Camera2D(registry, this, DUMMY_CAMERA_SIZE);
+            return new Camera2D(registry, DUMMY_CAMERA_SIZE);
         }
     }
 

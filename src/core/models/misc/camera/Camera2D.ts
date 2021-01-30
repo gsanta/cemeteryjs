@@ -1,10 +1,8 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { PointerTracker } from "../../../controller/ToolHandler";
-import { RenderTask } from "../../../services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
-import { AbstractCanvasPanel } from "../../../plugin/AbstractCanvasPanel";
 
 export class Camera2D implements ICamera {
     private screenSize: Point;
@@ -16,12 +14,10 @@ export class Camera2D implements ICamera {
     readonly LOG_ZOOM_MAX = Math.log(Camera2D.ZOOM_MAX);
     readonly NUM_OF_STEPS: number = 100;
     private registry: Registry;
-    private canvas: AbstractCanvasPanel;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel, screenSize: Point) {
+    constructor(registry: Registry, screenSize: Point) {
         this.registry = registry;
         this.screenSize = screenSize;
-        this.canvas = canvas;
         this.viewBox = new Rectangle(new Point(0, 0), new Point(screenSize.x, screenSize.y));
     }
 
@@ -107,18 +103,17 @@ export class Camera2D implements ICamera {
         return camera.viewBox.getSize().mul(ratio.x, ratio.y);
     }
 
-    zoomWheel() {
-        const canvasPos = this.canvas.pointer.pointer.curr;        
+    zoomWheel(pointerTracker: PointerTracker) {
         let nextZoomLevel: number
 
-        if (this.canvas.pointer.prevWheelState - this.canvas.pointer.wheelState > 0) {
+        if (pointerTracker.prevWheelState - pointerTracker.wheelState > 0) {
             nextZoomLevel = this.getNextManualZoomStep();
         } else {
             nextZoomLevel = this.getPrevManualZoomLevel();
         }
 
         if (nextZoomLevel) {
-            this.zoomToPosition(canvasPos, nextZoomLevel);
+            this.zoomToPosition(pointerTracker.curr, nextZoomLevel);
 
             this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
         }

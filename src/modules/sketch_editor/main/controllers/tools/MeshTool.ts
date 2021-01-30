@@ -5,16 +5,19 @@ import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
 import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const MeshToolId = 'mesh-tool';
 
-export class MeshTool extends RectangleTool<Canvas2dPanel> {
-    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
+export class MeshTool extends RectangleTool<AbstractShape> {
+    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
         super(MeshToolId, panel, viewStore, registry);
     }
 
     protected createView(rect: Rectangle): AbstractShape {
-        return this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect);
+        const canvas = <SketchEditorModule> this.canvas;
+
+        return canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(canvas, rect);
     }
     
     protected removeTmpView() {

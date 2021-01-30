@@ -11,7 +11,7 @@ import { ScaleAxisShapeType } from "../../../../src/modules/sketch_editor/main/m
 export interface FakeUIElementConfig {
     key?: string;
     controller?: FormController;
-    canvasPanel?: AbstractCanvasPanel;
+    canvasPanel?: AbstractCanvasPanel<AbstractShape>;
     view?: AbstractShape;
     scopedToolId?: string;
 }
@@ -27,7 +27,7 @@ export function createFakeUIElement(config: FakeUIElementConfig): UI_Element {
     return element;
 }
 
-export function createFakeUIElementForView(view: AbstractShape, canvasPanel: Canvas2dPanel, config: FakeUIElementConfig): UI_Element {
+export function createFakeUIElementForView(view: AbstractShape, canvasPanel: Canvas2dPanel<AbstractShape>, config: FakeUIElementConfig): UI_Element {
     const element: UI_Element = <UI_Element> {
         canvasPanel: config.canvasPanel,
         data: config.view,

@@ -37,7 +37,7 @@ export function getViewProperty(view: AbstractShape, prop: ViewTableProp) {
             return '';
     }
 }
-export function setViewProperty(canvasPanel: Canvas2dPanel, view: AbstractShape, prop: ViewTableProp, val: string) {
+export function setViewProperty(canvasPanel: Canvas2dPanel<AbstractShape>, view: AbstractShape, prop: ViewTableProp, val: string) {
     switch(prop) {
         case ViewTableProp.Selected:
             if (isViewPropTrue(val)) {

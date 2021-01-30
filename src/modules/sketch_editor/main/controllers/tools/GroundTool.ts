@@ -6,6 +6,7 @@ import { Registry } from "../../../../../core/Registry";
 import { sceneAndGameViewRatio, ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { MeshShapeType } from "../../models/shapes/MeshShape";
+import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const GroundToolId = 'ground-tool';
 export class GroundTool extends RectangleTool<AbstractShape> {
@@ -23,7 +24,9 @@ export class GroundTool extends RectangleTool<AbstractShape> {
             height: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const ground = this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect, config);
+        const canvas = <SketchEditorModule> this.canvas;
+
+        const ground = canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(canvas, rect, config);
 
         return ground;
     }

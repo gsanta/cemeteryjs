@@ -6,6 +6,7 @@ import { Registry } from "../../../../../core/Registry";
 import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { MeshShapeType } from "../../models/shapes/MeshShape";
+import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const SphereToolId = 'sphere-tool';
 export class SphereTool extends RectangleTool<AbstractShape> {
@@ -21,8 +22,9 @@ export class SphereTool extends RectangleTool<AbstractShape> {
             shapeType: 'Sphere',
             diameter: 5
         };
+        const canvas = <SketchEditorModule> this.canvas;
 
-        const sphere = this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect, config);
+        const sphere = canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(canvas, rect, config);
 
 
         return sphere;

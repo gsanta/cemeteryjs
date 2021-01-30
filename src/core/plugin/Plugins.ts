@@ -1,15 +1,12 @@
 import { EngineHooks } from '../engine/hooks/EngineHooks';
 import { Registry } from '../Registry';
-import { AbstractCanvasPanel } from './AbstractCanvasPanel';
 import { UI_Panel, UI_Region } from './UI_Panel';
-import { UI_PluginFactory } from './UI_PluginFactory';
 
 export class Plugins {
     engineHooks: EngineHooks;
 
     private activePanels: UI_Panel[] = [];
 
-    private pluginFactories: Map<string, UI_PluginFactory> = new Map();
     private panels: Map<string, UI_Panel> = new Map();
 
     visibilityDirty = true;

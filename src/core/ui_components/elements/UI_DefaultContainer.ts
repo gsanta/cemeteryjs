@@ -13,9 +13,11 @@ import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { UI_ControlledElementConfig, UI_ElementConfig } from './UI_Element';
 import { ParamController } from '../../controller/FormController';
 import { TreeController } from './complex/tree/TreeController';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { AbstractScene } from 'babylonjs';
 
 export class UI_DefaultContainer extends UI_Container {
-    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel}): UI_ListItem {
+    listItem(config: {key: string, dropTargetPlugin: AbstractCanvasPanel<AbstractShape>}): UI_ListItem {
         return UI_Factory.listItem(this, config);
     }
 
@@ -71,7 +73,7 @@ export class UI_DefaultContainer extends UI_Container {
         return UI_Factory.accordion(this, {});
     }
 
-    htmlCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel }): UI_HtmlCanvas {
+    htmlCanvas(config: UI_ElementConfig & { canvasPanel: AbstractCanvasPanel<AbstractShape> }): UI_HtmlCanvas {
         return UI_Factory.htmlCanvas(this, config);
     }
 

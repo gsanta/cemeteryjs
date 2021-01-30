@@ -4,6 +4,7 @@ import { ToolType } from "../../../../core/plugin/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
+import { NodeEditorModule } from "../../NodeEditorModule";
 import { NodeEditorToolbarController } from "../controllers/NodeEditorToolbarController";
 import { JoinTool } from "../controllers/tools/JoinTool";
 import { NodeShape, NodeShapeType } from "../models/shapes/NodeShape";
@@ -11,12 +12,12 @@ import { NodeConnectionRenderer } from "./NodeConnectionRenderer";
 import { NodeEditorToolbarRenderer } from "./NodeEditorToolbarRenderer";
 
 export class NodeEditorRenderer implements ICanvasRenderer {
-    private canvas: AbstractCanvasPanel;
+    private canvas: NodeEditorModule;
     private registry: Registry;
     private nodeConnectionRenderer: NodeConnectionRenderer;
     private nodeEditorToolbarRenderer: NodeEditorToolbarRenderer;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel, controller: NodeEditorToolbarController) {
+    constructor(registry: Registry, canvas: NodeEditorModule, controller: NodeEditorToolbarController) {
         this.canvas = canvas;
         this.registry = registry;
         this.nodeConnectionRenderer = new NodeConnectionRenderer(registry);

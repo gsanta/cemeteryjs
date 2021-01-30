@@ -1,4 +1,4 @@
-import { ShapeRenderer, ShapeTag } from "../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, ShapeRenderer, ShapeTag } from "../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
@@ -7,7 +7,7 @@ import { SpriteShape, SpriteShapeType } from "../models/shapes/SpriteShape";
 export class SpriteShapeRenderer implements ShapeRenderer {
     id: string = SpriteShapeType;
 
-    renderInto(canvas: UI_SvgCanvas, view: SpriteShape, panel: AbstractCanvasPanel): void {
+    renderInto(canvas: UI_SvgCanvas, view: SpriteShape, panel: AbstractCanvasPanel<AbstractShape>): void {
         const group = canvas.group(view.id);
         group.data = view;
         group.transform = `translate(${view.getBounds().topLeft.x} ${view.getBounds().topLeft.y})`;
