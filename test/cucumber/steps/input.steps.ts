@@ -1,4 +1,5 @@
 import { When } from "cucumber";
+import { AbstractShape } from "../../../src/core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { createFakeKeyboardEventFromString } from "./common/inputTestUtils";
 import { createFakeUIElement } from "./common/uiTestHelpers";
@@ -10,7 +11,7 @@ When('change param to \'{word}\' in controller \'{word}\' of panel \'{word}\'', 
 });
 
 When('change param to \'{word}\' in controller \'{word}\' of view \'{word}\'', function(newVal: string, controllerKey: string, viewId: string) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
     const view = canvasPanel.getViewStore().getById(viewId);
 
     view.paramController[controllerKey].change(newVal, null, null);

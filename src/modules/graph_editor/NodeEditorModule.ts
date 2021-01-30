@@ -2,6 +2,7 @@
 
 import { FormController } from "../../core/controller/FormController";
 import { Camera2D } from "../../core/models/misc/camera/Camera2D";
+import { AbstractShape } from "../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../core/plugin/Canvas2dPanel";
 import { CameraTool } from "../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../core/plugin/tools/DeleteTool";
@@ -21,7 +22,7 @@ import { NodeEditorRenderer } from "./main/renderers/NodeEditorRenderer";
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller';
 
-export class NodeEditorModule extends Canvas2dPanel {
+export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;

@@ -7,9 +7,9 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { SpriteShapeType } from "../../models/shapes/SpriteShape";
 
 export const SpriteToolId = 'sprite-tool';
-export class SpriteTool extends RectangleTool<Canvas2dPanel> {
+export class SpriteTool extends RectangleTool<AbstractShape> {
 
-    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
         super(SpriteToolId, panel, viewStore, registry);
     }
 

@@ -31,7 +31,7 @@ export enum Cursor {
     NE_Resize = 'ne-resize'
 }
 
-export interface Tool extends IHotkey {
+export interface Tool<D> extends IHotkey {
     rectangleSelection: Rectangle;
     id: string;
     icon?: string;
@@ -49,8 +49,8 @@ export interface Tool extends IHotkey {
     leave(): void;
     keydown(e: IKeyboardEvent): void;
     keyup(e: IKeyboardEvent): void;
-    over(item: AbstractShape): void;
-    out(item: AbstractShape): void;
+    over(item: D): void;
+    out(item: D): void;
     wheel(): void;
     wheelEnd(): void;
 

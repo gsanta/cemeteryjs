@@ -2,6 +2,7 @@ import { FormController } from "../../../core/controller/FormController";
 import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/controller/ToolHandler";
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
 import { ShapeObservable } from "../../../core/models/ShapeObservable";
+import { AbstractShape } from "../../../core/models/shapes/AbstractShape";
 import { RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
@@ -44,7 +45,7 @@ export const DUMMY_CAMERA_SIZE = new Point(100, 100);
 
 export const SketchEditorPanelId = 'sketch-editor';
 
-export class SketchEditorModule extends Canvas2dPanel {
+export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;

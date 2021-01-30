@@ -19,19 +19,19 @@ export function createRectFromMousePointer(pointer: PointerTracker): Rectangle {
     return rect;
 }
 
-export class ToolAdapter<P extends AbstractCanvasPanel = AbstractCanvasPanel> implements Tool {
+export class ToolAdapter<D> implements Tool<D> {
     rectangleSelection: Rectangle;
     id: string;
     isSelected = false;
 
     getCursor() { return Cursor.Default; }
     
-    protected canvas: P;
+    protected canvas: AbstractCanvasPanel<D>;
     protected registry: Registry;
 
-    constructor(type: string, panel: P, registry: Registry) {
+    constructor(type: string, canvas: AbstractCanvasPanel<D>, registry: Registry) {
         this.id = type;
-        this.canvas = panel;
+        this.canvas = canvas;
         this.registry = registry;
     }
 
@@ -47,8 +47,8 @@ export class ToolAdapter<P extends AbstractCanvasPanel = AbstractCanvasPanel> im
     wheelEnd() {}
     keydown(e: IKeyboardEvent) { }
     keyup(e: IKeyboardEvent){ }
-    over(item: AbstractShape) { }
-    out(item: AbstractShape) { }
+    over(item: D) { }
+    out(item: D) { }
     
     /**
      * Called when the mouse leaves the canvas.

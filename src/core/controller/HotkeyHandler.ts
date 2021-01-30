@@ -7,14 +7,14 @@ import { Wheel } from './PointerHandler';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 
-export class HotkeyHandler {
+export class HotkeyHandler<D> {
     private inputs: HTMLElement[] = [];
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];
     private registry: Registry;
-    private canvas: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel<D>;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<D>) {
         this.registry = registry;
         this.canvas = canvas;
     }

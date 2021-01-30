@@ -21,37 +21,37 @@ Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: Table
 });
 
 Then('canvas contains:', function (tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
     canvasContains(tableDef, canvasPanel.getViewStore().getAllShapes(), true);
 });
 
 Then('canvas contains some of:', function (tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
     canvasContains(tableDef, canvasPanel.getViewStore().getAllShapes(), false);
 });
 
 Then('canvas is empty', function () {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
     expect(canvasPanel.getViewStore().getAllShapes().length).toEqual(0);
 });
 
 Then('canvas selection contains:', function (tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
     canvasContains(tableDef, canvasPanel.getViewStore().getSelectedShapes(), true);
 });
 
 Then('canvas selection contains some of:', function (tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
     canvasContains(tableDef, canvasPanel.getViewStore().getSelectedShapes(), true);
 });
 
 Then('contained views of \'{word}\' are:', function(viewId: string, tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     
     const view = canvasPanel.getViewStore().getById(viewId);
 
@@ -63,7 +63,7 @@ Then('contained views of \'{word}\' are:', function(viewId: string, tableDef: Ta
 });
 
 Then('contained views of \'{word}\' partially are:', function(viewId: string, tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     
     const view = canvasPanel.getViewStore().getById(viewId);
 
@@ -75,7 +75,7 @@ Then('contained views of \'{word}\' partially are:', function(viewId: string, ta
 });
 
 Then('dump contained views of \'{word}\':', function(viewId: string, tableDef: TableDefinition) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     const view = canvasPanel.getViewStore().getById(viewId);
     
     if (!view) {
@@ -93,7 +93,7 @@ Then('view properties are:', function (tableDef: TableDefinition) {
 
 Then('dump views:', function(tableDef: TableDefinition) {
     const viewTableProps = collectViewTableProps(tableDef);
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     new ModelDumper().dumpViews(viewTableProps, canvasPanel.getViewStore().getAllShapes());
 });
 

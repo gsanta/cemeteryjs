@@ -19,7 +19,7 @@ export class LightViewFactory extends ShapeFactoryAdapter {
         return new LightShape();
     }
 
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+    instantiateOnCanvas(panel: Canvas2dPanel<AbstractShape>, dimensions: Rectangle) {
         const lightObj = <LightObj> this.registry.services.objService.createObj(LightObjType);
         const lightView: LightShape = <LightShape> this.instantiate();
         lightView.setBounds(dimensions);

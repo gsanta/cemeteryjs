@@ -1,7 +1,6 @@
 import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
 import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { IPointerEvent } from '../../controller/PointerHandler';
 import { ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
@@ -9,14 +8,14 @@ import { ToolAdapter } from "./ToolAdapter";
 import { ToolType } from "./Tool";
 import { PointerTracker } from '../../controller/ToolHandler';
 
-export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> extends ToolAdapter<P> {
+export abstract class PointerTool extends ToolAdapter<AbstractShape> {
     acceptedViews: string[] = [];
 
     protected movingItem: AbstractShape = undefined;
     private isDragStart = true;
     protected viewStore: ShapeStore;
 
-    constructor(type: string, panel: P, store: ShapeStore, registry: Registry) {
+    constructor(type: string, panel: AbstractCanvasPanel<AbstractShape>, store: ShapeStore, registry: Registry) {
         super(type, panel, registry);
         this.viewStore = store;
     }
@@ -73,24 +72,27 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         this.movingItem = undefined;
     }
 
-    over(view: AbstractShape) {
-        if (view.viewType === NodePortViewType) {
+    over(item: AbstractShape) {
+        const data = <AbstractShape> <any> item;
+        if (data.viewType === NodePortViewType) {
             this.canvas.tool.setPriorityTool(ToolType.Join);
         }
         
-        view.tags.add(ShapeTag.Hovered);
-        view.containerShape?.tags.add(ShapeTag.Hovered);
+        data.tags.add(ShapeTag.Hovered);
+        data.containerShape?.tags.add(ShapeTag.Hovered);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    out(view: AbstractShape) {
-        if (!this.canvas.pointer.isDown && view.viewType === NodePortViewType) {
+    out(item: AbstractShape) {
+        const data = <AbstractShape> <any> item;
+
+        if (!this.canvas.pointer.isDown && data.viewType === NodePortViewType) {
             this.canvas.tool.removePriorityTool(ToolType.Join);
 
         } 
         
-        view.tags.delete(ShapeTag.Hovered);
-        view.containerShape?.tags.delete(ShapeTag.Hovered);
+        data.tags.delete(ShapeTag.Hovered);
+        data.containerShape?.tags.delete(ShapeTag.Hovered);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 

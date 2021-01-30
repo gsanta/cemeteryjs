@@ -1,4 +1,5 @@
 import { ShapeObservable } from "../../../../../core/models/ShapeObservable";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
@@ -12,8 +13,8 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     private initialScale: Point_3;
     private initialBounds: Rectangle;
 
-    constructor(panel: AbstractCanvasPanel, registry: Registry, shapeObservable: ShapeObservable) {
-        super(ScaleAxisToolId, panel, registry, shapeObservable, ScaleAxisShapeType);
+    constructor(canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry, shapeObservable: ShapeObservable) {
+        super(ScaleAxisToolId, canvas, registry, shapeObservable, ScaleAxisShapeType);
     }
 
     down() {

@@ -19,7 +19,7 @@ export class SpriteViewFactory extends ShapeFactoryAdapter {
         return new SpriteShape();
     }
 
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+    instantiateOnCanvas(panel: Canvas2dPanel<AbstractShape>, dimensions: Rectangle) {
         const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
         spriteObj.color = colors.darkorchid;
 

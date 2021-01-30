@@ -6,11 +6,12 @@ import { createRectFromMousePointer } from './ToolAdapter';
 import { PointerTool } from './PointerTool';
 import { Cursor } from "./Tool";
 import { PointerTracker } from '../../controller/ToolHandler';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
 
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
 
-    constructor(canvas: AbstractCanvasPanel, store: ShapeStore, registry: Registry) {
+    constructor(canvas: AbstractCanvasPanel<AbstractShape>, store: ShapeStore, registry: Registry) {
         super(SelectToolId, canvas, store, registry);
     }
 

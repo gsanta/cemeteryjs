@@ -3,7 +3,7 @@ import { Camera3D } from "../models/misc/camera/Camera3D";
 import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
 
 
-export abstract class Canvas3dPanel extends AbstractCanvasPanel {
+export abstract class Canvas3dPanel<D> extends AbstractCanvasPanel<D> {
     // TODO find a better place
     engine: IEngineFacade;
     

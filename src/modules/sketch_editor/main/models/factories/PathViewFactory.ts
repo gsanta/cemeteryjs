@@ -1,6 +1,6 @@
 import { PathObj, PathObjType } from "../../../../../core/models/objs/PathObj";
 import { PathPoinShape } from "../../../../../core/models/shapes/child_views/PathPointShape";
-import { ShapeFactoryAdapter } from "../../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, ShapeFactoryAdapter } from "../../../../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
@@ -18,7 +18,7 @@ export class PathViewFactory extends ShapeFactoryAdapter {
         return new PathShape();
     }
 
-    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
+    instantiateOnCanvas(panel: Canvas2dPanel<AbstractShape>, dimensions: Rectangle) {
         const pointer = panel.pointer.pointer;
 
         const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);

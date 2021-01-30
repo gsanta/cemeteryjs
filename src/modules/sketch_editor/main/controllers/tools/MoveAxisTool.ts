@@ -1,6 +1,7 @@
 import { MeshSnapper } from "../../../../../core/engine/adapters/babylonjs/mesh/MeshSnapper";
 import { ObjEventType } from "../../../../../core/models/ObjObservable";
 import { ShapeEventType, ShapeObservable } from "../../../../../core/models/ShapeObservable";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { sceneAndGameViewRatio } from "../../../../../core/stores/ShapeStore";
@@ -13,8 +14,8 @@ export const MoveAxisToolId = 'move-axis-tool';
 export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     private snapper: MeshSnapper;
 
-    constructor(panel: AbstractCanvasPanel, registry: Registry, shapeObservable: ShapeObservable) {
-        super(MoveAxisToolId, panel, registry, shapeObservable, MoveAxisShapeType);
+    constructor(canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry, shapeObservable: ShapeObservable) {
+        super(MoveAxisToolId, canvas, registry, shapeObservable, MoveAxisShapeType);
         this.snapper = new MeshSnapper(registry);
     }
  

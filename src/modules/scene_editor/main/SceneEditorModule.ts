@@ -1,5 +1,6 @@
 import { FormController } from "../../../core/controller/FormController";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
+import { IObj } from "../../../core/models/objs/IObj";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
@@ -16,7 +17,7 @@ import { GameViewerRenderer } from "./renderers/GameViewerRenderer";
 export const SceneEditorPanelId = 'scene-viewer'; 
 export const SceneEditorPluginControllerId = 'scene-editor-plugin-controller';
 
-export class SceneEditorModule extends Canvas3dPanel {
+export class SceneEditorModule extends Canvas3dPanel<IObj> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;

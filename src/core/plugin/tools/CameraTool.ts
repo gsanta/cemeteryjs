@@ -8,7 +8,7 @@ import { Cursor } from "./Tool";
 import { ToolAdapter } from './ToolAdapter';
 
 export const CameraToolId = 'camera-tool';
-export class CameraTool extends ToolAdapter {
+export class CameraTool<D> extends ToolAdapter<D> {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
     private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
     private zoomHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, wheel: true, worksDuringMouseDown: true};
@@ -17,7 +17,7 @@ export class CameraTool extends ToolAdapter {
     private activeCameraAction: 'zoom' | 'pan' | 'rotate' = this.defaultCameraAction;
     private isSpaceDown: boolean;
 
-    constructor(panel: AbstractCanvasPanel, registry: Registry) {
+    constructor(panel: AbstractCanvasPanel<D>, registry: Registry) {
         super(CameraToolId, panel, registry);
     }
 

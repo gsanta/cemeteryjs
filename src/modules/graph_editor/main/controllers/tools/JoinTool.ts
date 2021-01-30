@@ -14,7 +14,7 @@ export class JoinTool extends PointerTool {
     endPoint: Point;
     nodePortView1: NodePortShape;
 
-    constructor(plugin: AbstractCanvasPanel, viewStore: ShapeStore,  registry: Registry) {
+    constructor(plugin: AbstractCanvasPanel<AbstractShape>, viewStore: ShapeStore,  registry: Registry) {
         super(ToolType.Join, plugin, viewStore, registry);
     }
 

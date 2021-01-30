@@ -9,16 +9,17 @@ import { MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { RotateAxisView } from "../../models/shapes/edit/RotateAxisShape";
 import { ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
 import { ShapeObservable } from "../../../../../core/models/ShapeObservable";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 
-export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter {
+export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter<AbstractShape> {
     protected downView: T;
     protected meshView: MeshShape;
     protected hoveredView: T;
     protected shapeObservable: ShapeObservable;
     private shapeType: string;
 
-    constructor(id: string, panel: AbstractCanvasPanel, registry: Registry, shapeObservable: ShapeObservable,  shapeType: string) {
-        super(id, panel, registry);
+    constructor(id: string, canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry, shapeObservable: ShapeObservable,  shapeType: string) {
+        super(id, canvas, registry);
         this.shapeObservable = shapeObservable;
         this.shapeType = shapeType;
     }

@@ -14,12 +14,13 @@ import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCa
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
+import { IObj } from "../../../../core/models/objs/IObj";
 
 export const MeshLoaderPreviewCanvasId = 'mesh-loader-preview-canvas';
 
 export class MeshLoaderPreviewCanvas {
     private registry: Registry;
-    private canvas: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel<IObj>;
     private engine: IEngineFacade;
 
     constructor(registry: Registry) {
@@ -36,7 +37,7 @@ export class MeshLoaderPreviewCanvas {
         this.engine.meshes.setPosition(meshObj, new Point_3(0, 0, 0));
     }
 
-    getCanvas(): AbstractCanvasPanel {
+    getCanvas(): AbstractCanvasPanel<IObj> {
         return this.canvas;
     }
 
@@ -46,7 +47,7 @@ export class MeshLoaderPreviewCanvas {
 }
 
 //  TODO merge this together with MeshLoaderPreviewCanvas (and make a module out of it)
-class MeshLoaderCanvas extends Canvas3dPanel {
+class MeshLoaderCanvas extends Canvas3dPanel<IObj> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;

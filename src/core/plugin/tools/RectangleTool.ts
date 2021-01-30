@@ -1,20 +1,19 @@
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { Registry } from '../../Registry';
-import { IPointerEvent } from '../../controller/PointerHandler';
-import { ToolAdapter, createRectFromMousePointer } from './ToolAdapter';
-import { UI_Region } from '../UI_Panel';
-import { AbstractShape } from '../../models/shapes/AbstractShape';
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { ShapeStore } from '../../stores/ShapeStore';
 import { PointerTracker } from '../../controller/ToolHandler';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { Registry } from '../../Registry';
+import { ShapeStore } from '../../stores/ShapeStore';
+import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
+import { UI_Region } from '../UI_Panel';
+import { createRectFromMousePointer, ToolAdapter } from './ToolAdapter';
 
-export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolAdapter<P> {
+export abstract class RectangleTool<D> extends ToolAdapter<D> {
     protected rectangleFeedback: Rectangle;
     protected tmpView: AbstractShape;
     protected viewStore: ShapeStore;
     protected rectRadius = 50;
 
-    constructor(type: string, panel: P, store: ShapeStore, registry: Registry) {
+    constructor(type: string, panel: AbstractCanvasPanel<D>, store: ShapeStore, registry: Registry) {
         super(type, panel, registry);
         this.viewStore = store;
     }

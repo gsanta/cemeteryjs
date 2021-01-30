@@ -127,14 +127,14 @@ export class UI_Builder {
             return this.buildElement(dialog, undefined);
         } else if (panel.region === UI_Region.Canvas1) {
             const layout = UI_Factory.layout({ controller: panel.controller, key: panel.region });
-            const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
+            const canvas = layout.svgCanvas({ canvasPanel: panel as AbstractCanvasPanel<any>, key: panel.id });
             
             panel.renderer.renderInto(canvas);
 
             return this.buildElement(layout, undefined);
         } else if (panel.region === UI_Region.Canvas2) {
             const layout = UI_Factory.layout({ controller: panel.controller });
-            const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel, key: panel.id });
+            const canvas = layout.htmlCanvas({ canvasPanel: panel as AbstractCanvasPanel<any>, key: panel.id });
             
             panel.renderer && panel.renderer.renderInto(canvas);
 

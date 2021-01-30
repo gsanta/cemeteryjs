@@ -8,9 +8,10 @@ import { Point } from "../../../src/utils/geometry/shapes/Point";
 import { ModelDumper } from "./common/ModelDumper";
 import expect from 'expect';
 import { NodeLibraryController } from "../../../src/modules/graph_editor/contribs/side_panel/node_library/NodeLibraryController";
+import { AbstractShape } from "../../../src/core/models/shapes/AbstractShape";
 
 When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: number, y: number) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel;
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     const nodeListPanel = this.registry.services.module.ui.getPanel(NodeListPanelId);
     const nodeEditorSettingsController = <NodeLibraryController> nodeListPanel.paramController;
     nodeEditorSettingsController.dragNode.onDndStart(nodeType);

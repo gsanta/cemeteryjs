@@ -12,7 +12,6 @@ export class Registry {
     stores: Stores;
     services: Services;
     plugins: Plugins;    
-    // ui_regions: UI_Regions;
     preferences: Preferences = defaultPreferences;
     engine: IEngineFacade;
 

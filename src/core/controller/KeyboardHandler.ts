@@ -73,12 +73,12 @@ export function getKeyFromKeyCode(keyCode: number) {
     return key;
 }
 
-export class KeyboardHandler {
+export class KeyboardHandler<D> {
     private registry: Registry;
     private handlers: ((keyboardEvent: IKeyboardEvent) => void)[] = [];
-    private canvas: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel<D>;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<D>) {
         this.registry = registry;
         this.canvas = canvas;
         this.keyDown = this.keyDown.bind(this);

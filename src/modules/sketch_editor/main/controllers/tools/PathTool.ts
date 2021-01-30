@@ -11,10 +11,10 @@ import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 
 export const PathToolId = 'path-tool';
-export class PathTool extends PointerTool<Canvas2dPanel> {
+export class PathTool extends PointerTool {
     acceptedViews = [PathShapeType, PathPointViewType]
 
-    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
         super(PathToolId, panel, viewStore, registry);
     }
 

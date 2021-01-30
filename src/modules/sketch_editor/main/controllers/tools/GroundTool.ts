@@ -8,11 +8,11 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { MeshShapeType } from "../../models/shapes/MeshShape";
 
 export const GroundToolId = 'ground-tool';
-export class GroundTool extends RectangleTool<Canvas2dPanel> {
+export class GroundTool extends RectangleTool<AbstractShape> {
     icon = 'grid';
     displayName = 'Ground';
 
-    constructor(panel: Canvas2dPanel, viewStore: ShapeStore, registry: Registry) {
+    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
         super(GroundToolId, panel, viewStore, registry);
     }
 

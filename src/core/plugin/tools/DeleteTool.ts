@@ -7,12 +7,13 @@ import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './ToolAdapter';
 import { PointerTool } from './PointerTool';
 import { Cursor } from './Tool';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
 
 export const DeleteToolId = 'delete-tool';
 export class DeleteTool extends PointerTool {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(panel: AbstractCanvasPanel, viewStore: ShapeStore,  registry: Registry) {
+    constructor(panel: AbstractCanvasPanel<AbstractShape>, viewStore: ShapeStore,  registry: Registry) {
         super(DeleteToolId, panel, viewStore, registry);
     }
 

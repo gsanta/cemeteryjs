@@ -21,12 +21,12 @@ export interface IPointerEvent {
     preventDefault: () => void;
 }
 
-export class PointerHandler<D = any> {
+export class PointerHandler<D> {
     isDown = false;
     isDrag = false;
     wheelState: number = 0;
     prevWheelState: number = 0;
-    hoveredView: AbstractShape;
+    hoveredView: D;
     dropType: string;
 
     // hoveredPlugin: AbstractCanvasPlugin;
@@ -34,14 +34,14 @@ export class PointerHandler<D = any> {
     pointer: PointerTracker = new PointerTracker();
 
     private registry: Registry;
-    private canvas: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel<D>;
 
-    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<D>) {
         this.registry = registry;
         this.canvas = canvas;
     }
 
-    pointerDown(controller: ToolHandler, e: IPointerEvent, scopedToolId?: string): void {
+    pointerDown(controller: ToolHandler<D>, e: IPointerEvent, scopedToolId?: string): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         if (e.button !== 'left') { return }
         this.isDown = true;
@@ -53,7 +53,7 @@ export class PointerHandler<D = any> {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerMove(controller: ToolHandler, e: IPointerEvent, scopedToolId?: string): void {
+    pointerMove(controller: ToolHandler<D>, e: IPointerEvent, scopedToolId?: string): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
 
         this.pointer.prev = this.pointer.curr;
@@ -77,7 +77,7 @@ export class PointerHandler<D = any> {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerUp(controller: ToolHandler, e: IPointerEvent, scopedToolId?: string): void {
+    pointerUp(controller: ToolHandler<D>, e: IPointerEvent, scopedToolId?: string): void {
         this.pointer.droppedItemType = e.droppedItemId;
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
@@ -96,7 +96,7 @@ export class PointerHandler<D = any> {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(controller: ToolHandler, data: AbstractShape, scopedToolId?: string): void {
+    pointerLeave(controller: ToolHandler<D>, data: D, scopedToolId?: string): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.pointer.lastPointerEvent = undefined;
         this.determineTool(controller, scopedToolId).out(data);
@@ -105,7 +105,7 @@ export class PointerHandler<D = any> {
         this.hoveredView = undefined;
     }
 
-    pointerEnter(controller: ToolHandler, data: AbstractShape, scopedToolId?: string) {
+    pointerEnter(controller: ToolHandler<D>, data: D, scopedToolId?: string) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.hoveredView = data;
         this.pointer.lastPointerEvent = undefined;
@@ -113,12 +113,12 @@ export class PointerHandler<D = any> {
         this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);
 
         const view = controller.controlledView || data;
-        this.determineTool(controller, scopedToolId).over(view);
+        this.determineTool(controller, scopedToolId).over(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
     }
 
-    pointerWheel(controller: ToolHandler, e: IPointerEvent): void {
+    pointerWheel(controller: ToolHandler<D>, e: IPointerEvent): void {
         this.prevWheelState = this.wheelState;
         this.wheelState += e.deltaY;
         this.pointer.wheelDiff = this.wheelState - this.prevWheelState;
@@ -136,14 +136,14 @@ export class PointerHandler<D = any> {
         controller.getActiveTool().wheel();
     }
 
-    pointerWheelEnd(controller: ToolHandler, ) {
+    pointerWheelEnd(controller: ToolHandler<D>) {
         this.pointer.wheel = Wheel.IDLE;
         this.pointer.lastPointerEvent = undefined;
 
         controller.getActiveTool().wheelEnd();
     }
 
-    private determineTool(toolController: ToolHandler, scopedToolId?: string): Tool {
+    private determineTool(toolController: ToolHandler<D>, scopedToolId?: string): Tool<D> {
         if (scopedToolId) {
             return toolController.getToolById(scopedToolId);
         } else {

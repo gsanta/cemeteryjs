@@ -90,20 +90,20 @@ export class PointerTracker {
     }
 }
 
-export class ToolHandler {
+export class ToolHandler<D> {
     controlledView: AbstractShape;
-    private scopedTool: Tool;
+    private scopedTool: Tool<D>;
 
     private registry: Registry;
-    private canvas: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel<D>;
 
-    private toolMap: Map<string, Tool> = new Map();
-    private tools: Tool[] = [];
+    private toolMap: Map<string, Tool<D>> = new Map();
+    private tools: Tool<D>[] = [];
 
-    protected priorityTool: Tool;
-    protected selectedTool: Tool;
+    protected priorityTool: Tool<D>;
+    protected selectedTool: Tool<D>;
 
-    constructor(canvasPanel: AbstractCanvasPanel, registry: Registry, tools: Tool[] = []) {
+    constructor(canvasPanel: AbstractCanvasPanel<D>, registry: Registry, tools: Tool<D>[] = []) {
         this.registry = registry;
         this.canvas = canvasPanel;
 
@@ -147,11 +147,11 @@ export class ToolHandler {
         this.registry.services.render.reRenderAll();
     }
 
-    mouseLeave(e: MouseEvent, data: AbstractShape, scopedToolId?: string): void {
+    mouseLeave(e: MouseEvent, data: D, scopedToolId?: string): void {
         this.canvas.pointer.pointerLeave(this, data, scopedToolId);
     }
 
-    mouseEnter(e: MouseEvent, data: AbstractShape, scopedToolId?: string): void {
+    mouseEnter(e: MouseEvent, data: D, scopedToolId?: string): void {
         this.canvas.pointer.pointerEnter(this, data, scopedToolId);
     }
 
@@ -165,7 +165,7 @@ export class ToolHandler {
         this.canvas.pointer.pointerWheelEnd(this);
     }
 
-    registerTool(tool: Tool) {
+    registerTool(tool: Tool<D>) {
         if (this.tools.indexOf(tool) === -1) {
             this.tools.push(tool);
         }
@@ -187,19 +187,19 @@ export class ToolHandler {
         this.registry.services.render.reRender(this.canvas.region);
     }
 
-    getSelectedTool(): Tool {
+    getSelectedTool(): Tool<D> {
         return this.selectedTool;
     }
 
-    getActiveTool(): Tool {
+    getActiveTool(): Tool<D> {
         return this.priorityTool ? this.priorityTool : this.scopedTool ? this.scopedTool : this.selectedTool;
     }
 
-    getToolById(toolId: string): Tool {
+    getToolById(toolId: string): Tool<D> {
         return this.toolMap.get(toolId);
     }
 
-    getAll(): Tool[] {
+    getAll(): Tool<D>[] {
         return this.tools;
     }
 

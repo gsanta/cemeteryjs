@@ -1,4 +1,5 @@
 import { ShapeEventType, ShapeObservable } from "../../../../../core/models/ShapeObservable";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
@@ -8,8 +9,8 @@ import { AbstractAxisTool } from "./AbstractAxisTool";
 export const RotateAxisToolId = 'rotate-axis-tool';
 
 export class RotateAxisTool extends AbstractAxisTool<RotateAxisView> {
-    constructor(panel: AbstractCanvasPanel, registry: Registry, shapeObservable: ShapeObservable) {
-        super(RotateAxisToolId, panel, registry, shapeObservable, RotateAxisShapeType);
+    constructor(canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry, shapeObservable: ShapeObservable) {
+        super(RotateAxisToolId, canvas, registry, shapeObservable, RotateAxisShapeType);
     }
  
     protected updateX() {

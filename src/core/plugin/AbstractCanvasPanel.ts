@@ -40,14 +40,13 @@ export enum InteractionMode {
     Execution = 'Execution'
 }
 
-export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
-    model: M;
+export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     readonly displayName: string;
 
-    readonly keyboard: KeyboardHandler;
-    readonly hotkey: HotkeyHandler;
-    readonly tool: ToolHandler;
-    readonly pointer: PointerHandler;
+    readonly keyboard: KeyboardHandler<D>;
+    readonly hotkey: HotkeyHandler<D>;
+    readonly tool: ToolHandler<D>;
+    readonly pointer: PointerHandler<D>;
 
     protected renderFunc: () => void;
 
@@ -78,7 +77,7 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
         this.controller = controller;
     }
 
-    addTool(tool: Tool) {
+    addTool(tool: Tool<D>) {
         this.tool.registerTool(tool);
     }
 
@@ -111,7 +110,7 @@ export class ZoomInController extends ParamController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext, element: UI_Element) {
-        const cameraTool = <CameraTool> element.canvasPanel.tool.getToolById(CameraToolId);
+        const cameraTool = <CameraTool<any>> element.canvasPanel.tool.getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
@@ -121,7 +120,7 @@ export class ZoomOutController extends ParamController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext, element: UI_Element) {
-        const cameraTool = <CameraTool> element.canvasPanel.tool.getToolById(CameraToolId);
+        const cameraTool = <CameraTool<any>> element.canvasPanel.tool.getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }
