@@ -68,23 +68,23 @@ export abstract class UI_Element<C extends ParamController = any> {
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseDown(e, this);
+        this.canvasPanel && this.canvasPanel.toolController.mouseDown(e, this.scopedToolId);
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseMove(e, this);
+        this.canvasPanel && this.canvasPanel.toolController.mouseMove(e, this.scopedToolId);
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseUp(e, this);
+        this.canvasPanel && this.canvasPanel.toolController.mouseUp(e, this.scopedToolId);
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseLeave(e, data, this);
+        this.canvasPanel && this.canvasPanel.toolController.mouseLeave(e, data, this.scopedToolId);
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseEnter(e, data, this);
+        this.canvasPanel && this.canvasPanel.toolController.mouseEnter(e, data, this.scopedToolId);
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
@@ -104,7 +104,7 @@ export abstract class UI_Element<C extends ParamController = any> {
     }
 
     dndEnd(registry: Registry, point: Point) {
-        this.canvasPanel && this.canvasPanel.toolController.dndDrop(point, this);
+        this.canvasPanel && this.canvasPanel.toolController.dndDrop(point);
     }
 }
 

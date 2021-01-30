@@ -105,7 +105,6 @@ export class App extends React.Component<{}, AppState> {
                     </div>
                     {this.context.controllers.isLoading ? <SpinnerOverlayComponent key="spinner"/> : null}
                     <DialogManagerComponent/>
-                    <HotkeyInputComponent key="hotkey-input" registry={this.context.registry}/>
                 </DndProvider>
             </StyledApp>
         );

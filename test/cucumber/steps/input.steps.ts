@@ -20,11 +20,11 @@ When('change param to \'{word}\' in controller \'{word}\' of view \'{word}\'', f
 When('click button \'{word}\' in panel \'{word}\'', function(paramName: string, panelId: string) {
     const panel = this.registry.services.module.ui.getPanel(panelId);
     
-    const fakeUIElement = createFakeUIElement({ controller: panel.controller, key: paramName });
-    
     panel.paramController[paramName].click(null, null);
 });
 
-When('press key \'{word}\'', function(key: string) {
-    this.registry.services.keyboard.keyDown(createFakeKeyboardEventFromString(key));
+When('press key \'{word}\' on canvas \'{word}\'', function(key: string, canvasId: string) {
+    const canvas = this.registry.services.module.ui.getCanvas(canvasId);
+
+    canvas.keyboard.keyDown(createFakeKeyboardEventFromString(key));
 });

@@ -19,10 +19,10 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     }
  
     protected updateX() {
-        const pointerTracker = this.registry.services.pointer.pointer;
+        const pointerTracker = this.canvas.pointer.pointer;
 
         if (!this.snapper.isSnapped()) {
-            let delta = new Point_3(this.registry.services.pointer.pointer.getDiff().x, 0, 0);    
+            let delta = new Point_3(this.canvas.pointer.pointer.getDiff().x, 0, 0);    
             this.meshView.move(delta);
             this.shapeObservable.emit({shape: this.meshView, eventType: ShapeEventType.PositionChanged});
         }
@@ -35,7 +35,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     }
 
     protected updateY() {
-        const pointerTracker = this.registry.services.pointer.pointer;
+        const pointerTracker = this.canvas.pointer.pointer;
 
         this.snapper.trySnapOrUnsnap(this.meshView.getObj(), pointerTracker);
 
@@ -47,7 +47,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     }
 
     protected updateZ() {
-        const pointerTracker = this.registry.services.pointer.pointer;
+        const pointerTracker = this.canvas.pointer.pointer;
     
         if (!this.snapper.isSnapped()) {
             let delta = new Point_3(0, pointerTracker.getDiff().y, 0);

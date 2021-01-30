@@ -1,6 +1,7 @@
 
 import * as React from "react";
 import styled from "styled-components";
+import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
 
 const HotkeyStyled = styled.input`
@@ -10,12 +11,12 @@ const HotkeyStyled = styled.input`
     left: -100;
 `;
 
-export class HotkeyInputComponent extends React.Component<{registry: Registry}> {
+export class HotkeyInputComponent extends React.Component<{registry: Registry, canvas: AbstractCanvasPanel}> {
 
     private readonly inputRef = React.createRef<HTMLInputElement>();
 
     componentDidMount(): void {
-        this.props.registry.services.hotkey.registerInput(this.inputRef.current, true);
+        this.props.canvas.hotkey.registerInput(this.inputRef.current, true);
     }
 
     render() {

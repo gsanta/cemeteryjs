@@ -50,7 +50,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     constructor(registry: Registry, name: string) {
         this.registry = registry;
         this.name = name;
-        this.camera = new Camera3D(this.registry);
+        this.camera = new Camera3D();
         this.spriteLoader = new Bab_SpriteLoader(this.registry, this);
         this.sprites = new Bab_Sprites(this.registry, this);
         this.meshLoader = new Bab_MeshLoader(this.registry, this);

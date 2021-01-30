@@ -4,6 +4,7 @@ import { PointerTracker } from "../../../controller/ToolController";
 import { RenderTask } from "../../../services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
+import { AbstractCanvasPanel } from "../../../plugin/AbstractCanvasPanel";
 
 export class Camera2D implements ICamera {
     private screenSize: Point;
@@ -15,10 +16,12 @@ export class Camera2D implements ICamera {
     readonly LOG_ZOOM_MAX = Math.log(Camera2D.ZOOM_MAX);
     readonly NUM_OF_STEPS: number = 100;
     private registry: Registry;
+    private canvas: AbstractCanvasPanel;
 
-    constructor(registry: Registry, screenSize: Point) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel, screenSize: Point) {
         this.registry = registry;
         this.screenSize = screenSize;
+        this.canvas = canvas;
         this.viewBox = new Rectangle(new Point(0, 0), new Point(screenSize.x, screenSize.y));
     }
 
@@ -105,10 +108,10 @@ export class Camera2D implements ICamera {
     }
 
     zoomWheel() {
-        const canvasPos = this.registry.services.pointer.pointer.curr;        
+        const canvasPos = this.canvas.pointer.pointer.curr;        
         let nextZoomLevel: number
 
-        if (this.registry.services.pointer.prevWheelState - this.registry.services.pointer.wheelState > 0) {
+        if (this.canvas.pointer.prevWheelState - this.canvas.pointer.wheelState > 0) {
             nextZoomLevel = this.getNextManualZoomStep();
         } else {
             nextZoomLevel = this.getPrevManualZoomLevel();

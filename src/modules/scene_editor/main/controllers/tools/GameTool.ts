@@ -14,7 +14,7 @@ export class GameTool extends ToolAdapter {
     }
 
     keydown(e: IKeyboardEvent) {
-        if (this.panel.interactionMode === InteractionMode.Execution) {
+        if (this.canvas.interactionMode === InteractionMode.Execution) {
             this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
             this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
             this.registry.services.game.executeKeyDown(e);
@@ -22,7 +22,7 @@ export class GameTool extends ToolAdapter {
     }
 
     keyup(e: IKeyboardEvent) {
-        if (this.panel.interactionMode === InteractionMode.Execution) {
+        if (this.canvas.interactionMode === InteractionMode.Execution) {
             // this.lastExecutedKey = String.fromCharCode(e.keyCode).toLocaleLowerCase();
             // this.registry.data.helper.node.graph.getNodesByType(KeyboardNodeType).forEach(node => node.getObj().execute());
             this.registry.services.game.executeKeyUp(e);

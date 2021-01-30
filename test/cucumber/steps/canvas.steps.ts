@@ -3,7 +3,6 @@ import { Then, When } from 'cucumber';
 import { Canvas2dPanel } from '../../../src/core/plugin/Canvas2dPanel';
 import { Point } from '../../../src/utils/geometry/shapes/Point';
 import { createFakeMouseEvent } from './common/inputTestUtils';
-import { createFakeUIElement, createFakeUIElementForView } from './common/uiTestHelpers';
 import { findViewOrContainedView } from './common/viewTestUtils';
 import expect from 'expect';
 import { SketchEditorPanelId } from '../../../src/modules/sketch_editor/main/SketchEditorModule';
@@ -27,7 +26,7 @@ When('hover over canvas \'{word}\'', function(panelId: string) {
 
 When('mouse down at \'{int}:{int}\'', function(x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel; 
-    canvasPanel.toolController.mouseDown(createFakeMouseEvent(x, y), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseDown(createFakeMouseEvent(x, y)); 
 });
 
 When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
@@ -36,13 +35,13 @@ When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
     const hoveredView = canvasPanel.getViewStore().getAllShapes().find(view => view.getBounds().containsPoint(new Point(x, y)));
 
     if (hoveredView) {
-        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(x, y), hoveredView, createFakeUIElement({ canvasPanel })); 
+        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(x, y), hoveredView); 
     } else {
-        this.registry.services.pointer.hoveredView = undefined;
+        canvasPanel.pointer.hoveredView = undefined;
     }
 
-    canvasPanel.toolController.mouseDown(createFakeMouseEvent(x, y), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseUp(createFakeMouseEvent(x, y), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseDown(createFakeMouseEvent(x, y)); 
+    canvasPanel.toolController.mouseUp(createFakeMouseEvent(x, y)); 
 });
 
 When('mouse click on \'{word}\'', function(viewId: string) {
@@ -54,10 +53,10 @@ When('mouse click on \'{word}\'', function(viewId: string) {
 
     const center = view.getBounds().getBoundingCenter();
 
-    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(center.x, center.y), view, createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseDown(createFakeMouseEvent(center.x, center.y), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseUp(createFakeMouseEvent(center.x, center.y), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseLeave(createFakeMouseEvent(center.x, center.y), view, createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(center.x, center.y), view); 
+    canvasPanel.toolController.mouseDown(createFakeMouseEvent(center.x, center.y)); 
+    canvasPanel.toolController.mouseUp(createFakeMouseEvent(center.x, center.y)); 
+    canvasPanel.toolController.mouseLeave(createFakeMouseEvent(center.x, center.y), view); 
 });
 
 When('mouse drags from \'{int}:{int}\' to \'{int}:{int}\'', function(xStart: number, yStart: number, xEnd: number, yEnd: number) {
@@ -65,19 +64,19 @@ When('mouse drags from \'{int}:{int}\' to \'{int}:{int}\'', function(xStart: num
 
     const hoveredView = canvasPanel.getViewStore().getAllShapes().find(view => view.getBounds().containsPoint(new Point(xStart, yStart)));
 
-    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xStart, yStart), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xStart, yStart)); 
 
     if (hoveredView) {
-        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(xStart, yStart), hoveredView, createFakeUIElement({ canvasPanel })); 
+        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(xStart, yStart), hoveredView); 
     } else {
-        this.registry.services.pointer.hoveredView = undefined;
+        canvasPanel.pointer.hoveredView = undefined;
     }
 
-    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xStart + 1, yStart + 1), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xStart + 1, yStart + 1)); 
 
-    canvasPanel.toolController.mouseDown(createFakeMouseEvent(xStart, yStart), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xEnd, yEnd), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseUp(createFakeMouseEvent(xEnd, yEnd), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseDown(createFakeMouseEvent(xStart, yStart)); 
+    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xEnd, yEnd)); 
+    canvasPanel.toolController.mouseUp(createFakeMouseEvent(xEnd, yEnd)); 
 });
 
 When('mouse drags from view \'{word}\' to view \'{word}\'', function(startViewPath: string, endViewPath: string) {
@@ -88,14 +87,14 @@ When('mouse drags from view \'{word}\' to view \'{word}\'', function(startViewPa
     const view1Pos = view1.getBounds().getBoundingCenter();
     const view2Pos = view2.getBounds().getBoundingCenter();
 
-    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1, createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseDown(createFakeMouseEvent(view1Pos.x, view1Pos.y), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseLeave(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1, createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1); 
+    canvasPanel.toolController.mouseDown(createFakeMouseEvent(view1Pos.x, view1Pos.y)); 
+    canvasPanel.toolController.mouseLeave(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1); 
     
-    canvasPanel.toolController.mouseMove(createFakeMouseEvent(view2Pos.x, view2Pos.y), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseMove(createFakeMouseEvent(view2Pos.x, view2Pos.y)); 
 
-    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view2Pos.x, view2Pos.y), view2, createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseUp(createFakeMouseEvent(view2Pos.x, view2Pos.y), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view2Pos.x, view2Pos.y), view2); 
+    canvasPanel.toolController.mouseUp(createFakeMouseEvent(view2Pos.x, view2Pos.y)); 
 });
 
 When('mouse drags from view \'{word}\' to \'{int}:{int}\'', function(startViewPath: string, xEnd: number, yEnd: number) {
@@ -104,12 +103,12 @@ When('mouse drags from view \'{word}\' to \'{int}:{int}\'', function(startViewPa
     const view1 = findViewOrContainedView(canvasPanel.getViewStore(), startViewPath);
     const view1Pos = view1.getBounds().getBoundingCenter();
 
-    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1, createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseDown(createFakeMouseEvent(view1Pos.x, view1Pos.y), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseLeave(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1, createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1); 
+    canvasPanel.toolController.mouseDown(createFakeMouseEvent(view1Pos.x, view1Pos.y)); 
+    canvasPanel.toolController.mouseLeave(createFakeMouseEvent(view1Pos.x, view1Pos.y), view1); 
     
-    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xEnd, yEnd), createFakeUIElement({ canvasPanel })); 
-    canvasPanel.toolController.mouseUp(createFakeMouseEvent(xEnd, yEnd), createFakeUIElement({ canvasPanel })); 
+    canvasPanel.toolController.mouseMove(createFakeMouseEvent(xEnd, yEnd)); 
+    canvasPanel.toolController.mouseUp(createFakeMouseEvent(xEnd, yEnd)); 
 });
 
 When('mouse move to view \'{word}\'', function(viewPath: string) {
@@ -118,7 +117,7 @@ When('mouse move to view \'{word}\'', function(viewPath: string) {
     const view = findViewOrContainedView(canvasPanel.getViewStore(), viewPath);
     const view1Pos = view.getBounds().getBoundingCenter();
 
-    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view, createFakeUIElementForView(view, canvasPanel, { canvasPanel })); 
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view); 
 });
 
 When('mouse move to view \'{word}\'', function(viewPath: string) {
@@ -127,7 +126,7 @@ When('mouse move to view \'{word}\'', function(viewPath: string) {
     const view = findViewOrContainedView(canvasPanel.getViewStore(), viewPath);
     const view1Pos = view.getBounds().getBoundingCenter();
 
-    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view, createFakeUIElementForView(view, canvasPanel, { canvasPanel })); 
+    canvasPanel.toolController.mouseEnter(createFakeMouseEvent(view1Pos.x, view1Pos.y), view); 
 });
 
 When('mouse move to \'{int}:{int}\'', function(x: number, y: number) {
@@ -135,9 +134,9 @@ When('mouse move to \'{int}:{int}\'', function(x: number, y: number) {
     const hoveredView = findViewAtPoint(new Point(x, y));
 
     if (hoveredView) {
-        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(x, y), hoveredView, createFakeUIElement({ canvasPanel })); 
+        canvasPanel.toolController.mouseEnter(createFakeMouseEvent(x, y), hoveredView); 
     } else {
-        this.registry.services.pointer.hoveredView = undefined;
+        canvasPanel.pointer.hoveredView = undefined;
     }
 });
 

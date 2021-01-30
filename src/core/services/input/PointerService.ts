@@ -2,8 +2,8 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { AbstractShape } from "../../models/shapes/AbstractShape";
 import { Registry } from "../../Registry";
 import { PointerTracker, ToolController } from "../../controller/ToolController";
-import { UI_Element } from "../../ui_components/elements/UI_Element";
 import { Tool } from "../../plugin/tools/Tool";
+import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -21,13 +21,11 @@ export interface IPointerEvent {
     preventDefault: () => void;
 }
 
-export class PointerService {
+export class PointerService<D = any> {
     isDown = false;
     isDrag = false;
-    wheel: Wheel = Wheel.IDLE;
     wheelState: number = 0;
     prevWheelState: number = 0;
-    wheelDiff: number = undefined;
     hoveredView: AbstractShape;
     dropType: string;
 
@@ -36,9 +34,11 @@ export class PointerService {
     pointer: PointerTracker = new PointerTracker();
 
     private registry: Registry;
+    private canvas: AbstractCanvasPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     pointerDown(controller: ToolController, e: IPointerEvent, scopedToolId?: string): void {
@@ -71,7 +71,7 @@ export class PointerService {
                 tool.move();
             }
         }
-        this.registry.services.hotkey.executeHotkey(e);
+        this.canvas.hotkey.executeHotkey(e, this.pointer);
         this.registry.services.render.reRenderScheduled();
     }
 
@@ -105,9 +105,7 @@ export class PointerService {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.hoveredView = data;
 
-        this.registry.services.hotkey.executeHotkey({
-            isHover: true
-        });
+        this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);
 
         const view = controller.controlledView || data;
         this.determineTool(controller, scopedToolId).over(view);
@@ -118,22 +116,22 @@ export class PointerService {
     pointerWheel(controller: ToolController, e: IPointerEvent): void {
         this.prevWheelState = this.wheelState;
         this.wheelState += e.deltaY;
-        this.wheelDiff = this.wheelState - this.prevWheelState;
+        this.pointer.wheelDiff = this.wheelState - this.prevWheelState;
 
         if (e.deltaY < 0) {
-            this.wheel = Wheel.UP;
+            this.pointer.wheel = Wheel.UP;
         } else if (e.deltaY > 0) {
-            this.wheel = Wheel.DOWN;
+            this.pointer.wheel = Wheel.DOWN;
         } else {
-            this.wheel = Wheel.IDLE;
+            this.pointer.wheel = Wheel.IDLE;
         }
 
-        this.registry.services.hotkey.executeHotkey(e);
+        this.canvas.hotkey.executeHotkey(e, this.pointer);
         controller.getActiveTool().wheel();
     }
 
     pointerWheelEnd(controller: ToolController, ) {
-        this.wheel = Wheel.IDLE;
+        this.pointer.wheel = Wheel.IDLE;
 
         controller.getActiveTool().wheelEnd();
     }

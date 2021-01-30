@@ -1,3 +1,4 @@
+import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { Registry } from '../../Registry';
 
 export enum Platform {
@@ -74,17 +75,19 @@ export function getKeyFromKeyCode(keyCode: number) {
 
 export class KeyboardService {
     private registry: Registry;
-    private handlers: ((keyboardEvent: IKeyboardEvent) => void)[] = []
+    private handlers: ((keyboardEvent: IKeyboardEvent) => void)[] = [];
+    private canvas: AbstractCanvasPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.registry = registry;
+        this.canvas = canvas;
         this.keyDown = this.keyDown.bind(this);
         this.keyUp = this.keyUp.bind(this);
     }
     
     keyDown(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, false);
-        this.registry.services.hotkey.executeHotkey(convertedEvent);
+        this.canvas.hotkey.executeHotkey(convertedEvent, this.canvas.pointer.pointer);
         this.registry.ui.helper.hoveredPanel.toolController.getActiveTool()?.keydown(convertedEvent);
         this.registry.services.render.reRenderScheduled();
 
@@ -95,7 +98,7 @@ export class KeyboardService {
 
     keyUp(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, true);
-        this.registry.services.hotkey.executeHotkey(convertedEvent);
+        this.canvas.hotkey.executeHotkey(convertedEvent, null);
         this.registry.ui.helper.hoveredPanel.toolController.getActiveTool()?.keyup(convertedEvent);
         this.registry.services.render.reRenderScheduled();
 

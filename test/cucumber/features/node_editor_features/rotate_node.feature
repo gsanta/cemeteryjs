@@ -28,12 +28,12 @@ Feature: Rotate node
             | Id          | Rotation  |
             | mesh-obj-1  | 0:0:0     |
         When hover over canvas 'game-viewer'
-        And press key 'a'
+        And press key 'a' on canvas 'game-viewer'
         Then obj properties are:
             | Id          | Rotation  |
             | mesh-obj-1  | 0:-6:0    |
-        And press key 'd'
-        And press key 'd'
+        And press key 'd' on canvas 'game-viewer'
+        And press key 'd' on canvas 'game-viewer'
         Then obj properties are:
             | Id          | Rotation  |
             | mesh-obj-1  | 0:6:0     |

@@ -2,9 +2,9 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { PointerTracker } from "../../../controller/ToolController";
 
 export interface ICamera {
-    zoomIn(): boolean;
-    zoomOut(): boolean;
-    zoomWheel(): void;
+    zoomIn(pointer: PointerTracker): boolean;
+    zoomOut(pointer: PointerTracker): boolean;
+    zoomWheel(pointer: PointerTracker): void;
     screenToCanvasPoint(screenPoint: Point): Point;
     getCenterPoint(): Point;
     getScale(): number;

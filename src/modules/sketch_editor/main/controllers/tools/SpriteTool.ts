@@ -14,7 +14,7 @@ export class SpriteTool extends RectangleTool<Canvas2dPanel> {
     }
 
     protected createView(rect: Rectangle): AbstractShape {
-        return this.panel.getViewStore().getViewFactory(SpriteShapeType).instantiateOnCanvas(this.panel, rect);
+        return this.canvas.getViewStore().getViewFactory(SpriteShapeType).instantiateOnCanvas(this.canvas, rect);
     }
     
     protected removeTmpView() {

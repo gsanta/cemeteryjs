@@ -60,8 +60,8 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     }
 
     private getDiffRatio() {
-        const downDiff =  this.registry.services.pointer.pointer.down.clone().subtract(this.initialBounds.getBoundingCenter());
-        const currdiff = this.registry.services.pointer.pointer.curr.clone().subtract(this.initialBounds.getBoundingCenter());
+        const downDiff =  this.canvas.pointer.pointer.down.clone().subtract(this.initialBounds.getBoundingCenter());
+        const currdiff = this.canvas.pointer.pointer.curr.clone().subtract(this.initialBounds.getBoundingCenter());
         
         return currdiff.div(downDiff.x, downDiff.y).negateY();
     }

@@ -3,6 +3,7 @@ import { UIController } from "../../../../../core/controller/UIController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { NodeShape } from "../../../main/models/shapes/NodeShape";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export class NodeLibraryController extends UIController {
     constructor(registry: Registry) {
@@ -32,11 +33,11 @@ export class DragNodeController extends DragAndDropController {
     }
 
     onDndEnd() {
-        console.log('ondndend')
         this.dropId = undefined;
     }
 
     private onDrop() {
+        const canvas = this.registry.services.module.ui.getCanvas(NodeEditorPanelId);
         const nodeType = this.dropId;
         const nodeObj = this.registry.data.helper.node.createObj(nodeType);
         const nodeView: NodeShape = this.registry.data.helper.node.createView(nodeType, nodeObj);
@@ -44,7 +45,7 @@ export class DragNodeController extends DragAndDropController {
         this.registry.stores.objStore.addObj(nodeObj);
         this.registry.data.shape.node.addShape(nodeView);
 
-        nodeView.getBounds().moveTo(this.registry.services.pointer.pointer.curr);
+        nodeView.getBounds().moveTo(canvas.pointer.pointer.curr);
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }

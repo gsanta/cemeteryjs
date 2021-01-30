@@ -17,12 +17,12 @@ export class DeleteTool extends PointerTool {
     }
 
     drag() {
-        this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
+        this.rectangleSelection = createRectFromMousePointer(this.canvas.pointer.pointer);
         this.registry.services.render.scheduleRendering(this.registry.ui.helper.hoveredPanel.region);
     }
 
     click() {
-        const hoveredItem = this.registry.services.pointer.hoveredView;
+        const hoveredItem = this.canvas.pointer.hoveredView;
 
         if (!hoveredItem) { return; }
 
@@ -33,7 +33,7 @@ export class DeleteTool extends PointerTool {
         }
         
         this.registry.services.level.updateCurrentLevel();
-        if (this.registry.services.pointer.hoveredView) {
+        if (this.canvas.pointer.hoveredView) {
             this.registry.services.history.createSnapshot();
             this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
@@ -63,12 +63,12 @@ export class DeleteTool extends PointerTool {
     }
 
     getCursor() {
-        return this.registry.services.pointer.hoveredView ? Cursor.Pointer : Cursor.Default;
+        return this.canvas.pointer.hoveredView ? Cursor.Pointer : Cursor.Default;
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
-        if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.registry)) {
-            this.panel.toolController.setSelectedTool(this.id)
+        if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.canvas.pointer.pointer)) {
+            this.canvas.toolController.setSelectedTool(this.id)
             
             return true;
         }

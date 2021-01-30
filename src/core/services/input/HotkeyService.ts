@@ -1,7 +1,9 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
+import { PointerTracker } from '../../controller/ToolController';
+import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
 import { Registry } from '../../Registry';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
-import { PointerService, Wheel } from './PointerService';
+import { Wheel } from './PointerService';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 
@@ -10,9 +12,11 @@ export class HotkeyService {
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];
     private registry: Registry;
+    private canvas: AbstractCanvasPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: AbstractCanvasPanel) {
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     registerInput(input: HTMLElement, isPrimaryInput = false) {
@@ -21,13 +25,13 @@ export class HotkeyService {
             this.primaryInput = input;
         }
 
-        input.addEventListener('keydown',  this.registry.services.keyboard.keyDown);
-        input.addEventListener('keyup', this.registry.services.keyboard.keyUp);
+        input.addEventListener('keydown',  this.canvas.keyboard.keyDown);
+        input.addEventListener('keyup', this.canvas.keyboard.keyUp);
     }
 
     unregisterInput(input: HTMLElement) {
-        input.removeEventListener('keydown',  this.registry.services.keyboard.keyDown);
-        input.removeEventListener('keyup', this.registry.services.keyboard.keyUp);
+        input.removeEventListener('keydown',  this.canvas.keyboard.keyDown);
+        input.removeEventListener('keyup', this.canvas.keyboard.keyUp);
     }
 
     registerHotkey(hotKey: Hotkey): void {
@@ -47,8 +51,8 @@ export class HotkeyService {
         return this.hotkeys.find(hk => hk.id === hotkeyId) !== undefined;
     }
 
-    executeHotkey(hotkeyEvent: IHotkeyEvent): boolean {
-        const executedHotkeys = this.hotkeys.filter(h => h.hotkey(hotkeyEvent));
+    executeHotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker): boolean {
+        const executedHotkeys = this.hotkeys.filter(h => h.hotkey(hotkeyEvent, pointerTracker));
 
         if (this.registry.ui.helper.hoveredPanel) {
             // TODO it should also return with the executed hotkeys
@@ -99,7 +103,7 @@ export interface IHotkeyEvent {
 }
 
 export interface IHotkey {
-    hotkey(hotkeyEvent: IHotkeyEvent): boolean;
+    hotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker): boolean;
 }
 
 export const defaultHotkeyTrigger: HotkeyTrigger = {
@@ -131,8 +135,8 @@ export class Hotkey implements IHotkey {
         this.action = action;
     }
 
-    hotkey(hotkeyEvent: IHotkeyEvent): boolean {
-        if (checkHotkeyAgainstTrigger(hotkeyEvent, this.trigger, this.registry)) {
+    hotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker): boolean {
+        if (checkHotkeyAgainstTrigger(hotkeyEvent, this.trigger, pointerTracker)) {
             this.action(hotkeyEvent, this.registry);
             return true;
         }
@@ -140,21 +144,21 @@ export class Hotkey implements IHotkey {
     }
 }
 
-export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger, registry: Registry) {
+export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger, pointerTracker: PointerTracker) {
     return (
         keyCodesMatch(hotkeyEvent, hotkeyTrigger) &&
         hotkeyEvent.isAltDown === hotkeyTrigger.alt &&
         (hotkeyTrigger.shift === undefined || hotkeyEvent.isShiftDown === hotkeyTrigger.shift) &&
         isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === hotkeyTrigger.ctrlOrCommand &&
-        wheelMatch(registry.services.pointer) === hotkeyTrigger.wheel &&
+        wheelMatch(pointerTracker) === hotkeyTrigger.wheel &&
         mouseDownMatch(hotkeyEvent, hotkeyTrigger) &&
         keyCodeFuncMatch(hotkeyEvent, hotkeyTrigger)
     );
 }
 
 
-function wheelMatch(pointerService: PointerService): boolean {
-    return pointerService.wheel !== Wheel.IDLE;
+function wheelMatch(pointerTracker: PointerTracker): boolean {
+    return pointerTracker.wheel !== Wheel.IDLE;
 }
 
 function keyCodeFuncMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger) {

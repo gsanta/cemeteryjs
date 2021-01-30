@@ -10,6 +10,7 @@ import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 import { DeleteToolId } from '../../../../plugin/tools/DeleteTool';
+import { HotkeyInputComponent } from '../../HotkeyInputComponent';
 
 const SelectionComponentStyled = styled.rect`
     fill-opacity: 0.3;
@@ -66,7 +67,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
                 {this.props.toolbar}
                 {this.props.dropLayer}
                 {this.props.element.elementType === UI_ElementType.SvgCanvas ? this.renderSvgCanvas() : this.renderHtmlCanvas()}
-
+                <HotkeyInputComponent key="hotkey-input" registry={this.context.registry} canvas={this.props.element.canvasPanel}/>
             </div>
         );
     }

@@ -21,7 +21,7 @@ export class LightTool extends RectangleTool<Canvas2dPanel> {
     }
 
     protected createView(rect: Rectangle): AbstractShape {
-        return this.panel.getViewStore().getViewFactory(LightShapeType).instantiateOnCanvas(this.panel, rect);
+        return this.canvas.getViewStore().getViewFactory(LightShapeType).instantiateOnCanvas(this.canvas, rect);
     }
     
     protected removeTmpView() {

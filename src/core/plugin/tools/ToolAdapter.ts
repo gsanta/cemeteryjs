@@ -26,12 +26,12 @@ export class ToolAdapter<P extends AbstractCanvasPanel = AbstractCanvasPanel> im
 
     getCursor() { return Cursor.Default; }
     
-    protected panel: P;
+    protected canvas: P;
     protected registry: Registry;
 
     constructor(type: string, panel: P, registry: Registry) {
         this.id = type;
-        this.panel = panel;
+        this.canvas = panel;
         this.registry = registry;
     }
 

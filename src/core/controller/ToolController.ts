@@ -1,8 +1,7 @@
 import { Registry } from "../Registry";
 import { Point } from '../../utils/geometry/shapes/Point';
-import { IPointerEvent } from "../services/input/PointerService";
+import { IPointerEvent, Wheel } from "../services/input/PointerService";
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
-import { UI_Element } from "../ui_components/elements/UI_Element";
 import { Tool } from "../plugin/tools/Tool";
 import { AbstractShape } from "../models/shapes/AbstractShape";
 import { ParamController, PropContext } from "./FormController";
@@ -18,6 +17,7 @@ import { ScaleAxisToolId } from "../../modules/sketch_editor/main/controllers/to
 import { MoveAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/MoveAxisTool";
 import { LightToolId } from "../../modules/sketch_editor/main/controllers/tools/LightTool";
 import { RotateAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/RotateAxisTool";
+import { UI_Element } from "../ui_components/elements/UI_Element";
 
 export class CommonToolController extends ParamController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -73,6 +73,8 @@ export class PointerTracker {
     prevScreen: Point;
     downScreen: Point;
     droppedItemType: string;
+    wheel: Wheel = Wheel.IDLE;
+    wheelDiff: number = undefined;
 
     getDiff() {
         return this.curr.subtract(this.prev);
@@ -92,7 +94,7 @@ export class ToolController {
     private scopedTool: Tool;
 
     private registry: Registry;
-    private canvasPanel: AbstractCanvasPanel;
+    private canvas: AbstractCanvasPanel;
 
     private toolMap: Map<string, Tool> = new Map();
     private tools: Tool[] = [];
@@ -102,7 +104,7 @@ export class ToolController {
 
     constructor(canvasPanel: AbstractCanvasPanel, registry: Registry, tools: Tool[] = []) {
         this.registry = registry;
-        this.canvasPanel = canvasPanel;
+        this.canvas = canvasPanel;
 
         tools.forEach(tool => this.registerTool(tool));
 
@@ -113,27 +115,27 @@ export class ToolController {
         } 
     }
 
-    mouseDown(e: MouseEvent, element: UI_Element): void {
+    mouseDown(e: MouseEvent, scopedToolId?: string): void {
         if (!this.isLeftButton(e)) { return }
 
-        this.registry.services.pointer.pointerDown(this, this.convertEvent(e, true), element.scopedToolId);
+        this.canvas.pointer.pointerDown(this, this.convertEvent(e, true), scopedToolId);
     }
     
-    mouseMove(e: MouseEvent, element: UI_Element): void {
-        this.registry.services.pointer.pointerMove(this, this.convertEvent(e, this.registry.services.pointer.isDown), element.scopedToolId);
+    mouseMove(e: MouseEvent, scopedToolId?: string): void {
+        this.canvas.pointer.pointerMove(this, this.convertEvent(e, this.canvas.pointer.isDown), scopedToolId);
     }    
 
-    mouseUp(e: MouseEvent, element: UI_Element): void {
+    mouseUp(e: MouseEvent, scopedToolId?: string): void {
         if (this.isLeftButton(e)) {
-            this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element.scopedToolId);
+            this.canvas.pointer.pointerUp(this, this.convertEvent(e, false), scopedToolId);
         }
 
-        this.registry.services.hotkey.focus();
+        this.canvas.hotkey.focus();
     }
 
-    dndDrop(point: Point, element: UI_Element) {
+    dndDrop(point: Point, scopedToolId?: string) {
         const e = <MouseEvent> {x: point.x, y: point.y};
-        this.registry.services.pointer.pointerUp(this, this.convertEvent(e, false), element.scopedToolId);
+        this.canvas.pointer.pointerUp(this, this.convertEvent(e, false), scopedToolId);
 
         this.registry.services.dragAndDropService.emitDrop();
         // if (this.plugin.dropItem) {
@@ -144,22 +146,22 @@ export class ToolController {
         this.registry.services.render.reRenderAll();
     }
 
-    mouseLeave(e: MouseEvent, data: AbstractShape, element: UI_Element): void {
-        this.registry.services.pointer.pointerLeave(this, data, element.scopedToolId);
+    mouseLeave(e: MouseEvent, data: AbstractShape, scopedToolId?: string): void {
+        this.canvas.pointer.pointerLeave(this, data, scopedToolId);
     }
 
-    mouseEnter(e: MouseEvent, data: AbstractShape, element: UI_Element): void {
-        this.registry.services.pointer.pointerEnter(this, data, element.scopedToolId);
+    mouseEnter(e: MouseEvent, data: AbstractShape, scopedToolId?: string): void {
+        this.canvas.pointer.pointerEnter(this, data, scopedToolId);
     }
 
     mouseWheel(e: WheelEvent): void {
         const pointerEvent = this.convertEvent(e, false);
         pointerEvent.deltaY = e.deltaY;
-        this.registry.services.pointer.pointerWheel(this, pointerEvent);
+        this.canvas.pointer.pointerWheel(this, pointerEvent);
     }
 
     mouseWheelEnd(): void {
-        this.registry.services.pointer.pointerWheelEnd(this);
+        this.canvas.pointer.pointerWheelEnd(this);
     }
 
     registerTool(tool: Tool) {
@@ -181,7 +183,7 @@ export class ToolController {
         this.selectedTool = this.getToolById(toolId);
         this.selectedTool.select();
         this.selectedTool.isSelected = true;
-        this.registry.services.render.reRender(this.canvasPanel.region);
+        this.registry.services.render.reRender(this.canvas.region);
     }
 
     getSelectedTool(): Tool {
@@ -205,7 +207,7 @@ export class ToolController {
             this.getActiveTool().leave();
             this.priorityTool = this.toolMap.get(toolId);
             this.priorityTool.select();
-            this.registry.services.render.reRender(this.canvasPanel.region);
+            this.registry.services.render.reRender(this.canvas.region);
         }
     }
 
@@ -213,7 +215,7 @@ export class ToolController {
         if (this.priorityTool && this.priorityTool.id === toolId) {
             this.priorityTool.deselect();
             this.priorityTool = null;
-            this.registry.services.render.reRender(this.canvasPanel.region);
+            this.registry.services.render.reRender(this.canvas.region);
         }
     }
 
@@ -222,7 +224,7 @@ export class ToolController {
             this.getActiveTool().leave();
             this.scopedTool = this.toolMap.get(toolId);
             this.scopedTool.select();
-            this.registry.services.render.reRender(this.canvasPanel.region);
+            this.registry.services.render.reRender(this.canvas.region);
         }
     }
 

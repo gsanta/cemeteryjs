@@ -1,10 +1,10 @@
 import { Registry } from '../../Registry';
-import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, Hotkey, HotkeyTrigger, IHotkeyEvent } from "../../services/input/HotkeyService";
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from "../../services/input/HotkeyService";
 import { IKeyboardEvent, Keyboard } from '../../services/input/KeyboardService';
 import { IPointerEvent } from '../../services/input/PointerService';
-import { ToolAdapter } from './ToolAdapter';
-import { ToolType, Cursor } from "./Tool";
 import { AbstractCanvasPanel, InteractionMode } from '../AbstractCanvasPanel';
+import { Cursor } from "./Tool";
+import { ToolAdapter } from './ToolAdapter';
 
 export const CameraToolId = 'camera-tool';
 export class CameraTool extends ToolAdapter {
@@ -21,28 +21,28 @@ export class CameraTool extends ToolAdapter {
     }
 
     wheel() {
-        this.panel.getCamera().zoomWheel();
+        this.canvas.getCamera().zoomWheel(this.canvas.pointer.pointer);
     }
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.panel.toolController.removePriorityTool(this.id)
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.canvas.toolController.removePriorityTool(this.id)
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     drag(e: IPointerEvent) {
         super.drag(e);
 
-        const camera = this.panel.getCamera();
+        const camera = this.canvas.getCamera();
 
         switch(this.activeCameraAction) {
             case 'pan':
-                camera.pan(this.registry.services.pointer.pointer);
-                this.registry.services.render.scheduleRendering(this.panel.region);
+                camera.pan(this.canvas.pointer.pointer);
+                this.registry.services.render.scheduleRendering(this.canvas.region);
                 break;
             case 'rotate':
-                camera.rotate(this.registry.services.pointer.pointer);
-                this.registry.services.render.scheduleRendering(this.panel.region);
+                camera.rotate(this.canvas.pointer.pointer);
+                this.registry.services.render.scheduleRendering(this.canvas.region);
                 break;
         }
 
@@ -50,14 +50,14 @@ export class CameraTool extends ToolAdapter {
     }
 
     zoomIn() {
-        if (this.panel.getCamera().zoomIn()) {
-            this.registry.services.render.reRender(this.panel.region);
+        if (this.canvas.getCamera().zoomIn(this.canvas.pointer.pointer)) {
+            this.registry.services.render.reRender(this.canvas.region);
         }
     }
 
     zoomOut() {
-        if (this.panel.getCamera().zoomOut()) {
-            this.registry.services.render.reRender(this.panel.region);
+        if (this.canvas.getCamera().zoomOut(this.canvas.pointer.pointer)) {
+            this.registry.services.render.reRender(this.canvas.region);
         }
     }
 
@@ -73,21 +73,22 @@ export class CameraTool extends ToolAdapter {
     }
 
     hotkey(event: IHotkeyEvent) {
+        const pointer = this.canvas.pointer.pointer;
         let setAsPriorityTool = false;
 
-        if (this.panel.interactionMode === InteractionMode.Edit) {
-            if (checkHotkeyAgainstTrigger(event, this.panHotkeyTrigger, this.registry)) {
+        if (this.canvas.interactionMode === InteractionMode.Edit) {
+            if (checkHotkeyAgainstTrigger(event, this.panHotkeyTrigger, pointer)) {
                 this.activeCameraAction = 'pan';
                 setAsPriorityTool = true;
-            } else if (checkHotkeyAgainstTrigger(event, this.rotationHotkeyTrigger, this.registry)) {
+            } else if (checkHotkeyAgainstTrigger(event, this.rotationHotkeyTrigger, pointer)) {
                 this.activeCameraAction = 'rotate';
                 setAsPriorityTool = true;
-            } else if (checkHotkeyAgainstTrigger(event, this.zoomHotkeyTrigger, this.registry)) {
+            } else if (checkHotkeyAgainstTrigger(event, this.zoomHotkeyTrigger, pointer)) {
                 this.activeCameraAction = 'zoom';
                 setAsPriorityTool = true;
             }
     
-            setAsPriorityTool && this.panel.toolController.setPriorityTool(this.id);
+            setAsPriorityTool && this.canvas.toolController.setPriorityTool(this.id);
             return setAsPriorityTool;
         }
 
@@ -96,7 +97,7 @@ export class CameraTool extends ToolAdapter {
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.panel.toolController.removePriorityTool(this.id);
+            this.canvas.toolController.removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.registry.ui.helper.hoveredPanel.region);
         }
     }

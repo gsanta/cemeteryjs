@@ -19,7 +19,7 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
     }
 
     click() {
-        const hoveredItem = this.registry.services.pointer.hoveredView;
+        const hoveredItem = this.canvas.pointer.hoveredView;
         if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
             super.click();
         } else {
@@ -30,7 +30,7 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
             this.viewStore.clearSelection();
-            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
 
             this.registry.services.history.createSnapshot();
         }
@@ -50,13 +50,13 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
 
         if (hover) {
             super.over(item);
-            this.registry.services.render.scheduleRendering(this.panel.region);
+            this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
 
     out(item: AbstractShape) {
         super.out(item);
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     private drawPath() {
@@ -73,25 +73,20 @@ export class PathTool extends PointerTool<Canvas2dPanel> {
         }
 
         this.registry.services.history.createSnapshot();
-        this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
+        this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
     }
 
     private continuePath(path: PathShape) {
-        const pointer = this.registry.services.pointer.pointer;
+        const pointer = this.canvas.pointer.pointer;
         const newEditPoint = new PathPoinShape(path, new Point(pointer.down.x, pointer.down.y));
         path.addPathPoint(newEditPoint);
     }
 
     private startNewPath() {
-        return this.panel.getViewStore().getViewFactory(PathShapeType).instantiateOnCanvas(this.panel, undefined);
+        return this.canvas.getViewStore().getViewFactory(PathShapeType).instantiateOnCanvas(this.canvas, undefined);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         return false;
-        // if (event.isHover && isNodeConnectionControl(this.registry.services.pointer.hoveredItem)) {
-        //     this.registry.services.layout.getHoveredView().setPriorityTool(this);
-        //     return true;
-        // }
-        // return false;
     }
 }

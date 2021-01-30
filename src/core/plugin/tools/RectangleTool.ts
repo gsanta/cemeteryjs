@@ -19,7 +19,7 @@ export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolA
     }
 
     click() {
-        const pointer = this.registry.services.pointer.pointer;
+        const pointer = this.canvas.pointer.pointer;
         const rect = Rectangle.squareFromCenterPointAndRadius(pointer.down, this.rectRadius);
 
         const view = this.createView(rect);
@@ -37,11 +37,11 @@ export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolA
 
         this.tmpView && this.removeTmpView();
 
-        this.rectangleFeedback = createRectFromMousePointer(this.registry.services.pointer.pointer);
+        this.rectangleFeedback = createRectFromMousePointer(this.canvas.pointer.pointer);
 
         this.tmpView = this.createView(this.rectangleFeedback);
 
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     draggedUp() {

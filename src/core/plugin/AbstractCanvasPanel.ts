@@ -1,18 +1,18 @@
 import { Point } from '../../utils/geometry/shapes/Point';
-import { Rectangle } from '../../utils/geometry/shapes/Rectangle';
+import { FormController, ParamController, PropContext } from '../controller/FormController';
+import { ToolController } from '../controller/ToolController';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
+import { AbstractModuleExporter } from '../services/export/AbstractModuleExporter';
+import { AbstractModuleImporter } from '../services/import/AbstractModuleImporter';
+import { HotkeyService } from '../services/input/HotkeyService';
 import { KeyboardService } from '../services/input/KeyboardService';
+import { PointerService } from '../services/input/PointerService';
 import { UI_Element } from '../ui_components/elements/UI_Element';
-import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { FormController, PropContext, ParamController } from '../controller/FormController';
-import { ToolController } from '../controller/ToolController';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
 import { UI_Panel, UI_Region } from './UI_Panel';
-import { AbstractModuleExporter } from '../services/export/AbstractModuleExporter';
-import { AbstractModuleImporter } from '../services/import/AbstractModuleImporter';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -47,12 +47,14 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
     protected gizmos: GizmoPlugin[] = [];
 
     readonly keyboard: KeyboardService;
+    readonly hotkey: HotkeyService;
 
     protected renderFunc: () => void;
 
     private camera: ICamera;
     
     readonly toolController: ToolController;
+    readonly pointer: PointerService;
 
     interactionMode = InteractionMode.Edit;
 
@@ -66,7 +68,9 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
         this.displayName = displayName;
 
         this.toolController = new ToolController(this, registry);
-        this.keyboard = new KeyboardService(registry);
+        this.keyboard = new KeyboardService(registry, this);
+        this.pointer = new PointerService(this.registry, this);
+        this.hotkey = new HotkeyService(this.registry, this);
     }
 
     protected setCamera(camera: ICamera) {
@@ -101,7 +105,7 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
     over(): void { this.registry.ui.helper.hoveredPanel = this }
     out(): void {
         this.registry.ui.helper.hoveredPanel = undefined;
-        this.registry.services.pointer.hoveredView = undefined;
+        this.pointer.hoveredView = undefined;
     }
 
     getOffset() {

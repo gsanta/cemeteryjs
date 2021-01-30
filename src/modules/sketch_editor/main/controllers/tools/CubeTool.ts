@@ -25,7 +25,7 @@ export class CubeTool extends RectangleTool<Canvas2dPanel> {
             depth: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const cube = this.panel.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.panel, rect, config);
+        const cube = this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect, config);
 
         return cube;
     }

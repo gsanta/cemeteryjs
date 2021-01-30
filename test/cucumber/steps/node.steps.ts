@@ -16,7 +16,7 @@ When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: nu
     nodeEditorSettingsController.dragNode.onDndStart(nodeType);
 
     const element = UI_Factory.listItem(<UI_Container> { children: [] }, { key: nodeType, controller: nodeListPanel.controller, dropTargetPlugin: canvasPanel});
-    canvasPanel.toolController.dndDrop(new Point(x, y), element);
+    canvasPanel.toolController.dndDrop(new Point(x, y));
 
     nodeEditorSettingsController.dragNode.onDndEnd();
 });

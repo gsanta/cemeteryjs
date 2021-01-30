@@ -21,7 +21,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
     }
 
     click(): void {
-        const hoveredItem = this.registry.services.pointer.hoveredView;
+        const hoveredItem = this.canvas.pointer.hoveredView;
         if (!hoveredItem) { return; }
 
         if (hoveredItem.isContainedView()) {
@@ -30,16 +30,16 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
                 this.viewStore.addSelectedShape(hoveredItem.containerShape);
             }
             hoveredItem.containerShape.setActiveContainedView(hoveredItem);
-            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         } else {
             this.viewStore.clearSelection();
             this.viewStore.addSelectedShape(hoveredItem);
-            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
     }
 
     down() {
-        this.initMove() &&  this.registry.services.render.scheduleRendering(this.panel.region);
+        this.initMove() &&  this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     drag(e: IPointerEvent) {
@@ -47,7 +47,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
 
         if (this.movingItem) {
             this.moveItems();
-            this.registry.services.render.scheduleRendering(this.panel.region);
+            this.registry.services.render.scheduleRendering(this.canvas.region);
         }
         
         this.isDragStart = false;
@@ -74,27 +74,27 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
 
     over(view: AbstractShape) {
         if (view.viewType === NodePortViewType) {
-            this.panel.toolController.setPriorityTool(ToolType.Join);
+            this.canvas.toolController.setPriorityTool(ToolType.Join);
         }
         
         view.tags.add(ShapeTag.Hovered);
         view.containerShape?.tags.add(ShapeTag.Hovered);
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     out(view: AbstractShape) {
-        if (!this.registry.services.pointer.isDown && view.viewType === NodePortViewType) {
-            this.panel.toolController.removePriorityTool(ToolType.Join);
+        if (!this.canvas.pointer.isDown && view.viewType === NodePortViewType) {
+            this.canvas.toolController.removePriorityTool(ToolType.Join);
 
         } 
         
         view.tags.delete(ShapeTag.Hovered);
         view.containerShape?.tags.delete(ShapeTag.Hovered);
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     private initMove(): boolean {
-        const hovered = this.registry.services.pointer.hoveredView;
+        const hovered = this.canvas.pointer.hoveredView;
         if (hovered) {
             this.movingItem = hovered;
             this.moveItems();
@@ -105,11 +105,11 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
 
     private moveItems() {
         if (this.movingItem.isContainedView()) {
-            this.movingItem.move(this.registry.services.pointer.pointer.getDiff())
+            this.movingItem.move(this.canvas.pointer.pointer.getDiff())
         } else {
             const views = this.viewStore.getSelectedShapes();
-            views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.registry.services.pointer.pointer.getDiff()));
+            views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
         }
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 }

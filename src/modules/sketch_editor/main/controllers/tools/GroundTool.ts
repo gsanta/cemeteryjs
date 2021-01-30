@@ -23,7 +23,7 @@ export class GroundTool extends RectangleTool<Canvas2dPanel> {
             height: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const ground = this.panel.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.panel, rect, config);
+        const ground = this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect, config);
 
         return ground;
     }

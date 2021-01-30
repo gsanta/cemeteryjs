@@ -25,20 +25,20 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
 
     over(view: T) {
         this.hoveredView = view;
-        this.panel.toolController.setScopedTool(this.id);
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.canvas.toolController.setScopedTool(this.id);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     out() {
         if (!this.downView) {
-            this.panel.toolController.removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.panel.region);
+            this.canvas.toolController.removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.viewType === this.shapeType) {
-            this.downView = <T> this.registry.services.pointer.hoveredView;
+        if (this.canvas.pointer.hoveredView && this.canvas.pointer.hoveredView.viewType === this.shapeType) {
+            this.downView = <T> this.canvas.pointer.hoveredView;
             this.meshView = <MeshShape> this.downView.containerShape;
         }
     }
@@ -60,13 +60,13 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
             }
 
         }
-        this.registry.services.render.scheduleRendering(this.panel.region);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     up() {
-        if (this.registry.services.pointer.hoveredView !== this.downView) {
-            this.panel.toolController.removeScopedTool(this.id);
-            this.registry.services.render.scheduleRendering(this.panel.region);
+        if (this.canvas.pointer.hoveredView !== this.downView) {
+            this.canvas.toolController.removeScopedTool(this.id);
+            this.registry.services.render.scheduleRendering(this.canvas.region);
         }
         this.downView = undefined;
         this.meshView = undefined;

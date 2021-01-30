@@ -19,7 +19,7 @@ export class PathViewFactory extends ShapeFactoryAdapter {
     }
 
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
-        const pointer = this.registry.services.pointer.pointer;
+        const pointer = panel.pointer.pointer;
 
         const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
         const pathView: PathShape = <PathShape> this.instantiate();

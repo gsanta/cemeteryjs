@@ -22,7 +22,7 @@ export class SphereTool extends RectangleTool<Canvas2dPanel> {
             diameter: 5
         };
 
-        const sphere = this.panel.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.panel, rect, config);
+        const sphere = this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect, config);
 
 
         return sphere;

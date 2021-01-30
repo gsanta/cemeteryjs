@@ -5,19 +5,15 @@ import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineF
 import { PointerTracker } from '../../../controller/ToolController';
 import { Registry } from '../../../Registry';
 import { ICamera } from './ICamera';
+import { AbstractCanvasPanel } from '../../../plugin/AbstractCanvasPanel';
 
 export class Camera3D implements ICamera {
     private startY: number;
     camera: ArcRotateCamera;
     private plane = Plane.FromPositionAndNormal(Vector3.Zero(), Axis.Y);
     private inertialPanning = Vector3.Zero();
-    private registry: Registry;
     private engine: Bab_EngineFacade;
     private zoomFactor: number = 5;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
 
     setEngine(engine: Bab_EngineFacade) {
         this.engine = engine;
@@ -54,23 +50,22 @@ export class Camera3D implements ICamera {
         this.inertialPanning.copyFromFloats(panningX, 0, panningY);
     }
 
-    zoomWheel() {
-        const zoomRatio = -this.registry.services.pointer.wheelDiff / this.camera.wheelPrecision / this.zoomFactor;
-        this.zoom(zoomRatio);
+    zoomWheel(pointer: PointerTracker) {
+        const zoomRatio = -pointer.wheelDiff / this.camera.wheelPrecision / this.zoomFactor;
+        this.zoom(zoomRatio, pointer);
     }
 
-    zoomIn() {
-        this.zoom(2);
+    zoomIn(pointer: PointerTracker) {
+        this.zoom(2, pointer);
         return true;
     }
 
-    zoomOut() {
-        this.zoom(-2);
+    zoomOut(pointer: PointerTracker) {
+        this.zoom(-2, pointer);
         return true;
     }
 
-    zoom(delta: number) {
-        const pointer = this.registry.services.pointer.pointer;
+    zoom(delta: number, pointer: PointerTracker) {
         if (this.camera.radius - this.camera.lowerRadiusLimit < 1 && delta > 0) {
             return;
         } else if (this.camera.upperRadiusLimit - this.camera.radius < 1 && delta < 0) {

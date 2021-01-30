@@ -14,7 +14,7 @@ export class MeshTool extends RectangleTool<Canvas2dPanel> {
     }
 
     protected createView(rect: Rectangle): AbstractShape {
-        return this.panel.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.panel, rect);
+        return this.canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(this.canvas, rect);
     }
     
     protected removeTmpView() {

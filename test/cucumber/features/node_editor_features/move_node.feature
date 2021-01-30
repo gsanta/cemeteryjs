@@ -18,15 +18,15 @@ Feature: Move node
             | Id          | Pos           |
             | mesh-obj-1  | 5.5:0:-5.5    |
         When hover over canvas 'game-viewer'
-        And press key 'w'
+        And press key 'w' on canvas 'game-viewer'
         Then obj properties are:
             | Id          | Pos           |
             | mesh-obj-1  | 5.5:0:-4.5    |
         When hover over canvas 'node-editor'
         And change param to 'backward' in controller 'move' of view 'node-view-2'
         And hover over canvas 'game-viewer'
-        And press key 'w'
-        And press key 'w'
+        And press key 'w' on canvas 'game-viewer'
+        And press key 'w' on canvas 'game-viewer'
         Then obj properties are:
             | Id          | Pos           |
             | mesh-obj-1  | 5.5:0:-6.5    |

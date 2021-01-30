@@ -10,22 +10,22 @@ import { Cursor } from "./Tool";
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
 
-    constructor(panel: AbstractCanvasPanel, store: ShapeStore, registry: Registry) {
-        super(SelectToolId, panel, store, registry);
+    constructor(canvas: AbstractCanvasPanel, store: ShapeStore, registry: Registry) {
+        super(SelectToolId, canvas, store, registry);
     }
 
     down() {
-        if (this.registry.services.pointer.hoveredView && this.registry.services.pointer.hoveredView.isSelected()) {
+        if (this.canvas.pointer.hoveredView && this.canvas.pointer.hoveredView.isSelected()) {
             super.down();
         }
     }
 
     click() {
-        if (this.registry.services.pointer.hoveredView) {
+        if (this.canvas.pointer.hoveredView) {
             super.click();
         } else if (this.viewStore.getSelectedShapes().length > 0) {
             this.viewStore.clearSelection();
-            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
     }
 
@@ -33,8 +33,8 @@ export class SelectTool extends PointerTool {
         if (this.movingItem) {
             super.drag(e);
         } else {
-            this.rectangleSelection = createRectFromMousePointer(this.registry.services.pointer.pointer);
-            this.registry.services.render.scheduleRendering(this.panel.region);
+            this.rectangleSelection = createRectFromMousePointer(this.canvas.pointer.pointer);
+            this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
 
@@ -50,12 +50,12 @@ export class SelectTool extends PointerTool {
             this.viewStore.addSelectedShape(...intersectingViews)
     
             this.rectangleSelection = undefined;
-            this.registry.services.render.scheduleRendering(this.panel.region, UI_Region.Sidepanel);
+            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
     }
 
     getCursor() {
-        if (this.registry.services.pointer.hoveredView) {
+        if (this.canvas.pointer.hoveredView) {
             return Cursor.Pointer;
         }
 

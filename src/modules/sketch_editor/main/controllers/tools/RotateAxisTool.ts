@@ -36,8 +36,8 @@ export class RotateAxisTool extends AbstractAxisTool<RotateAxisView> {
 
     private getRotationDelta(): number {
         const center = this.meshView.getBounds().getBoundingCenter();
-        const vector1 = this.registry.services.pointer.pointer.prev.clone().subtract(center);
-        const vector2 = this.registry.services.pointer.pointer.curr.clone().subtract(center);
+        const vector1 = this.canvas.pointer.pointer.prev.clone().subtract(center);
+        const vector2 = this.canvas.pointer.pointer.curr.clone().subtract(center);
 
         const angle = Math.atan2(vector2.y, vector2.x) - Math.atan2(vector1.y, vector1.x);
         return angle;

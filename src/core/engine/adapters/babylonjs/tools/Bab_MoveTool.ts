@@ -1,6 +1,8 @@
 import { Mesh, PointerInfo } from "babylonjs";
+import { SceneEditorPanelId } from "../../../../../modules/scene_editor/main/SceneEditorModule";
 import { ObjEventType } from "../../../../models/ObjObservable";
 import { MeshObj } from "../../../../models/objs/MeshObj";
+import { AbstractCanvasPanel } from "../../../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../Registry";
 import { IEngineTool } from "../../../IEngineTool";
 import { Bab_EngineFacade } from "../Bab_EngineFacade";
@@ -25,7 +27,9 @@ export class Bab_MoveTool implements IEngineTool {
         this.positionGizmo = new Bab_PositionGizmo(this.engineFacade);
         this.positionGizmo.onDragEnd(() => this.emitMoveEvent());
         this.positionGizmo.onDrag(() => {
-            const pointerTracker = registry.services.pointer.pointer;
+            // TODO: find a better solution
+            const canvas: AbstractCanvasPanel = this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+            const pointerTracker = canvas.pointer.pointer;
             const snapChanged = this.meshSnapper.trySnapOrUnsnap(this.pickedMeshObj, pointerTracker);
 
             if (snapChanged) {
