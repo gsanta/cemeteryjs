@@ -31,6 +31,7 @@ export class Test_EngineFacade implements IEngineFacade {
     animatons: IAnimationAdapter;
     gizmos: undefined;
     tools: undefined;
+    events: undefined;
 
     constructor(registry: Registry) {
         this.registry = registry;

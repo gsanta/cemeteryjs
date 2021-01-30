@@ -1,5 +1,5 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { PointerTracker } from "../../../controller/ToolHandler";
+import { PointerTracker } from "../../../controller/PointerHandler";
 
 export interface ICamera {
     zoomIn(pointer: PointerTracker): boolean;

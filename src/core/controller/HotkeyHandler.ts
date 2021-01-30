@@ -1,9 +1,8 @@
 import { Point } from '../../utils/geometry/shapes/Point';
-import { PointerTracker } from './ToolHandler';
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { Registry } from '../Registry';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardHandler';
-import { Wheel } from './PointerHandler';
+import { PointerTracker, Wheel } from './PointerHandler';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 

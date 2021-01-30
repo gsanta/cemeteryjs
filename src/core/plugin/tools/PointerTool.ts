@@ -6,7 +6,7 @@ import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { ToolAdapter } from "./ToolAdapter";
 import { ToolType } from "./Tool";
-import { PointerTracker } from '../../controller/ToolHandler';
+import { PointerTracker } from '../../controller/PointerHandler';
 
 export abstract class PointerTool extends ToolAdapter<AbstractShape> {
     acceptedViews: string[] = [];

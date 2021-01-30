@@ -1,8 +1,7 @@
-import { PointerTracker } from '../../controller/ToolHandler';
-import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from "../../controller/HotkeyHandler";
 import { IKeyboardEvent, Keyboard } from '../../controller/KeyboardHandler';
-import { IPointerEvent } from '../../controller/PointerHandler';
+import { PointerTracker } from "../../controller/PointerHandler";
+import { Registry } from '../../Registry';
 import { AbstractCanvasPanel, InteractionMode } from '../AbstractCanvasPanel';
 import { Cursor } from "./Tool";
 import { ToolAdapter } from './ToolAdapter';

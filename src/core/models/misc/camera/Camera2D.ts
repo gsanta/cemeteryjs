@@ -1,8 +1,8 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { PointerTracker } from "../../../controller/ToolHandler";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
+import { PointerTracker } from "../../../controller/PointerHandler";
 
 export class Camera2D implements ICamera {
     private screenSize: Point;

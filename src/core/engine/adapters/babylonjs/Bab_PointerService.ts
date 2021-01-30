@@ -29,21 +29,22 @@ export class Bab_PointerService {
                     tools.getSelectedTool().up(pointerInfo);
                 break;
                 case PointerEventTypes.POINTERMOVE:
-                    canvas.pointer.pointerMove(undefined, this.convertToIPointerEvent(pointerInfo), undefined);
+                    canvas.pointer.pointerMove(this.convertToIPointerEvent(pointerInfo), undefined);
                 break;
             }
         });
     }
 
     private convertToIPointerEvent(pointerInfo: PointerInfo): IPointerEvent {
-        return {
-            pointers: [{id: 1, pos: new Point(pointerInfo.event.offsetX, pointerInfo.event.offsetY), isDown: false}],
-            preventDefault: () => pointerInfo.event.preventDefault(),
-            button: 'left',
-            isAltDown: !!pointerInfo.event.altKey,
-            isShiftDown: !!pointerInfo.event.shiftKey,
-            isCtrlDown: !!pointerInfo.event.ctrlKey,
-            isMetaDown: !!pointerInfo.event.metaKey,
-        };
+        return null;
+        // return {
+        //     pointers: [{id: 1, pos: new Point(pointerInfo.event.offsetX, pointerInfo.event.offsetY), isDown: false}],
+        //     preventDefault: () => pointerInfo.event.preventDefault(),
+        //     button: 'left',
+        //     isAltDown: !!pointerInfo.event.altKey,
+        //     isShiftDown: !!pointerInfo.event.shiftKey,
+        //     isCtrlDown: !!pointerInfo.event.ctrlKey,
+        //     isMetaDown: !!pointerInfo.event.metaKey,
+        // };
     }
 }

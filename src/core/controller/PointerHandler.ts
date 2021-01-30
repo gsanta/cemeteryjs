@@ -1,7 +1,5 @@
 import { Point } from "../../utils/geometry/shapes/Point";
-import { AbstractShape } from "../models/shapes/AbstractShape";
 import { Registry } from "../Registry";
-import { PointerTracker, ToolHandler } from "./ToolHandler";
 import { Tool } from "../plugin/tools/Tool";
 import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
 
@@ -9,7 +7,47 @@ export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
 }
 
+export class PointerTracker {
+    down: Point;
+    curr: Point;
+    prev: Point;
+
+    currScreen: Point;
+    prevScreen: Point;
+    downScreen: Point;
+    droppedItemType: string;
+    wheel: Wheel = Wheel.IDLE;
+    wheelDiff: number = undefined;
+    wheelState: number = 0;
+    prevWheelState: number = 0;
+    lastPointerEvent: IPointerEvent;
+
+    getDiff() {
+        return this.curr.subtract(this.prev);
+    }
+
+    getDownDiff() {
+        return this.curr.subtract(this.down);
+    }
+
+    getScreenDiff() {
+        return this.prevScreen ? this.currScreen.subtract(this.prevScreen) : new Point(0, 0);
+    }
+}
+
+
+export enum IPointerEventType {
+    PointerDown = 'PointerDown',
+    PointerUp = 'PointerUp',
+    PointerMove = 'PointerMove',
+    PointerWheel = 'PointerWheel',
+    PointerDrop = 'PointerDrop',
+    PointerEnter = 'PointerEnter', 
+    PointerLeave = 'PointerLeave' 
+}
+
 export interface IPointerEvent {
+    eventType: IPointerEventType;
     pointers: {id: number, pos: Point, isDown: boolean}[];
     deltaY?: number;
     button: 'left' | 'right';
@@ -39,19 +77,20 @@ export class PointerHandler<D> {
         this.canvas = canvas;
     }
 
-    pointerDown(controller: ToolHandler<D>, e: IPointerEvent, scopedToolId?: string): void {
+    pointerDown(e: IPointerEvent, scopedToolId?: string): void {
+        if (e.button !== 'left') { return }        
         if (!this.registry.ui.helper.hoveredPanel) { return; }
-        if (e.button !== 'left') { return }
+        
         this.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.pointer.lastPointerEvent = e;
         
-        this.determineTool(controller, scopedToolId).down(this.pointer);
+        this.determineTool(scopedToolId).down(this.pointer);
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerMove(controller: ToolHandler<D>, e: IPointerEvent, scopedToolId?: string): void {
+    pointerMove(e: IPointerEvent, scopedToolId?: string): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
 
         this.pointer.prev = this.pointer.curr;
@@ -60,22 +99,23 @@ export class PointerHandler<D> {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         this.pointer.lastPointerEvent = e;
 
-        // TODO: babylonjs still uses native tools, maybe it could be abstracted and used in a unified way so this condition wont be needed
-        if (controller) {
-            const tool = this.determineTool(controller, scopedToolId);
-    
-            if (this.isDown && this.pointer.getDownDiff().len() > 2) {
-                this.isDrag = true;
-                tool.drag(this.pointer);
-            } else {
-                tool.move(this.pointer);
-            }
+        const tool = this.determineTool(scopedToolId);
+
+        if (this.isDown && this.pointer.getDownDiff().len() > 2) {
+            this.isDrag = true;
+            tool.drag(this.pointer);
+        } else {
+            tool.move(this.pointer);
         }
         this.canvas.hotkey.executeHotkey(e, this.pointer);
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerUp(controller: ToolHandler<D>, e: IPointerEvent, scopedToolId?: string): void {
+    pointerUp(e: IPointerEvent, scopedToolId?: string): void {
+        this.canvas.hotkey.focus();
+        
+        if (e.button !== 'left') { return; }
+
         this.pointer.droppedItemType = e.droppedItemId;
         this.pointer.prev = this.pointer.curr;
         this.pointer.curr = this.getCanvasPoint(e.pointers[0].pos);
@@ -83,40 +123,39 @@ export class PointerHandler<D> {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         this.pointer.lastPointerEvent = e;
 
-        const tool = this.determineTool(controller, scopedToolId);
+        const tool = this.determineTool(scopedToolId);
 
         this.isDrag ? tool.draggedUp(this.pointer) : tool.click(this.pointer); 
         
-        controller.getActiveTool().up(this.pointer);
+        this.canvas.tool.getActiveTool().up(this.pointer);
         this.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(controller: ToolHandler<D>, data: D, scopedToolId?: string): void {
+    pointerLeave(data: D, scopedToolId?: string): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.pointer.lastPointerEvent = undefined;
-        this.determineTool(controller, scopedToolId).out(data);
+        this.determineTool(scopedToolId).out(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
         this.hoveredView = undefined;
     }
 
-    pointerEnter(controller: ToolHandler<D>, data: D, scopedToolId?: string) {
+    pointerEnter(data: D, scopedToolId?: string) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.hoveredView = data;
         this.pointer.lastPointerEvent = undefined;
 
         this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);
 
-        const view = controller.controlledView || data;
-        this.determineTool(controller, scopedToolId).over(data);
+        this.determineTool(scopedToolId).over(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
     }
 
-    pointerWheel(controller: ToolHandler<D>, e: IPointerEvent): void {
+    pointerWheel(e: IPointerEvent): void {
         this.pointer.prevWheelState = this.pointer.wheelState;
         this.pointer.wheelState += e.deltaY;
         this.pointer.wheelDiff = this.pointer.wheelState - this.pointer.prevWheelState;
@@ -131,21 +170,28 @@ export class PointerHandler<D> {
         }
 
         this.canvas.hotkey.executeHotkey(e, this.pointer);
-        controller.getActiveTool().wheel();
+        this.canvas.tool.getActiveTool().wheel();
     }
 
-    pointerWheelEnd(controller: ToolHandler<D>) {
+    pointerWheelEnd() {
         this.pointer.wheel = Wheel.IDLE;
         this.pointer.lastPointerEvent = undefined;
 
-        controller.getActiveTool().wheelEnd();
+        this.canvas.tool.getActiveTool().wheelEnd();
     }
 
-    private determineTool(toolController: ToolHandler<D>, scopedToolId?: string): Tool<D> {
+    pointerDrop(e: IPointerEvent, scopedToolId?: string) {
+        this.pointerUp(e, scopedToolId);
+        this.registry.services.dragAndDropService.emitDrop();
+
+        this.registry.services.render.reRenderAll();
+    }
+
+    private determineTool(scopedToolId?: string): Tool<D> {
         if (scopedToolId) {
-            return toolController.getToolById(scopedToolId);
+            return this.canvas.tool.getToolById(scopedToolId);
         } else {
-            return toolController.getActiveTool(); 
+            return this.canvas.tool.getActiveTool();
         }
 
     }
@@ -158,5 +204,20 @@ export class PointerHandler<D> {
     private getCanvasPoint(point: Point): Point {
         const offset = this.registry.ui.helper.hoveredPanel.getOffset();
         return this.registry.ui.helper.hoveredPanel.getCamera().screenToCanvasPoint(new Point(point.x - offset.x, point.y - offset.y));
+    }
+
+    static convertMouseEvent(e: MouseEvent, isPointerDown: boolean, eventType: IPointerEventType): IPointerEvent {
+        const button = e.which || e.button;
+
+        return {
+            eventType: eventType,
+            pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
+            preventDefault: () => e.preventDefault(),
+            button: button === 1 ? 'left' : 'right',
+            isAltDown: !!e.altKey,
+            isShiftDown: !!e.shiftKey,
+            isCtrlDown: !!e.ctrlKey,
+            isMetaDown: !!e.metaKey,
+        };
     }
 }

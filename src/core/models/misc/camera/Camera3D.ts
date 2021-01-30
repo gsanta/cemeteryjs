@@ -1,11 +1,9 @@
 import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonjs';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
+import { PointerTracker } from '../../../controller/PointerHandler';
 import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineFacade';
-import { PointerTracker } from '../../../controller/ToolHandler';
-import { Registry } from '../../../Registry';
 import { ICamera } from './ICamera';
-import { AbstractCanvasPanel } from '../../../plugin/AbstractCanvasPanel';
 
 export class Camera3D implements ICamera {
     private startY: number;

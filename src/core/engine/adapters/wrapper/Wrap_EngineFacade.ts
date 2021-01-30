@@ -1,9 +1,9 @@
 import { Camera3D } from "../../../models/misc/camera/Camera3D";
 import { Registry } from "../../../Registry";
-import { IAnimationAdapter } from "../../IAnimationAdapter";
 import { IEngineFacade } from "../../IEngineFacade";
 import { Test_EngineFacade } from "../test/Test_EngineFacade";
 import { Wrap_AnimationAdapter } from "./Wrap_AnimationAdapter";
+import { Wrap_EventAdapter } from "./Wrap_EventAdapter";
 import { Wrap_GizmoAdapter } from "./Wrap_GizmoAdapter";
 import { Wrap_LightAdapter } from "./Wrap_LightAdapter";
 import { Wrap_Meshes } from "./Wrap_MeshAdapter";
@@ -31,6 +31,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
     animatons: Wrap_AnimationAdapter;
     gizmos: Wrap_GizmoAdapter;
     tools: Wrap_ToolAdapter;
+    events: Wrap_EventAdapter;
 
     engines: IEngineFacade[] = [];
 
@@ -58,6 +59,7 @@ export class Wrap_EngineFacade implements IEngineFacade {
         this.animatons = new Wrap_AnimationAdapter(this.registry, this);
         this.gizmos = new Wrap_GizmoAdapter(this);
         this.tools = new Wrap_ToolAdapter(this);
+        this.events = new Wrap_EventAdapter(this);
     }
 
     getCamera(): Camera3D {

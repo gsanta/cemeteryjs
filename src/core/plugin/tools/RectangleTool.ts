@@ -1,5 +1,5 @@
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { PointerTracker } from '../../controller/ToolHandler';
+import { PointerTracker } from '../../controller/PointerHandler';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
 import { ShapeStore } from '../../stores/ShapeStore';

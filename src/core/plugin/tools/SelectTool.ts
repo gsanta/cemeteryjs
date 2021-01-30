@@ -5,8 +5,8 @@ import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './ToolAdapter';
 import { PointerTool } from './PointerTool';
 import { Cursor } from "./Tool";
-import { PointerTracker } from '../../controller/ToolHandler';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { PointerTracker } from '../../controller/PointerHandler';
 
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {

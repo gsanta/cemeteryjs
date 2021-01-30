@@ -4,11 +4,11 @@ import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
 import { UI_Container } from "../../../src/core/ui_components/elements/UI_Container";
 import { UI_Factory } from "../../../src/core/ui_components/UI_Factory";
 import { NodeListPanelId } from "../../../src/modules/graph_editor/contribs/side_panel/node_library/NodeLibraryModule";
-import { Point } from "../../../src/utils/geometry/shapes/Point";
 import { ModelDumper } from "./common/ModelDumper";
 import expect from 'expect';
 import { NodeLibraryController } from "../../../src/modules/graph_editor/contribs/side_panel/node_library/NodeLibraryController";
 import { AbstractShape } from "../../../src/core/models/shapes/AbstractShape";
+import { MouseEventAdapter } from "../../../src/core/controller/MouseEventAdapter";
 
 When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
@@ -17,7 +17,8 @@ When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: nu
     nodeEditorSettingsController.dragNode.onDndStart(nodeType);
 
     const element = UI_Factory.listItem(<UI_Container> { children: [] }, { key: nodeType, controller: nodeListPanel.controller, dropTargetPlugin: canvasPanel});
-    canvasPanel.tool.dndDrop(new Point(x, y));
+    const pointerEvent = MouseEventAdapter.dndDrop(<MouseEvent> {x, y})
+    canvasPanel.pointer.pointerDrop(pointerEvent);
 
     nodeEditorSettingsController.dragNode.onDndEnd();
 });

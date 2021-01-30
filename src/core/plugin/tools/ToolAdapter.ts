@@ -1,12 +1,10 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { AbstractShape } from '../../models/shapes/AbstractShape';
-import { Registry } from '../../Registry';
 import { IHotkeyEvent } from '../../controller/HotkeyHandler';
 import { IKeyboardEvent } from '../../controller/KeyboardHandler';
-import { IPointerEvent } from '../../controller/PointerHandler';
+import { PointerTracker } from '../../controller/PointerHandler';
+import { Registry } from '../../Registry';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { PointerTracker } from '../../controller/ToolHandler';
 import { Cursor, Tool } from './Tool';
 
 export function createRectFromMousePointer(pointer: PointerTracker): Rectangle {

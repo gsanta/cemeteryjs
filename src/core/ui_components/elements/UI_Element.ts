@@ -4,6 +4,7 @@ import { FormController, ParamController } from '../../controller/FormController
 import { UI_Panel } from '../../plugin/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
+import { MouseEventAdapter } from '../../controller/MouseEventAdapter';
 
 export const activeToolId = '__activeTool__'
 
@@ -68,31 +69,49 @@ export abstract class UI_Element<C extends ParamController = any> {
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.tool.mouseDown(e, this.scopedToolId);
+        if (this.canvasPanel) {
+            const pointerEvent = MouseEventAdapter.mouseDown(e);
+            this.canvasPanel.pointer.pointerDown(pointerEvent, this.scopedToolId);
+        }
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.tool.mouseMove(e, this.scopedToolId);
+        if (this.canvasPanel) {
+            const pointerEvent = MouseEventAdapter.mouseMove(e);
+            this.canvasPanel.pointer.pointerMove(pointerEvent, this.scopedToolId);
+        }
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.tool.mouseUp(e, this.scopedToolId);
+        if (this.canvasPanel) {
+            const pointerEvent = MouseEventAdapter.mouseUp(e);
+            this.canvasPanel.pointer.pointerUp(pointerEvent, this.scopedToolId);
+        }
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
-        this.canvasPanel && this.canvasPanel.tool.mouseLeave(e, data, this.scopedToolId);
+        if (this.canvasPanel) {
+            this.canvasPanel.pointer.pointerLeave(data, this.scopedToolId);
+        }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
-        this.canvasPanel && this.canvasPanel.tool.mouseEnter(e, data, this.scopedToolId);
+        if (this.canvasPanel) {
+            this.canvasPanel.pointer.pointerEnter(data, this.scopedToolId);
+        }
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
-        this.canvasPanel && this.canvasPanel.tool.mouseWheel(e);
+        if (this.canvasPanel) {
+            const pointerEvent = MouseEventAdapter.mouseWheel(e);
+            this.canvasPanel.pointer.pointerWheel(pointerEvent);
+        }
     }
 
     mouseWheelEnd(registry: Registry) {
-        this.canvasPanel && this.canvasPanel.tool.mouseWheelEnd();
+        if (this.canvasPanel) {
+            this.canvasPanel.pointer.pointerWheelEnd()
+        }
     }
 
     keyDown(registry: Registry, e: KeyboardEvent) {
@@ -104,7 +123,11 @@ export abstract class UI_Element<C extends ParamController = any> {
     }
 
     dndEnd(registry: Registry, point: Point) {
-        this.canvasPanel && this.canvasPanel.tool.dndDrop(point);
+        if (this.canvasPanel) {
+            const e = <MouseEvent> {x: point.x, y: point.y};
+            const pointerEvent = MouseEventAdapter.mouseUp(e);
+            this.canvasPanel.pointer.pointerDrop(pointerEvent, this.scopedToolId);
+        }
     }
 }
 

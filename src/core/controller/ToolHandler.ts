@@ -1,23 +1,23 @@
-import { Registry } from "../Registry";
-import { Point } from '../../utils/geometry/shapes/Point';
-import { IPointerEvent, Wheel } from "./PointerHandler";
-import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
-import { Tool } from "../plugin/tools/Tool";
-import { AbstractShape } from "../models/shapes/AbstractShape";
-import { ParamController, PropContext } from "./FormController";
-import { SelectToolId } from "../plugin/tools/SelectTool";
-import { MeshToolId } from "../../modules/sketch_editor/main/controllers/tools/MeshTool";
-import { DeleteToolId } from "../plugin/tools/DeleteTool";
-import { CameraToolId } from "../plugin/tools/CameraTool";
-import { SpriteToolId } from "../../modules/sketch_editor/main/controllers/tools/SpriteTool";
-import { PathToolId } from "../../modules/sketch_editor/main/controllers/tools/PathTool";
 import { CubeToolId } from "../../modules/sketch_editor/main/controllers/tools/CubeTool";
-import { SphereToolId } from "../../modules/sketch_editor/main/controllers/tools/SphereTool";
-import { ScaleAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool";
-import { MoveAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/MoveAxisTool";
 import { LightToolId } from "../../modules/sketch_editor/main/controllers/tools/LightTool";
+import { MeshToolId } from "../../modules/sketch_editor/main/controllers/tools/MeshTool";
+import { MoveAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/MoveAxisTool";
+import { PathToolId } from "../../modules/sketch_editor/main/controllers/tools/PathTool";
 import { RotateAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/RotateAxisTool";
+import { ScaleAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool";
+import { SphereToolId } from "../../modules/sketch_editor/main/controllers/tools/SphereTool";
+import { SpriteToolId } from "../../modules/sketch_editor/main/controllers/tools/SpriteTool";
+import { Point } from '../../utils/geometry/shapes/Point';
+import { AbstractShape } from "../models/shapes/AbstractShape";
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { CameraToolId } from "../plugin/tools/CameraTool";
+import { DeleteToolId } from "../plugin/tools/DeleteTool";
+import { SelectToolId } from "../plugin/tools/SelectTool";
+import { Tool } from "../plugin/tools/Tool";
+import { Registry } from "../Registry";
 import { UI_Element } from "../ui_components/elements/UI_Element";
+import { ParamController, PropContext } from "./FormController";
+import { IPointerEvent, Wheel } from "./PointerHandler";
 
 export class CommonToolController extends ParamController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
@@ -63,35 +63,6 @@ export class CanvasContextDependentToolController extends ParamController<any> {
     }
 }
 
-
-export class PointerTracker {
-    down: Point;
-    curr: Point;
-    prev: Point;
-
-    currScreen: Point;
-    prevScreen: Point;
-    downScreen: Point;
-    droppedItemType: string;
-    wheel: Wheel = Wheel.IDLE;
-    wheelDiff: number = undefined;
-    wheelState: number = 0;
-    prevWheelState: number = 0;
-    lastPointerEvent: IPointerEvent;
-
-    getDiff() {
-        return this.curr.subtract(this.prev);
-    }
-
-    getDownDiff() {
-        return this.curr.subtract(this.down);
-    }
-
-    getScreenDiff() {
-        return this.prevScreen ? this.currScreen.subtract(this.prevScreen) : new Point(0, 0);
-    }
-}
-
 export class ToolHandler<D> {
     controlledView: AbstractShape;
     private scopedTool: Tool<D>;
@@ -116,55 +87,6 @@ export class ToolHandler<D> {
             this.selectedTool = tools[0];
             this.selectedTool.isSelected = true;
         } 
-    }
-
-    mouseDown(e: MouseEvent, scopedToolId?: string): void {
-        if (!this.isLeftButton(e)) { return }
-
-        this.canvas.pointer.pointerDown(this, this.convertEvent(e, true), scopedToolId);
-    }
-    
-    mouseMove(e: MouseEvent, scopedToolId?: string): void {
-        this.canvas.pointer.pointerMove(this, this.convertEvent(e, this.canvas.pointer.isDown), scopedToolId);
-    }    
-
-    mouseUp(e: MouseEvent, scopedToolId?: string): void {
-        if (this.isLeftButton(e)) {
-            this.canvas.pointer.pointerUp(this, this.convertEvent(e, false), scopedToolId);
-        }
-
-        this.canvas.hotkey.focus();
-    }
-
-    dndDrop(point: Point, scopedToolId?: string) {
-        const e = <MouseEvent> {x: point.x, y: point.y};
-        this.canvas.pointer.pointerUp(this, this.convertEvent(e, false), scopedToolId);
-
-        this.registry.services.dragAndDropService.emitDrop();
-        // if (this.plugin.dropItem) {
-        //     this.plugin.dropItem.controller.dndEnd(this.plugin.dropItem)
-        //     this.plugin.dropItem = undefined;
-        // }
-
-        this.registry.services.render.reRenderAll();
-    }
-
-    mouseLeave(e: MouseEvent, data: D, scopedToolId?: string): void {
-        this.canvas.pointer.pointerLeave(this, data, scopedToolId);
-    }
-
-    mouseEnter(e: MouseEvent, data: D, scopedToolId?: string): void {
-        this.canvas.pointer.pointerEnter(this, data, scopedToolId);
-    }
-
-    mouseWheel(e: WheelEvent): void {
-        const pointerEvent = this.convertEvent(e, false);
-        pointerEvent.deltaY = e.deltaY;
-        this.canvas.pointer.pointerWheel(this, pointerEvent);
-    }
-
-    mouseWheelEnd(): void {
-        this.canvas.pointer.pointerWheelEnd(this);
     }
 
     registerTool(tool: Tool<D>) {
@@ -235,22 +157,5 @@ export class ToolHandler<D> {
         if (this.scopedTool && this.scopedTool.id === toolId) {
             this.scopedTool = undefined;
         }
-    }
-
-    private convertEvent(e: MouseEvent, isPointerDown: boolean): IPointerEvent {
-        return {
-            pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
-            preventDefault: () => e.preventDefault(),
-            button: this.isLeftButton(e) ? 'left' : 'right',
-            isAltDown: !!e.altKey,
-            isShiftDown: !!e.shiftKey,
-            isCtrlDown: !!e.ctrlKey,
-            isMetaDown: !!e.metaKey,
-        };
-    }
-
-    private isLeftButton(e: MouseEvent) {
-        var button = e.which || e.button;
-        return button === 1;
     }
 }
