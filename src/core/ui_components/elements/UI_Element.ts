@@ -68,31 +68,31 @@ export abstract class UI_Element<C extends ParamController = any> {
     }
 
     mouseDown(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseDown(e, this.scopedToolId);
+        this.canvasPanel && this.canvasPanel.tool.mouseDown(e, this.scopedToolId);
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseMove(e, this.scopedToolId);
+        this.canvasPanel && this.canvasPanel.tool.mouseMove(e, this.scopedToolId);
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseUp(e, this.scopedToolId);
+        this.canvasPanel && this.canvasPanel.tool.mouseUp(e, this.scopedToolId);
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseLeave(e, data, this.scopedToolId);
+        this.canvasPanel && this.canvasPanel.tool.mouseLeave(e, data, this.scopedToolId);
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseEnter(e, data, this.scopedToolId);
+        this.canvasPanel && this.canvasPanel.tool.mouseEnter(e, data, this.scopedToolId);
     }
 
     mouseWheel(registry: Registry, e: WheelEvent) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseWheel(e);
+        this.canvasPanel && this.canvasPanel.tool.mouseWheel(e);
     }
 
     mouseWheelEnd(registry: Registry) {
-        this.canvasPanel && this.canvasPanel.toolController.mouseWheelEnd();
+        this.canvasPanel && this.canvasPanel.tool.mouseWheelEnd();
     }
 
     keyDown(registry: Registry, e: KeyboardEvent) {
@@ -104,7 +104,7 @@ export abstract class UI_Element<C extends ParamController = any> {
     }
 
     dndEnd(registry: Registry, point: Point) {
-        this.canvasPanel && this.canvasPanel.toolController.dndDrop(point);
+        this.canvasPanel && this.canvasPanel.tool.dndDrop(point);
     }
 }
 

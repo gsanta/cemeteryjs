@@ -25,13 +25,13 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
 
     over(view: T) {
         this.hoveredView = view;
-        this.canvas.toolController.setScopedTool(this.id);
+        this.canvas.tool.setScopedTool(this.id);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     out() {
         if (!this.downView) {
-            this.canvas.toolController.removeScopedTool(this.id);
+            this.canvas.tool.removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
@@ -65,7 +65,7 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
 
     up() {
         if (this.canvas.pointer.hoveredView !== this.downView) {
-            this.canvas.toolController.removeScopedTool(this.id);
+            this.canvas.tool.removeScopedTool(this.id);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
         this.downView = undefined;

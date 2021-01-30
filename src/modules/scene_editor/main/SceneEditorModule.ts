@@ -1,6 +1,5 @@
 import { FormController } from "../../../core/controller/FormController";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
-import { AbstractCanvasPanel } from "../../../core/plugin/AbstractCanvasPanel";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
@@ -41,8 +40,6 @@ export class SceneEditorModule extends Canvas3dPanel {
         this.onMounted(() => {
             registry.engine.setup(document.querySelector(`#${SceneEditorPanelId} canvas`));
             registry.engine.resize();
-        
-            this.getGizmos().forEach(gizmo => gizmo.mount());
         });
     
         this.onUnmounted(() => registry.engine.meshLoader.clear());

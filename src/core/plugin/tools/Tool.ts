@@ -1,8 +1,9 @@
-import { IHotkey, IHotkeyEvent } from "../../services/input/HotkeyService";
-import { IKeyboardEvent } from "../../services/input/KeyboardService";
+import { IHotkey, IHotkeyEvent } from "../../controller/HotkeyHandler";
+import { IKeyboardEvent } from "../../controller/KeyboardHandler";
 import { AbstractShape } from "../../models/shapes/AbstractShape";
-import { IPointerEvent } from "../../services/input/PointerService";
+import { IPointerEvent } from "../../controller/PointerHandler";
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
+import { PointerTracker } from "../../controller/ToolHandler";
 
 export enum ToolType {
     Rectangle = 'rectangle',
@@ -38,12 +39,12 @@ export interface Tool extends IHotkey {
     isSelected: boolean;
 
     getCursor(): Cursor;
-    down(e: IPointerEvent): void;
-    move(): void;
-    drag(e: IPointerEvent): void;
-    click(): void;
-    draggedUp(): void;
-    up(e: IPointerEvent): void;
+    down(pointer: PointerTracker): void;
+    move(pointer: PointerTracker): void;
+    drag(pointer: PointerTracker): void;
+    click(pointer: PointerTracker): void;
+    draggedUp(pointer: PointerTracker): void;
+    up(pointer: PointerTracker): void;
     activate(): void;
     leave(): void;
     keydown(e: IKeyboardEvent): void;

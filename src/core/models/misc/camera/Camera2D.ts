@@ -1,6 +1,6 @@
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { PointerTracker } from "../../../controller/ToolController";
+import { PointerTracker } from "../../../controller/ToolHandler";
 import { RenderTask } from "../../../services/RenderServices";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";

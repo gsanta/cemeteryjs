@@ -17,7 +17,7 @@ export class ScaleAxisViewRenderer implements ShapeRenderer {
     }
     
     renderInto(canvas: UI_SvgCanvas, scaleView: ScaleAxisView, canvasPanel: AbstractCanvasPanel): void {
-        if (!canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected) {
+        if (!canvasPanel.tool.getToolById(ScaleAxisToolId).isSelected) {
             return null;
         }
 

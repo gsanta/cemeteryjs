@@ -1,11 +1,12 @@
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { Registry } from '../../Registry';
-import { IPointerEvent } from '../../services/input/PointerService';
+import { IPointerEvent } from '../../controller/PointerHandler';
 import { ToolAdapter, createRectFromMousePointer } from './ToolAdapter';
 import { UI_Region } from '../UI_Panel';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { ShapeStore } from '../../stores/ShapeStore';
+import { PointerTracker } from '../../controller/ToolHandler';
 
 export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolAdapter<P> {
     protected rectangleFeedback: Rectangle;
@@ -32,8 +33,8 @@ export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolA
         this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
-    drag(e: IPointerEvent) {
-        super.drag(e)
+    drag(pointer: PointerTracker) {
+        super.drag(pointer)
 
         this.tmpView && this.removeTmpView();
 
@@ -44,8 +45,8 @@ export abstract class RectangleTool<P extends AbstractCanvasPanel> extends ToolA
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    draggedUp() {
-        super.draggedUp();
+    draggedUp(pointer: PointerTracker) {
+        super.draggedUp(pointer);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();

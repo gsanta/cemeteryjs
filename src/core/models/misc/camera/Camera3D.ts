@@ -2,7 +2,7 @@ import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonj
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineFacade';
-import { PointerTracker } from '../../../controller/ToolController';
+import { PointerTracker } from '../../../controller/ToolHandler';
 import { Registry } from '../../../Registry';
 import { ICamera } from './ICamera';
 import { AbstractCanvasPanel } from '../../../plugin/AbstractCanvasPanel';

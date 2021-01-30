@@ -1,13 +1,13 @@
 import { Point } from '../../utils/geometry/shapes/Point';
 import { FormController, ParamController, PropContext } from '../controller/FormController';
-import { ToolController } from '../controller/ToolController';
+import { ToolHandler } from '../controller/ToolHandler';
 import { ICamera } from '../models/misc/camera/ICamera';
 import { Registry } from '../Registry';
 import { AbstractModuleExporter } from '../services/export/AbstractModuleExporter';
 import { AbstractModuleImporter } from '../services/import/AbstractModuleImporter';
-import { HotkeyService } from '../services/input/HotkeyService';
-import { KeyboardService } from '../services/input/KeyboardService';
-import { PointerService } from '../services/input/PointerService';
+import { HotkeyHandler } from '../controller/HotkeyHandler';
+import { KeyboardHandler } from '../controller/KeyboardHandler';
+import { PointerHandler } from '../controller/PointerHandler';
 import { UI_Element } from '../ui_components/elements/UI_Element';
 import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
@@ -44,17 +44,14 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
     model: M;
     readonly displayName: string;
 
-    protected gizmos: GizmoPlugin[] = [];
-
-    readonly keyboard: KeyboardService;
-    readonly hotkey: HotkeyService;
+    readonly keyboard: KeyboardHandler;
+    readonly hotkey: HotkeyHandler;
+    readonly tool: ToolHandler;
+    readonly pointer: PointerHandler;
 
     protected renderFunc: () => void;
 
     private camera: ICamera;
-    
-    readonly toolController: ToolController;
-    readonly pointer: PointerService;
 
     interactionMode = InteractionMode.Edit;
 
@@ -67,10 +64,10 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
         this.id = id;
         this.displayName = displayName;
 
-        this.toolController = new ToolController(this, registry);
-        this.keyboard = new KeyboardService(registry, this);
-        this.pointer = new PointerService(this.registry, this);
-        this.hotkey = new HotkeyService(this.registry, this);
+        this.tool = new ToolHandler(this, registry);
+        this.keyboard = new KeyboardHandler(registry, this);
+        this.pointer = new PointerHandler(this.registry, this);
+        this.hotkey = new HotkeyHandler(this.registry, this);
     }
 
     protected setCamera(camera: ICamera) {
@@ -82,15 +79,7 @@ export abstract class AbstractCanvasPanel<M = any> extends UI_Panel {
     }
 
     addTool(tool: Tool) {
-        this.toolController.registerTool(tool);
-    }
-
-    addGizmo(gizmo: GizmoPlugin) {
-        this.gizmos.push(gizmo);
-    }
-
-    getGizmos(): GizmoPlugin[] {
-        return this.gizmos;
+        this.tool.registerTool(tool);
     }
 
     destroy(): void {}
@@ -122,7 +111,7 @@ export class ZoomInController extends ParamController {
     acceptedProps() { return [ZoomInProp]; }
 
     click(context: PropContext, element: UI_Element) {
-        const cameraTool = <CameraTool> element.canvasPanel.toolController.getToolById(CameraToolId);
+        const cameraTool = <CameraTool> element.canvasPanel.tool.getToolById(CameraToolId);
         cameraTool.zoomIn();
     }
 }
@@ -132,7 +121,7 @@ export class ZoomOutController extends ParamController {
     acceptedProps() { return [ZoomOutProp]; }
 
     click(context: PropContext, element: UI_Element) {
-        const cameraTool = <CameraTool> element.canvasPanel.toolController.getToolById(CameraToolId);
+        const cameraTool = <CameraTool> element.canvasPanel.tool.getToolById(CameraToolId);
         cameraTool.zoomOut();
     }
 }

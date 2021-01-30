@@ -24,7 +24,7 @@ export class NodeEditorToolbarRenderer implements IRenderer<UI_SvgCanvas> {
         dropLayer.isDragging = !!this.registry.services.dragAndDropService.isDragging;
 
         const toolbar = svgCanvas.toolbar();
-        const selectedTool = this.canvas.toolController.getSelectedTool();
+        const selectedTool = this.canvas.tool.getSelectedTool();
 
         let tool = toolbar.tool({key: SelectToolId});
         tool.paramController = this.controller.commonTool; 

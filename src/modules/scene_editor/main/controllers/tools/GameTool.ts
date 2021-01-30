@@ -1,5 +1,5 @@
 import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
-import { IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
+import { IKeyboardEvent } from "../../../../../core/controller/KeyboardHandler";
 import { Registry } from "../../../../../core/Registry";
 import { KeyboardNodeType } from "../../../../graph_editor/main/models/nodes/KeyboardNode";
 import { AbstractCanvasPanel, InteractionMode } from "../../../../../core/plugin/AbstractCanvasPanel";

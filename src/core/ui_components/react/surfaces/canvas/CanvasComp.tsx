@@ -58,7 +58,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
             <div 
                 ref={this.ref} id={this.props.element.canvasPanel.id}
                 style={{
-                    cursor: this.props.element.canvasPanel.toolController.getActiveTool().getCursor(),
+                    cursor: this.props.element.canvasPanel.tool.getActiveTool().getCursor(),
                     width: this.props.element.width ? this.props.element.width :'100%',
                     height: this.props.element.height ? this.props.element.height :'100%',
                     position: 'relative'
@@ -141,7 +141,7 @@ export class CanvasComp extends React.Component<CanvasCompProps> {
     }
 
     private renderFeedbacks(): JSX.Element {
-        const activeTool = this.props.element.canvasPanel.toolController.getActiveTool();
+        const activeTool = this.props.element.canvasPanel.tool.getActiveTool();
         const color = activeTool.id === DeleteToolId ? 'ce-red' : 'ce-blue';
         // TODO generalize
         if (activeTool.rectangleSelection) {

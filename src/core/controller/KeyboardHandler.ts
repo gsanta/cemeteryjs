@@ -1,5 +1,5 @@
-import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
-import { Registry } from '../../Registry';
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { Registry } from '../Registry';
 
 export enum Platform {
     WINDOWS = 'Windows',
@@ -73,7 +73,7 @@ export function getKeyFromKeyCode(keyCode: number) {
     return key;
 }
 
-export class KeyboardService {
+export class KeyboardHandler {
     private registry: Registry;
     private handlers: ((keyboardEvent: IKeyboardEvent) => void)[] = [];
     private canvas: AbstractCanvasPanel;
@@ -88,7 +88,7 @@ export class KeyboardService {
     keyDown(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, false);
         this.canvas.hotkey.executeHotkey(convertedEvent, this.canvas.pointer.pointer);
-        this.registry.ui.helper.hoveredPanel.toolController.getActiveTool()?.keydown(convertedEvent);
+        this.registry.ui.helper.hoveredPanel.tool.getActiveTool()?.keydown(convertedEvent);
         this.registry.services.render.reRenderScheduled();
 
         this.handlers.forEach(handler => handler(convertedEvent));
@@ -99,7 +99,7 @@ export class KeyboardService {
     keyUp(e: KeyboardEvent): void {
         const convertedEvent = this.convertEvent(e, true);
         this.canvas.hotkey.executeHotkey(convertedEvent, null);
-        this.registry.ui.helper.hoveredPanel.toolController.getActiveTool()?.keyup(convertedEvent);
+        this.registry.ui.helper.hoveredPanel.tool.getActiveTool()?.keyup(convertedEvent);
         this.registry.services.render.reRenderScheduled();
 
         e.preventDefault();

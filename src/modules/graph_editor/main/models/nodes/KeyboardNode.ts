@@ -1,7 +1,7 @@
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
-import { getKeyFromKeyCode, IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
+import { getKeyFromKeyCode, IKeyboardEvent } from "../../../../../core/controller/KeyboardHandler";
 import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
 import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";

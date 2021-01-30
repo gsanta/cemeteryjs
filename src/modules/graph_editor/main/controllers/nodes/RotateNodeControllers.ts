@@ -2,7 +2,7 @@ import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { getAllKeys } from "../../../../../core/services/input/KeyboardService";
+import { getAllKeys } from "../../../../../core/controller/KeyboardHandler";
 import { MeshController } from "./MeshNodeControllers";
 import { RotateNodeParams } from "../../models/nodes/RotateNode";
 import { UIController } from "../../../../../core/controller/UIController";

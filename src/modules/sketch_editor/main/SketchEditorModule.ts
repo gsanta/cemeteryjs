@@ -1,5 +1,5 @@
 import { FormController } from "../../../core/controller/FormController";
-import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/controller/ToolController";
+import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/controller/ToolHandler";
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
 import { ShapeObservable } from "../../../core/models/ShapeObservable";
 import { RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/plugin/AbstractCanvasPanel";

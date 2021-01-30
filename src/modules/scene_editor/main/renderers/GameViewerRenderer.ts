@@ -18,7 +18,7 @@ export class GameViewerRenderer implements ICanvasRenderer {
     }
 
     renderInto(htmlCanvas: UI_HtmlCanvas): void { 
-        const selectedTool = this.canvas.toolController.getSelectedTool();
+        const selectedTool = this.canvas.tool.getSelectedTool();
 
         const toolbar = htmlCanvas.toolbar();
 

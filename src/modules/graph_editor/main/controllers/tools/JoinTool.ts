@@ -35,7 +35,7 @@ export class JoinTool extends PointerTool {
     }
 
     draggedUp() {
-        this.canvas.toolController.removePriorityTool(this.id);
+        this.canvas.tool.removePriorityTool(this.id);
 
 
         if (this.checkConnectionValidity()) {
@@ -79,7 +79,7 @@ export class JoinTool extends PointerTool {
     out(view: AbstractShape) {
         super.out(view);
         if (!this.canvas.pointer.isDown) {
-            this.canvas.toolController.removePriorityTool(this.id);
+            this.canvas.tool.removePriorityTool(this.id);
         }
     }
 

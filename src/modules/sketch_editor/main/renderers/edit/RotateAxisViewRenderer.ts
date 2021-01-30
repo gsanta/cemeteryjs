@@ -18,7 +18,7 @@ export class RotateAxisViewRenderer implements ShapeRenderer {
     }
 
     renderInto(canvas: UI_SvgCanvas, axisView: RotateAxisView, canvasPanel: AbstractCanvasPanel) {
-        if (!canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected) {
+        if (!canvasPanel.tool.getToolById(RotateAxisToolId).isSelected) {
             return null;
         }
 

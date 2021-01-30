@@ -1,13 +1,13 @@
-import { Point } from '../../../utils/geometry/shapes/Point';
-import { PointerTracker } from '../../controller/ToolController';
-import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
-import { Registry } from '../../Registry';
-import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardService';
-import { Wheel } from './PointerService';
+import { Point } from '../../utils/geometry/shapes/Point';
+import { PointerTracker } from './ToolHandler';
+import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { Registry } from '../Registry';
+import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardHandler';
+import { Wheel } from './PointerHandler';
 
 export type IHotkeyAction = (hotkeyEvent: IHotkeyEvent, registry: Registry) => boolean;
 
-export class HotkeyService {
+export class HotkeyHandler {
     private inputs: HTMLElement[] = [];
     private primaryInput: HTMLElement;
     private hotkeys: Hotkey[] = [];
@@ -56,7 +56,7 @@ export class HotkeyService {
 
         if (this.registry.ui.helper.hoveredPanel) {
             // TODO it should also return with the executed hotkeys
-            this.registry.ui.helper.hoveredPanel.toolController.getAll().filter(tool => tool.hotkey(hotkeyEvent));
+            this.registry.ui.helper.hoveredPanel.tool.getAll().filter(tool => tool.hotkey(hotkeyEvent));
         }
 
         if (executedHotkeys.length > 0) {

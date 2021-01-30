@@ -24,7 +24,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
     }
 
     renderInto(svgCanvas: UI_SvgCanvas): void {
-        const joinTool = <JoinTool> this.canvas.toolController.getToolById(ToolType.Join);
+        const joinTool = <JoinTool> this.canvas.tool.getToolById(ToolType.Join);
 
         if (joinTool.startPoint && joinTool.endPoint) {
             const line = svgCanvas.line()

@@ -27,7 +27,7 @@ export class PrimitiveShapeDropdownControl extends ParamController<any> {
 
     click(context: PropContext, element: UI_Element) {
         const renderer = element.canvasPanel.renderer as SceneEditorRenderer;
-        element.canvasPanel.toolController.setSelectedTool(element.key);
+        element.canvasPanel.tool.setSelectedTool(element.key);
         renderer.isShapeDropdownOpen = false;
         renderer.activeShapeToolId = element.key;
         context.registry.services.render.reRender(UI_Region.Canvas1);

@@ -1,6 +1,6 @@
 import { Registry } from '../../Registry';
-import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../services/input/HotkeyService';
-import { Keyboard } from '../../services/input/KeyboardService';
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../controller/HotkeyHandler';
+import { Keyboard } from '../../controller/KeyboardHandler';
 import { getIntersectingViews, ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
@@ -68,7 +68,7 @@ export class DeleteTool extends PointerTool {
 
     hotkey(hotkeyEvent: IHotkeyEvent) {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.hotkeyTrigger, this.canvas.pointer.pointer)) {
-            this.canvas.toolController.setSelectedTool(this.id)
+            this.canvas.tool.setSelectedTool(this.id)
             
             return true;
         }

@@ -1,6 +1,6 @@
 import { Registry } from "../Registry";
 import { Point } from '../../utils/geometry/shapes/Point';
-import { IPointerEvent, Wheel } from "../services/input/PointerService";
+import { IPointerEvent, Wheel } from "./PointerHandler";
 import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { Tool } from "../plugin/tools/Tool";
 import { AbstractShape } from "../models/shapes/AbstractShape";
@@ -23,7 +23,7 @@ export class CommonToolController extends ParamController<any> {
     acceptedProps() { return [SelectToolId, DeleteToolId, CameraToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        element.canvasPanel.toolController.setSelectedTool(element.key);
+        element.canvasPanel.tool.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
@@ -32,7 +32,7 @@ export class SceneEditorToolController extends ParamController<any> {
     acceptedProps() { return [MeshToolId, SpriteToolId, PathToolId, CubeToolId, SphereToolId, LightToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        element.canvasPanel.toolController.setSelectedTool(element.key);
+        element.canvasPanel.tool.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
@@ -41,21 +41,21 @@ export class CanvasContextDependentToolController extends ParamController<any> {
     acceptedProps() { return [ScaleAxisToolId, MoveAxisToolId, RotateAxisToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        const tool = element.canvasPanel.toolController.getToolById(element.key);
+        const tool = element.canvasPanel.tool.getToolById(element.key);
         tool.isSelected = !tool.isSelected;
 
         switch(tool.id) {
             case ScaleAxisToolId:
-                element.canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected = false;
-                element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
+                element.canvasPanel.tool.getToolById(RotateAxisToolId).isSelected = false;
+                element.canvasPanel.tool.getToolById(MoveAxisToolId).isSelected = false;
                 break;
             case RotateAxisToolId:
-                element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;
-                element.canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected = false;
+                element.canvasPanel.tool.getToolById(ScaleAxisToolId).isSelected = false;
+                element.canvasPanel.tool.getToolById(MoveAxisToolId).isSelected = false;
                 break;
             case MoveAxisToolId:
-                element.canvasPanel.toolController.getToolById(RotateAxisToolId).isSelected = false;
-                element.canvasPanel.toolController.getToolById(ScaleAxisToolId).isSelected = false;        
+                element.canvasPanel.tool.getToolById(RotateAxisToolId).isSelected = false;
+                element.canvasPanel.tool.getToolById(ScaleAxisToolId).isSelected = false;        
                 break;
         }
 
@@ -75,6 +75,7 @@ export class PointerTracker {
     droppedItemType: string;
     wheel: Wheel = Wheel.IDLE;
     wheelDiff: number = undefined;
+    lastPointerEvent: IPointerEvent;
 
     getDiff() {
         return this.curr.subtract(this.prev);
@@ -89,7 +90,7 @@ export class PointerTracker {
     }
 }
 
-export class ToolController {
+export class ToolHandler {
     controlledView: AbstractShape;
     private scopedTool: Tool;
 

@@ -3,7 +3,7 @@ import { SceneEditorPanelId } from "../../../../modules/scene_editor/main/SceneE
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { AbstractCanvasPanel } from "../../../plugin/AbstractCanvasPanel";
 import { Registry } from "../../../Registry";
-import { IPointerEvent } from "../../../services/input/PointerService";
+import { IPointerEvent } from "../../../controller/PointerHandler";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 
 export class Bab_PointerService {

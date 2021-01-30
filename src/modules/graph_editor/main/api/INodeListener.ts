@@ -1,7 +1,7 @@
 import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam } from "../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../core/Registry";
-import { IKeyboardEvent } from "../../../../core/services/input/KeyboardService";
+import { IKeyboardEvent } from "../../../../core/controller/KeyboardHandler";
 
 export interface INodeListener {
     onBeforeRender(nodeObj: NodeObj, registry: Registry): void;

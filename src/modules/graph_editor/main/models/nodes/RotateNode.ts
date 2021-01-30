@@ -2,7 +2,7 @@ import { MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
-import { IKeyboardEvent } from "../../../../../core/services/input/KeyboardService";
+import { IKeyboardEvent } from "../../../../../core/controller/KeyboardHandler";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AbstractNodeListener } from "../../api/INodeListener";

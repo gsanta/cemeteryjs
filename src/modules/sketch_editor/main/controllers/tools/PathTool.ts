@@ -3,8 +3,8 @@ import { PathPoinShape, PathPointViewType } from "../../../../../core/models/sha
 import { PathShape, PathShapeType } from "../../models/shapes/PathShape";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
-import { IHotkeyEvent } from "../../../../../core/services/input/HotkeyService";
-import { IKeyboardEvent, Keyboard } from "../../../../../core/services/input/KeyboardService";
+import { IHotkeyEvent } from "../../../../../core/controller/HotkeyHandler";
+import { IKeyboardEvent, Keyboard } from "../../../../../core/controller/KeyboardHandler";
 import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { ShapeStore } from "../../../../../core/stores/ShapeStore";

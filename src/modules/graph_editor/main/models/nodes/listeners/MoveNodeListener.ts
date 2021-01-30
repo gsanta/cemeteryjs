@@ -1,6 +1,6 @@
 import { NodeObj } from "../../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam } from "../../../../../../core/models/objs/node_obj/NodeParam";
-import { IKeyboardEvent } from "../../../../../../core/services/input/KeyboardService";
+import { IKeyboardEvent } from "../../../../../../core/controller/KeyboardHandler";
 import { INodeListener } from "../../../api/INodeListener";
 import { MoveNodeParams } from "../MoveNode";
 

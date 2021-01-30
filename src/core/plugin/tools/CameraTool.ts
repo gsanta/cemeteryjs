@@ -1,7 +1,8 @@
+import { PointerTracker } from '../../controller/ToolHandler';
 import { Registry } from '../../Registry';
-import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from "../../services/input/HotkeyService";
-import { IKeyboardEvent, Keyboard } from '../../services/input/KeyboardService';
-import { IPointerEvent } from '../../services/input/PointerService';
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from "../../controller/HotkeyHandler";
+import { IKeyboardEvent, Keyboard } from '../../controller/KeyboardHandler';
+import { IPointerEvent } from '../../controller/PointerHandler';
 import { AbstractCanvasPanel, InteractionMode } from '../AbstractCanvasPanel';
 import { Cursor } from "./Tool";
 import { ToolAdapter } from './ToolAdapter';
@@ -26,12 +27,12 @@ export class CameraTool extends ToolAdapter {
 
     wheelEnd() {
         this.activeCameraAction = this.defaultCameraAction;
-        this.canvas.toolController.removePriorityTool(this.id)
+        this.canvas.tool.removePriorityTool(this.id)
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    drag(e: IPointerEvent) {
-        super.drag(e);
+    drag(pointer: PointerTracker) {
+        super.drag(pointer);
 
         const camera = this.canvas.getCamera();
 
@@ -46,7 +47,7 @@ export class CameraTool extends ToolAdapter {
                 break;
         }
 
-        this.cleanupIfToolFinished(this.isSpaceDown, e.isCtrlDown);
+        this.cleanupIfToolFinished(this.isSpaceDown, pointer.lastPointerEvent ? pointer.lastPointerEvent.isCtrlDown : false);
     }
 
     zoomIn() {
@@ -61,8 +62,8 @@ export class CameraTool extends ToolAdapter {
         }
     }
 
-    up(e: IPointerEvent) {
-        super.up(e);
+    up(pointer: PointerTracker) {
+        super.up(pointer);
 
         this.cleanupIfToolFinished(this.isSpaceDown, false);
     }
@@ -88,7 +89,7 @@ export class CameraTool extends ToolAdapter {
                 setAsPriorityTool = true;
             }
     
-            setAsPriorityTool && this.canvas.toolController.setPriorityTool(this.id);
+            setAsPriorityTool && this.canvas.tool.setPriorityTool(this.id);
             return setAsPriorityTool;
         }
 
@@ -97,7 +98,7 @@ export class CameraTool extends ToolAdapter {
     private cleanupIfToolFinished(panFinished: boolean, rotateFinished: boolean) {
         if (!panFinished && !rotateFinished) {
             this.activeCameraAction = this.defaultCameraAction;
-            this.canvas.toolController.removePriorityTool(this.id);
+            this.canvas.tool.removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.registry.ui.helper.hoveredPanel.region);
         }
     }

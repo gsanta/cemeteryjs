@@ -2,11 +2,11 @@ import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { IHotkeyEvent } from '../../services/input/HotkeyService';
-import { IKeyboardEvent } from '../../services/input/KeyboardService';
-import { IPointerEvent } from '../../services/input/PointerService';
+import { IHotkeyEvent } from '../../controller/HotkeyHandler';
+import { IKeyboardEvent } from '../../controller/KeyboardHandler';
+import { IPointerEvent } from '../../controller/PointerHandler';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { PointerTracker } from '../../controller/ToolController';
+import { PointerTracker } from '../../controller/ToolHandler';
 import { Cursor, Tool } from './Tool';
 
 export function createRectFromMousePointer(pointer: PointerTracker): Rectangle {
@@ -35,12 +35,12 @@ export class ToolAdapter<P extends AbstractCanvasPanel = AbstractCanvasPanel> im
         this.registry = registry;
     }
 
-    down(e: IPointerEvent) { }
-    move() { }
-    drag(e: IPointerEvent) { }
-    click() { }
-    draggedUp() { }
-    up(e: IPointerEvent) { }
+    down(pointer: PointerTracker) { }
+    move(pointer: PointerTracker) { }
+    drag(pointer: PointerTracker) { }
+    click(pointer: PointerTracker) { }
+    draggedUp(pointer: PointerTracker) { }
+    up(pointer: PointerTracker) { }
     activate() { }
     resize() { }
     wheel() {}

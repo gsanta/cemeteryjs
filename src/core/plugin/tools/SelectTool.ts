@@ -1,11 +1,11 @@
 import { Registry } from '../../Registry';
-import { IPointerEvent } from '../../services/input/PointerService';
 import { getIntersectingViews, ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer } from './ToolAdapter';
 import { PointerTool } from './PointerTool';
 import { Cursor } from "./Tool";
+import { PointerTracker } from '../../controller/ToolHandler';
 
 export const SelectToolId = 'select-tool';
 export class SelectTool extends PointerTool {
@@ -29,18 +29,18 @@ export class SelectTool extends PointerTool {
         }
     }
 
-    drag(e: IPointerEvent) {
+    drag(pointer: PointerTracker) {
         if (this.movingItem) {
-            super.drag(e);
+            super.drag(pointer);
         } else {
-            this.rectangleSelection = createRectFromMousePointer(this.canvas.pointer.pointer);
+            this.rectangleSelection = createRectFromMousePointer(pointer);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
 
-    draggedUp() {
+    draggedUp(pointer: PointerTracker) {
         if (this.movingItem) {
-            super.draggedUp();
+            super.draggedUp(pointer);
         } else {
             if (!this.rectangleSelection) { return }
     

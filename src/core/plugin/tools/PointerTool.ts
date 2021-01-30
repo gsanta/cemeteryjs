@@ -1,12 +1,13 @@
 import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
 import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { IPointerEvent } from '../../services/input/PointerService';
+import { IPointerEvent } from '../../controller/PointerHandler';
 import { ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { ToolAdapter } from "./ToolAdapter";
 import { ToolType } from "./Tool";
+import { PointerTracker } from '../../controller/ToolHandler';
 
 export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvasPanel> extends ToolAdapter<P> {
     acceptedViews: string[] = [];
@@ -42,8 +43,8 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         this.initMove() &&  this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    drag(e: IPointerEvent) {
-        super.drag(e);
+    drag(pointer: PointerTracker) {
+        super.drag(pointer);
 
         if (this.movingItem) {
             this.moveItems();
@@ -53,8 +54,8 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
         this.isDragStart = false;
     }
 
-    draggedUp() {
-        super.draggedUp();
+    draggedUp(pointer: PointerTracker) {
+        super.draggedUp(pointer);
 
         if (!this.isDragStart) {
             this.registry.services.history.createSnapshot();
@@ -74,7 +75,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
 
     over(view: AbstractShape) {
         if (view.viewType === NodePortViewType) {
-            this.canvas.toolController.setPriorityTool(ToolType.Join);
+            this.canvas.tool.setPriorityTool(ToolType.Join);
         }
         
         view.tags.add(ShapeTag.Hovered);
@@ -84,7 +85,7 @@ export abstract class PointerTool<P extends AbstractCanvasPanel = AbstractCanvas
 
     out(view: AbstractShape) {
         if (!this.canvas.pointer.isDown && view.viewType === NodePortViewType) {
-            this.canvas.toolController.removePriorityTool(ToolType.Join);
+            this.canvas.tool.removePriorityTool(ToolType.Join);
 
         } 
         

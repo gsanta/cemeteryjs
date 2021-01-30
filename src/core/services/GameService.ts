@@ -3,7 +3,7 @@ import { NodeObj, NodeParams } from "../models/objs/node_obj/NodeObj";
 import { NodeParam } from "../models/objs/node_obj/NodeParam";
 import { Registry } from "../Registry";
 import { ImportService } from "./import/ImportService";
-import { IKeyboardEvent } from "./input/KeyboardService";
+import { IKeyboardEvent } from "../controller/KeyboardHandler";
 
 export class GameService {
     viewImporter: ImportService;

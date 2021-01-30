@@ -18,7 +18,7 @@ export class MoveAxisViewRenderer implements ShapeRenderer {
     }
 
     renderInto(canvas: UI_SvgCanvas, axisView: MoveAxisView, canvasPanel: AbstractCanvasPanel) {
-        if (!canvasPanel.toolController.getToolById(MoveAxisToolId).isSelected) {
+        if (!canvasPanel.tool.getToolById(MoveAxisToolId).isSelected) {
             return null;
         }
 

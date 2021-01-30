@@ -1,6 +1,6 @@
 import { AbstractCanvasPanel, InteractionMode, ZoomInController, ZoomOutController } from "../../../../core/plugin/AbstractCanvasPanel";
 import { PropContext, ParamController } from "../../../../core/controller/FormController";
-import { CommonToolController } from "../../../../core/controller/ToolController";
+import { CommonToolController } from "../../../../core/controller/ToolHandler";
 import { Registry } from "../../../../core/Registry";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { GameToolId } from "../../main/controllers/tools/GameTool";
@@ -80,7 +80,7 @@ class GameViewerToolController extends ParamController<any> {
     acceptedProps() { return [GameToolId]; }
 
     click(context: PropContext, element: UI_Element) {
-        element.canvasPanel.toolController.setSelectedTool(element.key);
+        element.canvasPanel.tool.setSelectedTool(element.key);
         context.registry.services.render.reRender(element.canvasPanel.region);
     }
 }
