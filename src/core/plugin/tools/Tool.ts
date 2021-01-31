@@ -37,12 +37,12 @@ export interface Tool<D> extends IHotkey {
     isSelected: boolean;
 
     getCursor(): Cursor;
-    down(pointer: PointerTracker): void;
-    move(pointer: PointerTracker): void;
-    drag(pointer: PointerTracker): void;
-    click(pointer: PointerTracker): void;
-    draggedUp(pointer: PointerTracker): void;
-    up(pointer: PointerTracker): void;
+    down(pointer: PointerTracker<D>): void;
+    move(pointer: PointerTracker<D>): void;
+    drag(pointer: PointerTracker<D>): void;
+    click(pointer: PointerTracker<D>): void;
+    draggedUp(pointer: PointerTracker<D>): void;
+    up(pointer: PointerTracker<D>): void;
     activate(): void;
     leave(): void;
     keydown(e: IKeyboardEvent): void;

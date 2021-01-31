@@ -29,8 +29,8 @@ export class LightViewFactory extends ShapeFactoryAdapter {
         const objPos = lightViewBounds.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
         lightObj.setPosition(new Point_3(objPos.x, lightObj.getPosition().y, objPos.y));
 
-        this.registry.stores.objStore.addObj(lightObj);
-        panel.getViewStore().addShape(lightView);
+        this.registry.stores.objStore.addItem(lightObj);
+        panel.getViewStore().addItem(lightView);
 
         return lightView;
     }

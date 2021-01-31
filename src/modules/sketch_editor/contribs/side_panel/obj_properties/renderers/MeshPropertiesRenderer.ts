@@ -15,7 +15,7 @@ export class MeshPropertiesRenderer implements IRenderer<UI_Layout> {
     }
 
     renderInto(layout: UI_Layout): void {
-        const selectedViews = this.registry.data.shape.scene.getSelectedShapes();
+        const selectedViews = this.registry.data.shape.scene.getSelectedItems();
         const meshView = <MeshShape> selectedViews[0];
 
         let row = layout.row({ key: 'id-row' });
@@ -37,7 +37,7 @@ export class MeshPropertiesRenderer implements IRenderer<UI_Layout> {
         grid.paramController = this.controller.layer; 
         grid.label = 'Layer';
         const filledIndexes = new Set<number>();
-        this.registry.data.shape.scene.getAllShapes().forEach(view => filledIndexes.add(view.layer));
+        this.registry.data.shape.scene.getAllItems().forEach(view => filledIndexes.add(view.layer));
         grid.filledIndexes =  Array.from(filledIndexes);
 
         row = layout.row({ key: 'clone-row' });

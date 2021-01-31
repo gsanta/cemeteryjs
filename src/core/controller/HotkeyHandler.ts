@@ -50,7 +50,7 @@ export class HotkeyHandler<D> {
         return this.hotkeys.find(hk => hk.id === hotkeyId) !== undefined;
     }
 
-    executeHotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker): boolean {
+    executeHotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker<any>): boolean {
         const executedHotkeys = this.hotkeys.filter(h => h.hotkey(hotkeyEvent, pointerTracker));
 
         if (this.registry.ui.helper.hoveredPanel) {
@@ -102,7 +102,7 @@ export interface IHotkeyEvent {
 }
 
 export interface IHotkey {
-    hotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker): boolean;
+    hotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker<any>): boolean;
 }
 
 export const defaultHotkeyTrigger: HotkeyTrigger = {
@@ -134,7 +134,7 @@ export class Hotkey implements IHotkey {
         this.action = action;
     }
 
-    hotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker): boolean {
+    hotkey(hotkeyEvent: IHotkeyEvent, pointerTracker: PointerTracker<any>): boolean {
         if (checkHotkeyAgainstTrigger(hotkeyEvent, this.trigger, pointerTracker)) {
             this.action(hotkeyEvent, this.registry);
             return true;
@@ -143,7 +143,7 @@ export class Hotkey implements IHotkey {
     }
 }
 
-export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger, pointerTracker: PointerTracker) {
+export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger, pointerTracker: PointerTracker<any>) {
     return (
         keyCodesMatch(hotkeyEvent, hotkeyTrigger) &&
         hotkeyEvent.isAltDown === hotkeyTrigger.alt &&
@@ -156,7 +156,7 @@ export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigg
 }
 
 
-function wheelMatch(pointerTracker: PointerTracker): boolean {
+function wheelMatch(pointerTracker: PointerTracker<any>): boolean {
     return pointerTracker.wheel !== Wheel.IDLE;
 }
 

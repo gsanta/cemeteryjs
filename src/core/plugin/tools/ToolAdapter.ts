@@ -7,7 +7,7 @@ import { Registry } from '../../Registry';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { Cursor, Tool } from './Tool';
 
-export function createRectFromMousePointer(pointer: PointerTracker): Rectangle {
+export function createRectFromMousePointer(pointer: PointerTracker<any>): Rectangle {
     const minX = pointer.down.x < pointer.curr.x ? pointer.down.x : pointer.curr.x;
     const minY = pointer.down.y < pointer.curr.y ? pointer.down.y : pointer.curr.y;
     const maxX = pointer.down.x >= pointer.curr.x ? pointer.down.x : pointer.curr.x;
@@ -33,12 +33,12 @@ export class ToolAdapter<D> implements Tool<D> {
         this.registry = registry;
     }
 
-    down(pointer: PointerTracker) { }
-    move(pointer: PointerTracker) { }
-    drag(pointer: PointerTracker) { }
-    click(pointer: PointerTracker) { }
-    draggedUp(pointer: PointerTracker) { }
-    up(pointer: PointerTracker) { }
+    down(pointer: PointerTracker<D>) { }
+    move(pointer: PointerTracker<D>) { }
+    drag(pointer: PointerTracker<D>) { }
+    click(pointer: PointerTracker<D>) { }
+    draggedUp(pointer: PointerTracker<D>) { }
+    up(pointer: PointerTracker<D>) { }
     activate() { }
     resize() { }
     wheel() {}

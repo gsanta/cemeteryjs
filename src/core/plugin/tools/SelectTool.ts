@@ -1,18 +1,18 @@
+import { PointerTracker } from '../../controller/PointerHandler';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { getIntersectingViews, ShapeStore } from '../../stores/ShapeStore';
+import { getIntersectingViews } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
-import { createRectFromMousePointer } from './ToolAdapter';
-import { PointerTool } from './PointerTool';
+import { PointerTool, PointerToolLogic } from './PointerTool';
 import { Cursor } from "./Tool";
-import { AbstractShape } from '../../models/shapes/AbstractShape';
-import { PointerTracker } from '../../controller/PointerHandler';
+import { createRectFromMousePointer } from './ToolAdapter';
 
 export const SelectToolId = 'select-tool';
-export class SelectTool extends PointerTool {
+export class SelectTool extends PointerTool<AbstractShape> {
 
-    constructor(canvas: AbstractCanvasPanel<AbstractShape>, store: ShapeStore, registry: Registry) {
-        super(SelectToolId, canvas, store, registry);
+    constructor(logic: PointerToolLogic<AbstractShape>, canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
+        super(SelectToolId, logic, canvas, registry);
     }
 
     down() {
@@ -21,17 +21,17 @@ export class SelectTool extends PointerTool {
         }
     }
 
-    click() {
+    click(pointer: PointerTracker<AbstractShape>) {
         if (this.canvas.pointer.hoveredView) {
-            super.click();
-        } else if (this.viewStore.getSelectedShapes().length > 0) {
-            this.viewStore.clearSelection();
+            super.click(pointer);
+        } else if (this.canvas.store.getSelectedItems().length > 0) {
+            this.canvas.store.clearSelection();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
     }
 
-    drag(pointer: PointerTracker) {
-        if (this.movingItem) {
+    drag(pointer: PointerTracker<AbstractShape>) {
+        if (this.draggedItem) {
             super.drag(pointer);
         } else {
             this.rectangleSelection = createRectFromMousePointer(pointer);
@@ -39,16 +39,16 @@ export class SelectTool extends PointerTool {
         }
     }
 
-    draggedUp(pointer: PointerTracker) {
-        if (this.movingItem) {
+    draggedUp(pointer: PointerTracker<AbstractShape>) {
+        if (this.draggedItem) {
             super.draggedUp(pointer);
         } else {
             if (!this.rectangleSelection) { return }
     
-            const intersectingViews = getIntersectingViews(this.viewStore, this.rectangleSelection);
+            const intersectingViews = getIntersectingViews(this.canvas.store, this.rectangleSelection);
             
-            this.viewStore.clearSelection();
-            this.viewStore.addSelectedShape(...intersectingViews)
+            this.canvas.store.clearSelection();
+            this.canvas.store.addSelectedItem(...intersectingViews)
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);

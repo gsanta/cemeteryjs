@@ -20,6 +20,8 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
     showBoundingBoxes: boolean = false;
     selectedTool: string;
 
+    store: undefined;
+
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
 

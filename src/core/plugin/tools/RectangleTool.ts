@@ -25,14 +25,14 @@ export abstract class RectangleTool<D> extends ToolAdapter<D> {
         const view = this.createView(rect);
 
         this.viewStore.clearSelection()
-        this.viewStore.addSelectedShape(view);
+        this.viewStore.addSelectedItem(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();
         this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
-    drag(pointer: PointerTracker) {
+    drag(pointer: PointerTracker<D>) {
         super.drag(pointer)
 
         this.tmpView && this.removeTmpView();
@@ -44,7 +44,7 @@ export abstract class RectangleTool<D> extends ToolAdapter<D> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    draggedUp(pointer: PointerTracker) {
+    draggedUp(pointer: PointerTracker<D>) {
         super.draggedUp(pointer);
 
         this.registry.services.level.updateCurrentLevel();

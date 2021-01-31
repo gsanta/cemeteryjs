@@ -5,24 +5,24 @@ import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
 import { IHotkeyEvent } from "../../../../../core/controller/HotkeyHandler";
 import { IKeyboardEvent, Keyboard } from "../../../../../core/controller/KeyboardHandler";
-import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
+import { PointerTool, PointerToolLogic } from "../../../../../core/plugin/tools/PointerTool";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
-import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { SketchEditorModule } from "../../SketchEditorModule";
+import { PointerTracker } from "../../../../../core/controller/PointerHandler";
 
 export const PathToolId = 'path-tool';
-export class PathTool extends PointerTool {
+export class PathTool extends PointerTool<AbstractShape> {
     acceptedViews = [PathShapeType, PathPointViewType]
 
-    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
-        super(PathToolId, panel, viewStore, registry);
+    constructor(logic: PointerToolLogic<AbstractShape>, panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+        super(PathToolId, logic, panel, registry);
     }
 
-    click() {
+    click(pointer: PointerTracker<AbstractShape>) {
         const hoveredItem = this.canvas.pointer.hoveredView;
         if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
-            super.click();
+            super.click(pointer);
         } else {
             this.drawPath();
         }
@@ -30,7 +30,7 @@ export class PathTool extends PointerTool {
 
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
-            this.viewStore.clearSelection();
+            this.canvas.store.clearSelection();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
 
             this.registry.services.history.createSnapshot();
@@ -61,7 +61,7 @@ export class PathTool extends PointerTool {
     }
 
     private drawPath() {
-        const pathes = <PathShape[]> this.viewStore.getSelectedShapesByType(PathShapeType);
+        const pathes = <PathShape[]> this.canvas.store.getSelectedItemsByType(PathShapeType);
 
         if (pathes.length > 1) { return }
 

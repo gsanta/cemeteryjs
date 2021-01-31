@@ -3,6 +3,7 @@ import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../../../controller/PointerHandler';
 import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineFacade';
+import { IObj } from '../../objs/IObj';
 import { ICamera } from './ICamera';
 
 export class Camera3D implements ICamera {
@@ -41,29 +42,29 @@ export class Camera3D implements ICamera {
         this.engine && this.engine.engine && this.engine.engine.resize();
     }
 
-    pan(pointer: PointerTracker) {
+    pan(pointer: PointerTracker<any>) {
         const directionToZoomLocation = pointer.down.subtract(pointer.curr);
         const panningX = directionToZoomLocation.x * (1-this.camera.inertia);
         const panningY = directionToZoomLocation.y * (1-this.camera.inertia);
         this.inertialPanning.copyFromFloats(panningX, 0, panningY);
     }
 
-    zoomWheel(pointer: PointerTracker) {
+    zoomWheel(pointer: PointerTracker<any>) {
         const zoomRatio = -pointer.wheelDiff / this.camera.wheelPrecision / this.zoomFactor;
         this.zoom(zoomRatio, pointer);
     }
 
-    zoomIn(pointer: PointerTracker) {
+    zoomIn(pointer: PointerTracker<any>) {
         this.zoom(2, pointer);
         return true;
     }
 
-    zoomOut(pointer: PointerTracker) {
+    zoomOut(pointer: PointerTracker<any>) {
         this.zoom(-2, pointer);
         return true;
     }
 
-    zoom(delta: number, pointer: PointerTracker) {
+    zoom(delta: number, pointer: PointerTracker<any>) {
         if (this.camera.radius - this.camera.lowerRadiusLimit < 1 && delta > 0) {
             return;
         } else if (this.camera.upperRadiusLimit - this.camera.radius < 1 && delta < 0) {
@@ -117,7 +118,7 @@ export class Camera3D implements ICamera {
         return new Rectangle(new Point(0, 0), new Point(this.engine.engine.getRenderWidth(), this.engine.engine.getRenderHeight()));
     }
 
-    rotate(pointer: PointerTracker) {
+    rotate(pointer: PointerTracker<any>) {
         const offsetX = pointer.currScreen.x - pointer.prevScreen.x;
         const offsetY = pointer.currScreen.y - pointer.prevScreen.y;
         this.changeInertialAlphaBetaFromOffsets(offsetX, offsetY, this.camera);

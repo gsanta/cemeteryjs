@@ -30,7 +30,7 @@ export class CameraTool<D> extends ToolAdapter<D> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    drag(pointer: PointerTracker) {
+    drag(pointer: PointerTracker<D>) {
         super.drag(pointer);
 
         const camera = this.canvas.getCamera();
@@ -61,7 +61,7 @@ export class CameraTool<D> extends ToolAdapter<D> {
         }
     }
 
-    up(pointer: PointerTracker) {
+    up(pointer: PointerTracker<D>) {
         super.up(pointer);
 
         this.cleanupIfToolFinished(this.isSpaceDown, false);

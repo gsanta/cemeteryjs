@@ -18,7 +18,7 @@ function collectObjTablePropsToCheck(tableDef: TableDefinition): ObjTableProp[] 
 }
 
 function objPropertiesAre(world: World, tableDef: TableDefinition) {
-    const objs = world.registry.stores.objStore.getAll();
+    const objs = world.registry.stores.objStore.getAllItems();
     const objTableProps = collectObjTablePropsToCheck(tableDef);
 
     if (objTableProps[0] !== ObjTableProp.Id) {

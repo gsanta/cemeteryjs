@@ -49,6 +49,8 @@ export class MeshLoaderPreviewCanvas {
 //  TODO merge this together with MeshLoaderPreviewCanvas (and make a module out of it)
 class MeshLoaderCanvas extends Canvas3dPanel<IObj> {
 
+    store = undefined;
+
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
 

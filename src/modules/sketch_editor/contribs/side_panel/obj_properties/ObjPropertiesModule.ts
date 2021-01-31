@@ -23,7 +23,7 @@ export class ObjPropertiesModule extends UI_Panel {
         const spriteSettingsRenderer = new SpritePropertiesRenderer(spriteSettingsController);
     
         registry.services.event.select.on(() => {
-            const selectedViews = registry.data.shape.scene.getSelectedShapes();
+            const selectedViews = registry.data.shape.scene.getSelectedItems();
             this.renderer = undefined;
             this.paramController = undefined;
             if (selectedViews.length === 1) {

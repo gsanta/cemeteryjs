@@ -32,6 +32,6 @@ export class GroundTool extends RectangleTool<AbstractShape> {
     }
     
     protected removeTmpView() {
-        this.viewStore.removeShape(this.tmpView);
+        this.viewStore.removeItem(this.tmpView);
     }
 }

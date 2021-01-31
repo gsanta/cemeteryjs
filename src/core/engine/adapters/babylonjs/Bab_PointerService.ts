@@ -23,16 +23,16 @@ export class Bab_PointerService {
         const canvas: AbstractCanvasPanel<IObj> = this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
         const tools = this.engineFacade.toolService;
 
-        this.engineFacade.scene.onPointerObservable.add((pointerInfo) => {
-            switch(pointerInfo.type) {
-                case PointerEventTypes.POINTERUP:
-                    tools.getSelectedTool().up(pointerInfo);
-                break;
-                case PointerEventTypes.POINTERMOVE:
-                    canvas.pointer.pointerMove(this.convertToIPointerEvent(pointerInfo), undefined);
-                break;
-            }
-        });
+        // this.engineFacade.scene.onPointerObservable.add((pointerInfo) => {
+        //     switch(pointerInfo.type) {
+        //         case PointerEventTypes.POINTERUP:
+        //             tools.getSelectedTool().up(pointerInfo);
+        //         break;
+        //         case PointerEventTypes.POINTERMOVE:
+        //             canvas.pointer.pointerMove(this.convertToIPointerEvent(pointerInfo), undefined);
+        //         break;
+        //     }
+        // });
     }
 
     private convertToIPointerEvent(pointerInfo: PointerInfo): IPointerEvent {

@@ -46,7 +46,7 @@ export class SceneEditorImporter extends AbstractModuleImporter {
                 viewInstance = store.getViewFactory(viewJson.type).instantiate();
                 viewInstance.fromJson(viewJson, this.registry);
             }
-            store.addShape(viewInstance);
+            store.addItem(viewInstance);
         });
 
         afterAllViewsDeserializedFuncs.forEach(func => func());
@@ -74,7 +74,7 @@ export class SceneEditorImporter extends AbstractModuleImporter {
                 objInstance.deserialize(obj, this.registry);
             }
 
-            objStore.addObj(objInstance);
+            objStore.addItem(objInstance);
         });
 
         afterAllObjsDeserializedFuncs.forEach(func => func());

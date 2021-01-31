@@ -1,20 +1,20 @@
-import { Registry } from '../../Registry';
 import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../controller/HotkeyHandler';
 import { Keyboard } from '../../controller/KeyboardHandler';
-import { getIntersectingViews, ShapeStore } from '../../stores/ShapeStore';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { Registry } from '../../Registry';
+import { getIntersectingViews } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
-import { createRectFromMousePointer } from './ToolAdapter';
-import { PointerTool } from './PointerTool';
+import { PointerTool, PointerToolLogic } from './PointerTool';
 import { Cursor } from './Tool';
-import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { createRectFromMousePointer } from './ToolAdapter';
 
 export const DeleteToolId = 'delete-tool';
-export class DeleteTool extends PointerTool {
+export class DeleteTool extends PointerTool<AbstractShape> {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
-    constructor(panel: AbstractCanvasPanel<AbstractShape>, viewStore: ShapeStore,  registry: Registry) {
-        super(DeleteToolId, panel, viewStore, registry);
+    constructor(logic: PointerToolLogic<AbstractShape>, panel: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
+        super(DeleteToolId, logic, panel, registry);
     }
 
     drag() {
@@ -30,7 +30,7 @@ export class DeleteTool extends PointerTool {
         if (hoveredItem.isContainedView()) {
             hoveredItem.containerShape.deleteContainedView(hoveredItem);
         } else {
-            this.viewStore.removeShape(hoveredItem);
+            this.canvas.store.removeItem(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -42,8 +42,8 @@ export class DeleteTool extends PointerTool {
 
     
     draggedUp() {
-        const intersectingViews = getIntersectingViews(this.viewStore, this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.viewStore.removeShape(view));
+        const intersectingViews = getIntersectingViews(this.canvas.store, this.rectangleSelection);
+        intersectingViews.forEach(view =>  this.canvas.store.removeItem(view));
 
         this.rectangleSelection = undefined;
 
@@ -55,12 +55,6 @@ export class DeleteTool extends PointerTool {
     leave() {
         this.rectangleSelection = undefined;
         this.registry.services.render.scheduleRendering(this.registry.ui.helper.hoveredPanel.region);
-    }
-
-    eraseAll() {
-        this.registry.services.localStore.clearAll();
-        this.viewStore.clear();
-        this.registry.services.render.reRenderAll();
     }
 
     getCursor() {

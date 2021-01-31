@@ -7,11 +7,13 @@ import { RedoController, UndoController, ZoomInController, ZoomOutController } f
 import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
+import { PointerToolLogicForSvgCanvas } from "../../../core/plugin/tools/PointerTool";
 import { SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
+import { ShapeStore } from "../../../core/stores/ShapeStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "../contribs/toolbar/controllers/SceneEditorToolbarController";
 import { CubeTool } from "./controllers/tools/CubeTool";
@@ -47,11 +49,15 @@ export const SketchEditorPanelId = 'sketch-editor';
 
 export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
 
+    store: ShapeStore;
+
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas1, SketchEditorPanelId, 'Sketch editor');
+
+        this.store = registry.data.shape.scene;
 
         this.exporter = new SceneEditorExporter(registry);
         this.importer = new SceneEditorImporter(registry);
@@ -75,9 +81,9 @@ export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
             new MeshTool(this, registry.data.shape.scene, registry),
             new SpriteTool(this, registry.data.shape.scene, registry),
             new LightTool(this,  registry.data.shape.scene, registry),
-            new PathTool(this, registry.data.shape.scene, registry),
-            new SelectTool(this, registry.data.shape.scene, registry),
-            new DeleteTool(this, registry.data.shape.scene, registry),
+            new PathTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
+            new SelectTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
+            new DeleteTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
             new CameraTool(this, registry),
             new MoveAxisTool(this, registry, observable),
             new CubeTool(this, registry.data.shape.scene, registry),

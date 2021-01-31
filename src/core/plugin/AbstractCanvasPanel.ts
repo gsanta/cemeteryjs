@@ -9,10 +9,10 @@ import { HotkeyHandler } from '../controller/HotkeyHandler';
 import { KeyboardHandler } from '../controller/KeyboardHandler';
 import { PointerHandler } from '../controller/PointerHandler';
 import { UI_Element } from '../ui_components/elements/UI_Element';
-import { GizmoPlugin } from './IGizmo';
 import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
 import { UI_Panel, UI_Region } from './UI_Panel';
+import { IStore } from '../stores/IStore';
 
 function getScreenSize(canvasId: string): Point {
     if (typeof document !== 'undefined') {
@@ -47,6 +47,7 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     readonly hotkey: HotkeyHandler<D>;
     readonly tool: ToolHandler<D>;
     readonly pointer: PointerHandler<D>;
+    abstract readonly store: IStore<D>;
 
     protected renderFunc: () => void;
 

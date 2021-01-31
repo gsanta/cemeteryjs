@@ -124,8 +124,8 @@ export class MeshShape extends AbstractShape {
         meshClone.setObj(meshObjClone);
         meshClone.setBounds(bounds);
 
-        registry.stores.objStore.addObj(meshObjClone);
-        registry.data.shape.scene.addShape(meshClone);
+        registry.stores.objStore.addItem(meshObjClone);
+        registry.data.shape.scene.addItem(meshClone);
     }
 
     toJson(): MeshShapeJson {

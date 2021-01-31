@@ -41,9 +41,9 @@ export function setViewProperty(canvasPanel: Canvas2dPanel<AbstractShape>, view:
     switch(prop) {
         case ViewTableProp.Selected:
             if (isViewPropTrue(val)) {
-                canvasPanel.getViewStore().addSelectedShape(view);
+                canvasPanel.getViewStore().addSelectedItem(view);
             } else {
-                canvasPanel.getViewStore().removeSelectedShape(view);
+                canvasPanel.getViewStore().removeSelectedItem(view);
             }
         break;
     }

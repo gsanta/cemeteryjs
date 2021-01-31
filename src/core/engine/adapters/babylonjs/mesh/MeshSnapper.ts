@@ -27,7 +27,7 @@ export class MeshSnapper {
      * @param pointerTracker the current mouse/touch pointer
      * @returns whether a snap or unsnap was performed
      */
-    trySnapOrUnsnap(meshObj: MeshObj, pointerTracker: PointerTracker): boolean {
+    trySnapOrUnsnap(meshObj: MeshObj, pointerTracker: PointerTracker<any>): boolean {
         if (!this.currSnapInfo) {
             return this.trySnap(meshObj, pointerTracker);
         } else {
@@ -35,7 +35,7 @@ export class MeshSnapper {
         }
     }
 
-    trySnap(meshObj: MeshObj, pointerTracker: PointerTracker) {
+    trySnap(meshObj: MeshObj, pointerTracker: PointerTracker<any>) {
         if (this.snapTurnedOff) {
             return false;
         }
@@ -53,7 +53,7 @@ export class MeshSnapper {
         return false;
     }
 
-    tryUnsnap(pointerTracker: PointerTracker): boolean {
+    tryUnsnap(pointerTracker: PointerTracker<any>): boolean {
         if (this.snapTurnedOff) {
             return false;
         }

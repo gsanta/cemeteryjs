@@ -22,6 +22,7 @@ export class ThumbnailCanvasModule extends Canvas3dPanel<IObj> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
+    store = undefined;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Dialog, ThumbnailCanvasId, 'Thumbnail canvas');

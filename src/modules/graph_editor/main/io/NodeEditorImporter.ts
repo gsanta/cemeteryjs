@@ -39,7 +39,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
                 viewInstance = store.getViewFactory(viewJson.type).instantiate();
                 viewInstance.fromJson(viewJson, this.registry);
             }
-            store.addShape(viewInstance);
+            store.addItem(viewInstance);
         });
 
     }
@@ -66,7 +66,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
                 objInstance.deserialize(obj, this.registry);
             }
 
-            objStore.addObj(objInstance);
+            objStore.addItem(objInstance);
         });
 
         afterAllObjsDeserializedFuncs.forEach(func => func());

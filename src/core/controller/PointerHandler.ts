@@ -7,7 +7,7 @@ export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
 }
 
-export class PointerTracker {
+export class PointerTracker<D> {
     down: Point;
     curr: Point;
     prev: Point;
@@ -21,6 +21,7 @@ export class PointerTracker {
     wheelState: number = 0;
     prevWheelState: number = 0;
     lastPointerEvent: IPointerEvent;
+    data: D;
 
     getDiff() {
         return this.curr.subtract(this.prev);
@@ -67,7 +68,7 @@ export class PointerHandler<D> {
 
     // hoveredPlugin: AbstractCanvasPlugin;
 
-    pointer: PointerTracker = new PointerTracker();
+    pointer: PointerTracker<D> = new PointerTracker();
 
     private registry: Registry;
     private canvas: AbstractCanvasPanel<D>;

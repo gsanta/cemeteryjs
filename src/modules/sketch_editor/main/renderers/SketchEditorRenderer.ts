@@ -137,7 +137,7 @@ export class SketchEditorRenderer implements ICanvasRenderer {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Redo';
 
-        const views = this.registry.data.shape.scene.getAllShapes();
+        const views = this.registry.data.shape.scene.getAllItems();
 
         sortViewsByLayer(views);
 

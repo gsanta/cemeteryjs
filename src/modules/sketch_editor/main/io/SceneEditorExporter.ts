@@ -43,11 +43,11 @@ export class SceneEditorExporter extends AbstractModuleExporter {
     }
 
     exportViews(): ShapeJson[] {
-        return this.registry.data.shape.scene.getAllShapes().map(view => view.toJson());
+        return this.registry.data.shape.scene.getAllItems().map(view => view.toJson());
     }
 
     exportObjs(): ObjJson[] {
-        return this.registry.stores.objStore.getAll()
+        return this.registry.stores.objStore.getAllItems()
             .filter(obj => this.acceptedObjTypes.includes(obj.objType))
             .map(obj => obj.serialize());
     }

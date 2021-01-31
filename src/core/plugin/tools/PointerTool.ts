@@ -7,53 +7,108 @@ import { UI_Region } from '../UI_Panel';
 import { ToolAdapter } from "./ToolAdapter";
 import { ToolType } from "./Tool";
 import { PointerTracker } from '../../controller/PointerHandler';
+import { Canvas2dPanel } from '../Canvas2dPanel';
 
-export abstract class PointerTool extends ToolAdapter<AbstractShape> {
-    acceptedViews: string[] = [];
+export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractShape> {
+    private registry: Registry;
+    private canvas: Canvas2dPanel<AbstractShape>;
 
-    protected movingItem: AbstractShape = undefined;
-    private isDragStart = true;
-    protected viewStore: ShapeStore;
-
-    constructor(type: string, panel: AbstractCanvasPanel<AbstractShape>, store: ShapeStore, registry: Registry) {
-        super(type, panel, registry);
-        this.viewStore = store;
+    constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+        this.registry = registry;
+        this.canvas = canvas;
     }
 
-    click(): void {
-        const hoveredItem = this.canvas.pointer.hoveredView;
-        if (!hoveredItem) { return; }
-
-        if (hoveredItem.isContainedView()) {
-            if (!hoveredItem.containerShape.isSelected()) {
-                this.viewStore.clearSelection();
-                this.viewStore.addSelectedShape(hoveredItem.containerShape);
+    select(shape: AbstractShape) {
+        if (shape.isContainedView()) {
+            if (!shape.containerShape.isSelected()) {
+                this.canvas.store.clearSelection();
+                this.canvas.store.addSelectedItem(shape.containerShape);
             }
-            hoveredItem.containerShape.setActiveContainedView(hoveredItem);
+            shape.containerShape.setActiveContainedView(shape);
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         } else {
-            this.viewStore.clearSelection();
-            this.viewStore.addSelectedShape(hoveredItem);
+            this.canvas.store.clearSelection();
+            this.canvas.store.addSelectedItem(shape);
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
     }
 
-    down() {
-        this.initMove() &&  this.registry.services.render.scheduleRendering(this.canvas.region);
+    release(shape: AbstractShape) {
+
     }
 
-    drag(pointer: PointerTracker) {
+    drag(shape: AbstractShape) {
+        if (shape.isContainedView()) {
+            shape.move(this.canvas.pointer.pointer.getDiff())
+        } else {
+            const views = this.canvas.store.getSelectedItems();
+            views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
+        }
+    }
+
+    hover(shape: AbstractShape) {
+        if (shape.viewType === NodePortViewType) {
+            this.canvas.tool.setPriorityTool(ToolType.Join);
+        }
+        
+        shape.tags.add(ShapeTag.Hovered);
+        shape.containerShape?.tags.add(ShapeTag.Hovered);
+    }
+
+    unhover(shape: AbstractShape) {
+        if (!this.canvas.pointer.isDown && shape.viewType === NodePortViewType) {
+            this.canvas.tool.removePriorityTool(ToolType.Join);
+
+        } 
+        
+        shape.tags.delete(ShapeTag.Hovered);
+        shape.containerShape?.tags.delete(ShapeTag.Hovered);
+    }
+}
+
+export interface PointerToolLogic<D> {
+    select(item: D);
+    release(item: D);
+    drag(item: D);
+    hover(item: D);
+    unhover(item: D);
+}
+
+export abstract class PointerTool<D> extends ToolAdapter<D> {
+    acceptedViews: string[] = [];
+
+    protected draggedItem: D = undefined;
+    private isDragStart = true;
+    private logic: PointerToolLogic<D>;
+
+    constructor(type: string, logic: PointerToolLogic<D>, panel: AbstractCanvasPanel<D>, registry: Registry) {
+        super(type, panel, registry);
+        this.logic = logic;
+    }
+
+    click(pointer: PointerTracker<D>): void {
+        const hoveredItem = this.canvas.pointer.hoveredView;
+        if (!hoveredItem) { return; }
+
+        this.logic.select(hoveredItem);
+    }
+
+    down() {
+        this.initDrag() &&  this.registry.services.render.scheduleRendering(this.canvas.region);
+    }
+
+    drag(pointer: PointerTracker<D>) {
         super.drag(pointer);
 
-        if (this.movingItem) {
-            this.moveItems();
+        if (this.draggedItem) {
+            this.logic.drag(this.draggedItem);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
         
         this.isDragStart = false;
     }
 
-    draggedUp(pointer: PointerTracker) {
+    draggedUp(pointer: PointerTracker<D>) {
         super.draggedUp(pointer);
 
         if (!this.isDragStart) {
@@ -63,56 +118,31 @@ export abstract class PointerTool extends ToolAdapter<AbstractShape> {
 
         this.isDragStart = true;
         
-        this.movingItem = undefined;
+        this.draggedItem = undefined;
         this.registry.services.level.updateCurrentLevel();
     }
 
     leave() {
         this.isDragStart = true;
-        this.movingItem = undefined;
+        this.draggedItem = undefined;
     }
 
-    over(item: AbstractShape) {
-        const data = <AbstractShape> <any> item;
-        if (data.viewType === NodePortViewType) {
-            this.canvas.tool.setPriorityTool(ToolType.Join);
-        }
-        
-        data.tags.add(ShapeTag.Hovered);
-        data.containerShape?.tags.add(ShapeTag.Hovered);
+    over(item: D) {
+        this.logic.hover(item);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    out(item: AbstractShape) {
-        const data = <AbstractShape> <any> item;
-
-        if (!this.canvas.pointer.isDown && data.viewType === NodePortViewType) {
-            this.canvas.tool.removePriorityTool(ToolType.Join);
-
-        } 
-        
-        data.tags.delete(ShapeTag.Hovered);
-        data.containerShape?.tags.delete(ShapeTag.Hovered);
+    out(item: D) {
+        this.logic.unhover(item);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    private initMove(): boolean {
+    private initDrag(): boolean {
         const hovered = this.canvas.pointer.hoveredView;
         if (hovered) {
-            this.movingItem = hovered;
-            this.moveItems();
+            this.draggedItem = hovered;
             return true;
         }
         return false;
-    }
-
-    private moveItems() {
-        if (this.movingItem.isContainedView()) {
-            this.movingItem.move(this.canvas.pointer.pointer.getDiff())
-        } else {
-            const views = this.viewStore.getSelectedShapes();
-            views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
-        }
-        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 }

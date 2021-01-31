@@ -6,13 +6,14 @@ import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
 import { SpriteSheetObj, SpriteSheetObjType } from "../models/objs/SpriteSheetObj";
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
+import { IStore } from "./IStore";
 
 export interface ObjStoreHook {
     addObjHook(obj: IObj);
     removeObjHook(obj: IObj);
 }
 
-export class ObjStore {
+export class ObjStore implements IStore<IObj> {
     protected objs: IObj[] = [];
     protected objById: Map<string, IObj> = new Map();
     protected nameCache: Map<string, IObj> = new Map();
@@ -32,7 +33,7 @@ export class ObjStore {
         return this.idGenerator.generateId(objType);
     }
 
-    addObj(obj: IObj) {
+    addItem(obj: IObj) {
         if (obj.id) {
             this.idGenerator.registerExistingIdForPrefix(obj.objType, obj.id);
         } else {
@@ -50,7 +51,7 @@ export class ObjStore {
         this.hooks.forEach(hook => hook.addObjHook(obj));
     }
 
-    removeObj(obj: IObj) {
+    removeItem(obj: IObj) {
         this.hooks.forEach(hook => hook.removeObjHook(obj));
 
         this.objs.splice(this.objs.indexOf(obj), 1);
@@ -99,7 +100,7 @@ export class ObjStore {
         return Array.from(this.objsByType.keys());
     }
 
-    getAll(): IObj[] {
+    getAllItems(): IObj[] {
         return this.objs;
     }
 
@@ -108,7 +109,7 @@ export class ObjStore {
     }
 
     clear() {
-        this.objs.forEach(obj => this.removeObj(obj));
+        this.objs.forEach(obj => this.removeItem(obj));
         this.objs = [];
         this.objById = new Map();
         this.nameCache = new Map();
@@ -122,6 +123,22 @@ export class ObjStore {
 
     removeHook(hook: ObjStoreHook) {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
+    }
+
+    addSelectedItem(...items: IObj[]) {
+        throw new Error("Method not implemented.");
+    }
+    removeSelectedItem(item: IObj) {
+        throw new Error("Method not implemented.");
+    }
+    getSelectedItems(): IObj[] {
+        throw new Error("Method not implemented.");
+    }
+    clearSelection() {
+        throw new Error("Method not implemented.");
+    }
+    getSelectedItemsByType(objType: string): IObj[] {
+        throw new Error("Method not implemented.");
     }
 }
 
@@ -155,7 +172,7 @@ export class ObjLifeCycleHook implements ObjStoreHook {
     removeObjHook(obj: IObj) {
         const view = this.registry.data.shape.scene.getByObjId(obj.id);
         if (view) {
-            this.registry.data.shape.scene.removeShape(view);
+            this.registry.data.shape.scene.removeItem(view);
         }
     }
 }

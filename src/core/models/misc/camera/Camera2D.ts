@@ -3,6 +3,7 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
 import { PointerTracker } from "../../../controller/PointerHandler";
+import { AbstractShape } from "../../shapes/AbstractShape";
 
 export class Camera2D implements ICamera {
     private screenSize: Point;
@@ -28,7 +29,7 @@ export class Camera2D implements ICamera {
         this.setCenter(centerPoint, scale);
     }
 
-    pan(pointer: PointerTracker) {
+    pan(pointer: PointerTracker<AbstractShape>) {
         const delta = pointer.getScreenDiff().div(this.getScale());
         this.setViewBox(this.viewBox.clone().translate(new Point(-delta.x, -delta.y)));
     }
@@ -103,7 +104,7 @@ export class Camera2D implements ICamera {
         return camera.viewBox.getSize().mul(ratio.x, ratio.y);
     }
 
-    zoomWheel(pointerTracker: PointerTracker) {
+    zoomWheel(pointerTracker: PointerTracker<AbstractShape>) {
         let nextZoomLevel: number
 
         if (pointerTracker.prevWheelState - pointerTracker.wheelState > 0) {
@@ -145,7 +146,7 @@ export class Camera2D implements ICamera {
         return false;
     }
 
-    rotate(pointer: PointerTracker): void { throw new Error("Rotation is for 3d cameras, this camera does not support it."); }
+    rotate(pointer: PointerTracker<AbstractShape>): void { throw new Error("Rotation is for 3d cameras, this camera does not support it."); }
 
     private getNextManualZoomStep(): number {
         let currentStep = this.calcLogarithmicStep(this.getScale());

@@ -20,6 +20,6 @@ export class SpriteTool extends RectangleTool<AbstractShape> {
     }
     
     protected removeTmpView() {
-        this.viewStore.removeShape(this.tmpView);
+        this.viewStore.removeItem(this.tmpView);
     }
 }

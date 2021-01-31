@@ -23,31 +23,31 @@ Given('views on canvas \'{word}\':', function (canvasId: string, tableDef: Table
 Then('canvas contains:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getAllShapes(), true);
+    canvasContains(tableDef, canvasPanel.getViewStore().getAllItems(), true);
 });
 
 Then('canvas contains some of:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getAllShapes(), false);
+    canvasContains(tableDef, canvasPanel.getViewStore().getAllItems(), false);
 });
 
 Then('canvas is empty', function () {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    expect(canvasPanel.getViewStore().getAllShapes().length).toEqual(0);
+    expect(canvasPanel.getViewStore().getAllItems().length).toEqual(0);
 });
 
 Then('canvas selection contains:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedShapes(), true);
+    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedItems(), true);
 });
 
 Then('canvas selection contains some of:', function (tableDef: TableDefinition) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedShapes(), true);
+    canvasContains(tableDef, canvasPanel.getViewStore().getSelectedItems(), true);
 });
 
 Then('contained views of \'{word}\' are:', function(viewId: string, tableDef: TableDefinition) {
@@ -94,11 +94,11 @@ Then('view properties are:', function (tableDef: TableDefinition) {
 Then('dump views:', function(tableDef: TableDefinition) {
     const viewTableProps = collectViewTableProps(tableDef);
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
-    new ModelDumper().dumpViews(viewTableProps, canvasPanel.getViewStore().getAllShapes());
+    new ModelDumper().dumpViews(viewTableProps, canvasPanel.getViewStore().getAllItems());
 });
 
 function viewPropertiesAre(world: World, tableDef: TableDefinition) {
-    const views = world.registry.data.shape.scene.getAllShapes();
+    const views = world.registry.data.shape.scene.getAllItems();
     const viewTableProps = collectViewTableProps(tableDef);
 
     if (viewTableProps[0] !== ViewTableProp.Id) {

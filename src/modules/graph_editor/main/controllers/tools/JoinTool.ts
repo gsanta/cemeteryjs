@@ -2,20 +2,19 @@ import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
-import { PointerTool } from "../../../../../core/plugin/tools/PointerTool";
+import { PointerTool, PointerToolLogic } from "../../../../../core/plugin/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../../core/Registry";
-import { ShapeStore } from "../../../../../core/stores/ShapeStore";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { NodeConnectionShape, NodeConnectionShapeType } from "../../models/shapes/NodeConnectionShape";
 
-export class JoinTool extends PointerTool {
+export class JoinTool extends PointerTool<AbstractShape> {
     startPoint: Point;
     endPoint: Point;
     nodePortView1: NodePortShape;
 
-    constructor(plugin: AbstractCanvasPanel<AbstractShape>, viewStore: ShapeStore,  registry: Registry) {
-        super(ToolType.Join, plugin, viewStore, registry);
+    constructor(logic: PointerToolLogic<AbstractShape>, plugin: AbstractCanvasPanel<AbstractShape>,  registry: Registry) {
+        super(ToolType.Join, logic, plugin, registry);
     }
 
     down() {
@@ -51,7 +50,7 @@ export class JoinTool extends PointerTool {
 
             connectionView.setInputPoint(inputPort.getAbsolutePosition());
             connectionView.setOutputPoint(outputPort.getAbsolutePosition());
-            this.registry.data.shape.node.addShape(connectionView);
+            this.registry.data.shape.node.addItem(connectionView);
 
             this.registry.services.history.createSnapshot();
 

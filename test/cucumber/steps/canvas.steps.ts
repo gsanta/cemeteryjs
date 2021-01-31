@@ -36,7 +36,7 @@ When('mouse down at \'{int}:{int}\'', function(x: number, y: number) {
 When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     
-    const hoveredView = canvasPanel.getViewStore().getAllShapes().find(view => view.getBounds().containsPoint(new Point(x, y)));
+    const hoveredView = canvasPanel.getViewStore().getAllItems().find(view => view.getBounds().containsPoint(new Point(x, y)));
 
     if (hoveredView) {
         canvasPanel.pointer.pointerEnter(hoveredView); 
@@ -69,7 +69,7 @@ When('mouse click on \'{word}\'', function(viewId: string) {
 When('mouse drags from \'{int}:{int}\' to \'{int}:{int}\'', function(xStart: number, yStart: number, xEnd: number, yEnd: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    const hoveredView = canvasPanel.getViewStore().getAllShapes().find(view => view.getBounds().containsPoint(new Point(xStart, yStart)));
+    const hoveredView = canvasPanel.getViewStore().getAllItems().find(view => view.getBounds().containsPoint(new Point(xStart, yStart)));
 
     let pointerEvent = MouseEventAdapter.mouseMove(createFakeMouseEvent(xStart, yStart));
     canvasPanel.pointer.pointerMove(pointerEvent); 
@@ -164,7 +164,7 @@ Then('active tool is \'{word}\'', function(toolId: string) {
 function findViewAtPoint(point: Point) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
 
-    const viewAtPoint = canvasPanel.getViewStore().getAllShapes().find(view => view.getBounds().containsPoint(point));
+    const viewAtPoint = canvasPanel.getViewStore().getAllItems().find(view => view.getBounds().containsPoint(point));
 
     return viewAtPoint;
 }
