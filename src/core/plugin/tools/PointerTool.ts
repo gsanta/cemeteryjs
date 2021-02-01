@@ -1,7 +1,6 @@
 import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
 import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { ShapeStore } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { ToolAdapter } from "./ToolAdapter";
@@ -13,37 +12,59 @@ export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractSh
     private registry: Registry;
     private canvas: Canvas2dPanel<AbstractShape>;
 
+    pickedItem: AbstractShape;
+
+    private wasItemDragged = false;
+
     constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
         this.registry = registry;
         this.canvas = canvas;
     }
 
-    select(shape: AbstractShape) {
-        if (shape.isContainedView()) {
-            if (!shape.containerShape.isSelected()) {
+    down(pointer: PointerTracker<AbstractShape>) {
+        this.pickedItem = pointer.hoveredItem;
+    }
+
+    click(pointer: PointerTracker<AbstractShape>) {
+        this.pickedItem = pointer.hoveredItem;
+        
+        if (!this.pickedItem) { return false ; }
+
+        if (this.pickedItem.isContainedView()) {
+            if (!this.pickedItem.containerShape.isSelected()) {
                 this.canvas.store.clearSelection();
-                this.canvas.store.addSelectedItem(shape.containerShape);
+                this.canvas.store.addSelectedItem(this.pickedItem.containerShape);
             }
-            shape.containerShape.setActiveContainedView(shape);
+            this.pickedItem.containerShape.setActiveContainedView(this.pickedItem);
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         } else {
             this.canvas.store.clearSelection();
-            this.canvas.store.addSelectedItem(shape);
+            this.canvas.store.addSelectedItem(this.pickedItem);
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
+
+        return true;
     }
 
-    release(shape: AbstractShape) {
-
+    up(): boolean {
+        const ret = this.wasItemDragged;
+        this.abort();
+        return ret;
     }
 
-    drag(shape: AbstractShape) {
-        if (shape.isContainedView()) {
-            shape.move(this.canvas.pointer.pointer.getDiff())
+    drag(): boolean {
+        if (!this.pickedItem) { return false; }
+
+        if (this.pickedItem.isContainedView()) {
+            this.pickedItem.move(this.canvas.pointer.pointer.getDiff())
         } else {
-            const views = this.canvas.store.getSelectedItems();
-            views.filter(view => !views.includes(view.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
+            const shapes = this.canvas.store.getSelectedItems();
+            shapes.filter(shape => !shapes.includes(shape.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
         }
+
+        this.wasItemDragged = true;
+
+        return true;
     }
 
     hover(shape: AbstractShape) {
@@ -64,85 +85,71 @@ export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractSh
         shape.tags.delete(ShapeTag.Hovered);
         shape.containerShape?.tags.delete(ShapeTag.Hovered);
     }
+
+    abort() {
+        this.wasItemDragged = false;
+        this.pickedItem = undefined;
+    }
 }
 
 export interface PointerToolLogic<D> {
-    select(item: D);
-    release(item: D);
-    drag(item: D);
+    down(ponter: PointerTracker<D>);
+    click(ponter: PointerTracker<D>): boolean;
+    up(ponter: PointerTracker<D>): boolean;
+    drag(ponter: PointerTracker<D>): boolean;
     hover(item: D);
     unhover(item: D);
+    abort(): void;
 }
 
 export abstract class PointerTool<D> extends ToolAdapter<D> {
     acceptedViews: string[] = [];
 
     protected draggedItem: D = undefined;
-    private isDragStart = true;
-    private logic: PointerToolLogic<D>;
+    protected pointerToolLogic: PointerToolLogic<D>;
 
     constructor(type: string, logic: PointerToolLogic<D>, panel: AbstractCanvasPanel<D>, registry: Registry) {
         super(type, panel, registry);
-        this.logic = logic;
+        this.pointerToolLogic = logic;
     }
 
     click(pointer: PointerTracker<D>): void {
-        const hoveredItem = this.canvas.pointer.hoveredView;
-        if (!hoveredItem) { return; }
-
-        this.logic.select(hoveredItem);
+        this.pointerToolLogic.click(pointer);
     }
 
-    down() {
-        this.initDrag() &&  this.registry.services.render.scheduleRendering(this.canvas.region);
+    down(pointer: PointerTracker<D>) {
+        this.pointerToolLogic.down(pointer);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     drag(pointer: PointerTracker<D>) {
-        super.drag(pointer);
-
-        if (this.draggedItem) {
-            this.logic.drag(this.draggedItem);
+        if (this.pointerToolLogic.drag(pointer)) {
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
-        
-        this.isDragStart = false;
     }
 
     draggedUp(pointer: PointerTracker<D>) {
         super.draggedUp(pointer);
 
-        if (!this.isDragStart) {
+        if (this.pointerToolLogic.up(pointer)) {
             this.registry.services.history.createSnapshot();
             this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
 
-        this.isDragStart = true;
-        
-        this.draggedItem = undefined;
         this.registry.services.level.updateCurrentLevel();
     }
 
     leave() {
-        this.isDragStart = true;
-        this.draggedItem = undefined;
+        this.pointerToolLogic.abort();
     }
 
     over(item: D) {
-        this.logic.hover(item);
+        this.pointerToolLogic.hover(item);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     out(item: D) {
-        this.logic.unhover(item);
+        this.pointerToolLogic.unhover(item);
         this.registry.services.render.scheduleRendering(this.canvas.region);
-    }
-
-    private initDrag(): boolean {
-        const hovered = this.canvas.pointer.hoveredView;
-        if (hovered) {
-            this.draggedItem = hovered;
-            return true;
-        }
-        return false;
     }
 }

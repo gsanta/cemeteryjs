@@ -23,7 +23,7 @@ export class DeleteTool extends PointerTool<AbstractShape> {
     }
 
     click() {
-        const hoveredItem = this.canvas.pointer.hoveredView;
+        const hoveredItem = this.canvas.pointer.pointer.hoveredItem;
 
         if (!hoveredItem) { return; }
 
@@ -34,7 +34,7 @@ export class DeleteTool extends PointerTool<AbstractShape> {
         }
         
         this.registry.services.level.updateCurrentLevel();
-        if (this.canvas.pointer.hoveredView) {
+        if (this.canvas.pointer.pointer.hoveredItem) {
             this.registry.services.history.createSnapshot();
             this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
@@ -58,7 +58,7 @@ export class DeleteTool extends PointerTool<AbstractShape> {
     }
 
     getCursor() {
-        return this.canvas.pointer.hoveredView ? Cursor.Pointer : Cursor.Default;
+        return this.canvas.pointer.pointer.hoveredItem ? Cursor.Pointer : Cursor.Default;
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

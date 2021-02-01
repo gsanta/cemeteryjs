@@ -20,7 +20,7 @@ export class PathTool extends PointerTool<AbstractShape> {
     }
 
     click(pointer: PointerTracker<AbstractShape>) {
-        const hoveredItem = this.canvas.pointer.hoveredView;
+        const hoveredItem = this.canvas.pointer.pointer.hoveredItem;
         if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
             super.click(pointer);
         } else {

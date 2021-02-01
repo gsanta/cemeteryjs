@@ -1,51 +1,128 @@
+import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../../controller/PointerHandler';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
 import { getIntersectingViews } from '../../stores/ShapeStore';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
+import { Canvas2dPanel } from '../Canvas2dPanel';
 import { UI_Region } from '../UI_Panel';
-import { PointerTool, PointerToolLogic } from './PointerTool';
+import { PointerTool, PointerToolLogic, PointerToolLogicForSvgCanvas } from './PointerTool';
 import { Cursor } from "./Tool";
 import { createRectFromMousePointer } from './ToolAdapter';
 
-export const SelectToolId = 'select-tool';
-export class SelectTool extends PointerTool<AbstractShape> {
+export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLogic<AbstractShape> {
+    private registry: Registry;
+    private canvas: Canvas2dPanel<AbstractShape>;
 
-    constructor(logic: PointerToolLogic<AbstractShape>, canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
-        super(SelectToolId, logic, canvas, registry);
+    constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+        this.registry = registry;
+        this.canvas = canvas;
     }
 
-    down() {
-        if (this.canvas.pointer.hoveredView && this.canvas.pointer.hoveredView.isSelected()) {
-            super.down();
-        }
+    getIntersectingItems(selection: Rectangle): AbstractShape[] {
+        return getIntersectingViews(this.canvas.store, selection);
+    }
+
+    createSelectionRect(pointer: PointerTracker<AbstractShape>): Rectangle {
+        return createRectFromMousePointer(pointer);
+    }
+}
+
+// export class SelectionToolLogicForSvgCanvas implements PointerToolLogic<AbstractShape> {
+//     private registry: Registry;
+//     private canvas: Canvas2dPanel<AbstractShape>;
+//     private pointerToolLogic: PointerToolLogicForSvgCanvas;
+
+//     constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+//         this.registry = registry;
+//         this.canvas = canvas;
+
+//         this.pointerToolLogic = new PointerToolLogicForSvgCanvas(registry, canvas);
+//     }
+
+//     pick(shape: AbstractShape) {
+//         this.pointerToolLogic.pick(shape);
+//         // if (this.canvas.pointer.pointer.hoveredItem) {
+//         //     super.click(pointer);
+//         // } else if (this.canvas.store.getSelectedItems().length > 0) {
+//         //     this.canvas.store.clearSelection();
+//         //     this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
+//         // }
+//     }
+
+//     up(shape: AbstractShape) {
+//         this.canvas.store.clearSelection();
+//     }
+
+//     drag(shape: AbstractShape) {
+//         if (this.draggedItem) {
+//             super.drag(pointer);
+//         } else {
+//             this.rectangleSelection = createRectFromMousePointer(pointer);
+//             this.registry.services.render.scheduleRendering(this.canvas.region);
+//         }
+//     }
+
+//     hover(shape: AbstractShape) {
+
+//     }
+
+//     unhover(shape: AbstractShape) {
+
+//     }
+// }
+
+export interface RectangleSelectionToolLogic<D> {
+    getIntersectingItems(selection: Rectangle): D[];
+    createSelectionRect(pointer: PointerTracker<D>): Rectangle;
+}
+
+
+export const SelectToolId = 'select-tool';
+export class SelectTool extends PointerTool<AbstractShape> {
+    private selectionLogic: RectangleSelectionToolLogic<AbstractShape>;
+
+    constructor(pointerLogic: PointerToolLogic<AbstractShape>, selectionLogic: RectangleSelectionToolLogic<AbstractShape>, canvas: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
+        super(SelectToolId, pointerLogic, canvas, registry);
+        this.selectionLogic = selectionLogic;
+    }
+
+    down(pointerTracker: PointerTracker<AbstractShape>) {
+        this.pointerToolLogic.down(pointerTracker);
+        // if (this.canvas.pointer.pointer.hoveredItem && this.canvas.pointer.pointer.hoveredItem.isSelected()) {
+        //     super.down(pointerTracker);
+        // }
     }
 
     click(pointer: PointerTracker<AbstractShape>) {
-        if (this.canvas.pointer.hoveredView) {
-            super.click(pointer);
-        } else if (this.canvas.store.getSelectedItems().length > 0) {
+        if (!this.pointerToolLogic.click(pointer)) {
             this.canvas.store.clearSelection();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
+        // if (this.canvas.pointer.pointer.hoveredItem) {
+        //     super.click(pointer);
+        // } else if (this.canvas.store.getSelectedItems().length > 0) {
+        //     this.canvas.store.clearSelection();
+        // }
     }
 
     drag(pointer: PointerTracker<AbstractShape>) {
-        if (this.draggedItem) {
-            super.drag(pointer);
-        } else {
-            this.rectangleSelection = createRectFromMousePointer(pointer);
-            this.registry.services.render.scheduleRendering(this.canvas.region);
+        let changed = this.pointerToolLogic.drag(pointer);
+
+        if (!changed) {
+            this.rectangleSelection = this.selectionLogic.createSelectionRect(pointer);
         }
+
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     draggedUp(pointer: PointerTracker<AbstractShape>) {
-        if (this.draggedItem) {
-            super.draggedUp(pointer);
-        } else {
+        let changed = this.pointerToolLogic.up(pointer);
+
+        if (!changed) {
             if (!this.rectangleSelection) { return }
     
-            const intersectingViews = getIntersectingViews(this.canvas.store, this.rectangleSelection);
+            const intersectingViews = this.selectionLogic.getIntersectingItems(this.rectangleSelection);
             
             this.canvas.store.clearSelection();
             this.canvas.store.addSelectedItem(...intersectingViews)
@@ -56,7 +133,7 @@ export class SelectTool extends PointerTool<AbstractShape> {
     }
 
     getCursor() {
-        if (this.canvas.pointer.hoveredView) {
+        if (this.canvas.pointer.pointer.hoveredItem) {
             return Cursor.Pointer;
         }
 

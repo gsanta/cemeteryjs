@@ -41,7 +41,7 @@ When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
     if (hoveredView) {
         canvasPanel.pointer.pointerEnter(hoveredView); 
     } else {
-        canvasPanel.pointer.hoveredView = undefined;
+        canvasPanel.pointer.pointer.hoveredItem = undefined;
     }
 
     let pointerEvent = MouseEventAdapter.mouseDown(createFakeMouseEvent(x, y));
@@ -77,7 +77,7 @@ When('mouse drags from \'{int}:{int}\' to \'{int}:{int}\'', function(xStart: num
     if (hoveredView) {
         canvasPanel.pointer.pointerEnter(hoveredView); 
     } else {
-        canvasPanel.pointer.hoveredView = undefined;
+        canvasPanel.pointer.pointer.hoveredItem = undefined;
     }
 
     pointerEvent = MouseEventAdapter.mouseMove(createFakeMouseEvent(xStart + 1, yStart + 1));
@@ -151,7 +151,7 @@ When('mouse move to \'{int}:{int}\'', function(x: number, y: number) {
     if (hoveredView) {
         canvasPanel.pointer.pointerEnter(hoveredView); 
     } else {
-        canvasPanel.pointer.hoveredView = undefined;
+        canvasPanel.pointer.pointer.hoveredItem = undefined;
     }
 });
 

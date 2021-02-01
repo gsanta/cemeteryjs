@@ -19,7 +19,7 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
     down() {
         this.startPoint = this.canvas.pointer.pointer.curr;
-        this.nodePortView1 = <NodePortShape> this.canvas.pointer.hoveredView;
+        this.nodePortView1 = <NodePortShape> this.canvas.pointer.pointer.hoveredItem;
         this.endPoint = this.canvas.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
@@ -38,8 +38,8 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
 
         if (this.checkConnectionValidity()) {
-            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.hoveredView);
-            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.hoveredView : this.nodePortView1);
+            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.hoveredItem);
+            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.hoveredItem : this.nodePortView1);
 
             const connectionView = <NodeConnectionShape> this.registry.data.shape.node.getViewFactory(NodeConnectionShapeType).instantiate();
             inputPort.addConnection(connectionView);
@@ -65,7 +65,7 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
     private checkConnectionValidity() {
         const startPortView = this.nodePortView1;
-        const endPortView = <NodePortShape> this.canvas.pointer.hoveredView;
+        const endPortView = <NodePortShape> this.canvas.pointer.pointer.hoveredItem;
 
         if (!endPortView || !startPortView) { return false; }
         if (startPortView.viewType !== NodePortViewType || endPortView.viewType !== NodePortViewType) { return false; }

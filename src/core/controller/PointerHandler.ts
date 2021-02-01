@@ -23,6 +23,8 @@ export class PointerTracker<D> {
     lastPointerEvent: IPointerEvent;
     data: D;
 
+    hoveredItem: D;
+
     getDiff() {
         return this.curr.subtract(this.prev);
     }
@@ -63,7 +65,6 @@ export interface IPointerEvent {
 export class PointerHandler<D> {
     isDown = false;
     isDrag = false;
-    hoveredView: D;
     dropType: string;
 
     // hoveredPlugin: AbstractCanvasPlugin;
@@ -141,12 +142,12 @@ export class PointerHandler<D> {
         this.determineTool(scopedToolId).out(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
-        this.hoveredView = undefined;
+        this.pointer.hoveredItem = undefined;
     }
 
     pointerEnter(data: D, scopedToolId?: string) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
-        this.hoveredView = data;
+        this.pointer.hoveredItem = data;
         this.pointer.lastPointerEvent = undefined;
 
         this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);

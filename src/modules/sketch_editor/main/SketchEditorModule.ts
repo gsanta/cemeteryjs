@@ -8,7 +8,7 @@ import { Canvas2dPanel } from "../../../core/plugin/Canvas2dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { DeleteTool } from "../../../core/plugin/tools/DeleteTool";
 import { PointerToolLogicForSvgCanvas } from "../../../core/plugin/tools/PointerTool";
-import { SelectTool } from "../../../core/plugin/tools/SelectTool";
+import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
@@ -82,7 +82,7 @@ export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
             new SpriteTool(this, registry.data.shape.scene, registry),
             new LightTool(this,  registry.data.shape.scene, registry),
             new PathTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
-            new SelectTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
+            new SelectTool(new PointerToolLogicForSvgCanvas(registry, this), new SelectionToolLogicForSvgCanvas(registry, this), this, registry),
             new DeleteTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
             new CameraTool(this, registry),
             new MoveAxisTool(this, registry, observable),
