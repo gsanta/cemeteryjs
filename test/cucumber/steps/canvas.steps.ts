@@ -52,7 +52,7 @@ When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
 When('mouse click on \'{word}\'', function(viewId: string) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    const shape = canvasPanel.getViewStore().getById(viewId);
+    const shape = canvasPanel.getViewStore().getItemById(viewId);
 
     if (!shape) { throw new Error(`View not found with id: ${viewId}`); }
 

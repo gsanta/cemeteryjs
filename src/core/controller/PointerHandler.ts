@@ -24,6 +24,7 @@ export class PointerTracker<D> {
     data: D;
 
     hoveredItem: D;
+    pickedItem: D;
 
     getDiff() {
         return this.curr.subtract(this.prev);
@@ -60,6 +61,7 @@ export interface IPointerEvent {
     isMetaDown: boolean;
     droppedItemId?: string;
     preventDefault: () => void;
+    pickedItemId: string; 
 }
 
 export class PointerHandler<D> {
@@ -87,6 +89,7 @@ export class PointerHandler<D> {
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.pointer.lastPointerEvent = e;
+        this.pointer.pickedItem = this.canvas.store.getItemById(e.pickedItemId);
         
         this.determineTool(scopedToolId).down(this.pointer);
         this.registry.services.render.reRenderScheduled();
@@ -220,6 +223,7 @@ export class PointerHandler<D> {
             isShiftDown: !!e.shiftKey,
             isCtrlDown: !!e.ctrlKey,
             isMetaDown: !!e.metaKey,
+            pickedItemId: undefined
         };
     }
 }

@@ -228,7 +228,7 @@ export class LightParentMeshController extends ParamController {
 
     change(val: string) {
         const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
-        const meshView = <MeshShape> this.registry.data.shape.scene.getById(val);
+        const meshView = <MeshShape> this.registry.data.shape.scene.getItemById(val);
 
         if (meshView) {
             lightView.setParent(meshView);

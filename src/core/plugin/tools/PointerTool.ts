@@ -7,6 +7,48 @@ import { ToolAdapter } from "./ToolAdapter";
 import { ToolType } from "./Tool";
 import { PointerTracker } from '../../controller/PointerHandler';
 import { Canvas2dPanel } from '../Canvas2dPanel';
+import { IObj } from '../../models/objs/IObj';
+import { IGameObj } from '../../models/objs/IGameObj';
+import { Canvas3dPanel } from '../Canvas3dPanel';
+
+export class PointerToolLogicForWebGlCanvas implements PointerToolLogic<IObj> {
+    private registry: Registry;
+    private canvas: Canvas3dPanel<IObj>;
+    pickedItem: IGameObj;
+
+    constructor(registry: Registry, canvas: Canvas3dPanel<IObj>) {
+        this.registry = registry;
+        this.canvas = canvas;
+    }
+
+    down(pointer: PointerTracker<IGameObj>) {
+        if (pointer) {
+            this.pickedItem =  pointer.pickedItem;
+        }
+    }
+    click(ponter: PointerTracker<IObj>): boolean {
+        return false;
+    }
+    up(ponter: PointerTracker<IObj>): boolean {
+        if (this.pickedItem) {
+            this.canvas.store.addSelectedItem(this.pickedItem);
+            this.pickedItem.setBoundingBoxVisibility(true);
+            return true;
+        }
+
+        return false;
+    }
+    drag(ponter: PointerTracker<IObj>): boolean {
+        return false;
+    }
+    hover(item: IObj) {
+    }
+    unhover(item: IObj) {
+    }
+    abort(): void {
+    }
+    
+}
 
 export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractShape> {
     private registry: Registry;
@@ -93,10 +135,10 @@ export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractSh
 }
 
 export interface PointerToolLogic<D> {
-    down(ponter: PointerTracker<D>);
-    click(ponter: PointerTracker<D>): boolean;
-    up(ponter: PointerTracker<D>): boolean;
-    drag(ponter: PointerTracker<D>): boolean;
+    down(pointer: PointerTracker<D>): void;
+    click(pointer: PointerTracker<D>): boolean;
+    up(pointer: PointerTracker<D>): boolean;
+    drag(pointer: PointerTracker<D>): boolean;
     hover(item: D);
     unhover(item: D);
     abort(): void;

@@ -7,4 +7,5 @@ export interface IGameObj extends IObj {
     getParent(): IObj & IGameObj;
     setScale(scale: Point);
     getScale(): Point;
+    setBoundingBoxVisibility(isVisible: boolean);
 }

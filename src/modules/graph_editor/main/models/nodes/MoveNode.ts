@@ -183,7 +183,7 @@ export class MeshNodeParam extends NodeParam<MeshObj> {
     fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
         this.name = nodeParamJson.name;
         if (nodeParamJson.val) {
-            this.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+            this.ownVal = <MeshObj> registry.stores.objStore.getItemById(nodeParamJson.val);
         }
     }
 }

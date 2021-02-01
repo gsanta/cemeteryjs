@@ -29,7 +29,7 @@ export class NodeObjDeserialize {
 
             if (portJson.connectedObjIds) {
                 portJson.connectedObjIds.forEach((connectedObjId, index)  => {
-                    const connectedObj = <NodeObj> registry.stores.objStore.getById(connectedObjId);
+                    const connectedObj = <NodeObj> registry.stores.objStore.getItemById(connectedObjId);
                     if (connectedObj) {
                         port.addConnectedPort(connectedObj.getPort(portJson.connectedPortNames[index]));
                     }

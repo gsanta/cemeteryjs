@@ -84,7 +84,7 @@ export class MultiMeshController extends MultiSelectController {
     }
 
     done() {
-        const meshObjs = this.tempVal.map(val => this.registry.stores.objStore.getById(val));
+        const meshObjs = this.tempVal.map(val => this.registry.stores.objStore.getItemById(val));
         this.nodeObj.param.mesh.val = meshObjs;
         this.isPopupOpen = false;
         this.registry.services.history.createSnapshot();

@@ -1,12 +1,16 @@
+import { EngineEventAdapter } from "../../../core/controller/EngineEventAdapter";
 import { FormController } from "../../../core/controller/FormController";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
 import { IObj } from "../../../core/models/objs/IObj";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
+import { PointerToolLogicForWebGlCanvas } from "../../../core/plugin/tools/PointerTool";
+import { SelectionToolLogicForWebGlCanvas, SelectTool } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
+import { ObjStore } from "../../../core/stores/ObjStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { SceneEditorToolbarController } from "../contribs/toolbar/SceneEditorToolbarController";
 import { GameTool } from "./controllers/tools/GameTool";
@@ -20,7 +24,7 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
     showBoundingBoxes: boolean = false;
     selectedTool: string;
 
-    store: undefined;
+    store: ObjStore;
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
@@ -28,9 +32,15 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas2, SceneEditorPanelId, 'Scene Editor');
 
+        this.store = registry.stores.objStore;
+
+        this.engineEventAdapter = new EngineEventAdapter(registry, this);
+        this.engineEventAdapter.register();
+
         const tools = [
             new GameTool(this, registry),
-            new CameraTool(this, registry)
+            new CameraTool(this, registry),
+            new SelectTool(new PointerToolLogicForWebGlCanvas(registry, this), new SelectionToolLogicForWebGlCanvas(registry, this), this, registry)
         ];
         
         const controller = new SceneEditorToolbarController(registry, this);

@@ -67,7 +67,7 @@ export class FilterMeshNodeParams extends NodeParams {
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             const ids = (nodeParamJson.val as string).split(', ');
-            const meshObjs = <MeshObj[]> ids.map(id => registry.stores.objStore.getById(id));
+            const meshObjs = <MeshObj[]> ids.map(id => registry.stores.objStore.getItemById(id));
             this.mesh.name = nodeParamJson.name;
             this.mesh.ownVal = meshObjs;
         }

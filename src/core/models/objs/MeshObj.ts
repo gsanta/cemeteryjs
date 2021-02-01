@@ -160,6 +160,10 @@ export class MeshObj implements IGameObj {
         return this.meshAdapter.intersectsMesh(this, otherMeshObj);
     }
 
+    setBoundingBoxVisibility(isVisible: boolean) {
+        this.meshAdapter.showBoundingBoxes(this, isVisible);
+    }
+
     clone(registry: Registry): MeshObj {
         const clone = new MeshObj();
         clone.meshAdapter = this.meshAdapter;

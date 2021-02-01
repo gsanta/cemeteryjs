@@ -170,7 +170,7 @@ export abstract class AbstractShape implements IControlledModel {
         this.viewType = json.type;
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
         if (!this.getObj() && json.objId) {
-            this.setObj(registry.stores.objStore.getById(json.objId));
+            this.setObj(registry.stores.objStore.getItemById(json.objId));
         }
     }
 }

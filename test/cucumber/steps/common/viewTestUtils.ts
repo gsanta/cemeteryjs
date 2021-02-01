@@ -60,13 +60,13 @@ export function findViewOrContainedView(viewStore: ShapeStore, viewId: string): 
 
     if (viewId.indexOf('.') !== -1) {
         const ids = viewId.split('.');
-        view = viewStore.getById(ids[0]);
+        view = viewStore.getItemById(ids[0]);
 
         if (!view) { throw new Error(invalidPathMessage); }
 
         view = view.containedShapes.find(v => v.id === ids[1]);
     } else {
-        view = viewStore.getById(viewId);
+        view = viewStore.getItemById(viewId);
     } 
 
     if (!view) { throw new Error(invalidPathMessage); }

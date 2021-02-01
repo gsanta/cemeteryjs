@@ -18,6 +18,9 @@ export class EngineEventAdapter<D> {
 
     private onPointerEvent(pointerEvent: IPointerEvent) {
         switch(pointerEvent.eventType) {
+            case IPointerEventType.PointerDown:
+                this.canvas.pointer.pointerDown(pointerEvent);
+            break;
             case IPointerEventType.PointerUp:
                 this.canvas.pointer.pointerUp(pointerEvent);
             break;

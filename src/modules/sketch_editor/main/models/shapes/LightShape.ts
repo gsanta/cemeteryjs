@@ -76,12 +76,12 @@ export class LightShape extends AbstractShape {
         lightView.id = json.id;
         lightView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
-        const obj = <LightObj> registry.stores.objStore.getById(json.objId);
+        const obj = <LightObj> registry.stores.objStore.getItemById(json.objId);
         lightView.setObj(obj);
         
         const afterAllViewsDeserialized: AfterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => lightView.addChildView(registry.data.shape.scene.getById(id)));
-            json.parentId && lightView.setParent(registry.data.shape.scene.getById(json.parentId));
+            json.childViewIds.map(id => lightView.addChildView(registry.data.shape.scene.getItemById(id)));
+            json.parentId && lightView.setParent(registry.data.shape.scene.getItemById(json.parentId));
         }
 
         return [lightView, afterAllViewsDeserialized];

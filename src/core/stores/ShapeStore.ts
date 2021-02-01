@@ -130,7 +130,7 @@ export class ShapeStore implements IStore<AbstractShape> {
         return this.idMap.has(id);
     }
 
-    getById(id: string): AbstractShape {
+    getItemById(id: string): AbstractShape {
         return this.idMap.get(id);
     }
 
@@ -205,7 +205,7 @@ const handler = {
     get: function(target: ShapeStore, prop, receiver) {
 		var propValue = target[prop];
         if (typeof propValue != "function") {
-			return target.getById(prop);
+			return target.getItemById(prop);
 		}
 		else{
 			return function(){

@@ -112,6 +112,10 @@ export class LightObj implements IGameObj {
         return this.parent;
     }
 
+    setBoundingBoxVisibility(isVisible: boolean) {
+        throw new Error("Method not implemented.");
+    }
+
     dispose() {
         this.lightAdapter && this.lightAdapter.deleteInstance(this);
     }
@@ -152,10 +156,10 @@ export class LightObj implements IGameObj {
 
         const afterAllObjsDeserialized = () => {
             if (json.parentId) {
-                const parentPos =  (<MeshObj> registry.stores.objStore.getById(json.parentId)).getPosition();
+                const parentPos =  (<MeshObj> registry.stores.objStore.getItemById(json.parentId)).getPosition();
                 const pos = new Point_3(json.position.x, json.position.y, json.position.z).add(parentPos);
                 obj.setPosition(pos);
-                obj.setParent(<MeshObj> registry.stores.objStore.getById(json.parentId));
+                obj.setParent(<MeshObj> registry.stores.objStore.getItemById(json.parentId));
                 
             } else {
                 obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));

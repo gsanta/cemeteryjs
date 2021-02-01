@@ -1,4 +1,4 @@
-import { PointerEventTypes, PointerInfo } from "babylonjs";
+import { Mesh, PointerEventTypes, PointerInfo } from "babylonjs";
 import { ThinSprite } from "babylonjs/Sprites/thinSprite";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IPointerEvent, IPointerEventType } from "../../../controller/PointerHandler";
@@ -55,6 +55,16 @@ export class Bab_EventAdapter implements IEngineEventAdapter {
     }
 
     private convertToPointerEvent(pointerInfo: PointerInfo, eventType: IPointerEventType): IPointerEvent {
+        let pickedItemId: string = undefined;
+
+        if (pointerInfo.pickInfo.pickedMesh) {
+            const meshObj = this.engineFacade.meshes.meshToObj.get(<Mesh> pointerInfo.pickInfo.pickedMesh);
+
+            if (meshObj) {
+                pickedItemId = meshObj.id;
+            }
+        }
+        
         return {
             eventType: eventType,
             pointers: [{id: 1, pos: new Point(pointerInfo.event.offsetX, pointerInfo.event.offsetY), isDown: false}],
@@ -64,6 +74,7 @@ export class Bab_EventAdapter implements IEngineEventAdapter {
             isShiftDown: !!pointerInfo.event.shiftKey,
             isCtrlDown: !!pointerInfo.event.ctrlKey,
             isMetaDown: !!pointerInfo.event.metaKey,
+            pickedItemId: pickedItemId
         };
     }
 }

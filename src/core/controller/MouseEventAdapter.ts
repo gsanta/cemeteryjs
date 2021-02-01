@@ -50,6 +50,7 @@ export class MouseEventAdapter {
             isShiftDown: !!e.shiftKey,
             isCtrlDown: !!e.ctrlKey,
             isMetaDown: !!e.metaKey,
+            pickedItemId: undefined
         };
     }
 

@@ -143,7 +143,7 @@ export class MeshShape extends AbstractShape {
         meshView.id = json.id;
         meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
-        const obj = <MeshObj> registry.stores.objStore.getById(json.objId);
+        const obj = <MeshObj> registry.stores.objStore.getItemById(json.objId);
         meshView.setObj(obj);
         const point2 = meshView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
         obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
@@ -154,8 +154,8 @@ export class MeshShape extends AbstractShape {
         meshView.layer = json.layer;
 
         const afterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => meshView.addChildView(registry.data.shape.scene.getById(id)));
-            json.parentId && meshView.setParent(registry.data.shape.scene.getById(json.parentId));
+            json.childViewIds.map(id => meshView.addChildView(registry.data.shape.scene.getItemById(id)));
+            json.parentId && meshView.setParent(registry.data.shape.scene.getItemById(json.parentId));
         }
 
         return [meshView, afterAllViewsDeserialized];

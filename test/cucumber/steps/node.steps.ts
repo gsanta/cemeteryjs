@@ -24,12 +24,12 @@ When('drop node \'{word}\' at \'{int}:{int}\'', function(nodeType: string, x: nu
 });
 
 Then('node params for \'{word}\' are:', function(nodeObjId: string, tableDef: TableDefinition) {
-    const nodeObj = <NodeObj> this.registry.stores.objStore.getById(nodeObjId);
+    const nodeObj = <NodeObj> this.registry.stores.objStore.getItemById(nodeObjId);
     nodeParamsAre(this, nodeObj, tableDef);
 });
 
 Then('dump node params for \'{word}\'', function(nodeObjId: string) {
-    const nodeObj = <NodeObj> this.registry.stores.objStore.getById(nodeObjId);
+    const nodeObj = <NodeObj> this.registry.stores.objStore.getItemById(nodeObjId);
     new ModelDumper().dumpNodeParams(nodeObj);
 });
 

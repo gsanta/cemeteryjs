@@ -67,7 +67,7 @@ export class ObjStore implements IStore<IObj> {
         obj.dispose();
     }
 
-    getById(id: string) {
+    getItemById(id: string) {
         return this.objById.get(id);
     }
 
@@ -89,7 +89,7 @@ export class ObjStore implements IStore<IObj> {
     }
 
     getByNameOrId(nameOrId: string) {
-        return this.getById(nameOrId) || this.getByName(nameOrId);
+        return this.getItemById(nameOrId) || this.getByName(nameOrId);
     }
 
     getObjsByType(type: string): IObj[] {
@@ -126,19 +126,16 @@ export class ObjStore implements IStore<IObj> {
     }
 
     addSelectedItem(...items: IObj[]) {
-        throw new Error("Method not implemented.");
     }
     removeSelectedItem(item: IObj) {
-        throw new Error("Method not implemented.");
     }
     getSelectedItems(): IObj[] {
-        throw new Error("Method not implemented.");
+        return [];
     }
     clearSelection() {
-        throw new Error("Method not implemented.");
     }
     getSelectedItemsByType(objType: string): IObj[] {
-        throw new Error("Method not implemented.");
+        return [];
     }
 }
 

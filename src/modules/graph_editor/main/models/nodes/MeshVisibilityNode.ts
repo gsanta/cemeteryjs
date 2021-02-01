@@ -82,7 +82,7 @@ export class MeshVisibilityNodeParams extends NodeParams {
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.name = nodeParamJson.name;
             if (nodeParamJson.val) {
-                this.mesh.ownVal = <MeshObj> registry.stores.objStore.getById(nodeParamJson.val);
+                this.mesh.ownVal = <MeshObj> registry.stores.objStore.getItemById(nodeParamJson.val);
             }
         }
     }

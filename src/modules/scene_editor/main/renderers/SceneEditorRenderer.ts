@@ -4,6 +4,7 @@ import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/B
 import { InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
+import { SelectToolId } from "../../../../core/plugin/tools/SelectTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
 import { SceneEditorModule } from "../SceneEditorModule";
@@ -44,6 +45,16 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
+
+        separator = toolbar.iconSeparator();
+        separator.placement = 'left';
+
+        tool = toolbar.tool({key: SelectToolId});
+        tool.uniqueId = `${SelectToolId}-${this.canvas.id}`;
+        tool.icon = 'select';
+        tool.isActive = this.canvas.tool.getToolById(SelectToolId).isSelected;
+        tooltip = tool.tooltip();
+        tooltip.label = 'Select tool';
 
         separator = toolbar.iconSeparator();
         separator.placement = 'left';

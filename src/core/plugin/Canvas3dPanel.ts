@@ -1,4 +1,5 @@
 import { EngineEventAdapter } from "../controller/EngineEventAdapter";
+import { PointerHandler } from "../controller/PointerHandler";
 import { IEngineFacade } from "../engine/IEngineFacade";
 import { Camera3D } from "../models/misc/camera/Camera3D";
 import { Registry } from "../Registry";
@@ -13,9 +14,6 @@ export abstract class Canvas3dPanel<D> extends AbstractCanvasPanel<D> {
 
     constructor(registry: Registry, region: UI_Region, id: string, displayName: string) {
         super(registry, region, id, displayName);
-
-        this.engineEventAdapter = new EngineEventAdapter(registry, this);
-        this.engineEventAdapter.register();
     }
 
     setCamera(camera: Camera3D) {

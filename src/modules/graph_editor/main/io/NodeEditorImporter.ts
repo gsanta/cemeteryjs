@@ -32,7 +32,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
             let viewInstance: AbstractShape;
         
             if (viewJson.type === NodeShapeType) {
-                const nodeObj = (<NodeObj> this.registry.stores.objStore.getById(viewJson.objId));
+                const nodeObj = (<NodeObj> this.registry.stores.objStore.getItemById(viewJson.objId));
                 viewInstance = this.registry.data.helper.node.createView(nodeObj.type, nodeObj)
                 viewInstance.fromJson(viewJson, this.registry);
             } else {
