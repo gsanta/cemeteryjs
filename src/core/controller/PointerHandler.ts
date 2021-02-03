@@ -16,14 +16,17 @@ export class PointerTracker<D> {
     prevScreen: Point;
     downScreen: Point;
     droppedItemType: string;
+    
+    isDown: boolean;
+    
     wheel: Wheel = Wheel.IDLE;
     wheelDiff: number = undefined;
     wheelState: number = 0;
     prevWheelState: number = 0;
     lastPointerEvent: IPointerEvent;
+    
     data: D;
 
-    hoveredItem: D;
     pickedItem: D;
 
     getDiff() {
@@ -46,26 +49,25 @@ export enum IPointerEventType {
     PointerMove = 'PointerMove',
     PointerWheel = 'PointerWheel',
     PointerDrop = 'PointerDrop',
-    PointerEnter = 'PointerEnter', 
-    PointerLeave = 'PointerLeave' 
+    PointerOver = 'PointerOver', 
+    PointerOut = 'PointerOut' 
 }
 
 export interface IPointerEvent {
     eventType: IPointerEventType;
     pointers: {id: number, pos: Point, isDown: boolean}[];
     deltaY?: number;
-    button: 'left' | 'right';
-    isAltDown: boolean;
-    isShiftDown: boolean;
-    isCtrlDown: boolean;
-    isMetaDown: boolean;
+    button?: 'left' | 'right';
+    isAltDown?: boolean;
+    isShiftDown?: boolean;
+    isCtrlDown?: boolean;
+    isMetaDown?: boolean;
     droppedItemId?: string;
-    preventDefault: () => void;
-    pickedItemId: string; 
+    preventDefault?: () => void;
+    pickedItemId?: string;
 }
 
 export class PointerHandler<D> {
-    isDown = false;
     isDrag = false;
     dropType: string;
 
@@ -85,7 +87,7 @@ export class PointerHandler<D> {
         if (e.button !== 'left') { return }        
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         
-        this.isDown = true;
+        this.pointer.isDown = true;
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.pointer.lastPointerEvent = e;
@@ -106,7 +108,7 @@ export class PointerHandler<D> {
 
         const tool = this.determineTool(scopedToolId);
 
-        if (this.isDown && this.pointer.getDownDiff().len() > 2) {
+        if (this.pointer.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
             tool.drag(this.pointer);
         } else {
@@ -130,27 +132,32 @@ export class PointerHandler<D> {
 
         const tool = this.determineTool(scopedToolId);
 
-        this.isDrag ? tool.draggedUp(this.pointer) : tool.click(this.pointer); 
+        this.isDrag ? tool.dragEnd(this.pointer) : tool.click(this.pointer); 
         
         this.canvas.tool.getActiveTool().up(this.pointer);
-        this.isDown = false;
+        this.pointer.isDown = false;
         this.isDrag = false;
         this.pointer.down = undefined;
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerLeave(data: D, scopedToolId?: string): void {
+    pointerOut(e: IPointerEvent, scopedToolId?: string): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.pointer.lastPointerEvent = undefined;
+
+        const data = this.canvas.store.getItemById(e.pickedItemId);
+
         this.determineTool(scopedToolId).out(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
-        this.pointer.hoveredItem = undefined;
+        this.pointer.pickedItem = undefined;
     }
 
-    pointerEnter(data: D, scopedToolId?: string) {
+    pointerOver(e: IPointerEvent, scopedToolId?: string) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
-        this.pointer.hoveredItem = data;
+        const data = this.canvas.store.getItemById(e.pickedItemId);
+    
+        this.pointer.pickedItem = data;
         this.pointer.lastPointerEvent = undefined;
 
         this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);

@@ -41,7 +41,7 @@ export interface Tool<D> extends IHotkey {
     move(pointer: PointerTracker<D>): void;
     drag(pointer: PointerTracker<D>): void;
     click(pointer: PointerTracker<D>): void;
-    draggedUp(pointer: PointerTracker<D>): void;
+    dragEnd(pointer: PointerTracker<D>): void;
     up(pointer: PointerTracker<D>): void;
     activate(): void;
     leave(): void;

@@ -1,3 +1,4 @@
+import { AdvancedDynamicTexture, Rectangle as GuiRectangle } from 'babylonjs-gui';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../../controller/PointerHandler';
 import { IObj } from '../../models/objs/IObj';
@@ -8,25 +9,55 @@ import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { Canvas2dPanel } from '../Canvas2dPanel';
 import { Canvas3dPanel } from '../Canvas3dPanel';
 import { UI_Region } from '../UI_Panel';
-import { PointerTool, PointerToolLogic, PointerToolLogicForSvgCanvas } from './PointerTool';
+import { PointerTool, PointerToolLogic } from './PointerTool';
 import { Cursor } from "./Tool";
 import { createRectFromMousePointer } from './ToolAdapter';
 
 export class SelectionToolLogicForWebGlCanvas implements RectangleSelectionToolLogic<IObj> {
     private registry: Registry;
     private canvas: Canvas3dPanel<IObj>;
+    private texture: AdvancedDynamicTexture;
+    private rect: GuiRectangle;
 
     constructor(registry: Registry, canvas: Canvas3dPanel<IObj>) {
         this.registry = registry;
         this.canvas = canvas;
+        canvas.engine.onReady(() => {
+            this.texture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        });
     }
 
     getIntersectingItems(selection: Rectangle): IObj[] {
         return [];
     }
 
+
     createSelectionRect(pointer: PointerTracker<IObj>): Rectangle {
-        return undefined;
+        return createRectFromMousePointer(pointer);
+    }
+
+    down() {
+        const rect = new GuiRectangle();
+        rect.width = '100px';
+        // rect.left = 100;
+        rect.height = '100px';
+        rect.cornerRadius = 20;
+        rect.color = "Orange";
+        rect.thickness = 4;
+        rect.background = "green";
+        this.rect = rect;
+        this.texture.addControl(rect);    
+    }
+
+    drag(rectangle: Rectangle) {
+        this.rect.width = rectangle.getWidth();
+        this.rect.width = rectangle.getHeight();
+    }
+
+    up() {
+        if (this.rect) {
+            this.rect.dispose();
+        }
     }
 }
 
@@ -47,6 +78,10 @@ export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLog
     createSelectionRect(pointer: PointerTracker<AbstractShape>): Rectangle {
         return createRectFromMousePointer(pointer);
     }
+
+    drag() {}
+    down() {}
+    up() {}
 }
 
 // export class SelectionToolLogicForSvgCanvas implements PointerToolLogic<AbstractShape> {
@@ -63,7 +98,7 @@ export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLog
 
 //     pick(shape: AbstractShape) {
 //         this.pointerToolLogic.pick(shape);
-//         // if (this.canvas.pointer.pointer.hoveredItem) {
+//         // if (this.canvas.pointer.pointer.pickedItem) {
 //         //     super.click(pointer);
 //         // } else if (this.canvas.store.getSelectedItems().length > 0) {
 //         //     this.canvas.store.clearSelection();
@@ -96,6 +131,10 @@ export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLog
 export interface RectangleSelectionToolLogic<D> {
     getIntersectingItems(selection: Rectangle): D[];
     createSelectionRect(pointer: PointerTracker<D>): Rectangle;
+
+    down();
+    up();
+    drag(rect: Rectangle);
 }
 
 
@@ -110,7 +149,8 @@ export class SelectTool<D> extends PointerTool<D> {
 
     down(pointerTracker: PointerTracker<D>) {
         this.pointerToolLogic.down(pointerTracker);
-        // if (this.canvas.pointer.pointer.hoveredItem && this.canvas.pointer.pointer.hoveredItem.isSelected()) {
+        this.selectionLogic.down();
+        // if (this.canvas.pointer.pointer.pickedItem && this.canvas.pointer.pointer.pickedItem.isSelected()) {
         //     super.down(pointerTracker);
         // }
     }
@@ -120,7 +160,7 @@ export class SelectTool<D> extends PointerTool<D> {
             this.canvas.store.clearSelection();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
-        // if (this.canvas.pointer.pointer.hoveredItem) {
+        // if (this.canvas.pointer.pointer.pickedItem) {
         //     super.click(pointer);
         // } else if (this.canvas.store.getSelectedItems().length > 0) {
         //     this.canvas.store.clearSelection();
@@ -132,13 +172,15 @@ export class SelectTool<D> extends PointerTool<D> {
 
         if (!changed) {
             this.rectangleSelection = this.selectionLogic.createSelectionRect(pointer);
+            this.selectionLogic.drag(this.rectangleSelection);
         }
 
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    draggedUp(pointer: PointerTracker<D>) {
+    dragEnd(pointer: PointerTracker<D>) {
         let changed = this.pointerToolLogic.up(pointer);
+        this.selectionLogic.up();
 
         if (!changed) {
             if (!this.rectangleSelection) { return }
@@ -154,7 +196,7 @@ export class SelectTool<D> extends PointerTool<D> {
     }
 
     getCursor() {
-        if (this.canvas.pointer.pointer.hoveredItem) {
+        if (this.canvas.pointer.pointer.pickedItem) {
             return Cursor.Pointer;
         }
 

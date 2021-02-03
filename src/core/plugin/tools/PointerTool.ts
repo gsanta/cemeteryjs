@@ -10,13 +10,26 @@ import { Canvas2dPanel } from '../Canvas2dPanel';
 import { IObj } from '../../models/objs/IObj';
 import { IGameObj } from '../../models/objs/IGameObj';
 import { Canvas3dPanel } from '../Canvas3dPanel';
+import { AdvancedDynamicTexture } from 'babylonjs-gui';
 
-export class PointerToolLogicForWebGlCanvas implements PointerToolLogic<IObj> {
+export abstract class PointerToolLogic<D> {
+    down(pointer: PointerTracker<D>): void {}
+    click(pointer: PointerTracker<D>): boolean { return false; }
+    up(pointer: PointerTracker<D>): boolean { return false; }
+    drag(pointer: PointerTracker<D>): boolean { return false; }
+    dragEnd(pointer: PointerTracker<D>): boolean { return false; }
+    hover(item: D) { return false; }
+    unhover(item: D) { return false; }
+    abort(): void {}
+}
+
+export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
     private registry: Registry;
     private canvas: Canvas3dPanel<IObj>;
-    pickedItem: IGameObj;
-
+    pickedItem: IGameObj;    
+    
     constructor(registry: Registry, canvas: Canvas3dPanel<IObj>) {
+        super();
         this.registry = registry;
         this.canvas = canvas;
     }
@@ -29,28 +42,31 @@ export class PointerToolLogicForWebGlCanvas implements PointerToolLogic<IObj> {
     click(ponter: PointerTracker<IObj>): boolean {
         return false;
     }
-    up(ponter: PointerTracker<IObj>): boolean {
+    up(pointer: PointerTracker<IObj>): boolean {
         if (this.pickedItem) {
             this.canvas.store.addSelectedItem(this.pickedItem);
-            this.pickedItem.setBoundingBoxVisibility(true);
             return true;
         }
 
         return false;
     }
+
+    hover(item: IGameObj) {
+        item.setBoundingBoxVisibility(true);
+        return true;
+    }
+
+    unhover(item: IGameObj) {
+        item.setBoundingBoxVisibility(false);
+        return true;
+    }
+
     drag(ponter: PointerTracker<IObj>): boolean {
         return false;
     }
-    hover(item: IObj) {
-    }
-    unhover(item: IObj) {
-    }
-    abort(): void {
-    }
-    
 }
 
-export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractShape> {
+export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape> {
     private registry: Registry;
     private canvas: Canvas2dPanel<AbstractShape>;
 
@@ -59,16 +75,17 @@ export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractSh
     private wasItemDragged = false;
 
     constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+        super();
         this.registry = registry;
         this.canvas = canvas;
     }
 
     down(pointer: PointerTracker<AbstractShape>) {
-        this.pickedItem = pointer.hoveredItem;
+        this.pickedItem = pointer.pickedItem;
     }
 
     click(pointer: PointerTracker<AbstractShape>) {
-        this.pickedItem = pointer.hoveredItem;
+        this.pickedItem = pointer.pickedItem;
         
         if (!this.pickedItem) { return false ; }
 
@@ -116,32 +133,23 @@ export class PointerToolLogicForSvgCanvas implements PointerToolLogic<AbstractSh
         
         shape.tags.add(ShapeTag.Hovered);
         shape.containerShape?.tags.add(ShapeTag.Hovered);
+        return true;
     }
 
     unhover(shape: AbstractShape) {
-        if (!this.canvas.pointer.isDown && shape.viewType === NodePortViewType) {
+        if (!this.canvas.pointer.pointer.isDown && shape.viewType === NodePortViewType) {
             this.canvas.tool.removePriorityTool(ToolType.Join);
-
         } 
         
         shape.tags.delete(ShapeTag.Hovered);
         shape.containerShape?.tags.delete(ShapeTag.Hovered);
+        return true;
     }
 
     abort() {
         this.wasItemDragged = false;
         this.pickedItem = undefined;
     }
-}
-
-export interface PointerToolLogic<D> {
-    down(pointer: PointerTracker<D>): void;
-    click(pointer: PointerTracker<D>): boolean;
-    up(pointer: PointerTracker<D>): boolean;
-    drag(pointer: PointerTracker<D>): boolean;
-    hover(item: D);
-    unhover(item: D);
-    abort(): void;
 }
 
 export abstract class PointerTool<D> extends ToolAdapter<D> {
@@ -170,8 +178,8 @@ export abstract class PointerTool<D> extends ToolAdapter<D> {
         }
     }
 
-    draggedUp(pointer: PointerTracker<D>) {
-        super.draggedUp(pointer);
+    dragEnd(pointer: PointerTracker<D>) {
+        super.dragEnd(pointer);
 
         if (this.pointerToolLogic.up(pointer)) {
             this.registry.services.history.createSnapshot();
@@ -179,6 +187,13 @@ export abstract class PointerTool<D> extends ToolAdapter<D> {
         }
 
         this.registry.services.level.updateCurrentLevel();
+    }
+
+    up(pointer: PointerTracker<D>) {
+        if (this.pointerToolLogic.up(pointer)) {
+            this.registry.services.history.createSnapshot();
+            this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
+        }
     }
 
     leave() {

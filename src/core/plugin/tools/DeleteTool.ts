@@ -23,7 +23,7 @@ export class DeleteTool extends PointerTool<AbstractShape> {
     }
 
     click() {
-        const hoveredItem = this.canvas.pointer.pointer.hoveredItem;
+        const hoveredItem = this.canvas.pointer.pointer.pickedItem;
 
         if (!hoveredItem) { return; }
 
@@ -34,14 +34,14 @@ export class DeleteTool extends PointerTool<AbstractShape> {
         }
         
         this.registry.services.level.updateCurrentLevel();
-        if (this.canvas.pointer.pointer.hoveredItem) {
+        if (this.canvas.pointer.pointer.pickedItem) {
             this.registry.services.history.createSnapshot();
             this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
         }
     }
 
     
-    draggedUp() {
+    dragEnd() {
         const intersectingViews = getIntersectingViews(this.canvas.store, this.rectangleSelection);
         intersectingViews.forEach(view =>  this.canvas.store.removeItem(view));
 
@@ -58,7 +58,7 @@ export class DeleteTool extends PointerTool<AbstractShape> {
     }
 
     getCursor() {
-        return this.canvas.pointer.pointer.hoveredItem ? Cursor.Pointer : Cursor.Default;
+        return this.canvas.pointer.pointer.pickedItem ? Cursor.Pointer : Cursor.Default;
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

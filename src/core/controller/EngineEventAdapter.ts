@@ -27,6 +27,13 @@ export class EngineEventAdapter<D> {
             case IPointerEventType.PointerMove:
                 this.canvas.pointer.pointerMove(pointerEvent);
             break;
+            case IPointerEventType.PointerOver:
+                this.canvas.pointer.pointerOver(pointerEvent);
+            break;
+            case IPointerEventType.PointerOut:
+                this.canvas.pointer.pointerOut(pointerEvent);
+            break;
+
         }
     }
 }

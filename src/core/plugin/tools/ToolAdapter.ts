@@ -37,7 +37,7 @@ export class ToolAdapter<D> implements Tool<D> {
     move(pointer: PointerTracker<D>) { }
     drag(pointer: PointerTracker<D>) { }
     click(pointer: PointerTracker<D>) { }
-    draggedUp(pointer: PointerTracker<D>) { }
+    dragEnd(pointer: PointerTracker<D>) { }
     up(pointer: PointerTracker<D>) { }
     activate() { }
     resize() { }

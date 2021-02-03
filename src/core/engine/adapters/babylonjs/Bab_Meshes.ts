@@ -1,4 +1,4 @@
-import { AnimationGroup, Color3, Skeleton, StandardMaterial, Vector3 } from "babylonjs";
+import { ActionManager, AnimationGroup, Color3, ExecuteCodeAction, Skeleton, StandardMaterial, Vector3 } from "babylonjs";
 import { Mesh } from "babylonjs/Meshes/mesh";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
@@ -216,6 +216,16 @@ export  class Bab_Meshes implements IMeshAdapter {
             meshData.meshes[0].scaling = toVector3(scaling);
             this.meshToObj.set(meshData.meshes[0], meshObj);
         }
+
+        // meshData.meshes[0].actionManager
+
+        meshData.meshes[0].actionManager = new ActionManager(this.engineFacade.scene);
+        meshData.meshes[0].actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPointerOverTrigger, (evt) => {
+            this.engineFacade.events.emitPointerOverEvent(meshObj.id);
+        }));
+        meshData.meshes[0].actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPointerOutTrigger, (evt) => {
+            this.engineFacade.events.emitPointerOutEvent(meshObj.id);
+        }));
 
         return true;
     }

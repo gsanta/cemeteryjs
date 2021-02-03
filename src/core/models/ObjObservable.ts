@@ -4,7 +4,9 @@ import { IObj } from "./objs/IObj";
 export enum ObjEventType {
     PositionChanged = 'PositionChanged',
     ScaleChanged = 'ScaleChanged',
-    RotationChanged = 'RotationChanged'
+    RotationChanged = 'RotationChanged',
+    PointerOver = 'PointerOver',
+    PointerOut = 'PointerOut'
 }
 
 export interface ObjEventData {

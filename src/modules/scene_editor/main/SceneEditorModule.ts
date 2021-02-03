@@ -5,7 +5,7 @@ import { IObj } from "../../../core/models/objs/IObj";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
 import { PointerToolLogicForWebGlCanvas } from "../../../core/plugin/tools/PointerTool";
-import { SelectionToolLogicForWebGlCanvas, SelectTool } from "../../../core/plugin/tools/SelectTool";
+import { SelectionToolLogicForWebGlCanvas, SelectTool, SelectToolId } from "../../../core/plugin/tools/SelectTool";
 import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
@@ -33,6 +33,7 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
         super(registry, UI_Region.Canvas2, SceneEditorPanelId, 'Scene Editor');
 
         this.store = registry.stores.objStore;
+        this.engine = registry.engine;
 
         this.engineEventAdapter = new EngineEventAdapter(registry, this);
         this.engineEventAdapter.register();
@@ -59,6 +60,8 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
         registry.engine.onReady(() => {
             registry.engine.gizmos.showGizmo(AxisGizmoType);
             registry.engine.gizmos.setGizmoPosition(AxisGizmoType, new Point(2.5, 3.2));
+            
+            this.tool.setSelectedTool(SelectToolId);
         });
     }
 }

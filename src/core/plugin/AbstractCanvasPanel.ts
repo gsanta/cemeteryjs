@@ -94,7 +94,7 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     over(): void { this.registry.ui.helper.hoveredPanel = this }
     out(): void {
         this.registry.ui.helper.hoveredPanel = undefined;
-        this.pointer.pointer.hoveredItem = undefined;
+        this.pointer.pointer.pickedItem = undefined;
     }
 
     getOffset() {

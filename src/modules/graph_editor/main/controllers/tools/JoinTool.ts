@@ -19,7 +19,7 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
     down() {
         this.startPoint = this.canvas.pointer.pointer.curr;
-        this.nodePortView1 = <NodePortShape> this.canvas.pointer.pointer.hoveredItem;
+        this.nodePortView1 = <NodePortShape> this.canvas.pointer.pointer.pickedItem;
         this.endPoint = this.canvas.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
@@ -33,13 +33,13 @@ export class JoinTool extends PointerTool<AbstractShape> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    draggedUp() {
+    dragEnd() {
         this.canvas.tool.removePriorityTool(this.id);
 
 
         if (this.checkConnectionValidity()) {
-            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.hoveredItem);
-            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.hoveredItem : this.nodePortView1);
+            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.pickedItem);
+            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.pickedItem : this.nodePortView1);
 
             const connectionView = <NodeConnectionShape> this.registry.data.shape.node.getViewFactory(NodeConnectionShapeType).instantiate();
             inputPort.addConnection(connectionView);
@@ -65,7 +65,7 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
     private checkConnectionValidity() {
         const startPortView = this.nodePortView1;
-        const endPortView = <NodePortShape> this.canvas.pointer.pointer.hoveredItem;
+        const endPortView = <NodePortShape> this.canvas.pointer.pointer.pickedItem;
 
         if (!endPortView || !startPortView) { return false; }
         if (startPortView.viewType !== NodePortViewType || endPortView.viewType !== NodePortViewType) { return false; }
@@ -77,7 +77,7 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
     out(view: AbstractShape) {
         super.out(view);
-        if (!this.canvas.pointer.isDown) {
+        if (!this.canvas.pointer.pointer.isDown) {
             this.canvas.tool.removePriorityTool(this.id);
         }
     }

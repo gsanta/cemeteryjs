@@ -91,13 +91,15 @@ export abstract class UI_Element<C extends ParamController = any> {
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
         if (this.canvasPanel) {
-            this.canvasPanel.pointer.pointerLeave(data, this.scopedToolId);
+            const pointerEvent = MouseEventAdapter.mouseOut(e, data.id);
+            this.canvasPanel.pointer.pointerOut(pointerEvent, this.scopedToolId);
         }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
         if (this.canvasPanel) {
-            this.canvasPanel.pointer.pointerEnter(data, this.scopedToolId);
+            const pointerEvent = MouseEventAdapter.mouseOver(e, data.id);
+            this.canvasPanel.pointer.pointerOver(pointerEvent, this.scopedToolId);
         }
     }
 

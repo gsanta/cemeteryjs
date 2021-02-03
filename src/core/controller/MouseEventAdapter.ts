@@ -24,14 +24,16 @@ export class MouseEventAdapter {
         // this.registry.services.render.reRenderAll();
     }
 
-    static mouseLeave(e: MouseEvent): IPointerEvent {
-        return this.convertEvent(e, false, IPointerEventType.PointerLeave);
-        // this.canvas.pointer.pointerLeave(data, scopedToolId);
+    static mouseOut(e: MouseEvent, pickedItemId: string): IPointerEvent {
+        const pointerEvent = this.convertEvent(e, false, IPointerEventType.PointerOut);
+        pointerEvent.pickedItemId = pickedItemId;
+        return pointerEvent;
     }
 
-    static mouseEnter(e: MouseEvent): IPointerEvent {
-        return this.convertEvent(e, false, IPointerEventType.PointerEnter);
-        // this.canvas.pointer.pointerEnter(data, scopedToolId);
+    static mouseOver(e: MouseEvent, pickedItemId: string): IPointerEvent {
+        const pointerEvent = this.convertEvent(e, false, IPointerEventType.PointerOver);
+        pointerEvent.pickedItemId = pickedItemId;
+        return pointerEvent;
     }
 
     static mouseWheel(e: WheelEvent): IPointerEvent {

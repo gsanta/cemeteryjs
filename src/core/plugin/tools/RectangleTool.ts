@@ -44,8 +44,8 @@ export abstract class RectangleTool<D> extends ToolAdapter<D> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    draggedUp(pointer: PointerTracker<D>) {
-        super.draggedUp(pointer);
+    dragEnd(pointer: PointerTracker<D>) {
+        super.dragEnd(pointer);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();

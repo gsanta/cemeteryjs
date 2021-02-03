@@ -150,7 +150,7 @@ export function checkHotkeyAgainstTrigger(hotkeyEvent: IHotkeyEvent, hotkeyTrigg
         (hotkeyTrigger.shift === undefined || hotkeyEvent.isShiftDown === hotkeyTrigger.shift) &&
         isCtrlOrCommandDown(<IKeyboardEvent> hotkeyEvent) === hotkeyTrigger.ctrlOrCommand &&
         wheelMatch(pointerTracker) === hotkeyTrigger.wheel &&
-        mouseDownMatch(hotkeyEvent, hotkeyTrigger) &&
+        mouseDownMatch(hotkeyEvent, hotkeyTrigger, pointerTracker) &&
         keyCodeFuncMatch(hotkeyEvent, hotkeyTrigger)
     );
 }
@@ -166,8 +166,8 @@ function keyCodeFuncMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigge
     return hotkeyEvent.keyCode !== undefined && hotkeyTrigger.keyCodeFunc(hotkeyEvent);
 }
 
-function mouseDownMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger) {
-    return hotkeyTrigger.mouseDown === false || hotkeyTrigger.mouseDown === hotkeyEvent.pointers[0].isDown
+function mouseDownMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger, pointerTracker: PointerTracker<any>) {
+    return hotkeyTrigger.mouseDown === false || hotkeyTrigger.mouseDown === pointerTracker.isDown;
 }
 
 function keyCodesMatch(hotkeyEvent: IHotkeyEvent, hotkeyTrigger: HotkeyTrigger): boolean {

@@ -1,9 +1,9 @@
-import { ArcRotateCamera, Axis, Epsilon, Matrix, Plane, Vector3 } from 'babylonjs';
+import { ArcRotateCamera, Axis, Epsilon, ICameraInput, Matrix, Plane, Vector3 } from 'babylonjs';
+import { off } from 'process';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../../../controller/PointerHandler';
 import { Bab_EngineFacade } from '../../../engine/adapters/babylonjs/Bab_EngineFacade';
-import { IObj } from '../../objs/IObj';
 import { ICamera } from './ICamera';
 
 export class Camera3D implements ICamera {
@@ -18,10 +18,13 @@ export class Camera3D implements ICamera {
         this.engine = engine;
 
         this.camera = new ArcRotateCamera("Camera", -Math.PI / 2, 0, 150, Vector3.Zero(), this.engine.scene);
-        this.camera.attachControl(false);
+        // this.camera.attachControl(true);
+        this.camera.detachControl();
+
+        this.camera.inputs.add(new SceneCameraInput(this.camera));
 
         this.startY = this.camera.position.y;
-        this.camera.inertia = 0.7;
+        this.camera.inertia = 0.1;
         this.camera.lowerRadiusLimit = 10;
         this.camera.upperRadiusLimit = 1000;
         this.camera.upperBetaLimit = Math.PI / 2 - 0.1;
@@ -31,6 +34,7 @@ export class Camera3D implements ICamera {
             () => {
                 if (this.inertialPanning.x !== 0 || this.inertialPanning.y !== 0 || this.inertialPanning.z !== 0) {
                     this.camera.target.addInPlace(this.inertialPanning);
+                    console.log('pan: ' + this.inertialPanning.toString());
                     this.inertialPanning.scaleInPlace(this.camera.inertia);
                     zeroIfClose(this.inertialPanning);
                 }
@@ -70,6 +74,7 @@ export class Camera3D implements ICamera {
         } else if (this.camera.upperRadiusLimit - this.camera.radius < 1 && delta < 0) {
             return;
         }
+
         const inertiaComp = 1 - this.camera.inertia;
         if (this.camera.radius - (this.camera.inertialRadiusOffset + delta) / inertiaComp < this.camera.lowerRadiusLimit) {
             delta = (this.camera.radius - this.camera.lowerRadiusLimit) * inertiaComp - this.camera.inertialRadiusOffset;
@@ -84,6 +89,9 @@ export class Camera3D implements ICamera {
     
         const directionToZoomLocation = vec.subtract(this.camera.target);
         const offset = directionToZoomLocation.scale(ratio);
+
+        console.log('directionToZooLoc: ' + directionToZoomLocation.toString());
+        console.log('scaledDirToZoomLoc: ' + offset.toString());
         offset.scaleInPlace(inertiaComp);
         this.inertialPanning.addInPlace(offset);
     
@@ -142,4 +150,27 @@ function zeroIfClose(vec) {
     if (Math.abs(vec.z) < Epsilon) {
         vec.z = 0;
     }
+}
+
+export class SceneCameraInput implements ICameraInput<ArcRotateCamera> {
+    camera: ArcRotateCamera;
+
+    constructor(camera: ArcRotateCamera) {
+        this.camera = camera;
+    }
+
+    getClassName(): string {
+        return 'SceneCamera';
+    }
+
+    getSimpleName(): string {
+        return 'sceneCamera';
+    }
+
+    attachControl(noPreventDefault?: boolean): void {
+    }
+    detachControl(): void {
+    }
+
+    checkInputs?: () => void;
 }
