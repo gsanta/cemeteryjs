@@ -33,7 +33,9 @@ export class LigthObjFactory extends ObjFactoryAdapter {
     }
 
     newInstance() {
-        return new LightObj(this.registry.stores.objStore.generateId(this.objType), this.registry.engine.lights);
+        const lightObj = new LightObj(undefined, this.registry.engine.lights);
+        lightObj.id = this.registry.stores.objStore.generateId(lightObj);
+        return lightObj; 
     }
 
     insantiateFromJson(json: LightObjJson): [IObj, AfterAllObjsDeserialized] {

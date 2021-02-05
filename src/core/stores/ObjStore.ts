@@ -29,8 +29,8 @@ export class ObjStore implements IStore<IObj> {
         this.idGenerator = idGenerator;
     }
 
-    generateId(objType: string): string {
-        return this.idGenerator.generateId(objType);
+    generateId(obj: IObj): string {
+        return this.idGenerator.generateId(obj.objType);
     }
 
     addItem(obj: IObj) {
@@ -83,6 +83,10 @@ export class ObjStore implements IStore<IObj> {
         return this.nameCache.get(name);
     }
 
+    find<T>(prop: (item: IObj) => T, expectedVal: T): IObj[] {
+        throw new Error("Method not implemented.");
+    }
+
     private addObjWithNameToCache(name: string) {
         const obj = this.objs.find(obj => obj.name === name);
         this.nameCache.set(name, obj);
@@ -125,16 +129,27 @@ export class ObjStore implements IStore<IObj> {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
-    addSelectedItem(...items: IObj[]) {
-    }
-    removeSelectedItem(item: IObj) {
-    }
-    getSelectedItems(): IObj[] {
-        return [];
-    }
-    clearSelection() {
-    }
-    getSelectedItemsByType(objType: string): IObj[] {
+    // addSelectedItem(...items: IObj[]) {
+    //     this.selectedItems.push(...items);
+    // }
+    
+    // removeSelectedItem(item: IObj) {
+    //     this.selectedItems = this.selectedItems.filter(i => i !== item);
+    // }
+    
+    // getSelectedItems(): IObj[] {
+    //     return this.selectedItems;
+    // }
+    
+    // clearSelection() {
+    //     this.selectedItems = [];
+    // }
+    
+    // getSelectedItemsByType(objType: string): IObj[] {
+    //     return [];
+    // }
+
+    getItemsByType(type: string): IObj[] {
         return [];
     }
 }
@@ -167,9 +182,9 @@ export class ObjLifeCycleHook implements ObjStoreHook {
     }
 
     removeObjHook(obj: IObj) {
-        const view = this.registry.data.shape.scene.getByObjId(obj.id);
+        const view = this.registry.data.sketch.items.find(item => item.getObj().id, obj.id)[0];
         if (view) {
-            this.registry.data.shape.scene.removeItem(view);
+            this.registry.data.sketch.items.removeItem(view);
         }
     }
 }

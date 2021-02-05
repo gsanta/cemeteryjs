@@ -6,7 +6,7 @@ import { PointerTool, PointerToolLogic } from "../../../../../core/plugin/tools/
 import { Cursor, ToolType } from '../../../../../core/plugin/tools/Tool';
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { NodeConnectionShape, NodeConnectionShapeType } from "../../models/shapes/NodeConnectionShape";
+import { NodeConnectionShape, NodeConnectionShapeFactory, NodeConnectionShapeType } from "../../models/shapes/NodeConnectionShape";
 
 export class JoinTool extends PointerTool<AbstractShape> {
     startPoint: Point;
@@ -41,16 +41,16 @@ export class JoinTool extends PointerTool<AbstractShape> {
             let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.pickedItem);
             let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.pickedItem : this.nodePortView1);
 
-            const connectionView = <NodeConnectionShape> this.registry.data.shape.node.getViewFactory(NodeConnectionShapeType).instantiate();
-            inputPort.addConnection(connectionView);
-            outputPort.addConnection(connectionView);
-            connectionView.setInputPort(inputPort);
-            connectionView.setOutputPort(outputPort);
+            const connectionShape = new NodeConnectionShapeFactory().instantiate();
+            inputPort.addConnection(connectionShape);
+            outputPort.addConnection(connectionShape);
+            connectionShape.setInputPort(inputPort);
+            connectionShape.setOutputPort(outputPort);
             inputPort.getObj().addConnectedPort(outputPort.getObj());
 
-            connectionView.setInputPoint(inputPort.getAbsolutePosition());
-            connectionView.setOutputPoint(outputPort.getAbsolutePosition());
-            this.registry.data.shape.node.addItem(connectionView);
+            connectionShape.setInputPoint(inputPort.getAbsolutePosition());
+            connectionShape.setOutputPoint(outputPort.getAbsolutePosition());
+            this.registry.data.node.items.addItem(connectionShape);
 
             this.registry.services.history.createSnapshot();
 

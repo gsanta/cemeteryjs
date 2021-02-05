@@ -9,6 +9,8 @@ import { MeshPropertiesController } from "./controllers/MeshPropertiesController
 import { SpritePropertiesRenderer } from "./renderers/SpritePropertiesRenderer";
 import { SpriteShapeType } from "../../../main/models/shapes/SpriteShape";
 import { SpritePropertiesController } from "./controllers/SpritePropertiesController";
+import { SketchEditorModule, SketchEditorPanelId } from "../../../main/SketchEditorModule";
+import { ShapeEventType } from "../../../../../core/models/ShapeObservable";
 
 export const ObjectPropertiesPanelId = 'object-properties-panel'; 
 
@@ -21,29 +23,32 @@ export class ObjPropertiesModule extends UI_Panel {
         const lightSettingsRenderer = new LightPropertiesRenderer(lightSettingsController);
         const spriteSettingsController = new SpritePropertiesController(registry);
         const spriteSettingsRenderer = new SpritePropertiesRenderer(spriteSettingsController);
-    
-        registry.services.event.select.on(() => {
-            const selectedViews = registry.data.shape.scene.getSelectedItems();
-            this.renderer = undefined;
-            this.paramController = undefined;
-            if (selectedViews.length === 1) {
-                switch(selectedViews[0].viewType) {
-                    case MeshShapeType:
-                        const meshSettingsController = new MeshPropertiesController(registry, selectedViews[0] as MeshShape);
-                        this.paramController = meshSettingsController;
-                        this.renderer = new MeshPropertiesRenderer(registry, meshSettingsController);
-                    break;
-                    case SpriteShapeType:
-                        this.renderer = spriteSettingsRenderer;
-                        this.paramController = spriteSettingsController;
-                    break;
-                    case LightShapeType:
-                        this.renderer = lightSettingsRenderer;
-                        this.paramController = lightSettingsController;
-                    break;
+
+        const sketchEditorModule = <SketchEditorModule> registry.services.module.ui.getCanvas(SketchEditorPanelId);
+
+        sketchEditorModule.observable.add(eventData => {
+            if (eventData.eventType === ShapeEventType.SelectionChanged) {
+                const selectedItems = sketchEditorModule.data.selection.getAllItems();
+                this.renderer = undefined;
+                this.paramController = undefined;
+                if (selectedItems.length === 1) {
+                    switch(selectedItems[0].viewType) {
+                        case MeshShapeType:
+                            const meshSettingsController = new MeshPropertiesController(registry, selectedItems[0] as MeshShape);
+                            this.paramController = meshSettingsController;
+                            this.renderer = new MeshPropertiesRenderer(registry, meshSettingsController);
+                        break;
+                        case SpriteShapeType:
+                            this.renderer = spriteSettingsRenderer;
+                            this.paramController = spriteSettingsController;
+                        break;
+                        case LightShapeType:
+                            this.renderer = lightSettingsRenderer;
+                            this.paramController = lightSettingsController;
+                        break;
+                    }
                 }
             }
         });
-    
     }
 }

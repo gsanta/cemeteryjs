@@ -35,7 +35,7 @@ export class MoveNode extends AbstractNodeFactory {
         const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MoveNodeControllers(this.registry, obj))
-        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
+        nodeView.id = this.registry.data.node.items.generateId(nodeView);
 
         return nodeView;
     }
@@ -45,7 +45,7 @@ export class MoveNode extends AbstractNodeFactory {
         obj.setParams(new MoveNodeParams(obj));
         obj.listener = new MoveNodeListener(obj, obj.param);
         obj.listener.onInit();
-        obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.id = this.registry.stores.objStore.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;

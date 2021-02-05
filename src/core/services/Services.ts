@@ -51,7 +51,7 @@ export class Services {
         this.error = new ErrorService();
         this.dragAndDropService = new DragAndDropService();
         this.event = new EventService();
-        this.module = new ModuleService(this.registry);
+        this.module = new ModuleService();
         // TODO: find a better place to register general hotkeys
     }
 }

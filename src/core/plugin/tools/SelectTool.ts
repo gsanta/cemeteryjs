@@ -1,10 +1,12 @@
 import { AdvancedDynamicTexture, Rectangle as GuiRectangle } from 'babylonjs-gui';
+import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../../controller/PointerHandler';
 import { IObj } from '../../models/objs/IObj';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { getIntersectingViews } from '../../stores/ShapeStore';
+import { getIntersectingViews, sceneAndGameViewRatio } from '../../stores/ShapeStore';
+import { colors } from '../../ui_components/react/styles';
 import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { Canvas2dPanel } from '../Canvas2dPanel';
 import { Canvas3dPanel } from '../Canvas3dPanel';
@@ -38,20 +40,35 @@ export class SelectionToolLogicForWebGlCanvas implements RectangleSelectionToolL
 
     down() {
         const rect = new GuiRectangle();
-        rect.width = '100px';
+        rect.width = '0px';
         // rect.left = 100;
-        rect.height = '100px';
-        rect.cornerRadius = 20;
-        rect.color = "Orange";
-        rect.thickness = 4;
-        rect.background = "green";
+        rect.height = '0px';
+        rect.color = colors.defaultBlue;
+        rect.alpha = 0.3;
+        rect.thickness = 1.5;
+        rect.background = colors.defaultBlue;
         this.rect = rect;
         this.texture.addControl(rect);    
     }
 
-    drag(rectangle: Rectangle) {
-        this.rect.width = rectangle.getWidth();
-        this.rect.width = rectangle.getHeight();
+    drag(pointer: PointerTracker<IObj>, rectangle: Rectangle) {
+        const {downScreen, currScreen} = pointer;
+        const topLeft = new Point(currScreen.x < downScreen.x ? currScreen.x : downScreen.x, currScreen.y < downScreen.y ? currScreen.y : downScreen.y); 
+        const bottomRight = new Point(currScreen.x >= downScreen.x ? currScreen.x : downScreen.x, currScreen.y >= downScreen.y ? currScreen.y : downScreen.y); 
+        const rectWidth = bottomRight.x - topLeft.x;
+        const rectHeight = bottomRight.y - topLeft.y;
+        const screenCenterX = pointer.screenSize.x / 2;
+        const screenCenterY = pointer.screenSize.y / 2;
+        const rectWidthHalf = rectWidth / 2;
+        const rectHeightHalf = rectHeight / 2;
+        const left = screenCenterX - topLeft.x - rectWidthHalf;
+        const top = screenCenterY - topLeft.y - rectHeightHalf; 
+
+        this.rect.left = -left; 
+        this.rect.top = -top; 
+        this.rect.width = `${rectWidth}px`;
+        this.rect.height = `${rectHeight}px`;
+        console.log(rectWidth + '  ' + rectHeight);
     }
 
     up() {
@@ -72,7 +89,7 @@ export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLog
     }
 
     getIntersectingItems(selection: Rectangle): AbstractShape[] {
-        return getIntersectingViews(this.canvas.store, selection);
+        return getIntersectingViews(this.canvas.data.items, selection);
     }
 
     createSelectionRect(pointer: PointerTracker<AbstractShape>): Rectangle {
@@ -134,7 +151,7 @@ export interface RectangleSelectionToolLogic<D> {
 
     down();
     up();
-    drag(rect: Rectangle);
+    drag(pointer: PointerTracker<D>, rect: Rectangle);
 }
 
 
@@ -157,7 +174,7 @@ export class SelectTool<D> extends PointerTool<D> {
 
     click(pointer: PointerTracker<D>) {
         if (!this.pointerToolLogic.click(pointer)) {
-            this.canvas.store.clearSelection();
+            this.canvas.data.selection.clear();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
         // if (this.canvas.pointer.pointer.pickedItem) {
@@ -172,7 +189,7 @@ export class SelectTool<D> extends PointerTool<D> {
 
         if (!changed) {
             this.rectangleSelection = this.selectionLogic.createSelectionRect(pointer);
-            this.selectionLogic.drag(this.rectangleSelection);
+            this.selectionLogic.drag(pointer, this.rectangleSelection);
         }
 
         this.registry.services.render.scheduleRendering(this.canvas.region);
@@ -185,10 +202,10 @@ export class SelectTool<D> extends PointerTool<D> {
         if (!changed) {
             if (!this.rectangleSelection) { return }
     
-            const intersectingViews = this.selectionLogic.getIntersectingItems(this.rectangleSelection);
+            const intersectingShapes = this.selectionLogic.getIntersectingItems(this.rectangleSelection);
             
-            this.canvas.store.clearSelection();
-            this.canvas.store.addSelectedItem(...intersectingViews)
+            this.canvas.data.selection.clear();
+            intersectingShapes.forEach(shape => this.canvas.data.selection.addItem(shape));
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);

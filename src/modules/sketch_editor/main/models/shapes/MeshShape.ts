@@ -104,7 +104,7 @@ export class MeshShape extends AbstractShape {
     }
 
     deepClone(registry: Registry) {
-        const meshView = <MeshShape> registry.data.shape.scene.getOneSelectedShape();
+        const meshView = <MeshShape> registry.data.sketch.selection.getAllItems()[0];
         const meshObj = meshView.getObj();
         let bounds = meshView.getBounds().clone();
         bounds = bounds.moveTo(bounds.getBoundingCenter());
@@ -125,7 +125,7 @@ export class MeshShape extends AbstractShape {
         meshClone.setBounds(bounds);
 
         registry.stores.objStore.addItem(meshObjClone);
-        registry.data.shape.scene.addItem(meshClone);
+        registry.data.sketch.items.addItem(meshClone);
     }
 
     toJson(): MeshShapeJson {
@@ -154,8 +154,8 @@ export class MeshShape extends AbstractShape {
         meshView.layer = json.layer;
 
         const afterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => meshView.addChildView(registry.data.shape.scene.getItemById(id)));
-            json.parentId && meshView.setParent(registry.data.shape.scene.getItemById(json.parentId));
+            json.childViewIds.map(id => meshView.addChildView(registry.data.sketch.items.getItemById(id)));
+            json.parentId && meshView.setParent(registry.data.sketch.items.getItemById(json.parentId));
         }
 
         return [meshView, afterAllViewsDeserialized];

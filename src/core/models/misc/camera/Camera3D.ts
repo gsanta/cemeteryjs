@@ -1,5 +1,4 @@
 import { ArcRotateCamera, Axis, Epsilon, ICameraInput, Matrix, Plane, Vector3 } from 'babylonjs';
-import { off } from 'process';
 import { Point } from '../../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../../../controller/PointerHandler';

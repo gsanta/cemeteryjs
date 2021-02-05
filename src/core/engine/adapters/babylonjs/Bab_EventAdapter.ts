@@ -1,5 +1,4 @@
 import { Mesh, PointerEventTypes, PointerInfo } from "babylonjs";
-import { ThinSprite } from "babylonjs/Sprites/thinSprite";
 import { Point } from "../../../../utils/geometry/shapes/Point";
 import { IPointerEvent, IPointerEventType } from "../../../controller/PointerHandler";
 import { IEngineEventAdapter, IEnginePointerObservable } from "../../IEngineEventAdapter";

@@ -1,13 +1,14 @@
 
-import { MoveAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape";
-import { RotateAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape";
-import { ScaleAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape";
+import { MoveAxisShapeFactory, MoveAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape";
+import { RotateAxisShapeFactory, RotateAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape";
+import { ScaleAxisShapeFactory, ScaleAxisShapeType } from "../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape";
 import { MeshShapeType } from "../../modules/sketch_editor/main/models/shapes/MeshShape";
 import { SpriteShapeType } from "../../modules/sketch_editor/main/models/shapes/SpriteShape";
 import { without } from "../../utils/geometry/Functions";
 import { Polygon } from "../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../utils/geometry/shapes/Rectangle";
 import { AbstractShape, ShapeFactory, ShapeTag } from '../models/shapes/AbstractShape';
+import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
 import { Registry } from "../Registry";
 import { IdGenerator } from "./IdGenerator";
 import { IStore } from "./IStore";
@@ -44,18 +45,23 @@ export class ShapeStore implements IStore<AbstractShape> {
     private selectedViews: AbstractShape[] = [];
     private idMap: Map<string, AbstractShape> = new Map();
     private byObjIdMap: Map<string, AbstractShape> = new Map();
-    private viewsByType: Map<string, AbstractShape[]> = new Map();
+    private shapesByType: Map<string, AbstractShape[]> = new Map();
     private idGenerator: IdGenerator;
     private hooks: ShapeStoreHook[] = [];
     private viewFactories: Map<string, ShapeFactory> = new Map();
+    private canvas: AbstractCanvasPanel<AbstractShape>;
 
-    readonly canvasId: string;
     private registry: Registry;
 
-    constructor(canvasId: string, registry: Registry) {
-        this.canvasId = canvasId;
+    constructor(registry: Registry, canvas: AbstractCanvasPanel<AbstractShape>) {
         this.registry = registry;
+        this.canvas = canvas;
         this.setIdGenerator(new IdGenerator());
+    }
+
+    // TODO cache it to make find fast
+    find<T>(prop: (item: AbstractShape) => T, expectedVal: T): AbstractShape[] {
+        return this.getAllItems().filter(item => prop(item) === expectedVal);
     }
 
     setIdGenerator(idGenerator: IdGenerator) {
@@ -95,11 +101,11 @@ export class ShapeStore implements IStore<AbstractShape> {
         this.idMap.set(shape.id, shape);
         shape.getObj() && this.byObjIdMap.set(shape.getObj().id, shape);
 
-        if (!this.viewsByType.get(shape.viewType)) {
-            this.viewsByType.set(shape.viewType, []);
+        if (!this.shapesByType.get(shape.viewType)) {
+            this.shapesByType.set(shape.viewType, []);
         }
 
-        this.viewsByType.get(shape.viewType).push(shape);
+        this.shapesByType.get(shape.viewType).push(shape);
         
         this.hooks.forEach(hook => hook.addViewHook(shape));
     }
@@ -117,7 +123,7 @@ export class ShapeStore implements IStore<AbstractShape> {
             this.byObjIdMap.delete(shape.getObj().id);
         }
 
-        const thisViewTypes = this.viewsByType.get(shape.viewType);
+        const thisViewTypes = this.shapesByType.get(shape.viewType);
         thisViewTypes.splice(thisViewTypes.indexOf(shape), 1);
         this.shapes.splice(this.shapes.indexOf(shape), 1);
         this.selectedViews.indexOf(shape) !== -1 && this.selectedViews.splice(this.selectedViews.indexOf(shape), 1);
@@ -134,16 +140,12 @@ export class ShapeStore implements IStore<AbstractShape> {
         return this.idMap.get(id);
     }
 
-    getByObjId(objId: string): AbstractShape {
-        return this.byObjIdMap.get(objId);
-    }
-
-    getShapesByType(type: string): AbstractShape[] {
-        return this.viewsByType.get(type) || [];
+    getItemsByType(type: string): AbstractShape[] {
+        return this.shapesByType.get(type) || [];
     }
 
     getAllTypes(): string[] {
-        return Array.from(this.viewsByType.keys());
+        return Array.from(this.shapesByType.keys());
     }
 
     getAllItems(): AbstractShape[]  {
@@ -166,36 +168,19 @@ export class ShapeStore implements IStore<AbstractShape> {
         this.registry.services.event.select.emit();
     }
 
-    getSelectedItems(): AbstractShape[] {
-        return this.selectedViews;
-    }
-
-    getSelectedItemsByType(type: string): AbstractShape[] {
-        return this.selectedViews.filter(view => view.viewType === type);
-    }
-
-    getOneSelectedShape(): AbstractShape {
-        return this.selectedViews.length > 0 && this.selectedViews[0];
-    }
-
-    clearSelection() {
-        this.selectedViews.forEach(item => this.removeSelectedItem(item));
-        this.selectedViews = [];
-    }
-
     clear() {
         while(this.shapes.length > 0) {
             this.removeItem(this.shapes[0]);
         }
         this.idMap = new Map();
-        this.viewsByType = new Map();
+        this.shapesByType = new Map();
         this.byObjIdMap = new Map();
         this.idGenerator.clear();
-        this.clearSelection();
+        this.canvas.data.selection.clear();
     }
 
-    static newInstance(canvasId: string, registry: Registry): ShapeStore {
-        const viewStore = new ShapeStore(canvasId, registry);
+    static newInstance(registry: Registry, canvas: AbstractCanvasPanel<AbstractShape>): ShapeStore {
+        const viewStore = new ShapeStore(registry, canvas);
         const proxy = new Proxy(viewStore, handler);
         return proxy;
     }
@@ -239,9 +224,9 @@ export class AxisControlHook extends EmptyShapeStoreHook {
 
     addSelectionHook(views: AbstractShape[]) {
         if (views.length === 1 && (views[0].viewType === SpriteShapeType || views[0].viewType === MeshShapeType)) {
-            this.registry.data.shape.scene.getViewFactory(MoveAxisShapeType).instantiateOnSelection(views[0])
-            this.registry.data.shape.scene.getViewFactory(ScaleAxisShapeType).instantiateOnSelection(views[0])
-            this.registry.data.shape.scene.getViewFactory(RotateAxisShapeType).instantiateOnSelection(views[0])
+            new MoveAxisShapeFactory(this.registry).instantiateOnSelection(views[0])
+            new ScaleAxisShapeFactory(this.registry).instantiateOnSelection(views[0])
+            new RotateAxisShapeFactory(this.registry).instantiateOnSelection(views[0])
         }
     }
 

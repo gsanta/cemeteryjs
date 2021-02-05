@@ -1,13 +1,12 @@
 
 
 export interface IStore<D> {
-    addItem(shape: D);
-    removeItem(shape: D);
+    addItem(item: D);
+    removeItem(item: D);
     getItemById(id: string): D;
     getAllItems(): D[];
-    addSelectedItem(...items: D[]);
-    removeSelectedItem(item: D);
-    getSelectedItems(): D[]
-    getSelectedItemsByType(type: string): D[];
-    clearSelection(): void;
+    getItemsByType(type: string): D[];
+    generateId(item: D): string;
+    clear(): void;
+    find<T>(prop: (item: D) => T, expectedVal: T): D[];
 }

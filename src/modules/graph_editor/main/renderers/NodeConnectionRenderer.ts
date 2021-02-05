@@ -34,7 +34,7 @@ class ConnectionRenderer implements IRenderer<UI_SvgCanvas> {
     }
 
     renderInto(svgCanvas: UI_SvgCanvas): void {
-        this.registry.data.shape.node.getShapesByType(NodeConnectionShapeType).forEach((connection: NodeConnectionShape) => {
+        this.registry.data.node.items.getItemsByType(NodeConnectionShapeType).forEach((connection: NodeConnectionShape) => {
             const pathCss = {
                 pointerEvents: 'none' as 'none',
                 stroke: connection.color,

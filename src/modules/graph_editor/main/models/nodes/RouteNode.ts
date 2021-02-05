@@ -27,7 +27,7 @@ export class RouteNode extends AbstractNodeFactory {
         const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RouteNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
+        nodeView.id = this.registry.data.node.items.generateId(nodeView);
 
         return nodeView;
     }
@@ -36,7 +36,7 @@ export class RouteNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new RouteNodeParams());
         obj.executor = new RouteNodeExecutor(this.registry, obj);
-        obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.id = this.registry.stores.objStore.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
@@ -121,7 +121,7 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('mesh').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('mesh').getConnectedPorts()[0].getNodeParam();
-            return <MeshObj> registry.data.shape.node.getItemById(nodeParam.ownVal)?.getObj();
+            return <MeshObj> registry.data.node.items.getItemById(nodeParam.ownVal)?.getObj();
         }
     }
 

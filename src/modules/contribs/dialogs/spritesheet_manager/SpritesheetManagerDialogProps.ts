@@ -32,7 +32,7 @@ export class SpriteSheetJsonPathControl extends ParamController<{data: string, p
     change(val: {data: string, path: string}, context: PropContext, element: UI_Element) {
         const json = atob(val.data.split(',')[1]);
 
-        this.uiPanel.data.set(DataKeys.SpriteSheetJson, json);
+        this.uiPanel.map.set(DataKeys.SpriteSheetJson, json);
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -58,7 +58,7 @@ export class SpriteSheetImgController extends ParamController<string> {
     }
 
     blur(context: PropContext, element: UI_Element) {
-        this.uiPanel.data.set(DataKeys.SpriteSheetImgUrl, context.getTempVal());
+        this.uiPanel.map.set(DataKeys.SpriteSheetImgUrl, context.getTempVal());
         context.registry.services.render.reRender(UI_Region.Dialog);
     }
 }
@@ -76,8 +76,8 @@ export class AddSpriteSheetController extends ParamController<string> {
     click(context: PropContext) {
         const spriteSheetObj = new SpriteSheetObj();
 
-        const spriteSheetJson = this.uiPanel.data.get(DataKeys.SpriteSheetJson);
-        const imgPath = this.uiPanel.data.get(DataKeys.SpriteSheetImgUrl);
+        const spriteSheetJson = this.uiPanel.map.get(DataKeys.SpriteSheetJson);
+        const imgPath = this.uiPanel.map.get(DataKeys.SpriteSheetImgUrl);
         
         const imgAsset = new AssetObj({path: imgPath, assetType: AssetType.SpriteSheet});
         const jsonAsset = new AssetObj({data: spriteSheetJson, assetType: AssetType.SpriteSheetJson});
@@ -96,7 +96,7 @@ export class AddSpriteSheetController extends ParamController<string> {
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Dialog);
 
-        this.uiPanel.data.delete(DataKeys.SpriteSheetJson);
-        this.uiPanel.data.delete(DataKeys.SpriteSheetImgUrl);
+        this.uiPanel.map.delete(DataKeys.SpriteSheetJson);
+        this.uiPanel.map.delete(DataKeys.SpriteSheetImgUrl);
     }
 }

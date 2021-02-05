@@ -69,7 +69,9 @@ export class MeshIdController extends ParamController<string> {
     private tempVal: string;
 
     val() {
-        return (<MeshShape> this.registry.data.shape.scene.getOneSelectedShape()).id;
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        return meshShape.id;
     }
     
     change(val: string) {
@@ -78,7 +80,8 @@ export class MeshIdController extends ParamController<string> {
     }
 
     blur() {
-        (<MeshShape> this.registry.data.shape.scene.getOneSelectedShape()).id = this.tempVal;
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+        meshShape.id = this.tempVal;
         this.tempVal = undefined;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
@@ -87,14 +90,15 @@ export class MeshIdController extends ParamController<string> {
 
 export class LayerController extends ParamController<number> {
     val() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
-        return meshView.layer;
+        return meshShape.layer;
     }
 
     change(val) {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-        meshView.layer = val;
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        meshShape.layer = val;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
@@ -156,9 +160,9 @@ export class RotationController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            const rotRad = CanvasAxis.getAxisVal(meshView.getObj().getRotation(), this.axis);
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            const rotRad = CanvasAxis.getAxisVal(meshShape.getObj().getRotation(), this.axis);
             return Math.round(toDegree(rotRad));
         }
     }
@@ -169,18 +173,18 @@ export class RotationController extends ParamController {
     }
 
     blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                const rotation = meshView.getObj().getRotation();
+                const rotation = meshShape.getObj().getRotation();
                 const rot = toRadian(parseFloat(this.tempVal));
                 
                 if (this.axis === CanvasAxis.Y) {
-                    meshView.setRotation(rot);
+                    meshShape.setRotation(rot);
                 } else {
                     CanvasAxis.setAxisVal(rotation, this.axis, rot);
-                    meshView.getObj().setRotation(rotation)
+                    meshShape.getObj().setRotation(rotation)
                 }
 
                 this.registry.services.history.createSnapshot();
@@ -208,9 +212,9 @@ export class PositionController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            return CanvasAxis.getAxisVal(meshView.getObj().getPosition(), this.axis);
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            return CanvasAxis.getAxisVal(meshShape.getObj().getPosition(), this.axis);
         }
     }
 
@@ -220,14 +224,14 @@ export class PositionController extends ParamController {
     }
 
     blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-        
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                const position = meshView.getObj().getPosition();
+                const position = meshShape.getObj().getPosition();
                 const axisPosition = parseFloat(this.tempVal);
                 CanvasAxis.setAxisVal(position, this.axis, axisPosition);
-                meshView.getObj().setPosition(position);
+                meshShape.getObj().setPosition(position);
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -250,8 +254,9 @@ export class ThumbnailController extends ParamController {
 
 export class CloneController extends ParamController {
     click() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-        meshView.deepClone(this.registry);
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        meshShape.deepClone(this.registry);
 
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRenderAll();
@@ -293,9 +298,9 @@ export class WidthController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            return (<MeshBoxConfig> meshView.getObj().shapeConfig).width;
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            return (<MeshBoxConfig> meshShape.getObj().shapeConfig).width;
         }
     }
 
@@ -305,13 +310,13 @@ export class WidthController extends ParamController {
     }
 
     async blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                (<MeshBoxConfig> meshView.getObj().shapeConfig).width = parseFloat(this.tempVal);
-                this.registry.engine.meshes.deleteInstance(meshView.getObj());
-                await this.registry.engine.meshes.createInstance(meshView.getObj());
+                (<MeshBoxConfig> meshShape.getObj().shapeConfig).width = parseFloat(this.tempVal);
+                this.registry.engine.meshes.deleteInstance(meshShape.getObj());
+                await this.registry.engine.meshes.createInstance(meshShape.getObj());
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -335,9 +340,9 @@ export class HeightController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
     
-            return (<MeshBoxConfig> meshView.getObj().shapeConfig).height;
+            return (<MeshBoxConfig> meshShape.getObj().shapeConfig).height;
         }
     }
 
@@ -347,13 +352,13 @@ export class HeightController extends ParamController {
     }
 
     async blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                (<MeshBoxConfig> meshView.getObj().shapeConfig).height = parseFloat(this.tempVal);
-                this.registry.engine.meshes.deleteInstance(meshView.getObj());
-                await this.registry.engine.meshes.createInstance(meshView.getObj())
+                (<MeshBoxConfig> meshShape.getObj().shapeConfig).height = parseFloat(this.tempVal);
+                this.registry.engine.meshes.deleteInstance(meshShape.getObj());
+                await this.registry.engine.meshes.createInstance(meshShape.getObj())
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -377,9 +382,9 @@ export class DepthController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            return (<MeshBoxConfig> meshView.getObj().shapeConfig).depth;
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            return (<MeshBoxConfig> meshShape.getObj().shapeConfig).depth;
         }
     }
 
@@ -389,13 +394,13 @@ export class DepthController extends ParamController {
     }
 
     async blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                (<MeshBoxConfig> meshView.getObj().shapeConfig).depth = parseFloat(this.tempVal);
-                this.registry.engine.meshes.deleteInstance(meshView.getObj());
-                await this.registry.engine.meshes.createInstance(meshView.getObj())
+                (<MeshBoxConfig> meshShape.getObj().shapeConfig).depth = parseFloat(this.tempVal);
+                this.registry.engine.meshes.deleteInstance(meshShape.getObj());
+                await this.registry.engine.meshes.createInstance(meshShape.getObj())
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -420,9 +425,9 @@ export class ColorController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
     
-            return meshView.getObj().getColor();
+            return meshShape.getObj().getColor();
         }
     }
 
@@ -432,11 +437,11 @@ export class ColorController extends ParamController {
     }
 
     async blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                meshView.getObj().setColor(this.tempVal);
+                meshShape.getObj().setColor(this.tempVal);
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -459,9 +464,9 @@ export class MeshVisibilityController extends ParamController {
         if (this.tempVal !== undefined) {
             return this.tempVal;
         } else {
-            const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            return meshView.getObj().getVisibility();
+            const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            return meshShape.getObj().getVisibility();
         }
     }
 
@@ -471,11 +476,11 @@ export class MeshVisibilityController extends ParamController {
     }
 
     async blur() {
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                meshView.getObj().setVisibility(parseFloat(this.tempVal));
+                meshShape.getObj().setVisibility(parseFloat(this.tempVal));
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -492,7 +497,9 @@ export class MeshNameController extends ParamController<string> {
     private tempVal: string;
 
     val() {
-        return this.tempVal !== undefined ? this.tempVal : (<MeshShape> this.registry.data.shape.scene.getOneSelectedShape()).getObj().name;
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        return this.tempVal !== undefined ? this.tempVal : meshShape.getObj().name;
     }
     
     change(val: string) {
@@ -501,7 +508,9 @@ export class MeshNameController extends ParamController<string> {
     }
 
     blur() {
-        (<MeshShape> this.registry.data.shape.scene.getOneSelectedShape()).getObj().name = this.tempVal;
+        const meshShape = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        meshShape.getObj().name = this.tempVal;
         this.tempVal = undefined;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);

@@ -136,8 +136,8 @@ export class NodeConnectionShape extends AbstractShape {
 
     fromJson(json: NodeConnectionShapeJson, registry: Registry) {
         super.fromJson(json, registry);
-        const nodeView1 = (<NodeShape> registry.data.shape.node.getItemById(json.joinPoint1.nodeId));
-        const nodeView2 = (<NodeShape> registry.data.shape.node.getItemById(json.joinPoint2.nodeId))
+        const nodeView1 = (<NodeShape> registry.data.node.items.getItemById(json.joinPoint1.nodeId));
+        const nodeView2 = (<NodeShape> registry.data.node.items.getItemById(json.joinPoint2.nodeId))
         this.setInputPort(<NodePortShape> nodeView1.findJoinPointView(json.joinPoint1.joinPointName));
         this.setOutputPort(<NodePortShape> nodeView2.findJoinPointView(json.joinPoint2.joinPointName));
         this.nodePortView1.addConnection(this);

@@ -47,7 +47,7 @@ export class NodeEditorRenderer implements ICanvasRenderer {
     }
 
     private renderNodesInto(canvas: UI_SvgCanvas) {
-        (<NodeShape[]> this.registry.data.shape.node.getShapesByType(NodeShapeType)).forEach(nodeView => {
+        (<NodeShape[]> this.registry.data.node.items.getItemsByType(NodeShapeType)).forEach(nodeView => {
             nodeView.renderer.renderInto(canvas, nodeView, this.canvas);
         });
     }

@@ -1,6 +1,7 @@
 
 
 import { FormController } from "../../core/controller/FormController";
+import { ItemData } from "../../core/lookups/ItemData";
 import { Camera2D } from "../../core/models/misc/camera/Camera2D";
 import { AbstractShape } from "../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../core/plugin/Canvas2dPanel";
@@ -12,7 +13,9 @@ import { UI_Region } from "../../core/plugin/UI_Panel";
 import { Registry } from "../../core/Registry";
 import { AbstractModuleExporter } from "../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../core/services/import/AbstractModuleImporter";
-import { ShapeStore } from "../../core/stores/ShapeStore";
+import { NodeGraphHook } from "../../core/services/NodePlugin";
+import { SelectionStoreForNodeEditor } from "../../core/stores/SelectionStoreForNodeEditor";
+import { ShapeLifeCycleHook, ShapeStore } from "../../core/stores/ShapeStore";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { NodeEditorToolbarController } from "./main/controllers/NodeEditorToolbarController";
 import { JoinTool } from "./main/controllers/tools/JoinTool";
@@ -26,7 +29,7 @@ export const NodeEditorToolControllerId = 'node-editor-tool-controller';
 
 export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
 
-    store: ShapeStore;
+    data: ItemData<AbstractShape>
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
@@ -34,7 +37,14 @@ export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas1, NodeEditorPanelId, 'Node editor');
 
-        this.store = this.registry.data.shape.node;
+        this.data = {
+            items: ShapeStore.newInstance(registry, this),
+            selection: new SelectionStoreForNodeEditor()
+        }
+
+        registry.data.node = this.data;
+        (this.registry.data.node.items as ShapeStore).addHook(new ShapeLifeCycleHook(this.registry));
+        (this.registry.data.node.items as ShapeStore).addHook(new NodeGraphHook(this.registry));
 
         this.exporter = new NodeEditorExporter(registry);
         this.importer = new NodeEditorImporter(registry);
@@ -50,11 +60,8 @@ export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
     
         this.setController(new FormController(this, registry, [], controller));
         this.setCamera(this.cameraInitializer(NodeEditorPanelId, registry));
-        this.setViewStore(registry.data.shape.node);
         this.renderer = new NodeEditorRenderer(registry, this, controller);
         tools.forEach(tool => this.addTool(tool));
-    
-        registry.data.shape.node.registerViewType(NodeConnectionShapeType, new NodeConnectionShapeFactory());
     }
 
 

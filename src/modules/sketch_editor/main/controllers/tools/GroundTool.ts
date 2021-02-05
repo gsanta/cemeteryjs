@@ -3,8 +3,9 @@ import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
-import { sceneAndGameViewRatio, ShapeStore } from "../../../../../core/stores/ShapeStore";
+import { sceneAndGameViewRatio } from "../../../../../core/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { MeshViewFactory } from "../../models/factories/MeshViewFactory";
 import { MeshShapeType } from "../../models/shapes/MeshShape";
 import { SketchEditorModule } from "../../SketchEditorModule";
 
@@ -13,8 +14,8 @@ export class GroundTool extends RectangleTool<AbstractShape> {
     icon = 'grid';
     displayName = 'Ground';
 
-    constructor(panel: Canvas2dPanel<AbstractShape>, viewStore: ShapeStore, registry: Registry) {
-        super(GroundToolId, panel, viewStore, registry);
+    constructor(panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+        super(GroundToolId, panel, registry);
     }
 
     protected createView(rect: Rectangle): AbstractShape {
@@ -26,12 +27,12 @@ export class GroundTool extends RectangleTool<AbstractShape> {
 
         const canvas = <SketchEditorModule> this.canvas;
 
-        const ground = canvas.getViewStore().getViewFactory(MeshShapeType).instantiateOnCanvas(canvas, rect, config);
+        const ground = new MeshViewFactory(this.registry).instantiateOnCanvas(canvas, rect, config);
 
         return ground;
     }
     
     protected removeTmpView() {
-        this.viewStore.removeItem(this.tmpView);
+        this.canvas.data.items.removeItem(this.tmpView);
     }
 }

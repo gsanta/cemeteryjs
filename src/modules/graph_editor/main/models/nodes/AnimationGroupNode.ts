@@ -25,7 +25,7 @@ export class AnimationGroupNode extends AbstractNodeFactory {
         const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new AnimationGroupNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
+        nodeView.id = this.registry.data.node.items.generateId(nodeView);
 
         return nodeView;
     }
@@ -34,7 +34,7 @@ export class AnimationGroupNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new AnimationGroupNodeParams(obj));
         obj.listener = new AnimationGroupNodeListener(this.registry, obj.param);
-        obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.id = this.registry.stores.objStore.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;

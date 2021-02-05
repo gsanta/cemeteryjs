@@ -1,6 +1,7 @@
 import { EngineEventAdapter } from "../../../core/controller/EngineEventAdapter";
 import { FormController } from "../../../core/controller/FormController";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
+import { ItemData } from "../../../core/lookups/ItemData";
 import { IObj } from "../../../core/models/objs/IObj";
 import { Canvas3dPanel } from "../../../core/plugin/Canvas3dPanel";
 import { CameraTool } from "../../../core/plugin/tools/CameraTool";
@@ -24,7 +25,7 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
     showBoundingBoxes: boolean = false;
     selectedTool: string;
 
-    store: ObjStore;
+    data: ItemData<IObj>;
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
@@ -32,8 +33,11 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas2, SceneEditorPanelId, 'Scene Editor');
 
-        this.store = registry.stores.objStore;
         this.engine = registry.engine;
+        this.data = {
+            items: registry.stores.objStore,
+            selection: new ObjStore()
+        }
 
         this.engineEventAdapter = new EngineEventAdapter(registry, this);
         this.engineEventAdapter.register();

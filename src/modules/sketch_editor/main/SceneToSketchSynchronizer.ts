@@ -28,7 +28,7 @@ export class SceneToSketchSynchronizer {
     }
 
     private syncPosition(obj: MeshObj) {
-        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.sketch.items.find((item) => item.getObj().id, obj.id)[0];
 
         const position = this.registry.engine.meshes.getPosition(obj);
 
@@ -40,7 +40,7 @@ export class SceneToSketchSynchronizer {
     }
 
     private syncScale(obj: MeshObj) {
-        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.sketch.items.find(item => item.getObj().id, obj.id)[0];
 
         const dimensions = this.registry.engine.meshes.getDimensions(obj);
 
@@ -52,7 +52,7 @@ export class SceneToSketchSynchronizer {
     }
 
     private syncRotation(obj: MeshObj) {
-        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.sketch.items.find(item => item.getObj().id, obj.id)[0];
 
         const rotation = this.registry.engine.meshes.getRotation(obj);
         

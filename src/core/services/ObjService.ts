@@ -48,7 +48,7 @@ export class ObjService {
 
         const obj = this.factoriesByType.get(objType).newInstance();
         if (!obj.id) {
-            obj.id = this.registry.stores.objStore.generateId(objType);
+            obj.id = this.registry.stores.objStore.generateId(obj);
         }
         return obj;
     }

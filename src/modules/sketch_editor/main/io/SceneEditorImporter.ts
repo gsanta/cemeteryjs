@@ -4,11 +4,21 @@ import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { NodeObjType, NodeObjJson } from "../../../../core/models/objs/node_obj/NodeObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
+import { AfterAllViewsDeserialized, AbstractShape, ShapeJson, ShapeFactoryAdapter } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
+import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../../../graph_editor/main/models/shapes/NodeConnectionShape";
+import { LightViewFactory } from "../models/factories/LightViewFactory";
+import { MeshViewFactory } from "../models/factories/MeshViewFactory";
+import { PathViewFactory } from "../models/factories/PathViewFactory";
+import { SpriteViewFactory } from "../models/factories/SpriteViewFactory";
+import { MoveAxisShapeFactory, MoveAxisShapeType } from "../models/shapes/edit/MoveAxisShape";
+import { RotateAxisShapeFactory, RotateAxisShapeType } from "../models/shapes/edit/RotateAxisShape";
+import { ScaleAxisShapeFactory, ScaleAxisShapeType } from "../models/shapes/edit/ScaleAxisShape";
 import { LightShapeType } from "../models/shapes/LightShape";
 import { MeshShapeType } from "../models/shapes/MeshShape";
+import { PathShapeType } from "../models/shapes/PathShape";
+import { SpriteShapeType } from "../models/shapes/SpriteShape";
 
 interface ImportData {
     views?: ShapeJson[];
@@ -16,12 +26,31 @@ interface ImportData {
     assets?: ObjJson[];
 }
 
+export function getShapeFactories(registry: Registry): Map<string, ShapeFactoryAdapter> {
+    const map: Map<string, ShapeFactoryAdapter> = new Map();
+
+    map.set(NodeConnectionShapeType, new NodeConnectionShapeFactory());
+    map.set(LightShapeType, new LightViewFactory(registry));
+    map.set(LightShapeType, new LightViewFactory(registry));
+    map.set(MeshShapeType, new MeshViewFactory(registry));
+    map.set(PathShapeType, new PathViewFactory(registry));
+    map.set(SpriteShapeType, new SpriteViewFactory(registry));
+    map.set(MoveAxisShapeType, new MoveAxisShapeFactory(registry));
+    map.set(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry));
+    map.set(RotateAxisShapeType, new RotateAxisShapeFactory(registry));
+
+    return map;
+}
+
 export class SceneEditorImporter extends AbstractModuleImporter {
     private registry: Registry;
+    private factories: Map<string, ShapeFactoryAdapter>;
 
     constructor(registry: Registry) {
         super();
         this.registry = registry;
+
+        this.factories = getShapeFactories(registry);
     }
 
     import(data: ImportData): void {
@@ -31,7 +60,7 @@ export class SceneEditorImporter extends AbstractModuleImporter {
     }
 
     private importViews(viewJsons: ShapeJson[]) {
-        const store = this.registry.data.shape.scene;
+        const store = this.registry.data.sketch.items;
 
         const afterAllViewsDeserializedFuncs: AfterAllViewsDeserialized[] = [];
 
@@ -40,10 +69,10 @@ export class SceneEditorImporter extends AbstractModuleImporter {
             let afterAllViewsDeserialized: AfterAllViewsDeserialized;
         
             if (viewJson.type === MeshShapeType || viewJson.type === LightShapeType) {
-                [viewInstance, afterAllViewsDeserialized] = store.getViewFactory(viewJson.type).instantiateFromJson(viewJson);
+                [viewInstance, afterAllViewsDeserialized] = this.factories.get(viewJson.type).instantiateFromJson(viewJson);
                 afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
             } else {
-                viewInstance = store.getViewFactory(viewJson.type).instantiate();
+                viewInstance = this.factories.get(viewJson.type).instantiate();
                 viewInstance.fromJson(viewJson, this.registry);
             }
             store.addItem(viewInstance);

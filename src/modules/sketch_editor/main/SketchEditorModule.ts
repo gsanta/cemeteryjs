@@ -1,5 +1,6 @@
 import { FormController } from "../../../core/controller/FormController";
 import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/controller/ToolHandler";
+import { ItemData } from "../../../core/lookups/ItemData";
 import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
 import { ShapeObservable } from "../../../core/models/ShapeObservable";
 import { AbstractShape } from "../../../core/models/shapes/AbstractShape";
@@ -13,7 +14,9 @@ import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
-import { ShapeStore } from "../../../core/stores/ShapeStore";
+import { ObjStore } from "../../../core/stores/ObjStore";
+import { SelectionStoreForSketchEditor } from "../../../core/stores/SelectionStoreForSketchEditor";
+import { AxisControlHook, ShapeLifeCycleHook, ShapeStore } from "../../../core/stores/ShapeStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "../contribs/toolbar/controllers/SceneEditorToolbarController";
 import { CubeTool } from "./controllers/tools/CubeTool";
@@ -49,21 +52,32 @@ export const SketchEditorPanelId = 'sketch-editor';
 
 export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
 
-    store: ShapeStore;
+    data: ItemData<AbstractShape>
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
 
+    observable: ShapeObservable;
+
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas1, SketchEditorPanelId, 'Sketch editor');
 
-        this.store = registry.data.shape.scene;
+        this.observable = new ShapeObservable();
+
+        this.data = {
+            items: ShapeStore.newInstance(registry, this),
+            selection: new SelectionStoreForSketchEditor(this)
+        }
+
+        registry.data.sketch = this.data;
+        registry.data.sketch.items = <ShapeStore> this.data.items;
+        (this.registry.data.sketch.items as ShapeStore).addHook(new ShapeLifeCycleHook(this.registry));
+        (this.registry.data.sketch.items as ShapeStore).addHook(new AxisControlHook(this.registry));
 
         this.exporter = new SceneEditorExporter(registry);
         this.importer = new SceneEditorImporter(registry);
         
-        const observable = new ShapeObservable();
-        const sketchToSceneSynchronizer = new SketchToSceneSynchronizer(registry, observable);
+        const sketchToSceneSynchronizer = new SketchToSceneSynchronizer(registry, this.observable);
     
         const propControllers = [
             new ZoomInController(registry),
@@ -78,35 +92,25 @@ export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
         ];
     
         const tools = [
-            new MeshTool(this, registry.data.shape.scene, registry),
-            new SpriteTool(this, registry.data.shape.scene, registry),
-            new LightTool(this,  registry.data.shape.scene, registry),
+            new MeshTool(this, registry),
+            new SpriteTool(this, registry),
+            new LightTool(this, registry),
             new PathTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
             new SelectTool(new PointerToolLogicForSvgCanvas(registry, this), new SelectionToolLogicForSvgCanvas(registry, this), this, registry),
             new DeleteTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
             new CameraTool(this, registry),
-            new MoveAxisTool(this, registry, observable),
-            new CubeTool(this, registry.data.shape.scene, registry),
-            new SphereTool(this, registry.data.shape.scene, registry),
-            new GroundTool(this, registry.data.shape.scene, registry),
-            new ScaleAxisTool(this, registry, observable),
-            new RotateAxisTool(this, registry, observable)
+            new MoveAxisTool(this, registry, this.observable),
+            new CubeTool(this, registry),
+            new SphereTool(this, registry),
+            new GroundTool(this, registry),
+            new ScaleAxisTool(this, registry, this.observable),
+            new RotateAxisTool(this, registry, this.observable)
         ];
     
         this.renderer = new SketchEditorRenderer(registry, this);
         this.setController(new FormController(undefined, registry, propControllers))
         this.setCamera(this.cameraInitializer(SketchEditorPanelId, registry));
-        this.setViewStore(registry.data.shape.scene);
         tools.forEach(tool => this.addTool(tool));
-    
-        registry.data.shape.scene.registerViewType(MeshShapeType, new MeshViewFactory(registry));
-        registry.data.shape.scene.registerViewType(SpriteShapeType, new SpriteViewFactory(registry));
-        registry.data.shape.scene.registerViewType(LightShapeType, new LightViewFactory(registry));
-    
-        registry.data.shape.scene.registerViewType(MoveAxisShapeType, new MoveAxisShapeFactory(registry));
-        registry.data.shape.scene.registerViewType(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry));
-        registry.data.shape.scene.registerViewType(RotateAxisShapeType, new RotateAxisShapeFactory(registry));
-        registry.data.shape.scene.registerViewType(PathShapeType, new PathViewFactory(registry));
     
         new SceneToSketchSynchronizer(registry);
     }
@@ -133,71 +137,3 @@ export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
         return undefined;
     }
 }
-
-// export function registerSketchEditor(registry: Registry) {
-//     const canvas = createCanvas(registry);
-
-//     const module: UIModule = {
-//         moduleName: SketchEditorPanelId,
-//         panels: [canvas],
-//         exporter: new SceneEditorExporter(registry),
-//         importer: new SceneEditorImporter(registry)
-//     }
-
-//     registry.services.module.registerUIModule(module);
-
-// }
-
-// function createCanvas(registry: Registry): AbstractCanvasPanel {
-//     const canvas = new Canvas2dPanel(registry, UI_Region.Canvas1, SketchEditorPanelId, 'Scene editor');
-
-//     const observable = new ShapeObservable();
-//     const sketchToSceneSynchronizer = new SketchToSceneSynchronizer(registry, observable);
-
-//     const propControllers = [
-//         new ZoomInController(registry),
-//         new ZoomOutController(registry),
-//         new UndoController(registry),
-//         new RedoController(registry),
-//         new PrimitiveShapeDropdownControl(registry),
-//         new PrimitiveShapeDropdownMenuOpenControl(registry),
-//         new CommonToolController(registry),
-//         new SceneEditorToolController(registry),
-//         new CanvasContextDependentToolController(registry),
-//     ];
-
-//     const tools = [
-//         new MeshTool(canvas, registry.data.shape.scene, registry),
-//         new SpriteTool(canvas, registry.data.shape.scene, registry),
-//         new LightTool(canvas,  registry.data.shape.scene, registry),
-//         new PathTool(canvas, registry.data.shape.scene, registry),
-//         new SelectTool(canvas, registry.data.shape.scene, registry),
-//         new DeleteTool(canvas, registry.data.shape.scene, registry),
-//         new CameraTool(canvas, registry),
-//         new MoveAxisTool(canvas, registry, observable),
-//         new CubeTool(canvas, registry.data.shape.scene, registry),
-//         new SphereTool(canvas, registry.data.shape.scene, registry),
-//         new GroundTool(canvas, registry.data.shape.scene, registry),
-//         new ScaleAxisTool(canvas, registry, observable),
-//         new RotateAxisTool(canvas, registry, observable)
-//     ];
-
-//     canvas.renderer = new SceneEditorRenderer(registry, canvas);
-//     canvas.setController(new FormController(undefined, registry, propControllers))
-//     canvas.setCamera(cameraInitializer(SketchEditorPanelId, registry));
-//     canvas.setViewStore(registry.data.shape.scene);
-//     tools.forEach(tool => canvas.addTool(tool));
-
-//     registry.data.shape.scene.registerViewType(MeshShapeType, new MeshViewFactory(registry));
-//     registry.data.shape.scene.registerViewType(SpriteShapeType, new SpriteViewFactory(registry));
-//     registry.data.shape.scene.registerViewType(LightShapeType, new LightViewFactory(registry));
-
-//     registry.data.shape.scene.registerViewType(MoveAxisShapeType, new MoveAxisShapeFactory(registry));
-//     registry.data.shape.scene.registerViewType(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry));
-//     registry.data.shape.scene.registerViewType(RotateAxisShapeType, new RotateAxisShapeFactory(registry));
-//     registry.data.shape.scene.registerViewType(PathShapeType, new PathViewFactory(registry));
-
-//     new SceneToSketchSynchronizer(registry);
-
-//     return canvas;
-// }

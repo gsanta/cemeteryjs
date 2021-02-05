@@ -5,7 +5,7 @@ import { Registry } from '../../../../../../core/Registry';
 import { ApplicationError } from '../../../../../../core/services/ErrorService';
 import { toDegree } from '../../../../../../utils/geometry/Measurements';
 import { Point_3 } from '../../../../../../utils/geometry/shapes/Point_3';
-import { LightShape } from '../../../../main/models/shapes/LightShape';
+import { LightShape, LightShapeType } from '../../../../main/models/shapes/LightShape';
 import { MeshShape, MeshShapeType } from '../../../../main/models/shapes/MeshShape';
 import { UIController } from '../../../../../../core/controller/UIController';
 
@@ -41,9 +41,9 @@ export class LightYPosController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+            const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
     
-            return lightView.getObj().getPosition().y;
+            return lightShape.getObj().getPosition().y;
         }
     }
 
@@ -53,13 +53,13 @@ export class LightYPosController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
         
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                const pos = lightView.getObj().getPosition();
+                const pos = lightShape.getObj().getPosition();
                 const yPos = parseFloat(this.tempVal);                
-                lightView.getObj().setPosition(new Point_3(pos.x, yPos, pos.z));
+                lightShape.getObj().setPosition(new Point_3(pos.x, yPos, pos.z));
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -84,9 +84,9 @@ export class LightDirController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+            const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
     
-            return this.getVal(lightView);
+            return this.getVal(lightShape);
         }
     }
 
@@ -96,11 +96,11 @@ export class LightDirController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                this.setVal(lightView, this.tempVal);
+                this.setVal(lightShape, this.tempVal);
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
@@ -149,9 +149,9 @@ export class LightAngleController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+            const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
     
-            return toDegree(lightView.getObj().getAngle());
+            return toDegree(lightShape.getObj().getAngle());
         }
     }
 
@@ -161,12 +161,12 @@ export class LightAngleController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
                 const angle = parseFloat(this.tempVal);
-                lightView.getObj().setAngle(angle);
+                lightShape.getObj().setAngle(angle);
             }
         } catch(e) {
             this.registry.services.error.setError(new ApplicationError(e));
@@ -188,9 +188,9 @@ export class LightDiffuseColorController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            return lightView.getObj().getDiffuseColor();
+            const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            return lightShape.getObj().getDiffuseColor();
         }
     }
 
@@ -200,11 +200,11 @@ export class LightDiffuseColorController extends ParamController {
     }
 
     blur() {
-        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
-                lightView.getObj().setDiffuseColor(this.tempVal);
+                lightShape.getObj().setDiffuseColor(this.tempVal);
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -218,20 +218,20 @@ export class LightDiffuseColorController extends ParamController {
 
 export class LightParentMeshController extends ParamController {
     values() {
-        return this.registry.data.shape.scene.getShapesByType(MeshShapeType).map(obj => obj.id)
+        return this.registry.data.sketch.items.getItemsByType(MeshShapeType).map(obj => obj.id)
     }
 
     val() {
-        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
-        return lightView.getParent() && lightView.getParent().id;
+        const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
+        return lightShape.getParent() && lightShape.getParent().id;
     }
 
     change(val: string) {
-        const lightView = <LightShape> this.registry.data.shape.scene.getOneSelectedShape();
-        const meshView = <MeshShape> this.registry.data.shape.scene.getItemById(val);
+        const lightShape = <LightShape> this.registry.data.sketch.selection.getAllItems()[0];
+        const meshView = <MeshShape> this.registry.data.sketch.items.getItemById(val);
 
         if (meshView) {
-            lightView.setParent(meshView);
+            lightShape.setParent(meshView);
             this.registry.services.history.createSnapshot();
             this.registry.services.render.reRender(UI_Region.Sidepanel);
         }

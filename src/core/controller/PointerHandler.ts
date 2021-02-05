@@ -2,6 +2,7 @@ import { Point } from "../../utils/geometry/shapes/Point";
 import { Registry } from "../Registry";
 import { Tool } from "../plugin/tools/Tool";
 import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
+import { Rectangle } from "babylonjs-gui";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -28,6 +29,8 @@ export class PointerTracker<D> {
     data: D;
 
     pickedItem: D;
+
+    screenSize: Point;
 
     getDiff() {
         return this.curr.subtract(this.prev);
@@ -91,7 +94,7 @@ export class PointerHandler<D> {
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.pointer.lastPointerEvent = e;
-        this.pointer.pickedItem = this.canvas.store.getItemById(e.pickedItemId);
+        this.pointer.pickedItem = this.canvas.data.items.getItemById(e.pickedItemId);
         
         this.determineTool(scopedToolId).down(this.pointer);
         this.registry.services.render.reRenderScheduled();
@@ -145,7 +148,7 @@ export class PointerHandler<D> {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.pointer.lastPointerEvent = undefined;
 
-        const data = this.canvas.store.getItemById(e.pickedItemId);
+        const data = this.canvas.data.items.getItemById(e.pickedItemId);
 
         this.determineTool(scopedToolId).out(data);
 
@@ -155,7 +158,7 @@ export class PointerHandler<D> {
 
     pointerOver(e: IPointerEvent, scopedToolId?: string) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
-        const data = this.canvas.store.getItemById(e.pickedItemId);
+        const data = this.canvas.data.items.getItemById(e.pickedItemId);
     
         this.pointer.pickedItem = data;
         this.pointer.lastPointerEvent = undefined;

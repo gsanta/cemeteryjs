@@ -22,7 +22,7 @@ export class ThumbnailCanvasModule extends Canvas3dPanel<IObj> {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
-    store = undefined;
+    data = undefined;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Dialog, ThumbnailCanvasId, 'Thumbnail canvas');
@@ -46,7 +46,7 @@ export class ThumbnailCanvasModule extends Canvas3dPanel<IObj> {
     
     
         this.onMounted(() => {
-            const meshView = registry.data.shape.scene.getOneSelectedShape() as MeshShape;
+            const meshView = registry.data.sketch.selection.getAllItems()[0] as MeshShape;
     
             engine.setup(this.htmlElement.getElementsByTagName('canvas')[0]);
     
@@ -65,52 +65,3 @@ export class ThumbnailCanvasModule extends Canvas3dPanel<IObj> {
     
     }
 }
-
-
-// export function registerThumbnailCanvas(registry: Registry) {
-//     const canvas = createCanvas(registry);
-
-//     registry.services.module.ui.registerCanvas(canvas);
-// }
-
-// function createCanvas(registry: Registry): AbstractCanvasPanel {
-//     const canvas = new Canvas3dPanel(registry, UI_Region.Dialog, ThumbnailCanvasId, 'Thumbnail canvas');
-    
-//     const propControllers = [
-//         new ThumbnailCreateControl(registry),
-//         new ThumbnailUploadControl(registry),
-//         new ClearThumbnailControl(registry)
-//     ];
-
-//     const tools = [
-//         new CameraTool(canvas, registry)
-//     ];
-
-//     const engine = new Bab_EngineFacade(registry, 'Thumbnail Canvas Engine');
-//     canvas.engine = engine;
-//     canvas.setController(new FormController(canvas, registry, propControllers));
-//     canvas.setCamera(engine.getCamera());
-//     canvas.renderer = new ThumbnailCanvasRenderer(registry);
-//     tools.forEach(tool => canvas.addTool(tool));
-
-
-//     canvas.onMounted(() => {
-//         const meshView = registry.data.shape.scene.getOneSelectedShape() as MeshShape;
-
-//         engine.setup(canvas.htmlElement.getElementsByTagName('canvas')[0]);
-
-//         setTimeout(() => {
-//             canvas.engine.meshes.createInstance(meshView.getObj())
-//                 .then(() => {
-//                     canvas.engine.meshes.setRotation(meshView.getObj(), new Point_3(0, 0, 0));
-//                     canvas.engine.meshes.setPosition(meshView.getObj(), new Point_3(0, 0, 0));
-//                 });
-//         }, 500);
-//     });
-
-//     canvas.onUnmounted(() => {
-//         engine.engine.dispose();
-//     });
-
-//     return canvas;
-// }

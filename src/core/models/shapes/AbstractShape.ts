@@ -5,7 +5,6 @@ import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
 import { FormController } from "../../controller/FormController";
 import { IControlledModel } from "../../plugin/IControlledModel";
 import { Registry } from "../../Registry";
-import { ShapeStore } from "../../stores/ShapeStore";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../objs/IObj";
 import { ChildShapeContext } from "./ChildShapeContext";

@@ -28,7 +28,7 @@ export class NodeEditorTestUtils {
             const nodeObj = registry.data.helper.node.createObj(nodeType);
             const nodeView: NodeShape = registry.data.helper.node.createView(nodeType, nodeObj);
             
-            registry.data.shape.node.addItem(nodeView);
+            registry.data.node.items.addItem(nodeView);
             registry.stores.objStore.addItem(nodeObj);
     
             nodeView.getBounds().moveTo(Point.fromString(row[posColumnIndex]));

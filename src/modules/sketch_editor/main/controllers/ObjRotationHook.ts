@@ -14,7 +14,7 @@ export class ObjRotationHook extends MeshHookAdapter {
     }
 
     hook_setRotation(obj: MeshObj, rot: Point_3) {
-        const view = <MeshShape> this.registry.data.shape.scene.getByObjId(obj.id);
+        const view = <MeshShape> this.registry.data.sketch.items.find(item => item.getObj().id, obj.id)[0];
         view.setRotation(rot.y);
     }
 }

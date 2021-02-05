@@ -10,6 +10,7 @@ import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
 import { SketchEditorModule } from "../../SketchEditorModule";
 import { PointerTracker } from "../../../../../core/controller/PointerHandler";
+import { PathViewFactory } from "../../models/factories/PathViewFactory";
 
 export const PathToolId = 'path-tool';
 export class PathTool extends PointerTool<AbstractShape> {
@@ -30,7 +31,7 @@ export class PathTool extends PointerTool<AbstractShape> {
 
     keydown(e: IKeyboardEvent) {
         if (e.keyCode === Keyboard.Enter) {
-            this.canvas.store.clearSelection();
+            this.canvas.data.items.clear();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
 
             this.registry.services.history.createSnapshot();
@@ -61,7 +62,7 @@ export class PathTool extends PointerTool<AbstractShape> {
     }
 
     private drawPath() {
-        const pathes = <PathShape[]> this.canvas.store.getSelectedItemsByType(PathShapeType);
+        const pathes = <PathShape[]> this.canvas.data.selection.getItemsByType(PathShapeType);
 
         if (pathes.length > 1) { return }
 
@@ -86,7 +87,7 @@ export class PathTool extends PointerTool<AbstractShape> {
     private startNewPath() {
         const canvas = <SketchEditorModule> this.canvas;
         
-        return canvas.getViewStore().getViewFactory(PathShapeType).instantiateOnCanvas(canvas, undefined);
+        return new PathViewFactory(this.registry).instantiateOnCanvas(canvas, undefined);
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

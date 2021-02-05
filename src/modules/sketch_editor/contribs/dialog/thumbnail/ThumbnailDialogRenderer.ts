@@ -4,8 +4,6 @@ import { Registry } from "../../../../../core/Registry";
 import { UI_Dialog } from "../../../../../core/ui_components/elements/surfaces/dialog/UI_Dialog";
 import { ThumbnailCanvasId } from "./ThumbnailCanvasModule";
 import { ThumbnailMakerControllerProps } from "./ThumbnailDialogProps";
-
-
 export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
     private registry: Registry;
 
@@ -14,7 +12,7 @@ export class ThumbnailDialogRenderer implements IRenderer<UI_Dialog> {
     }
 
     renderInto(dialog: UI_Dialog) {
-        const meshView = this.registry.data.shape.scene.getOneSelectedShape() as MeshShape;
+        const meshView = this.registry.data.sketch.selection.getAllItems()[0] as MeshShape;
         dialog.width = '560px';
 
         let row = dialog.row({key: '1'});

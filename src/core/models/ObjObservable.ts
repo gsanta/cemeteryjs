@@ -6,11 +6,12 @@ export enum ObjEventType {
     ScaleChanged = 'ScaleChanged',
     RotationChanged = 'RotationChanged',
     PointerOver = 'PointerOver',
-    PointerOut = 'PointerOut'
+    PointerOut = 'PointerOut',
+    SelectionChanged = 'SelectionChanged'
 }
 
 export interface ObjEventData {
-    obj: IObj;
+    obj?: IObj;
     eventType: ObjEventType;
 }
 

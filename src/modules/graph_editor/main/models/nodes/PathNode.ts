@@ -23,7 +23,7 @@ export class PathNode extends AbstractNodeFactory {
         const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new PathNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
+        nodeView.id = this.registry.data.node.items.generateId(nodeView);
 
         return nodeView;
     }
@@ -31,7 +31,7 @@ export class PathNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new PathNodeParams());
-        obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.id = this.registry.stores.objStore.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;

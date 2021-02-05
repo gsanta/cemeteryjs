@@ -30,7 +30,7 @@ export class DeleteTool extends PointerTool<AbstractShape> {
         if (hoveredItem.isContainedView()) {
             hoveredItem.containerShape.deleteContainedView(hoveredItem);
         } else {
-            this.canvas.store.removeItem(hoveredItem);
+            this.canvas.data.items.removeItem(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -42,8 +42,8 @@ export class DeleteTool extends PointerTool<AbstractShape> {
 
     
     dragEnd() {
-        const intersectingViews = getIntersectingViews(this.canvas.store, this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.canvas.store.removeItem(view));
+        const intersectingViews = getIntersectingViews(this.canvas.data.items, this.rectangleSelection);
+        intersectingViews.forEach(view =>  this.canvas.data.items.removeItem(view));
 
         this.rectangleSelection = undefined;
 

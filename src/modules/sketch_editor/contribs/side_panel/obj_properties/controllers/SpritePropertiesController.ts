@@ -30,7 +30,9 @@ export class FrameNameController extends ParamController {
     private tempVal: string;
 
     val() {
-        return this.tempVal ? this.tempVal : (<SpriteShape> this.registry.data.shape.scene.getOneSelectedShape()).getObj().frameName || '';
+        const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        return this.tempVal ? this.tempVal : spriteShape.getObj().frameName || '';
     }
 
     change(val: string) {
@@ -39,11 +41,12 @@ export class FrameNameController extends ParamController {
     }
 
     blur() {
-        const spriteView = (<SpriteShape> this.registry.data.shape.scene.getOneSelectedShape());
-        spriteView.getObj().frameName = this.tempVal;
+        const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        spriteShape.getObj().frameName = this.tempVal;
         this.tempVal = undefined;
         this.registry.services.history.createSnapshot();
-        this.registry.engine.sprites.updateInstance(spriteView.getObj());
+        this.registry.engine.sprites.updateInstance(spriteShape.getObj());
         this.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 }
@@ -51,14 +54,17 @@ export class FrameNameController extends ParamController {
 export class SelectSpriteSheetController extends ParamController {
 
     val() {
-        return (<SpriteShape> this.registry.data.shape.scene.getOneSelectedShape()).getObj().spriteSheetId;
+        const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        return spriteShape.getObj().spriteSheetId;
     }
 
     change(val: string) {
-        const spriteView = (<SpriteShape> this.registry.data.shape.scene.getOneSelectedShape());
-        spriteView.getObj().spriteSheetId = val;
+        const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        spriteShape.getObj().spriteSheetId = val;
         this.registry.services.history.createSnapshot();
-        this.registry.engine.sprites.updateInstance(spriteView.getObj());
+        this.registry.engine.sprites.updateInstance(spriteShape.getObj());
         this.registry.services.render.reRender(UI_Region.Sidepanel);
     }
 
@@ -86,9 +92,9 @@ export class ScaleXController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const spriteView = <SpriteShape> this.registry.data.shape.scene.getOneSelectedShape();
-    
-            return spriteView.getObj().getScale().x;
+            const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+            return spriteShape.getObj().getScale().x;
         }
     }
 
@@ -98,15 +104,15 @@ export class ScaleXController extends ParamController {
     }
 
     blur() {
-        const spriteView = <SpriteShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
                 const scaleX = parseFloat(this.tempVal);
                 
-                const currScale = spriteView.getObj().getScale();
-                spriteView.getObj().setScale(new Point(scaleX, currScale.y))
-                this.registry.engine.sprites.updateInstance(spriteView.getObj());
+                const currScale = spriteShape.getObj().getScale();
+                spriteShape.getObj().setScale(new Point(scaleX, currScale.y))
+                this.registry.engine.sprites.updateInstance(spriteShape.getObj());
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {
@@ -131,9 +137,9 @@ export class ScaleYController extends ParamController {
         if (this.tempVal) {
             return this.tempVal;
         } else {
-            const spriteView = <SpriteShape> this.registry.data.shape.scene.getOneSelectedShape();
+            const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
     
-            return spriteView.getObj().getScale().y;
+            return spriteShape.getObj().getScale().y;
         }
     }
 
@@ -143,15 +149,15 @@ export class ScaleYController extends ParamController {
     }
 
     blur() {
-        const spriteView = <SpriteShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const spriteShape = <SpriteShape> this.registry.data.sketch.selection.getAllItems()[0];
 
         try {
             if (this.tempVal !== undefined && this.tempVal !== "") {
                 const scaleY = parseFloat(this.tempVal);
                 
-                const currScale = spriteView.getObj().getScale();
-                spriteView.getObj().setScale(new Point(currScale.x, scaleY))
-                this.registry.engine.sprites.updateInstance(spriteView.getObj());
+                const currScale = spriteShape.getObj().getScale();
+                spriteShape.getObj().setScale(new Point(currScale.x, scaleY))
+                this.registry.engine.sprites.updateInstance(spriteShape.getObj());
                 this.registry.services.history.createSnapshot();
             }
         } catch(e) {

@@ -30,7 +30,7 @@ export class LightViewFactory extends ShapeFactoryAdapter {
         lightObj.setPosition(new Point_3(objPos.x, lightObj.getPosition().y, objPos.y));
 
         this.registry.stores.objStore.addItem(lightObj);
-        panel.getViewStore().addItem(lightView);
+        panel.data.items.addItem(lightView);
 
         return lightView;
     }

@@ -25,7 +25,7 @@ export class RayCasterNode extends AbstractNodeFactory {
         const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RayCasterNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
+        nodeView.id = this.registry.data.node.items.generateId(nodeView);
 
         return nodeView;
     }
@@ -34,7 +34,7 @@ export class RayCasterNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         const params = new RayCasterNodeParams(this.registry, obj);
         obj.setParams(params);
-        obj.id = this.registry.stores.objStore.generateId(obj.type);
+        obj.id = this.registry.stores.objStore.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
         return obj;
     }

@@ -34,7 +34,7 @@ export class NodeEditorExporter extends AbstractModuleExporter {
     }
 
     exportViews(): ShapeJson[] {
-        return this.registry.data.shape.node.getAllItems().map(view => view.toJson());
+        return this.registry.data.node.items.getAllItems().map(view => view.toJson());
     }
 
     exportObjs(): ObjJson[] {

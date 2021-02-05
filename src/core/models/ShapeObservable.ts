@@ -1,15 +1,15 @@
-import { IObj } from "./objs/IObj";
 import { AbstractShape } from "./shapes/AbstractShape";
 
 
 export enum ShapeEventType {
     PositionChanged = 'PositionChanged',
     ScaleChanged = 'ScaleChanged',
-    RotationChanged = 'RotationChanged'
+    RotationChanged = 'RotationChanged',
+    SelectionChanged = 'SelectionChanged'
 }
 
 export interface ShapeEventData {
-    shape: AbstractShape;
+    shape?: AbstractShape;
     eventType: ShapeEventType;
 }
 

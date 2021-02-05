@@ -1,7 +1,6 @@
 import { TableDefinition } from "cucumber";
-import { IObj } from "../../../../../src/core/models/objs/IObj";
-import { Canvas2dPanel } from "../../../../../src/core/plugin/Canvas2dPanel";
 import { Registry } from "../../../../../src/core/Registry";
+import { getShapeFactories } from "../../../../../src/modules/sketch_editor/main/io/SceneEditorImporter";
 import { SketchEditorModule, SketchEditorPanelId } from "../../../../../src/modules/sketch_editor/main/SketchEditorModule";
 import { Point } from "../../../../../src/utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../src/utils/geometry/shapes/Rectangle";
@@ -21,7 +20,7 @@ export class SceneEditorTestUtils {
         tableDef.rows().forEach((row: string[]) => {
             const dimensionsIndex = viewTableProps.indexOf(ViewTableProp.Bounds);
             let dimensions: Rectangle = dimensionsIndex !== -1 ? Rectangle.fromString(row[dimensionsIndex]) : new Rectangle(new Point(100, 100), new Point(110, 110));
-            const view = canvasPanel.getViewStore().getViewFactory(row[0]).instantiateOnCanvas(canvasPanel, dimensions);
+            const view = getShapeFactories(registry).get(row[0]).instantiateOnCanvas(canvasPanel, dimensions);
     
             row.forEach(((prop, index) => setViewProperty(canvasPanel, view, viewTableProps[index], prop)))
         });

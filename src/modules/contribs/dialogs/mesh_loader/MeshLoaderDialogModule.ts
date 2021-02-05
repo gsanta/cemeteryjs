@@ -18,7 +18,7 @@ export class MeshLoaderDialogModule extends UI_Panel {
             const canvas = new MeshLoaderPreviewCanvas(registry);
             registry.services.module.ui.registerCanvas(canvas.getCanvas());
     
-            const selectedViews = registry.data.shape.scene.getSelectedItems();
+            const selectedViews = registry.data.sketch.selection.getAllItems();
             const meshObj = selectedViews[0].getObj() as MeshObj;
     
             const controller = new MeshLoaderDialogControllers(registry, canvas, meshObj);

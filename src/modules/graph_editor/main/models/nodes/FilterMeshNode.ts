@@ -24,7 +24,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
         const nodeView = new NodeShape(this.registry);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new FilterMeshNodeControllers(this.registry, obj));
-        nodeView.id = this.registry.data.shape.node.generateId(nodeView);
+        nodeView.id = this.registry.data.node.items.generateId(nodeView);
 
         return nodeView;
     }
@@ -32,7 +32,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj<FilterMeshNodeParams>(this.nodeType, {displayName: this.displayName});
         obj.setParams(new FilterMeshNodeParams(obj));
-        obj.id = this.registry.stores.objStore.generateId(obj.type) ;
+        obj.id = this.registry.stores.objStore.generateId(obj) ;
         obj.graph = this.registry.data.helper.node.graph;
         
         return obj;

@@ -26,7 +26,7 @@ export class PathController extends ParamController<string> {
     }
 
     values() {
-        return this.registry.data.shape.scene.getShapesByType(PathShapeType).map(pathView => pathView.id);
+        return this.registry.data.sketch.items.getItemsByType(PathShapeType).map(pathView => pathView.id);
     }
 
     val() {

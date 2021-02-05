@@ -13,17 +13,11 @@ import { CameraTool, CameraToolId } from './tools/CameraTool';
 import { Tool } from './tools/Tool';
 import { UI_Panel, UI_Region } from './UI_Panel';
 import { IStore } from '../stores/IStore';
+import { ItemData } from '../lookups/ItemData';
 
-function getScreenSize(canvasId: string): Point {
-    if (typeof document !== 'undefined') {
-        const svg: HTMLElement = document.getElementById(canvasId);
-
-        if (svg) {
-            const rect: ClientRect = svg.getBoundingClientRect();
-            return new Point(rect.width, rect.height);
-        }
-    }
-    return undefined;
+function getScreenSize(htmlElement: HTMLElement): Point {
+    const rect: ClientRect = htmlElement.getBoundingClientRect();
+    return new Point(rect.width, rect.height);
 }
 
 export function calcOffsetFromDom(element: HTMLElement): Point {
@@ -47,7 +41,7 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     readonly hotkey: HotkeyHandler<D>;
     readonly tool: ToolHandler<D>;
     readonly pointer: PointerHandler<D>;
-    abstract readonly store: IStore<D>;
+    abstract readonly data: ItemData<D>;
 
     protected renderFunc: () => void;
 
@@ -85,8 +79,9 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     destroy(): void {}
 
     resize(): void {
-        const screenSize = getScreenSize(this.id);
+        const screenSize = getScreenSize(this.htmlElement);
         screenSize && this.getCamera().resize(screenSize);
+        this.pointer.pointer.screenSize = screenSize; 
 
         this.registry.services.render.reRender(this.region);
     }
@@ -95,6 +90,11 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     out(): void {
         this.registry.ui.helper.hoveredPanel = undefined;
         this.pointer.pointer.pickedItem = undefined;
+    }
+
+    mounted(htmlElement: HTMLElement) {
+        super.mounted(htmlElement);
+        this.pointer.pointer.screenSize = getScreenSize(this.htmlElement); 
     }
 
     getOffset() {

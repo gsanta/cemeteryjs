@@ -276,7 +276,7 @@ export class SaveController extends ParamController {
 
     async click() {
         const { modelObj } = this.meshObj;
-        const meshView = <MeshShape> this.registry.data.shape.scene.getOneSelectedShape();
+        const meshView = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
         const meshObj = meshView.getObj();
         const assetObj = new AssetObj({path: modelObj.path, name: modelObj.name, assetType: modelObj.assetType});
         

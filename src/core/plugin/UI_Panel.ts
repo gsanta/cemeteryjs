@@ -49,7 +49,8 @@ export class UI_Panel {
     renderer: IRenderer;
     controller: FormController;
     paramController: UIController;
-    data: Map<string, any> = new Map();
+    // TODO remove it
+    map: Map<string, any> = new Map();
 
     private onMountedFunc: () => void;
     private onUnmountedFunc: () => void;

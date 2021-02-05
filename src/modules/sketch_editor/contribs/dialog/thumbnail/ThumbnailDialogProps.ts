@@ -18,7 +18,7 @@ export class ThumbnailCreateControl extends ParamController<any> {
     
     async click(context: PropContext, element: UI_Element) {
         const engine = (<Canvas3dPanel<IObj>> element.canvasPanel).engine;
-        const meshView = context.registry.data.shape.scene.getOneSelectedShape() as MeshShape;
+        const meshView = context.registry.data.sketch.selection.getAllItems()[0] as MeshShape;
 
         // TODO: should not cast to Bab_EngineFacade
         const thumbnail = await Tools.CreateScreenshotUsingRenderTargetAsync((engine as Bab_EngineFacade).engine, engine.getCamera().camera, 1000)

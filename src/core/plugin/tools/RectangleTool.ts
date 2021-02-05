@@ -7,15 +7,13 @@ import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
 import { UI_Region } from '../UI_Panel';
 import { createRectFromMousePointer, ToolAdapter } from './ToolAdapter';
 
-export abstract class RectangleTool<D> extends ToolAdapter<D> {
+export abstract class RectangleTool<AbstractShape> extends ToolAdapter<AbstractShape> {
     protected rectangleFeedback: Rectangle;
     protected tmpView: AbstractShape;
-    protected viewStore: ShapeStore;
     protected rectRadius = 50;
 
-    constructor(type: string, panel: AbstractCanvasPanel<D>, store: ShapeStore, registry: Registry) {
+    constructor(type: string, panel: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
         super(type, panel, registry);
-        this.viewStore = store;
     }
 
     click() {
@@ -24,15 +22,15 @@ export abstract class RectangleTool<D> extends ToolAdapter<D> {
 
         const view = this.createView(rect);
 
-        this.viewStore.clearSelection()
-        this.viewStore.addSelectedItem(view);
+        this.canvas.data.selection.clear()
+        this.canvas.data.selection.addItem(view);
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();
         this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
 
-    drag(pointer: PointerTracker<D>) {
+    drag(pointer: PointerTracker<AbstractShape>) {
         super.drag(pointer)
 
         this.tmpView && this.removeTmpView();
@@ -44,7 +42,7 @@ export abstract class RectangleTool<D> extends ToolAdapter<D> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    dragEnd(pointer: PointerTracker<D>) {
+    dragEnd(pointer: PointerTracker<AbstractShape>) {
         super.dragEnd(pointer);
 
         this.registry.services.level.updateCurrentLevel();

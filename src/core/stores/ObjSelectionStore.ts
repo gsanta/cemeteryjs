@@ -1,80 +1,38 @@
 import { IObj } from "../models/objs/IObj";
+import { IStore } from "./IStore";
 
-export class ObjSelectionStore {
-    protected objs: IObj[] = [];
-    protected objById: Map<string, IObj> = new Map();
-    protected nameCache: Map<string, IObj> = new Map();
-    private objsByType: Map<string, IObj[]> = new Map();
-
-    addObj(obj: IObj) {
-        this.objs.push(obj);
-        this.objById.set(obj.id, obj);
-
-        if (!this.objsByType.get(obj.objType)) {
-            this.objsByType.set(obj.objType, []);
-        }
-
-        this.objsByType.get(obj.objType).push(obj);
+export class ObjSelectionStore implements IStore<IObj> {
+    private items: IObj[] = [];
+    
+    addItem(shape: IObj) {
+        this.items.push(shape);
     }
 
-    removeObj(obj: IObj) {
-        this.objs.splice(this.objs.indexOf(obj), 1);
-        this.objById.delete(obj.id);
-        this.nameCache.delete(obj.name);
-
-        const thisObjTypes = this.objsByType.get(obj.objType) || [];
-        thisObjTypes.splice(thisObjTypes.indexOf(obj), 1);
-        if (thisObjTypes.length === 0) {
-            this.objsByType.delete(obj.objType);
-        }
+    removeItem(item: IObj) {
+        this.items = this.items.filter(i => i !== item);
     }
 
-    getById(id: string) {
-        return this.objById.get(id);
+    getItemById(id: string): IObj {
+        return this.items.find(item => item.id === id);
     }
 
-    getByName(name: string) {
-        if (this.nameCache.get(name) && this.nameCache.get(name).name !== name) {
-            this.nameCache.delete(name);
-        }
-
-        if (!this.nameCache.get(name)) {
-            this.addObjWithNameToCache(name);
-        }
-
-        return this.nameCache.get(name);
+    getAllItems(): IObj[] {
+        return this.items;
     }
 
-    private addObjWithNameToCache(name: string) {
-        const obj = this.objs.find(obj => obj.name === name);
-        this.nameCache.set(name, obj);
+    getItemsByType(type: string): IObj[] {
+        return this.items.filter(item => item.objType === type);
     }
 
-    getByNameOrId(nameOrId: string) {
-        return this.getById(nameOrId) || this.getByName(nameOrId);
+    find<T>(prop: (item: IObj) => T, expectedVal: T): IObj[] {
+        throw new Error("Method not implemented.");
     }
 
-    getObjsByType(type: string): IObj[] {
-        return this.objsByType.get(type) || [];
+    clear(): void {
+        this.items = [];
     }
 
-    getAllTypes(): string[] {
-        return Array.from(this.objsByType.keys());
-    }
-
-    getAll(): IObj[] {
-        return this.objs;
-    }
-
-    size() {
-        return this.objs.length;
-    }
-
-    clear() {
-        this.objs.forEach(obj => this.removeObj(obj));
-        this.objs = [];
-        this.objById = new Map();
-        this.nameCache = new Map();
-        this.objsByType = new Map();
+    generateId(): string {
+        return undefined;
     }
 }

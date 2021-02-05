@@ -12,36 +12,10 @@ export interface UIModule {
 }
 
 export class ModuleService {
-    private registry: Registry;
-    private uiModules: UIModule[] = [];
     ui: UI_Modules;
 
-    constructor(registry: Registry) {
-        this.registry = registry;
+    constructor() {
         this.ui = new UI_Modules();
-    }
-
-    registerUIModule(uiModule: UIModule) {
-        this.registerPanels(uiModule.panels);
-        this.uiModules.push(uiModule);
-    }
-
-    unRegisterModule(moduleName: string) {
-        // TODO implement unregistration
-    }
-
-    private registerPanels(panels: UI_Panel[]) {
-        panels.forEach(panel => {
-            switch(panel.region) {
-                case UI_Region.Canvas1:
-                case UI_Region.Canvas2:
-                    this.ui.registerCanvas(<AbstractCanvasPanel<any>> panel);
-                    break;
-                default:
-                    this.ui.registerPanel(panel);
-                    break;
-            }
-        });
     }
 }
 

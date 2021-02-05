@@ -17,12 +17,15 @@ export class PathIdController extends ParamController<any> {
     }
 
     blur(context) {
-        context.releaseTempVal((val) => (<PathShape> context.registry.stores.views.getOneSelectedView()).id = val);
+        const pathShape = <PathShape> this.registry.data.sketch.selection.getAllItems()[0];
+
+        context.releaseTempVal((val) => pathShape.id = val);
         context.registry.services.history.createSnapshot();
         context.registry.services.render.reRender(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
     }
     
     defaultVal(context) {
-        return (<PathShape> context.registry.stores.views.getOneSelectedView()).id
+        const pathShape = <PathShape> this.registry.data.sketch.selection.getAllItems()[0];
+        return pathShape.id;
     }
 }

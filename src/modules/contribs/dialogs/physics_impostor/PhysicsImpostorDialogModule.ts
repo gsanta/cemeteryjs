@@ -12,7 +12,7 @@ export class PhysicsImpostorDialogModule extends UI_Panel {
         super(registry, UI_Region.Dialog, PhysicsImpostorDialogDialogId, 'Physics Impostor');
         
         this.onOpen(() => {
-            const selectedViews = registry.data.shape.scene.getSelectedItems();
+            const selectedViews = registry.data.sketch.selection.getAllItems();
             const meshObj = selectedViews[0].getObj() as MeshObj;
     
             const controller = new PhysicsImpostorDialogController(registry, meshObj);

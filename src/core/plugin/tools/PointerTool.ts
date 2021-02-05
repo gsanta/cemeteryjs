@@ -44,7 +44,7 @@ export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
     }
     up(pointer: PointerTracker<IObj>): boolean {
         if (this.pickedItem) {
-            this.canvas.store.addSelectedItem(this.pickedItem);
+            this.canvas.data.selection.addItem(this.pickedItem);
             return true;
         }
 
@@ -91,14 +91,14 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
 
         if (this.pickedItem.isContainedView()) {
             if (!this.pickedItem.containerShape.isSelected()) {
-                this.canvas.store.clearSelection();
-                this.canvas.store.addSelectedItem(this.pickedItem.containerShape);
+                this.canvas.data.selection.clear();
+                this.canvas.data.selection.addItem(this.pickedItem.containerShape);
             }
             this.pickedItem.containerShape.setActiveContainedView(this.pickedItem);
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         } else {
-            this.canvas.store.clearSelection();
-            this.canvas.store.addSelectedItem(this.pickedItem);
+            this.canvas.data.selection.clear();
+            this.canvas.data.selection.addItem(this.pickedItem);
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
 
@@ -117,7 +117,7 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
         if (this.pickedItem.isContainedView()) {
             this.pickedItem.move(this.canvas.pointer.pointer.getDiff())
         } else {
-            const shapes = this.canvas.store.getSelectedItems();
+            const shapes = this.canvas.data.selection.getAllItems();
             shapes.filter(shape => !shapes.includes(shape.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
         }
 

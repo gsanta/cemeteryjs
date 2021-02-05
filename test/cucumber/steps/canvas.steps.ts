@@ -6,6 +6,7 @@ import { IPointerEventType } from '../../../src/core/controller/PointerHandler';
 import { AbstractShape } from '../../../src/core/models/shapes/AbstractShape';
 import { Canvas2dPanel } from '../../../src/core/plugin/Canvas2dPanel';
 import { NodeEditorPerspectiveName, SceneEditorPerspectiveName } from '../../../src/core/services/UI_PerspectiveService';
+import { ShapeStore } from '../../../src/core/stores/ShapeStore';
 import { NodeEditorPanelId } from '../../../src/modules/graph_editor/NodeEditorModule';
 import { SketchEditorPanelId } from '../../../src/modules/sketch_editor/main/SketchEditorModule';
 import { Point } from '../../../src/utils/geometry/shapes/Point';
@@ -36,7 +37,7 @@ When('mouse down at \'{int}:{int}\'', function(x: number, y: number) {
 When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
     
-    const shape = canvasPanel.getViewStore().getAllItems().find(view => view.getBounds().containsPoint(new Point(x, y)));
+    const shape = canvasPanel.data.items.getAllItems().find(view => view.getBounds().containsPoint(new Point(x, y)));
 
     if (shape) {
         canvasPanel.pointer.pointerOver({pickedItemId: shape.id, pointers: [], eventType: IPointerEventType.PointerOver}); 
@@ -52,7 +53,7 @@ When('mouse click at \'{int}:{int}\'', function(x: number, y: number) {
 When('mouse click on \'{word}\'', function(viewId: string) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    const shape = canvasPanel.getViewStore().getItemById(viewId);
+    const shape = canvasPanel.data.items.getItemById(viewId);
 
     if (!shape) { throw new Error(`View not found with id: ${viewId}`); }
 
@@ -69,7 +70,7 @@ When('mouse click on \'{word}\'', function(viewId: string) {
 When('mouse drags from \'{int}:{int}\' to \'{int}:{int}\'', function(xStart: number, yStart: number, xEnd: number, yEnd: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
 
-    const shape = canvasPanel.getViewStore().getAllItems().find(view => view.getBounds().containsPoint(new Point(xStart, yStart)));
+    const shape = canvasPanel.data.items.getAllItems().find(view => view.getBounds().containsPoint(new Point(xStart, yStart)));
 
     let pointerEvent = MouseEventAdapter.mouseMove(createFakeMouseEvent(xStart, yStart));
     canvasPanel.pointer.pointerMove(pointerEvent); 
@@ -94,8 +95,8 @@ When('mouse drags from \'{int}:{int}\' to \'{int}:{int}\'', function(xStart: num
 When('mouse drags from view \'{word}\' to view \'{word}\'', function(startViewPath: string, endViewPath: string) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
 
-    const view1 = findViewOrContainedView(canvasPanel.getViewStore(), startViewPath);
-    const view2 = findViewOrContainedView(canvasPanel.getViewStore(), endViewPath);
+    const view1 = findViewOrContainedView(canvasPanel.data.items as ShapeStore, startViewPath);
+    const view2 = findViewOrContainedView(canvasPanel.data.items as ShapeStore, endViewPath);
     const view1Pos = view1.getBounds().getBoundingCenter();
     const view2Pos = view2.getBounds().getBoundingCenter();
 
@@ -113,7 +114,7 @@ When('mouse drags from view \'{word}\' to view \'{word}\'', function(startViewPa
 When('mouse drags from view \'{word}\' to \'{int}:{int}\'', function(startViewPath: string, xEnd: number, yEnd: number) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
 
-    const shape = findViewOrContainedView(canvasPanel.getViewStore(), startViewPath);
+    const shape = findViewOrContainedView(canvasPanel.data.items as ShapeStore, startViewPath);
     const shape1Pos = shape.getBounds().getBoundingCenter();
 
     let pointerEvent = MouseEventAdapter.mouseMove(createFakeMouseEvent(shape1Pos.x, shape1Pos.y)); 
@@ -129,7 +130,7 @@ When('mouse drags from view \'{word}\' to \'{int}:{int}\'', function(startViewPa
 When('mouse move to view \'{word}\'', function(viewPath: string) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
 
-    const shape = findViewOrContainedView(canvasPanel.getViewStore(), viewPath);
+    const shape = findViewOrContainedView(canvasPanel.data.items as ShapeStore, viewPath);
 
     canvasPanel.pointer.pointerOver({pickedItemId: shape.id, pointers: [], eventType: IPointerEventType.PointerOver}); 
 });
@@ -137,7 +138,7 @@ When('mouse move to view \'{word}\'', function(viewPath: string) {
 When('mouse move to view \'{word}\'', function(viewPath: string) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
 
-    const shape = findViewOrContainedView(canvasPanel.getViewStore(), viewPath);
+    const shape = findViewOrContainedView(canvasPanel.data.items as ShapeStore, viewPath);
 
     canvasPanel.pointer.pointerOver({pickedItemId: shape.id, pointers: [], eventType: IPointerEventType.PointerOver}); 
 });
@@ -162,7 +163,7 @@ Then('active tool is \'{word}\'', function(toolId: string) {
 function findViewAtPoint(point: Point) {
     const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>;
 
-    const viewAtPoint = canvasPanel.getViewStore().getAllItems().find(view => view.getBounds().containsPoint(point));
+    const viewAtPoint = canvasPanel.data.items.getAllItems().find(view => view.getBounds().containsPoint(point));
 
     return viewAtPoint;
 }
