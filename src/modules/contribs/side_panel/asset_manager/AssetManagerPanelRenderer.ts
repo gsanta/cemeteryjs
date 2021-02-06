@@ -1,4 +1,4 @@
-import { IRenderer } from "../../../../core/plugin/IRenderer";
+import { IRenderer } from "../../../../core/models/IRenderer";
 import { UI_Container } from "../../../../core/ui_components/elements/UI_Container";
 import { UI_Layout } from "../../../../core/ui_components/elements/UI_Layout";
 import { AssetManagerSidepanelControllerProps } from "./AssetManagerSidepanelProps";

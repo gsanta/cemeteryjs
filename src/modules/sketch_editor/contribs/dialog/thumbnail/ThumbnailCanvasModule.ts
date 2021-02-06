@@ -5,9 +5,9 @@
 import { FormController } from "../../../../../core/controller/FormController";
 import { Bab_EngineFacade } from "../../../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { IObj } from "../../../../../core/models/objs/IObj";
-import { Canvas3dPanel } from "../../../../../core/plugin/Canvas3dPanel";
-import { CameraTool } from "../../../../../core/plugin/tools/CameraTool";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { CameraTool } from "../../../../../core/controller/tools/CameraTool";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { AbstractModuleExporter } from "../../../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../../../core/services/import/AbstractModuleImporter";

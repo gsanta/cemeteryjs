@@ -1,7 +1,7 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
-import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { FormController, ParamController } from '../../controller/FormController';
-import { UI_Panel } from '../../plugin/UI_Panel';
+import { UI_Panel } from '../../models/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
 import { MouseEventAdapter } from '../../controller/MouseEventAdapter';

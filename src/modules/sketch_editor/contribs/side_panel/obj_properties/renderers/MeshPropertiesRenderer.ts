@@ -1,4 +1,4 @@
-import { IRenderer } from "../../../../../../core/plugin/IRenderer";
+import { IRenderer } from "../../../../../../core/models/IRenderer";
 import { Registry } from "../../../../../../core/Registry";
 import { UI_Accordion } from "../../../../../../core/ui_components/elements/surfaces/UI_Accordion";
 import { UI_Layout } from "../../../../../../core/ui_components/elements/UI_Layout";

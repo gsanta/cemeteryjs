@@ -1,11 +1,11 @@
-import { IObj } from "../models/objs/IObj";
-import { LightObj, LightObjType } from "../models/objs/LightObj";
-import { MeshObj, MeshObjType } from "../models/objs/MeshObj";
-import { RayObj, RayObjType } from "../models/objs/RayObj";
-import { SpriteObj, SpriteObjType } from "../models/objs/SpriteObj";
-import { SpriteSheetObj, SpriteSheetObjType } from "../models/objs/SpriteSheetObj";
-import { Registry } from "../Registry";
-import { IdGenerator } from "./IdGenerator";
+import { IObj } from "../../models/objs/IObj";
+import { LightObj, LightObjType } from "../../models/objs/LightObj";
+import { MeshObj, MeshObjType } from "../../models/objs/MeshObj";
+import { RayObj, RayObjType } from "../../models/objs/RayObj";
+import { SpriteObj, SpriteObjType } from "../../models/objs/SpriteObj";
+import { SpriteSheetObj, SpriteSheetObjType } from "../../models/objs/SpriteSheetObj";
+import { Registry } from "../../Registry";
+import { IdGenerator } from "../IdGenerator";
 import { IStore } from "./IStore";
 
 export interface ObjStoreHook {

@@ -2,7 +2,7 @@ import { ParamController, TextFieldController } from "../../../../core/controlle
 import { DialogController } from "../../../../core/controller/UIController";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
 import { PhysicsImpostorObj, PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { ApplicationError } from "../../../../core/services/ErrorService";
 

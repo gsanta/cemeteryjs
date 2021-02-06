@@ -1,6 +1,6 @@
-import { Camera2D } from "../models/misc/camera/Camera2D";
-import { ShapeObservable } from "../models/ShapeObservable";
-import { AbstractShape } from "../models/shapes/AbstractShape";
+import { Camera2D } from "../misc/camera/Camera2D";
+import { ShapeObservable } from "../ShapeObservable";
+import { AbstractShape } from "../shapes/AbstractShape";
 import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
 
 export abstract class Canvas2dPanel extends AbstractCanvasPanel<AbstractShape> {

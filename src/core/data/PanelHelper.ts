@@ -1,5 +1,5 @@
-import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
-import { UI_Panel } from "../plugin/UI_Panel";
+import { AbstractCanvasPanel } from "../models/modules/AbstractCanvasPanel";
+import { UI_Panel } from "../models/UI_Panel";
 
 export class PanelHelper {
     private _dialogPanel: UI_Panel;

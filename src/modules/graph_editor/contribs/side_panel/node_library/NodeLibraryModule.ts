@@ -1,6 +1,6 @@
 
 
-import { UI_Panel, UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Panel, UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { NodeLibraryController } from "./NodeLibraryController";
 import { NodeSelectorRenderer } from "./NodeLibraryRenderer";

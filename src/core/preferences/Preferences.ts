@@ -1,5 +1,5 @@
 import { SceneEditorPerspectiveName } from '../services/UI_PerspectiveService';
-import { UI_Region } from '../plugin/UI_Panel';
+import { UI_Region } from '../models/UI_Panel';
 
 
 export interface Preferences {

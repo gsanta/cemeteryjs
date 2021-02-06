@@ -1,6 +1,6 @@
 import { DragAndDropController } from "../../../../../core/controller/FormController";
 import { UIController } from "../../../../../core/controller/UIController";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { NodeShape } from "../../../main/models/shapes/NodeShape";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";

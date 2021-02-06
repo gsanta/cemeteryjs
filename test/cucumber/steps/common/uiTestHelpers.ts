@@ -1,6 +1,6 @@
 import { AbstractShape } from "../../../../src/core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from "../../../../src/core/plugin/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../../../src/core/plugin/Canvas2dPanel";
+import { AbstractCanvasPanel } from "../../../../src/core/models/modules/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../../../../src/core/models/modules/Canvas2dPanel";
 import { FormController } from "../../../../src/core/controller/FormController";
 import { UI_Element } from "../../../../src/core/ui_components/elements/UI_Element";
 

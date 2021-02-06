@@ -1,7 +1,7 @@
 import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
 import { UIController } from "../../../../../core/controller/UIController";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { DirectionNodeParams } from "../../models/nodes/DirectionNode";
 import { MoveDirection } from "../../models/nodes/MoveNode";

@@ -1,15 +1,14 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../plugin/Canvas2dPanel";
 import { FormController } from "../../controller/FormController";
-import { IControlledModel } from "../../plugin/IControlledModel";
+import { UIController } from "../../controller/UIController";
+import { AbstractCanvasPanel } from "../modules/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../modules/Canvas2dPanel";
 import { Registry } from "../../Registry";
 import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../objs/IObj";
 import { ChildShapeContext } from "./ChildShapeContext";
 import { ChildShape } from "./child_views/ChildShape";
-import { UIController } from "../../controller/UIController";
 
 export interface ShapeJson {
     id: string;
@@ -48,7 +47,7 @@ export interface ShapeRenderer {
 }
 
 
-export abstract class AbstractShape implements IControlledModel {
+export abstract class AbstractShape {
     id: string;
     viewType: string;
     tags: Set<ShapeTag> = new Set();

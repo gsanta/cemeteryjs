@@ -1,11 +1,11 @@
-import { AbstractCanvasPanel, InteractionMode, ZoomInController, ZoomOutController } from "../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel, InteractionMode, ZoomInController, ZoomOutController } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { PropContext, ParamController } from "../../../../core/controller/FormController";
 import { CommonToolController } from "../../../../core/controller/ToolHandler";
 import { Registry } from "../../../../core/Registry";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { GameToolId } from "../../main/controllers/tools/GameTool";
 import { UIController } from "../../../../core/controller/UIController";
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../core/models/UI_Panel";
 import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_ScaleTool";
 import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_RotationTool";

@@ -1,4 +1,4 @@
-import { UI_Panel, UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Panel, UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { LightPropertiesRenderer } from "./renderers/LightPropertiesRenderer";
 import { LightShapeType } from "../../../main/models/shapes/LightShape";

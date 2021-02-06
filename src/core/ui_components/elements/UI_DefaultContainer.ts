@@ -9,7 +9,7 @@ import { UI_Column } from './UI_Column';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_Image } from './UI_Image';
 import { UI_Icon } from './UI_Icon';
-import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { UI_ControlledElementConfig, UI_ElementConfig } from './UI_Element';
 import { ParamController } from '../../controller/FormController';
 import { TreeController } from './complex/tree/TreeController';

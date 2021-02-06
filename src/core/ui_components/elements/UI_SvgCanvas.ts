@@ -2,7 +2,7 @@ import { UI_ElementType } from './UI_ElementType';
 import { UI_SvgGroup } from './svg/UI_SvgGroup';
 import { UI_Toolbar } from './toolbar/UI_Toolbar';
 import { UI_Factory } from '../UI_Factory';
-import { AbstractCanvasPanel } from '../../plugin/AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { UI_DropLayer } from './surfaces/canvases/UI_DropLayer';
 import { Registry } from '../../Registry';
 import { UI_GizmoLayer } from './gizmo/UI_GizmoLayer';

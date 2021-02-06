@@ -66,7 +66,7 @@ import { SvgLineComp } from './react/svg/SvgLineComp';
 import { ListItemComp } from './react/data_display/ListItemComp';
 import { TreeComp } from './react/data_display/tree/TreeComp';
 import { DialogComp } from './react/dialogs/DialogComp';
-import { UI_Panel, UI_Region } from '../plugin/UI_Panel';
+import { UI_Panel, UI_Region } from '../models/UI_Panel';
 import { UI_SvgPolygon } from './elements/svg/UI_SvgPolygon';
 import { SvgPolygonComp } from './react/svg/SvgPolygonComp';
 import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
@@ -81,7 +81,6 @@ import { DropLayerComp } from './react/surfaces/canvas/DropLayerComp';
 import { UI_SvgMarker } from './elements/svg/UI_SvgMarker';
 import { SvgMarkerComp } from './react/svg/SvgMarkerComp';
 import { UI_Factory } from './UI_Factory';
-import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
 import { UI_Checkbox } from './elements/UI_Checkbox';
 import { CheckboxComp } from './react/inputs/CheckboxComp';
 import { MultiSelectTriggerComp } from './react/inputs/popup_multiselect/MultiSelectTriggerComp';
@@ -93,6 +92,7 @@ import { DialogFooterComp } from './react/dialogs/DialogFooterComp';
 import { UI_Dialog } from './elements/surfaces/dialog/UI_Dialog';
 import { UI_Separator } from './elements/surfaces/misc/UI_Separator';
 import { SeparatorComp } from './react/surfaces/misc/SeparatorComp';
+import { AbstractCanvasPanel } from '../models/modules/AbstractCanvasPanel';
 
 export class UI_Builder {
 

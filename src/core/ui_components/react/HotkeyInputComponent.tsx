@@ -1,7 +1,7 @@
 
 import * as React from "react";
 import styled from "styled-components";
-import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../models/modules/AbstractCanvasPanel";
 import { Registry } from "../../Registry";
 
 const HotkeyStyled = styled.input`

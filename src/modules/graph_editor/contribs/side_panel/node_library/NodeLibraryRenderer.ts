@@ -1,5 +1,5 @@
-import { IRenderer } from '../../../../../core/plugin/IRenderer';
-import { UI_Panel } from '../../../../../core/plugin/UI_Panel';
+import { IRenderer } from '../../../../../core/models/IRenderer';
+import { UI_Panel } from '../../../../../core/models/UI_Panel';
 import { Registry } from '../../../../../core/Registry';
 import { UI_Layout } from '../../../../../core/ui_components/elements/UI_Layout';
 import { NodeLibraryController } from './NodeLibraryController';

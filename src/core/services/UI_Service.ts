@@ -1,4 +1,4 @@
-import { UI_Region } from '../plugin/UI_Panel';
+import { UI_Region } from '../models/UI_Panel';
 import { UI_Layout } from '../ui_components/elements/UI_Layout';
 
 export class UI_Service {

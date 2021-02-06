@@ -1,5 +1,5 @@
 import { ShapeRenderer, AbstractShape, ShapeTag } from "../../../../core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";
 import { LightShapeType } from "../models/shapes/LightShape";

@@ -2,9 +2,9 @@ import { MeshSnapper } from "../../../../../core/engine/adapters/babylonjs/mesh/
 import { ObjEventType } from "../../../../../core/models/ObjObservable";
 import { ShapeEventType, ShapeObservable } from "../../../../../core/models/ShapeObservable";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
-import { sceneAndGameViewRatio } from "../../../../../core/stores/ShapeStore";
+import { sceneAndGameViewRatio } from "../../../../../core/data/stores/ShapeStore";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { MoveAxisShapeFactory, MoveAxisShapeType, MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";

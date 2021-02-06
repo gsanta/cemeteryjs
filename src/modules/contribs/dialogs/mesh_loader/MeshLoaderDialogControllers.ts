@@ -2,7 +2,7 @@ import { ParamController } from "../../../../core/controller/FormController";
 import { DialogController } from "../../../../core/controller/UIController";
 import { AssetObj, AssetType } from "../../../../core/models/objs/AssetObj";
 import { MeshObj, MeshTreeNode } from "../../../../core/models/objs/MeshObj";
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { ApplicationError } from "../../../../core/services/ErrorService";
 import { TreeController, TreeData } from "../../../../core/ui_components/elements/complex/tree/TreeController";

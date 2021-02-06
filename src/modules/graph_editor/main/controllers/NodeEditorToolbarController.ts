@@ -1,4 +1,4 @@
-import { ZoomInController, ZoomOutController } from "../../../../core/plugin/AbstractCanvasPanel";
+import { ZoomInController, ZoomOutController } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { ParamController } from "../../../../core/controller/FormController";
 import { CommonToolController } from "../../../../core/controller/ToolHandler";
 import { Registry } from "../../../../core/Registry";

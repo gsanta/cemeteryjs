@@ -1,13 +1,13 @@
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { PointerTracker } from '../../controller/PointerHandler';
+import { PointerTracker } from '../PointerHandler';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { ShapeStore } from '../../stores/ShapeStore';
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { UI_Region } from '../UI_Panel';
-import { createRectFromMousePointer, ToolAdapter } from './ToolAdapter';
+import { ShapeStore } from '../../data/stores/ShapeStore';
+import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
+import { UI_Region } from '../../models/UI_Panel';
+import { createRectFromMousePointer, AbstractTool } from './AbstractTool';
 
-export abstract class RectangleTool<AbstractShape> extends ToolAdapter<AbstractShape> {
+export abstract class RectangleTool<AbstractShape> extends AbstractTool<AbstractShape> {
     protected rectangleFeedback: Rectangle;
     protected tmpView: AbstractShape;
     protected rectRadius = 50;

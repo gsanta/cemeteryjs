@@ -3,7 +3,7 @@ import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { PointerTracker } from "../../../../controller/PointerHandler";
 import { MeshObj, MeshObjType } from "../../../../models/objs/MeshObj";
 import { Registry } from "../../../../Registry";
-import { sceneAndGameViewRatio } from "../../../../stores/ShapeStore";
+import { sceneAndGameViewRatio } from "../../../../data/stores/ShapeStore";
 import { MeshSideInfo } from "../../../IMeshAdapter";
 
 export class MeshSnapper {

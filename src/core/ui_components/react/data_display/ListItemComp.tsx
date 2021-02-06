@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useDrag, DragElementWrapper, DragSourceOptions } from 'react-dnd';
 import styled from 'styled-components';
-import { Canvas2dPanel } from '../../../plugin/Canvas2dPanel';
 import { UI_ListItem } from '../../../ui_components/elements/UI_ListItem';
 import { colors } from '../../../ui_components/react/styles';
 import { UI_ComponentProps } from '../../../ui_components/react/UI_ComponentProps';

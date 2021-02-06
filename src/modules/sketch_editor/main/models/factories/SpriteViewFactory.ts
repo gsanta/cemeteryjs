@@ -1,6 +1,6 @@
 import { SpriteObj, SpriteObjType } from "../../../../../core/models/objs/SpriteObj";
 import { AbstractShape, ShapeFactoryAdapter } from "../../../../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
 import { colors } from "../../../../../core/ui_components/react/styles";
 import { Point } from "../../../../../utils/geometry/shapes/Point";

@@ -1,10 +1,10 @@
-import { EngineEventAdapter } from "../controller/EngineEventAdapter";
-import { PointerHandler } from "../controller/PointerHandler";
-import { IEngineFacade } from "../engine/IEngineFacade";
-import { Camera3D } from "../models/misc/camera/Camera3D";
-import { Registry } from "../Registry";
+import { EngineEventAdapter } from "../../controller/EngineEventAdapter";
+import { PointerHandler } from "../../controller/PointerHandler";
+import { IEngineFacade } from "../../engine/IEngineFacade";
+import { Camera3D } from "../misc/camera/Camera3D";
+import { Registry } from "../../Registry";
 import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
-import { UI_Region } from "./UI_Panel";
+import { UI_Region } from "../UI_Panel";
 
 export abstract class Canvas3dPanel<D> extends AbstractCanvasPanel<D> {
     // TODO find a better place

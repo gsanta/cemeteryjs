@@ -3,12 +3,12 @@ import { Wrap_EngineFacade } from "../../../../core/engine/adapters/wrapper/Wrap
 import { IEngineFacade } from "../../../../core/engine/IEngineFacade";
 import { AssetObj } from "../../../../core/models/objs/AssetObj";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
-import { Canvas3dPanel } from "../../../../core/plugin/Canvas3dPanel";
+import { AbstractCanvasPanel } from "../../../../core/models/modules/AbstractCanvasPanel";
+import { Canvas3dPanel } from "../../../../core/models/modules/Canvas3dPanel";
 import { FormController } from "../../../../core/controller/FormController";
-import { IRenderer } from "../../../../core/plugin/IRenderer";
-import { CameraTool } from "../../../../core/plugin/tools/CameraTool";
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { IRenderer } from "../../../../core/models/IRenderer";
+import { CameraTool } from "../../../../core/controller/tools/CameraTool";
+import { UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";

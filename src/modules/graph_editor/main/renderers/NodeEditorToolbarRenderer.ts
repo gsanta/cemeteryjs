@@ -1,8 +1,8 @@
-import { AbstractCanvasPanel, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
-import { IRenderer } from "../../../../core/plugin/IRenderer";
-import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
-import { DeleteToolId } from "../../../../core/plugin/tools/DeleteTool";
-import { SelectToolId } from "../../../../core/plugin/tools/SelectTool";
+import { AbstractCanvasPanel, ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
+import { IRenderer } from "../../../../core/models/IRenderer";
+import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
+import { DeleteToolId } from "../../../../core/controller/tools/DeleteTool";
+import { SelectToolId } from "../../../../core/controller/tools/SelectTool";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { NodeEditorModule } from "../../NodeEditorModule";

@@ -1,22 +1,20 @@
-import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
-import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
-import { Registry } from '../../Registry';
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { UI_Region } from '../UI_Panel';
-import { ToolAdapter } from "./ToolAdapter";
-import { ToolType } from "./Tool";
-import { PointerTracker } from '../../controller/PointerHandler';
-import { Canvas2dPanel } from '../Canvas2dPanel';
-import { IObj } from '../../models/objs/IObj';
-import { IGameObj } from '../../models/objs/IGameObj';
-import { Canvas3dPanel } from '../Canvas3dPanel';
-import { MoveAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape';
 import { MoveAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/MoveAxisTool';
-import { ScaleAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape';
-import { ScaleAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool';
-import { RotateAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape';
 import { RotateAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/RotateAxisTool';
+import { ScaleAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool';
+import { MoveAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape';
+import { RotateAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape';
+import { ScaleAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape';
+import { PointerTracker } from '../PointerHandler';
+import { IGameObj } from '../../models/objs/IGameObj';
+import { IObj } from '../../models/objs/IObj';
 import { ShapeEventType } from '../../models/ShapeObservable';
+import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
+import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
+import { Registry } from '../../Registry';
+import { Canvas2dPanel } from '../../models/modules/Canvas2dPanel';
+import { Canvas3dPanel } from '../../models/modules/Canvas3dPanel';
+import { UI_Region } from '../../models/UI_Panel';
+import { ToolType } from "./Tool";
 
 export abstract class PointerToolLogic<D> {
     down(pointer: PointerTracker<D>): boolean { return false; }
@@ -166,59 +164,5 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
     abort() {
         this.wasItemDragged = false;
         this.pickedItem = undefined;
-    }
-}
-
-export abstract class PointerTool<D> extends ToolAdapter<D> {
-    acceptedViews: string[] = [];
-
-    protected draggedItem: D = undefined;
-    protected pointerToolLogic: PointerToolLogic<D>;
-
-    constructor(type: string, logic: PointerToolLogic<D>, panel: AbstractCanvasPanel<D>, registry: Registry) {
-        super(type, panel, registry);
-        this.pointerToolLogic = logic;
-    }
-
-    click(pointer: PointerTracker<D>): void {
-        this.pointerToolLogic.click(pointer);
-    }
-
-    drag(pointer: PointerTracker<D>) {
-        if (this.pointerToolLogic.drag(pointer)) {
-            this.registry.services.render.scheduleRendering(this.canvas.region);
-        }
-    }
-
-    dragEnd(pointer: PointerTracker<D>) {
-        super.dragEnd(pointer);
-
-        if (this.pointerToolLogic.up(pointer)) {
-            this.registry.services.history.createSnapshot();
-            this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
-        }
-
-        this.registry.services.level.updateCurrentLevel();
-    }
-
-    up(pointer: PointerTracker<D>) {
-        if (this.pointerToolLogic.up(pointer)) {
-            this.registry.services.history.createSnapshot();
-            this.registry.services.render.scheduleRendering(UI_Region.Canvas1, UI_Region.Canvas2, UI_Region.Sidepanel);
-        }
-    }
-
-    leave() {
-        this.pointerToolLogic.abort();
-    }
-
-    over(item: D) {
-        this.pointerToolLogic.hover(item);
-        this.registry.services.render.scheduleRendering(this.canvas.region);
-    }
-
-    out(item: D) {
-        this.pointerToolLogic.unhover(item);
-        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 }

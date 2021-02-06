@@ -4,7 +4,7 @@ import { Point } from "../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../utils/geometry/shapes/Point_3";
 import { BasicShapeType, MeshObj } from "../../../models/objs/MeshObj";
 import { Registry } from "../../../Registry";
-import { RectangleFactory } from "../../../stores/RectangleFactory";
+import { RectangleFactory } from "../../../data/RectangleFactory";
 import { toHexString } from "../../../ui_components/react/colorUtils";
 import { IMeshAdapter, MeshSideInfo } from "../../IMeshAdapter";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";

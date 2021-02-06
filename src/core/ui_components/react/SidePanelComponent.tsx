@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors } from './styles';
 import { AppContext, AppContextType } from './Context';
 import { UI_Builder } from '../UI_Builder';
-import { UI_Region } from '../../plugin/UI_Panel';
+import { UI_Region } from '../../models/UI_Panel';
 
 export interface SidebarComponentProps {
     isEditorOpen: boolean;

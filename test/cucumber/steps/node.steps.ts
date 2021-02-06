@@ -1,6 +1,6 @@
 import { TableDefinition, Then, When, World } from "cucumber";
 import { NodeObj } from "../../../src/core/models/objs/node_obj/NodeObj";
-import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
+import { Canvas2dPanel } from "../../../src/core/models/modules/Canvas2dPanel";
 import { UI_Container } from "../../../src/core/ui_components/elements/UI_Container";
 import { UI_Factory } from "../../../src/core/ui_components/UI_Factory";
 import { NodeListPanelId } from "../../../src/modules/graph_editor/contribs/side_panel/node_library/NodeLibraryModule";

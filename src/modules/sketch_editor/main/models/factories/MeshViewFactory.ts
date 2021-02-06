@@ -1,6 +1,6 @@
 import { MeshObj, MeshObjType, MeshShapeConfig } from "../../../../../core/models/objs/MeshObj";
 import { AbstractShape, AfterAllViewsDeserialized, ShapeFactoryAdapter } from "../../../../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
 import { colors } from "../../../../../core/ui_components/react/styles";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";

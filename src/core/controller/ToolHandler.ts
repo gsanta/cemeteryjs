@@ -9,11 +9,11 @@ import { SphereToolId } from "../../modules/sketch_editor/main/controllers/tools
 import { SpriteToolId } from "../../modules/sketch_editor/main/controllers/tools/SpriteTool";
 import { Point } from '../../utils/geometry/shapes/Point';
 import { AbstractShape } from "../models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
-import { CameraToolId } from "../plugin/tools/CameraTool";
-import { DeleteToolId } from "../plugin/tools/DeleteTool";
-import { SelectToolId } from "../plugin/tools/SelectTool";
-import { Tool } from "../plugin/tools/Tool";
+import { AbstractCanvasPanel } from '../models/modules/AbstractCanvasPanel';
+import { CameraToolId } from "./tools/CameraTool";
+import { DeleteToolId } from "./tools/DeleteTool";
+import { SelectToolId } from "./tools/SelectTool";
+import { Tool } from "./tools/Tool";
 import { Registry } from "../Registry";
 import { UI_Element } from "../ui_components/elements/UI_Element";
 import { ParamController, PropContext } from "./FormController";

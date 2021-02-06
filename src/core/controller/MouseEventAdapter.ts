@@ -53,6 +53,6 @@ export class MouseEventAdapter {
 
     private static isLeftButton(e: MouseEvent) {
         var button = e.which || e.button;
-        return button === 1;
+        return button === 1 || button === undefined;
     }
 }

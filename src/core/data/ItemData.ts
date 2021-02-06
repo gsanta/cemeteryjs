@@ -1,4 +1,4 @@
-import { IStore } from "../stores/IStore";
+import { IStore } from "./stores/IStore";
 
 
 export class ItemData<D> {

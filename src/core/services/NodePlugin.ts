@@ -5,8 +5,8 @@ import { NodeObj } from '../models/objs/node_obj/NodeObj';
 import { AbstractShape } from '../models/shapes/AbstractShape';
 import { FormController } from '../controller/FormController';
 import { Registry } from '../Registry';
-import { GameState, GameStoreHook } from '../stores/GameStore';
-import { EmptyShapeStoreHook } from '../stores/ShapeStore';
+import { GameState, GameStoreHook } from '../data/stores/GameStore';
+import { EmptyShapeStoreHook } from '../data/stores/ShapeStore';
 import { AbstractNodeExecutor } from './node/INodeExecutor';
 
 export interface NodeFactory {

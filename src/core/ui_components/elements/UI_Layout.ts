@@ -5,7 +5,7 @@ import { UI_SvgCanvas } from './UI_SvgCanvas';
 import { UI_Factory } from '../UI_Factory';
 import { UI_HtmlCanvas } from './UI_HtmlCanvas';
 import { UI_ElementConfig } from "./UI_Element";
-import { AbstractCanvasPanel } from "../../plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../models/modules/AbstractCanvasPanel";
 import { ParamController } from "../../controller/FormController";
 
 const elementType = UI_ElementType.Layout;

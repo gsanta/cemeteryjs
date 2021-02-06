@@ -1,6 +1,6 @@
 import { Point } from "../../utils/geometry/shapes/Point";
 import { Registry } from "../Registry";
-import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../models/modules/AbstractCanvasPanel";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -218,7 +218,7 @@ export class PointerHandler<D> {
             eventType: eventType,
             pointers: [{id: 1, pos: new Point(e.x, e.y), isDown: isPointerDown}],
             preventDefault: () => e.preventDefault(),
-            button: button === 1 ? 'left' : 'right',
+            button: button === 1 || button === undefined ? 'left' : 'right',
             isAltDown: !!e.altKey,
             isShiftDown: !!e.shiftKey,
             isCtrlDown: !!e.ctrlKey,

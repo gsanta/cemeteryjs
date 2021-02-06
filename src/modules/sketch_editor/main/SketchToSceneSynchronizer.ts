@@ -1,7 +1,7 @@
 import { ShapeEventType, ShapeObservable } from "../../../core/models/ShapeObservable";
 import { AbstractShape } from "../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../core/Registry";
-import { sceneAndGameViewRatio } from "../../../core/stores/ShapeStore";
+import { sceneAndGameViewRatio } from "../../../core/data/stores/ShapeStore";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { MeshShape, MeshShapeType } from "./models/shapes/MeshShape";
 

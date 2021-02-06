@@ -1,5 +1,5 @@
 import { Point } from '../../utils/geometry/shapes/Point';
-import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../models/modules/AbstractCanvasPanel';
 import { Registry } from '../Registry';
 import { IKeyboardEvent, isCtrlOrCommandDown } from './KeyboardHandler';
 import { PointerTracker, Wheel } from './PointerHandler';

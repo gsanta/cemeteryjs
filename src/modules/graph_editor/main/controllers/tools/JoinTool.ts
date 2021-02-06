@@ -1,25 +1,28 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
-import { PointerTool, PointerToolLogic } from "../../../../../core/plugin/tools/PointerTool";
-import { Cursor, ToolType } from '../../../../../core/plugin/tools/Tool';
+import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
+import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
+import { PointerToolLogic } from "../../../../../core/controller/tools/PointerTool";
+import { Cursor, ToolType } from '../../../../../core/controller/tools/Tool';
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { NodeConnectionShape, NodeConnectionShapeFactory, NodeConnectionShapeType } from "../../models/shapes/NodeConnectionShape";
+import { NodeConnectionShapeFactory } from "../../models/shapes/NodeConnectionShape";
 
-export class JoinTool extends PointerTool<AbstractShape> {
+export class JoinTool extends AbstractTool<AbstractShape> {
     startPoint: Point;
     endPoint: Point;
     nodePortView1: NodePortShape;
+    private pointerLogic: PointerToolLogic<AbstractShape>
 
     constructor(logic: PointerToolLogic<AbstractShape>, plugin: AbstractCanvasPanel<AbstractShape>,  registry: Registry) {
-        super(ToolType.Join, logic, plugin, registry);
+        super(ToolType.Join, plugin, registry);
+        this.pointerLogic = logic;
     }
 
     down() {
         this.startPoint = this.canvas.pointer.pointer.curr;
-        this.nodePortView1 = <NodePortShape> this.canvas.pointer.pointer.pickedItem;
+        this.nodePortView1 = <NodePortShape> this.canvas.pointer.pointer.hoveredItem;
         this.endPoint = this.canvas.pointer.pointer.curr;
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
@@ -38,8 +41,8 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
 
         if (this.checkConnectionValidity()) {
-            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.pickedItem);
-            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.pickedItem : this.nodePortView1);
+            let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.hoveredItem);
+            let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.hoveredItem : this.nodePortView1);
 
             const connectionShape = new NodeConnectionShapeFactory().instantiate();
             inputPort.addConnection(connectionShape);
@@ -65,7 +68,7 @@ export class JoinTool extends PointerTool<AbstractShape> {
 
     private checkConnectionValidity() {
         const startPortView = this.nodePortView1;
-        const endPortView = <NodePortShape> this.canvas.pointer.pointer.pickedItem;
+        const endPortView = <NodePortShape> this.canvas.pointer.pointer.hoveredItem;
 
         if (!endPortView || !startPortView) { return false; }
         if (startPortView.viewType !== NodePortViewType || endPortView.viewType !== NodePortViewType) { return false; }
@@ -76,10 +79,11 @@ export class JoinTool extends PointerTool<AbstractShape> {
     }
 
     out(view: AbstractShape) {
-        super.out(view);
+        this.pointerLogic.unhover(view);
         if (!this.canvas.pointer.pointer.isDown) {
             this.canvas.tool.removePriorityTool(this.id);
         }
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     getCursor() {

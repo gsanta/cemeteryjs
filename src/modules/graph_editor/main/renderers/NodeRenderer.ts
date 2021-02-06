@@ -1,7 +1,7 @@
 import { NodeParam, PortDirection, PortValueType } from '../../../../core/models/objs/node_obj/NodeParam';
 import { NodePortShape } from '../../../../core/models/shapes/child_views/NodePortShape';
 import { ShapeRenderer, ShapeTag } from '../../../../core/models/shapes/AbstractShape';
-import { AbstractCanvasPanel } from '../../../../core/plugin/AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../../../../core/models/modules/AbstractCanvasPanel';
 import { InputParamType, MultiSelectController } from '../../../../core/controller/FormController';
 import { UI_SvgForeignObject } from '../../../../core/ui_components/elements/svg/UI_SvgForeignObject';
 import { UI_SvgGroup } from '../../../../core/ui_components/elements/svg/UI_SvgGroup';

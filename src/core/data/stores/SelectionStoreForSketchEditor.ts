@@ -1,6 +1,6 @@
-import { SketchEditorModule } from "../../modules/sketch_editor/main/SketchEditorModule";
-import { ShapeEventType } from "../models/ShapeObservable";
-import { AbstractShape, ShapeTag } from "../models/shapes/AbstractShape";
+import { SketchEditorModule } from "../../../modules/sketch_editor/main/SketchEditorModule";
+import { ShapeEventType } from "../../models/ShapeObservable";
+import { AbstractShape, ShapeTag } from "../../models/shapes/AbstractShape";
 import { IStore } from "./IStore";
 
 export class SelectionStoreForSketchEditor implements IStore<AbstractShape> {

@@ -1,6 +1,6 @@
-import { AbstractCanvasPanel } from "../../../../core/plugin/AbstractCanvasPanel";
-import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
-import { ToolType } from "../../../../core/plugin/tools/Tool";
+import { AbstractCanvasPanel } from "../../../../core/models/modules/AbstractCanvasPanel";
+import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
+import { ToolType } from "../../../../core/controller/tools/Tool";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
 import { colors } from "../../../../core/ui_components/react/styles";

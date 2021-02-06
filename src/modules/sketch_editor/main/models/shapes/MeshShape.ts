@@ -1,7 +1,7 @@
 import { MeshObj } from '../../../../../core/models/objs/MeshObj';
 import { AfterAllViewsDeserialized, AbstractShape, ShapeJson } from '../../../../../core/models/shapes/AbstractShape';
 import { Registry } from '../../../../../core/Registry';
-import { sceneAndGameViewRatio } from '../../../../../core/stores/ShapeStore';
+import { sceneAndGameViewRatio } from '../../../../../core/data/stores/ShapeStore';
 import { colors } from '../../../../../core/ui_components/react/styles';
 import { MeshShapeRenderer } from '../../renderers/MeshShapeRenderer';
 import { Point } from '../../../../../utils/geometry/shapes/Point';

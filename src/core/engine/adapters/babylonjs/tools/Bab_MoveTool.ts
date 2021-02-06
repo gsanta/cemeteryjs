@@ -3,7 +3,7 @@ import { SceneEditorPanelId } from "../../../../../modules/scene_editor/main/Sce
 import { ObjEventType } from "../../../../models/ObjObservable";
 import { IObj } from "../../../../models/objs/IObj";
 import { MeshObj } from "../../../../models/objs/MeshObj";
-import { AbstractCanvasPanel } from "../../../../plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../../models/modules/AbstractCanvasPanel";
 import { Registry } from "../../../../Registry";
 import { IEngineTool } from "../../../IEngineTool";
 import { Bab_EngineFacade } from "../Bab_EngineFacade";

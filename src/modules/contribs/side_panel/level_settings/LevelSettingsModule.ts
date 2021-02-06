@@ -1,5 +1,5 @@
 import { FormController } from "../../../../core/controller/FormController";
-import { UI_Panel, UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Panel, UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { LevelSettingsRenderer } from "./LevelSettingsPanel";
 import { LevelController, LevelNameController, ClearLevelController } from "./LevelSettingsProps";

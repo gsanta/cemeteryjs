@@ -1,4 +1,4 @@
-import { AbstractShape } from "../models/shapes/AbstractShape";
+import { AbstractShape } from "../../models/shapes/AbstractShape";
 import { IStore } from "./IStore";
 
 export class SelectionStoreForNodeEditor implements IStore<AbstractShape> {

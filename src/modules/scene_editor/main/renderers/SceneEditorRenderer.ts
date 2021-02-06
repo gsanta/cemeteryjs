@@ -1,10 +1,10 @@
 import { _3DMoveTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_MoveTool";
 import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_RotationTool";
 import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_ScaleTool";
-import { InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
-import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
-import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
-import { SelectToolId } from "../../../../core/plugin/tools/SelectTool";
+import { InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
+import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
+import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
+import { SelectToolId } from "../../../../core/controller/tools/SelectTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
 import { SceneEditorModule } from "../SceneEditorModule";

@@ -1,13 +1,13 @@
-import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from "../../controller/HotkeyHandler";
-import { IKeyboardEvent, Keyboard } from '../../controller/KeyboardHandler';
-import { PointerTracker } from "../../controller/PointerHandler";
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from "../HotkeyHandler";
+import { IKeyboardEvent, Keyboard } from '../KeyboardHandler';
+import { PointerTracker } from "../PointerHandler";
 import { Registry } from '../../Registry';
-import { AbstractCanvasPanel, InteractionMode } from '../AbstractCanvasPanel';
+import { AbstractCanvasPanel, InteractionMode } from '../../models/modules/AbstractCanvasPanel';
 import { Cursor } from "./Tool";
-import { ToolAdapter } from './ToolAdapter';
+import { AbstractTool } from './AbstractTool';
 
 export const CameraToolId = 'camera-tool';
-export class CameraTool<D> extends ToolAdapter<D> {
+export class CameraTool<D> extends AbstractTool<D> {
     private panHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, keyCodes: [Keyboard.Space], worksDuringMouseDown: true};
     private rotationHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, mouseDown: true, worksDuringMouseDown: true, ctrlOrCommand: true};
     private zoomHotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, wheel: true, worksDuringMouseDown: true};

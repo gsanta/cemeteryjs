@@ -11,7 +11,7 @@ import { RotateNode } from '../modules/graph_editor/main/models/nodes/RotateNode
 import { TriggerZoneNode } from '../modules/graph_editor/main/models/nodes/TriggerZoneNode';
 import { ThumbnailCanvasModule } from '../modules/sketch_editor/contribs/dialog/thumbnail/ThumbnailCanvasModule';
 import { Registry } from './Registry';
-import { ObjLifeCycleHook, ObjStore } from './stores/ObjStore';
+import { ObjLifeCycleHook, ObjStore } from './data/stores/ObjStore';
 import { CollisionNode } from '../modules/graph_editor/main/models/nodes/CollisionNode';
 import { DirectionNode } from '../modules/graph_editor/main/models/nodes/DirectionNode';
 import { ArrayNode } from '../modules/graph_editor/main/models/nodes/ArrayNode';

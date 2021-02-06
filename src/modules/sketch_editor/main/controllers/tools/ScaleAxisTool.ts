@@ -1,6 +1,6 @@
 import { ShapeEventData, ShapeEventType, ShapeObservable } from "../../../../../core/models/ShapeObservable";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";

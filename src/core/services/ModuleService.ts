@@ -1,5 +1,5 @@
-import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
-import { UI_Panel, UI_Region } from "../plugin/UI_Panel";
+import { AbstractCanvasPanel } from "../models/modules/AbstractCanvasPanel";
+import { UI_Panel, UI_Region } from "../models/UI_Panel";
 import { Registry } from "../Registry";
 import { AbstractModuleExporter } from "./export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "./import/AbstractModuleImporter";

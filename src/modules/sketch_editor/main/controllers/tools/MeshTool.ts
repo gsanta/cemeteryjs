@@ -1,7 +1,7 @@
 import { MeshShapeType } from "../../models/shapes/MeshShape";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
-import { RectangleTool } from "../../../../../core/plugin/tools/RectangleTool";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { RectangleTool } from "../../../../../core/controller/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { SketchEditorModule } from "../../SketchEditorModule";

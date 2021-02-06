@@ -1,10 +1,8 @@
+import { UI_Panel, UI_Region } from '../models/UI_Panel';
 import { Registry } from '../Registry';
-import { UI_Element } from '../ui_components/elements/UI_Element';
-import { UI_ListItem } from '../ui_components/elements/UI_ListItem';
-import { UI_Panel, UI_Region } from '../plugin/UI_Panel';
-import { UIController } from './UIController';
-import { UI_Renderer } from '../plugin/UI_PluginFactory';
 import { ApplicationError } from '../services/ErrorService';
+import { UI_Element } from '../ui_components/elements/UI_Element';
+import { UIController } from './UIController';
 
 export enum GlobalControllerProps {
     CloseDialog = 'CloseDialog'

@@ -1,7 +1,7 @@
 import { AssetObj, AssetType } from '../../../../core/models/objs/AssetObj';
 import { SpriteSheetObj } from '../../../../core/models/objs/SpriteSheetObj';
 import { PropContext, ParamController } from '../../../../core/controller/FormController';
-import { UI_Panel, UI_Region } from '../../../../core/plugin/UI_Panel';
+import { UI_Panel, UI_Region } from '../../../../core/models/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { UI_Element } from '../../../../core/ui_components/elements/UI_Element';
 import { SpriteSheetManagerDialogRenderer } from './SpriteSheetManagerDialogRenderer';

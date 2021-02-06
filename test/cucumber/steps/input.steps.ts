@@ -1,6 +1,6 @@
 import { When } from "cucumber";
 import { AbstractShape } from "../../../src/core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../../src/core/plugin/Canvas2dPanel";
+import { Canvas2dPanel } from "../../../src/core/models/modules/Canvas2dPanel";
 import { createFakeKeyboardEventFromString } from "./common/inputTestUtils";
 import { createFakeUIElement } from "./common/uiTestHelpers";
 

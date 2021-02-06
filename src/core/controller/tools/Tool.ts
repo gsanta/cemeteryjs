@@ -1,7 +1,7 @@
-import { IHotkey, IHotkeyEvent } from "../../controller/HotkeyHandler";
-import { IKeyboardEvent } from "../../controller/KeyboardHandler";
+import { IHotkey, IHotkeyEvent } from "../HotkeyHandler";
+import { IKeyboardEvent } from "../KeyboardHandler";
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { PointerTracker } from "../../controller/PointerHandler";
+import { PointerTracker } from "../PointerHandler";
 
 export enum ToolType {
     Rectangle = 'rectangle',

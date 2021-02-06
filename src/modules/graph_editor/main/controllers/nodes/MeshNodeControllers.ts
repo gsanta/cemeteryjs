@@ -1,7 +1,7 @@
 import { MeshObjType, MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { InputParamType, MultiSelectController, ParamController } from "../../../../../core/controller/FormController";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshNodeParams } from "../../models/nodes/MeshNode";
 import { UIController } from "../../../../../core/controller/UIController";

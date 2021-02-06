@@ -1,6 +1,6 @@
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
 import { ParamController, PropContext } from "../../../../../core/controller/FormController";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { SketchEditorRenderer } from "../../../main/renderers/SketchEditorRenderer";
 import { CubeToolId } from "../../../main/controllers/tools/CubeTool";

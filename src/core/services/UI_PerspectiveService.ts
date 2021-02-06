@@ -6,7 +6,7 @@ import { ObjectPropertiesPanelId } from '../../modules/sketch_editor/contribs/si
 import { SketchEditorPanelId } from '../../modules/sketch_editor/main/SketchEditorModule';
 import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_settings/FileSettingsModule';
 import { LayoutSettingsPanelId } from '../../modules/contribs/side_panel/layout_settings/LayoutSettingsModule';
-import { UI_Region } from '../plugin/UI_Panel';
+import { UI_Region } from '../models/UI_Panel';
 import { Registry } from '../Registry';
 
 

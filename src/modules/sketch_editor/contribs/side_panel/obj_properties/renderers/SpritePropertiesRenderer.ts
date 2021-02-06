@@ -1,4 +1,4 @@
-import { IRenderer } from "../../../../../../core/plugin/IRenderer";
+import { IRenderer } from "../../../../../../core/models/IRenderer";
 import { UI_Layout } from "../../../../../../core/ui_components/elements/UI_Layout";
 import { SpritePropertiesController } from "../controllers/SpritePropertiesController";
 

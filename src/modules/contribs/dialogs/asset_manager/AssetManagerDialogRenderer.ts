@@ -1,5 +1,5 @@
 import { AssetType, AssetObj } from "../../../../core/models/objs/AssetObj";
-import { IRenderer } from "../../../../core/plugin/IRenderer";
+import { IRenderer } from "../../../../core/models/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { UI_Dialog } from "../../../../core/ui_components/elements/surfaces/dialog/UI_Dialog";
 import { UI_Table } from "../../../../core/ui_components/elements/UI_Table";

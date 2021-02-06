@@ -1,9 +1,9 @@
 import { sortViewsByLayer, AbstractShape } from "../../../../core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../../core/plugin/AbstractCanvasPanel";
-import { ICanvasRenderer } from "../../../../core/plugin/ICanvasRenderer";
-import { CameraToolId } from "../../../../core/plugin/tools/CameraTool";
-import { DeleteToolId } from "../../../../core/plugin/tools/DeleteTool";
-import { SelectToolId } from "../../../../core/plugin/tools/SelectTool";
+import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
+import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
+import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
+import { DeleteToolId } from "../../../../core/controller/tools/DeleteTool";
+import { SelectToolId } from "../../../../core/controller/tools/SelectTool";
 import { Registry } from "../../../../core/Registry";
 import { UI_Toolbar } from "../../../../core/ui_components/elements/toolbar/UI_Toolbar";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";

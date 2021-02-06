@@ -1,6 +1,6 @@
 import { CanvasAxis } from '../../../../../../core/models/misc/CanvasAxis';
 import { FormController, ParamController } from '../../../../../../core/controller/FormController';
-import { UI_Region } from '../../../../../../core/plugin/UI_Panel';
+import { UI_Region } from '../../../../../../core/models/UI_Panel';
 import { Registry } from '../../../../../../core/Registry';
 import { ApplicationError } from '../../../../../../core/services/ErrorService';
 import { toDegree } from '../../../../../../utils/geometry/Measurements';

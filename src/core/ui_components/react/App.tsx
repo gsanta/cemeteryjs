@@ -7,14 +7,13 @@ import Backend from 'react-dnd-html5-backend';
 import 'tippy.js/dist/tippy.css';
 import './App.scss';
 import { AppContext, AppContextType } from './Context';
-import { HotkeyInputComponent } from './HotkeyInputComponent';
 import { SpinnerOverlayComponent } from './misc/SpinnerOverlayComponent';
 import { SidePanelComponent } from './SidePanelComponent';
 import { MainPanelComp } from './regions/MainPanelComp';
 import { SceneEditorPerspectiveName } from '../../services/UI_PerspectiveService';
 import styled from 'styled-components';
 import { DialogManagerComponent } from './dialogs/DialogManagerComponent';
-import { UI_Region } from '../../plugin/UI_Panel';
+import { UI_Region } from '../../models/UI_Panel';
 
 export interface AppState {
     isDialogOpen: boolean;

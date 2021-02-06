@@ -1,19 +1,19 @@
-import { Point } from '../../utils/geometry/shapes/Point';
-import { FormController, ParamController, PropContext } from '../controller/FormController';
-import { ToolHandler } from '../controller/ToolHandler';
-import { ICamera } from '../models/misc/camera/ICamera';
-import { Registry } from '../Registry';
-import { AbstractModuleExporter } from '../services/export/AbstractModuleExporter';
-import { AbstractModuleImporter } from '../services/import/AbstractModuleImporter';
-import { HotkeyHandler } from '../controller/HotkeyHandler';
-import { KeyboardHandler } from '../controller/KeyboardHandler';
-import { PointerHandler } from '../controller/PointerHandler';
-import { UI_Element } from '../ui_components/elements/UI_Element';
-import { CameraTool, CameraToolId } from './tools/CameraTool';
-import { Tool } from './tools/Tool';
-import { UI_Panel, UI_Region } from './UI_Panel';
-import { IStore } from '../stores/IStore';
-import { ItemData } from '../lookups/ItemData';
+import { Point } from '../../../utils/geometry/shapes/Point';
+import { FormController, ParamController, PropContext } from '../../controller/FormController';
+import { ToolHandler } from '../../controller/ToolHandler';
+import { ICamera } from '../misc/camera/ICamera';
+import { Registry } from '../../Registry';
+import { AbstractModuleExporter } from '../../services/export/AbstractModuleExporter';
+import { AbstractModuleImporter } from '../../services/import/AbstractModuleImporter';
+import { HotkeyHandler } from '../../controller/HotkeyHandler';
+import { KeyboardHandler } from '../../controller/KeyboardHandler';
+import { PointerHandler } from '../../controller/PointerHandler';
+import { UI_Element } from '../../ui_components/elements/UI_Element';
+import { CameraTool, CameraToolId } from '../../controller/tools/CameraTool';
+import { Tool } from '../../controller/tools/Tool';
+import { UI_Panel, UI_Region } from '../UI_Panel';
+import { IStore } from '../../data/stores/IStore';
+import { ItemData } from '../../data/ItemData';
 
 function getScreenSize(htmlElement: HTMLElement): Point {
     const rect: ClientRect = htmlElement.getBoundingClientRect();

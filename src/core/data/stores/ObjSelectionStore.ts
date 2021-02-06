@@ -1,4 +1,4 @@
-import { IObj } from "../models/objs/IObj";
+import { IObj } from "../../models/objs/IObj";
 import { IStore } from "./IStore";
 
 export class ObjSelectionStore implements IStore<IObj> {

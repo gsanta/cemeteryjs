@@ -1,8 +1,8 @@
 import { CanvasAxis } from "../../../../../core/models/misc/CanvasAxis";
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
-import { Cursor } from "../../../../../core/plugin/tools/Tool";
-import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
+import { Cursor } from "../../../../../core/controller/tools/Tool";
+import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { MeshShape, MeshShapeType } from "../../models/shapes/MeshShape";
 import { MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
@@ -12,7 +12,7 @@ import { ShapeEventData, ShapeEventType, ShapeObservable } from "../../../../../
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { SpriteShape, SpriteShapeType } from "../../models/shapes/SpriteShape";
 
-export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter<AbstractShape> {
+export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends AbstractTool<AbstractShape> {
     protected downView: T;
     protected meshShape: MeshShape;
     protected hoveredView: T;

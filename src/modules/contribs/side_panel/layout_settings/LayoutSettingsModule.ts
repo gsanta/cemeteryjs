@@ -1,4 +1,4 @@
-import { UI_Panel, UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Panel, UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { LayoutSettingsControllers } from "./LayoutSettingsControllers";
 import { LayoutSettingsRenderer } from "./LayoutSettingsRenderer";

@@ -1,29 +1,32 @@
-import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { PathPoinShape, PathPointViewType } from "../../../../../core/models/shapes/child_views/PathPointShape";
-import { PathShape, PathShapeType } from "../../models/shapes/PathShape";
-import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { Registry } from "../../../../../core/Registry";
 import { IHotkeyEvent } from "../../../../../core/controller/HotkeyHandler";
 import { IKeyboardEvent, Keyboard } from "../../../../../core/controller/KeyboardHandler";
-import { PointerTool, PointerToolLogic } from "../../../../../core/plugin/tools/PointerTool";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
-import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
-import { SketchEditorModule } from "../../SketchEditorModule";
 import { PointerTracker } from "../../../../../core/controller/PointerHandler";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
+import { PathPoinShape, PathPointViewType } from "../../../../../core/models/shapes/child_views/PathPointShape";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
+import { PointerToolLogic } from "../../../../../core/controller/tools/PointerTool";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
+import { Registry } from "../../../../../core/Registry";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { PathViewFactory } from "../../models/factories/PathViewFactory";
+import { PathShape, PathShapeType } from "../../models/shapes/PathShape";
+import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const PathToolId = 'path-tool';
-export class PathTool extends PointerTool<AbstractShape> {
+export class PathTool extends AbstractTool<AbstractShape> {
     acceptedViews = [PathShapeType, PathPointViewType]
+    private pointerLogic: PointerToolLogic<AbstractShape>;
 
     constructor(logic: PointerToolLogic<AbstractShape>, panel: Canvas2dPanel, registry: Registry) {
-        super(PathToolId, logic, panel, registry);
+        super(PathToolId, panel, registry);
+        this.pointerLogic = logic;
     }
 
     click(pointer: PointerTracker<AbstractShape>) {
         const hoveredItem = this.canvas.pointer.pointer.pickedItem;
         if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
-            super.click(pointer);
+            this.pointerLogic.click(pointer);
         } else {
             this.drawPath();
         }
@@ -51,13 +54,13 @@ export class PathTool extends PointerTool<AbstractShape> {
         }
 
         if (hover) {
-            super.over(item);
+            this.pointerLogic.hover(item);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
 
     out(item: AbstractShape) {
-        super.out(item);
+        this.pointerLogic.unhover(item);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 

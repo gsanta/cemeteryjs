@@ -1,6 +1,6 @@
 import { PathShape } from '../../../../main/models/shapes/PathShape';
 import { ParamController } from '../../../../../../core/controller/FormController';
-import { UI_Region } from '../../../../../../core/plugin/UI_Panel';
+import { UI_Region } from '../../../../../../core/models/UI_Panel';
 
 export enum PathViewControllerParam {
     PathId = 'PathId',

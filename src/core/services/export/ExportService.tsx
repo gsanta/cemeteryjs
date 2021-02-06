@@ -1,8 +1,6 @@
-import { IPluginJson } from '../../plugin/IPluginExporter';
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
 import { ShapeJson } from '../../models/shapes/AbstractShape';
-import { AbstractModuleExporter } from './AbstractModuleExporter';
 import { Registry } from '../../Registry';
 
 export interface ViewExporter {
@@ -10,7 +8,6 @@ export interface ViewExporter {
 }
 
 export interface AppJson {
-    plugins: IPluginJson[];
     assets: AssetObjJson[];
 
     viewsByType: {

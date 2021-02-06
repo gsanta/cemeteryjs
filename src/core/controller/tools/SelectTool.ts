@@ -1,19 +1,19 @@
 import { AdvancedDynamicTexture, Rectangle as GuiRectangle } from 'babylonjs-gui';
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { PointerTracker } from '../../controller/PointerHandler';
+import { PointerTracker } from '../PointerHandler';
 import { IObj } from '../../models/objs/IObj';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { getIntersectingViews, sceneAndGameViewRatio } from '../../stores/ShapeStore';
+import { getIntersectingViews } from '../../data/stores/ShapeStore';
 import { colors } from '../../ui_components/react/styles';
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
-import { Canvas2dPanel } from '../Canvas2dPanel';
-import { Canvas3dPanel } from '../Canvas3dPanel';
-import { UI_Region } from '../UI_Panel';
-import { PointerTool, PointerToolLogic } from './PointerTool';
+import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
+import { Canvas2dPanel } from '../../models/modules/Canvas2dPanel';
+import { Canvas3dPanel } from '../../models/modules/Canvas3dPanel';
+import { UI_Region } from '../../models/UI_Panel';
+import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
+import { PointerToolLogic } from './PointerTool';
 import { Cursor } from "./Tool";
-import { createRectFromMousePointer } from './ToolAdapter';
 
 export class SelectionToolLogicForWebGlCanvas implements RectangleSelectionToolLogic<IObj> {
     private registry: Registry;
@@ -156,37 +156,31 @@ export interface RectangleSelectionToolLogic<D> {
 
 
 export const SelectToolId = 'select-tool';
-export class SelectTool<D> extends PointerTool<D> {
+export class SelectTool<D> extends AbstractTool<D> {
     private selectionLogic: RectangleSelectionToolLogic<D>;
+    private pointerLogic: PointerToolLogic<D>;
 
     constructor(pointerLogic: PointerToolLogic<D>, selectionLogic: RectangleSelectionToolLogic<D>, canvas: AbstractCanvasPanel<D>, registry: Registry) {
-        super(SelectToolId, pointerLogic, canvas, registry);
+        super(SelectToolId, canvas, registry);
         this.selectionLogic = selectionLogic;
+        this.pointerLogic = pointerLogic;
     }
 
     down(pointer: PointerTracker<D>) {
-        if (!this.pointerToolLogic.down(pointer)) {
+        if (!this.pointerLogic.down(pointer)) {
             this.selectionLogic.down();
         }
-        // if (this.canvas.pointer.pointer.pickedItem && this.canvas.pointer.pointer.pickedItem.isSelected()) {
-        //     super.down(pointerTracker);
-        // }
     }
 
     click(pointer: PointerTracker<D>) {
-        if (!this.pointerToolLogic.click(pointer)) {
+        if (!this.pointerLogic.click(pointer)) {
             this.canvas.data.selection.clear();
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
-        // if (this.canvas.pointer.pointer.pickedItem) {
-        //     super.click(pointer);
-        // } else if (this.canvas.store.getSelectedItems().length > 0) {
-        //     this.canvas.store.clearSelection();
-        // }
     }
 
     drag(pointer: PointerTracker<D>) {
-        let changed = this.pointerToolLogic.drag(pointer);
+        let changed = this.pointerLogic.drag(pointer);
 
         if (!changed) {
             this.rectangleSelection = this.selectionLogic.createSelectionRect(pointer);
@@ -197,7 +191,7 @@ export class SelectTool<D> extends PointerTool<D> {
     }
 
     dragEnd(pointer: PointerTracker<D>) {
-        let changed = this.pointerToolLogic.up(pointer);
+        let changed = this.pointerLogic.up(pointer);
         this.selectionLogic.up();
 
         if (!changed) {
@@ -219,5 +213,14 @@ export class SelectTool<D> extends PointerTool<D> {
         }
 
         return Cursor.Default;
+    }
+
+    over(item) {
+        this.pointerLogic.hover(item);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
+    }
+    out(item) {
+        this.pointerLogic.unhover(item);
+        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 }

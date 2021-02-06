@@ -1,7 +1,7 @@
 import { ParamController, PropContext } from "../../../../core/controller/FormController";
 import { UIController } from "../../../../core/controller/UIController";
 import { AssetObj } from "../../../../core/models/objs/AssetObj";
-import { UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { UI_InputElement } from "../../../../core/ui_components/elements/UI_InputElement";

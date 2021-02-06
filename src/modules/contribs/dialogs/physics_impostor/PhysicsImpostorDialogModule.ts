@@ -1,5 +1,5 @@
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { UI_Panel, UI_Region } from "../../../../core/plugin/UI_Panel";
+import { UI_Panel, UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { PhysicsImpostorDialogController } from "./PhysicsImpostorDialogController";
 import { PhysicsImpostorDialogRenderer } from "./PhysicsImpostorDialogRenderer";

@@ -1,6 +1,6 @@
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { InputParamType, ParamController } from "../../../../../core/controller/FormController";
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { RayHelperNodeParams } from "../../models/nodes/RayHelperNode";
 import { UIController } from "../../../../../core/controller/UIController";

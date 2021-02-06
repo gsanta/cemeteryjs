@@ -1,22 +1,22 @@
 
 
 import { FormController } from "../../core/controller/FormController";
-import { ItemData } from "../../core/lookups/ItemData";
+import { ItemData } from "../../core/data/ItemData";
 import { Camera2D } from "../../core/models/misc/camera/Camera2D";
 import { ShapeObservable } from "../../core/models/ShapeObservable";
 import { AbstractShape } from "../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../core/plugin/Canvas2dPanel";
-import { CameraTool } from "../../core/plugin/tools/CameraTool";
-import { DeleteTool } from "../../core/plugin/tools/DeleteTool";
-import { PointerToolLogicForSvgCanvas } from "../../core/plugin/tools/PointerTool";
-import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../core/plugin/tools/SelectTool";
-import { UI_Region } from "../../core/plugin/UI_Panel";
+import { Canvas2dPanel } from "../../core/models/modules/Canvas2dPanel";
+import { CameraTool } from "../../core/controller/tools/CameraTool";
+import { DeleteTool } from "../../core/controller/tools/DeleteTool";
+import { PointerToolLogicForSvgCanvas } from "../../core/controller/tools/PointerTool";
+import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../core/controller/tools/SelectTool";
+import { UI_Region } from "../../core/models/UI_Panel";
 import { Registry } from "../../core/Registry";
 import { AbstractModuleExporter } from "../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../core/services/import/AbstractModuleImporter";
 import { NodeGraphHook } from "../../core/services/NodePlugin";
-import { SelectionStoreForNodeEditor } from "../../core/stores/SelectionStoreForNodeEditor";
-import { ShapeLifeCycleHook, ShapeStore } from "../../core/stores/ShapeStore";
+import { SelectionStoreForNodeEditor } from "../../core/data/stores/SelectionStoreForNodeEditor";
+import { ShapeLifeCycleHook, ShapeStore } from "../../core/data/stores/ShapeStore";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { NodeEditorToolbarController } from "./main/controllers/NodeEditorToolbarController";
 import { JoinTool } from "./main/controllers/tools/JoinTool";

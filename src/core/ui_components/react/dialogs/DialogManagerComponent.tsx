@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { AppContext, AppContextType } from '../Context';
 import { UI_Builder } from '../../UI_Builder';
-import { UI_Region } from '../../../plugin/UI_Panel';
+import { UI_Region } from '../../../models/UI_Panel';
 
 export class DialogManagerComponent extends React.Component {
     static contextType = AppContext;

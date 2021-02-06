@@ -1,7 +1,7 @@
 import { PointerEventTypes, PointerInfo } from "babylonjs";
 import { SceneEditorPanelId } from "../../../../modules/scene_editor/main/SceneEditorModule";
 import { Point } from "../../../../utils/geometry/shapes/Point";
-import { AbstractCanvasPanel } from "../../../plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../models/modules/AbstractCanvasPanel";
 import { Registry } from "../../../Registry";
 import { IPointerEvent } from "../../../controller/PointerHandler";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";

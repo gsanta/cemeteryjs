@@ -1,9 +1,9 @@
 import { Tools } from "babylonjs";
 import { Bab_EngineFacade } from "../../../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
 import { MeshShape } from "../../../main/models/shapes/MeshShape";
-import { Canvas3dPanel } from "../../../../../core/plugin/Canvas3dPanel";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
 import { ParamController, PropContext } from '../../../../../core/controller/FormController';
-import { UI_Region } from "../../../../../core/plugin/UI_Panel";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { UI_Element } from "../../../../../core/ui_components/elements/UI_Element";
 import { IObj } from "../../../../../core/models/objs/IObj";
 

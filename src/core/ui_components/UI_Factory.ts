@@ -1,4 +1,4 @@
-import { AbstractCanvasPanel } from '../plugin/AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../models/modules/AbstractCanvasPanel';
 import { Registry } from '../Registry';
 import { UI_GizmoLayer } from './elements/gizmo/UI_GizmoLayer';
 import { UI_DropLayer } from './elements/surfaces/canvases/UI_DropLayer';

@@ -1,12 +1,12 @@
-import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
+import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
 import { IKeyboardEvent } from "../../../../../core/controller/KeyboardHandler";
 import { Registry } from "../../../../../core/Registry";
 import { KeyboardNodeType } from "../../../../graph_editor/main/models/nodes/KeyboardNode";
-import { AbstractCanvasPanel, InteractionMode } from "../../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel, InteractionMode } from "../../../../../core/models/modules/AbstractCanvasPanel";
 import { IObj } from "../../../../../core/models/objs/IObj";
 
 export const GameToolId = 'game-tool';
-export class GameTool extends ToolAdapter<IObj> {
+export class GameTool extends AbstractTool<IObj> {
     // TODO: not a good place for it
     lastExecutedKey: string;
 

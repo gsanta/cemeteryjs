@@ -1,6 +1,6 @@
 
 import { AbstractShape, ShapeRenderer } from "../../../../../core/models/shapes/AbstractShape";
-import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { UI_SvgGroup } from "../../../../../core/ui_components/elements/svg/UI_SvgGroup";
 import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";

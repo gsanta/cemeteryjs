@@ -2,7 +2,7 @@ import { ParamController } from '../../../../../../core/controller/FormControlle
 import { UIController } from '../../../../../../core/controller/UIController';
 import { CanvasAxis } from '../../../../../../core/models/misc/CanvasAxis';
 import { MeshBoxConfig, MeshObj } from '../../../../../../core/models/objs/MeshObj';
-import { UI_Region } from '../../../../../../core/plugin/UI_Panel';
+import { UI_Region } from '../../../../../../core/models/UI_Panel';
 import { Registry } from '../../../../../../core/Registry';
 import { ApplicationError } from '../../../../../../core/services/ErrorService';
 import { MeshLoaderDialogId } from '../../../../../contribs/dialogs/mesh_loader/MeshLoaderDialogModule';

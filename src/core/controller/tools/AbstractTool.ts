@@ -1,10 +1,10 @@
 import { Point } from '../../../utils/geometry/shapes/Point';
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
-import { IHotkeyEvent } from '../../controller/HotkeyHandler';
-import { IKeyboardEvent } from '../../controller/KeyboardHandler';
-import { PointerTracker } from '../../controller/PointerHandler';
+import { IHotkeyEvent } from '../HotkeyHandler';
+import { IKeyboardEvent } from '../KeyboardHandler';
+import { PointerTracker } from '../PointerHandler';
 import { Registry } from '../../Registry';
-import { AbstractCanvasPanel } from '../AbstractCanvasPanel';
+import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { Cursor, Tool } from './Tool';
 
 export function createRectFromMousePointer(pointer: PointerTracker<any>): Rectangle {
@@ -17,7 +17,7 @@ export function createRectFromMousePointer(pointer: PointerTracker<any>): Rectan
     return rect;
 }
 
-export class ToolAdapter<D> implements Tool<D> {
+export class AbstractTool<D> implements Tool<D> {
     rectangleSelection: Rectangle;
     id: string;
     isSelected = false;

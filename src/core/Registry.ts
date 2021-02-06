@@ -1,12 +1,12 @@
 import { Bab_EngineFacade } from "./engine/adapters/babylonjs/Bab_EngineFacade";
 import { IEngineFacade } from "./engine/IEngineFacade";
 import { Wrap_EngineFacade } from "./engine/adapters/wrapper/Wrap_EngineFacade";
-import { Plugins } from "./plugin/Plugins";
+import { Plugins } from "./models/Plugins";
 import { defaultPreferences, Preferences } from './preferences/Preferences';
 import { Services } from "./services/Services";
-import { Stores } from "./stores/Stores";
-import { DataLookup } from "./lookups/DataLookup";
-import { UI_Lookup } from "./lookups/UI_Lookup";
+import { Stores } from "./data/stores/Stores";
+import { DataLookup } from "./data/DataLookup";
+import { UI_Lookup } from "./data/UI_Lookup";
 
 export class Registry {
     stores: Stores;

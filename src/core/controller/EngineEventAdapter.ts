@@ -1,4 +1,4 @@
-import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
+import { AbstractCanvasPanel } from "../models/modules/AbstractCanvasPanel";
 import { Registry } from "../Registry";
 import { IPointerEvent, IPointerEventType } from "./PointerHandler";
 

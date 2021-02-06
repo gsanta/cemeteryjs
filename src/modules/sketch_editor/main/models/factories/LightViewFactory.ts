@@ -1,8 +1,8 @@
 import { LightObj, LightObjType } from "../../../../../core/models/objs/LightObj";
 import { AfterAllViewsDeserialized, AbstractShape, ShapeFactoryAdapter } from "../../../../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../../../../core/plugin/Canvas2dPanel";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { Registry } from "../../../../../core/Registry";
-import { sceneAndGameViewRatio } from "../../../../../core/stores/ShapeStore";
+import { sceneAndGameViewRatio } from "../../../../../core/data/stores/ShapeStore";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { LightShape, LightShapeJson } from "../shapes/LightShape";

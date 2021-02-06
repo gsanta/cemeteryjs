@@ -1,7 +1,7 @@
-import { Registry } from "../Registry";
+import { Registry } from "../../Registry";
 import { AssetStore } from "./AssetStore";
 import { GameStore } from "./GameStore";
-import { IdGenerator } from "./IdGenerator";
+import { IdGenerator } from "../IdGenerator";
 import { LevelStore } from "./LevelStore";
 import { ObjStore } from "./ObjStore";
 
