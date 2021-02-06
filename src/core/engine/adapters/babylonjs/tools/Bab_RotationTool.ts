@@ -41,7 +41,7 @@ export class Bab_RotationTool implements IEngineTool {
     private emitRotationEvent() {
         if (this.pickedMesh) {
             const meshObj = this.engineFacade.meshes.meshToObj.get(this.pickedMesh);
-            this.registry.data.scene.observable.emit({ obj: meshObj, eventType: ObjEventType.RotationChanged });
+            this.registry.data.observable.emit({ obj: meshObj, eventType: ObjEventType.RotationChanged });
         }
     }
 }

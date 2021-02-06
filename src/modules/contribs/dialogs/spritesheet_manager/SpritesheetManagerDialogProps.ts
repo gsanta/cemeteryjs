@@ -90,7 +90,7 @@ export class AddSpriteSheetController extends ParamController<string> {
 
         spriteSheetObj.jsonAssetId = jsonAsset.id;
         spriteSheetObj.spriteAssetId = imgAsset.id;
-        context.registry.stores.objStore.addItem(spriteSheetObj);
+        context.registry.data.scene.items.addItem(spriteSheetObj);
 
         context.registry.engine.spriteLoader.loadSpriteSheet(spriteSheetObj);
         context.registry.services.history.createSnapshot();

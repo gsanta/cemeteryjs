@@ -31,7 +31,7 @@ export class SpriteViewFactory extends ShapeFactoryAdapter {
         spriteObj.startPos = new Point(spriteView.getBounds().div(10).getBoundingCenter().x, -spriteView.getBounds().div(10).getBoundingCenter().y);
 
         panel.data.items.addItem(spriteView);
-        this.registry.stores.objStore.addItem(spriteObj);
+        this.registry.data.scene.items.addItem(spriteObj);
 
         return spriteView;
 

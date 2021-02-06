@@ -124,7 +124,7 @@ export class MeshShape extends AbstractShape {
         meshClone.setObj(meshObjClone);
         meshClone.setBounds(bounds);
 
-        registry.stores.objStore.addItem(meshObjClone);
+        registry.data.scene.items.addItem(meshObjClone);
         registry.data.sketch.items.addItem(meshClone);
     }
 
@@ -143,7 +143,7 @@ export class MeshShape extends AbstractShape {
         meshView.id = json.id;
         meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
-        const obj = <MeshObj> registry.stores.objStore.getItemById(json.objId);
+        const obj = <MeshObj> registry.data.scene.items.getItemById(json.objId);
         meshView.setObj(obj);
         const point2 = meshView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
         obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));

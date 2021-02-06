@@ -210,7 +210,7 @@ export class ShapeLifeCycleHook extends EmptyShapeStoreHook {
     }
 
     removeViewHook(view: AbstractShape) {
-        view.getObj() && this.registry.stores.objStore.removeItem(view.getObj());
+        view.getObj() && this.registry.data.scene.items.removeItem(view.getObj());
     }
 }
 

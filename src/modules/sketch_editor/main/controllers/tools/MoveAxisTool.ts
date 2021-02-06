@@ -31,7 +31,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
         const snapHappend = this.snapper.trySnapOrUnsnap(this.meshView.getObj(), pointerTracker);
 
         if (snapHappend) {
-            this.registry.data.scene.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
+            this.registry.data.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
         }
     }
 
@@ -58,7 +58,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
         const snapHappend = this.snapper.trySnapOrUnsnap(this.meshView.getObj(), pointerTracker);
         
         if (snapHappend) {
-            this.registry.data.scene.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
+            this.registry.data.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
         }    
     }
 }

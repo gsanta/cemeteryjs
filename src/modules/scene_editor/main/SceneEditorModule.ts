@@ -11,6 +11,7 @@ import { UI_Region } from "../../../core/plugin/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
+import { ObjSelectionStore } from "../../../core/stores/ObjSelectionStore";
 import { ObjStore } from "../../../core/stores/ObjStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { SceneEditorToolbarController } from "../contribs/toolbar/SceneEditorToolbarController";
@@ -35,9 +36,11 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
 
         this.engine = registry.engine;
         this.data = {
-            items: registry.stores.objStore,
-            selection: new ObjStore()
+            items: new ObjStore(),
+            selection: new ObjSelectionStore()
         }
+
+        this.registry.data.scene = this.data;
 
         this.engineEventAdapter = new EngineEventAdapter(registry, this);
         this.engineEventAdapter.register();

@@ -57,8 +57,8 @@ export class NodeConnectionObj implements IObj {
         this.id = json.id;
         this.name = json.name;
         this.joinPoint1 = json.joinPoint1;
-        this.node1 = registry.stores.objStore.getItemById(json.node1Id) as NodeObj;
+        this.node1 = registry.data.scene.items.getItemById(json.node1Id) as NodeObj;
         this.joinPoint2 = json.joinPoint2;
-        this.node2 = registry.stores.objStore.getItemById(json.node2Id) as NodeObj;
+        this.node2 = registry.data.scene.items.getItemById(json.node2Id) as NodeObj;
     }
 }

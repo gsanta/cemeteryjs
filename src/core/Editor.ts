@@ -12,7 +12,7 @@ import { TriggerZoneNode } from '../modules/graph_editor/main/models/nodes/Trigg
 import { ThumbnailCanvasModule } from '../modules/sketch_editor/contribs/dialog/thumbnail/ThumbnailCanvasModule';
 import { Registry } from './Registry';
 import { NodeGraphHook } from './services/NodePlugin';
-import { ObjLifeCycleHook } from './stores/ObjStore';
+import { ObjLifeCycleHook, ObjStore } from './stores/ObjStore';
 import { AxisControlHook, ShapeLifeCycleHook, ShapeStore } from './stores/ShapeStore';
 import { CollisionNode } from '../modules/graph_editor/main/models/nodes/CollisionNode';
 import { DirectionNode } from '../modules/graph_editor/main/models/nodes/DirectionNode';
@@ -49,7 +49,7 @@ export class Editor {
         this.registry.services.module.ui.registerCanvas(new ThumbnailCanvasModule(this.registry));
 
         // hooks
-        this.registry.stores.objStore.addHook(new ObjLifeCycleHook(this.registry));
+        (this.registry.data.scene.items as ObjStore).addHook(new ObjLifeCycleHook(this.registry));
         
         // side panels
         this.registry.services.module.ui.registerPanel(new NodeLibraryModule(this.registry))

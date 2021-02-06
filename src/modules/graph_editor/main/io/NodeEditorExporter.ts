@@ -38,7 +38,7 @@ export class NodeEditorExporter extends AbstractModuleExporter {
     }
 
     exportObjs(): ObjJson[] {
-        return this.registry.stores.objStore.getAllItems()
+        return this.registry.data.scene.items.getAllItems()
             .filter(obj => this.acceptedObjTypes.includes(obj.objType))
             .map(obj => obj.serialize());
     }

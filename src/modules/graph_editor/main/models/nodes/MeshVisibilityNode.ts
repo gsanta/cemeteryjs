@@ -33,7 +33,7 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new MeshVisibilityNodeParams());
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
         // obj.executor = new MeshPropertyNodeExecutor(this.registry, obj);
 
@@ -82,7 +82,7 @@ export class MeshVisibilityNodeParams extends NodeParams {
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.name = nodeParamJson.name;
             if (nodeParamJson.val) {
-                this.mesh.ownVal = <MeshObj> registry.stores.objStore.getItemById(nodeParamJson.val);
+                this.mesh.ownVal = <MeshObj> registry.data.scene.items.getItemById(nodeParamJson.val);
             }
         }
     }

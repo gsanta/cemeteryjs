@@ -33,7 +33,7 @@ export class CollisionNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj<CollisionNodeParams>(this.nodeType, {displayName: this.displayName});
         obj.setParams(new CollisionNodeParams(this.registry, obj));
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
         
         return obj;

@@ -37,7 +37,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
             let viewInstance: AbstractShape;
         
             if (viewJson.type === NodeShapeType) {
-                const nodeObj = (<NodeObj> this.registry.stores.objStore.getItemById(viewJson.objId));
+                const nodeObj = (<NodeObj> this.registry.data.scene.items.getItemById(viewJson.objId));
                 viewInstance = this.registry.data.helper.node.createView(nodeObj.type, nodeObj)
                 viewInstance.fromJson(viewJson, this.registry);
             } else {
@@ -49,7 +49,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
     }
 
     private importObjs(objJsons: ObjJson[]) {
-        const objStore = this.registry.stores.objStore;
+        const objStore = this.registry.data.scene.items;
         const afterAllObjsDeserializedFuncs: AfterAllObjsDeserialized[] = [];
 
         // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType

@@ -20,7 +20,7 @@ export class CollisionConstraint {
     }
 
     isPositionValid(meshObj: MeshObj) {
-        const meshObjs = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType);
+        const meshObjs = <MeshObj[]> this.registry.data.scene.items.getItemsByType(MeshObjType);
 
         const intersectingMeshObj = meshObjs.find(obj => {
             if (obj !== meshObj) {

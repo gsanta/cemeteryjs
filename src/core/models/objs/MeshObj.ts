@@ -210,7 +210,7 @@ export class MeshObj implements IGameObj {
 
         this.modelObj = json.modelId ? registry.stores.assetStore.getAssetById(json.modelId) : undefined;
         this.textureObj = json.textureId ? registry.stores.assetStore.getAssetById(json.textureId) : undefined;
-        this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> registry.stores.objStore.getByNameOrId(json.textureId) : undefined;
+        this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> registry.data.scene.items.getItemById(json.textureId) : undefined;
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;

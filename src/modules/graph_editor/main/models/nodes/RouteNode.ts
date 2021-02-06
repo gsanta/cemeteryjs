@@ -36,7 +36,7 @@ export class RouteNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new RouteNodeParams());
         obj.executor = new RouteNodeExecutor(this.registry, obj);
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
@@ -128,7 +128,7 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
         if (nodeObj.getPort('path').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('path').getConnectedPorts()[0].getNodeParam();
-            return <PathObj> registry.stores.objStore.getItemById(nodeParam.ownVal);
+            return <PathObj> registry.data.scene.items.getItemById(nodeParam.ownVal);
         }
     }
 }

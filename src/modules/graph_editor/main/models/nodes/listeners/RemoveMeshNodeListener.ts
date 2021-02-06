@@ -29,7 +29,7 @@ export class RemoveMeshNodeListener extends AbstractNodeListener {
         let meshObj: MeshObj = this.params.mesh.getPortOrOwnVal();
 
         if (meshObj) {
-            this.registry.stores.objStore.removeItem(meshObj);
+            this.registry.data.scene.items.removeItem(meshObj);
         }
     }
 }

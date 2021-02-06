@@ -95,7 +95,7 @@ export class MeshSnapper {
     }
 
     private testForSnap(meshObj: MeshObj): [MeshSideInfo, MeshSideInfo] {
-        const allMeshes = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType).filter(obj => obj !== meshObj);
+        const allMeshes = <MeshObj[]> this.registry.data.scene.items.getItemsByType(MeshObjType).filter(obj => obj !== meshObj);
 
         for (let targetMesh of allMeshes) {
             const snapInfo = this.testForUnsnap(meshObj, targetMesh);

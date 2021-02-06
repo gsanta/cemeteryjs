@@ -11,7 +11,7 @@ export class SceneToSketchSynchronizer {
     constructor(registry: Registry) {
         this.registry = registry;
     
-        registry.data.scene.observable.add((eventData) => {
+        registry.data.observable.add((eventData) => {
 
             switch(eventData.eventType) {
                 case ObjEventType.PositionChanged:

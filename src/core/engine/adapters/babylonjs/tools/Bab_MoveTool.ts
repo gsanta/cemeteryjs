@@ -63,7 +63,7 @@ export class Bab_MoveTool implements IEngineTool {
 
     private emitMoveEvent() {
         if (this.pickedMesh) {
-            this.registry.data.scene.observable.emit({ obj: this.pickedMeshObj, eventType: ObjEventType.PositionChanged });
+            this.registry.data.observable.emit({ obj: this.pickedMeshObj, eventType: ObjEventType.PositionChanged });
         }
     }
 }

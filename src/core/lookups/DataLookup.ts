@@ -1,35 +1,24 @@
 import { ObjObservable } from "../models/ObjObservable";
+import { IObj } from "../models/objs/IObj";
 import { AbstractShape } from "../models/shapes/AbstractShape";
 import { Registry } from "../Registry";
-import { ObjSelectionStore } from "../stores/ObjSelectionStore";
 import { ObjStore } from "../stores/ObjStore";
 import { DataHelperLookup } from "./DataHelperLookup";
 import { ItemData } from "./ItemData";
-import { ShapeLookup } from "./ShapeLookup";
 
 export class DataLookup {
     helper: DataHelperLookup;
-    shape: ShapeLookup;
-    obj: ObjLookup;
-    scene: {
-        selection: ObjSelectionStore;
-        observable: ObjObservable;
-    }
+    observable: ObjObservable;
     
-    sketch: ItemData<AbstractShape>;
+    scene: ItemData<IObj>;
     node: ItemData<AbstractShape>
+    sketch: ItemData<AbstractShape>;
     
     private _registry: Registry;
 
     constructor(registry: Registry) {
         this.helper = new DataHelperLookup(registry);
-        this.shape = new ShapeLookup();
-        this.obj = new ObjLookup(registry);
-
-        this.scene = {
-            selection: new ObjSelectionStore(),
-            observable: new ObjObservable()
-        }
+        this.observable =  new ObjObservable()
 
         this._registry = registry;
     }
@@ -37,9 +26,9 @@ export class DataLookup {
     clearData() {
         this.sketch.items.clear();
         this.node.items.clear();
-        this.obj.feature.clear();
+        this.scene.items.clear();
 
-        this._registry.stores.objStore.clear();
+        this._registry.data.scene.items.clear();
         this._registry.stores.assetStore.clear();
     }
 }

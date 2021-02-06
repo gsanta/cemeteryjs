@@ -35,7 +35,7 @@ export class KeyboardNode extends AbstractNodeFactory {
         const params = new KeyboardNodeParams(obj);
         obj.setParams(params);
         obj.listener = new KeyboardNodeListener(obj, obj.param);
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;

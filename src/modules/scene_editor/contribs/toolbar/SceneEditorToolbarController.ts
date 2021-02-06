@@ -98,7 +98,7 @@ class ShowBoundingBoxController extends ParamController<boolean> {
         const show = !this.canvas.showBoundingBoxes;
         this.canvas.showBoundingBoxes = show;
         
-        const meshObjs = <MeshObj[]> this.registry.stores.objStore.getObjsByType(MeshObjType);
+        const meshObjs = <MeshObj[]> this.registry.data.scene.items.getItemsByType(MeshObjType);
         meshObjs.forEach(meshObj => this.registry.engine.meshes.showBoundingBoxes(meshObj, show));
 
         this.registry.services.render.reRender(UI_Region.Canvas2);

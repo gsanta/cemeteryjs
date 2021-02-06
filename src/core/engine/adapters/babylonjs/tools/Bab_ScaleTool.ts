@@ -42,7 +42,7 @@ export class Bab_ScaleTool implements IEngineTool {
     private emitScaleEvent() {
         if (this.pickedMesh) {
             const meshObj = this.engineFacade.meshes.meshToObj.get(this.pickedMesh);
-            this.registry.data.scene.observable.emit({ obj: meshObj, eventType: ObjEventType.ScaleChanged });
+            this.registry.data.observable.emit({ obj: meshObj, eventType: ObjEventType.ScaleChanged });
         }
     }
 }

@@ -32,7 +32,7 @@ export class FilterMeshNode extends AbstractNodeFactory {
     createObj(): NodeObj {
         const obj = new NodeObj<FilterMeshNodeParams>(this.nodeType, {displayName: this.displayName});
         obj.setParams(new FilterMeshNodeParams(obj));
-        obj.id = this.registry.stores.objStore.generateId(obj) ;
+        obj.id = this.registry.data.scene.items.generateId(obj) ;
         obj.graph = this.registry.data.helper.node.graph;
         
         return obj;
@@ -67,7 +67,7 @@ export class FilterMeshNodeParams extends NodeParams {
         },
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             const ids = (nodeParamJson.val as string).split(', ');
-            const meshObjs = <MeshObj[]> ids.map(id => registry.stores.objStore.getItemById(id));
+            const meshObjs = <MeshObj[]> ids.map(id => registry.data.scene.items.getItemById(id));
             this.mesh.name = nodeParamJson.name;
             this.mesh.ownVal = meshObjs;
         }

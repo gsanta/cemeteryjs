@@ -28,7 +28,7 @@ export class MeshViewFactory extends ShapeFactoryAdapter {
         meshView.setBounds(dimensions);
         meshView.setRotation(0);
     
-        this.registry.stores.objStore.addItem(meshObj);
+        this.registry.data.scene.items.addItem(meshObj);
         panel.data.items.addItem(meshView);
     
         return meshView;

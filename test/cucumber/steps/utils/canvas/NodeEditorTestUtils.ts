@@ -29,7 +29,7 @@ export class NodeEditorTestUtils {
             const nodeView: NodeShape = registry.data.helper.node.createView(nodeType, nodeObj);
             
             registry.data.node.items.addItem(nodeView);
-            registry.stores.objStore.addItem(nodeObj);
+            registry.data.scene.items.addItem(nodeObj);
     
             nodeView.getBounds().moveTo(Point.fromString(row[posColumnIndex]));
         });

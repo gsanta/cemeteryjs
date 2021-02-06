@@ -33,7 +33,7 @@ export class ArrayNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new ArrayNodeParams(obj));
         obj.listener = new ArrayNodeListener(obj, obj.param);
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;

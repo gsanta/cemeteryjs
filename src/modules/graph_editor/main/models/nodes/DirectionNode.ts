@@ -34,7 +34,7 @@ export class DirectionNode extends AbstractNodeFactory {
         const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
         obj.setParams(new DirectionNodeParams(obj));
         obj.listener = new DirectionNodeListener(obj.param);
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;

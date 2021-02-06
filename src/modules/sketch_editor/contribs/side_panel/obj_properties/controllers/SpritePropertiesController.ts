@@ -69,7 +69,7 @@ export class SelectSpriteSheetController extends ParamController {
     }
 
     values() {
-        return this.registry.stores.objStore.getObjsByType(SpriteSheetObjType).map(asset => asset.id);
+        return this.registry.data.scene.items.getItemsByType(SpriteSheetObjType).map(asset => asset.id);
     }
 }
 

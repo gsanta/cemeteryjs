@@ -45,7 +45,7 @@ export class MoveNode extends AbstractNodeFactory {
         obj.setParams(new MoveNodeParams(obj));
         obj.listener = new MoveNodeListener(obj, obj.param);
         obj.listener.onInit();
-        obj.id = this.registry.stores.objStore.generateId(obj);
+        obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;
 
         return obj;
@@ -183,7 +183,7 @@ export class MeshNodeParam extends NodeParam<MeshObj> {
     fromJson(registry: Registry, nodeParamJson: NodeParamJson) {
         this.name = nodeParamJson.name;
         if (nodeParamJson.val) {
-            this.ownVal = <MeshObj> registry.stores.objStore.getItemById(nodeParamJson.val);
+            this.ownVal = <MeshObj> registry.data.scene.items.getItemById(nodeParamJson.val);
         }
     }
 }

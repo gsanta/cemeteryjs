@@ -76,7 +76,7 @@ export class LightShape extends AbstractShape {
         lightView.id = json.id;
         lightView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
-        const obj = <LightObj> registry.stores.objStore.getItemById(json.objId);
+        const obj = <LightObj> registry.data.scene.items.getItemById(json.objId);
         lightView.setObj(obj);
         
         const afterAllViewsDeserialized: AfterAllViewsDeserialized = () => {

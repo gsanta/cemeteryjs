@@ -26,7 +26,7 @@ export class MeshController extends ParamController<string> {
     }
 
     values() {
-        return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.name ? meshObj.name : meshObj.id)
+        return this.registry.data.scene.items.getItemsByType(MeshObjType).map(meshObj => meshObj.name ? meshObj.name : meshObj.id)
     }
 
     val() {
@@ -38,9 +38,9 @@ export class MeshController extends ParamController<string> {
 
     change(val: string) {
         if (this.nodeObj.param.mesh.setVal) {
-            this.nodeObj.param.mesh.setVal(this.registry.stores.objStore.getByNameOrId(val) as MeshObj);
+            this.nodeObj.param.mesh.setVal(this.registry.data.scene.items.getItemById(val) as MeshObj);
         } else {
-            this.nodeObj.param.mesh.ownVal = this.registry.stores.objStore.getByNameOrId(val) as MeshObj;
+            this.nodeObj.param.mesh.ownVal = this.registry.data.scene.items.getItemById(val) as MeshObj;
         }
         this.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
@@ -57,7 +57,7 @@ export class MultiMeshController extends MultiSelectController {
     }
 
     values() {
-        return this.registry.stores.objStore.getObjsByType(MeshObjType).map(meshObj => meshObj.id)
+        return this.registry.data.scene.items.getItemsByType(MeshObjType).map(meshObj => meshObj.id)
     }
 
     selectedValues() {
@@ -78,13 +78,13 @@ export class MultiMeshController extends MultiSelectController {
         if (!this.tempVal.includes(val)) {
             this.tempVal.push(val);
         }
-        // this.nodeObj.param.mesh.val.push(this.registry.stores.objStore.getById(val));
+        // this.nodeObj.param.mesh.val.push(this.registry.data.scene.items.getById(val));
         // context.registry.services.history.createSnapshot();
         this.registry.services.render.reRender(UI_Region.Canvas1);
     }
 
     done() {
-        const meshObjs = this.tempVal.map(val => this.registry.stores.objStore.getItemById(val));
+        const meshObjs = this.tempVal.map(val => this.registry.data.scene.items.getItemById(val));
         this.nodeObj.param.mesh.val = meshObjs;
         this.isPopupOpen = false;
         this.registry.services.history.createSnapshot();

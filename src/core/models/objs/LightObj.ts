@@ -34,7 +34,7 @@ export class LigthObjFactory extends ObjFactoryAdapter {
 
     newInstance() {
         const lightObj = new LightObj(undefined, this.registry.engine.lights);
-        lightObj.id = this.registry.stores.objStore.generateId(lightObj);
+        lightObj.id = this.registry.data.scene.items.generateId(lightObj);
         return lightObj; 
     }
 
@@ -158,10 +158,10 @@ export class LightObj implements IGameObj {
 
         const afterAllObjsDeserialized = () => {
             if (json.parentId) {
-                const parentPos =  (<MeshObj> registry.stores.objStore.getItemById(json.parentId)).getPosition();
+                const parentPos =  (<MeshObj> registry.data.scene.items.getItemById(json.parentId)).getPosition();
                 const pos = new Point_3(json.position.x, json.position.y, json.position.z).add(parentPos);
                 obj.setPosition(pos);
-                obj.setParent(<MeshObj> registry.stores.objStore.getItemById(json.parentId));
+                obj.setParent(<MeshObj> registry.data.scene.items.getItemById(json.parentId));
                 
             } else {
                 obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));

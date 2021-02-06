@@ -28,7 +28,7 @@ export class PathViewFactory extends ShapeFactoryAdapter {
         const editPoint = new PathPoinShape(pathView, pointer.down.clone());
         pathView.addPathPoint(editPoint);
         panel.data.items.addItem(pathView);
-        this.registry.stores.objStore.addItem(pathObj);
+        this.registry.data.scene.items.addItem(pathObj);
         panel.data.selection.addItem(pathView);
 
         return pathView;

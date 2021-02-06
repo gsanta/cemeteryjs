@@ -22,6 +22,10 @@ export class ObjStore implements IStore<IObj> {
     private hooks: ObjStoreHook[] = [];
     id: string;
 
+    constructor() {
+        this.setIdGenerator(new IdGenerator());
+    }
+
     setIdGenerator(idGenerator: IdGenerator) {
         if (this.idGenerator) {
             throw new Error(`Store ${this.id} already has an id generator, for consistency with the store's content, id generator should be set only once.`);
@@ -68,10 +72,10 @@ export class ObjStore implements IStore<IObj> {
     }
 
     getItemById(id: string) {
-        return this.objById.get(id);
+        return this.objById.get(id) || this.getByName(id);
     }
 
-    getByName(name: string) {
+    private getByName(name: string) {
         if (this.nameCache.get(name) && this.nameCache.get(name).name !== name) {
             this.nameCache.delete(name);
         }
@@ -92,24 +96,8 @@ export class ObjStore implements IStore<IObj> {
         this.nameCache.set(name, obj);
     }
 
-    getByNameOrId(nameOrId: string) {
-        return this.getItemById(nameOrId) || this.getByName(nameOrId);
-    }
-
-    getObjsByType(type: string): IObj[] {
-        return this.objsByType.get(type) || [];
-    }
-
-    getAllTypes(): string[] {
-        return Array.from(this.objsByType.keys());
-    }
-
     getAllItems(): IObj[] {
         return this.objs;
-    }
-
-    size() {
-        return this.objs.length;
     }
 
     clear() {
@@ -129,28 +117,8 @@ export class ObjStore implements IStore<IObj> {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
-    // addSelectedItem(...items: IObj[]) {
-    //     this.selectedItems.push(...items);
-    // }
-    
-    // removeSelectedItem(item: IObj) {
-    //     this.selectedItems = this.selectedItems.filter(i => i !== item);
-    // }
-    
-    // getSelectedItems(): IObj[] {
-    //     return this.selectedItems;
-    // }
-    
-    // clearSelection() {
-    //     this.selectedItems = [];
-    // }
-    
-    // getSelectedItemsByType(objType: string): IObj[] {
-    //     return [];
-    // }
-
     getItemsByType(type: string): IObj[] {
-        return [];
+        return this.objsByType.get(type) || [];
     }
 }
 

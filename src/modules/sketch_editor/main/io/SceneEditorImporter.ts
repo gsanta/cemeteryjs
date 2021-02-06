@@ -82,7 +82,7 @@ export class SceneEditorImporter extends AbstractModuleImporter {
     }
 
     private importObjs(objJsons: ObjJson[]) {
-        const objStore = this.registry.stores.objStore;
+        const objStore = this.registry.data.scene.items;
         const afterAllObjsDeserializedFuncs: AfterAllObjsDeserialized[] = [];
 
         // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
