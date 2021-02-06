@@ -40,7 +40,6 @@ export class ScaleAxisViewRenderer implements ShapeRenderer {
 
         line.data = scaleView;
         // line.controller = () => plugin.toolController(scaleView, ScaleToolId)
-        line.scopedToolId = ScaleAxisToolId;
         line.isInteractive = true;
 
         const x1 = center.x + axisLineBounds[scaleView.axis].point1.x;

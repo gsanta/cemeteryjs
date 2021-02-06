@@ -16,8 +16,10 @@ import { ScaleAxisShapeType } from '../../../modules/sketch_editor/main/models/s
 import { ScaleAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool';
 import { RotateAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape';
 import { RotateAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/RotateAxisTool';
+import { ShapeEventType } from '../../models/ShapeObservable';
 
 export abstract class PointerToolLogic<D> {
+    down(pointer: PointerTracker<D>): boolean { return false; }
     click(pointer: PointerTracker<D>): boolean { return false; }
     up(pointer: PointerTracker<D>): boolean { return false; }
     drag(pointer: PointerTracker<D>): boolean { return false; }
@@ -71,36 +73,43 @@ export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
 
 export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape> {
     private registry: Registry;
-    private canvas: Canvas2dPanel<AbstractShape>;
+    private canvas: Canvas2dPanel;
 
     pickedItem: AbstractShape;
 
     private wasItemDragged = false;
 
-    constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
         this.canvas = canvas;
     }
 
+    down(pointer: PointerTracker<AbstractShape>) {
+        if (pointer.hoveredItem) {
+            this.pickedItem = pointer.hoveredItem;
+            return true;
+        }
+        return false;
+    }
+
     click(pointer: PointerTracker<AbstractShape>) {
         this.pickedItem = pointer.hoveredItem;
         
-        if (!this.pickedItem) { return false ; }
-
-        if (this.pickedItem.isContainedView()) {
+        if (!this.pickedItem) {
+            this.canvas.data.selection.clear();
+        } else if (this.pickedItem.isContainedView()) {
             if (!this.pickedItem.containerShape.isSelected()) {
                 this.canvas.data.selection.clear();
                 this.canvas.data.selection.addItem(this.pickedItem.containerShape);
             }
             this.pickedItem.containerShape.setActiveContainedView(this.pickedItem);
-            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         } else {
             this.canvas.data.selection.clear();
             this.canvas.data.selection.addItem(this.pickedItem);
-            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
-
+        
+        this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         return true;
     }
 
@@ -113,12 +122,12 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
     drag(): boolean {
         if (!this.pickedItem) { return false; }
 
-        if (this.pickedItem.isContainedView()) {
-            this.pickedItem.move(this.canvas.pointer.pointer.getDiff())
-        } else {
-            const shapes = this.canvas.data.selection.getAllItems();
-            shapes.filter(shape => !shapes.includes(shape.getParent())).forEach(item => item.move(this.canvas.pointer.pointer.getDiff()));
-        }
+        let shapes = this.pickedItem.isContainedView() ? [this.pickedItem] : this.canvas.data.selection.getAllItems();
+        shapes = shapes.filter(shape => !shapes.includes(shape.getParent()));
+        shapes.forEach(item => {
+            item.move(this.canvas.pointer.pointer.getDiff())
+            this.canvas.observable.emit({shape: item, eventType: ShapeEventType.PositionChanged});
+        });
 
         this.wasItemDragged = true;
 

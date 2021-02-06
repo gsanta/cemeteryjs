@@ -2,7 +2,6 @@ import { ObjObservable } from "../models/ObjObservable";
 import { IObj } from "../models/objs/IObj";
 import { AbstractShape } from "../models/shapes/AbstractShape";
 import { Registry } from "../Registry";
-import { ObjStore } from "../stores/ObjStore";
 import { DataHelperLookup } from "./DataHelperLookup";
 import { ItemData } from "./ItemData";
 
@@ -30,14 +29,5 @@ export class DataLookup {
 
         this._registry.data.scene.items.clear();
         this._registry.stores.assetStore.clear();
-    }
-}
-
-export class ObjLookup {
-
-    feature: ObjStore;
-    
-    constructor(registry: Registry) {
-        this.feature = new ObjStore();
     }
 }

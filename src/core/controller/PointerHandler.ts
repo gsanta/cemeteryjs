@@ -1,6 +1,5 @@
 import { Point } from "../../utils/geometry/shapes/Point";
 import { Registry } from "../Registry";
-import { Tool } from "../plugin/tools/Tool";
 import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
 
 export enum Wheel {
@@ -86,7 +85,7 @@ export class PointerHandler<D> {
         this.canvas = canvas;
     }
 
-    pointerDown(e: IPointerEvent, scopedToolId?: string): void {
+    pointerDown(e: IPointerEvent): void {
         if (e.button !== 'left') { return }        
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         
@@ -96,11 +95,11 @@ export class PointerHandler<D> {
         this.pointer.lastPointerEvent = e;
         this.pointer.pickedItem = this.canvas.data.items.getItemById(e.pickedItemId);
         
-        this.determineTool(scopedToolId).down(this.pointer);
+        this.canvas.tool.getActiveTool().down(this.pointer);
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerMove(e: IPointerEvent, scopedToolId?: string): void {
+    pointerMove(e: IPointerEvent): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
 
         this.pointer.prev = this.pointer.curr;
@@ -109,7 +108,7 @@ export class PointerHandler<D> {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         this.pointer.lastPointerEvent = e;
 
-        const tool = this.determineTool(scopedToolId);
+        const tool = this.canvas.tool.getActiveTool();
 
         if (this.pointer.isDown && this.pointer.getDownDiff().len() > 2) {
             this.isDrag = true;
@@ -121,7 +120,7 @@ export class PointerHandler<D> {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerUp(e: IPointerEvent, scopedToolId?: string): void {
+    pointerUp(e: IPointerEvent): void {
         this.canvas.hotkey.focus();
         
         if (e.button !== 'left') { return; }
@@ -133,7 +132,7 @@ export class PointerHandler<D> {
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         this.pointer.lastPointerEvent = e;
 
-        const tool = this.determineTool(scopedToolId);
+        const tool = this.canvas.tool.getActiveTool();
 
         this.isDrag ? tool.dragEnd(this.pointer) : tool.click(this.pointer); 
         
@@ -144,19 +143,19 @@ export class PointerHandler<D> {
         this.registry.services.render.reRenderScheduled();
     }
 
-    pointerOut(e: IPointerEvent, scopedToolId?: string): void {
+    pointerOut(e: IPointerEvent): void {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.pointer.lastPointerEvent = undefined;
 
         const data = this.canvas.data.items.getItemById(e.pickedItemId);
+        this.pointer.hoveredItem = undefined;
 
-        this.determineTool(scopedToolId).out(data);
+        this.canvas.tool.getActiveTool().out(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
-        this.pointer.pickedItem = undefined;
     }
 
-    pointerOver(e: IPointerEvent, scopedToolId?: string) {
+    pointerOver(e: IPointerEvent) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         const data = this.canvas.data.items.getItemById(e.pickedItemId);
     
@@ -165,7 +164,7 @@ export class PointerHandler<D> {
 
         this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);
 
-        this.determineTool(scopedToolId).over(data);
+        this.canvas.tool.getActiveTool().over(data);
 
         this.registry.services.render.reRender(this.registry.ui.helper.hoveredPanel.region);
     }
@@ -195,20 +194,11 @@ export class PointerHandler<D> {
         this.canvas.tool.getActiveTool().wheelEnd();
     }
 
-    pointerDrop(e: IPointerEvent, scopedToolId?: string) {
-        this.pointerUp(e, scopedToolId);
+    pointerDrop(e: IPointerEvent) {
+        this.pointerUp(e);
         this.registry.services.dragAndDropService.emitDrop();
 
         this.registry.services.render.reRenderAll();
-    }
-
-    private determineTool(scopedToolId?: string): Tool<D> {
-        return this.canvas.tool.getActiveTool();
-        // if (scopedToolId) {
-        //     // return this.canvas.tool.getToolById(scopedToolId);
-        // } else {
-        // }
-
     }
     
     private getScreenPoint(point: Point): Point {

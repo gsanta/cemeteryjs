@@ -40,6 +40,8 @@ export class SelectionStoreForSketchEditor implements IStore<AbstractShape> {
     }
 
     clear(): void {
+        this.items.forEach(item => item.tags.delete(ShapeTag.Selected));
+
         this.items = [];
         this.canvas.observable.emit({eventType: ShapeEventType.SelectionChanged});
     }

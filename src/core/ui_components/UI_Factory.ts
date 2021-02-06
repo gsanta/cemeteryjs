@@ -276,7 +276,6 @@ Id
     static svgText(parent: UI_Container, config: UI_ElementConfig): UI_SvgText {
         const element = new UI_SvgText({controller: config.controller || parent.controller, parent, ...config});
 
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
 
         parent.children.push(element);
@@ -288,7 +287,6 @@ Id
     static svgRect(parent: UI_Container, config: UI_ElementConfig): UI_SvgRect {
         const element = new UI_SvgRect({controller: config.controller || parent.controller, parent, ...config});
 
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
     
         parent.children.push(element);
@@ -300,7 +298,6 @@ Id
     static svgLine(parent: UI_Container, config: UI_ElementConfig): UI_SvgLine {
         const element = new UI_SvgLine({controller: config.controller || parent.controller, parent, ...config});
 
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
     
         parent.children.push(element);
@@ -312,7 +309,6 @@ Id
     static svgCircle(parent: UI_Container, config: UI_ElementConfig): UI_SvgCircle {
         const element = new UI_SvgCircle({controller: config.controller || parent.controller, parent, ...config});
 
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
     
         parent.children.push(element);
@@ -324,7 +320,6 @@ Id
     static svgPath(parent: UI_Container, config: UI_ElementConfig): UI_SvgPath {
         const element = new UI_SvgPath({controller: config.controller || parent.controller, parent, ...config});
 
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
     
         parent.children.push(element);
@@ -336,7 +331,6 @@ Id
     static svgPolygon(parent: UI_Container, config: UI_ElementConfig): UI_SvgPolygon {
         const element = new UI_SvgPolygon({controller: config.controller || parent.controller, parent, ...config});
 
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
     
         parent.children.push(element);
@@ -348,7 +342,6 @@ Id
     static svgImage(parent: UI_Container, config: UI_ElementConfig): UI_SvgImage {
         const element = new UI_SvgImage({controller: config.controller || parent.controller, parent, ...config});
     
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
 
         parent.children.push(element);
@@ -360,7 +353,6 @@ Id
     static svgGroup(parent: UI_Container, config: UI_ElementConfig): UI_SvgGroup {
         const element = new UI_SvgGroup({ controller: config.controller || parent.controller, parent, ...config});
         
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
 
         parent.children.push(element);
@@ -381,7 +373,6 @@ Id
     static svgForeignObject(parent: UI_Container, config: UI_ElementConfig): UI_SvgForeignObject {
         const element = new UI_SvgForeignObject({controller: config.controller || parent.controller, parent, ...config});
         
-        element.scopedToolId = parent.scopedToolId;
         element.data = parent.data;
 
         parent.children.push(element);

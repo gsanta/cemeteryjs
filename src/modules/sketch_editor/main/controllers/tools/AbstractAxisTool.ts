@@ -29,7 +29,7 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
 
     over(view: T) {
         this.hoveredView = view;
-        this.canvas.tool.setScopedTool(this.id);
+        this.canvas.tool.setPriorityTool(this.id);
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
@@ -43,7 +43,6 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
     down() {
         if (this.canvas.pointer.pointer.hoveredItem && this.canvas.pointer.pointer.hoveredItem.viewType === this.shapeType) {
             this.downView = <T> this.canvas.pointer.pointer.hoveredItem;
-            this.meshShape = <MeshShape> this.hoveredView.containerShape;
         }
     }
 
@@ -68,12 +67,11 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
     }
 
     up() {
-        if (this.canvas.pointer.pointer.pickedItem !== this.downView) {
-            this.canvas.tool.removeScopedTool(this.id);
+        if (this.canvas.pointer.pointer.hoveredItem !== this.downView) {
+            this.canvas.tool.removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
         this.downView = undefined;
-        this.meshShape = undefined;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.scheduleRendering(UI_Region.Sidepanel);
     }

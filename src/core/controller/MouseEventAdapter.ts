@@ -17,11 +17,6 @@ export class MouseEventAdapter {
 
     static dndDrop(e: MouseEvent): IPointerEvent {
         return this.convertEvent(e, false, IPointerEventType.PointerDrop);
-        // this.canvas.pointer.pointerUp(this.convertEvent(e, false, IPointerEventType.PointerDrop), scopedToolId);
-
-        // this.registry.services.dragAndDropService.emitDrop();
-
-        // this.registry.services.render.reRenderAll();
     }
 
     static mouseOut(e: MouseEvent, pickedItemId: string): IPointerEvent {

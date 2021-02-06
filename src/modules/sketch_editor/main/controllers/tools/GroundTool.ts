@@ -14,7 +14,7 @@ export class GroundTool extends RectangleTool<AbstractShape> {
     icon = 'grid';
     displayName = 'Ground';
 
-    constructor(panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+    constructor(panel: Canvas2dPanel, registry: Registry) {
         super(GroundToolId, panel, registry);
     }
 

@@ -44,6 +44,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
             const deltaY = -pointerTracker.getDiff().y / sceneAndGameViewRatio;
             let delta = new Point_3(0, deltaY, 0);    
             this.meshShape.getObj().translate(delta);
+            this.shapeObservable.emit({shape: this.meshShape, eventType: ShapeEventType.PositionChanged});
         }
     }
 
@@ -53,6 +54,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
         if (!this.snapper.isSnapped()) {
             let delta = new Point_3(0, pointerTracker.getDiff().y, 0);
             this.meshShape.move(delta);
+            this.shapeObservable.emit({shape: this.meshShape, eventType: ShapeEventType.PositionChanged});
         }
     
         const snapHappend = this.snapper.trySnapOrUnsnap(this.meshShape.getObj(), pointerTracker);

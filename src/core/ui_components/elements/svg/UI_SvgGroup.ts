@@ -5,7 +5,6 @@ import { UI_ElementType } from '../UI_ElementType';
 
 export class UI_SvgGroup extends UI_Container {
     elementType = UI_ElementType.SvgGroup;
-    scopedToolId: string;
     transform: string;
 
     rect(key?: string) {

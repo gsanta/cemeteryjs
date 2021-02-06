@@ -16,7 +16,7 @@ export const PathToolId = 'path-tool';
 export class PathTool extends PointerTool<AbstractShape> {
     acceptedViews = [PathShapeType, PathPointViewType]
 
-    constructor(logic: PointerToolLogic<AbstractShape>, panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+    constructor(logic: PointerToolLogic<AbstractShape>, panel: Canvas2dPanel, registry: Registry) {
         super(PathToolId, logic, panel, registry);
     }
 

@@ -11,7 +11,7 @@ When('change param to \'{word}\' in controller \'{word}\' of panel \'{word}\'', 
 });
 
 When('change param to \'{word}\' in controller \'{word}\' of view \'{word}\'', function(newVal: string, controllerKey: string, viewId: string) {
-    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel<AbstractShape>; 
+    const canvasPanel = this.registry.ui.helper.hoveredPanel as Canvas2dPanel; 
     const view = canvasPanel.data.items.getItemById(viewId);
 
     view.paramController[controllerKey].change(newVal, null, null);

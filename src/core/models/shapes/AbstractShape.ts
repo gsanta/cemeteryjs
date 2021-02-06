@@ -31,14 +31,14 @@ export interface AfterAllViewsDeserialized {
 
 export interface ShapeFactory {
     instantiate(): AbstractShape;
-    instantiateOnCanvas(canvas: Canvas2dPanel<AbstractShape>, dimensions: Rectangle, config?: any): AbstractShape;
+    instantiateOnCanvas(canvas: Canvas2dPanel, dimensions: Rectangle, config?: any): AbstractShape;
     instantiateOnSelection(parentView: AbstractShape): void;
     instantiateFromJson(json: ShapeJson): [AbstractShape, AfterAllViewsDeserialized];
 }
 
 export abstract class ShapeFactoryAdapter implements ShapeFactory {
     instantiate() { return undefined; }
-    instantiateOnCanvas(panel: Canvas2dPanel<AbstractShape>, dimensions: Rectangle, config?: any): AbstractShape { return undefined; }
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: any): AbstractShape { return undefined; }
     instantiateOnSelection(parentView: AbstractShape): void {  }
     instantiateFromJson(json: ShapeJson) { return undefined; };
 }

@@ -13,7 +13,7 @@ export class CubeTool extends RectangleTool<AbstractShape> {
     icon = 'cube';
     displayName = 'Cube';
 
-    constructor(panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+    constructor(panel: Canvas2dPanel, registry: Registry) {
         super(CubeToolId, panel, registry);
     }
 

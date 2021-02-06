@@ -10,7 +10,7 @@ import { SketchEditorModule } from "../../SketchEditorModule";
 export const LightToolId = 'light-tool';
 
 export class LightTool extends RectangleTool<AbstractShape> {
-    constructor(panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+    constructor(panel: Canvas2dPanel, registry: Registry) {
         super(LightToolId, panel, registry);
         this.rectRadius = 15;
     }

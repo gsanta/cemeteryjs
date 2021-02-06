@@ -81,9 +81,9 @@ export class SelectionToolLogicForWebGlCanvas implements RectangleSelectionToolL
 
 export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLogic<AbstractShape> {
     private registry: Registry;
-    private canvas: Canvas2dPanel<AbstractShape>;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         this.registry = registry;
         this.canvas = canvas;
     }
@@ -103,10 +103,10 @@ export class SelectionToolLogicForSvgCanvas implements RectangleSelectionToolLog
 
 // export class SelectionToolLogicForSvgCanvas implements PointerToolLogic<AbstractShape> {
 //     private registry: Registry;
-//     private canvas: Canvas2dPanel<AbstractShape>;
+//     private canvas: Canvas2dPanel;
 //     private pointerToolLogic: PointerToolLogicForSvgCanvas;
 
-//     constructor(registry: Registry, canvas: Canvas2dPanel<AbstractShape>) {
+//     constructor(registry: Registry, canvas: Canvas2dPanel) {
 //         this.registry = registry;
 //         this.canvas = canvas;
 
@@ -165,7 +165,9 @@ export class SelectTool<D> extends PointerTool<D> {
     }
 
     down(pointer: PointerTracker<D>) {
-        this.selectionLogic.down();
+        if (!this.pointerToolLogic.down(pointer)) {
+            this.selectionLogic.down();
+        }
         // if (this.canvas.pointer.pointer.pickedItem && this.canvas.pointer.pointer.pickedItem.isSelected()) {
         //     super.down(pointerTracker);
         // }

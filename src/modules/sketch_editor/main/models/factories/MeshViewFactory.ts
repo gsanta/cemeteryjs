@@ -18,7 +18,7 @@ export class MeshViewFactory extends ShapeFactoryAdapter {
         return new MeshShape();
     }
 
-    instantiateOnCanvas(panel: Canvas2dPanel<AbstractShape>, dimensions: Rectangle, config?: MeshShapeConfig) {
+    instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: MeshShapeConfig) {
         const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
         meshObj.color = colors.darkorchid;
         meshObj.shapeConfig = config;

@@ -3,6 +3,7 @@
 import { FormController } from "../../core/controller/FormController";
 import { ItemData } from "../../core/lookups/ItemData";
 import { Camera2D } from "../../core/models/misc/camera/Camera2D";
+import { ShapeObservable } from "../../core/models/ShapeObservable";
 import { AbstractShape } from "../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../core/plugin/Canvas2dPanel";
 import { CameraTool } from "../../core/plugin/tools/CameraTool";
@@ -27,12 +28,13 @@ import { NodeEditorRenderer } from "./main/renderers/NodeEditorRenderer";
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller';
 
-export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
+export class NodeEditorModule extends Canvas2dPanel {
 
     data: ItemData<AbstractShape>
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
+    observable: ShapeObservable;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas1, NodeEditorPanelId, 'Node editor');
@@ -41,6 +43,8 @@ export class NodeEditorModule extends Canvas2dPanel<AbstractShape> {
             items: ShapeStore.newInstance(registry, this),
             selection: new SelectionStoreForNodeEditor()
         }
+
+        this.observable = new ShapeObservable();
 
         registry.data.node = this.data;
         (this.registry.data.node.items as ShapeStore).addHook(new ShapeLifeCycleHook(this.registry));

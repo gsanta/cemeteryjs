@@ -50,8 +50,6 @@ export abstract class UI_Element<C extends ParamController = any> {
     
     isBold: boolean;
     data: any;
-    //TODO: consider restrict it only to svg elements
-    scopedToolId: string;
     isInteractive: boolean = true;
 
     uniqueId: string;
@@ -72,35 +70,35 @@ export abstract class UI_Element<C extends ParamController = any> {
     mouseDown(registry: Registry, e: MouseEvent) {
         if (this.canvasPanel) {
             const pointerEvent = MouseEventAdapter.mouseDown(e);
-            this.canvasPanel.pointer.pointerDown(pointerEvent, this.scopedToolId);
+            this.canvasPanel.pointer.pointerDown(pointerEvent);
         }
     }
 
     mouseMove(registry: Registry, e: MouseEvent) {
         if (this.canvasPanel) {
             const pointerEvent = MouseEventAdapter.mouseMove(e);
-            this.canvasPanel.pointer.pointerMove(pointerEvent, this.scopedToolId);
+            this.canvasPanel.pointer.pointerMove(pointerEvent);
         }
     }
 
     mouseUp(registry: Registry, e: MouseEvent) {
         if (this.canvasPanel) {
             const pointerEvent = MouseEventAdapter.mouseUp(e);
-            this.canvasPanel.pointer.pointerUp(pointerEvent, this.scopedToolId);
+            this.canvasPanel.pointer.pointerUp(pointerEvent);
         }
     }
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
         if (this.canvasPanel) {
             const pointerEvent = MouseEventAdapter.mouseOut(e, data.getFqn());
-            this.canvasPanel.pointer.pointerOut(pointerEvent, this.scopedToolId);
+            this.canvasPanel.pointer.pointerOut(pointerEvent);
         }
     }
 
     mouseEnter(registry: Registry, e: MouseEvent, data?: AbstractShape) {
         if (this.canvasPanel) {
             const pointerEvent = MouseEventAdapter.mouseOver(e, data.getFqn());
-            this.canvasPanel.pointer.pointerOver(pointerEvent, this.scopedToolId);
+            this.canvasPanel.pointer.pointerOver(pointerEvent);
         }
     }
 
@@ -129,7 +127,7 @@ export abstract class UI_Element<C extends ParamController = any> {
         if (this.canvasPanel) {
             const e = <MouseEvent> {x: point.x, y: point.y};
             const pointerEvent = MouseEventAdapter.mouseUp(e);
-            this.canvasPanel.pointer.pointerDrop(pointerEvent, this.scopedToolId);
+            this.canvasPanel.pointer.pointerDrop(pointerEvent);
         }
     }
 }

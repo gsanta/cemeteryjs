@@ -41,7 +41,6 @@ export class MoveAxisViewRenderer implements ShapeRenderer {
 
         line.data = scaleView;
         // line.controller = () => plugin.toolController(scaleView, ScaleToolId)
-        line.scopedToolId = MoveAxisToolId;
         line.isInteractive = true;
 
         const x1 = center.x + axisLineBounds[scaleView.axis].point1.x;

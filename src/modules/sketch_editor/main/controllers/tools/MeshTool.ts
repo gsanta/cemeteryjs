@@ -10,7 +10,7 @@ import { MeshViewFactory } from "../../models/factories/MeshViewFactory";
 export const MeshToolId = 'mesh-tool';
 
 export class MeshTool extends RectangleTool<AbstractShape> {
-    constructor(panel: Canvas2dPanel<AbstractShape>, registry: Registry) {
+    constructor(panel: Canvas2dPanel, registry: Registry) {
         super(MeshToolId, panel, registry);
     }
 

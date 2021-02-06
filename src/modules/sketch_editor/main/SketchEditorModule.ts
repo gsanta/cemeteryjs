@@ -38,13 +38,12 @@ export const DUMMY_CAMERA_SIZE = new Point(100, 100);
 
 export const SketchEditorPanelId = 'sketch-editor';
 
-export class SketchEditorModule extends Canvas2dPanel<AbstractShape> {
+export class SketchEditorModule extends Canvas2dPanel {
 
     data: ItemData<AbstractShape>
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
-
     observable: ShapeObservable;
 
     constructor(registry: Registry) {

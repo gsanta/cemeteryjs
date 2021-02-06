@@ -40,7 +40,6 @@ export class RotateAxisViewRenderer implements ShapeRenderer {
         }
 
         line.data = axisView;
-        line.scopedToolId = RotateAxisToolId;
         line.isInteractive = true;
 
         const x1 = center.x + axisLineBounds[axisView.axis].point1.x;

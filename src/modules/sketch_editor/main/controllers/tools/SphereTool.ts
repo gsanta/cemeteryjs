@@ -13,7 +13,7 @@ export class SphereTool extends RectangleTool<AbstractShape> {
     icon = 'sphere';
     displayName = 'Sphere';
 
-    constructor(canvas: Canvas2dPanel<AbstractShape>, registry: Registry) {
+    constructor(canvas: Canvas2dPanel, registry: Registry) {
         super(SphereToolId, canvas, registry);
     }
 
