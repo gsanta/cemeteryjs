@@ -5,6 +5,7 @@ import { UI_Panel } from '../../plugin/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
 import { MouseEventAdapter } from '../../controller/MouseEventAdapter';
+import { AbstractShape } from '../../models/shapes/AbstractShape';
 
 export const activeToolId = '__activeTool__'
 
@@ -91,14 +92,14 @@ export abstract class UI_Element<C extends ParamController = any> {
 
     mouseLeave(registry: Registry, e: MouseEvent, data?: any) {
         if (this.canvasPanel) {
-            const pointerEvent = MouseEventAdapter.mouseOut(e, data.id);
+            const pointerEvent = MouseEventAdapter.mouseOut(e, data.getFqn());
             this.canvasPanel.pointer.pointerOut(pointerEvent, this.scopedToolId);
         }
     }
 
-    mouseEnter(registry: Registry, e: MouseEvent, data?: any) {
+    mouseEnter(registry: Registry, e: MouseEvent, data?: AbstractShape) {
         if (this.canvasPanel) {
-            const pointerEvent = MouseEventAdapter.mouseOver(e, data.id);
+            const pointerEvent = MouseEventAdapter.mouseOver(e, data.getFqn());
             this.canvasPanel.pointer.pointerOver(pointerEvent, this.scopedToolId);
         }
     }

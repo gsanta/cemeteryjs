@@ -164,8 +164,7 @@ export class SelectTool<D> extends PointerTool<D> {
         this.selectionLogic = selectionLogic;
     }
 
-    down(pointerTracker: PointerTracker<D>) {
-        this.pointerToolLogic.down(pointerTracker);
+    down(pointer: PointerTracker<D>) {
         this.selectionLogic.down();
         // if (this.canvas.pointer.pointer.pickedItem && this.canvas.pointer.pointer.pickedItem.isSelected()) {
         //     super.down(pointerTracker);

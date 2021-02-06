@@ -136,8 +136,24 @@ export class ShapeStore implements IStore<AbstractShape> {
         return this.idMap.has(id);
     }
 
-    getItemById(id: string): AbstractShape {
+    getItemById(id: string = ''): AbstractShape {
+        if (id.indexOf('/') !== -1) {
+            return this.getByFqn(id);
+        }
+        
         return this.idMap.get(id);
+    }
+
+    private getByFqn(fqn: string): AbstractShape {
+        const ids = fqn.split('/');
+
+        let shape = this.idMap.get(ids[0]);
+
+        for (let i = 1; i < ids.length; i++) {
+            shape = shape.containedShapes.find(s => s.id === ids[i]);
+        }
+
+        return shape;
     }
 
     getItemsByType(type: string): AbstractShape[] {
@@ -211,30 +227,5 @@ export class ShapeLifeCycleHook extends EmptyShapeStoreHook {
 
     removeViewHook(view: AbstractShape) {
         view.getObj() && this.registry.data.scene.items.removeItem(view.getObj());
-    }
-}
-
-export class AxisControlHook extends EmptyShapeStoreHook {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        super();
-        this.registry = registry;
-    }
-
-    addSelectionHook(views: AbstractShape[]) {
-        if (views.length === 1 && (views[0].viewType === SpriteShapeType || views[0].viewType === MeshShapeType)) {
-            new MoveAxisShapeFactory(this.registry).instantiateOnSelection(views[0])
-            new ScaleAxisShapeFactory(this.registry).instantiateOnSelection(views[0])
-            new RotateAxisShapeFactory(this.registry).instantiateOnSelection(views[0])
-        }
-    }
-
-    removeSelectionHook(views: AbstractShape[]) {
-        views.forEach(view => {
-            view.containedShapes.filter(view => view.viewType === MoveAxisShapeType).forEach(child => view.deleteContainedView(child));
-            view.containedShapes.filter(view => view.viewType === ScaleAxisShapeType).forEach(child => view.deleteContainedView(child));
-            view.containedShapes.filter(view => view.viewType === RotateAxisShapeType).forEach(child => view.deleteContainedView(child));
-        });
     }
 }

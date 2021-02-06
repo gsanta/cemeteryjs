@@ -4,16 +4,17 @@ import { Cursor } from "../../../../../core/plugin/tools/Tool";
 import { ToolAdapter } from "../../../../../core/plugin/tools/ToolAdapter";
 import { UI_Region } from "../../../../../core/plugin/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { MeshShape } from "../../models/shapes/MeshShape";
+import { MeshShape, MeshShapeType } from "../../models/shapes/MeshShape";
 import { MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { RotateAxisView } from "../../models/shapes/edit/RotateAxisShape";
-import { ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
-import { ShapeObservable } from "../../../../../core/models/ShapeObservable";
+import { ScaleAxisShapeFactory, ScaleAxisView } from "../../models/shapes/edit/ScaleAxisShape";
+import { ShapeEventData, ShapeEventType, ShapeObservable } from "../../../../../core/models/ShapeObservable";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
+import { SpriteShape, SpriteShapeType } from "../../models/shapes/SpriteShape";
 
 export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | RotateAxisView> extends ToolAdapter<AbstractShape> {
     protected downView: T;
-    protected meshView: MeshShape;
+    protected meshShape: MeshShape;
     protected hoveredView: T;
     protected shapeObservable: ShapeObservable;
     private shapeType: string;
@@ -22,6 +23,8 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
         super(id, canvas, registry);
         this.shapeObservable = shapeObservable;
         this.shapeType = shapeType;
+
+        shapeObservable.add(eventData => this.observer(eventData));
     }
 
     over(view: T) {
@@ -32,15 +35,15 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
 
     out() {
         if (!this.downView) {
-            this.canvas.tool.removeScopedTool(this.id);
+            this.canvas.tool.removePriorityTool(this.id);
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
     }
 
     down() {
-        if (this.canvas.pointer.pointer.pickedItem && this.canvas.pointer.pointer.pickedItem.viewType === this.shapeType) {
-            this.downView = <T> this.canvas.pointer.pointer.pickedItem;
-            this.meshView = <MeshShape> this.downView.containerShape;
+        if (this.canvas.pointer.pointer.hoveredItem && this.canvas.pointer.pointer.hoveredItem.viewType === this.shapeType) {
+            this.downView = <T> this.canvas.pointer.pointer.hoveredItem;
+            this.meshShape = <MeshShape> this.hoveredView.containerShape;
         }
     }
 
@@ -70,7 +73,7 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
             this.registry.services.render.scheduleRendering(this.canvas.region);
         }
         this.downView = undefined;
-        this.meshView = undefined;
+        this.meshShape = undefined;
         this.registry.services.history.createSnapshot();
         this.registry.services.render.scheduleRendering(UI_Region.Sidepanel);
     }
@@ -98,4 +101,21 @@ export abstract class AbstractAxisTool<T extends ScaleAxisView | MoveAxisView | 
     protected abstract updateX();
     protected abstract updateY();
     protected abstract updateZ();
+    protected abstract instantiate();
+    protected abstract remove();
+
+    private observer(eventData: ShapeEventData) {
+        if (eventData.eventType === ShapeEventType.SelectionChanged) {
+            if (this.meshShape) {
+                this.remove();
+                this.meshShape = undefined;
+            }
+
+            const items = this.canvas.data.selection.getAllItems();
+            if (items.length === 1 && items[0].viewType === MeshShapeType) {
+                this.meshShape = items[0] as MeshShape;
+                this.instantiate();
+            }
+        }
+    }
 }

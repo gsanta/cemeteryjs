@@ -6,7 +6,7 @@ import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPa
 import { Registry } from "../../../../../core/Registry";
 import { sceneAndGameViewRatio } from "../../../../../core/stores/ShapeStore";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { MoveAxisShapeType, MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
+import { MoveAxisShapeFactory, MoveAxisShapeType, MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const MoveAxisToolId = 'move-axis-tool';
@@ -24,26 +24,26 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
 
         if (!this.snapper.isSnapped()) {
             let delta = new Point_3(this.canvas.pointer.pointer.getDiff().x, 0, 0);    
-            this.meshView.move(delta);
-            this.shapeObservable.emit({shape: this.meshView, eventType: ShapeEventType.PositionChanged});
+            this.meshShape.move(delta);
+            this.shapeObservable.emit({shape: this.meshShape, eventType: ShapeEventType.PositionChanged});
         }
 
-        const snapHappend = this.snapper.trySnapOrUnsnap(this.meshView.getObj(), pointerTracker);
+        const snapHappend = this.snapper.trySnapOrUnsnap(this.meshShape.getObj(), pointerTracker);
 
         if (snapHappend) {
-            this.registry.data.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
+            this.registry.data.observable.emit({obj: this.meshShape.getObj(), eventType: ObjEventType.PositionChanged});
         }
     }
 
     protected updateY() {
         const pointerTracker = this.canvas.pointer.pointer;
 
-        this.snapper.trySnapOrUnsnap(this.meshView.getObj(), pointerTracker);
+        this.snapper.trySnapOrUnsnap(this.meshShape.getObj(), pointerTracker);
 
         if (!this.snapper.isSnapped()) {
             const deltaY = -pointerTracker.getDiff().y / sceneAndGameViewRatio;
             let delta = new Point_3(0, deltaY, 0);    
-            this.meshView.getObj().translate(delta);
+            this.meshShape.getObj().translate(delta);
         }
     }
 
@@ -52,13 +52,24 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     
         if (!this.snapper.isSnapped()) {
             let delta = new Point_3(0, pointerTracker.getDiff().y, 0);
-            this.meshView.move(delta);
+            this.meshShape.move(delta);
         }
     
-        const snapHappend = this.snapper.trySnapOrUnsnap(this.meshView.getObj(), pointerTracker);
+        const snapHappend = this.snapper.trySnapOrUnsnap(this.meshShape.getObj(), pointerTracker);
         
         if (snapHappend) {
-            this.registry.data.observable.emit({obj: this.meshView.getObj(), eventType: ObjEventType.PositionChanged});
+            this.registry.data.observable.emit({obj: this.meshShape.getObj(), eventType: ObjEventType.PositionChanged});
         }    
     }
+
+    protected instantiate() {
+        new MoveAxisShapeFactory(this.registry).instantiateOnSelection(this.meshShape);
+    }
+
+    protected remove() {
+        this.meshShape.containedShapes
+            .filter(shape => shape.viewType === MoveAxisShapeType)
+            .forEach(child => this.meshShape.deleteContainedView(child));
+    }
+
 }

@@ -3,7 +3,7 @@ import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
-import { RotateAxisView, RotateAxisShapeType } from "../../models/shapes/edit/RotateAxisShape";
+import { RotateAxisView, RotateAxisShapeType, RotateAxisShapeFactory } from "../../models/shapes/edit/RotateAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const RotateAxisToolId = 'rotate-axis-tool';
@@ -15,28 +15,38 @@ export class RotateAxisTool extends AbstractAxisTool<RotateAxisView> {
  
     protected updateX() {
         const angle = this.getRotationDelta();
-        const rotation = this.meshView.getObj().getRotation();
+        const rotation = this.meshShape.getObj().getRotation();
 
-        this.meshView.getObj().setRotation(new Point_3(rotation.x + angle, rotation.y, rotation.z));
+        this.meshShape.getObj().setRotation(new Point_3(rotation.x + angle, rotation.y, rotation.z));
     }
 
     protected updateY() {
         const angle = this.getRotationDelta();
 
-        const rotation = this.meshView.getRotation();
-        this.meshView.setRotation(rotation + angle);
-        this.shapeObservable.emit({shape: this.meshView, eventType: ShapeEventType.RotationChanged});
+        const rotation = this.meshShape.getRotation();
+        this.meshShape.setRotation(rotation + angle);
+        this.shapeObservable.emit({shape: this.meshShape, eventType: ShapeEventType.RotationChanged});
     }
 
     protected updateZ() {
         const angle = this.getRotationDelta();
-        const rotation = this.meshView.getObj().getRotation();
+        const rotation = this.meshShape.getObj().getRotation();
 
-        this.meshView.getObj().setRotation(new Point_3(rotation.x, rotation.y, rotation.z + angle));
+        this.meshShape.getObj().setRotation(new Point_3(rotation.x, rotation.y, rotation.z + angle));
+    }
+
+    protected instantiate() {
+        new RotateAxisShapeFactory(this.registry).instantiateOnSelection(this.meshShape);
+    }
+
+    protected remove() {
+        this.meshShape.containedShapes
+            .filter(shape => shape.viewType === RotateAxisShapeType)
+            .forEach(child => this.meshShape.deleteContainedView(child));
     }
 
     private getRotationDelta(): number {
-        const center = this.meshView.getBounds().getBoundingCenter();
+        const center = this.meshShape.getBounds().getBoundingCenter();
         const vector1 = this.canvas.pointer.pointer.prev.clone().subtract(center);
         const vector2 = this.canvas.pointer.pointer.curr.clone().subtract(center);
 

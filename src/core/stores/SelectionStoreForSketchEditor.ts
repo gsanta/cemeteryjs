@@ -1,6 +1,6 @@
 import { SketchEditorModule } from "../../modules/sketch_editor/main/SketchEditorModule";
 import { ShapeEventType } from "../models/ShapeObservable";
-import { AbstractShape } from "../models/shapes/AbstractShape";
+import { AbstractShape, ShapeTag } from "../models/shapes/AbstractShape";
 import { IStore } from "./IStore";
 
 export class SelectionStoreForSketchEditor implements IStore<AbstractShape> {
@@ -11,12 +11,14 @@ export class SelectionStoreForSketchEditor implements IStore<AbstractShape> {
         this.canvas = canvas;
     }
 
-    addItem(shape: AbstractShape) {
-        this.items.push(shape);
+    addItem(item: AbstractShape) {
+        item.tags.add(ShapeTag.Selected)
+        this.items.push(item);
         this.canvas.observable.emit({eventType: ShapeEventType.SelectionChanged});
     }
 
     removeItem(item: AbstractShape) {
+        item.tags.delete(ShapeTag.Selected)
         this.items = this.items.filter(i => i !== item);
         this.canvas.observable.emit({eventType: ShapeEventType.SelectionChanged});
     }

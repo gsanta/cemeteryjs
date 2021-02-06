@@ -76,6 +76,14 @@ export abstract class AbstractShape implements IControlledModel {
     abstract getObj(): IObj;
     abstract setObj(obj: IObj);
 
+    getFqn() {
+        if (this.containerShape) {
+            return `${this.containerShape.getFqn()}/${this.id}`;
+        }
+
+        return this.id;
+    }
+
     isHovered() {
         return this.tags.has(ShapeTag.Hovered);
     }

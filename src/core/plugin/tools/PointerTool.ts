@@ -10,10 +10,14 @@ import { Canvas2dPanel } from '../Canvas2dPanel';
 import { IObj } from '../../models/objs/IObj';
 import { IGameObj } from '../../models/objs/IGameObj';
 import { Canvas3dPanel } from '../Canvas3dPanel';
-import { AdvancedDynamicTexture } from 'babylonjs-gui';
+import { MoveAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape';
+import { MoveAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/MoveAxisTool';
+import { ScaleAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape';
+import { ScaleAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool';
+import { RotateAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape';
+import { RotateAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/RotateAxisTool';
 
 export abstract class PointerToolLogic<D> {
-    down(pointer: PointerTracker<D>): void {}
     click(pointer: PointerTracker<D>): boolean { return false; }
     up(pointer: PointerTracker<D>): boolean { return false; }
     drag(pointer: PointerTracker<D>): boolean { return false; }
@@ -34,14 +38,13 @@ export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
         this.canvas = canvas;
     }
 
-    down(pointer: PointerTracker<IGameObj>) {
-        if (pointer) {
-            this.pickedItem =  pointer.pickedItem;
+    click(pointer: PointerTracker<IObj>): boolean {
+        if (pointer.pickedItem) {
+            this.pickedItem = <IGameObj> pointer.pickedItem;
+            return true;
         }
-    }
-    click(ponter: PointerTracker<IObj>): boolean {
-        return false;
-    }
+        return false;    }
+
     up(pointer: PointerTracker<IObj>): boolean {
         if (this.pickedItem) {
             this.canvas.data.selection.addItem(this.pickedItem);
@@ -80,12 +83,8 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
         this.canvas = canvas;
     }
 
-    down(pointer: PointerTracker<AbstractShape>) {
-        this.pickedItem = pointer.pickedItem;
-    }
-
     click(pointer: PointerTracker<AbstractShape>) {
-        this.pickedItem = pointer.pickedItem;
+        this.pickedItem = pointer.hoveredItem;
         
         if (!this.pickedItem) { return false ; }
 
@@ -129,6 +128,15 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
     hover(shape: AbstractShape) {
         if (shape.viewType === NodePortViewType) {
             this.canvas.tool.setPriorityTool(ToolType.Join);
+        } else if (shape.viewType === MoveAxisShapeType) {
+            this.canvas.tool.setPriorityTool(MoveAxisToolId);
+            this.canvas.tool.getActiveTool().over(shape);
+        } else if (shape.viewType === ScaleAxisShapeType) {
+            this.canvas.tool.setPriorityTool(ScaleAxisToolId);
+            this.canvas.tool.getActiveTool().over(shape);
+        } else if (shape.viewType === RotateAxisShapeType) {
+            this.canvas.tool.setPriorityTool(RotateAxisToolId);
+            this.canvas.tool.getActiveTool().over(shape);
         }
         
         shape.tags.add(ShapeTag.Hovered);
@@ -165,11 +173,6 @@ export abstract class PointerTool<D> extends ToolAdapter<D> {
 
     click(pointer: PointerTracker<D>): void {
         this.pointerToolLogic.click(pointer);
-    }
-
-    down(pointer: PointerTracker<D>) {
-        this.pointerToolLogic.down(pointer);
-        this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
     drag(pointer: PointerTracker<D>) {

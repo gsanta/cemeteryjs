@@ -2,7 +2,6 @@ import { Point } from "../../utils/geometry/shapes/Point";
 import { Registry } from "../Registry";
 import { Tool } from "../plugin/tools/Tool";
 import { AbstractCanvasPanel } from "../plugin/AbstractCanvasPanel";
-import { Rectangle } from "babylonjs-gui";
 
 export enum Wheel {
     IDLE = 'idle', UP = 'up', DOWN = 'down'
@@ -29,6 +28,7 @@ export class PointerTracker<D> {
     data: D;
 
     pickedItem: D;
+    hoveredItem: D;
 
     screenSize: Point;
 
@@ -160,7 +160,7 @@ export class PointerHandler<D> {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         const data = this.canvas.data.items.getItemById(e.pickedItemId);
     
-        this.pointer.pickedItem = data;
+        this.pointer.hoveredItem = data;
         this.pointer.lastPointerEvent = undefined;
 
         this.canvas.hotkey.executeHotkey({ isHover: true }, this.pointer);
@@ -203,11 +203,11 @@ export class PointerHandler<D> {
     }
 
     private determineTool(scopedToolId?: string): Tool<D> {
-        if (scopedToolId) {
-            return this.canvas.tool.getToolById(scopedToolId);
-        } else {
-            return this.canvas.tool.getActiveTool();
-        }
+        return this.canvas.tool.getActiveTool();
+        // if (scopedToolId) {
+        //     // return this.canvas.tool.getToolById(scopedToolId);
+        // } else {
+        // }
 
     }
     

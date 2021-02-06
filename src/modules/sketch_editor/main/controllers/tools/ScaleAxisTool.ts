@@ -1,10 +1,10 @@
-import { ShapeObservable } from "../../../../../core/models/ShapeObservable";
+import { ShapeEventData, ShapeEventType, ShapeObservable } from "../../../../../core/models/ShapeObservable";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from "../../../../../core/plugin/AbstractCanvasPanel";
 import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { ScaleAxisView, ScaleAxisShapeType } from "../../models/shapes/edit/ScaleAxisShape";
+import { ScaleAxisView, ScaleAxisShapeType, ScaleAxisShapeFactory } from "../../models/shapes/edit/ScaleAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
 
 export const ScaleAxisToolId = 'scale-axis-tool';
@@ -19,9 +19,9 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
 
     down() {
         super.down();
-        if (this.meshView) {
-            this.initialScale = this.meshView.getObj().getScale();
-            this.initialBounds = this.meshView.getBounds().clone();
+        if (this.meshShape) {
+            this.initialScale = this.meshShape.getObj().getScale();
+            this.initialBounds = this.meshShape.getBounds().clone();
         }
     }
 
@@ -32,32 +32,42 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     }
 
     protected updateX() {
-        const scale = this.meshView.getObj().getScale();
+        const scale = this.meshShape.getObj().getScale();
         scale.x = this.initialScale.x * this.getDiffRatio().x;
 
-        const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
+        const realDimensions = this.registry.engine.meshes.getDimensions(this.meshShape.getObj())
         
-        this.meshView.getObj().setScale(scale);
-        this.meshView.getBounds().setWidth(realDimensions.x);
+        this.meshShape.getObj().setScale(scale);
+        this.meshShape.getBounds().setWidth(realDimensions.x);
     }
 
     protected updateZ() {
-        const scale = this.meshView.getObj().getScale();
+        const scale = this.meshShape.getObj().getScale();
 
         scale.z = this.initialScale.z * this.getDiffRatio().y;
 
-        const realDimensions = this.registry.engine.meshes.getDimensions(this.meshView.getObj())
+        const realDimensions = this.registry.engine.meshes.getDimensions(this.meshShape.getObj())
 
-        this.meshView.getObj().setScale(scale);
-        this.meshView.getBounds().setHeight(realDimensions.y);
+        this.meshShape.getObj().setScale(scale);
+        this.meshShape.getBounds().setHeight(realDimensions.y);
     }
 
     protected updateY() {
-        const scale = this.meshView.getObj().getScale();
+        const scale = this.meshShape.getObj().getScale();
 
         scale.y = this.initialScale.y * this.getDiffRatio().len();
 
-        this.meshView.getObj().setScale(scale);
+        this.meshShape.getObj().setScale(scale);
+    }
+
+    protected instantiate() {
+        new ScaleAxisShapeFactory(this.registry).instantiateOnSelection(this.meshShape);
+    }
+
+    protected remove() {
+        this.meshShape.containedShapes
+            .filter(shape => shape.viewType === ScaleAxisShapeType)
+            .forEach(child => this.meshShape.deleteContainedView(child));
     }
 
     private getDiffRatio() {
