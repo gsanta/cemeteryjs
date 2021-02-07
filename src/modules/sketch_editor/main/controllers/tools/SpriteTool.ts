@@ -5,6 +5,7 @@ import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { SpriteViewFactory } from "../../models/factories/SpriteViewFactory";
 import { SpriteShapeType } from "../../models/shapes/SpriteShape";
 import { SketchEditorModule } from "../../SketchEditorModule";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const SpriteToolId = 'sprite-tool';
 export class SpriteTool extends RectangleTool<AbstractShape> {
@@ -15,7 +16,7 @@ export class SpriteTool extends RectangleTool<AbstractShape> {
 
     protected createView(rect: Rectangle): AbstractShape {
         const canvas = <SketchEditorModule> this.canvas;
-        return new SpriteViewFactory(this.registry).instantiateOnCanvas(canvas, rect);
+        return new SpriteViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect);
     }
     
     protected removeTmpView() {

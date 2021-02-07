@@ -1,6 +1,8 @@
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { DirectionNodeControllers } from "../../controllers/nodes/DirectionNodeControllers";
 import { NodeShape } from "../shapes/NodeShape";
@@ -22,7 +24,7 @@ export class DirectionNode extends AbstractNodeFactory {
     category = 'Default';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new DirectionNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

@@ -1,6 +1,8 @@
 import { AbstractShape } from "./shapes/AbstractShape";
 
 
+
+
 export enum ShapeEventType {
     PositionChanged = 'PositionChanged',
     ScaleChanged = 'ScaleChanged',

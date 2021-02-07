@@ -24,7 +24,7 @@ export class SphereTool extends RectangleTool<AbstractShape> {
         };
         const canvas = <SketchEditorModule> this.canvas;
 
-        const sphere = new MeshViewFactory(this.registry).instantiateOnCanvas(canvas, rect, config);
+        const sphere = new MeshViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect, config);
 
 
         return sphere;

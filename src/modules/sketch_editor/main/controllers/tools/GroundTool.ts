@@ -27,7 +27,7 @@ export class GroundTool extends RectangleTool<AbstractShape> {
 
         const canvas = <SketchEditorModule> this.canvas;
 
-        const ground = new MeshViewFactory(this.registry).instantiateOnCanvas(canvas, rect, config);
+        const ground = new MeshViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect, config);
 
         return ground;
     }

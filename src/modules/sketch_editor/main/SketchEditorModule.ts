@@ -7,7 +7,7 @@ import { AbstractShape } from "../../../core/models/shapes/AbstractShape";
 import { RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/models/modules/AbstractCanvasPanel";
 import { Canvas2dPanel } from "../../../core/models/modules/Canvas2dPanel";
 import { CameraTool } from "../../../core/controller/tools/CameraTool";
-import { DeleteTool } from "../../../core/controller/tools/DeleteTool";
+import { DeleteTool_Svg } from "../../../core/controller/tools/DeleteTool_Svg";
 import { PointerToolLogicForSvgCanvas } from "../../../core/controller/tools/PointerTool";
 import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../../core/controller/tools/SelectTool";
 import { UI_Region } from "../../../core/models/UI_Panel";
@@ -23,7 +23,7 @@ import { GroundTool } from "./controllers/tools/GroundTool";
 import { LightTool } from "./controllers/tools/LightTool";
 import { MeshTool } from "./controllers/tools/MeshTool";
 import { MoveAxisTool } from "./controllers/tools/MoveAxisTool";
-import { PathTool } from "./controllers/tools/PathTool";
+import { PathTool_Svg } from "./controllers/tools/PathTool_Svg";
 import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
 import { ScaleAxisTool } from "./controllers/tools/ScaleAxisTool";
 import { SphereTool } from "./controllers/tools/SphereTool";
@@ -33,6 +33,8 @@ import { SceneEditorImporter } from "./io/SceneEditorImporter";
 import { SketchEditorRenderer } from "./renderers/SketchEditorRenderer";
 import { SceneToSketchSynchronizer } from "./SceneToSketchSynchronizer";
 import { SketchToSceneSynchronizer } from "./SketchToSceneSynchronizer";
+import { SelectTool_Svg } from "../../../core/controller/tools/SelectTool_Svg";
+import { TagStore } from "../../../core/data/stores/TagStore";
 
 export const DUMMY_CAMERA_SIZE = new Point(100, 100);
 
@@ -53,7 +55,8 @@ export class SketchEditorModule extends Canvas2dPanel {
 
         this.data = {
             items: ShapeStore.newInstance(registry, this),
-            selection: new SelectionStoreForSketchEditor(this)
+            selection: new SelectionStoreForSketchEditor(this),
+            tags: new TagStore()
         }
 
         registry.data.sketch = this.data;
@@ -81,9 +84,9 @@ export class SketchEditorModule extends Canvas2dPanel {
             new MeshTool(this, registry),
             new SpriteTool(this, registry),
             new LightTool(this, registry),
-            new PathTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
-            new SelectTool(new PointerToolLogicForSvgCanvas(registry, this), new SelectionToolLogicForSvgCanvas(registry, this), this, registry),
-            new DeleteTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
+            new PathTool_Svg(this, registry),
+            new SelectTool_Svg(this, registry),
+            new DeleteTool_Svg(this, registry),
             new CameraTool(this, registry),
             new MoveAxisTool(this, registry, this.observable),
             new CubeTool(this, registry),

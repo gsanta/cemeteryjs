@@ -7,6 +7,7 @@ import { LightShapeRenderer } from "../../renderers/LightShapeRenderer";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from '../../../../../utils/geometry/shapes/Rectangle';
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const LightShapeType = 'light-shape';
 
@@ -20,8 +21,8 @@ export class LightShape extends AbstractShape {
     protected obj: LightObj;
     private relativeParentPos: Point;
 
-    constructor() {
-        super();
+    constructor(canvas: Canvas2dPanel) {
+        super(canvas);
         this.renderer = new LightShapeRenderer();
     }
 
@@ -71,8 +72,8 @@ export class LightShape extends AbstractShape {
         this.calcRelativePos();
     }
 
-    static fromJson(json: ShapeJson, registry: Registry): [AbstractShape, AfterAllViewsDeserialized] {
-        const lightView = new LightShape();
+    static fromJson(json: ShapeJson, registry: Registry, canvas: Canvas2dPanel): [AbstractShape, AfterAllViewsDeserialized] {
+        const lightView = new LightShape(canvas);
         lightView.id = json.id;
         lightView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 

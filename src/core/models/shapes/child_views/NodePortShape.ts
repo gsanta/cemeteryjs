@@ -28,7 +28,7 @@ export class NodePortShape extends ChildShape {
     bounds: Rectangle;
 
     constructor(parent: NodeShape, obj: NodePortObj) {
-        super();
+        super(parent.canvas);
         this.containerShape = parent;
         this.obj = obj;
         this.id = obj.id;

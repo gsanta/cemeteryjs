@@ -5,6 +5,8 @@ import { Registry } from "../../../../../core/Registry";
 import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { MeshNodeControllers } from "../../controllers/nodes/MeshNodeControllers";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export const MeshNodeType = 'mesh-node-obj';
 
@@ -21,7 +23,7 @@ export class MeshNode extends AbstractNodeFactory {
     category = 'Mesh';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MeshNodeControllers(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

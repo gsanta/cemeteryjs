@@ -7,6 +7,7 @@ import { Registry } from "../../../../../../core/Registry";
 import { Point } from "../../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../utils/geometry/shapes/Rectangle";
 import { RotateAxisViewRenderer } from "../../../renderers/edit/RotateAxisViewRenderer";
+import { Canvas2dPanel } from "../../../../../../core/models/modules/Canvas2dPanel";
 
 export interface AxisShapeJson extends ShapeJson {
     point: string;
@@ -17,27 +18,29 @@ export const RotateAxisShapeType = 'rotate-axis-shape';
 
 export class RotateAxisShapeFactory extends ShapeFactoryAdapter {
     private registry: Registry;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     instantiate() {
         // TODO: does not make sense to create only one of the axis
-        return new RotateAxisView(this.registry, CanvasAxis.X);
+        return new RotateAxisView(this.registry, this.canvas, CanvasAxis.X);
     }
 
     instantiateOnSelection(parentView: AbstractShape) {
-        let scaleView = new RotateAxisView(this.registry, CanvasAxis.X);
+        let scaleView = new RotateAxisView(this.registry, this.canvas, CanvasAxis.X);
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
 
-        scaleView = new RotateAxisView(this.registry, CanvasAxis.Y);
+        scaleView = new RotateAxisView(this.registry, this.canvas, CanvasAxis.Y);
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
 
-        scaleView = new RotateAxisView(this.registry, CanvasAxis.Z);
+        scaleView = new RotateAxisView(this.registry, this.canvas, CanvasAxis.Z);
         scaleView.setContainerView(parentView);
         parentView.addContainedView(scaleView);
     }
@@ -50,8 +53,8 @@ export class RotateAxisView extends ChildShape {
     point: Point;
     readonly containerShape: AbstractShape;
 
-    constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+    constructor(registry: Registry, canvas: Canvas2dPanel, axis: CanvasAxis) {
+        super(canvas);
         this.axis = axis;
         this.bounds = new Rectangle(new Point(0, 0), new Point(40, 5));
         this.renderer = new RotateAxisViewRenderer(registry);

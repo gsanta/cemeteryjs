@@ -7,6 +7,7 @@ import { Registry } from "../../../../../../core/Registry";
 import { Point } from "../../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../utils/geometry/shapes/Rectangle";
 import { MoveAxisViewRenderer } from "../../../renderers/edit/MoveAxisViewRenderer";
+import { Canvas2dPanel } from "../../../../../../core/models/modules/Canvas2dPanel";
 
 export interface AxisShapeJson extends ShapeJson {
     point: string;
@@ -17,27 +18,29 @@ export const MoveAxisShapeType = 'move-axis-shape';
 
 export class MoveAxisShapeFactory extends ShapeFactoryAdapter {
     private registry: Registry;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     instantiate() {
         // TODO: does not make sense to create only one of the axis
-        return new MoveAxisView(this.registry, CanvasAxis.X);
+        return new MoveAxisView(this.registry, this.canvas, CanvasAxis.X);
     }
 
     instantiateOnSelection(parentView: AbstractShape) {
-        let moveAxisView = new MoveAxisView(this.registry, CanvasAxis.X);
+        let moveAxisView = new MoveAxisView(this.registry, this.canvas, CanvasAxis.X);
         moveAxisView.setContainerView(parentView);
         parentView.addContainedView(moveAxisView);
 
-        moveAxisView = new MoveAxisView(this.registry, CanvasAxis.Y);
+        moveAxisView = new MoveAxisView(this.registry, this.canvas, CanvasAxis.Y);
         moveAxisView.setContainerView(parentView);
         parentView.addContainedView(moveAxisView);
 
-        moveAxisView = new MoveAxisView(this.registry, CanvasAxis.Z);
+        moveAxisView = new MoveAxisView(this.registry, this.canvas, CanvasAxis.Z);
         moveAxisView.setContainerView(parentView);
         parentView.addContainedView(moveAxisView);
     }
@@ -50,8 +53,8 @@ export class MoveAxisView extends ChildShape {
     point: Point;
     readonly containerShape: AbstractShape;
 
-    constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+    constructor(registry: Registry, canvas: Canvas2dPanel, axis: CanvasAxis) {
+        super(canvas);
         this.axis = axis;
         this.bounds = new Rectangle(new Point(0, 0), new Point(40, 5));
         this.renderer = new MoveAxisViewRenderer(registry);

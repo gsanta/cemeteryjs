@@ -17,7 +17,7 @@ export class MeshTool extends RectangleTool<AbstractShape> {
     protected createView(rect: Rectangle): AbstractShape {
         const canvas = <SketchEditorModule> this.canvas;
 
-        return new MeshViewFactory(this.registry).instantiateOnCanvas(canvas, rect);
+        return new MeshViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect);
     }
     
     protected removeTmpView() {

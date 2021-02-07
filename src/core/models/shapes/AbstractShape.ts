@@ -64,6 +64,11 @@ export abstract class AbstractShape {
     renderer: ShapeRenderer;
 
     deleteConstraiedViews: ChildShapeContext = new ChildShapeContext();
+    readonly canvas: Canvas2dPanel;
+
+    constructor(canvas: Canvas2dPanel) {
+        this.canvas = canvas;
+    }
 
     protected obj: IObj;
 

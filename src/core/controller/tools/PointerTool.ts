@@ -15,6 +15,7 @@ import { Canvas2dPanel } from '../../models/modules/Canvas2dPanel';
 import { Canvas3dPanel } from '../../models/modules/Canvas3dPanel';
 import { UI_Region } from '../../models/UI_Panel';
 import { ToolType } from "./Tool";
+import { AbstractTool } from './AbstractTool';
 
 export abstract class PointerToolLogic<D> {
     down(pointer: PointerTracker<D>): boolean { return false; }
@@ -27,13 +28,11 @@ export abstract class PointerToolLogic<D> {
     abort(): void {}
 }
 
-export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
-    private registry: Registry;
-    private canvas: Canvas3dPanel<IObj>;
+export class PointerToolLogicForWebGlCanvas extends AbstractTool<IObj> {
     pickedItem: IGameObj;    
     
     constructor(registry: Registry, canvas: Canvas3dPanel<IObj>) {
-        super();
+        super('pointer-tool', canvas, registry);
         this.registry = registry;
         this.canvas = canvas;
     }
@@ -43,7 +42,8 @@ export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
             this.pickedItem = <IGameObj> pointer.pickedItem;
             return true;
         }
-        return false;    }
+        return false;    
+    }
 
     up(pointer: PointerTracker<IObj>): boolean {
         if (this.pickedItem) {
@@ -69,16 +69,13 @@ export class PointerToolLogicForWebGlCanvas extends PointerToolLogic<IObj> {
     }
 }
 
-export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape> {
-    private registry: Registry;
-    private canvas: Canvas2dPanel;
-
+export class PointerToolLogicForSvgCanvas extends AbstractTool<AbstractShape> {
     pickedItem: AbstractShape;
 
     private wasItemDragged = false;
 
     constructor(registry: Registry, canvas: Canvas2dPanel) {
-        super();
+        super('pointer-tool', canvas, registry);
         this.registry = registry;
         this.canvas = canvas;
     }
@@ -124,7 +121,7 @@ export class PointerToolLogicForSvgCanvas extends PointerToolLogic<AbstractShape
         shapes = shapes.filter(shape => !shapes.includes(shape.getParent()));
         shapes.forEach(item => {
             item.move(this.canvas.pointer.pointer.getDiff())
-            this.canvas.observable.emit({shape: item, eventType: ShapeEventType.PositionChanged});
+            // this.canvas.observable.emit({shape: item, eventType: ShapeEventType.PositionChanged});
         });
 
         this.wasItemDragged = true;

@@ -6,6 +6,8 @@ import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { MeshVisibilityNodeControllers } from "../../controllers/nodes/MeshVisibilityNodeControllers";
 import { NodeShape } from "../shapes/NodeShape";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
 
@@ -22,7 +24,7 @@ export class MeshVisibilityNode extends AbstractNodeFactory {
     category = 'Mesh';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MeshVisibilityNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

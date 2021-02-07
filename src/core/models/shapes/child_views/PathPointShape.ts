@@ -19,7 +19,7 @@ export class PathPoinShape extends ChildShape {
     readonly containerShape: PathShape;
 
     constructor(parent: PathShape, point?: Point) {
-        super();
+        super(parent.canvas);
         this.point = point;
         this.containerShape = parent;
     }

@@ -9,14 +9,16 @@ import { SpriteShape } from "../shapes/SpriteShape";
 
 export class SpriteViewFactory extends ShapeFactoryAdapter {
     private registry: Registry;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     instantiate() {
-        return new SpriteShape();
+        return new SpriteShape(this.canvas);
     }
 
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {

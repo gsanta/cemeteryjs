@@ -1,3 +1,4 @@
+import { Canvas2dPanel } from "../../../../core/models/modules/Canvas2dPanel";
 import { AssetObj, AssetObjType } from "../../../../core/models/objs/AssetObj";
 import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models/objs/IObj";
 import { LightObjType } from "../../../../core/models/objs/LightObj";
@@ -8,6 +9,7 @@ import { AfterAllViewsDeserialized, AbstractShape, ShapeJson, ShapeFactoryAdapte
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../../../graph_editor/main/models/shapes/NodeConnectionShape";
+import { SceneEditorModule } from "../../../scene_editor/main/SceneEditorModule";
 import { LightViewFactory } from "../models/factories/LightViewFactory";
 import { MeshViewFactory } from "../models/factories/MeshViewFactory";
 import { PathViewFactory } from "../models/factories/PathViewFactory";
@@ -19,6 +21,7 @@ import { LightShapeType } from "../models/shapes/LightShape";
 import { MeshShapeType } from "../models/shapes/MeshShape";
 import { PathShapeType } from "../models/shapes/PathShape";
 import { SpriteShapeType } from "../models/shapes/SpriteShape";
+import { SketchEditorPanelId } from "../SketchEditorModule";
 
 interface ImportData {
     views?: ShapeJson[];
@@ -29,15 +32,15 @@ interface ImportData {
 export function getShapeFactories(registry: Registry): Map<string, ShapeFactoryAdapter> {
     const map: Map<string, ShapeFactoryAdapter> = new Map();
 
-    map.set(NodeConnectionShapeType, new NodeConnectionShapeFactory());
-    map.set(LightShapeType, new LightViewFactory(registry));
-    map.set(LightShapeType, new LightViewFactory(registry));
-    map.set(MeshShapeType, new MeshViewFactory(registry));
-    map.set(PathShapeType, new PathViewFactory(registry));
-    map.set(SpriteShapeType, new SpriteViewFactory(registry));
-    map.set(MoveAxisShapeType, new MoveAxisShapeFactory(registry));
-    map.set(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry));
-    map.set(RotateAxisShapeType, new RotateAxisShapeFactory(registry));
+    map.set(NodeConnectionShapeType, new NodeConnectionShapeFactory(<Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(LightShapeType, new LightViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(LightShapeType, new LightViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(MeshShapeType, new MeshViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(PathShapeType, new PathViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(SpriteShapeType, new SpriteViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(MoveAxisShapeType, new MoveAxisShapeFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+    map.set(RotateAxisShapeType, new RotateAxisShapeFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
 
     return map;
 }

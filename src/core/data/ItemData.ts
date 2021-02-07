@@ -1,7 +1,8 @@
 import { IStore } from "./stores/IStore";
-
+import { TagStore } from "./stores/TagStore";
 
 export class ItemData<D> {
     items: IStore<D>;
     selection: IStore<D>;
+    tags: TagStore<D>;
 }

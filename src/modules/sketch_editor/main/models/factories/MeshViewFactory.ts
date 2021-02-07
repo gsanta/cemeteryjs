@@ -8,14 +8,16 @@ import { MeshShape, MeshShapeJson } from "../shapes/MeshShape";
 
 export class MeshViewFactory extends ShapeFactoryAdapter {
     private registry: Registry;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     instantiate() {
-        return new MeshShape();
+        return new MeshShape(this.canvas);
     }
 
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: MeshShapeConfig) {
@@ -35,6 +37,7 @@ export class MeshViewFactory extends ShapeFactoryAdapter {
     }
 
     instantiateFromJson(json: MeshShapeJson): [AbstractShape, AfterAllViewsDeserialized] {
-        return MeshShape.fromJson(json, this.registry);
+        const obj = <MeshObj> this.registry.data.scene.items.getItemById(json.objId);
+        return MeshShape.fromJson(json, this.canvas, obj);
     }
 }

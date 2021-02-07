@@ -6,6 +6,8 @@ import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
 import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { KeyboardNodeControllers } from "../../controllers/nodes/KeyboardNodeController";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
@@ -22,7 +24,7 @@ export class KeyboardNode extends AbstractNodeFactory {
     category = 'Default';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new KeyboardNodeControllers(this.registry, nodeView));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

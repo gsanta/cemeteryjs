@@ -6,6 +6,8 @@ import { Registry } from "../../../../../core/Registry";
 import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { TriggerZoneNodeControllers } from "../../controllers/nodes/TriggerZoneNodeControllers";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export const TriggerZoneNodeType = 'trigger-zone-node-obj';
 
@@ -22,7 +24,7 @@ export class TriggerZoneNode extends AbstractNodeFactory {
     category = 'Trigger';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new TriggerZoneNodeControllers(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

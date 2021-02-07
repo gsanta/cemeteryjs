@@ -17,6 +17,9 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { SceneEditorToolbarController } from "../contribs/toolbar/SceneEditorToolbarController";
 import { GameTool } from "./controllers/tools/GameTool";
 import { SceneEditorRenderer } from "./renderers/SceneEditorRenderer";
+import { SelectTool_Svg } from "../../../core/controller/tools/SelectTool_Svg";
+import { SelectTool_Webgl } from "../../../core/controller/tools/SelectTool_Webgl";
+import { TagStore } from "../../../core/data/stores/TagStore";
 (<any> window).earcut = require('earcut');
 
 export const SceneEditorPanelId = 'scene-viewer'; 
@@ -37,7 +40,8 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
         this.engine = registry.engine;
         this.data = {
             items: new ObjStore(),
-            selection: new ObjSelectionStore()
+            selection: new ObjSelectionStore(),
+            tags: new TagStore()
         }
 
         this.registry.data.scene = this.data;
@@ -48,7 +52,7 @@ export class SceneEditorModule extends Canvas3dPanel<IObj> {
         const tools = [
             new GameTool(this, registry),
             new CameraTool(this, registry),
-            new SelectTool(new PointerToolLogicForWebGlCanvas(registry, this), new SelectionToolLogicForWebGlCanvas(registry, this), this, registry)
+            new SelectTool_Webgl(this, registry)
         ];
         
         const controller = new SceneEditorToolbarController(registry, this);

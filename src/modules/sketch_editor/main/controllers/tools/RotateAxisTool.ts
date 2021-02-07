@@ -5,6 +5,7 @@ import { Registry } from "../../../../../core/Registry";
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { RotateAxisView, RotateAxisShapeType, RotateAxisShapeFactory } from "../../models/shapes/edit/RotateAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const RotateAxisToolId = 'rotate-axis-tool';
 
@@ -36,7 +37,7 @@ export class RotateAxisTool extends AbstractAxisTool<RotateAxisView> {
     }
 
     protected instantiate() {
-        new RotateAxisShapeFactory(this.registry).instantiateOnSelection(this.meshShape);
+        new RotateAxisShapeFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnSelection(this.meshShape);
     }
 
     protected remove() {

@@ -7,6 +7,7 @@ import { MeshShapeRenderer } from '../../renderers/MeshShapeRenderer';
 import { Point } from '../../../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../../../utils/geometry/shapes/Rectangle';
+import { Canvas2dPanel } from '../../../../../core/models/modules/Canvas2dPanel';
 
 export const MeshShapeType = 'mesh-shape';
 
@@ -30,8 +31,8 @@ export class MeshShape extends AbstractShape {
     color: string = colors.pastelBlue;
     speed = 0.5;
 
-    constructor() {
-        super();
+    constructor(canvas: Canvas2dPanel) {
+        super(canvas);
         this.renderer = new MeshShapeRenderer();
     }
 
@@ -96,7 +97,7 @@ export class MeshShape extends AbstractShape {
     }
 
     clone(registry: Registry): AbstractShape {
-        const [clone] = MeshShape.fromJson(this.toJson(), registry);
+        const [clone] = MeshShape.fromJson(this.toJson(), this.canvas, undefined);
         clone.obj = undefined;
         clone.id = undefined;
         clone.bounds = undefined;
@@ -138,15 +139,16 @@ export class MeshShape extends AbstractShape {
         }
     }
 
-    static fromJson(json: MeshShapeJson, registry: Registry): [MeshShape, AfterAllViewsDeserialized] {
-        const meshView = new MeshShape();
+    static fromJson(json: MeshShapeJson, canvas: Canvas2dPanel, obj: MeshObj): [MeshShape, AfterAllViewsDeserialized] {
+        const meshView = new MeshShape(canvas);
         meshView.id = json.id;
         meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
-        const obj = <MeshObj> registry.data.scene.items.getItemById(json.objId);
-        meshView.setObj(obj);
-        const point2 = meshView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
-        obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
+        if (obj) {
+            meshView.setObj(obj);
+            const point2 = meshView.getBounds().getBoundingCenter().div(sceneAndGameViewRatio).negateY()
+            obj.setPosition(new Point_3(point2.x, obj.getPosition().y, point2.y));
+        }
         
         meshView.rotation = json.rotation;
         meshView.thumbnailData = json.thumbnailData;
@@ -154,8 +156,8 @@ export class MeshShape extends AbstractShape {
         meshView.layer = json.layer;
 
         const afterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => meshView.addChildView(registry.data.sketch.items.getItemById(id)));
-            json.parentId && meshView.setParent(registry.data.sketch.items.getItemById(json.parentId));
+            json.childViewIds.map(id => meshView.addChildView(canvas.data.items.getItemById(id)));
+            json.parentId && meshView.setParent(canvas.data.items.getItemById(json.parentId));
         }
 
         return [meshView, afterAllViewsDeserialized];

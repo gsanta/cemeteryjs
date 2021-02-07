@@ -2,7 +2,7 @@ import { CubeToolId } from "../../modules/sketch_editor/main/controllers/tools/C
 import { LightToolId } from "../../modules/sketch_editor/main/controllers/tools/LightTool";
 import { MeshToolId } from "../../modules/sketch_editor/main/controllers/tools/MeshTool";
 import { MoveAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/MoveAxisTool";
-import { PathToolId } from "../../modules/sketch_editor/main/controllers/tools/PathTool";
+import { PathToolId } from "../../modules/sketch_editor/main/controllers/tools/PathTool_Svg";
 import { RotateAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/RotateAxisTool";
 import { ScaleAxisToolId } from "../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool";
 import { SphereToolId } from "../../modules/sketch_editor/main/controllers/tools/SphereTool";
@@ -11,7 +11,7 @@ import { Point } from '../../utils/geometry/shapes/Point';
 import { AbstractShape } from "../models/shapes/AbstractShape";
 import { AbstractCanvasPanel } from '../models/modules/AbstractCanvasPanel';
 import { CameraToolId } from "./tools/CameraTool";
-import { DeleteToolId } from "./tools/DeleteTool";
+import { DeleteToolId } from "./tools/DeleteTool_Svg";
 import { SelectToolId } from "./tools/SelectTool";
 import { Tool } from "./tools/Tool";
 import { Registry } from "../Registry";

@@ -6,17 +6,14 @@ import { getIntersectingViews } from '../../data/stores/ShapeStore';
 import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { UI_Region } from '../../models/UI_Panel';
 import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
-import { PointerToolLogic } from './PointerTool';
 import { Cursor } from './Tool';
 
 export const DeleteToolId = 'delete-tool';
-export class DeleteTool extends AbstractTool<AbstractShape> {
+export class DeleteTool_Svg extends AbstractTool<AbstractShape> {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
-    private pointerLogic: PointerToolLogic<AbstractShape>;
 
-    constructor(logic: PointerToolLogic<AbstractShape>, panel: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
+    constructor(panel: AbstractCanvasPanel<AbstractShape>, registry: Registry) {
         super(DeleteToolId, panel, registry);
-        this.pointerLogic = logic;
     }
 
     drag() {

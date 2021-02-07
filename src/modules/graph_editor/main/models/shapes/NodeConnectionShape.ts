@@ -7,6 +7,9 @@ import { NodePortShape } from "../../../../../core/models/shapes/child_views/Nod
 import { NodeShape } from "./NodeShape";
 import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from '../../../../../core/models/shapes/AbstractShape';
 import { colors } from "../../../../../core/ui_components/react/styles";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { HistoryService } from "../../../../../core/services/HistoryService";
+import { timeStamp } from "console";
 
 export const NodeConnectionShapeType = 'node-connection-shape';
 
@@ -26,8 +29,15 @@ export interface NodeConnectionShapeJson extends ShapeJson {
 }
 
 export class NodeConnectionShapeFactory extends ShapeFactoryAdapter {
+    private canvas: Canvas2dPanel;
+
+    constructor(canvas: Canvas2dPanel) {
+        super();
+        this.canvas = canvas;
+    }
+
     instantiate() {
-        return new NodeConnectionShape();
+        return new NodeConnectionShape(this.canvas);
     }
 }
 

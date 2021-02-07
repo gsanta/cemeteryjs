@@ -28,7 +28,7 @@ export class CubeTool extends RectangleTool<AbstractShape> {
 
         const canvas = <SketchEditorModule> this.canvas;
 
-        const cube = new MeshViewFactory(this.registry).instantiateOnCanvas(canvas, rect, config);
+        const cube = new MeshViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect, config);
 
         return cube;
     }

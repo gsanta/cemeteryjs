@@ -9,6 +9,8 @@ import { CollisionConstraint } from "../../controllers/domain/CollisionConstrain
 import { MeshMover } from "../../controllers/domain/MeshMover";
 import { NodeShape } from "../shapes/NodeShape";
 import { MoveNodeListener } from "./listeners/MoveNodeListener";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export const MoveNodeType = 'move-node-obj';
 
@@ -32,7 +34,7 @@ export class MoveNode extends AbstractNodeFactory {
     category = 'Default';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new MoveNodeControllers(this.registry, obj))
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

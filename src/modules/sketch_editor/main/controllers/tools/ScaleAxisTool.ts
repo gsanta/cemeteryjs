@@ -6,6 +6,7 @@ import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { ScaleAxisView, ScaleAxisShapeType, ScaleAxisShapeFactory } from "../../models/shapes/edit/ScaleAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const ScaleAxisToolId = 'scale-axis-tool';
 
@@ -61,7 +62,7 @@ export class ScaleAxisTool extends AbstractAxisTool<ScaleAxisView> {
     }
 
     protected instantiate() {
-        new ScaleAxisShapeFactory(this.registry).instantiateOnSelection(this.meshShape);
+        new ScaleAxisShapeFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnSelection(this.meshShape);
     }
 
     protected remove() {

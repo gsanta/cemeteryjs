@@ -1,3 +1,4 @@
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { SpriteObj, SpriteObjJson } from "../../../../../core/models/objs/SpriteObj";
 import { AbstractShape, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
@@ -22,8 +23,8 @@ export class SpriteShape extends AbstractShape {
     thumbnailData: string;
     protected obj: SpriteObj;
 
-    constructor() {
-        super();
+    constructor(canvas: Canvas2dPanel) {
+        super(canvas);
         this.renderer = new SpriteShapeRenderer();
     }
 

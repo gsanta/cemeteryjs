@@ -6,6 +6,8 @@ import { Registry } from "../../../../../core/Registry";
 import { RayCasterNodeControllers } from "../../controllers/nodes/RayCasterNodeControllers";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { NodeShape } from "../shapes/NodeShape";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
 
 export const RayCasterNodeType = 'ray-caster-node-obj';
 
@@ -22,7 +24,7 @@ export class RayCasterNode extends AbstractNodeFactory {
     category = 'Default';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RayCasterNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

@@ -1,3 +1,4 @@
+import { Canvas2dPanel } from "../../../../core/models/modules/Canvas2dPanel";
 import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models/objs/IObj";
 import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { NodeObj, NodeObjJson, NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
@@ -6,6 +7,7 @@ import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../../../../core/
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 import { LightViewFactory } from "../../../sketch_editor/main/models/factories/LightViewFactory";
+import { SketchEditorPanelId } from "../../../sketch_editor/main/SketchEditorModule";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../models/shapes/NodeConnectionShape";
 import { NodeShapeType } from "../models/shapes/NodeShape";
 
@@ -22,7 +24,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
     constructor(registry: Registry) {
         super();
         this.registry = registry;
-        this.shapeFactories.set(NodeConnectionShapeType, new NodeConnectionShapeFactory());
+        this.shapeFactories.set(NodeConnectionShapeType, new NodeConnectionShapeFactory(<Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
     }
 
     import(data: ImportData): void {

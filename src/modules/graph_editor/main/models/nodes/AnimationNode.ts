@@ -4,6 +4,8 @@ import { Registry } from "../../../../../core/Registry";
 import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AnimationNodeControllers } from "../../controllers/nodes/AnimationNodeControllers";
+import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const AnimationNodeType = 'animation-node-obj';
 
@@ -21,7 +23,7 @@ export class AnimationNode extends AbstractNodeFactory {
 
     
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry);
+        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
         nodeView.setObj(obj);
         nodeView.addParamControllers(new AnimationNodeControllers(this.registry, nodeView.getObj()));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);

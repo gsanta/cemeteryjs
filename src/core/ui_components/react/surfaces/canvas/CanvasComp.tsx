@@ -10,7 +10,7 @@ import { UI_ComponentProps } from '../../UI_ComponentProps';
 import { UI_HtmlCanvas } from '../../../elements/UI_HtmlCanvas';
 import { Camera2D } from '../../../../models/misc/camera/Camera2D';
 import { HotkeyInputComponent } from '../../HotkeyInputComponent';
-import { DeleteToolId } from '../../../../controller/tools/DeleteTool';
+import { DeleteToolId } from '../../../../controller/tools/DeleteTool_Svg';
 
 const SelectionComponentStyled = styled.rect`
     fill-opacity: 0.3;

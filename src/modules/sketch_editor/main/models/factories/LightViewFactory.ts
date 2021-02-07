@@ -9,14 +9,16 @@ import { LightShape, LightShapeJson } from "../shapes/LightShape";
 
 export class LightViewFactory extends ShapeFactoryAdapter {
     private registry: Registry;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     instantiate() {
-        return new LightShape();
+        return new LightShape(this.canvas);
     }
 
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
@@ -36,6 +38,6 @@ export class LightViewFactory extends ShapeFactoryAdapter {
     }
 
     instantiateFromJson(json: LightShapeJson): [AbstractShape, AfterAllViewsDeserialized] {
-        return LightShape.fromJson(json, this.registry);
+        return LightShape.fromJson(json, this.registry, this.canvas);
     }
 }

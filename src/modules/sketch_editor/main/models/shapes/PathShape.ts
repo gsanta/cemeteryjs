@@ -1,3 +1,4 @@
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { AbstractShape, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
 import { EditPointViewJson, PathPoinShape } from '../../../../../core/models/shapes/child_views/PathPointShape';
@@ -32,8 +33,8 @@ export class PathShape extends AbstractShape {
     radius = 5;
     str: string;
 
-    constructor() {
-        super();
+    constructor(canvas: Canvas2dPanel) {
+        super(canvas);
         this.renderer = new PathShapeRenderer();
     }
 

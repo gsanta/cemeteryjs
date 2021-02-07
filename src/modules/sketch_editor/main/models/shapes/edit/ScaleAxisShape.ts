@@ -7,6 +7,7 @@ import { Registry } from "../../../../../../core/Registry";
 import { Point } from "../../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../../utils/geometry/shapes/Rectangle";
 import { ScaleAxisViewRenderer } from "../../../renderers/edit/ScaleAxisViewRenderer";
+import { Canvas2dPanel } from "../../../../../../core/models/modules/Canvas2dPanel";
 
 export interface AxisShapeJson extends ShapeJson {
     point: string;
@@ -17,27 +18,29 @@ export const ScaleAxisShapeType = 'scale-axis-shape';
 
 export class ScaleAxisShapeFactory extends ShapeFactoryAdapter {
     private registry: Registry;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
         super();
         this.registry = registry;
+        this.canvas = canvas;
     }
 
     instantiate() {
         // TODO: does not make sense to create only one of the axis
-        return new ScaleAxisView(this.registry, CanvasAxis.X);
+        return new ScaleAxisView(this.registry, this.canvas, CanvasAxis.X);
     }
 
     instantiateOnSelection(parentView: AbstractShape) {
-        let axisView = new ScaleAxisView(this.registry, CanvasAxis.X);
+        let axisView = new ScaleAxisView(this.registry, this.canvas, CanvasAxis.X);
         axisView.setContainerView(parentView);
         parentView.addContainedView(axisView);
 
-        axisView = new ScaleAxisView(this.registry, CanvasAxis.Y);
+        axisView = new ScaleAxisView(this.registry, this.canvas, CanvasAxis.Y);
         axisView.setContainerView(parentView);
         parentView.addContainedView(axisView);
 
-        axisView = new ScaleAxisView(this.registry, CanvasAxis.Z);
+        axisView = new ScaleAxisView(this.registry, this.canvas, CanvasAxis.Z);
         axisView.setContainerView(parentView);
         parentView.addContainedView(axisView);
     }
@@ -54,8 +57,8 @@ export class ScaleAxisView extends ChildShape {
     readonly axis: CanvasAxis;
     readonly containerShape: AbstractShape;
 
-    constructor(registry: Registry, axis: CanvasAxis) {
-        super();
+    constructor(registry: Registry, canvas: Canvas2dPanel, axis: CanvasAxis) {
+        super(canvas);
         this.axis = axis;
         this.bounds = new Rectangle(new Point(0, 0), new Point(0, 0));
         this.renderer = new ScaleAxisViewRenderer(registry);

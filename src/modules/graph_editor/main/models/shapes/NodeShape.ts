@@ -10,6 +10,7 @@ import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
 import { NodeRenderer } from "../../renderers/NodeRenderer";
 import { UIController } from "../../../../../core/controller/UIController";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const NodeShapeType = 'node-shape';
 
@@ -57,8 +58,8 @@ export class NodeShape extends AbstractShape {
     private registry: Registry;
 
     // TODO pass registry from the ui in every event handling method for FormController, so we don't need to pass it here
-    constructor(registry: Registry) {
-        super();
+    constructor(registry: Registry, canvas: Canvas2dPanel) {
+        super(canvas);
         
         this.registry = registry;
         this.renderer = new NodeRenderer(this);

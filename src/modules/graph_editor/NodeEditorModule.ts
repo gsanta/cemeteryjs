@@ -7,7 +7,7 @@ import { ShapeObservable } from "../../core/models/ShapeObservable";
 import { AbstractShape } from "../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../core/models/modules/Canvas2dPanel";
 import { CameraTool } from "../../core/controller/tools/CameraTool";
-import { DeleteTool } from "../../core/controller/tools/DeleteTool";
+import { DeleteTool_Svg } from "../../core/controller/tools/DeleteTool_Svg";
 import { PointerToolLogicForSvgCanvas } from "../../core/controller/tools/PointerTool";
 import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../core/controller/tools/SelectTool";
 import { UI_Region } from "../../core/models/UI_Panel";
@@ -24,6 +24,8 @@ import { NodeEditorExporter } from "./main/io/NodeEditorExporter";
 import { NodeEditorImporter } from "./main/io/NodeEditorImporter";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "./main/models/shapes/NodeConnectionShape";
 import { NodeEditorRenderer } from "./main/renderers/NodeEditorRenderer";
+import { SelectTool_Svg } from "../../core/controller/tools/SelectTool_Svg";
+import { TagStore } from "../../core/data/stores/TagStore";
 
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller';
@@ -41,7 +43,8 @@ export class NodeEditorModule extends Canvas2dPanel {
 
         this.data = {
             items: ShapeStore.newInstance(registry, this),
-            selection: new SelectionStoreForNodeEditor()
+            selection: new SelectionStoreForNodeEditor(),
+            tags: new TagStore()
         }
 
         this.observable = new ShapeObservable();
@@ -54,10 +57,10 @@ export class NodeEditorModule extends Canvas2dPanel {
         this.importer = new NodeEditorImporter(registry);
 
         const tools = [
-            new SelectTool(new PointerToolLogicForSvgCanvas(registry, this), new SelectionToolLogicForSvgCanvas(registry, this), this, registry),
-            new DeleteTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry),
+            new SelectTool_Svg(this, registry),
+            new DeleteTool_Svg(this, registry),
             new CameraTool(this, registry),
-            new JoinTool(new PointerToolLogicForSvgCanvas(registry, this), this, registry)
+            new JoinTool(this, registry)
         ];
     
         const controller = new NodeEditorToolbarController(registry);

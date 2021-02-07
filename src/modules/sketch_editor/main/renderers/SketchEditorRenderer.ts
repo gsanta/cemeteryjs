@@ -2,7 +2,7 @@ import { sortViewsByLayer, AbstractShape } from "../../../../core/models/shapes/
 import { AbstractCanvasPanel, RedoProp, UndoProp, ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
-import { DeleteToolId } from "../../../../core/controller/tools/DeleteTool";
+import { DeleteToolId } from "../../../../core/controller/tools/DeleteTool_Svg";
 import { SelectToolId } from "../../../../core/controller/tools/SelectTool";
 import { Registry } from "../../../../core/Registry";
 import { UI_Toolbar } from "../../../../core/ui_components/elements/toolbar/UI_Toolbar";
@@ -15,7 +15,7 @@ import { CubeToolId } from "../controllers/tools/CubeTool";
 import { GroundToolId } from "../controllers/tools/GroundTool";
 import { LightToolId } from "../controllers/tools/LightTool";
 import { MeshToolId } from "../controllers/tools/MeshTool";
-import { PathToolId } from "../controllers/tools/PathTool";
+import { PathToolId } from "../controllers/tools/PathTool_Svg";
 import { SphereToolId } from "../controllers/tools/SphereTool";
 import { SpriteToolId } from "../controllers/tools/SpriteTool";
 import { SketchEditorModule } from "../SketchEditorModule";

@@ -1,10 +1,10 @@
+import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
+import { PointerToolLogicForSvgCanvas } from "../../../../../core/controller/tools/PointerTool";
+import { Cursor, ToolType } from '../../../../../core/controller/tools/Tool';
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
-import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
-import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
-import { PointerToolLogic } from "../../../../../core/controller/tools/PointerTool";
-import { Cursor, ToolType } from '../../../../../core/controller/tools/Tool';
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { NodeConnectionShapeFactory } from "../../models/shapes/NodeConnectionShape";
@@ -13,11 +13,11 @@ export class JoinTool extends AbstractTool<AbstractShape> {
     startPoint: Point;
     endPoint: Point;
     nodePortView1: NodePortShape;
-    private pointerLogic: PointerToolLogic<AbstractShape>
+    private pointerTool: PointerToolLogicForSvgCanvas;
 
-    constructor(logic: PointerToolLogic<AbstractShape>, plugin: AbstractCanvasPanel<AbstractShape>,  registry: Registry) {
-        super(ToolType.Join, plugin, registry);
-        this.pointerLogic = logic;
+    constructor(canvas: Canvas2dPanel,  registry: Registry) {
+        super(ToolType.Join, canvas, registry);
+        this.pointerTool = new PointerToolLogicForSvgCanvas(registry, canvas);
     }
 
     down() {
@@ -44,7 +44,7 @@ export class JoinTool extends AbstractTool<AbstractShape> {
             let inputPort = <NodePortShape> (this.nodePortView1.getObj().isInputPort() ? this.nodePortView1 : this.canvas.pointer.pointer.hoveredItem);
             let outputPort = <NodePortShape> (inputPort === this.nodePortView1 ? this.canvas.pointer.pointer.hoveredItem : this.nodePortView1);
 
-            const connectionShape = new NodeConnectionShapeFactory().instantiate();
+            const connectionShape = new NodeConnectionShapeFactory(this.canvas as Canvas2dPanel).instantiate();
             inputPort.addConnection(connectionShape);
             outputPort.addConnection(connectionShape);
             connectionShape.setInputPort(inputPort);
@@ -79,7 +79,7 @@ export class JoinTool extends AbstractTool<AbstractShape> {
     }
 
     out(view: AbstractShape) {
-        this.pointerLogic.unhover(view);
+        this.pointerTool.unhover(view);
         if (!this.canvas.pointer.pointer.isDown) {
             this.canvas.tool.removePriorityTool(this.id);
         }

@@ -8,6 +8,7 @@ import { sceneAndGameViewRatio } from "../../../../../core/data/stores/ShapeStor
 import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { MoveAxisShapeFactory, MoveAxisShapeType, MoveAxisView } from "../../models/shapes/edit/MoveAxisShape";
 import { AbstractAxisTool } from "./AbstractAxisTool";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 
 export const MoveAxisToolId = 'move-axis-tool';
 
@@ -65,7 +66,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
     }
 
     protected instantiate() {
-        new MoveAxisShapeFactory(this.registry).instantiateOnSelection(this.meshShape);
+        new MoveAxisShapeFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnSelection(this.meshShape);
     }
 
     protected remove() {
