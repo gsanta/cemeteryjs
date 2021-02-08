@@ -1,6 +1,5 @@
-import { Registry } from "../../Registry";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
-import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
+import { IObj, ObjJson } from "./IObj";
 
 export const AssetObjType = 'asset-obj';
 
@@ -18,19 +17,6 @@ export enum AssetType {
     Thumbnail = 'Thumbnail',
     SpriteSheet = 'SpriteSheet',
     SpriteSheetJson = 'SpriteSheetJson'
-}
-
-export class AssetObjFactory extends ObjFactoryAdapter {
-    private registry: Registry;
-    
-    constructor(registry: Registry) {
-        super(AssetObjType);
-        this.registry = registry;
-    }
-
-    newInstance() {
-        return new AssetObj(this.registry.services.module.ui.sceneEditor);
-    }
 }
 
 export class AssetObj implements IObj {
@@ -75,5 +61,6 @@ export class AssetObj implements IObj {
         this.path = json.path;
         this.data = json.data;
         this.name = json.name;
+        return undefined;
     }
 }

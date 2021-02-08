@@ -3,7 +3,6 @@ import { AssetStore } from "./AssetStore";
 import { GameStore } from "./GameStore";
 import { IdGenerator } from "../IdGenerator";
 import { LevelStore } from "./LevelStore";
-import { ObjStore } from "./ObjStore";
 
 export const SceneStoreId = 'scene-store';
 export const SpriteStoreId = 'sprite-store';
@@ -15,14 +14,11 @@ export class Stores {
     levelStore: LevelStore;
     assetStore: AssetStore;
 
-    game: GameStore;
-
     constructor(registry: Registry) {
         this.registry = registry;
         this.levelStore = new LevelStore();
         this.assetStore = new AssetStore(this.registry);
 
         this.assetStore.setIdGenerator(new IdGenerator());
-        this.game = new GameStore(this.registry);
     }
 }

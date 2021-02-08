@@ -9,10 +9,8 @@ import { ImportService } from './import/ImportService';
 import { LevelService } from "./LevelService";
 import { LocalStoreService } from "./LocalStroreService";
 import { ModuleService } from "./ModuleService";
-import { ObjService } from "./ObjService";
 import { RenderService } from "./RenderServices";
 import { UI_PerspectiveService } from './UI_PerspectiveService';
-import { UI_Service } from "./UI_Service";
 
 export class Services {
     localStore: LocalStoreService;
@@ -24,11 +22,9 @@ export class Services {
     error: ErrorService;
     event: EventService;
     module: ModuleService;
-    ui: UI_Service;
     
     level: LevelService;
     game: GameService;
-    objService: ObjService;
     dragAndDropService: DragAndDropService;
 
     private registry: Registry;
@@ -45,9 +41,7 @@ export class Services {
         this.export = new ExportService(this.registry);
         this.history = new HistoryService(this.registry);
         this.game = new GameService(this.registry);
-        this.ui = new UI_Service();
         this.uiPerspective = new UI_PerspectiveService(this.registry);
-        this.objService = new ObjService(this.registry);
         this.error = new ErrorService();
         this.dragAndDropService = new DragAndDropService();
         this.event = new EventService();

@@ -16,15 +16,11 @@ export class PathViewFactory extends ShapeFactoryAdapter {
         this.canvas = canvas;
     }
 
-    instantiate() {
-        return new PathShape(this.canvas);
-    }
-
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
         const pointer = panel.pointer.pointer;
 
-        const pathObj = <PathObj> this.registry.services.objService.createObj(PathObjType);
-        const pathView: PathShape = <PathShape> this.instantiate();
+        const pathObj = new PathObj(this.registry.services.module.ui.sceneEditor);
+        const pathView: PathShape = new PathShape(pathObj, panel);
         pathView.setObj(pathObj);
 
         const editPoint = new PathPoinShape(pathView, pointer.down.clone());

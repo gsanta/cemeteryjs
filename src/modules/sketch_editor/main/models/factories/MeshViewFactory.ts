@@ -16,16 +16,12 @@ export class MeshViewFactory extends ShapeFactoryAdapter {
         this.canvas = canvas;
     }
 
-    instantiate() {
-        return new MeshShape(this.canvas);
-    }
-
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle, config?: MeshShapeConfig) {
-        const meshObj = <MeshObj> this.registry.services.objService.createObj(MeshObjType);
+        const meshObj = new MeshObj(this.registry.services.module.ui.sceneEditor);
         meshObj.color = colors.darkorchid;
         meshObj.shapeConfig = config;
 
-        const meshView: MeshShape = <MeshShape> this.instantiate();
+        const meshView: MeshShape = new MeshShape(meshObj, panel);
         meshView.setObj(meshObj);
         meshView.setBounds(dimensions);
         meshView.setRotation(0);
@@ -38,6 +34,6 @@ export class MeshViewFactory extends ShapeFactoryAdapter {
 
     instantiateFromJson(json: MeshShapeJson): [AbstractShape, AfterAllViewsDeserialized] {
         const obj = <MeshObj> this.registry.data.scene.items.getItemById(json.objId);
-        return MeshShape.fromJson(json, this.canvas, obj);
+        return MeshShape.fromJson(json, obj, this.canvas);
     }
 }

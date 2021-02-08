@@ -8,8 +8,6 @@ import { RedoController, UndoController, ZoomInController, ZoomOutController } f
 import { Canvas2dPanel } from "../../../core/models/modules/Canvas2dPanel";
 import { CameraTool } from "../../../core/controller/tools/CameraTool";
 import { DeleteTool_Svg } from "../../../core/controller/tools/DeleteTool_Svg";
-import { PointerToolLogicForSvgCanvas } from "../../../core/controller/tools/PointerTool";
-import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../../core/controller/tools/SelectTool";
 import { UI_Region } from "../../../core/models/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
@@ -28,8 +26,8 @@ import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
 import { ScaleAxisTool } from "./controllers/tools/ScaleAxisTool";
 import { SphereTool } from "./controllers/tools/SphereTool";
 import { SpriteTool } from "./controllers/tools/SpriteTool";
-import { SceneEditorExporter } from "./io/SceneEditorExporter";
-import { SceneEditorImporter } from "./io/SceneEditorImporter";
+import { Exporter_Sketch } from "./io/Exporter_Sketch";
+import { Importer_Sketch } from "./io/Importer_Sketch";
 import { SketchEditorRenderer } from "./renderers/SketchEditorRenderer";
 import { SceneToSketchSynchronizer } from "./SceneToSketchSynchronizer";
 import { SketchToSceneSynchronizer } from "./SketchToSceneSynchronizer";
@@ -63,8 +61,8 @@ export class SketchEditorModule extends Canvas2dPanel {
         registry.data.sketch.items = <ShapeStore> this.data.items;
         (this.registry.data.sketch.items as ShapeStore).addHook(new ShapeLifeCycleHook(this.registry));
 
-        this.exporter = new SceneEditorExporter(registry);
-        this.importer = new SceneEditorImporter(registry);
+        this.exporter = new Exporter_Sketch(registry);
+        this.importer = new Importer_Sketch(this, registry);
         
         const sketchToSceneSynchronizer = new SketchToSceneSynchronizer(registry, this.observable);
     

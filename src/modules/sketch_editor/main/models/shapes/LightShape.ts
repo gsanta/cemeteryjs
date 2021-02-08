@@ -21,8 +21,9 @@ export class LightShape extends AbstractShape {
     protected obj: LightObj;
     private relativeParentPos: Point;
 
-    constructor(canvas: Canvas2dPanel) {
+    constructor(obj: LightObj, canvas: Canvas2dPanel) {
         super(canvas);
+        this.setObj(obj);
         this.renderer = new LightShapeRenderer();
     }
 
@@ -72,17 +73,15 @@ export class LightShape extends AbstractShape {
         this.calcRelativePos();
     }
 
-    static fromJson(json: ShapeJson, registry: Registry, canvas: Canvas2dPanel): [AbstractShape, AfterAllViewsDeserialized] {
-        const lightView = new LightShape(canvas);
+    static fromJson(json: ShapeJson, obj: LightObj, canvas: Canvas2dPanel): [AbstractShape, AfterAllViewsDeserialized] {
+        const lightView = new LightShape(obj, canvas);
         lightView.id = json.id;
         lightView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
-        const obj = <LightObj> registry.data.scene.items.getItemById(json.objId);
-        lightView.setObj(obj);
         
         const afterAllViewsDeserialized: AfterAllViewsDeserialized = () => {
-            json.childViewIds.map(id => lightView.addChildView(registry.data.sketch.items.getItemById(id)));
-            json.parentId && lightView.setParent(registry.data.sketch.items.getItemById(json.parentId));
+            json.childViewIds.map(id => lightView.addChildView(canvas.data.items.getItemById(id)));
+            json.parentId && lightView.setParent(canvas.data.items.getItemById(json.parentId));
         }
 
         return [lightView, afterAllViewsDeserialized];

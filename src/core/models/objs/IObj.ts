@@ -11,24 +11,6 @@ export interface AfterAllObjsDeserialized {
     (): void;
 }
 
-export interface ObjFactory {
-    objType: string;
-    newInstance(): IObj;
-    insantiateFromJson(objJson: ObjJson): [IObj, AfterAllObjsDeserialized]
-}
-
-export abstract class ObjFactoryAdapter implements ObjFactory {
-    objType: string;
-
-    constructor(objType: string) {
-        this.objType = objType;
-    }
-
-    newInstance(): IObj { return undefined; }
-    insantiateFromJson(objJson: ObjJson): [IObj, AfterAllObjsDeserialized] { return undefined; }
-
-}
-
 export interface IObj {
     id: string;
     name: string;
@@ -37,6 +19,6 @@ export interface IObj {
 
     dispose(): void;
     serialize(): ObjJson;
-    deserialize(json: ObjJson, registry: Registry);
+    deserialize(json: ObjJson, registry: Registry): AfterAllObjsDeserialized;
     clone(registry: Registry): IObj;
 }

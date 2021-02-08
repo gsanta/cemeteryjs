@@ -1,6 +1,6 @@
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { SpriteObj, SpriteObjJson } from "../../../../../core/models/objs/SpriteObj";
-import { AbstractShape, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, AfterAllViewsDeserialized, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
 import { colors } from "../../../../../core/ui_components/react/styles";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
@@ -23,8 +23,9 @@ export class SpriteShape extends AbstractShape {
     thumbnailData: string;
     protected obj: SpriteObj;
 
-    constructor(canvas: Canvas2dPanel) {
+    constructor(obj: SpriteObj, canvas: Canvas2dPanel) {
         super(canvas);
+        this.setObj(obj);
         this.renderer = new SpriteShapeRenderer();
     }
 
@@ -66,11 +67,12 @@ export class SpriteShape extends AbstractShape {
         }
     }
 
-    fromJson(json: SpriteShapeJson, registry: Registry) {
-        super.fromJson(json, registry);
-        this.thumbnailData = json.thumbnailData;
-        this.obj.frameName = json.frameName;
-        this.obj.spriteSheetId = json.spriteSheetId;
-        this.obj.deserialize(json.obj);
+    static fromJson(json: SpriteShapeJson, obj: SpriteObj, canvas: Canvas2dPanel): [AbstractShape, AfterAllViewsDeserialized] {
+        const spriteShape = new SpriteShape(obj, canvas);
+        spriteShape.thumbnailData = json.thumbnailData;
+        spriteShape.obj.frameName = json.frameName;
+        spriteShape.obj.spriteSheetId = json.spriteSheetId;
+        spriteShape.obj.deserialize(json.obj);
+        return [spriteShape, undefined];
     }
 }

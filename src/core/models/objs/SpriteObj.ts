@@ -1,10 +1,8 @@
-import { Sprite } from "babylonjs";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
-import { Registry } from "../../Registry";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
-import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
+import { IObj, ObjJson } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
 
@@ -16,21 +14,6 @@ export interface SpriteObjJson extends ObjJson {
     scaleY: number;
     id: string;
     spriteSheetId: string;
-}
-
-export class SpriteObjFactory extends ObjFactoryAdapter {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        super(SpriteObjType);
-        this.registry = registry;
-    }
-
-    newInstance() {
-        const obj = new SpriteObj(this.registry.services.module.ui.sceneEditor);
-        obj.spriteAdapter = this.registry.engine.sprites;
-        return obj;
-    }
 }
 
 export class SpriteObj implements IObj {
@@ -50,6 +33,7 @@ export class SpriteObj implements IObj {
 
     constructor(canvas: Canvas3dPanel) {
         this.canvas = canvas;
+        this.spriteAdapter = this.canvas.engine.sprites;
     }
 
     move(point: Point) {
@@ -139,5 +123,6 @@ export class SpriteObj implements IObj {
         }
         this.setScale(new Point(json.scaleX, json.scaleY));
         this.spriteSheetId = json.spriteSheetId;
+        return undefined;
     }
 }

@@ -1,3 +1,5 @@
+
+
 import { ObjJson } from "../../../../core/models/objs/IObj";
 import { LightObjType } from "../../../../core/models/objs/LightObj";
 import { MeshObjType } from "../../../../core/models/objs/MeshObj";
@@ -5,11 +7,10 @@ import { PathObjType } from "../../../../core/models/objs/PathObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteObjType } from "../../../../core/models/objs/SpriteObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 
-export class SceneEditorExporter extends AbstractModuleExporter {
+export class Exporter_Scene extends AbstractModuleExporter {
     private registry: Registry;
     private acceptedObjTypes: string[] = [MeshObjType, SpriteObjType, PathObjType, LightObjType, PhysicsImpostorObjType, SpriteSheetObjType]
 
@@ -21,16 +22,10 @@ export class SceneEditorExporter extends AbstractModuleExporter {
     export() {
         const data: any = {};
 
-        const views = this.exportViews();
-        
-        if (views.length > 0) {
-            data.views = views;
-        }
+        const items = this.exportObjs();
 
-        const objs = this.exportObjs();
-
-        if (objs.length > 0) {
-            data.objs = objs;
+        if (items.length > 0) {
+            data.items = items;
         }
 
         const assets = this.exportAssets();
@@ -40,10 +35,6 @@ export class SceneEditorExporter extends AbstractModuleExporter {
         }
 
         return data;
-    }
-
-    exportViews(): ShapeJson[] {
-        return this.registry.data.sketch.items.getAllItems().map(view => view.toJson());
     }
 
     exportObjs(): ObjJson[] {

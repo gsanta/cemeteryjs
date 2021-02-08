@@ -1,7 +1,7 @@
 import { ParamController, TextFieldController } from "../../../../core/controller/FormController";
 import { DialogController } from "../../../../core/controller/UIController";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { PhysicsImpostorObj, PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
+import { PhysicsImpostorObj } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { ApplicationError } from "../../../../core/services/ErrorService";
@@ -10,7 +10,7 @@ export class PhysicsImpostorDialogController extends DialogController {
     constructor(registry: Registry, meshObj: MeshObj) {
         super(registry);
 
-        const impostorObj = <PhysicsImpostorObj> registry.services.objService.createObj(PhysicsImpostorObjType);
+        const impostorObj = new PhysicsImpostorObj(registry.services.module.ui.sceneEditor);
 
         this.mass = new MassController(registry, impostorObj);
         this.save = new SaveController(registry, meshObj, impostorObj);

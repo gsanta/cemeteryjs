@@ -1,15 +1,17 @@
 import { Canvas2dPanel } from "../../../../core/models/modules/Canvas2dPanel";
-import { AssetObj, AssetObjType } from "../../../../core/models/objs/AssetObj";
+import { AssetObj } from "../../../../core/models/objs/AssetObj";
 import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models/objs/IObj";
-import { LightObjType } from "../../../../core/models/objs/LightObj";
-import { NodeObjType, NodeObjJson } from "../../../../core/models/objs/node_obj/NodeObj";
+import { LightObj } from "../../../../core/models/objs/LightObj";
+import { MeshObj } from "../../../../core/models/objs/MeshObj";
+import { NodeObjJson, NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
+import { PathObj } from "../../../../core/models/objs/PathObj";
 import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
+import { SpriteObj } from "../../../../core/models/objs/SpriteObj";
 import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
-import { AfterAllViewsDeserialized, AbstractShape, ShapeJson, ShapeFactoryAdapter } from "../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, AfterAllViewsDeserialized, ShapeFactoryAdapter, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../../../graph_editor/main/models/shapes/NodeConnectionShape";
-import { SceneEditorModule } from "../../../scene_editor/main/SceneEditorModule";
 import { LightViewFactory } from "../models/factories/LightViewFactory";
 import { MeshViewFactory } from "../models/factories/MeshViewFactory";
 import { PathViewFactory } from "../models/factories/PathViewFactory";
@@ -17,10 +19,10 @@ import { SpriteViewFactory } from "../models/factories/SpriteViewFactory";
 import { MoveAxisShapeFactory, MoveAxisShapeType } from "../models/shapes/edit/MoveAxisShape";
 import { RotateAxisShapeFactory, RotateAxisShapeType } from "../models/shapes/edit/RotateAxisShape";
 import { ScaleAxisShapeFactory, ScaleAxisShapeType } from "../models/shapes/edit/ScaleAxisShape";
-import { LightShapeType } from "../models/shapes/LightShape";
-import { MeshShapeType } from "../models/shapes/MeshShape";
-import { PathShapeType } from "../models/shapes/PathShape";
-import { SpriteShapeType } from "../models/shapes/SpriteShape";
+import { LightShape, LightShapeJson, LightShapeType } from "../models/shapes/LightShape";
+import { MeshShape, MeshShapeJson, MeshShapeType } from "../models/shapes/MeshShape";
+import { PathShape, PathShapeJson, PathShapeType } from "../models/shapes/PathShape";
+import { SpriteShape, SpriteShapeJson, SpriteShapeType } from "../models/shapes/SpriteShape";
 import { SketchEditorPanelId } from "../SketchEditorModule";
 
 interface ImportData {
@@ -45,20 +47,17 @@ export function getShapeFactories(registry: Registry): Map<string, ShapeFactoryA
     return map;
 }
 
-export class SceneEditorImporter extends AbstractModuleImporter {
+export class Importer_Sketch extends AbstractModuleImporter {
     private registry: Registry;
-    private factories: Map<string, ShapeFactoryAdapter>;
+    private canvas: Canvas2dPanel;
 
-    constructor(registry: Registry) {
+    constructor(canvas: Canvas2dPanel, registry: Registry) {
         super();
+        this.canvas = canvas;
         this.registry = registry;
-
-        this.factories = getShapeFactories(registry);
     }
 
     import(data: ImportData): void {
-        this.importAssetObjs(data.assets || []);
-        this.importObjs(data.objs || []);
         this.importViews(data.views || []);
     }
 
@@ -71,54 +70,28 @@ export class SceneEditorImporter extends AbstractModuleImporter {
             let viewInstance: AbstractShape;
             let afterAllViewsDeserialized: AfterAllViewsDeserialized;
         
-            if (viewJson.type === MeshShapeType || viewJson.type === LightShapeType) {
-                [viewInstance, afterAllViewsDeserialized] = this.factories.get(viewJson.type).instantiateFromJson(viewJson);
-                afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
-            } else {
-                viewInstance = this.factories.get(viewJson.type).instantiate();
-                viewInstance.fromJson(viewJson, this.registry);
-            }
+            [viewInstance, afterAllViewsDeserialized] = this.createShape(viewJson);
+            afterAllViewsDeserialized && afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
             store.addItem(viewInstance);
         });
 
         afterAllViewsDeserializedFuncs.forEach(func => func());
     }
 
-    private importObjs(objJsons: ObjJson[]) {
-        const objStore = this.registry.data.scene.items;
-        const afterAllObjsDeserializedFuncs: AfterAllObjsDeserialized[] = [];
-
-        // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
-        objJsons.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
-        // TODO: find a better way to ensure PhysicsImpostorObj loads before MeshObj
-        objJsons.sort((a, b) => a.objType === PhysicsImpostorObjType ? -1 : b.objType === PhysicsImpostorObjType ? 1 : 0);
-        objJsons.forEach(obj => {
-            let objInstance: IObj;
-            let afterAllObjsDeserialized: AfterAllObjsDeserialized;
-            if (obj.objType === NodeObjType) {
-                objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type);
-                objInstance.deserialize(obj, this.registry);
-            } else if (obj.objType === LightObjType) {
-                [objInstance, afterAllObjsDeserialized] = this.registry.services.objService.getObjFactory(LightObjType).insantiateFromJson(obj); 
-                afterAllObjsDeserializedFuncs.push(afterAllObjsDeserialized);
-            } else {
-                objInstance = this.registry.services.objService.createObj(obj.objType);
-                objInstance.deserialize(obj, this.registry);
-            }
-
-            objStore.addItem(objInstance);
-        });
-
-        afterAllObjsDeserializedFuncs.forEach(func => func());
-    }
-
-    private importAssetObjs(objJsons: ObjJson[]) {
-        const assetStore = this.registry.stores.assetStore;
-
-        objJsons.forEach(objJson => {
-            const objInstance = this.registry.services.objService.createObj(objJson.objType);
-            objInstance.deserialize(objJson, this.registry);
-            assetStore.addObj(objInstance as AssetObj);
-        });
+    private createShape(shapeJson: ShapeJson) {
+        switch(shapeJson.type) {
+            case MeshShapeType:
+                const meshObj = <MeshObj> this.registry.data.scene.items.getItemById(shapeJson.objId);
+                return MeshShape.fromJson(<MeshShapeJson> shapeJson, meshObj, this.canvas);
+            case LightShapeType:
+                const lightObj = <LightObj> this.registry.data.scene.items.getItemById(shapeJson.objId);
+                return LightShape.fromJson(<LightShapeJson> shapeJson, lightObj, this.canvas);
+            case SpriteShapeType:
+                const spriteObj = <SpriteObj> this.registry.data.scene.items.getItemById(shapeJson.objId);
+                return SpriteShape.fromJson(<SpriteShapeJson> shapeJson, spriteObj, this.canvas);
+            case PathShapeType:
+                const pathObj = <PathObj> this.registry.data.scene.items.getItemById(shapeJson.objId);
+                return PathShape.fromJson(<PathShapeJson> shapeJson, pathObj, this.canvas);
+        }
     }
 }

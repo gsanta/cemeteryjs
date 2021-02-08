@@ -1,6 +1,6 @@
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { PathObj } from "../../../../../core/models/objs/PathObj";
-import { AbstractShape, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, AfterAllViewsDeserialized, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
 import { EditPointViewJson, PathPoinShape } from '../../../../../core/models/shapes/child_views/PathPointShape';
 import { Registry } from "../../../../../core/Registry";
 import { maxBy, minBy } from "../../../../../utils/geometry/Functions";
@@ -33,8 +33,9 @@ export class PathShape extends AbstractShape {
     radius = 5;
     str: string;
 
-    constructor(canvas: Canvas2dPanel) {
+    constructor(obj: PathObj, canvas: Canvas2dPanel) {
         super(canvas);
+        this.setObj(obj);
         this.renderer = new PathShapeRenderer();
     }
 
@@ -118,14 +119,15 @@ export class PathShape extends AbstractShape {
         }
     }
 
-    fromJson(json: PathShapeJson, registry: Registry) {
-        super.fromJson(json, registry);
+    static fromJson(json: PathShapeJson, obj: PathObj, canvas: Canvas2dPanel): [AbstractShape, AfterAllViewsDeserialized] {
+        const pathShape = new PathShape(obj, canvas);
         json.editPoints.forEach((ep) => {
-            const epView = new PathPoinShape(this);
-            epView.fromJson(ep, registry);
-            this.addPathPoint(epView);
+            const epView = new PathPoinShape(pathShape);
+            epView.fromJson(ep);
+            pathShape.addPathPoint(epView);
         });
 
-        this.str = undefined;
+        pathShape.str = undefined;
+        return [pathShape, undefined];
     }
 }

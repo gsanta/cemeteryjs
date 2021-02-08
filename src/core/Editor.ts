@@ -41,9 +41,9 @@ export class Editor {
         this.registry = new Registry();
 
         // canvases
+        this.registry.services.module.ui.registerCanvas(new SceneEditorModule(this.registry));
         this.registry.services.module.ui.registerCanvas(new SketchEditorModule(this.registry));
         this.registry.services.module.ui.registerCanvas(new NodeEditorModule(this.registry));
-        this.registry.services.module.ui.registerCanvas(new SceneEditorModule(this.registry));
         this.registry.services.module.ui.registerCanvas(new ThumbnailCanvasModule(this.registry));
 
         // hooks

@@ -1,6 +1,6 @@
 import { Registry } from "../../Registry";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
-import { IObj, ObjJson } from "./IObj";
+import { AfterAllObjsDeserialized, IObj, ObjJson } from "./IObj";
 
 
 export abstract class AbstractObj implements IObj {
@@ -10,6 +10,6 @@ export abstract class AbstractObj implements IObj {
     name: string;
     dispose(): void {}
     serialize(): ObjJson { return undefined; }
-    deserialize(json: ObjJson, registry: Registry) {}
+    deserialize(json: ObjJson, registry: Registry): AfterAllObjsDeserialized { return undefined; }
     clone(): IObj { return undefined; }
 }

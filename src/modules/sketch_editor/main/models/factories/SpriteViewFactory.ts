@@ -17,16 +17,11 @@ export class SpriteViewFactory extends ShapeFactoryAdapter {
         this.canvas = canvas;
     }
 
-    instantiate() {
-        return new SpriteShape(this.canvas);
-    }
-
     instantiateOnCanvas(panel: Canvas2dPanel, dimensions: Rectangle) {
-        const spriteObj = <SpriteObj> this.registry.services.objService.createObj(SpriteObjType);
+        const spriteObj = new SpriteObj(this.registry.services.module.ui.sceneEditor);
         spriteObj.color = colors.darkorchid;
 
-        const spriteView: SpriteShape = <SpriteShape> this.instantiate();
-        spriteView.setObj(spriteObj);
+        const spriteView = new SpriteShape(spriteObj, panel);
         spriteView.setBounds(dimensions);
         spriteObj.spriteAdapter = this.registry.engine.sprites;
         spriteObj.setScale(new Point(3, 3));

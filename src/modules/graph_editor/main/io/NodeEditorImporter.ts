@@ -28,7 +28,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
     }
 
     import(data: ImportData): void {
-        this.importObjs(data.objs || []);
+        // this.importObjs(data.objs || []);
         this.importViews(data.views || []);
     }
 
@@ -50,31 +50,27 @@ export class NodeEditorImporter extends AbstractModuleImporter {
         });
     }
 
-    private importObjs(objJsons: ObjJson[]) {
-        const objStore = this.registry.data.scene.items;
-        const afterAllObjsDeserializedFuncs: AfterAllObjsDeserialized[] = [];
+    // private importObjs(objJsons: ObjJson[]) {
+    //     const objStore = this.registry.data.scene.items;
+    //     const afterAllObjsDeserializedFuncs: AfterAllObjsDeserialized[] = [];
 
-        // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
-        objJsons.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
-        objJsons.forEach(obj => {
-            let objInstance: IObj;
-            let afterAllObjsDeserialized: AfterAllObjsDeserialized;
-            if (obj.objType === NodeObjType) {
-                objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type);
-                const nodeObj = <NodeObj> objInstance;
-                objInstance.deserialize(obj, this.registry);
-                nodeObj.listener && nodeObj.listener.onInit && nodeObj.listener.onInit();
-            } else if (obj.objType === LightObjType) {
-                [objInstance, afterAllObjsDeserialized] = this.registry.services.objService.getObjFactory(LightObjType).insantiateFromJson(obj); 
-                afterAllObjsDeserializedFuncs.push(afterAllObjsDeserialized);
-            } else {
-                objInstance = this.registry.services.objService.createObj(obj.objType);
-                objInstance.deserialize(obj, this.registry);
-            }
+    //     // TODO: find a better way to ensure SpriteSheetObjType loads before SpriteObjType
+    //     objJsons.sort((a, b) => a.objType === SpriteSheetObjType ? -1 : b.objType === SpriteSheetObjType ? 1 : 0);
+    //     objJsons.forEach(obj => {
+    //         let objInstance: IObj;
+    //         if (obj.objType === NodeObjType) {
+    //             objInstance = this.registry.data.helper.node.createObj((<NodeObjJson> obj).type);
+    //             const nodeObj = <NodeObj> objInstance;
+    //             objInstance.deserialize(obj, this.registry);
+    //             nodeObj.listener && nodeObj.listener.onInit && nodeObj.listener.onInit();
+    //         } else {
+    //             objInstance = this.registry.services.module.ui.sceneEditor.data.new[obj.objType];
+    //             objInstance.deserialize(obj, this.registry);
+    //         }
 
-            objStore.addItem(objInstance);
-        });
+    //         objStore.addItem(objInstance);
+    //     });
 
-        afterAllObjsDeserializedFuncs.forEach(func => func());
-    }
+    //     afterAllObjsDeserializedFuncs.forEach(func => func());
+    // }
 }

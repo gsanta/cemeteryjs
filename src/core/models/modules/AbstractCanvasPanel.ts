@@ -41,9 +41,8 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     readonly hotkey: HotkeyHandler<D>;
     readonly tool: ToolHandler<D>;
     readonly pointer: PointerHandler<D>;
+    
     abstract readonly data: ItemData<D>;
-
-    protected renderFunc: () => void;
 
     private camera: ICamera;
 

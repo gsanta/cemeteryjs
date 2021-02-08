@@ -1,6 +1,6 @@
 import { TableDefinition } from "cucumber";
 import { Registry } from "../../../../../src/core/Registry";
-import { getShapeFactories } from "../../../../../src/modules/sketch_editor/main/io/SceneEditorImporter";
+import { getShapeFactories } from "../../../../../src/modules/sketch_editor/main/io/Importer_Sketch";
 import { SketchEditorModule, SketchEditorPanelId } from "../../../../../src/modules/sketch_editor/main/SketchEditorModule";
 import { Point } from "../../../../../src/utils/geometry/shapes/Point";
 import { Rectangle } from "../../../../../src/utils/geometry/shapes/Rectangle";

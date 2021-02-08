@@ -64,8 +64,8 @@ export class PathPoinShape extends ChildShape {
         }
     }
 
-    fromJson(json: EditPointViewJson, registry: Registry) {
-        super.fromJson(json, registry);
+    fromJson(json: EditPointViewJson) {
+        super.fromJson(json, undefined);
         this.point = Point.fromString(json.point);
     }
 }

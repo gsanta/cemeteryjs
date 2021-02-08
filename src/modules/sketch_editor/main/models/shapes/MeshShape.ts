@@ -31,8 +31,9 @@ export class MeshShape extends AbstractShape {
     color: string = colors.pastelBlue;
     speed = 0.5;
 
-    constructor(canvas: Canvas2dPanel) {
+    constructor(obj: MeshObj, canvas: Canvas2dPanel) {
         super(canvas);
+        this.setObj(obj);
         this.renderer = new MeshShapeRenderer();
     }
 
@@ -97,7 +98,7 @@ export class MeshShape extends AbstractShape {
     }
 
     clone(): AbstractShape {
-        const [clone] = MeshShape.fromJson(this.toJson(), this.canvas, undefined);
+        const [clone] = MeshShape.fromJson(this.toJson(), this.obj, this.canvas);
         clone.obj = undefined;
         clone.id = undefined;
         clone.bounds = undefined;
@@ -139,8 +140,8 @@ export class MeshShape extends AbstractShape {
         }
     }
 
-    static fromJson(json: MeshShapeJson, canvas: Canvas2dPanel, obj: MeshObj): [MeshShape, AfterAllViewsDeserialized] {
-        const meshView = new MeshShape(canvas);
+    static fromJson(json: MeshShapeJson, obj: MeshObj, canvas: Canvas2dPanel): [MeshShape, AfterAllViewsDeserialized] {
+        const meshView = new MeshShape(obj, canvas);
         meshView.id = json.id;
         meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 

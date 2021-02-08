@@ -126,8 +126,9 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
         return new NodeObjSerializer(this).serialize();
     }
 
-    deserialize(json: NodeObjJson, registry: Registry): void {
+    deserialize(json: NodeObjJson, registry: Registry) {
         new NodeObjDeserialize(this).deserialize(json, registry);
+        return undefined;
     }
 
     initParams() {

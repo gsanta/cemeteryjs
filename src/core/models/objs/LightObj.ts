@@ -4,7 +4,7 @@ import { ILightAdapter } from "../../engine/ILightAdapter";
 import { Registry } from "../../Registry";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { IGameObj } from "./IGameObj";
-import { AfterAllObjsDeserialized, IObj, ObjFactoryAdapter, ObjJson } from "./IObj";
+import { AfterAllObjsDeserialized, IObj, ObjJson } from "./IObj";
 import { MeshObj } from "./MeshObj";
 
 export const LightObjType = 'light-obj';
@@ -25,25 +25,6 @@ export interface LightObjJson extends ObjJson {
     parentId: string;
 }
 
-export class LigthObjFactory extends ObjFactoryAdapter {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        super(LightObjType);
-        this.registry = registry;
-    }
-
-    newInstance() {
-        const lightObj = new LightObj(undefined, this.registry.services.module.ui.sceneEditor);
-        lightObj.id = this.registry.data.scene.items.generateId(lightObj);
-        return lightObj; 
-    }
-
-    insantiateFromJson(json: LightObjJson): [IObj, AfterAllObjsDeserialized] {
-        return LightObj.deserialize(json, this.registry.services.module.ui.sceneEditor);
-    }
-}
-
 export class LightObj implements IGameObj {
     objType = LightObjType;
     id: string;
@@ -52,8 +33,7 @@ export class LightObj implements IGameObj {
 
     private lightAdapter: ILightAdapter;
 
-    constructor(id: string, canvas: Canvas3dPanel) {
-        this.id = id;
+    constructor(canvas: Canvas3dPanel) {
         this.canvas = canvas;
         this.lightAdapter = canvas.engine.lights;
 
@@ -150,27 +130,26 @@ export class LightObj implements IGameObj {
         return json;
     }
 
-    deserialize() {}
     clone(): LightObj { throw new Error('Not implemented'); }
 
-    static deserialize(json: LightObjJson, canvas: Canvas3dPanel): [IObj, AfterAllObjsDeserialized] {
-        const obj = new LightObj(json.id, canvas);
+    deserialize(json: LightObjJson): AfterAllObjsDeserialized {
+        this.id = json.id;
         
-        obj.setDirection(new Point_3(json.direction.x, json.direction.y, json.direction.z));
-        obj.setDiffuseColor(json.diffuseColor);
+        this.setDirection(new Point_3(json.direction.x, json.direction.y, json.direction.z));
+        this.setDiffuseColor(json.diffuseColor);
 
         const afterAllObjsDeserialized = () => {
             if (json.parentId) {
-                const parentPos =  (<MeshObj> canvas.data.items.getItemById(json.parentId)).getPosition();
+                const parentPos =  (<MeshObj> this.canvas.data.items.getItemById(json.parentId)).getPosition();
                 const pos = new Point_3(json.position.x, json.position.y, json.position.z).add(parentPos);
-                obj.setPosition(pos);
-                obj.setParent(<MeshObj> canvas.data.items.getItemById(json.parentId));
+                this.setPosition(pos);
+                this.setParent(<MeshObj> this.canvas.data.items.getItemById(json.parentId));
                 
             } else {
-                obj.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
+                this.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));
             }
         }
 
-        return [obj, afterAllObjsDeserialized];   
+        return afterAllObjsDeserialized;   
     }
 }

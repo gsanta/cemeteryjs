@@ -1,7 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
-import { Registry } from "../../Registry";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
-import { IObj, ObjFactoryAdapter, ObjJson } from "./IObj";
+import { IObj, ObjJson } from "./IObj";
 
 export const PathObjType = 'path-obj';
 
@@ -10,19 +9,6 @@ export interface PathObjJson extends ObjJson {
         x: number;
         y: number;
     }[];
-}
-
-export class PathObjFactory extends ObjFactoryAdapter {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        super(PathObjType);
-        this.registry = registry;
-    }
-
-    newInstance() {
-        return new PathObj(this.registry.services.module.ui.sceneEditor);
-    }
 }
 
 export class PathObj implements IObj {
@@ -57,5 +43,6 @@ export class PathObj implements IObj {
     deserialize(json: PathObjJson) {
         this.id = json.id;
         this.points = json.points.map(point => new Point(point.x, point.y));
+        return undefined;
     }
 }

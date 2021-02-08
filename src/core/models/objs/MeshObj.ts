@@ -4,7 +4,7 @@ import { Registry } from '../../Registry';
 import { Canvas3dPanel } from '../modules/Canvas3dPanel';
 import { AssetObj } from './AssetObj';
 import { IGameObj } from './IGameObj';
-import { IObj, ObjFactoryAdapter, ObjJson } from './IObj';
+import { IObj, ObjJson } from './IObj';
 import { PhysicsImpostorObj } from './PhysicsImpostorObj';
 
 export const MeshObjType = 'mesh-obj';
@@ -31,21 +31,6 @@ export interface MeshObjJson extends ObjJson {
     shapeConfig: MeshShapeConfig;
     visibility: number;
     isCheckIntersection: boolean;
-}
-
-export class MeshObjFactory extends ObjFactoryAdapter {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        super(MeshObjType);
-        this.registry = registry;
-    }
-
-    newInstance() {
-        const obj = new MeshObj(this.registry.services.module.ui.sceneEditor);
-        obj.meshAdapter = this.registry.engine.meshes;
-        return obj;
-    }
 }
 
 export enum BasicShapeType {
@@ -96,6 +81,7 @@ export class MeshObj implements IGameObj {
 
     constructor(canvas: Canvas3dPanel) {
         this.canvas = canvas;
+        this.meshAdapter = canvas.engine.meshes;
     }
 
     translate(point: Point_3, isGlobal = true) {
@@ -222,5 +208,6 @@ export class MeshObj implements IGameObj {
         this.shapeConfig = json.shapeConfig;
         this.setVisibility(json.visibility);
         this.isCheckIntersection = json.isCheckIntersection;
+        return undefined;
     }
 }

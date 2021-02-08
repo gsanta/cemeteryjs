@@ -36,6 +36,6 @@ export class RayObj implements IObj {
 
     dispose() {}
     serialize() { return undefined; }
-    deserialize() {}
+    deserialize() { return undefined; }
     clone() { return undefined; }
 }
