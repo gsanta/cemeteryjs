@@ -17,7 +17,7 @@ export class ThumbnailCreateControl extends ParamController<any> {
     acceptedProps() { return [ThumbnailMakerControllerProps.ThumbnailCreate]; }
     
     async click(context: PropContext, element: UI_Element) {
-        const engine = (<Canvas3dPanel<IObj>> element.canvasPanel).engine;
+        const engine = (<Canvas3dPanel> element.canvasPanel).engine;
         const meshView = context.registry.data.sketch.selection.getAllItems()[0] as MeshShape;
 
         // TODO: should not cast to Bab_EngineFacade

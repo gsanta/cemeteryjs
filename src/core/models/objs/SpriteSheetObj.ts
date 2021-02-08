@@ -1,3 +1,5 @@
+import { Registry } from "../../Registry";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const SpriteSheetObjType = 'sprite-sheet-obj';
@@ -8,12 +10,15 @@ export interface SpriteSheetObjJson extends ObjJson {
 }
 
 export class SpriteSheetObjFactory extends ObjFactoryAdapter {
-    constructor() {
+    private registry: Registry;
+    
+    constructor(registry: Registry) {
         super(SpriteSheetObjType);
+        this.registry = registry;
     }
 
     newInstance() {
-        return new SpriteSheetObj();
+        return new SpriteSheetObj(this.registry.services.module.ui.sceneEditor);
     }
 }
 
@@ -24,6 +29,11 @@ export class SpriteSheetObj implements IObj {
 
     spriteAssetId: string;
     jsonAssetId: string;
+    canvas: Canvas3dPanel;
+
+    constructor(canvas: Canvas3dPanel) {
+        this.canvas = canvas;
+    }
 
     dispose() {}
 

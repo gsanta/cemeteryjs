@@ -28,7 +28,7 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     category = 'Mesh';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
+        const nodeView = new NodeShape(this.registry, this.registry.services.module.ui.nodeEditor);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RemoveMeshNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);
@@ -37,7 +37,7 @@ export class RemoveMeshNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, this.registry.services.module.ui.sceneEditor, {displayName: this.displayName});
         obj.setParams(new RemoveMeshNodeParams(obj));
         obj.listener = new RemoveMeshNodeListener(this.registry, obj, obj.param);
         obj.id = this.registry.data.scene.items.generateId(obj);

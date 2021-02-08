@@ -1,4 +1,5 @@
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { IObj } from "./IObj";
 import { MeshObj } from "./MeshObj";
 
@@ -15,6 +16,11 @@ export class RayObj implements IObj {
     direction: Point_3;
 
     pickedMeshObj: MeshObj;
+    canvas: Canvas3dPanel;
+
+    constructor(canvas: Canvas3dPanel) {
+        this.canvas = canvas;
+    }
 
     createHelper() {
 

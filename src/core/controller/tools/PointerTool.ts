@@ -31,7 +31,7 @@ export abstract class PointerToolLogic<D> {
 export class PointerToolLogicForWebGlCanvas extends AbstractTool<IObj> {
     pickedItem: IGameObj;    
     
-    constructor(registry: Registry, canvas: Canvas3dPanel<IObj>) {
+    constructor(registry: Registry, canvas: Canvas3dPanel) {
         super('pointer-tool', canvas, registry);
         this.registry = registry;
         this.canvas = canvas;

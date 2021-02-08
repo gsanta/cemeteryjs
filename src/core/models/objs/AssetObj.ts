@@ -1,3 +1,5 @@
+import { Registry } from "../../Registry";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const AssetObjType = 'asset-obj';
@@ -19,12 +21,15 @@ export enum AssetType {
 }
 
 export class AssetObjFactory extends ObjFactoryAdapter {
-    constructor() {
+    private registry: Registry;
+    
+    constructor(registry: Registry) {
         super(AssetObjType);
+        this.registry = registry;
     }
 
     newInstance() {
-        return new AssetObj();
+        return new AssetObj(this.registry.services.module.ui.sceneEditor);
     }
 }
 
@@ -35,8 +40,10 @@ export class AssetObj implements IObj {
     assetType: AssetType;
     data: string;
     path: string;
+    canvas: Canvas3dPanel;
 
-    constructor(config?: {data?: string, path?: string, name?: string, assetType: AssetType}) {
+    constructor(canvas: Canvas3dPanel, config?: {data?: string, path?: string, name?: string, assetType: AssetType}) {
+        this.canvas = canvas;
         if (config) {
             this.data = config.data;
             this.assetType = config.assetType;
@@ -48,7 +55,7 @@ export class AssetObj implements IObj {
     dispose() {}
 
     clone(): AssetObj {
-        return new AssetObj({data: this.data, path: this.path, name: this.name, assetType: this.assetType});
+        return new AssetObj(this.canvas, {data: this.data, path: this.path, name: this.name, assetType: this.assetType});
     }
 
     serialize(): AssetObjJson {

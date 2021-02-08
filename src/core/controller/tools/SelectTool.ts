@@ -17,11 +17,11 @@ import { Cursor } from "./Tool";
 
 export class SelectionToolLogicForWebGlCanvas implements RectangleSelectionToolLogic<IObj> {
     private registry: Registry;
-    private canvas: Canvas3dPanel<IObj>;
+    private canvas: Canvas3dPanel;
     private texture: AdvancedDynamicTexture;
     private rect: GuiRectangle;
 
-    constructor(registry: Registry, canvas: Canvas3dPanel<IObj>) {
+    constructor(registry: Registry, canvas: Canvas3dPanel) {
         this.registry = registry;
         this.canvas = canvas;
         canvas.engine.onReady(() => {

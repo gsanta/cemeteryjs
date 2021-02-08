@@ -12,7 +12,7 @@ import { Cursor } from "./Tool";
 export class SelectTool_Webgl extends AbstractTool<IObj> {
     private pointerTool: PointerToolLogicForWebGlCanvas;
 
-    constructor(canvas: Canvas3dPanel<IObj>, registry: Registry) {
+    constructor(canvas: Canvas3dPanel, registry: Registry) {
         super(SelectToolId, canvas, registry);
         this.pointerTool = new PointerToolLogicForWebGlCanvas(registry, canvas);
     }

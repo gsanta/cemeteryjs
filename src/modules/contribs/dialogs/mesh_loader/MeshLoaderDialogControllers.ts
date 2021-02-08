@@ -210,7 +210,7 @@ export class ModelController extends ParamController {
     }
 
     static async createModel(registry: Registry, canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj, path: string) {
-        const assetObj = new AssetObj({path: path, assetType: AssetType.Model});
+        const assetObj = new AssetObj(canvas.canvas, {path: path, assetType: AssetType.Model});
         assetObj.id = 'temp-model-asset';
         meshObj.modelObj = assetObj;
         try {
@@ -255,7 +255,7 @@ export class TextureController extends ParamController {
     }
 
     static createTexture(canvas: MeshLoaderPreviewCanvas, meshObj: MeshObj, path: string): AssetObj {
-        const assetObj = new AssetObj({path: path, assetType: AssetType.Texture});
+        const assetObj = new AssetObj(canvas.canvas, {path: path, assetType: AssetType.Texture});
         assetObj.id = 'temp-texture-asset';
 
         meshObj.textureObj = assetObj;
@@ -278,7 +278,7 @@ export class SaveController extends ParamController {
         const { modelObj } = this.meshObj;
         const meshView = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
         const meshObj = meshView.getObj();
-        const assetObj = new AssetObj({path: modelObj.path, name: modelObj.name, assetType: modelObj.assetType});
+        const assetObj = new AssetObj(this.registry.services.module.ui.sceneEditor, {path: modelObj.path, name: modelObj.name, assetType: modelObj.assetType});
         
         this.registry.engine.meshes.deleteInstance(meshObj);
         this.registry.stores.assetStore.addObj(assetObj);

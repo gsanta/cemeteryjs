@@ -33,7 +33,7 @@ export class TriggerZoneNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj<TriggerZoneNodeParams>(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj<TriggerZoneNodeParams>(this.nodeType, this.registry.services.module.ui.sceneEditor, {displayName: this.displayName});
         obj.setParams(new TriggerZoneNodeParams(obj));
         obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;

@@ -36,7 +36,7 @@ export class RotateNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, this.registry.services.module.ui.sceneEditor, {displayName: this.displayName});
         obj.setParams(new RotateNodeParams(obj));
         obj.listener = new RotateNodeListener(obj.param, new MeshRotator());
         obj.id = this.registry.data.scene.items.generateId(obj);

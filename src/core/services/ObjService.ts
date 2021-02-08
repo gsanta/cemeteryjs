@@ -16,11 +16,11 @@ export class ObjService {
     constructor(registry: Registry) {
         this.registry = registry;
         this.registerObj(new MeshObjFactory(this.registry));
-        this.registerObj(new PathObjFactory());
+        this.registerObj(new PathObjFactory(this.registry));
         this.registerObj(new SpriteObjFactory(this.registry));
-        this.registerObj(new SpriteSheetObjFactory());
-        this.registerObj(new AssetObjFactory());
-        this.registerObj(new NodeConnectionObjFactory());
+        this.registerObj(new SpriteSheetObjFactory(this.registry));
+        this.registerObj(new AssetObjFactory(this.registry));
+        this.registerObj(new NodeConnectionObjFactory(this.registry));
         this.registerObj(new LigthObjFactory(this.registry));
         this.registerObj(new PhysicsImpostorObjFactory(this.registry));
     }

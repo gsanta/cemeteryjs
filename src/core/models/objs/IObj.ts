@@ -1,4 +1,5 @@
 import { Registry } from "../../Registry";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 
 export interface ObjJson {
     id: string;
@@ -32,6 +33,7 @@ export interface IObj {
     id: string;
     name: string;
     readonly objType: string;
+    readonly canvas: Canvas3dPanel;
 
     dispose(): void;
     serialize(): ObjJson;

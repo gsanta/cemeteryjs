@@ -25,7 +25,7 @@ import { TagStore } from "../../../core/data/stores/TagStore";
 export const SceneEditorPanelId = 'scene-viewer'; 
 export const SceneEditorPluginControllerId = 'scene-editor-plugin-controller';
 
-export class SceneEditorModule extends Canvas3dPanel<IObj> {
+export class SceneEditorModule extends Canvas3dPanel {
     showBoundingBoxes: boolean = false;
     selectedTool: string;
 

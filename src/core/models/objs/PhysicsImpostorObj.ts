@@ -1,5 +1,6 @@
 import { IPhysicsAdapter } from "../../engine/IPhysicsAdapter";
 import { Registry } from "../../Registry";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { IObj, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const PhysicsImpostorObjType = 'physics-impostor-obj';
@@ -20,7 +21,7 @@ export class PhysicsImpostorObjFactory extends ObjFactoryAdapter {
     }
 
     newInstance() {
-        return new PhysicsImpostorObj(this.registry.engine.physics);
+        return new PhysicsImpostorObj(this.registry.services.module.ui.sceneEditor);
     }
 }
 
@@ -31,11 +32,13 @@ export class PhysicsImpostorObj implements IObj {
     mass: number = 1;
     friction = 0.9;
     restitution = 0.2;
+    canvas: Canvas3dPanel;
 
     private physicsAdapter: IPhysicsAdapter;
 
-    constructor(physicsAdapter: IPhysicsAdapter) {
-        this.physicsAdapter = physicsAdapter;
+    constructor(canvas: Canvas3dPanel) {
+        this.canvas = canvas;
+        this.physicsAdapter = this.canvas.engine.physics;
     }
 
     dispose(): void {
@@ -61,7 +64,7 @@ export class PhysicsImpostorObj implements IObj {
     }
 
     clone(): IObj {
-        const clone = new PhysicsImpostorObj(this.physicsAdapter);
+        const clone = new PhysicsImpostorObj(this.canvas);
         clone.mass = this.mass;
         return clone;
     }

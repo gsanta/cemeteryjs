@@ -26,7 +26,7 @@ export class RouteNode extends AbstractNodeFactory {
     category = 'Default';
 
     createView(obj: NodeObj): NodeShape {
-        const nodeView = new NodeShape(this.registry, <Canvas2dPanel> this.registry.services.module.ui.getCanvas(NodeEditorPanelId));
+        const nodeView = new NodeShape(this.registry, this.registry.services.module.ui.nodeEditor);
         nodeView.setObj(obj);
         nodeView.addParamControllers(new RouteNodeControllers(this.registry, obj));
         nodeView.id = this.registry.data.node.items.generateId(nodeView);
@@ -35,7 +35,7 @@ export class RouteNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const obj = new NodeObj(this.nodeType, this.registry.services.module.ui.sceneEditor, {displayName: this.displayName});
         obj.setParams(new RouteNodeParams());
         obj.executor = new RouteNodeExecutor(this.registry, obj);
         obj.id = this.registry.data.scene.items.generateId(obj);

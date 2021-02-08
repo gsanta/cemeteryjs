@@ -6,6 +6,8 @@ import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AnimationNodeControllers } from "../../controllers/nodes/AnimationNodeControllers";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
 
 export const AnimationNodeType = 'animation-node-obj';
 
@@ -32,7 +34,8 @@ export class AnimationNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const obj = new NodeObj(this.nodeType, canvas, {displayName: this.displayName});
         obj.setParams(new AnimationNodeParams());
         obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;

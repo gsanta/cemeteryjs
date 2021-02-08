@@ -8,6 +8,8 @@ import { CollisionNodeControllers } from "../../controllers/nodes/CollisionNodeC
 import { CollisionConstraint } from "../../controllers/domain/CollisionConstraint";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
 
 export const CollisionNodeType = 'collision-node-obj';
 
@@ -33,7 +35,8 @@ export class CollisionNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj<CollisionNodeParams>(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const obj = new NodeObj<CollisionNodeParams>(this.nodeType, canvas, {displayName: this.displayName});
         obj.setParams(new CollisionNodeParams(this.registry, obj));
         obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;

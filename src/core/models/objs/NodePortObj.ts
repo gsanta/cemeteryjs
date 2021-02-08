@@ -1,3 +1,4 @@
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { AbstractObj } from "./AbstractObj";
 import { NodeObj } from "./node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection } from "./node_obj/NodeParam";
@@ -14,16 +15,18 @@ export class NodePortObj<D = any> extends AbstractObj {
     objType: string = NodePortObjType;
     id: string;
     name: string;
+    canvas: Canvas3dPanel;
 
     private connectedPortObjs: NodePortObj[] = [];
     private readonly nodeObj: NodeObj;
     private readonly param: NodeParam;
 
-    constructor(nodeObj: NodeObj, param: NodeParam<D>) {
+    constructor(nodeObj: NodeObj, param: NodeParam<D>, canvas: Canvas3dPanel) {
         super();
         this.id = param.name;
         this.nodeObj = nodeObj;
         this.param = param;
+        this.canvas = canvas;
 
         if (!param.portDirection) {
             throw new Error(`NodeParam '${param.name}' is not a port.`);

@@ -7,6 +7,7 @@ import { NodeObjSerializer } from './NodeObjSerializer';
 import { NodePortObj, NodePortObjJson } from '../NodePortObj';
 import { NodeParamJson, NodeParam } from './NodeParam';
 import { INodeListener } from '../../../../modules/graph_editor/main/api/INodeListener';
+import { Canvas3dPanel } from '../../modules/Canvas3dPanel';
 
 export const NodeObjType = 'node-obj';
 
@@ -48,12 +49,14 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
     executor: AbstractNodeExecutor<any>;
 
     graph: NodeGraph;
+    canvas: Canvas3dPanel;
 
     private ports: Map<string, NodePortObj> = new Map();
 
 
-    constructor(nodeType: string, config?: NodeObjConfig) {
+    constructor(nodeType: string, canvas: Canvas3dPanel, config?: NodeObjConfig) {
         this.type = nodeType;
+        this.canvas = canvas;
         if (config) {
             this.category = config.category || NodeCategory.Default;
             this.displayName = config.displayName || nodeType;
@@ -141,7 +144,7 @@ export class NodeObj<P extends NodeParams = any> implements IObj {
                     this.ports.set(port.name, currentPorts.get(port.name));
                     currentPorts.delete(port.name);
                 } else {
-                    this.ports.set(port.name, new NodePortObj(this, port))
+                    this.ports.set(port.name, new NodePortObj(this, port, this.canvas))
                 }
             });
         Array.from(currentPorts.values()).forEach(port => port.dispose());

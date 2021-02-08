@@ -8,6 +8,8 @@ import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { MeshPropertyNodeControllers } from "../../controllers/nodes/MeshPropertyNodeControllers";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
 
 export const MeshPropertyNodeType = 'mesh-property-node-obj';
 
@@ -33,7 +35,8 @@ export class MeshPropertyNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const obj = new NodeObj(this.nodeType, canvas, {displayName: this.displayName});
         obj.setParams(new MeshPropertyNodeParams());
         obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;

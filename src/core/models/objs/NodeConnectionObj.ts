@@ -1,6 +1,7 @@
 import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 import { NodeObj } from "./node_obj/NodeObj";
 import { Registry } from "../../Registry";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 
 export const NodeConnectionObjType = 'node-connection-obj';
 
@@ -13,12 +14,15 @@ export interface NodeConnectionObjJson extends ObjJson {
 }
 
 export class NodeConnectionObjFactory extends ObjFactoryAdapter {
-    constructor() {
+    private registry: Registry;
+
+    constructor(registry: Registry) {
         super(NodeConnectionObjType);
+        this.registry = registry;
     }
 
     newInstance() {
-        return new NodeConnectionObj();
+        return new NodeConnectionObj(this.registry.services.module.ui.sceneEditor);
     }
 }
 
@@ -30,6 +34,11 @@ export class NodeConnectionObj implements IObj {
     node1: NodeObj;
     joinPoint2: string;
     node2: NodeObj
+    canvas: Canvas3dPanel;
+
+    constructor(canvas: Canvas3dPanel) {
+        this.canvas = canvas;
+    }
 
     getOtherNode(node: NodeObj) {
         return node === this.node1 ? this.node2 : this.node1;

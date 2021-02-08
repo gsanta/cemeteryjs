@@ -8,6 +8,8 @@ import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { KeyboardNodeControllers } from "../../controllers/nodes/KeyboardNodeController";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
 
 export const KeyboardNodeType = 'keyboard-node-obj';
 
@@ -33,7 +35,8 @@ export class KeyboardNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const obj = new NodeObj<KeyboardNodeParams>(this.nodeType, canvas, {displayName: this.displayName});
         const params = new KeyboardNodeParams(obj);
         obj.setParams(params);
         obj.listener = new KeyboardNodeListener(obj, obj.param);

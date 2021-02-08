@@ -1,7 +1,9 @@
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { PathNodeControllers } from "../../controllers/nodes/PathNodeControllers";
@@ -31,7 +33,8 @@ export class PathNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const obj = new NodeObj(this.nodeType, canvas, {displayName: this.displayName});
         obj.setParams(new PathNodeParams());
         obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;

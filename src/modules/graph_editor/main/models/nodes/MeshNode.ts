@@ -7,6 +7,8 @@ import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { MeshNodeControllers } from "../../controllers/nodes/MeshNodeControllers";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
 
 export const MeshNodeType = 'mesh-node-obj';
 
@@ -16,7 +18,7 @@ export class MeshNode extends AbstractNodeFactory {
     constructor(registry: Registry) {
         super();
         this.registry = registry;
-}
+    }
 
     nodeType = MeshNodeType;
     displayName = 'Mesh';
@@ -32,7 +34,8 @@ export class MeshNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj {
-        const obj = new NodeObj<MeshNodeParams>(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId)
+        const obj = new NodeObj<MeshNodeParams>(this.nodeType, canvas, {displayName: this.displayName});
         obj.setParams(new MeshNodeParams());
         obj.id = this.registry.data.scene.items.generateId(obj);
         obj.graph = this.registry.data.helper.node.graph;

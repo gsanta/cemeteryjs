@@ -20,7 +20,7 @@ export const MeshLoaderPreviewCanvasId = 'mesh-loader-preview-canvas';
 
 export class MeshLoaderPreviewCanvas {
     private registry: Registry;
-    private canvas: AbstractCanvasPanel<IObj>;
+    canvas: Canvas3dPanel;
     private engine: IEngineFacade;
 
     constructor(registry: Registry) {
@@ -47,7 +47,7 @@ export class MeshLoaderPreviewCanvas {
 }
 
 //  TODO merge this together with MeshLoaderPreviewCanvas (and make a module out of it)
-class MeshLoaderCanvas extends Canvas3dPanel<IObj> {
+class MeshLoaderCanvas extends Canvas3dPanel {
 
     data = undefined;
 

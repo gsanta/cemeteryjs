@@ -5,6 +5,8 @@ import { UI_Panel, UI_Region } from '../../../../core/models/UI_Panel';
 import { Registry } from '../../../../core/Registry';
 import { UI_Element } from '../../../../core/ui_components/elements/UI_Element';
 import { SpriteSheetManagerDialogRenderer } from './SpriteSheetManagerDialogRenderer';
+import { Canvas3dPanel } from '../../../../core/models/modules/Canvas3dPanel';
+import { SceneEditorPanelId } from '../../../scene_editor/main/SceneEditorModule';
 
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
 
@@ -74,13 +76,14 @@ export class AddSpriteSheetController extends ParamController<string> {
     acceptedProps() { return [SpritesheetManagerDialogProps.AddSpriteSheet]; }
 
     click(context: PropContext) {
-        const spriteSheetObj = new SpriteSheetObj();
+        const canvas = <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const spriteSheetObj = new SpriteSheetObj(canvas);
 
         const spriteSheetJson = this.uiPanel.map.get(DataKeys.SpriteSheetJson);
         const imgPath = this.uiPanel.map.get(DataKeys.SpriteSheetImgUrl);
         
-        const imgAsset = new AssetObj({path: imgPath, assetType: AssetType.SpriteSheet});
-        const jsonAsset = new AssetObj({data: spriteSheetJson, assetType: AssetType.SpriteSheetJson});
+        const imgAsset = new AssetObj(canvas, {path: imgPath, assetType: AssetType.SpriteSheet});
+        const jsonAsset = new AssetObj(canvas, {data: spriteSheetJson, assetType: AssetType.SpriteSheetJson});
 
         context.registry.stores.assetStore.addObj(imgAsset);
         context.registry.stores.assetStore.addObj(jsonAsset);

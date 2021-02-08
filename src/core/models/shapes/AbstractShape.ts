@@ -163,7 +163,7 @@ export abstract class AbstractShape {
     getYPos() { return undefined; }
 
     abstract dispose(): void;
-    clone(registry: Registry): AbstractShape { throw new Error('Not implemented'); }
+    clone(): AbstractShape { throw new Error('Not implemented'); }
 
     toJson(): ShapeJson {
         return {

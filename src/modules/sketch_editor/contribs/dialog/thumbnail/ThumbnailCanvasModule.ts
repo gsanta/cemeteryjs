@@ -18,7 +18,7 @@ import { ClearThumbnailControl, ThumbnailCreateControl, ThumbnailUploadControl }
 
 export const ThumbnailCanvasId = 'thumbnail-canvas';
 
-export class ThumbnailCanvasModule extends Canvas3dPanel<IObj> {
+export class ThumbnailCanvasModule extends Canvas3dPanel {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;

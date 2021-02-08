@@ -96,7 +96,7 @@ export class MeshShape extends AbstractShape {
         // TODO: later when ObjStores are correctly introduced, dispose obj only when removing from obj store.
     }
 
-    clone(registry: Registry): AbstractShape {
+    clone(): AbstractShape {
         const [clone] = MeshShape.fromJson(this.toJson(), this.canvas, undefined);
         clone.obj = undefined;
         clone.id = undefined;
@@ -112,7 +112,7 @@ export class MeshShape extends AbstractShape {
 
         const meshObjClone = meshObj.clone(registry);
         meshObjClone.meshAdapter = registry.engine.meshes;
-        const meshClone = meshView.clone(registry);
+        const meshClone = meshView.clone();
 
         if (meshObj.textureObj) {
             meshObjClone.textureObj = meshObj.textureObj.clone();

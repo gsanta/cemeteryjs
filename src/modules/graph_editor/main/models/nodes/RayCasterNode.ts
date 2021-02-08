@@ -8,6 +8,8 @@ import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { NodeShape } from "../shapes/NodeShape";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
 
 export const RayCasterNodeType = 'ray-caster-node-obj';
 
@@ -33,7 +35,8 @@ export class RayCasterNode extends AbstractNodeFactory {
     }
 
     createObj(): NodeObj<RayCasterNodeParams> {
-        const obj = new NodeObj(this.nodeType, {displayName: this.displayName});
+        const canvas =  <Canvas3dPanel> this.registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const obj = new NodeObj(this.nodeType, canvas, {displayName: this.displayName});
         const params = new RayCasterNodeParams(this.registry, obj);
         obj.setParams(params);
         obj.id = this.registry.data.scene.items.generateId(obj);
@@ -49,6 +52,7 @@ export class RayCasterNodeParams extends NodeParams {
         this.when = new WhenNodeParam(registry, nodeObj, this);
         this.helper = new HelperNodeParam(nodeObj);
         this.signal = new SignalNodeParam(nodeObj);
+        this.ray = new RayNodeParam(registry, nodeObj);
     }
 
     readonly mesh: NodeParam<MeshObj> = {
@@ -73,10 +77,7 @@ export class RayCasterNodeParams extends NodeParams {
         ownVal: 100,
     }
     
-    readonly ray: NodeParam = {
-        name: 'ray',
-        ownVal: new RayObj
-    }
+    readonly ray: RayNodeParam; 
     
     readonly when: WhenNodeParam;
     readonly helper: HelperNodeParam;
@@ -95,6 +96,17 @@ class SignalNodeParam extends NodeParam {
     name = 'signal';
     portDirection = PortDirection.Output;
     portDataFlow = PortDataFlow.Push;
+}
+
+class RayNodeParam extends NodeParam {
+    name = 'ray';
+    ownVal: RayObj;
+
+    constructor(registry: Registry, nodeObj: NodeObj) {
+        super(nodeObj);
+
+        this.ownVal = new RayObj(registry.services.module.ui.sceneEditor)
+    }
 }
 
 class WhenNodeParam extends NodeParam {

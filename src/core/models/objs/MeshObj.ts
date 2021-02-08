@@ -1,6 +1,7 @@
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
+import { Canvas3dPanel } from '../modules/Canvas3dPanel';
 import { AssetObj } from './AssetObj';
 import { IGameObj } from './IGameObj';
 import { IObj, ObjFactoryAdapter, ObjJson } from './IObj';
@@ -41,7 +42,7 @@ export class MeshObjFactory extends ObjFactoryAdapter {
     }
 
     newInstance() {
-        const obj = new MeshObj();
+        const obj = new MeshObj(this.registry.services.module.ui.sceneEditor);
         obj.meshAdapter = this.registry.engine.meshes;
         return obj;
     }
@@ -91,6 +92,11 @@ export class MeshObj implements IGameObj {
     isCheckIntersection: boolean = false;
 
     meshAdapter: IMeshAdapter;
+    canvas: Canvas3dPanel;
+
+    constructor(canvas: Canvas3dPanel) {
+        this.canvas = canvas;
+    }
 
     translate(point: Point_3, isGlobal = true) {
         this.meshAdapter.translate(this, point, false);
@@ -165,7 +171,7 @@ export class MeshObj implements IGameObj {
     }
 
     clone(registry: Registry): MeshObj {
-        const clone = new MeshObj();
+        const clone = new MeshObj(this.canvas);
         clone.meshAdapter = this.meshAdapter;
         clone.deserialize(this.serialize(), registry);
         clone.id = undefined;
@@ -210,7 +216,7 @@ export class MeshObj implements IGameObj {
 
         this.modelObj = json.modelId ? registry.stores.assetStore.getAssetById(json.modelId) : undefined;
         this.textureObj = json.textureId ? registry.stores.assetStore.getAssetById(json.textureId) : undefined;
-        this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> registry.data.scene.items.getItemById(json.textureId) : undefined;
+        this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> this.canvas.data.items.getItemById(json.textureId) : undefined;
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;

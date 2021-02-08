@@ -3,6 +3,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { Registry } from "../../Registry";
+import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { IObj, ObjFactory, ObjFactoryAdapter, ObjJson } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
@@ -26,7 +27,7 @@ export class SpriteObjFactory extends ObjFactoryAdapter {
     }
 
     newInstance() {
-        const obj = new SpriteObj();
+        const obj = new SpriteObj(this.registry.services.module.ui.sceneEditor);
         obj.spriteAdapter = this.registry.engine.sprites;
         return obj;
     }
@@ -45,6 +46,11 @@ export class SpriteObj implements IObj {
 
     spriteSheetId: string;
     frameName: string;
+    canvas: Canvas3dPanel;
+
+    constructor(canvas: Canvas3dPanel) {
+        this.canvas = canvas;
+    }
 
     move(point: Point) {
         this.startPos.add(point);
