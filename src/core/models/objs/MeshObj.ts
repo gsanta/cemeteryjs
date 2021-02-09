@@ -1,7 +1,9 @@
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
+import { colors } from '../../ui_components/react/styles';
 import { Canvas3dPanel } from '../modules/Canvas3dPanel';
+import { ObjEventType, ObjObservable } from '../ObjObservable';
 import { AssetObj } from './AssetObj';
 import { IGameObj } from './IGameObj';
 import { IObj, ObjJson } from './IObj';
@@ -69,7 +71,7 @@ export class MeshObj implements IGameObj {
     id: string;
     name: string;
     shapeConfig: MeshShapeConfig;
-    color: string;
+    color: string = colors.darkorchid;
     modelObj: AssetObj;
     textureObj: AssetObj;
     physicsImpostorObj: PhysicsImpostorObj;
@@ -78,19 +80,25 @@ export class MeshObj implements IGameObj {
 
     meshAdapter: IMeshAdapter;
     canvas: Canvas3dPanel;
+    observable: ObjObservable;
 
     constructor(canvas: Canvas3dPanel) {
         this.canvas = canvas;
         this.meshAdapter = canvas.engine.meshes;
+        this.observable = new ObjObservable();
+
+        this.canvas.data.items.addItem(this);
     }
 
     translate(point: Point_3, isGlobal = true) {
         this.meshAdapter.translate(this, point, false);
         // this.meshAdapter.setPosition(this, this.meshAdapter.getPosition(this).add(point));
+        this.observable.emit({ obj: this, eventType: ObjEventType.PositionChanged });
     }
 
     setPosition(pos: Point_3) {
         this.meshAdapter.setPosition(this, pos);
+        this.observable.emit({ obj: this, eventType: ObjEventType.PositionChanged });
     }
 
     getPosition(): Point_3 {

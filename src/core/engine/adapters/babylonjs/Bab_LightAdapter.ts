@@ -6,6 +6,7 @@ import { Registry } from "../../../Registry";
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { toVector3 } from "./Bab_Utils";
 import { ILightAdapter } from "../../ILightAdapter";
+import { Point } from "../../../../utils/geometry/shapes/Point";
 
 
 export const defaultLightDirection = new Point_3(0, -1, 0);
@@ -30,7 +31,11 @@ export class Bab_LightAdapter implements ILightAdapter {
     getPosition(lightObj: LightObj): Point_3 {
         const light = this.lights.get(lightObj.id);
 
-        return light && new Point_3(light.position.x, light.position.y, light.position.z);
+        if (!light) {
+            return new Point_3(0, 0, 0);
+        }
+
+        return new Point_3(light.position.x, light.position.y, light.position.z);
     }
 
     setDirection(lightObj: LightObj, dir: Point_3): void {
@@ -43,7 +48,11 @@ export class Bab_LightAdapter implements ILightAdapter {
     getDirection(lightObj: LightObj): Point_3 {
         const light = this.lights.get(lightObj.id);
 
-        return light && new Point_3(light.direction.x, light.direction.y, light.direction.z);
+        if (!light) {
+            return new Point_3(0, -1, 0);
+        }
+
+        return new Point_3(light.direction.x, light.direction.y, light.direction.z);
     }
 
     setAngle(lightObj: LightObj, angleRad: number): void {
@@ -69,8 +78,12 @@ export class Bab_LightAdapter implements ILightAdapter {
 
     getDiffuseColor(lightObj: LightObj): string {
         const light = this.lights.get(lightObj.id);
+
+        if (!light) {
+            return "#FFFFFF";
+        }
     
-        return light && light.diffuse.toHexString();
+        return light.diffuse.toHexString();
     }
 
     setParent(lightObj: LightObj, parent: MeshObj): void {

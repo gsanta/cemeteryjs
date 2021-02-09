@@ -1,13 +1,13 @@
-import { BasicShapeType, MeshBoxConfig } from "../../../../../core/models/objs/MeshObj";
-import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { RectangleTool } from "../../../../../core/controller/tools/RectangleTool";
-import { Registry } from "../../../../../core/Registry";
 import { sceneAndGameViewRatio } from "../../../../../core/data/stores/ShapeStore";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { BasicShapeType, MeshBoxConfig, MeshObj } from "../../../../../core/models/objs/MeshObj";
+import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
+import { Registry } from "../../../../../core/Registry";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { MeshViewFactory } from "../../models/factories/MeshViewFactory";
-import { MeshShapeType } from "../../models/shapes/MeshShape";
-import { SketchEditorModule } from "../../SketchEditorModule";
+import { MeshShape } from "../../models/shapes/MeshShape";
 
 export const GroundToolId = 'ground-tool';
 export class GroundTool extends RectangleTool<AbstractShape> {
@@ -25,11 +25,14 @@ export class GroundTool extends RectangleTool<AbstractShape> {
             height: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const canvas = <SketchEditorModule> this.canvas;
-
-        const ground = new MeshViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect, config);
-
-        return ground;
+        const ground = new MeshObj(this.registry.services.module.ui.sceneEditor);
+        ground.shapeConfig = config;
+        
+        const objDimensions = rect.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
+        const objPos = ground.getPosition();
+        ground.setPosition(new Point_3(objDimensions.x, objPos ? objPos.y : 0, objDimensions.y));
+        
+        return new MeshShape(ground, new Point(rect.getWidth(), rect.getHeight()), <Canvas2dPanel> this.canvas);
     }
     
     protected removeTmpView() {

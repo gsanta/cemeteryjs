@@ -1,21 +1,14 @@
 import { Canvas2dPanel } from "../../../../core/models/modules/Canvas2dPanel";
-import { AssetObj } from "../../../../core/models/objs/AssetObj";
-import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models/objs/IObj";
+import { ObjJson } from "../../../../core/models/objs/IObj";
 import { LightObj } from "../../../../core/models/objs/LightObj";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
-import { NodeObjJson, NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
 import { PathObj } from "../../../../core/models/objs/PathObj";
-import { PhysicsImpostorObjType } from "../../../../core/models/objs/PhysicsImpostorObj";
 import { SpriteObj } from "../../../../core/models/objs/SpriteObj";
-import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
 import { AbstractShape, AfterAllViewsDeserialized, ShapeFactoryAdapter, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../../../graph_editor/main/models/shapes/NodeConnectionShape";
 import { LightViewFactory } from "../models/factories/LightViewFactory";
-import { MeshViewFactory } from "../models/factories/MeshViewFactory";
-import { PathViewFactory } from "../models/factories/PathViewFactory";
-import { SpriteViewFactory } from "../models/factories/SpriteViewFactory";
 import { MoveAxisShapeFactory, MoveAxisShapeType } from "../models/shapes/edit/MoveAxisShape";
 import { RotateAxisShapeFactory, RotateAxisShapeType } from "../models/shapes/edit/RotateAxisShape";
 import { ScaleAxisShapeFactory, ScaleAxisShapeType } from "../models/shapes/edit/ScaleAxisShape";
@@ -36,10 +29,6 @@ export function getShapeFactories(registry: Registry): Map<string, ShapeFactoryA
 
     map.set(NodeConnectionShapeType, new NodeConnectionShapeFactory(<Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
     map.set(LightShapeType, new LightViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
-    map.set(LightShapeType, new LightViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
-    map.set(MeshShapeType, new MeshViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
-    map.set(PathShapeType, new PathViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
-    map.set(SpriteShapeType, new SpriteViewFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
     map.set(MoveAxisShapeType, new MoveAxisShapeFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
     map.set(ScaleAxisShapeType, new ScaleAxisShapeFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
     map.set(RotateAxisShapeType, new RotateAxisShapeFactory(registry, <Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
@@ -72,7 +61,6 @@ export class Importer_Sketch extends AbstractModuleImporter {
         
             [viewInstance, afterAllViewsDeserialized] = this.createShape(viewJson);
             afterAllViewsDeserialized && afterAllViewsDeserializedFuncs.push(afterAllViewsDeserialized);
-            store.addItem(viewInstance);
         });
 
         afterAllViewsDeserializedFuncs.forEach(func => func());

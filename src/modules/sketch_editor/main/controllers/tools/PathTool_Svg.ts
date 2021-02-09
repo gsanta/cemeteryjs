@@ -4,14 +4,13 @@ import { PointerTracker } from "../../../../../core/controller/PointerHandler";
 import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
 import { PointerToolLogicForSvgCanvas } from "../../../../../core/controller/tools/PointerTool";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { PathObj } from "../../../../../core/models/objs/PathObj";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { PathPoinShape, PathPointViewType } from "../../../../../core/models/shapes/child_views/PathPointShape";
 import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
-import { PathViewFactory } from "../../models/factories/PathViewFactory";
 import { PathShape, PathShapeType } from "../../models/shapes/PathShape";
-import { SketchEditorModule } from "../../SketchEditorModule";
 
 export const PathToolId = 'path-tool';
 export class PathTool_Svg extends AbstractTool<AbstractShape> {
@@ -28,7 +27,7 @@ export class PathTool_Svg extends AbstractTool<AbstractShape> {
         if (hoveredItem && this.acceptedViews.indexOf(hoveredItem.viewType) !== -1) {
             this.pointerTool.click(pointer);
         } else {
-            this.drawPath();
+            this.drawPath(pointer);
         }
     }
 
@@ -64,7 +63,7 @@ export class PathTool_Svg extends AbstractTool<AbstractShape> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    private drawPath() {
+    private drawPath(pointer: PointerTracker<AbstractShape>) {
         const pathes = <PathShape[]> this.canvas.data.selection.getItemsByType(PathShapeType);
 
         if (pathes.length > 1) { return }
@@ -74,7 +73,7 @@ export class PathTool_Svg extends AbstractTool<AbstractShape> {
         if (path && path.getActiveContainedView()) {
             this.continuePath(path);
         } else {
-            this.startNewPath();
+            this.startNewPath(pointer);
         }
 
         this.registry.services.history.createSnapshot();
@@ -87,11 +86,15 @@ export class PathTool_Svg extends AbstractTool<AbstractShape> {
         path.addPathPoint(newEditPoint);
     }
 
-    private startNewPath() {
-        const canvas = <SketchEditorModule> this.canvas;
-        
+    private startNewPath(pointer: PointerTracker<AbstractShape>) {
+        const pathObj = new PathObj(this.registry.services.module.ui.sceneEditor);
         // TODO: remove canvas from AbstractTool, move it to the tools themselves so no casting will be needed
-        return new PathViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, undefined);
+        const pathView: PathShape = new PathShape(pathObj, <Canvas2dPanel> this.canvas);
+
+        const editPoint = new PathPoinShape(pathView, pointer.down.clone());
+        pathView.addPathPoint(editPoint);
+        this.canvas.data.selection.addItem(pathView);
+        return pathView;
     }
 
     hotkey(hotkeyEvent: IHotkeyEvent) {

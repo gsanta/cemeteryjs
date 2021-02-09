@@ -21,6 +21,8 @@ export class PathObj implements IObj {
 
     constructor(canvas: Canvas3dPanel) {
         this.canvas = canvas;
+        
+        canvas.data.items.addItem(this);
     }
 
     dispose() {}

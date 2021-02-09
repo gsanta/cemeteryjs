@@ -37,6 +37,8 @@ export class PathShape extends AbstractShape {
         super(canvas);
         this.setObj(obj);
         this.renderer = new PathShapeRenderer();
+
+        canvas.data.items.addItem(this);
     }
 
     getObj(): PathObj {

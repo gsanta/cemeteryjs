@@ -1,7 +1,9 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
+import { colors } from "../../ui_components/react/styles";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
+import { ObjEventType, ObjObservable } from "../ObjObservable";
 import { IObj, ObjJson } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
@@ -22,10 +24,9 @@ export class SpriteObj implements IObj {
     name: string;
 
     spriteAdapter: ISpriteAdapter;
+    observable: ObjObservable;
 
-    color: string;
-    startPos: Point;
-    startScale: Point = new Point(1, 1);
+    color: string = colors.darkorchid;
 
     spriteSheetId: string;
     frameName: string;
@@ -34,42 +35,33 @@ export class SpriteObj implements IObj {
     constructor(canvas: Canvas3dPanel) {
         this.canvas = canvas;
         this.spriteAdapter = this.canvas.engine.sprites;
+        this.observable = new ObjObservable();
+
+        this.canvas.data.items.addItem(this);
     }
 
     move(point: Point) {
-        this.startPos.add(point);
-
-        if (this.spriteAdapter) {
-            this.spriteAdapter.setPosition(this, this.spriteAdapter.getPosition(this).add(point));
-        }
+        this.spriteAdapter.setPosition(this, this.spriteAdapter.getPosition(this).add(point));
+        this.observable.emit({ obj: this, eventType: ObjEventType.PositionChanged });
     }
 
     setPosition(pos: Point) {
-        this.startPos = pos;
-
         this.spriteAdapter && this.spriteAdapter.setPosition(this, pos);
+        this.observable.emit({ obj: this, eventType: ObjEventType.PositionChanged });
     }
 
     getPosition(): Point_3 {
-        let pos = this.spriteAdapter && this.spriteAdapter.getPosition(this);
-
-        if (!pos) {
-            pos = this.startPos;
-        }
+        let pos = this.spriteAdapter.getPosition(this);
 
         return <Point_3> pos;
     }
 
     setScale(scale: Point) {
-        this.startScale = scale;
-
-        this.spriteAdapter && this.spriteAdapter.setScale(this, scale);
+        this.spriteAdapter.setScale(this, scale);
     }
 
     getScale(): Point {
-        let scale = this.spriteAdapter && this.spriteAdapter.getScale(this);
-        
-        return scale || this.startScale;
+        return this.spriteAdapter.getScale(this);
     }
 
     getRotation(): Point_3 {
@@ -102,13 +94,14 @@ export class SpriteObj implements IObj {
     }
 
     serialize(): SpriteObjJson {
+        const position = this.getPosition();
         return {
             id: this.id,
             name: this.name,
             objType: this.objType,
             frameName: this.frameName,
-            x: this.startPos && this.startPos.x,
-            y: this.startPos && this.startPos.y,
+            x: position.x,
+            y: position.y,
             scaleX: this.getScale().x,
             scaleY: this.getScale().y,
             spriteSheetId: this.spriteSheetId

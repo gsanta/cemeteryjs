@@ -52,8 +52,6 @@ export class Importer_Scene extends AbstractModuleImporter {
                     afterAllObjsDeserializedFuncs.push(afterAllObjsDeserialized);
                 }
             }
-
-            this.canvas.data.items.addItem(objInstance);
         });
 
         afterAllObjsDeserializedFuncs.forEach(func => func());

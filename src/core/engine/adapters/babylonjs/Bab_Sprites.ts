@@ -30,6 +30,10 @@ export class Bab_Sprites implements ISpriteAdapter {
     getPosition(spriteObj: SpriteObj): Point {
         const sprite = this.sprites.get(spriteObj.id);
 
+        if (!sprite) {
+            return new Point(0, 0);
+        }
+
         return  new Point(sprite.position.x, sprite.position.z);
     }
 
@@ -43,9 +47,10 @@ export class Bab_Sprites implements ISpriteAdapter {
 
     getScale(spriteObj: SpriteObj): Point {
         const sprite = this.sprites.get(spriteObj.id);
-        if (sprite) {
-            return new Point(sprite.width, sprite.height);
+        if (!sprite) {
+            return new Point(1, 1);
         }
+        return new Point(sprite.width, sprite.height);
     } 
 
     updateInstance(spriteObj: SpriteObj): void {
@@ -73,7 +78,7 @@ export class Bab_Sprites implements ISpriteAdapter {
         sprite.width = spriteObj.getScale().x;
         sprite.height = spriteObj.getScale().y;
 
-        sprite.position = new Vector3(spriteObj.startPos.x, 0, spriteObj.startPos.y);
+        sprite.position = new Vector3(spriteObj.getPosition().x, 0, spriteObj.getPosition().y);
         
         this.sprites.set(spriteObj.id, sprite);
     }

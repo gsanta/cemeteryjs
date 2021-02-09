@@ -1,4 +1,6 @@
+import { sceneAndGameViewRatio } from "../../../../../core/data/stores/ShapeStore";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { ObjEventData, ObjEventType } from "../../../../../core/models/ObjObservable";
 import { SpriteObj, SpriteObjJson } from "../../../../../core/models/objs/SpriteObj";
 import { AbstractShape, AfterAllViewsDeserialized, ShapeJson } from "../../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../../core/Registry";
@@ -23,11 +25,32 @@ export class SpriteShape extends AbstractShape {
     thumbnailData: string;
     protected obj: SpriteObj;
 
-    constructor(obj: SpriteObj, canvas: Canvas2dPanel) {
+    constructor(obj: SpriteObj, size: Point, canvas: Canvas2dPanel) {
         super(canvas);
         this.setObj(obj);
+        this.bounds = new Rectangle(new Point(0, 0), new Point(size.x, size.y));
         this.renderer = new SpriteShapeRenderer();
+
+        this.syncPosition();
+    
+        canvas.data.items.addItem(this);
+
+        this.obj.observable.add((eventData: ObjEventData) => {
+            switch(eventData.eventType) {
+                case ObjEventType.PositionChanged:
+                    this.syncPosition();
+                break;
+            }
+        });
     }
+
+    moveTo(point: Point) {
+        this.bounds.moveCenterTo(point);
+
+        this.containedShapes.forEach(child => child.calcBounds());
+        this.childShapes.forEach(boundView => boundView.calcBounds());
+    }
+
 
     getObj(): SpriteObj {
         return this.obj;
@@ -67,8 +90,15 @@ export class SpriteShape extends AbstractShape {
         }
     }
 
+    private syncPosition() {
+        const objPosition = this.obj.getPosition();
+        const viewPos = new Point(objPosition.x, -objPosition.y).scale(sceneAndGameViewRatio);
+        this.moveTo(viewPos);
+    }
+
     static fromJson(json: SpriteShapeJson, obj: SpriteObj, canvas: Canvas2dPanel): [AbstractShape, AfterAllViewsDeserialized] {
-        const spriteShape = new SpriteShape(obj, canvas);
+        const bounds = Rectangle.fromString(json.dimensions);
+        const spriteShape = new SpriteShape(obj, new Point(bounds.getWidth(), bounds.getHeight()), canvas);
         spriteShape.thumbnailData = json.thumbnailData;
         spriteShape.obj.frameName = json.frameName;
         spriteShape.obj.spriteSheetId = json.spriteSheetId;

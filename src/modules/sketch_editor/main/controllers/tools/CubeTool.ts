@@ -1,12 +1,14 @@
-import { MeshBoxConfig } from "../../../../../core/models/objs/MeshObj";
+import { MeshBoxConfig, MeshObj } from "../../../../../core/models/objs/MeshObj";
 import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { RectangleTool } from "../../../../../core/controller/tools/RectangleTool";
 import { Registry } from "../../../../../core/Registry";
 import { sceneAndGameViewRatio } from "../../../../../core/data/stores/ShapeStore";
 import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
-import { MeshViewFactory } from "../../models/factories/MeshViewFactory";
 import { SketchEditorModule } from "../../SketchEditorModule";
+import { Point_3 } from "../../../../../utils/geometry/shapes/Point_3";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
+import { MeshShape } from "../../models/shapes/MeshShape";
 
 export const CubeToolId = 'cube-tool';
 export class CubeTool extends RectangleTool<AbstractShape> {
@@ -18,7 +20,6 @@ export class CubeTool extends RectangleTool<AbstractShape> {
     }
 
     protected createView(rect: Rectangle): AbstractShape {
-
         const config = <MeshBoxConfig> {
             shapeType: 'Box',
             width: rect.getWidth() / sceneAndGameViewRatio,
@@ -26,11 +27,14 @@ export class CubeTool extends RectangleTool<AbstractShape> {
             depth: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const canvas = <SketchEditorModule> this.canvas;
-
-        const cube = new MeshViewFactory(this.registry, this.canvas as Canvas2dPanel).instantiateOnCanvas(canvas, rect, config);
-
-        return cube;
+        const cube = new MeshObj(this.registry.services.module.ui.sceneEditor);
+        cube.shapeConfig = config;
+        
+        const objDimensions = rect.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
+        const objPos = cube.getPosition();
+        cube.setPosition(new Point_3(objDimensions.x, objPos ? objPos.y : 0, objDimensions.y));
+        
+        return new MeshShape(cube, new Point(rect.getWidth(), rect.getHeight()), <Canvas2dPanel> this.canvas);
     }
     
     protected removeTmpView() {

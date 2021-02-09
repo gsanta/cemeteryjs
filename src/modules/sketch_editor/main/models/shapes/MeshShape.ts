@@ -8,6 +8,7 @@ import { Point } from '../../../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../../../utils/geometry/shapes/Point_3';
 import { Rectangle } from '../../../../../utils/geometry/shapes/Rectangle';
 import { Canvas2dPanel } from '../../../../../core/models/modules/Canvas2dPanel';
+import { ObjEventData, ObjEventType } from '../../../../../core/models/ObjObservable';
 
 export const MeshShapeType = 'mesh-shape';
 
@@ -24,17 +25,29 @@ export class MeshShape extends AbstractShape {
     protected obj: MeshObj;
 
     id: string;
-    private rotation: number;
+    private rotation: number = 0;
     
     thumbnailData: string;
 
     color: string = colors.pastelBlue;
     speed = 0.5;
 
-    constructor(obj: MeshObj, canvas: Canvas2dPanel) {
+    constructor(obj: MeshObj, size: Point, canvas: Canvas2dPanel) {
         super(canvas);
         this.setObj(obj);
+        this.bounds = new Rectangle(new Point(0, 0), new Point(size.x, size.y));
         this.renderer = new MeshShapeRenderer();
+        this.syncPosition();
+    
+        canvas.data.items.addItem(this);
+
+        this.obj.observable.add((eventData: ObjEventData) => {
+            switch(eventData.eventType) {
+                case ObjEventType.PositionChanged:
+                    this.syncPosition();
+                break;
+            }
+        });
     }
 
     getObj(): MeshObj {
@@ -140,10 +153,16 @@ export class MeshShape extends AbstractShape {
         }
     }
 
+    private syncPosition() {
+        const objPosition = this.obj.getPosition();
+        const viewPos = new Point(objPosition.x, -objPosition.z).scale(sceneAndGameViewRatio);
+        this.moveTo(viewPos);
+    }
+
     static fromJson(json: MeshShapeJson, obj: MeshObj, canvas: Canvas2dPanel): [MeshShape, AfterAllViewsDeserialized] {
-        const meshView = new MeshShape(obj, canvas);
+        const bounds = Rectangle.fromString(json.dimensions);
+        const meshView = new MeshShape(obj, new Point(bounds.getWidth(), bounds.getHeight()), canvas);
         meshView.id = json.id;
-        meshView.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
 
         if (obj) {
             meshView.setObj(obj);
