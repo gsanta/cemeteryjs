@@ -25,4 +25,8 @@ export class UI_Toolbar extends UI_Container {
     toolbarDropdown(config: UI_ElementConfig) {
         return UI_Factory.toolbarDropdown(this, config);
     }
+
+    select(config: UI_ElementConfig) {
+        return UI_Factory.select(this, config);
+    }
 }

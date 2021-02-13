@@ -62,9 +62,9 @@ export class App extends React.Component<{}, AppState> {
     componentDidMount() {
         this.context.registry.services.render.setRootRenderer(() => this.forceUpdate());
         this.context.controllers.setRenderer(() => this.forceUpdate());
-        if (this.context.registry.plugins.visibilityDirty) {
+        if (this.context.registry.services.uiPerspective.isDirty) {
             this.context.registry.services.uiPerspective.layoutHandler.buildLayout();
-            this.context.registry.plugins.visibilityDirty = false;
+            this.context.registry.services.uiPerspective.isDirty = false;
         }
 
         // TODO: find a better place
@@ -84,10 +84,10 @@ export class App extends React.Component<{}, AppState> {
     }
 
     componentDidUpdate() {
-        if (this.context.registry.plugins.visibilityDirty) {
+        if (this.context.registry.services.uiPerspective.isDirty) {
             this.context.registry.services.uiPerspective.layoutHandler.buildLayout();
             this.context.registry.services.uiPerspective.layoutHandler.resizePlugins();
-            this.context.registry.plugins.visibilityDirty = false;
+            this.context.registry.services.uiPerspective.isDirty = false;
         }
     }
     

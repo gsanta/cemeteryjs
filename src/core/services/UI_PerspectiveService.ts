@@ -8,6 +8,7 @@ import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_sett
 import { LayoutSettingsPanelId } from '../../modules/contribs/side_panel/layout_settings/LayoutSettingsModule';
 import { UI_Region } from '../models/UI_Panel';
 import { Registry } from '../Registry';
+import { timeStamp } from 'console';
 
 
 export class LayoutHandler {
@@ -21,6 +22,12 @@ export class LayoutHandler {
     }
 
     buildLayout() {
+        if (!this.registry.ui.helper.getPanel1()) {
+            this.panelIds = [UI_Region.Sidepanel, UI_Region.Canvas2];
+        } else {
+            this.panelIds = [UI_Region.Sidepanel, UI_Region.Canvas1, UI_Region.Canvas2];
+        }
+
         if (this.split) {
             this.split.destroy();
         }
@@ -28,8 +35,7 @@ export class LayoutHandler {
         let panelIds = this.panelIds;
         let sizes: number[] = [];
 
-        if (this.registry.preferences.fullscreenRegion) {
-            panelIds = [UI_Region.Sidepanel, this.registry.preferences.fullscreenRegion];
+        if (this.panelIds.length === 2) {
             sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].twoColumnRatio);
         } else {
             sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].threeColumnRatio);
@@ -55,17 +61,17 @@ export class LayoutHandler {
     }
 
     resizePlugins() {
-        this.registry.ui.helper.getPanel1().resize();
-        this.registry.ui.helper.getPanel2().resize();
+        this.registry.ui.helper.getPanel1() && this.registry.ui.helper.getPanel1().resize();
+        this.registry.ui.helper.getPanel2() && this.registry.ui.helper.getPanel2().resize();
     }
 
     setSizesInPercent(sizes: number[]) {
 
         const [sidepanelWidth] = sizes;
 
-        if (this.registry.preferences.fullscreenRegion) {
+        if (this.panelIds.length === 2) {
             const prevSidepanelWidth = this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio;
-            const prevCanvasWidth = this.registry.preferences.panelSizes[this.registry.preferences.fullscreenRegion].twoColumnRatio;
+            const prevCanvasWidth = this.registry.preferences.panelSizes[UI_Region.Canvas2].twoColumnRatio;
 
             const canvasWidth = prevCanvasWidth - (sidepanelWidth - prevSidepanelWidth);
 
@@ -78,7 +84,7 @@ export class LayoutHandler {
             }
 
             this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio = widths[0];
-            this.registry.preferences.panelSizes[this.registry.preferences.fullscreenRegion].twoColumnRatio = widths[1];
+            this.registry.preferences.panelSizes[UI_Region.Canvas2].twoColumnRatio = widths[1];
 
 
         } else {
@@ -119,6 +125,7 @@ export class UI_PerspectiveService {
 
     perspectives: UI_Perspective[] = [];
     activePerspective: UI_Perspective;
+    isDirty = true;
 
     layoutHandler: LayoutHandler;
 
@@ -131,7 +138,7 @@ export class UI_PerspectiveService {
 
         this.perspectives.push({
             name: SceneEditorPerspectiveName,
-            canvas1Plugin: SketchEditorPanelId,
+            canvas1Plugin: undefined,
             canvas2Plugin: SceneEditorPanelId,
             sidepanelPlugins: [
                 FileSettingsPanelId,
@@ -152,7 +159,16 @@ export class UI_PerspectiveService {
         });
     }
 
+    getActiveRegions() {
+        if (this.activePerspective.canvas1Plugin) {
+            return [UI_Region.Sidepanel, UI_Region.Canvas1, UI_Region.Canvas2];
+        } else {
+            return [UI_Region.Sidepanel, UI_Region.Canvas2];
+        }
+    }
+
     activatePerspective(name: string) {
+        this.isDirty = true;
         const perspective = this.perspectives.find(perspective => perspective.name === name);
         this.activePerspective = perspective;
 

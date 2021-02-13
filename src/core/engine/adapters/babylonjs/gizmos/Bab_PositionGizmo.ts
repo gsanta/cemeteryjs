@@ -83,7 +83,7 @@ export class Bab_PositionGizmo implements IGizmo {
     private emitDrag() {
         const canvas: AbstractCanvasPanel<IObj> = this._registry.services.module.ui.getCanvas(SceneEditorPanelId);
         const pointerTracker = canvas.pointer.pointer;
-        const snapChanged = this._meshSnapper.trySnapOrUnsnap(this._obj, pointerTracker);
+        const snapChanged = false;//this._meshSnapper.trySnapOrUnsnap(this._obj, pointerTracker);
 
         if (snapChanged) {
             if (this._meshSnapper.isSnapped()) {

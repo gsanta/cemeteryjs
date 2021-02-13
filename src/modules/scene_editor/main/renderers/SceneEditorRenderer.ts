@@ -1,6 +1,3 @@
-import { _3DMoveTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_MoveTool";
-import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_RotationTool";
-import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_ScaleTool";
 import { InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
@@ -9,6 +6,7 @@ import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCa
 import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
 import { SceneEditorModule } from "../SceneEditorModule";
 import { GizmoType } from "../GizmoHandler";
+import { UI_Toolbar } from "../../../../core/ui_components/elements/toolbar/UI_Toolbar";
 
 export class SceneEditorRenderer implements ICanvasRenderer {
     private canvas: SceneEditorModule;
@@ -24,6 +22,10 @@ export class SceneEditorRenderer implements ICanvasRenderer {
 
         const toolbar = htmlCanvas.toolbar();
 
+        this.renderShapeDropdown(toolbar);
+
+        let separator = toolbar.iconSeparator();
+
         let tool = toolbar.tool({key: CameraToolId});
         tool.paramController = this.controllers.commonTool;
         tool.isActive = selectedTool.id === CameraToolId;
@@ -32,7 +34,7 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         let tooltip = tool.tooltip();
         tooltip.label = 'Pan tool';
 
-        let separator = toolbar.iconSeparator();
+        separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
         let actionIcon = toolbar.actionIcon({key: ZoomInProp, uniqueId: `${ZoomInProp}-${this.canvas.id}`});
@@ -46,6 +48,21 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         actionIcon.icon = 'zoom-out';
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Zoom out';
+
+        separator = toolbar.iconSeparator();
+        separator.placement = 'left';
+
+        actionIcon = toolbar.actionIcon({key: 'undo', uniqueId: `undo-${this.canvas.id}`});
+        actionIcon.icon = 'undo';
+        actionIcon.paramController = this.controllers.undo;
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Undo';
+
+        actionIcon = toolbar.actionIcon({key: 'redo', uniqueId: `redo-${this.canvas.id}`});
+        actionIcon.icon = 'redo';
+        actionIcon.paramController = this.controllers.redo;
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Redo';
 
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
@@ -91,12 +108,15 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Scale';
 
+        separator = toolbar.iconSeparator();
+        separator.placement = 'left';
+
         tool = toolbar.tool({key: GameViewerProps.EditMode});
         tool.paramController = this.controllers.editMode;
         tool.uniqueId = `${GameViewerProps.EditMode}-${this.canvas.id}`;
         tool.isActive = this.canvas.interactionMode === InteractionMode.Edit;
         tool.icon = 'edit-mode';
-        tool.placement = 'middle';
+        tool.placement = 'left';
         tooltip = tool.tooltip();
         tooltip.label = 'Edit mode';
 
@@ -105,7 +125,7 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tool.uniqueId = `${GameViewerProps.ExecutionMode}-${this.canvas.id}`;
         tool.isActive = this.canvas.interactionMode === InteractionMode.Execution;
         tool.icon = 'games';
-        tool.placement = 'middle';
+        tool.placement = 'left';
         tooltip = tool.tooltip();
         tooltip.label = 'Game mode';
 
@@ -115,5 +135,13 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         const gizmoLayer = htmlCanvas.gizmoLayer({});
         
         // this.canvas.getGizmos().forEach(gizmo => gizmo.renderer.renderInto(gizmoLayer));
+    }
+
+    private renderShapeDropdown(toolbar: UI_Toolbar) {
+        const layoutSelect = toolbar.select({key: 'Add'});
+        layoutSelect.paramController = this.controllers.add; 
+        layoutSelect.layout = 'horizontal';
+        layoutSelect.placeholder = 'Add';
+        layoutSelect.inputWidth = '30px';
     }
 }

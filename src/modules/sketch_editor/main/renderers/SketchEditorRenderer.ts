@@ -106,6 +106,16 @@ export class SketchEditorRenderer implements ICanvasRenderer {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
+        actionIcon = toolbar.actionIcon({key: UndoProp, uniqueId: `${UndoProp}-${this.canvas.id}`});
+        actionIcon.icon = 'undo';
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Undo';
+
+        actionIcon = toolbar.actionIcon({key: RedoProp, uniqueId: `${RedoProp}-${this.canvas.id}`});
+        actionIcon.icon = 'redo';
+        tooltip = actionIcon.tooltip();
+        tooltip.label = 'Redo';
+
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 

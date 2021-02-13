@@ -131,19 +131,15 @@ export class ZoomOutController extends ParamController {
 
 export const UndoProp = 'undo';
 export class UndoController extends ParamController<any> {
-    acceptedProps() { return [UndoProp]; }
-
-    click(context: PropContext) {
-        context.registry.services.history.undo();
+    click() {
+        this.registry.services.history.undo();
     }
 }
 
 export const RedoProp = 'redo';
 
 export class RedoController extends ParamController<any> {
-    acceptedProps() { return [RedoProp]; }
-
-    click(context: PropContext) {
-        context.registry.services.history.redo();
+    click() {
+        this.registry.services.history.redo();
     }
 }

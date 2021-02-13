@@ -1,4 +1,4 @@
-import { AbstractCanvasPanel, InteractionMode, ZoomInController, ZoomOutController } from "../../../../core/models/modules/AbstractCanvasPanel";
+import { AbstractCanvasPanel, InteractionMode, RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { PropContext, ParamController } from "../../../../core/controller/FormController";
 import { CommonToolController } from "../../../../core/controller/ToolHandler";
 import { Registry } from "../../../../core/Registry";
@@ -6,10 +6,7 @@ import { UI_Element } from "../../../../core/ui_components/elements/UI_Element";
 import { GameToolId } from "../../main/controllers/tools/GameTool";
 import { UIController } from "../../../../core/controller/UIController";
 import { UI_Region } from "../../../../core/models/UI_Panel";
-import { MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
-import { _3DScaleTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_ScaleTool";
-import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_RotationTool";
-import { _3DMoveTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_MoveTool";
+import { BasicShapeType, MeshBoxConfig, MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { IObj } from "../../../../core/models/objs/IObj";
 import { SceneEditorModule } from "../../main/SceneEditorModule";
 import { GizmoType } from "../../main/GizmoHandler";
@@ -27,6 +24,7 @@ export class SceneEditorToolbarController extends UIController {
     constructor(registry: Registry, canvas: SceneEditorModule) {
         super();
 
+        this.add = new AddNewControl(registry);
         this.editMode = new EditModeController(registry);
         this.interactionMode = new InteractionModeController(registry);
         this.gameViewerTool = new GameViewerToolController(registry);
@@ -37,8 +35,11 @@ export class SceneEditorToolbarController extends UIController {
         this.positionGizmo = new PositionGizmoController(registry, canvas);
         this.rotationGizmo = new RotationGizmoController(registry, canvas);
         this.scaleGizmo = new ScaleGizmoController(registry, canvas);
+        this.undo = new UndoController(registry);
+        this.redo = new RedoController(registry);
     }
     
+    add: ParamController;
     editMode: ParamController;
     interactionMode: ParamController;
     gameViewerTool: ParamController;
@@ -49,6 +50,46 @@ export class SceneEditorToolbarController extends UIController {
     positionGizmo: PositionGizmoController;
     rotationGizmo: RotationGizmoController;
     scaleGizmo: ScaleGizmoController;
+    undo: ParamController;
+    redo: ParamController;
+}
+
+export class AddNewControl extends ParamController<string> {
+    val() {
+        return 'Add'
+    }
+
+    change(val) {
+        switch(val) {
+            case 'Mesh':
+                MeshObj.CreateMesh(this.registry.services.module.ui.sceneEditor);
+                this.registry.services.history.createSnapshot();
+            break;
+            case 'Cube':
+                const config = <MeshBoxConfig> {
+                    shapeType: BasicShapeType.Cube,
+                    width: 1,
+                    height: 1,
+                    depth: 1
+                };
+                MeshObj.CreateBox(config, this.registry.services.module.ui.sceneEditor);
+                this.registry.services.history.createSnapshot();
+            break;
+            case 'Ground':
+                const groundConfig = <MeshBoxConfig> {
+                    shapeType: BasicShapeType.Ground,
+                    width: 50,
+                    height: 50
+                };
+                MeshObj.CreateGround(groundConfig, this.registry.services.module.ui.sceneEditor);
+                this.registry.services.history.createSnapshot();
+            break;
+        }
+    }
+
+    values() {
+        return ['Add', 'Mesh', 'Cube', 'Ground'];
+    }
 }
 
 export class PlayController extends ParamController {
