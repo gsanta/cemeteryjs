@@ -26,6 +26,7 @@ export class MoveAxisTool extends AbstractAxisTool<MoveAxisView> {
         if (!this.snapper.isSnapped()) {
             let delta = new Point_3(this.canvas.pointer.pointer.getDiff().x, 0, 0);    
             this.meshShape.move(delta);
+            
             this.shapeObservable.emit({shape: this.meshShape, eventType: ShapeEventType.PositionChanged});
         }
 

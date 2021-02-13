@@ -17,7 +17,7 @@ export class MeshTool extends RectangleTool<AbstractShape> {
     }
 
     protected createView(rect: Rectangle): AbstractShape {
-        const meshObj = new MeshObj(this.registry.services.module.ui.sceneEditor);
+        const meshObj = MeshObj.CreateMesh(this.registry.services.module.ui.sceneEditor);
 
         const objDimensions = rect.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
         const objPos = meshObj.getPosition();

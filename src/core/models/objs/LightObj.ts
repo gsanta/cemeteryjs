@@ -1,9 +1,9 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Point_3 } from "../../../utils/geometry/shapes/Point_3";
 import { ILightAdapter } from "../../engine/ILightAdapter";
-import { Registry } from "../../Registry";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
-import { IGameObj } from "./IGameObj";
+import { ObjObservable } from "../ObjObservable";
+import { AbstractGameObj } from "./AbstractGameObj";
 import { AfterAllObjsDeserialized, IObj, ObjJson } from "./IObj";
 import { MeshObj } from "./MeshObj";
 
@@ -25,23 +25,28 @@ export interface LightObjJson extends ObjJson {
     parentId: string;
 }
 
-export class LightObj implements IGameObj {
+export class LightObj extends AbstractGameObj {
     objType = LightObjType;
     id: string;
     name: string;
     canvas: Canvas3dPanel;
+    observable: ObjObservable;
 
     private lightAdapter: ILightAdapter;
 
     constructor(canvas: Canvas3dPanel) {
+        super(canvas);
         this.canvas = canvas;
         this.lightAdapter = canvas.engine.lights;
+        this.observable = new ObjObservable();
+        this.canvas.data.items.addItem(this);
 
+        this.lightAdapter.createInstance(this);
         this.lightAdapter.setDiffuseColor(this, "#FFFFFF");
         this.lightAdapter.setPosition(this, new Point_3(0, 5, 0));
     }
 
-    private parent: IObj & IGameObj;
+    private parent: AbstractGameObj;
 
     move(point: Point_3) {
         this.lightAdapter.setPosition(this, this.lightAdapter.getPosition(this).add(point));
@@ -86,14 +91,14 @@ export class LightObj implements IGameObj {
         return this.lightAdapter;
     }
 
-    setParent(parentObj: IObj & IGameObj) {
+    setParent(parentObj: AbstractGameObj) {
         if (this.parent !== parentObj) {
             this.parent = parentObj;
             this.lightAdapter.setParent(this, parentObj);
         }
     }
 
-    getParent(): IObj & IGameObj {
+    getParent(): AbstractGameObj {
         return this.parent;
     }
 

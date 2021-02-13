@@ -1,38 +1,33 @@
 import { FormController } from "../../../core/controller/FormController";
 import { CanvasContextDependentToolController, CommonToolController, SceneEditorToolController } from "../../../core/controller/ToolHandler";
-import { ItemData } from "../../../core/data/ItemData";
-import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
-import { ShapeObservable } from "../../../core/models/ShapeObservable";
-import { AbstractShape } from "../../../core/models/shapes/AbstractShape";
-import { RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/models/modules/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../../../core/models/modules/Canvas2dPanel";
 import { CameraTool } from "../../../core/controller/tools/CameraTool";
 import { DeleteTool_Svg } from "../../../core/controller/tools/DeleteTool_Svg";
+import { SelectTool_Svg } from "../../../core/controller/tools/SelectTool_Svg";
+import { ItemData } from "../../../core/data/ItemData";
+import { SelectionStoreForSketchEditor } from "../../../core/data/stores/SelectionStoreForSketchEditor";
+import { ShapeLifeCycleHook, ShapeStore } from "../../../core/data/stores/ShapeStore";
+import { TagStore } from "../../../core/data/stores/TagStore";
+import { Camera2D } from "../../../core/models/misc/camera/Camera2D";
+import { RedoController, UndoController, ZoomInController, ZoomOutController } from "../../../core/models/modules/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../../../core/models/modules/Canvas2dPanel";
+import { AbstractShape } from "../../../core/models/shapes/AbstractShape";
 import { UI_Region } from "../../../core/models/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
-import { SelectionStoreForSketchEditor } from "../../../core/data/stores/SelectionStoreForSketchEditor";
-import { ShapeLifeCycleHook, ShapeStore } from "../../../core/data/stores/ShapeStore";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { PrimitiveShapeDropdownControl, PrimitiveShapeDropdownMenuOpenControl } from "../contribs/toolbar/controllers/SceneEditorToolbarController";
 import { CubeTool } from "./controllers/tools/CubeTool";
 import { GroundTool } from "./controllers/tools/GroundTool";
 import { LightTool } from "./controllers/tools/LightTool";
 import { MeshTool } from "./controllers/tools/MeshTool";
-import { MoveAxisTool } from "./controllers/tools/MoveAxisTool";
 import { PathTool_Svg } from "./controllers/tools/PathTool_Svg";
-import { RotateAxisTool } from "./controllers/tools/RotateAxisTool";
-import { ScaleAxisTool } from "./controllers/tools/ScaleAxisTool";
 import { SphereTool } from "./controllers/tools/SphereTool";
 import { SpriteTool } from "./controllers/tools/SpriteTool";
 import { Exporter_Sketch } from "./io/Exporter_Sketch";
 import { Importer_Sketch } from "./io/Importer_Sketch";
 import { SketchEditorRenderer } from "./renderers/SketchEditorRenderer";
 import { SceneToSketchSynchronizer } from "./SceneToSketchSynchronizer";
-import { SketchToSceneSynchronizer } from "./SketchToSceneSynchronizer";
-import { SelectTool_Svg } from "../../../core/controller/tools/SelectTool_Svg";
-import { TagStore } from "../../../core/data/stores/TagStore";
 
 export const DUMMY_CAMERA_SIZE = new Point(100, 100);
 
@@ -44,17 +39,14 @@ export class SketchEditorModule extends Canvas2dPanel {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
-    observable: ShapeObservable;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas1, SketchEditorPanelId, 'Sketch editor');
 
-        this.observable = new ShapeObservable();
-
         this.data = {
             items: ShapeStore.newInstance(registry, this),
             selection: new SelectionStoreForSketchEditor(this),
-            tags: new TagStore()
+            tags: new TagStore(this)
         }
 
         registry.data.sketch = this.data;
@@ -63,8 +55,6 @@ export class SketchEditorModule extends Canvas2dPanel {
 
         this.exporter = new Exporter_Sketch(registry);
         this.importer = new Importer_Sketch(this, registry);
-        
-        const sketchToSceneSynchronizer = new SketchToSceneSynchronizer(registry, this.observable);
     
         const propControllers = [
             new ZoomInController(registry),
@@ -86,12 +76,9 @@ export class SketchEditorModule extends Canvas2dPanel {
             new SelectTool_Svg(this, registry),
             new DeleteTool_Svg(this, registry),
             new CameraTool(this, registry),
-            new MoveAxisTool(this, registry, this.observable),
             new CubeTool(this, registry),
             new SphereTool(this, registry),
             new GroundTool(this, registry),
-            new ScaleAxisTool(this, registry, this.observable),
-            new RotateAxisTool(this, registry, this.observable)
         ];
     
         this.renderer = new SketchEditorRenderer(registry, this);

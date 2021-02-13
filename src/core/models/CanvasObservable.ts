@@ -1,7 +1,6 @@
-import { IObj } from "./objs/IObj";
+import { AbstractGameObj } from "./objs/AbstractGameObj";
 
-
-export enum ObjEventType {
+export enum CanvasEventType {
     PositionChanged = 'PositionChanged',
     ScaleChanged = 'ScaleChanged',
     RotationChanged = 'RotationChanged',
@@ -11,23 +10,23 @@ export enum ObjEventType {
     TagChanged = 'TagChanged',
 }
 
-export interface ObjEventData {
-    obj?: IObj;
-    eventType: ObjEventType;
+export interface CanvasEventData {
+    obj?: AbstractGameObj;
+    eventType: CanvasEventType;
 }
 
-export class ObjObservable {
-    private observers: ((eventData: ObjEventData) => void)[] = []; 
+export class CanvasObservable {
+    private observers: ((eventData: CanvasEventData) => void)[] = []; 
 
-    add(observer: (eventData: ObjEventData) => void) {
+    add(observer: (eventData: CanvasEventData) => void) {
         this.observers.push(observer);
     }
 
-    remove(observer: (eventData: ObjEventData) => void) {
+    remove(observer: (eventData: CanvasEventData) => void) {
         this.observers = this.observers.filter(obs => obs !== observer);
     }
 
-    emit(eventData: ObjEventData) {
+    emit(eventData: CanvasEventData) {
         this.observers.forEach(observer => observer(eventData));
     }
 }

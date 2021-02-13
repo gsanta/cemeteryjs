@@ -27,8 +27,7 @@ export class CubeTool extends RectangleTool<AbstractShape> {
             depth: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const cube = new MeshObj(this.registry.services.module.ui.sceneEditor);
-        cube.shapeConfig = config;
+        const cube = MeshObj.CreateBox(config, this.registry.services.module.ui.sceneEditor);
         
         const objDimensions = rect.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
         const objPos = cube.getPosition();

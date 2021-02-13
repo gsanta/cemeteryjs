@@ -1,5 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
+import { AbstractGameObj } from "./AbstractGameObj";
 import { IObj, ObjJson } from "./IObj";
 
 export const PathObjType = 'path-obj';
@@ -11,7 +12,7 @@ export interface PathObjJson extends ObjJson {
     }[];
 }
 
-export class PathObj implements IObj {
+export class PathObj extends AbstractGameObj {
     objType = 'path-obj';
 
     id: string;
@@ -20,6 +21,7 @@ export class PathObj implements IObj {
     canvas: Canvas3dPanel;
 
     constructor(canvas: Canvas3dPanel) {
+        super(canvas);
         this.canvas = canvas;
         
         canvas.data.items.addItem(this);
@@ -29,6 +31,26 @@ export class PathObj implements IObj {
 
     clone(): PathObj {
         throw new Error('not implemented');
+    }
+
+    setParent(obj: AbstractGameObj): void {
+        throw new Error("Method not implemented.");
+    }
+
+    getParent(): AbstractGameObj {
+        throw new Error("Method not implemented.");
+    }
+
+    setScale(scale: Point) {
+        throw new Error("Method not implemented.");
+    }
+
+    getScale(): Point {
+        throw new Error("Method not implemented.");
+    }
+
+    setBoundingBoxVisibility(isVisible: boolean) {
+
     }
 
     serialize(): PathObjJson {

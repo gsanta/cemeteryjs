@@ -25,14 +25,13 @@ export class GroundTool extends RectangleTool<AbstractShape> {
             height: rect.getHeight() / sceneAndGameViewRatio
         };
 
-        const ground = new MeshObj(this.registry.services.module.ui.sceneEditor);
-        ground.shapeConfig = config;
+        const groundObj = MeshObj.CreateGround(config, this.registry.services.module.ui.sceneEditor);
         
         const objDimensions = rect.getBoundingCenter().div(sceneAndGameViewRatio).negateY();
-        const objPos = ground.getPosition();
-        ground.setPosition(new Point_3(objDimensions.x, objPos ? objPos.y : 0, objDimensions.y));
+        const objPos = groundObj.getPosition();
+        groundObj.setPosition(new Point_3(objDimensions.x, objPos ? objPos.y : 0, objDimensions.y));
         
-        return new MeshShape(ground, new Point(rect.getWidth(), rect.getHeight()), <Canvas2dPanel> this.canvas);
+        return new MeshShape(groundObj, new Point(rect.getWidth(), rect.getHeight()), <Canvas2dPanel> this.canvas);
     }
     
     protected removeTmpView() {

@@ -12,10 +12,8 @@ import { toDegree, toRadian } from '../../../../../../utils/geometry/Measurement
 import { MeshShape } from '../../../../main/models/shapes/MeshShape';
 
 export class MeshPropertiesController extends UIController {
-    constructor(registry: Registry, meshView: MeshShape) {
+    constructor(registry: Registry, meshObj: MeshObj) {
         super();
-
-        const meshObj = meshView.getObj();
 
         this.meshId = new MeshIdController(registry);
         this.layer = new LayerController(registry);

@@ -37,14 +37,15 @@ export class MeshShape extends AbstractShape {
         this.setObj(obj);
         this.bounds = new Rectangle(new Point(0, 0), new Point(size.x, size.y));
         this.renderer = new MeshShapeRenderer();
-        this.syncPosition();
+        this.syncPositionFromObj();
+        this.syncScaleFromObj();
     
         canvas.data.items.addItem(this);
 
         this.obj.observable.add((eventData: ObjEventData) => {
             switch(eventData.eventType) {
                 case ObjEventType.PositionChanged:
-                    this.syncPosition();
+                    this.syncPositionFromObj();
                 break;
             }
         });
@@ -74,6 +75,11 @@ export class MeshShape extends AbstractShape {
     selectHoveredSubview() {}
 
     move(point: Point) {
+        this._move(point);
+        this.syncPositionToObj();
+    }
+
+    private _move(point: Point) {
         this.bounds = this.bounds.translate(point);
 
         this.containedShapes.forEach(child => child.calcBounds());
@@ -81,6 +87,11 @@ export class MeshShape extends AbstractShape {
     }
 
     moveTo(point: Point) {
+        this._moveTo(point);
+        this.syncPositionToObj();
+    }
+
+    private _moveTo(point: Point) {
         this.bounds.moveCenterTo(point);
 
         this.containedShapes.forEach(child => child.calcBounds());
@@ -153,10 +164,24 @@ export class MeshShape extends AbstractShape {
         }
     }
 
-    private syncPosition() {
+    private syncScaleFromObj() {
+        const dimensions = this.getObj().getDimension();
+
+        this.getBounds().setWidth(dimensions.x);
+        this.getBounds().setHeight(dimensions.y);
+    }
+
+    private syncPositionFromObj() {
         const objPosition = this.obj.getPosition();
         const viewPos = new Point(objPosition.x, -objPosition.z).scale(sceneAndGameViewRatio);
-        this.moveTo(viewPos);
+        this._moveTo(viewPos);
+    }
+
+    private syncPositionToObj() {
+        const center = this.getBounds().getBoundingCenter();
+        const objPos = center.div(sceneAndGameViewRatio).negateY();
+        const objPos3 = this.getObj().getPosition();
+        this.getObj().setPosition(new Point_3(objPos.x, objPos3.y, objPos.y))
     }
 
     static fromJson(json: MeshShapeJson, obj: MeshObj, canvas: Canvas2dPanel): [MeshShape, AfterAllViewsDeserialized] {

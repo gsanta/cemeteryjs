@@ -131,6 +131,7 @@ export class PointerHandler<D> {
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         this.pointer.lastPointerEvent = e;
+        this.pointer.pickedItem = this.canvas.data.items.getItemById(e.pickedItemId);
 
         const tool = this.canvas.tool.getActiveTool();
 

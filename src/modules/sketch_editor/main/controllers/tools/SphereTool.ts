@@ -24,7 +24,7 @@ export class SphereTool extends RectangleTool<AbstractShape> {
             diameter: 5
         };
 
-        const sphere = new MeshObj(this.registry.services.module.ui.sceneEditor);
+        const sphere = MeshObj.CreateSphere(config, this.registry.services.module.ui.sceneEditor);
         sphere.shapeConfig = config;
         
         const objDimensions = rect.getBoundingCenter().div(sceneAndGameViewRatio).negateY();

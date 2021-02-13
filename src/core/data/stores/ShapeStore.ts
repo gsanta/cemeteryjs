@@ -1,14 +1,9 @@
 
-import { MoveAxisShapeFactory, MoveAxisShapeType } from "../../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape";
-import { RotateAxisShapeFactory, RotateAxisShapeType } from "../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape";
-import { ScaleAxisShapeFactory, ScaleAxisShapeType } from "../../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape";
-import { MeshShapeType } from "../../../modules/sketch_editor/main/models/shapes/MeshShape";
-import { SpriteShapeType } from "../../../modules/sketch_editor/main/models/shapes/SpriteShape";
 import { without } from "../../../utils/geometry/Functions";
 import { Polygon } from "../../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { AbstractShape, ShapeFactory, ShapeTag } from '../../models/shapes/AbstractShape';
 import { AbstractCanvasPanel } from "../../models/modules/AbstractCanvasPanel";
+import { AbstractShape, ShapeFactory, ShapeTag } from '../../models/shapes/AbstractShape';
 import { Registry } from "../../Registry";
 import { IdGenerator } from "../IdGenerator";
 import { IStore } from "./IStore";

@@ -60,7 +60,7 @@ export class Importer_Scene extends AbstractModuleImporter {
     createObj(objJson: ObjJson) {
         switch(objJson.objType) {
             case MeshObjType:
-                const obj = new MeshObj(this.canvas);
+                const obj = MeshObj.CreateMesh(this.canvas);
                 return obj;
             case PathObjType:
                 return new PathObj(this.canvas);

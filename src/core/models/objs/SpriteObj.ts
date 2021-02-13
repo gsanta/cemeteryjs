@@ -4,6 +4,7 @@ import { ISpriteAdapter } from "../../engine/ISpriteAdapter";
 import { colors } from "../../ui_components/react/styles";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { ObjEventType, ObjObservable } from "../ObjObservable";
+import { AbstractGameObj } from "./AbstractGameObj";
 import { IObj, ObjJson } from "./IObj";
 
 export const SpriteObjType = 'sprite-obj';
@@ -18,7 +19,7 @@ export interface SpriteObjJson extends ObjJson {
     spriteSheetId: string;
 }
 
-export class SpriteObj implements IObj {
+export class SpriteObj extends AbstractGameObj {
     objType = SpriteObjType;
     id: string;
     name: string;
@@ -33,6 +34,7 @@ export class SpriteObj implements IObj {
     canvas: Canvas3dPanel;
 
     constructor(canvas: Canvas3dPanel) {
+        super(canvas);
         this.canvas = canvas;
         this.spriteAdapter = this.canvas.engine.sprites;
         this.observable = new ObjObservable();
@@ -91,6 +93,16 @@ export class SpriteObj implements IObj {
 
     clone(): SpriteObj {
         throw new Error('not implemented');
+    }
+
+    setParent(obj: AbstractGameObj): void {
+        throw new Error("Method not implemented.");
+    }
+    getParent(): AbstractGameObj {
+        throw new Error("Method not implemented.");
+    }
+    setBoundingBoxVisibility(isVisible: boolean) {
+
     }
 
     serialize(): SpriteObjJson {

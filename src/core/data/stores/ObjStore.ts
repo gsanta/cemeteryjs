@@ -1,3 +1,4 @@
+import { AbstractGameObj } from "../../models/objs/AbstractGameObj";
 import { IObj } from "../../models/objs/IObj";
 import { LightObj, LightObjType } from "../../models/objs/LightObj";
 import { MeshObj, MeshObjType } from "../../models/objs/MeshObj";
@@ -13,11 +14,11 @@ export interface ObjStoreHook {
     removeObjHook(obj: IObj);
 }
 
-export class ObjStore implements IStore<IObj> {
-    protected objs: IObj[] = [];
-    protected objById: Map<string, IObj> = new Map();
-    protected nameCache: Map<string, IObj> = new Map();
-    private objsByType: Map<string, IObj[]> = new Map();
+export class ObjStore implements IStore<AbstractGameObj> {
+    protected objs: AbstractGameObj[] = [];
+    protected objById: Map<string, AbstractGameObj> = new Map();
+    protected nameCache: Map<string, AbstractGameObj> = new Map();
+    private objsByType: Map<string, AbstractGameObj[]> = new Map();
     private idGenerator: IdGenerator;
     private hooks: ObjStoreHook[] = [];
     id: string;
@@ -33,11 +34,11 @@ export class ObjStore implements IStore<IObj> {
         this.idGenerator = idGenerator;
     }
 
-    generateId(obj: IObj): string {
+    generateId(obj: AbstractGameObj): string {
         return this.idGenerator.generateId(obj.objType);
     }
 
-    addItem(obj: IObj) {
+    addItem(obj: AbstractGameObj) {
         if (obj.id) {
             this.idGenerator.registerExistingIdForPrefix(obj.objType, obj.id);
         } else {
@@ -55,7 +56,7 @@ export class ObjStore implements IStore<IObj> {
         this.hooks.forEach(hook => hook.addObjHook(obj));
     }
 
-    removeItem(obj: IObj) {
+    removeItem(obj: AbstractGameObj) {
         this.hooks.forEach(hook => hook.removeObjHook(obj));
 
         this.objs.splice(this.objs.indexOf(obj), 1);
@@ -76,6 +77,8 @@ export class ObjStore implements IStore<IObj> {
     }
 
     private getByName(name: string) {
+        if (!name) { return undefined; }
+
         if (this.nameCache.get(name) && this.nameCache.get(name).name !== name) {
             this.nameCache.delete(name);
         }
@@ -87,7 +90,7 @@ export class ObjStore implements IStore<IObj> {
         return this.nameCache.get(name);
     }
 
-    find<T>(prop: (item: IObj) => T, expectedVal: T): IObj[] {
+    find<T>(prop: (item: AbstractGameObj) => T, expectedVal: T): AbstractGameObj[] {
         throw new Error("Method not implemented.");
     }
 
@@ -96,7 +99,7 @@ export class ObjStore implements IStore<IObj> {
         this.nameCache.set(name, obj);
     }
 
-    getAllItems(): IObj[] {
+    getAllItems(): AbstractGameObj[] {
         return this.objs;
     }
 
@@ -117,7 +120,7 @@ export class ObjStore implements IStore<IObj> {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
-    getItemsByType(type: string): IObj[] {
+    getItemsByType(type: string): AbstractGameObj[] {
         return this.objsByType.get(type) || [];
     }
 }
@@ -132,7 +135,7 @@ export class ObjLifeCycleHook implements ObjStoreHook {
     addObjHook(obj: IObj) {
         switch(obj.objType) {
             case MeshObjType:
-                this.registry.engine.meshes.createInstance(<MeshObj> obj);
+                // this.registry.engine.meshes.createInstance(<MeshObj> obj);
                 break;
             case SpriteObjType:
                 this.registry.engine.sprites.createInstance(<SpriteObj> obj);
@@ -141,7 +144,7 @@ export class ObjLifeCycleHook implements ObjStoreHook {
                 this.registry.engine.spriteLoader.loadSpriteSheet(<SpriteSheetObj> obj);
                 break;
             case LightObjType:
-                this.registry.engine.lights.createInstance(<LightObj> obj);
+                // this.registry.engine.lights.createInstance(<LightObj> obj);
                 break;
             case RayObjType:
                 this.registry.engine.rays.createInstance(<RayObj> obj);

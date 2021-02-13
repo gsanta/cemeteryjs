@@ -1,8 +1,6 @@
 import { AbstractCanvasPanel } from "../models/modules/AbstractCanvasPanel";
 import { Registry } from "../Registry";
 import { IPointerEvent, IPointerEventType } from "./PointerHandler";
-
-
 export class EngineEventAdapter<D> {
     private registry: Registry;
     private canvas: AbstractCanvasPanel<D>;

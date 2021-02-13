@@ -5,7 +5,7 @@ import { MoveAxisShapeType } from '../../../modules/sketch_editor/main/models/sh
 import { RotateAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape';
 import { ScaleAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape';
 import { PointerTracker } from '../PointerHandler';
-import { IGameObj } from '../../models/objs/IGameObj';
+import { AbstractGameObj } from '../../models/objs/AbstractGameObj';
 import { IObj } from '../../models/objs/IObj';
 import { ShapeEventType } from '../../models/ShapeObservable';
 import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
@@ -29,7 +29,7 @@ export abstract class PointerToolLogic<D> {
 }
 
 export class PointerToolLogicForWebGlCanvas extends AbstractTool<IObj> {
-    pickedItem: IGameObj;    
+    pickedItem: AbstractGameObj;    
     
     constructor(registry: Registry, canvas: Canvas3dPanel) {
         super('pointer-tool', canvas, registry);
@@ -39,7 +39,7 @@ export class PointerToolLogicForWebGlCanvas extends AbstractTool<IObj> {
 
     click(pointer: PointerTracker<IObj>): boolean {
         if (pointer.pickedItem) {
-            this.pickedItem = <IGameObj> pointer.pickedItem;
+            this.pickedItem = <AbstractGameObj> pointer.pickedItem;
             return true;
         }
         return false;    
@@ -54,12 +54,12 @@ export class PointerToolLogicForWebGlCanvas extends AbstractTool<IObj> {
         return false;
     }
 
-    hover(item: IGameObj) {
+    hover(item: AbstractGameObj) {
         item.setBoundingBoxVisibility(true);
         return true;
     }
 
-    unhover(item: IGameObj) {
+    unhover(item: AbstractGameObj) {
         item.setBoundingBoxVisibility(false);
         return true;
     }

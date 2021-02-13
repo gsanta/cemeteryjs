@@ -1,14 +1,13 @@
 import { EngineEventAdapter } from "../../controller/EngineEventAdapter";
 import { IEngineFacade } from "../../engine/IEngineFacade";
 import { Camera3D } from "../misc/camera/Camera3D";
-import { IObj } from "../objs/IObj";
+import { AbstractGameObj } from "../objs/AbstractGameObj";
 import { AbstractCanvasPanel } from "./AbstractCanvasPanel";
 
-export abstract class Canvas3dPanel extends AbstractCanvasPanel<IObj> {
-    // TODO find a better place
+export abstract class Canvas3dPanel extends AbstractCanvasPanel<AbstractGameObj> {
     engine: IEngineFacade;
     
-    protected engineEventAdapter: EngineEventAdapter<IObj>
+    protected engineEventAdapter: EngineEventAdapter<AbstractGameObj>
 
     setCamera(camera: Camera3D) {
         super.setCamera(camera);

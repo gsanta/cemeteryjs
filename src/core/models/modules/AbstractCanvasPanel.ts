@@ -14,6 +14,7 @@ import { Tool } from '../../controller/tools/Tool';
 import { UI_Panel, UI_Region } from '../UI_Panel';
 import { IStore } from '../../data/stores/IStore';
 import { ItemData } from '../../data/ItemData';
+import { CanvasObservable } from '../CanvasObservable';
 
 function getScreenSize(htmlElement: HTMLElement): Point {
     const rect: ClientRect = htmlElement.getBoundingClientRect();
@@ -43,6 +44,8 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
     readonly pointer: PointerHandler<D>;
     
     abstract readonly data: ItemData<D>;
+    readonly observable: CanvasObservable;
+
 
     private camera: ICamera;
 
@@ -61,6 +64,7 @@ export abstract class AbstractCanvasPanel<D> extends UI_Panel {
         this.keyboard = new KeyboardHandler(registry, this);
         this.pointer = new PointerHandler(this.registry, this);
         this.hotkey = new HotkeyHandler(this.registry, this);
+        this.observable = new CanvasObservable();
     }
 
     protected setCamera(camera: ICamera) {

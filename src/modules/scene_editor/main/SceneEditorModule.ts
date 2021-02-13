@@ -9,7 +9,7 @@ import { ObjStore } from "../../../core/data/stores/ObjStore";
 import { TagStore } from "../../../core/data/stores/TagStore";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
 import { Canvas3dPanel } from "../../../core/models/modules/Canvas3dPanel";
-import { itemFactoryProxyHandler } from "../../../core/models/modules/ItemFactory";
+import { AbstractGameObj } from "../../../core/models/objs/AbstractGameObj";
 import { IObj } from "../../../core/models/objs/IObj";
 import { UI_Region } from "../../../core/models/UI_Panel";
 import { Registry } from "../../../core/Registry";
@@ -17,6 +17,7 @@ import { AbstractModuleExporter } from "../../../core/services/export/AbstractMo
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { SceneEditorToolbarController } from "../contribs/toolbar/SceneEditorToolbarController";
+import { SelectionListener } from "./controllers/listeners/SelectionListener";
 import { GameTool } from "./controllers/tools/GameTool";
 import { Exporter_Scene } from "./io/Exporter_Scene";
 import { Importer_Scene } from "./io/Importer_Scene";
@@ -30,10 +31,12 @@ export class SceneEditorModule extends Canvas3dPanel {
     showBoundingBoxes: boolean = false;
     selectedTool: string;
 
-    data: ItemData<IObj>;
+    data: ItemData<AbstractGameObj>;
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
+
+    private _selectionListener: SelectionListener;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas2, SceneEditorPanelId, 'Scene Editor');
@@ -43,9 +46,7 @@ export class SceneEditorModule extends Canvas3dPanel {
 
         this.engine = registry.engine;
         this.data = {
-            items: new ObjStore(),
-            selection: new ObjSelectionStore(),
-            tags: new TagStore()
+            items: new ObjStore()
         }
 
         this.registry.data.scene = this.data;
@@ -64,6 +65,9 @@ export class SceneEditorModule extends Canvas3dPanel {
         this.setCamera(registry.engine.getCamera());
         this.renderer = new SceneEditorRenderer(this, controller);
         tools.forEach(tool => this.addTool(tool));
+
+        this._selectionListener = new SelectionListener(this);
+        this._selectionListener.listen();
     
         this.onMounted(() => {
             registry.engine.setup(document.querySelector(`#${SceneEditorPanelId} canvas`));

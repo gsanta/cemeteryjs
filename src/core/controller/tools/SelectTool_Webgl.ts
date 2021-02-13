@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Canvas3dPanel } from "../../models/modules/Canvas3dPanel";
-import { IObj } from "../../models/objs/IObj";
+import { AbstractGameObj } from "../../models/objs/AbstractGameObj";
 import { UI_Region } from "../../models/UI_Panel";
 import { Registry } from "../../Registry";
 import { PointerTracker } from "../PointerHandler";
@@ -9,7 +9,7 @@ import { PointerToolLogicForWebGlCanvas } from "./PointerTool";
 import { SelectToolId } from "./SelectTool";
 import { Cursor } from "./Tool";
 
-export class SelectTool_Webgl extends AbstractTool<IObj> {
+export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
     private pointerTool: PointerToolLogicForWebGlCanvas;
 
     constructor(canvas: Canvas3dPanel, registry: Registry) {
@@ -17,18 +17,19 @@ export class SelectTool_Webgl extends AbstractTool<IObj> {
         this.pointerTool = new PointerToolLogicForWebGlCanvas(registry, canvas);
     }
 
-    down(pointer: PointerTracker<IObj>) {
+    down(pointer: PointerTracker<AbstractGameObj>) {
         this.pointerTool.down(pointer)
     }
 
-    click(pointer: PointerTracker<IObj>) {
-        if (!this.pointerTool.click(pointer)) {
-            this.canvas.data.selection.clear();
-            this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
+    click(pointer: PointerTracker<AbstractGameObj>) {
+        this.deselectAll();
+
+        if (pointer.pickedItem) {
+            pointer.pickedItem.addTag('select');
         }
     }
 
-    drag(pointer: PointerTracker<IObj>) {
+    drag(pointer: PointerTracker<AbstractGameObj>) {
         let changed = this.pointerTool.drag(pointer);
 
         if (!changed) {
@@ -39,7 +40,7 @@ export class SelectTool_Webgl extends AbstractTool<IObj> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    dragEnd(pointer: PointerTracker<IObj>) {
+    dragEnd(pointer: PointerTracker<AbstractGameObj>) {
         let changed = this.pointerTool.up(pointer);
         // this.selectionLogic.up();
 
@@ -64,20 +65,25 @@ export class SelectTool_Webgl extends AbstractTool<IObj> {
         return Cursor.Default;
     }
 
-    over(item) {
-        this.pointerTool.hover(item);
-        this.registry.services.render.scheduleRendering(this.canvas.region);
-    }
-    out(item) {
-        this.pointerTool.unhover(item);
+    over(item: AbstractGameObj) {
+        item.addTag('hover');
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    private getIntersectingItems(selection: Rectangle): IObj[] {
+    out(item: AbstractGameObj) {
+        item.removeTag('hover');
+        this.registry.services.render.scheduleRendering(this.canvas.region);
+    }
+
+    private getIntersectingItems(selection: Rectangle): AbstractGameObj[] {
         return [];
     }
 
-    private createSelectionRect(pointer: PointerTracker<IObj>): Rectangle {
+    private createSelectionRect(pointer: PointerTracker<AbstractGameObj>): Rectangle {
         return createRectFromMousePointer(pointer);
+    }
+
+    private deselectAll() {
+        this.canvas.data.items.getAllItems().forEach(item => item.removeTag('select'));
     }
 }

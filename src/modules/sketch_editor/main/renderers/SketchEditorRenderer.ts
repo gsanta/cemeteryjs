@@ -106,24 +106,6 @@ export class SketchEditorRenderer implements ICanvasRenderer {
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 
-        actionIcon = toolbar.actionIcon({key: MoveAxisToolId, uniqueId: `${MoveAxisToolId}-${this.canvas.id}`});
-        actionIcon.icon = 'move';
-        actionIcon.isActivated = this.canvas.tool.getToolById(MoveAxisToolId).isSelected;
-        tooltip = actionIcon.tooltip();
-        tooltip.label = 'Move';
-
-        actionIcon = toolbar.actionIcon({key: RotateAxisToolId, uniqueId: `${RotateAxisToolId}-${this.canvas.id}`});
-        actionIcon.icon = 'rotate';
-        actionIcon.isActivated = this.canvas.tool.getToolById(RotateAxisToolId).isSelected;
-        tooltip = actionIcon.tooltip();
-        tooltip.label = 'Rotate';
-
-        actionIcon = toolbar.actionIcon({key: ScaleAxisToolId, uniqueId: `${ScaleAxisToolId}-${this.canvas.id}`});
-        actionIcon.icon = 'scale';
-        actionIcon.isActivated = this.canvas.tool.getToolById(ScaleAxisToolId).isSelected;
-        tooltip = actionIcon.tooltip();
-        tooltip.label = 'Scale';
-
         separator = toolbar.iconSeparator();
         separator.placement = 'left';
 

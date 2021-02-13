@@ -36,7 +36,6 @@ export class NodeEditorModule extends Canvas2dPanel {
 
     exporter: AbstractModuleExporter;
     importer: AbstractModuleImporter;
-    observable: ShapeObservable;
 
     constructor(registry: Registry) {
         super(registry, UI_Region.Canvas1, NodeEditorPanelId, 'Node editor');
@@ -44,10 +43,8 @@ export class NodeEditorModule extends Canvas2dPanel {
         this.data = {
             items: ShapeStore.newInstance(registry, this),
             selection: new SelectionStoreForNodeEditor(),
-            tags: new TagStore()
+            tags: new TagStore(this)
         }
-
-        this.observable = new ShapeObservable();
 
         registry.data.node = this.data;
         (this.registry.data.node.items as ShapeStore).addHook(new ShapeLifeCycleHook(this.registry));

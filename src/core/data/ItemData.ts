@@ -4,6 +4,6 @@ import { TagStore } from "./stores/TagStore";
 
 export class ItemData<D> {
     items: IStore<D>;
-    selection: IStore<D>;
-    tags: TagStore<D>;
+    selection?: IStore<D>;
+    tags?: TagStore<D>;
 }

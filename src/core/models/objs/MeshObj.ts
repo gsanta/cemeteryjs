@@ -1,11 +1,12 @@
+import { Point } from '../../../utils/geometry/shapes/Point';
 import { Point_3 } from '../../../utils/geometry/shapes/Point_3';
 import { IMeshAdapter } from '../../engine/IMeshAdapter';
 import { Registry } from '../../Registry';
 import { colors } from '../../ui_components/react/styles';
 import { Canvas3dPanel } from '../modules/Canvas3dPanel';
-import { ObjEventType, ObjObservable } from '../ObjObservable';
+import { ObjEventType } from '../ObjObservable';
 import { AssetObj } from './AssetObj';
-import { IGameObj } from './IGameObj';
+import { AbstractGameObj } from './AbstractGameObj';
 import { IObj, ObjJson } from './IObj';
 import { PhysicsImpostorObj } from './PhysicsImpostorObj';
 
@@ -66,7 +67,7 @@ export interface MeshTreeNode {
     children: MeshTreeNode[];
 }
 
-export class MeshObj implements IGameObj {
+export class MeshObj extends AbstractGameObj {
     readonly objType = MeshObjType;
     id: string;
     name: string;
@@ -80,14 +81,40 @@ export class MeshObj implements IGameObj {
 
     meshAdapter: IMeshAdapter;
     canvas: Canvas3dPanel;
-    observable: ObjObservable;
 
-    constructor(canvas: Canvas3dPanel) {
+    private constructor(canvas: Canvas3dPanel) {
+        super(canvas);
         this.canvas = canvas;
         this.meshAdapter = canvas.engine.meshes;
-        this.observable = new ObjObservable();
 
         this.canvas.data.items.addItem(this);
+    }
+
+    static CreateMesh(canvas: Canvas3dPanel) {
+        const meshObj = new MeshObj(canvas);
+        meshObj.meshAdapter.createInstance(meshObj);
+        return meshObj;
+    }
+
+    static CreateGround(config: MeshBoxConfig, canvas: Canvas3dPanel): MeshObj {
+        const meshObj = new MeshObj(canvas);
+        meshObj.shapeConfig = config;
+        meshObj.meshAdapter.createInstance(meshObj);
+        return meshObj;
+    }
+
+    static CreateSphere(config: MeshSphereConfig, canvas: Canvas3dPanel): MeshObj {
+        const meshObj = new MeshObj(canvas);
+        meshObj.shapeConfig = config;
+        meshObj.meshAdapter.createInstance(meshObj);
+        return meshObj;
+    }
+
+    static CreateBox(config: MeshBoxConfig, canvas: Canvas3dPanel): MeshObj {
+        const meshObj = new MeshObj(canvas);
+        meshObj.shapeConfig = config;
+        meshObj.meshAdapter.createInstance(meshObj);
+        return meshObj;
     }
 
     translate(point: Point_3, isGlobal = true) {
@@ -103,6 +130,10 @@ export class MeshObj implements IGameObj {
 
     getPosition(): Point_3 {
         return this.meshAdapter.getPosition(this);
+    }
+
+    getDimension(): Point {
+        return this.meshAdapter.getDimensions(this);
     }
 
     setColor(color: string) {
@@ -133,10 +164,10 @@ export class MeshObj implements IGameObj {
         this.meshAdapter.deleteInstance(this);
     }
 
-    setParent(parentObj: IObj & IGameObj) {
+    setParent(parentObj: AbstractGameObj) {
     }
 
-    getParent(): IObj & IGameObj {
+    getParent(): IObj & AbstractGameObj {
         return undefined;
     }
 
@@ -210,7 +241,7 @@ export class MeshObj implements IGameObj {
 
         this.modelObj = json.modelId ? registry.stores.assetStore.getAssetById(json.modelId) : undefined;
         this.textureObj = json.textureId ? registry.stores.assetStore.getAssetById(json.textureId) : undefined;
-        this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> this.canvas.data.items.getItemById(json.textureId) : undefined;
+        // this.physicsImpostorObj = json.physicsImpostorId ? <PhysicsImpostorObj> this.canvas.data.items.getItemById(json.textureId) : undefined;
         this.routeId = json.routeId;
         this.color = json.color;
         this.shapeConfig = json.shapeConfig;
