@@ -54,6 +54,7 @@ export class Bab_EventAdapter implements IEngineEventAdapter {
     }
 
     emitPointerOverEvent(pickedItemId: string) {
+        console.log('emit pointer over')
         this.pointer.emit({eventType: IPointerEventType.PointerOver, pointers: [], pickedItemId: pickedItemId});
     }
 

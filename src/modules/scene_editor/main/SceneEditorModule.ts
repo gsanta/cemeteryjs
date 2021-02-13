@@ -19,6 +19,7 @@ import { Point } from "../../../utils/geometry/shapes/Point";
 import { SceneEditorToolbarController } from "../contribs/toolbar/SceneEditorToolbarController";
 import { SelectionListener } from "./controllers/listeners/SelectionListener";
 import { GameTool } from "./controllers/tools/GameTool";
+import { GizmoHandler } from "./GizmoHandler";
 import { Exporter_Scene } from "./io/Exporter_Scene";
 import { Importer_Scene } from "./io/Importer_Scene";
 import { SceneEditorRenderer } from "./renderers/SceneEditorRenderer";
@@ -43,6 +44,8 @@ export class SceneEditorModule extends Canvas3dPanel {
 
         this.exporter = new Exporter_Scene(registry);
         this.importer = new Importer_Scene(this, registry);
+
+        this.gizmoHandler = new GizmoHandler(this);
 
         this.engine = registry.engine;
         this.data = {

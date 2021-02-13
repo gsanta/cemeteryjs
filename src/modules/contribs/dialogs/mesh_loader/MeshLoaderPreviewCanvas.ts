@@ -1,5 +1,4 @@
 import { Bab_EngineFacade } from "../../../../core/engine/adapters/babylonjs/Bab_EngineFacade";
-import { Wrap_EngineFacade } from "../../../../core/engine/adapters/wrapper/Wrap_EngineFacade";
 import { IEngineFacade } from "../../../../core/engine/IEngineFacade";
 import { AssetObj } from "../../../../core/models/objs/AssetObj";
 import { MeshObj } from "../../../../core/models/objs/MeshObj";
@@ -25,7 +24,7 @@ export class MeshLoaderPreviewCanvas {
 
     constructor(registry: Registry) {
         this.registry = registry;
-        this.engine = new Wrap_EngineFacade(registry, new Bab_EngineFacade(registry, 'Mesh Loader Engine'));
+        this.engine = new Bab_EngineFacade(registry, 'Mesh Loader Engine');
 
         this.canvas = new MeshLoaderCanvas(registry, this.engine);
     }

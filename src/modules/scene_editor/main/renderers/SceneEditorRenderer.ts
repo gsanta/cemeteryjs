@@ -8,6 +8,7 @@ import { SelectToolId } from "../../../../core/controller/tools/SelectTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
 import { SceneEditorModule } from "../SceneEditorModule";
+import { GizmoType } from "../GizmoHandler";
 
 export class SceneEditorRenderer implements ICanvasRenderer {
     private canvas: SceneEditorModule;
@@ -71,22 +72,22 @@ export class SceneEditorRenderer implements ICanvasRenderer {
 
         actionIcon = toolbar.actionIcon({key: 'move', uniqueId: `${'move'}-${this.canvas.id}`});
         actionIcon.icon = 'move';
-        actionIcon.paramController = this.controllers.moveTool;
-        actionIcon.isActivated = this.canvas.selectedTool === _3DMoveTool;
+        actionIcon.paramController = this.controllers.positionGizmo;
+        actionIcon.isActivated = this.canvas.gizmoHandler.getSelectedGizmo() === GizmoType.Position;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Move';
 
         actionIcon = toolbar.actionIcon({key: 'rotate', uniqueId: `${'rotate'}-${this.canvas.id}`});
         actionIcon.icon = 'rotate';
-        actionIcon.paramController = this.controllers.rotationTool;
-        actionIcon.isActivated = this.canvas.selectedTool === _3DRotationTool;
+        actionIcon.paramController = this.controllers.rotationGizmo;
+        actionIcon.isActivated = this.canvas.gizmoHandler.getSelectedGizmo() === GizmoType.Rotation;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Rotate';
 
         actionIcon = toolbar.actionIcon({key: 'scale', uniqueId: `${'scale'}-${this.canvas.id}`});
         actionIcon.icon = 'scale';
-        actionIcon.paramController = this.controllers.scaleTool;
-        actionIcon.isActivated = this.canvas.selectedTool === _3DScaleTool;
+        actionIcon.paramController = this.controllers.scaleGizmo;
+        actionIcon.isActivated = this.canvas.gizmoHandler.getSelectedGizmo() === GizmoType.Scale;
         tooltip = actionIcon.tooltip();
         tooltip.label = 'Scale';
 

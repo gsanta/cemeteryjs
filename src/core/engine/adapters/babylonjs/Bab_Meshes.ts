@@ -32,6 +32,14 @@ export  class Bab_Meshes implements IMeshAdapter {
         this.meshCreator = new MeshCreator(registry, engineFacade);
     }
 
+    getRootMesh(meshObj: MeshObj): Mesh {
+        const meshData = this.meshes.get(meshObj);
+
+        if (meshData) {
+            return meshData.meshes[0];
+        }
+    }
+
     hasMesh(mesh: Mesh) {
         return Array.from(this.meshes.values()).find(meshData => meshData.meshes[0] === mesh);
     }
@@ -46,7 +54,7 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     getPosition(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return; }
+        if (!meshData) { return new Point_3(0, 0, 0); }
 
         return new Point_3(meshData.meshes[0].position.x, meshData.meshes[0].position.y, meshData.meshes[0].position.z);
     }
@@ -60,7 +68,7 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     getScale(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return; }
+        if (!meshData) { return new Point_3(1, 1, 1); }
 
         return new Point_3(meshData.meshes[0].scaling.x, meshData.meshes[0].scaling.y, meshData.meshes[0].scaling.z);
     } 
@@ -86,14 +94,14 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     getRotation(meshObj: MeshObj): Point_3 {
         const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return; }
+        if (!meshData) { return new Point_3(0, 0, 0); }
 
         return new Point_3(meshData.meshes[0].rotation.x, meshData.meshes[0].rotation.y, meshData.meshes[0].rotation.z);
     }
 
     getDimensions(meshObj: MeshObj): Point {
         const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return; }
+        if (!meshData) { return new Point(5, 5); }
 
         const mesh = meshData.meshes[0];
         mesh.computeWorldMatrix();
@@ -121,8 +129,7 @@ export  class Bab_Meshes implements IMeshAdapter {
     getColor(meshObj: MeshObj): string {
         const meshData = this.meshes.get(meshObj);
         
-        if (!meshData) { return; }
-        if (!meshData.meshes[0].material) { return; }
+        if (!meshData || !meshData.meshes[0].material) { return '#FFFFFF'; }
         const material = <StandardMaterial> meshData.meshes[0].material;
 
         if (material && material.diffuseColor) {
@@ -139,14 +146,14 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     getVisibility(meshObj: MeshObj): number {        
         const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return undefined; }
+        if (!meshData) { return 1; }
 
         return meshData.meshes[0].visibility;
     }
 
     showBoundingBoxes(meshObj: MeshObj, show: boolean) {
         const meshData = this.meshes.get(meshObj);
-        if (!meshData) { return undefined; }
+        if (!meshData) { return false; }
 
         return meshData.meshes[0].showBoundingBox = show;
     }
@@ -184,10 +191,10 @@ export  class Bab_Meshes implements IMeshAdapter {
 
     intersectsMesh(meshObj: MeshObj, otherMeshObj: MeshObj): boolean {
         const meshData1 = this.meshes.get(meshObj);
-        if (!meshData1) { return undefined; }
+        if (!meshData1) { return false; }
 
         const meshData2 = this.meshes.get(otherMeshObj);
-        if (!meshData2) { return undefined; }
+        if (!meshData2) { return false; }
 
         if (meshData1 && meshData2) {
             return meshData1.meshes[0].intersectsMesh(meshData2.meshes[0]);

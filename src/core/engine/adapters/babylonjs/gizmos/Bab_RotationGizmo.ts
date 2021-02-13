@@ -1,47 +1,57 @@
 import { Mesh, RotationGizmo, UtilityLayerRenderer } from "babylonjs";
+import { ObjEventType } from "../../../../models/ObjObservable";
+import { AbstractGameObj } from "../../../../models/objs/AbstractGameObj";
+import { MeshObj, MeshObjType } from "../../../../models/objs/MeshObj";
+import { Registry } from "../../../../Registry";
+import { IGizmo } from "../../../IGizmo";
 import { Bab_EngineFacade } from "../Bab_EngineFacade";
 
 export const RotationGizmoType = 'rotation-gizmo';
-export class Bab_RotationGizmo {
+export class Bab_RotationGizmo implements IGizmo {
     private engineFacade: Bab_EngineFacade;
     gizmoType = RotationGizmoType;
 
-    private utilLayer: UtilityLayerRenderer;
-    private gizmo: RotationGizmo;
-    private onDragFuncs: (() => void)[] = [];
+    private _utilLayer: UtilityLayerRenderer;
+    private _gizmo: RotationGizmo;
+    private _registry: Registry;
+    private _mesh: Mesh;
 
-    constructor(engineFacade: Bab_EngineFacade) {
+    constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
+        this._registry = registry;
         this.engineFacade = engineFacade;
     }
 
-    attachTo(mesh: Mesh) {
-        this.utilLayer = new UtilityLayerRenderer(this.engineFacade.scene);
-        this.gizmo = new RotationGizmo(this.utilLayer);
-        this.gizmo.attachedMesh = mesh;
-    
-        this.gizmo.updateGizmoRotationToMatchAttachedMesh = false;
-        this.gizmo.updateGizmoPositionToMatchAttachedMesh = true;
+    attachTo(obj: AbstractGameObj) {
+        this._mesh = undefined;
 
-        this.gizmo.onDragEndObservable.add(() => {
-            this.onDragFuncs.forEach(func => func())
-        });
+        if (obj.objType === MeshObjType) {
+            this._mesh = this.engineFacade.meshes.getRootMesh(<MeshObj> obj);
+        }
+
+        if (this._mesh) {
+            this._utilLayer = new UtilityLayerRenderer(this.engineFacade.scene);
+            this._gizmo = new RotationGizmo(this._utilLayer);
+            this._gizmo.attachedMesh = this._mesh;
+        
+            this._gizmo.updateGizmoRotationToMatchAttachedMesh = false;
+            this._gizmo.updateGizmoPositionToMatchAttachedMesh = true;
+
+            this._gizmo.onDragEndObservable.add(() => this.dragEnd());
+        }
     }
 
     detach() {
-        if (this.utilLayer) {
-            this.utilLayer.dispose();
+        if (this._utilLayer) {
+            this._utilLayer.dispose();
         }
 
-        if (this.gizmo) {
-            this.gizmo.dispose();
+        if (this._gizmo) {
+            this._gizmo.dispose();
         }
     }
 
-    onDrag(callback: () => void) {
-        this.onDragFuncs.push(callback);
-    }
-
-    offDrag(callback: () => void) {
-        this.onDragFuncs = this.onDragFuncs.filter(func => func !== callback);
+    private dragEnd() {
+        const meshObj = this.engineFacade.meshes.meshToObj.get(this._mesh);
+        this._registry.data.observable.emit({ obj: meshObj, eventType: ObjEventType.RotationChanged });
     }
 }

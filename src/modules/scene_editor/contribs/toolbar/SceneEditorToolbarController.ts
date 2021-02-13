@@ -12,6 +12,7 @@ import { _3DRotationTool } from "../../../../core/engine/adapters/babylonjs/tool
 import { _3DMoveTool } from "../../../../core/engine/adapters/babylonjs/tools/Bab_MoveTool";
 import { IObj } from "../../../../core/models/objs/IObj";
 import { SceneEditorModule } from "../../main/SceneEditorModule";
+import { GizmoType } from "../../main/GizmoHandler";
 
 export enum GameViewerProps {
     Play = 'Play',
@@ -33,9 +34,9 @@ export class SceneEditorToolbarController extends UIController {
         this.zoomIn = new ZoomInController(registry);
         this.zoomOut = new ZoomOutController(registry);
         this.showBoundingBox = new ShowBoundingBoxController(registry, canvas);
-        this.moveTool = new MoveToolController(registry, canvas);
-        this.scaleTool = new ScaleToolController(registry, canvas);
-        this.rotationTool = new RotationToolController(registry, canvas);
+        this.positionGizmo = new PositionGizmoController(registry, canvas);
+        this.rotationGizmo = new RotationGizmoController(registry, canvas);
+        this.scaleGizmo = new ScaleGizmoController(registry, canvas);
     }
     
     editMode: ParamController;
@@ -45,9 +46,9 @@ export class SceneEditorToolbarController extends UIController {
     zoomIn: ParamController;
     zoomOut: ParamController;
     showBoundingBox: ParamController;
-    moveTool: ParamController;
-    scaleTool: ParamController;
-    rotationTool: ParamController;
+    positionGizmo: PositionGizmoController;
+    rotationGizmo: RotationGizmoController;
+    scaleGizmo: ScaleGizmoController;
 }
 
 export class PlayController extends ParamController {
@@ -56,6 +57,60 @@ export class PlayController extends ParamController {
     click(context) {
         context.registry.stores.game.gameState = 'running';
         context.registry.services.render.reRender(context.plugin.region);
+    }
+}
+
+class PositionGizmoController extends ParamController {
+    private canvas: SceneEditorModule;
+
+    constructor(registry: Registry, canvas: SceneEditorModule) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        if (this.canvas.gizmoHandler.getSelectedGizmo() === GizmoType.Position) {
+            this.canvas.gizmoHandler.setSelectedGizmo(undefined);
+        } else {
+            this.canvas.gizmoHandler.setSelectedGizmo(GizmoType.Position);
+        }
+        this.registry.services.render.reRender(this.canvas.region);
+    }
+}
+
+class RotationGizmoController extends ParamController {
+    private canvas: SceneEditorModule;
+
+    constructor(registry: Registry, canvas: SceneEditorModule) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        if (this.canvas.gizmoHandler.getSelectedGizmo() === GizmoType.Rotation) {
+            this.canvas.gizmoHandler.setSelectedGizmo(undefined);
+        } else {
+            this.canvas.gizmoHandler.setSelectedGizmo(GizmoType.Rotation);
+        }
+        this.registry.services.render.reRender(this.canvas.region);
+    }
+}
+
+class ScaleGizmoController extends ParamController {
+    private canvas: SceneEditorModule;
+
+    constructor(registry: Registry, canvas: SceneEditorModule) {
+        super(registry);
+        this.canvas = canvas;
+    }
+
+    click() {
+        if (this.canvas.gizmoHandler.getSelectedGizmo() === GizmoType.Scale) {
+            this.canvas.gizmoHandler.setSelectedGizmo(undefined);
+        } else {
+            this.canvas.gizmoHandler.setSelectedGizmo(GizmoType.Scale);
+        }
+        this.registry.services.render.reRender(this.canvas.region);
     }
 }
 
@@ -101,54 +156,6 @@ class ShowBoundingBoxController extends ParamController<boolean> {
         const meshObjs = <MeshObj[]> this.registry.data.scene.items.getItemsByType(MeshObjType);
         meshObjs.forEach(meshObj => this.registry.engine.meshes.showBoundingBoxes(meshObj, show));
 
-        this.registry.services.render.reRender(UI_Region.Canvas2);
-    }
-}
-
-class ScaleToolController extends ParamController<boolean> {
-    private canvas: SceneEditorModule;
-
-    constructor(registry: Registry, canvas: SceneEditorModule) {
-        super(registry);
-        this.canvas = canvas;
-    }
-
-    click() {
-        this.registry.engine.tools.selectTool(_3DScaleTool);
-        this.canvas.selectedTool = _3DScaleTool;
-        
-        this.registry.services.render.reRender(UI_Region.Canvas2);
-    }
-}
-
-class RotationToolController extends ParamController<boolean> {
-    private canvas: SceneEditorModule;
-
-    constructor(registry: Registry, canvas: SceneEditorModule) {
-        super(registry);
-        this.canvas = canvas;
-    }
-
-    click() {
-        this.registry.engine.tools.selectTool(_3DRotationTool);
-        this.canvas.selectedTool = _3DRotationTool;
-        
-        this.registry.services.render.reRender(UI_Region.Canvas2);
-    }
-}
-
-class MoveToolController extends ParamController<boolean> {
-    private canvas: SceneEditorModule;
-
-    constructor(registry: Registry, canvas: SceneEditorModule) {
-        super(registry);
-        this.canvas = canvas;
-    }
-
-    click() {
-        this.registry.engine.tools.selectTool(_3DMoveTool);
-        this.canvas.selectedTool = _3DMoveTool;
-        
         this.registry.services.render.reRender(UI_Region.Canvas2);
     }
 }

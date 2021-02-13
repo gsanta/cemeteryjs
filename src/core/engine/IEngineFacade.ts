@@ -9,7 +9,6 @@ import { IRayCasterAdapter } from "./IRayCasterAdapter";
 import { IAnimationAdapter } from "./IAnimationAdapter";
 import { IPhysicsAdapter } from "./IPhysicsAdapter";
 import { IGizmoAdapter } from "./IGizmoAdapter";
-import { IToolAdapter } from "./IToolAdapter";
 import { IEngineEventAdapter } from "./IEngineEventAdapter";
 
 export interface IEngineFacade {
@@ -23,7 +22,6 @@ export interface IEngineFacade {
     meshFactory: IMeshFactory;
     animatons: IAnimationAdapter;
     gizmos: IGizmoAdapter;
-    tools: IToolAdapter;
     events: IEngineEventAdapter;
     
     setup(canvas: HTMLCanvasElement): void;

@@ -13,12 +13,6 @@ import { Bab_AnimationAdapter } from "./Bab_AnimationAdapter";
 import { Bab_PhysicsAdapter } from "./Bab_PhysicsAdapter";
 import { Bab_GizmoAdapter } from "./Bab_GizmoAdapter";
 import { Bab_AxisGizmo } from "./gizmos/Bab_AxisGizmo";
-import { Bab_ToolService } from "./Bab_ToolService";
-import { Bab_PositionGizmo } from "./gizmos/Bab_PositionGizmo";
-import { Bab_PointerService } from "./Bab_PointerService";
-import { Bab_ScaleGizmo } from "./gizmos/Bab_ScaleGizmo";
-import { Bab_RotationGizmo } from "./gizmos/Bab_RotationGizmo";
-import { Bab_ToolAdapter } from "./Bab_ToolAdapter";
 import { Bab_EventAdapter } from "./Bab_EventAdapter";
 
 export class Bab_EngineFacade implements IEngineFacade {
@@ -39,11 +33,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     physics: Bab_PhysicsAdapter;
     animatons: Bab_AnimationAdapter;
     gizmos: Bab_GizmoAdapter;
-    tools: Bab_ToolAdapter;
     events: Bab_EventAdapter;
-
-    toolService: Bab_ToolService;
-    pointerService: Bab_PointerService;
 
     private renderLoops: (() => void)[] = [];
     private onReadyFuncs: (() => void)[] = [];
@@ -62,12 +52,8 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.rays = new Bab_RayCasterAdapter(this.registry, this);
         this.physics = new Bab_PhysicsAdapter(this.registry, this);
         this.animatons = new Bab_AnimationAdapter(this.registry, this);
-        this.gizmos = new Bab_GizmoAdapter(this);
-        this.tools = new Bab_ToolAdapter(this);
+        this.gizmos = new Bab_GizmoAdapter(this.registry, this);
         this.events = new Bab_EventAdapter(this);
-
-        this.toolService = new Bab_ToolService(registry, this);
-        this.pointerService = new Bab_PointerService(registry, this);
     }
 
     getCamera(): Camera3D {
@@ -103,9 +89,6 @@ export class Bab_EngineFacade implements IEngineFacade {
     }
 
     private registerGizmos() {
-        this.gizmos.positionGizmo = new Bab_PositionGizmo(this);
-        this.gizmos.scaleGizmo = new Bab_ScaleGizmo(this);
-        this.gizmos.rotationGizmo = new Bab_RotationGizmo(this);
         this.gizmos.registerGizmo(new Bab_AxisGizmo(this.scene, this.camera.camera));
     }
 

@@ -1,3 +1,4 @@
+import { GizmoType } from "../../../modules/scene_editor/main/GizmoHandler";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Canvas3dPanel } from "../../models/modules/Canvas3dPanel";
 import { AbstractGameObj } from "../../models/objs/AbstractGameObj";
@@ -23,9 +24,11 @@ export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
 
     click(pointer: PointerTracker<AbstractGameObj>) {
         this.deselectAll();
+        const canvas3d = <Canvas3dPanel> this.canvas;
 
         if (pointer.pickedItem) {
             pointer.pickedItem.addTag('select');
+
         }
     }
 
@@ -49,7 +52,6 @@ export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
     
             const intersectingShapes = this.getIntersectingItems(this.rectangleSelection);
             
-            this.canvas.data.selection.clear();
             intersectingShapes.forEach(shape => this.canvas.data.selection.addItem(shape));
     
             this.rectangleSelection = undefined;
