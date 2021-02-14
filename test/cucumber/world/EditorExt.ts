@@ -1,6 +1,5 @@
 import { Editor } from "../../../src/core/Editor";
 import { Test_EngineFacade } from "../../../src/core/engine/adapters/test/Test_EngineFacade";
-import { Wrap_EngineFacade } from "../../../src/core/engine/adapters/wrapper/Wrap_EngineFacade";
 import { UI_Region } from "../../../src/core/models/UI_Panel";
 import { SketchEditorPanelId } from "../../../src/modules/sketch_editor/main/SketchEditorModule";
 
@@ -38,8 +37,5 @@ export class EditorExt extends Editor {
         this.registry.services.render.setRenderer(UI_Region.Sidepanel, () => this.fakeRenderer.renderSidePanel());
         this.registry.services.render.setRenderer(UI_Region.Dialog, () => this.fakeRenderer.renderDialog());
         this.registry.services.render.setRootRenderer(() => this.fakeRenderer.renderDialog());
-        const wrapEngine = new Wrap_EngineFacade(this.registry, undefined);
-        wrapEngine.realEngine = new Test_EngineFacade(this.registry);
-        this.registry.engine = wrapEngine;
     }
 }

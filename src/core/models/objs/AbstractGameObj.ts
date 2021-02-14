@@ -1,5 +1,6 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Registry } from "../../Registry";
+import { HistoryService } from "../../services/HistoryService";
 import { CanvasEventType } from "../CanvasObservable";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { ObjObservable } from "../ObjObservable";
@@ -41,6 +42,11 @@ export abstract class AbstractGameObj implements IObj {
 
     removeTag(tag: string): void {
         this.tags.delete(tag);
+        this.canvas.observable.emit({eventType: CanvasEventType.TagChanged, obj: this})
+    }
+
+    clearTags(): void {
+        this.tags.clear();
         this.canvas.observable.emit({eventType: CanvasEventType.TagChanged, obj: this})
     }
 

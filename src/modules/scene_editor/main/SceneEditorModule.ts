@@ -17,6 +17,7 @@ import { AbstractModuleExporter } from "../../../core/services/export/AbstractMo
 import { AbstractModuleImporter } from "../../../core/services/import/AbstractModuleImporter";
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { SceneEditorToolbarController } from "../contribs/toolbar/SceneEditorToolbarController";
+import { HistoryListener } from "./controllers/listeners/HistoryListener";
 import { SelectionListener } from "./controllers/listeners/SelectionListener";
 import { GameTool } from "./controllers/tools/GameTool";
 import { GizmoHandler } from "./GizmoHandler";
@@ -71,6 +72,9 @@ export class SceneEditorModule extends Canvas3dPanel {
 
         this._selectionListener = new SelectionListener(this);
         this._selectionListener.listen();
+
+        const historyListener = new HistoryListener(this.registry, this);
+        historyListener.listen();
     
         this.onMounted(() => {
             registry.engine.setup(document.querySelector(`#${SceneEditorPanelId} canvas`));

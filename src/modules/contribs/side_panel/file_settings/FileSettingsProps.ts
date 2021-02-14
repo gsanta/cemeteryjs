@@ -1,5 +1,6 @@
 import { saveAs } from 'file-saver';
 import { PropContext, ParamController } from '../../../../core/controller/FormController';
+import { SceneEditorModule, SceneEditorPanelId } from '../../../scene_editor/main/SceneEditorModule';
 
 export enum FileSettingsProps {
     Export = 'Export',
@@ -31,9 +32,9 @@ export class ImportFileController extends ParamController<{ data: string }> {
 export class NewProjectController extends ParamController {
     acceptedProps() { return [FileSettingsProps.NewProject]; }
 
-    click(context: PropContext) {
-        context.registry.data.clearData();
-        context.registry.services.history.createSnapshot();
-        context.registry.services.render.reRenderAll();
+    click() {
+        this.registry.data.clearData();
+        this.registry.services.history.createSnapshot();
+        this.registry.services.render.reRenderAll();
     }
 }

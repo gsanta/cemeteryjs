@@ -1,4 +1,5 @@
 import { Mesh, ScaleGizmo, UtilityLayerRenderer } from "babylonjs";
+import { CanvasEventType } from "../../../../models/CanvasObservable";
 import { ObjEventType } from "../../../../models/ObjObservable";
 import { AbstractGameObj } from "../../../../models/objs/AbstractGameObj";
 import { MeshObjType, MeshObj } from "../../../../models/objs/MeshObj";
@@ -14,6 +15,7 @@ export class Bab_ScaleGizmo {
     private _gizmo: ScaleGizmo;
     private _registry: Registry;
     private _mesh: Mesh;
+    private _obj: MeshObj;
 
     constructor(registry: Registry, engineFacade: Bab_EngineFacade) {
         this._registry = registry;
@@ -22,6 +24,7 @@ export class Bab_ScaleGizmo {
 
     attachTo(obj: AbstractGameObj) {
         this._mesh = undefined;
+        this._obj = <MeshObj> obj;
 
         if (obj.objType === MeshObjType) {
             this._mesh = this._engineFacade.meshes.getRootMesh(<MeshObj> obj);
@@ -52,7 +55,8 @@ export class Bab_ScaleGizmo {
 
     private _dragEnd() {
         const meshObj = this._engineFacade.meshes.meshToObj.get(this._mesh);
-        this._registry.data.observable.emit({ obj: meshObj, eventType: ObjEventType.ScaleChanged });
+        // gizmo manipulates mesh data directly not through obj, so we need to manually call the event
+        this._obj.canvas.observable.emit({eventType: CanvasEventType.ScaleChanged})
 
     }
 }

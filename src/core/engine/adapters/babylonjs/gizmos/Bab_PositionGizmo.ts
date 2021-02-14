@@ -1,5 +1,6 @@
 import { Mesh, Observer } from "babylonjs";
 import { SceneEditorPanelId } from "../../../../../modules/scene_editor/main/SceneEditorModule";
+import { CanvasEventType } from "../../../../models/CanvasObservable";
 import { AbstractCanvasPanel } from "../../../../models/modules/AbstractCanvasPanel";
 import { AbstractGameObj } from "../../../../models/objs/AbstractGameObj";
 import { IObj } from "../../../../models/objs/IObj";
@@ -26,6 +27,7 @@ export class Bab_PositionGizmo implements IGizmo {
         this._engineFacade = engineFacade;
         this.dragStart.bind(this);
         this.dragEnd.bind(this);
+
     }
 
     attachTo(obj: AbstractGameObj) {
@@ -40,10 +42,13 @@ export class Bab_PositionGizmo implements IGizmo {
             const gizmoManager = this._engineFacade.gizmos.gizmoManager;
             gizmoManager.positionGizmoEnabled = true;
             gizmoManager.attachToMesh(mesh);
-        
-            this._dragStartObserver = gizmoManager.gizmos.positionGizmo.onDragStartObservable.add(() => this.dragStart());
-            this._dragEndObserver = gizmoManager.gizmos.positionGizmo.onDragEndObservable.add(() => this.dragEnd());
+
+            if (!this._dragEndObserver) {
+                this._dragStartObserver = gizmoManager.gizmos.positionGizmo.onDragStartObservable.add(() => this.dragStart());
+                this._dragEndObserver = gizmoManager.gizmos.positionGizmo.onDragEndObservable.add(() => this.dragEnd())
+            }
         }
+
     }
 
     disable() {
@@ -59,28 +64,20 @@ export class Bab_PositionGizmo implements IGizmo {
     detach() {
         const gizmoManager = this._engineFacade.gizmos.gizmoManager;
         gizmoManager.positionGizmoEnabled = false;
-
-        if (this._dragStartObserver) {
-            gizmoManager.gizmos.positionGizmo.onDragStartObservable.remove(this._dragStartObserver);
-        }
-
-        if (this._dragEndObserver) {
-            gizmoManager.gizmos.positionGizmo.onDragStartObservable.remove(this._dragEndObserver);
-        }
-
-        this._dragStartObserver = undefined;
-        this._dragEndObserver = undefined;
     }
 
     private dragStart() {
-        this._dragIntervalToken = setInterval(() => this.emitDrag(), 50);
+        this._dragIntervalToken = setInterval(() => this.handleSnap(), 50);
     }
 
     private dragEnd() {
         clearTimeout(this._dragIntervalToken);
+        console.log('dragEnd')
+        // gizmo manipulates mesh data directly not through obj, so we need to manually call the event
+        this._obj.canvas.observable.emit({eventType: CanvasEventType.PositionChanged})
     }
 
-    private emitDrag() {
+    private handleSnap() {
         const canvas: AbstractCanvasPanel<IObj> = this._registry.services.module.ui.getCanvas(SceneEditorPanelId);
         const pointerTracker = canvas.pointer.pointer;
         const snapChanged = false;//this._meshSnapper.trySnapOrUnsnap(this._obj, pointerTracker);

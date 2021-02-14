@@ -104,7 +104,11 @@ export class ObjStore implements IStore<AbstractGameObj> {
     }
 
     clear() {
-        this.objs.forEach(obj => this.removeItem(obj));
+        while(this.objs.length > 0) {
+            this.objs[0].clearTags();
+            this.removeItem(this.objs[0]);
+        }
+        // this.objs.forEach(obj => this.removeItem(obj));
         this.objs = [];
         this.objById = new Map();
         this.nameCache = new Map();
