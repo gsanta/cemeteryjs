@@ -3,7 +3,7 @@ import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
 import { ICamera } from './ICamera';
 import { Registry } from "../../../Registry";
 import { PointerTracker } from "../../../controller/PointerHandler";
-import { AbstractShape } from "../../shapes/AbstractShape";
+import { AbstractShape } from "../../../../modules/graph_editor/main/models/shapes/AbstractShape";
 
 export class Camera2D implements ICamera {
     private screenSize: Point;

@@ -10,8 +10,8 @@ import { MeshMover } from "../../controllers/domain/MeshMover";
 import { NodeShape } from "../shapes/NodeShape";
 import { MoveNodeListener } from "./listeners/MoveNodeListener";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
-import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorCanvas";
 import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
 
 export const MoveNodeType = 'move-node-obj';

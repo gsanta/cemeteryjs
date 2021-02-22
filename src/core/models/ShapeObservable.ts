@@ -1,4 +1,4 @@
-import { AbstractShape } from "./shapes/AbstractShape";
+import { AbstractShape } from "../../modules/graph_editor/main/models/shapes/AbstractShape";
 
 
 

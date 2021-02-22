@@ -3,7 +3,7 @@ import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/No
 import { NodeParam, PortDataFlow, PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { RayObj } from "../../../../../core/models/objs/RayObj";
 import { Registry } from "../../../../../core/Registry";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { RayHelperNodeControllers } from "../../controllers/nodes/RayHelperNodeControllers";
 import { NodeShape } from "../shapes/NodeShape";

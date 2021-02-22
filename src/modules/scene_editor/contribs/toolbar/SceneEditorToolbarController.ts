@@ -8,7 +8,7 @@ import { UIController } from "../../../../core/controller/UIController";
 import { UI_Region } from "../../../../core/models/UI_Panel";
 import { BasicShapeType, MeshBoxConfig, MeshObj, MeshObjType } from "../../../../core/models/objs/MeshObj";
 import { IObj } from "../../../../core/models/objs/IObj";
-import { SceneEditorModule } from "../../main/SceneEditorModule";
+import { SceneEditorCanvas } from "../../main/SceneEditorCanvas";
 import { GizmoType } from "../../main/GizmoHandler";
 
 export enum GameViewerProps {
@@ -21,7 +21,7 @@ export enum GameViewerProps {
 
 export class SceneEditorToolbarController extends UIController {
 
-    constructor(registry: Registry, canvas: SceneEditorModule) {
+    constructor(registry: Registry, canvas: SceneEditorCanvas) {
         super();
 
         this.add = new AddNewControl(registry);
@@ -102,9 +102,9 @@ export class PlayController extends ParamController {
 }
 
 class PositionGizmoController extends ParamController {
-    private canvas: SceneEditorModule;
+    private canvas: SceneEditorCanvas;
 
-    constructor(registry: Registry, canvas: SceneEditorModule) {
+    constructor(registry: Registry, canvas: SceneEditorCanvas) {
         super(registry);
         this.canvas = canvas;
     }
@@ -120,9 +120,9 @@ class PositionGizmoController extends ParamController {
 }
 
 class RotationGizmoController extends ParamController {
-    private canvas: SceneEditorModule;
+    private canvas: SceneEditorCanvas;
 
-    constructor(registry: Registry, canvas: SceneEditorModule) {
+    constructor(registry: Registry, canvas: SceneEditorCanvas) {
         super(registry);
         this.canvas = canvas;
     }
@@ -138,9 +138,9 @@ class RotationGizmoController extends ParamController {
 }
 
 class ScaleGizmoController extends ParamController {
-    private canvas: SceneEditorModule;
+    private canvas: SceneEditorCanvas;
 
-    constructor(registry: Registry, canvas: SceneEditorModule) {
+    constructor(registry: Registry, canvas: SceneEditorCanvas) {
         super(registry);
         this.canvas = canvas;
     }
@@ -183,9 +183,9 @@ class GameViewerToolController extends ParamController<any> {
 }
 
 class ShowBoundingBoxController extends ParamController<boolean> {
-    private canvas: SceneEditorModule;
+    private canvas: SceneEditorCanvas;
 
-    constructor(registry: Registry, canvas: SceneEditorModule) {
+    constructor(registry: Registry, canvas: SceneEditorCanvas) {
         super(registry);
         this.canvas = canvas;
     }

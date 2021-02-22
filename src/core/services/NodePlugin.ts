@@ -2,7 +2,7 @@ import { AnimationNodeType } from '../../modules/graph_editor/main/models/nodes/
 import { RouteNodeObjType } from '../../modules/graph_editor/main/models/nodes/RouteNode';
 import { NodeShape, NodeShapeType } from '../../modules/graph_editor/main/models/shapes/NodeShape';
 import { NodeObj } from '../models/objs/node_obj/NodeObj';
-import { AbstractShape } from '../models/shapes/AbstractShape';
+import { AbstractShape } from '../../modules/graph_editor/main/models/shapes/AbstractShape';
 import { FormController } from '../controller/FormController';
 import { Registry } from '../Registry';
 import { GameState, GameStoreHook } from '../data/stores/GameStore';

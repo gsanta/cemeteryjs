@@ -1,10 +1,10 @@
 import { Canvas2dPanel } from "../../../../core/models/modules/Canvas2dPanel";
 import { ObjJson } from "../../../../core/models/objs/IObj";
 import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
-import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
+import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
-import { NodeEditorPanelId } from "../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../NodeEditorCanvas";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../models/shapes/NodeConnectionShape";
 import { NodeShapeType } from "../models/shapes/NodeShape";
 

@@ -1,6 +1,6 @@
 import { AssetObjJson } from '../../models/objs/AssetObj';
 import { ObjJson } from '../../models/objs/IObj';
-import { ShapeJson } from '../../models/shapes/AbstractShape';
+import { ShapeJson } from '../../../modules/graph_editor/main/models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
 
 export interface ViewExporter {

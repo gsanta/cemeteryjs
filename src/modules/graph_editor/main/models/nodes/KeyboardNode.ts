@@ -7,8 +7,8 @@ import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { KeyboardNodeControllers } from "../../controllers/nodes/KeyboardNodeController";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
-import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorCanvas";
 import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
 
 export const KeyboardNodeType = 'keyboard-node-obj';

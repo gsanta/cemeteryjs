@@ -1,6 +1,6 @@
 import { ObjObservable } from "../models/ObjObservable";
 import { IObj } from "../models/objs/IObj";
-import { AbstractShape } from "../models/shapes/AbstractShape";
+import { AbstractShape } from "../../modules/graph_editor/main/models/shapes/AbstractShape";
 import { Registry } from "../Registry";
 import { DataHelperLookup } from "./DataHelperLookup";
 import { ItemData } from "./ItemData";

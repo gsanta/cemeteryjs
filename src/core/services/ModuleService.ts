@@ -1,5 +1,5 @@
-import { NodeEditorModule, NodeEditorPanelId } from "../../modules/graph_editor/NodeEditorModule";
-import { SceneEditorModule, SceneEditorPanelId } from "../../modules/scene_editor/main/SceneEditorModule";
+import { NodeEditorCanvas, NodeEditorPanelId } from "../../modules/graph_editor/NodeEditorCanvas";
+import { SceneEditorCanvas, SceneEditorPanelId } from "../../modules/scene_editor/main/SceneEditorCanvas";
 import { AbstractCanvasPanel } from "../models/modules/AbstractCanvasPanel";
 import { UI_Panel, UI_Region } from "../models/UI_Panel";
 import { AbstractModuleExporter } from "./export/AbstractModuleExporter";
@@ -24,16 +24,16 @@ export class UI_Modules {
     private canvases: Map<string, AbstractCanvasPanel<any>> = new Map();
     private panels: Map<string, UI_Panel> = new Map();
 
-    nodeEditor: NodeEditorModule;
-    sceneEditor: SceneEditorModule;
+    nodeEditor: NodeEditorCanvas;
+    sceneEditor: SceneEditorCanvas;
 
     registerCanvas(canvas: AbstractCanvasPanel<any>) {
         this.canvases.set(canvas.id, canvas);
 
         if (canvas.id === NodeEditorPanelId) {
-            this.nodeEditor = <NodeEditorModule> canvas;
+            this.nodeEditor = <NodeEditorCanvas> canvas;
         } else if (canvas.id === SceneEditorPanelId) {
-            this.sceneEditor = <SceneEditorModule> canvas;
+            this.sceneEditor = <SceneEditorCanvas> canvas;
         }
     }
 

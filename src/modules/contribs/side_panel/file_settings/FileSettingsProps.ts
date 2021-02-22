@@ -1,6 +1,6 @@
 import { saveAs } from 'file-saver';
 import { PropContext, ParamController } from '../../../../core/controller/FormController';
-import { SceneEditorModule, SceneEditorPanelId } from '../../../scene_editor/main/SceneEditorModule';
+import { SceneEditorCanvas, SceneEditorPanelId } from '../../../scene_editor/main/SceneEditorCanvas';
 
 export enum FileSettingsProps {
     Export = 'Export',

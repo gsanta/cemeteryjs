@@ -3,7 +3,7 @@ import { without } from "../../../utils/geometry/Functions";
 import { Polygon } from "../../../utils/geometry/shapes/Polygon";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { AbstractCanvasPanel } from "../../models/modules/AbstractCanvasPanel";
-import { AbstractShape, ShapeFactory, ShapeTag } from '../../models/shapes/AbstractShape';
+import { AbstractShape, ShapeFactory, ShapeTag } from '../../../modules/graph_editor/main/models/shapes/AbstractShape';
 import { Registry } from "../../Registry";
 import { IdGenerator } from "../IdGenerator";
 import { IStore } from "./IStore";

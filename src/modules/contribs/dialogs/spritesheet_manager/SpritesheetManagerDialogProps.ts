@@ -6,7 +6,7 @@ import { Registry } from '../../../../core/Registry';
 import { UI_Element } from '../../../../core/ui_components/elements/UI_Element';
 import { SpriteSheetManagerDialogRenderer } from './SpriteSheetManagerDialogRenderer';
 import { Canvas3dPanel } from '../../../../core/models/modules/Canvas3dPanel';
-import { SceneEditorPanelId } from '../../../scene_editor/main/SceneEditorModule';
+import { SceneEditorPanelId } from '../../../scene_editor/main/SceneEditorCanvas';
 
 export const SpritesheetManagerDialogControllerId = 'spritesheet-manager-dialog-controller';
 

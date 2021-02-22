@@ -1,12 +1,12 @@
-import { Point } from "../../../../utils/geometry/shapes/Point";
-import { Rectangle } from "../../../../utils/geometry/shapes/Rectangle";
-import { Registry } from "../../../Registry";
-import { NodePortObj } from "../../objs/NodePortObj";
-import { PortDirection } from "../../objs/node_obj/NodeParam";
-import { NodeConnectionShape } from "../../../../modules/graph_editor/main/models/shapes/NodeConnectionShape";
-import { AbstractShape, ShapeJson } from "../AbstractShape";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { Registry } from "../../../../../core/Registry";
+import { NodePortObj } from "../../../../../core/models/objs/NodePortObj";
+import { PortDirection } from "../../../../../core/models/objs/node_obj/NodeParam";
+import { NodeConnectionShape } from "./NodeConnectionShape";
+import { AbstractShape, ShapeJson } from "./AbstractShape";
 import { ChildShape } from "./ChildShape";
-import { NodeShape } from "../../../../modules/graph_editor/main/models/shapes/NodeShape";
+import { NodeShape } from "./NodeShape";
 
 export function isJoinPointView(view: AbstractShape) {
     return view && view.viewType === NodePortViewType;

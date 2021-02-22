@@ -23,8 +23,8 @@ import { LevelSettingsModule } from '../modules/contribs/side_panel/level_settin
 import { SpriteSheetManagerDialogModule } from '../modules/contribs/dialogs/spritesheet_manager/SpriteSheetManagerDialogModule';
 import { MeshLoaderDialogModule } from '../modules/contribs/dialogs/mesh_loader/MeshLoaderDialogModule';
 import { PhysicsImpostorDialogModule } from '../modules/contribs/dialogs/physics_impostor/PhysicsImpostorDialogModule';
-import { NodeEditorModule } from '../modules/graph_editor/NodeEditorModule';
-import { SceneEditorModule } from '../modules/scene_editor/main/SceneEditorModule';
+import { NodeEditorCanvas } from '../modules/graph_editor/NodeEditorCanvas';
+import { SceneEditorCanvas } from '../modules/scene_editor/main/SceneEditorCanvas';
 
 export class Editor {
     registry: Registry;
@@ -38,8 +38,8 @@ export class Editor {
         this.registry = new Registry();
 
         // canvases
-        this.registry.services.module.ui.registerCanvas(new SceneEditorModule(this.registry));
-        this.registry.services.module.ui.registerCanvas(new NodeEditorModule(this.registry));
+        this.registry.services.module.ui.registerCanvas(new SceneEditorCanvas(this.registry));
+        this.registry.services.module.ui.registerCanvas(new NodeEditorCanvas(this.registry));
 
         // side panels
         this.registry.services.module.ui.registerPanel(new NodeLibraryModule(this.registry))

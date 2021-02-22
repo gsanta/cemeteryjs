@@ -2,14 +2,14 @@
 
 import { FormController } from "../../core/controller/FormController";
 import { CameraTool } from "../../core/controller/tools/CameraTool";
-import { DeleteTool_Svg } from "../../core/controller/tools/DeleteTool_Svg";
-import { SelectTool_Svg } from "../../core/controller/tools/SelectTool_Svg";
+import { DeleteTool_2D } from "./main/controllers/tools/DeleteTool_2D";
+import { SelectTool_2D } from "./main/controllers/tools/SelectTool_2D";
 import { ItemData } from "../../core/data/ItemData";
 import { ShapeLifeCycleHook, ShapeStore } from "../../core/data/stores/ShapeStore";
 import { TagStore } from "../../core/data/stores/TagStore";
 import { Camera2D } from "../../core/models/misc/camera/Camera2D";
 import { Canvas2dPanel } from "../../core/models/modules/Canvas2dPanel";
-import { AbstractShape } from "../../core/models/shapes/AbstractShape";
+import { AbstractShape } from "./main/models/shapes/AbstractShape";
 import { UI_Region } from "../../core/models/UI_Panel";
 import { Registry } from "../../core/Registry";
 import { AbstractModuleExporter } from "../../core/services/export/AbstractModuleExporter";
@@ -25,7 +25,7 @@ import { NodeEditorRenderer } from "./main/renderers/NodeEditorRenderer";
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller';
 
-export class NodeEditorModule extends Canvas2dPanel {
+export class NodeEditorCanvas extends Canvas2dPanel {
 
     data: ItemData<AbstractShape>
 
@@ -47,8 +47,8 @@ export class NodeEditorModule extends Canvas2dPanel {
         this.importer = new NodeEditorImporter(registry);
 
         const tools = [
-            new SelectTool_Svg(this, registry),
-            new DeleteTool_Svg(this, registry),
+            new SelectTool_2D(this, registry),
+            new DeleteTool_2D(this, registry),
             new CameraTool(this, registry),
             new JoinTool(this, registry)
         ];

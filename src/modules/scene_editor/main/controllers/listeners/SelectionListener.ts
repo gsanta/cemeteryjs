@@ -1,12 +1,12 @@
 import { CanvasEventData, CanvasEventType } from "../../../../../core/models/CanvasObservable";
 import { AbstractGameObj } from "../../../../../core/models/objs/AbstractGameObj";
-import { SceneEditorModule } from "../../SceneEditorModule";
+import { SceneEditorCanvas } from "../../SceneEditorCanvas";
 
 
 export class SelectionListener {
-    private _canvas: SceneEditorModule;
+    private _canvas: SceneEditorCanvas;
 
-    constructor(canvas: SceneEditorModule) {
+    constructor(canvas: SceneEditorCanvas) {
         this._canvas = canvas;
     }
 

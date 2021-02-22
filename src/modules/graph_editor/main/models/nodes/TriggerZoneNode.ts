@@ -7,7 +7,7 @@ import { AbstractNodeListener, INodeListener } from "../../api/INodeListener";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { TriggerZoneNodeControllers } from "../../controllers/nodes/TriggerZoneNodeControllers";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 
 export const TriggerZoneNodeType = 'trigger-zone-node-obj';
 

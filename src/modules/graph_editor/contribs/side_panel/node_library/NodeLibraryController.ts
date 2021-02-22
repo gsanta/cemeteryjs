@@ -3,7 +3,7 @@ import { UIController } from "../../../../../core/controller/UIController";
 import { UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
 import { NodeShape } from "../../../main/models/shapes/NodeShape";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 
 export class NodeLibraryController extends UIController {
     constructor(registry: Registry) {

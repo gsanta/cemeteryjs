@@ -2,7 +2,7 @@ import { ObjJson } from "../../../../core/models/objs/IObj";
 import { NodeConnectionObjType } from "../../../../core/models/objs/NodeConnectionObj";
 import { NodePortObjType } from "../../../../core/models/objs/NodePortObj";
 import { NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
-import { ShapeJson } from "../../../../core/models/shapes/AbstractShape";
+import { ShapeJson } from "../models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleExporter } from "../../../../core/services/export/AbstractModuleExporter";
 

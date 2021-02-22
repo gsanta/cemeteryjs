@@ -7,9 +7,9 @@ import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { MeshPropertyNodeControllers } from "../../controllers/nodes/MeshPropertyNodeControllers";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
-import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorCanvas";
 
 export const MeshPropertyNodeType = 'mesh-property-node-obj';
 

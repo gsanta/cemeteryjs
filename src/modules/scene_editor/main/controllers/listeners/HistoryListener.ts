@@ -1,13 +1,13 @@
 import { CanvasEventData, CanvasEventType } from "../../../../../core/models/CanvasObservable";
 import { Registry } from "../../../../../core/Registry";
-import { SceneEditorModule } from "../../SceneEditorModule";
+import { SceneEditorCanvas } from "../../SceneEditorCanvas";
 
 
 export class HistoryListener {
-    private _canvas: SceneEditorModule;
+    private _canvas: SceneEditorCanvas;
     private _registry: Registry;
 
-    constructor(registry: Registry, canvas: SceneEditorModule) {
+    constructor(registry: Registry, canvas: SceneEditorCanvas) {
         this._registry = registry;
         this._canvas = canvas;
     }

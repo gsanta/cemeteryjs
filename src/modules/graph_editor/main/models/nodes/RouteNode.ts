@@ -9,7 +9,7 @@ import { RouteNodeControllers } from "../../controllers/nodes/RouteNodeControlle
 import { RouteWalker } from "../../controllers/domain/RouteWalker";
 import { NodeShape } from "../shapes/NodeShape";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 
 export const RouteNodeObjType = 'route-node-obj';
 

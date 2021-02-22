@@ -1,8 +1,8 @@
 import { EngineEventAdapter } from "../../../core/controller/EngineEventAdapter";
 import { FormController } from "../../../core/controller/FormController";
 import { CameraTool } from "../../../core/controller/tools/CameraTool";
-import { SelectToolId } from "../../../core/controller/tools/SelectTool_Svg";
-import { SelectTool_Webgl } from "../../../core/controller/tools/SelectTool_Webgl";
+import { SelectToolId } from "../../graph_editor/main/controllers/tools/SelectTool_2D";
+import { SelectTool_3D } from "./controllers/tools/SelectTool_3D";
 import { ItemData } from "../../../core/data/ItemData";
 import { ObjStore } from "../../../core/data/stores/ObjStore";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
@@ -26,7 +26,7 @@ import { SceneEditorRenderer } from "./renderers/SceneEditorRenderer";
 export const SceneEditorPanelId = 'scene-editor'; 
 export const SceneEditorPluginControllerId = 'scene-editor-plugin-controller';
 
-export class SceneEditorModule extends Canvas3dPanel {
+export class SceneEditorCanvas extends Canvas3dPanel {
     showBoundingBoxes: boolean = false;
     selectedTool: string;
 
@@ -58,7 +58,7 @@ export class SceneEditorModule extends Canvas3dPanel {
         const tools = [
             new GameTool(this, registry),
             new CameraTool(this, registry),
-            new SelectTool_Webgl(this, registry)
+            new SelectTool_3D(this, registry)
         ];
         
         const controller = new SceneEditorToolbarController(registry, this);

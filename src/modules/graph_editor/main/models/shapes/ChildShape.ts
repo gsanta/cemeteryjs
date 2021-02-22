@@ -1,4 +1,4 @@
-import { AbstractShape } from "../AbstractShape";
+import { AbstractShape } from "./AbstractShape";
 
 export abstract class ChildShape extends AbstractShape {
     containerShape: AbstractShape;

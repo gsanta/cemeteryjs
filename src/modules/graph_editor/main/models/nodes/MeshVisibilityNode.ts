@@ -7,9 +7,9 @@ import { NodeParam, PortDirection, PortDataFlow, NodeParamJson } from "../../../
 import { MeshVisibilityNodeControllers } from "../../controllers/nodes/MeshVisibilityNodeControllers";
 import { NodeShape } from "../shapes/NodeShape";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
-import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorCanvas";
 
 export const MeshVisibilityNodeType = 'mesh-visibility-node-obj';
 

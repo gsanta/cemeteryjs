@@ -11,7 +11,7 @@ import { INodeListener } from "../../api/INodeListener";
 import { threadId } from "worker_threads";
 import { RemoveMeshNodeListener } from "./listeners/RemoveMeshNodeListener";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 
 export const RemoveMeshNodeType = 'remove-mesh-node-obj';
 

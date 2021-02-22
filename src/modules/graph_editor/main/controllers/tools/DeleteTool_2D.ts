@@ -1,15 +1,15 @@
-import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../HotkeyHandler';
-import { Keyboard } from '../KeyboardHandler';
+import { checkHotkeyAgainstTrigger, defaultHotkeyTrigger, HotkeyTrigger, IHotkeyEvent } from '../../../../../core/controller/HotkeyHandler';
+import { Keyboard } from '../../../../../core/controller/KeyboardHandler';
 import { AbstractShape } from '../../models/shapes/AbstractShape';
-import { Registry } from '../../Registry';
-import { getIntersectingViews } from '../../data/stores/ShapeStore';
-import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
-import { UI_Region } from '../../models/UI_Panel';
-import { AbstractTool, createRectFromMousePointer } from './AbstractTool';
-import { Cursor } from './Tool';
+import { Registry } from '../../../../../core/Registry';
+import { getIntersectingViews } from '../../../../../core/data/stores/ShapeStore';
+import { AbstractCanvasPanel } from '../../../../../core/models/modules/AbstractCanvasPanel';
+import { UI_Region } from '../../../../../core/models/UI_Panel';
+import { AbstractTool, createRectFromMousePointer } from '../../../../../core/controller/tools/AbstractTool';
+import { Cursor } from '../../../../../core/controller/tools/Tool';
 
 export const DeleteToolId = 'delete-tool';
-export class DeleteTool_Svg extends AbstractTool<AbstractShape> {
+export class DeleteTool_2D extends AbstractTool<AbstractShape> {
     private hotkeyTrigger: HotkeyTrigger = {...defaultHotkeyTrigger, ...{keyCodes: [Keyboard.e], shift: true}}
 
     constructor(panel: AbstractCanvasPanel<AbstractShape>, registry: Registry) {

@@ -5,7 +5,7 @@ import { MeshObj, MeshObjType } from "../../../../../core/models/objs/MeshObj";
 import { SpriteObjType } from "../../../../../core/models/objs/SpriteObj";
 import { UI_Panel, UI_Region } from "../../../../../core/models/UI_Panel";
 import { Registry } from "../../../../../core/Registry";
-import { SceneEditorModule, SceneEditorPanelId } from "../../../main/SceneEditorModule";
+import { SceneEditorCanvas, SceneEditorPanelId } from "../../../main/SceneEditorCanvas";
 import { LightPropertiesController } from "./controllers/LightPropertiesController";
 import { MeshPropertiesController } from "./controllers/MeshPropertiesController";
 import { SpritePropertiesController } from "./controllers/SpritePropertiesController";
@@ -25,7 +25,7 @@ export class ObjPropertiesModule extends UI_Panel {
         const spriteSettingsController = new SpritePropertiesController(registry);
         const spriteSettingsRenderer = new SpritePropertiesRenderer(spriteSettingsController);
 
-        const sceneEditorModule = <SceneEditorModule> registry.services.module.ui.getCanvas(SceneEditorPanelId);
+        const sceneEditorModule = <SceneEditorCanvas> registry.services.module.ui.getCanvas(SceneEditorPanelId);
 
         sceneEditorModule.observable.add(eventData => {
             if (eventData.eventType === CanvasEventType.TagChanged) {

@@ -3,8 +3,8 @@ import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel"
 import { NodeObj, NodeParams } from "../../../../../core/models/objs/node_obj/NodeObj";
 import { NodeParam, PortDataFlow, PortDirection, PortValueType } from "../../../../../core/models/objs/node_obj/NodeParam";
 import { Registry } from "../../../../../core/Registry";
-import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorCanvas";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { DirectionNodeControllers } from "../../controllers/nodes/DirectionNodeControllers";
 import { NodeShape } from "../shapes/NodeShape";

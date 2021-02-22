@@ -1,5 +1,5 @@
 import { Mesh, Observer } from "babylonjs";
-import { SceneEditorPanelId } from "../../../../../modules/scene_editor/main/SceneEditorModule";
+import { SceneEditorPanelId } from "../../../../../modules/scene_editor/main/SceneEditorCanvas";
 import { CanvasEventType } from "../../../../models/CanvasObservable";
 import { AbstractCanvasPanel } from "../../../../models/modules/AbstractCanvasPanel";
 import { AbstractGameObj } from "../../../../models/objs/AbstractGameObj";

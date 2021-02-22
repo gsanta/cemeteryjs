@@ -10,7 +10,7 @@ import { RotateNodeControllers } from "../../controllers/nodes/RotateNodeControl
 import { NodeShape } from "../shapes/NodeShape";
 import { MeshNodeParam, MoveDirection } from "./MoveNode";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 
 export const RotateNodeType = 'rotate-node-obj';
 

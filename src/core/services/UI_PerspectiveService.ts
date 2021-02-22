@@ -1,6 +1,6 @@
 import Split from 'split.js';
-import { SceneEditorPanelId } from '../../modules/scene_editor/main/SceneEditorModule';
-import { NodeEditorPanelId } from '../../modules/graph_editor/NodeEditorModule';
+import { SceneEditorPanelId } from '../../modules/scene_editor/main/SceneEditorCanvas';
+import { NodeEditorPanelId } from '../../modules/graph_editor/NodeEditorCanvas';
 import { NodeListPanelId } from '../../modules/graph_editor/contribs/side_panel/node_library/NodeLibraryModule';
 import { ObjectPropertiesPanelId } from '../../modules/scene_editor/contribs/side_panel/obj_properties/ObjPropertiesModule';
 import { FileSettingsPanelId } from '../../modules/contribs/side_panel/file_settings/FileSettingsModule';

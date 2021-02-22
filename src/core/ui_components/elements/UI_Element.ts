@@ -5,7 +5,7 @@ import { UI_Panel } from '../../models/UI_Panel';
 import { Registry } from '../../Registry';
 import { UI_ElementType } from './UI_ElementType';
 import { MouseEventAdapter } from '../../controller/MouseEventAdapter';
-import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { AbstractShape } from '../../../modules/graph_editor/main/models/shapes/AbstractShape';
 
 export const activeToolId = '__activeTool__'
 

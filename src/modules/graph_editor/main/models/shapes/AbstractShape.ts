@@ -1,15 +1,15 @@
-import { Point } from "../../../utils/geometry/shapes/Point";
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { FormController } from "../../controller/FormController";
-import { UIController } from "../../controller/UIController";
-import { AbstractCanvasPanel } from "../modules/AbstractCanvasPanel";
-import { Canvas2dPanel } from "../modules/Canvas2dPanel";
-import { Registry } from "../../Registry";
-import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
-import { IObj } from "../objs/IObj";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
+import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { FormController } from "../../../../../core/controller/FormController";
+import { UIController } from "../../../../../core/controller/UIController";
+import { AbstractCanvasPanel } from "../../../../../core/models/modules/AbstractCanvasPanel";
+import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
+import { Registry } from "../../../../../core/Registry";
+import { UI_SvgCanvas } from "../../../../../core/ui_components/elements/UI_SvgCanvas";
+import { IObj } from "../../../../../core/models/objs/IObj";
 import { ChildShapeContext } from "./ChildShapeContext";
-import { ChildShape } from "./child_views/ChildShape";
-import { CanvasEventType } from "../CanvasObservable";
+import { ChildShape } from "./ChildShape";
+import { CanvasEventType } from "../../../../../core/models/CanvasObservable";
 
 export interface ShapeJson {
     id: string;

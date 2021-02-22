@@ -1,11 +1,10 @@
 import { AbstractCanvasPanel } from '../models/modules/AbstractCanvasPanel';
-import { AbstractShape } from "../models/shapes/AbstractShape";
 import { Registry } from "../Registry";
 import { UI_Element } from "../ui_components/elements/UI_Element";
 import { ParamController, PropContext } from "./FormController";
 import { CameraToolId } from "./tools/CameraTool";
-import { DeleteToolId } from "./tools/DeleteTool_Svg";
-import { SelectToolId } from "./tools/SelectTool_Svg";
+import { DeleteToolId } from "../../modules/graph_editor/main/controllers/tools/DeleteTool_2D";
+import { SelectToolId } from "../../modules/graph_editor/main/controllers/tools/SelectTool_2D";
 import { Tool } from "./tools/Tool";
 
 export class CommonToolController extends ParamController<any> {
@@ -18,7 +17,6 @@ export class CommonToolController extends ParamController<any> {
 }
 
 export class ToolHandler<D> {
-    controlledView: AbstractShape;
     private scopedTool: Tool<D>;
 
     private registry: Registry;

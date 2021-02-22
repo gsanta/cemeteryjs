@@ -1,23 +1,23 @@
 import { AbstractTool } from "../../../../../core/controller/tools/AbstractTool";
-import { PointerToolLogicForSvgCanvas } from "../../../../../core/controller/tools/PointerTool";
 import { Cursor, ToolType } from '../../../../../core/controller/tools/Tool';
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { NodeObj } from "../../../../../core/models/objs/node_obj/NodeObj";
-import { AbstractShape } from "../../../../../core/models/shapes/AbstractShape";
-import { NodePortShape, NodePortViewType } from "../../../../../core/models/shapes/child_views/NodePortShape";
+import { AbstractShape } from "../../models/shapes/AbstractShape";
+import { NodePortShape, NodePortViewType } from "../../models/shapes/NodePortShape";
 import { Registry } from "../../../../../core/Registry";
 import { Point } from "../../../../../utils/geometry/shapes/Point";
 import { NodeConnectionShapeFactory } from "../../models/shapes/NodeConnectionShape";
+import { PointerLogic } from "./SelectTool_2D";
 
 export class JoinTool extends AbstractTool<AbstractShape> {
     startPoint: Point;
     endPoint: Point;
     nodePortView1: NodePortShape;
-    private pointerTool: PointerToolLogicForSvgCanvas;
+    private pointerTool: PointerLogic;
 
     constructor(canvas: Canvas2dPanel,  registry: Registry) {
         super(ToolType.Join, canvas, registry);
-        this.pointerTool = new PointerToolLogicForSvgCanvas(registry, canvas);
+        this.pointerTool = new PointerLogic(registry, canvas);
     }
 
     down() {

@@ -13,7 +13,7 @@ import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { UI_ControlledElementConfig, UI_ElementConfig } from './UI_Element';
 import { ParamController } from '../../controller/FormController';
 import { TreeController } from './complex/tree/TreeController';
-import { AbstractShape } from '../../models/shapes/AbstractShape';
+import { AbstractShape } from '../../../modules/graph_editor/main/models/shapes/AbstractShape';
 import { AbstractScene } from 'babylonjs';
 
 export class UI_DefaultContainer extends UI_Container {

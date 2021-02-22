@@ -3,16 +3,16 @@ import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
-import { SceneEditorModule } from "../SceneEditorModule";
+import { SceneEditorCanvas } from "../SceneEditorCanvas";
 import { GizmoType } from "../GizmoHandler";
 import { UI_Toolbar } from "../../../../core/ui_components/elements/toolbar/UI_Toolbar";
-import { SelectToolId } from "../../../../core/controller/tools/SelectTool_Svg";
+import { SelectToolId } from "../../../graph_editor/main/controllers/tools/SelectTool_2D";
 
 export class SceneEditorRenderer implements ICanvasRenderer {
-    private canvas: SceneEditorModule;
+    private canvas: SceneEditorCanvas;
     private controllers: SceneEditorToolbarController;
 
-    constructor(canvas: SceneEditorModule, controllers: SceneEditorToolbarController) {
+    constructor(canvas: SceneEditorCanvas, controllers: SceneEditorToolbarController) {
         this.canvas = canvas;
         this.controllers = controllers;
     }

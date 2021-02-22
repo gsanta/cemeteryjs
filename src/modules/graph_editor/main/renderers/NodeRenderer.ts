@@ -1,6 +1,6 @@
 import { NodeParam, PortDirection, PortValueType } from '../../../../core/models/objs/node_obj/NodeParam';
-import { NodePortShape } from '../../../../core/models/shapes/child_views/NodePortShape';
-import { ShapeRenderer, ShapeTag } from '../../../../core/models/shapes/AbstractShape';
+import { NodePortShape } from '../models/shapes/NodePortShape';
+import { ShapeRenderer, ShapeTag } from '../models/shapes/AbstractShape';
 import { AbstractCanvasPanel } from '../../../../core/models/modules/AbstractCanvasPanel';
 import { InputParamType, MultiSelectController } from '../../../../core/controller/FormController';
 import { UI_SvgForeignObject } from '../../../../core/ui_components/elements/svg/UI_SvgForeignObject';
@@ -9,7 +9,7 @@ import { UI_Column } from '../../../../core/ui_components/elements/UI_Column';
 import { UI_SvgCanvas } from '../../../../core/ui_components/elements/UI_SvgCanvas';
 import { colors, sizes } from '../../../../core/ui_components/react/styles';
 import { NodeHeightCalc, NodeShape } from '../models/shapes/NodeShape';
-import { NodeEditorModule } from '../../NodeEditorModule';
+import { NodeEditorCanvas } from '../../NodeEditorCanvas';
 
 export class NodeRenderer implements ShapeRenderer {
     private joinPointsHeight: number;
@@ -19,7 +19,7 @@ export class NodeRenderer implements ShapeRenderer {
         this.nodeView = nodeView;
     }
 
-    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeShape, canvas: NodeEditorModule): void {
+    renderInto(svgCanvas: UI_SvgCanvas, nodeView: NodeShape, canvas: NodeEditorCanvas): void {
         const group = svgCanvas.group(nodeView.id);
         group.transform = `translate(${nodeView.getBounds().topLeft.x} ${nodeView.getBounds().topLeft.y})`;
 
@@ -29,7 +29,7 @@ export class NodeRenderer implements ShapeRenderer {
         this.renderInputsInto(column, nodeView, canvas);
     }
 
-    private renderInputsInto(column: UI_Column, nodeView: NodeShape, canvas: NodeEditorModule) {
+    private renderInputsInto(column: UI_Column, nodeView: NodeShape, canvas: NodeEditorCanvas) {
         nodeView.getFieldParams()
             .map(param => {
                 let row = column.row({key: param.name});

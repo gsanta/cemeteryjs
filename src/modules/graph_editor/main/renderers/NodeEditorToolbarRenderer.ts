@@ -1,19 +1,19 @@
 import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
-import { DeleteToolId } from "../../../../core/controller/tools/DeleteTool_Svg";
-import { SelectToolId } from "../../../../core/controller/tools/SelectTool_Svg";
+import { DeleteToolId } from "../controllers/tools/DeleteTool_2D";
+import { SelectToolId } from "../controllers/tools/SelectTool_2D";
 import { IRenderer } from "../../../../core/models/IRenderer";
 import { ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { Registry } from "../../../../core/Registry";
 import { UI_SvgCanvas } from "../../../../core/ui_components/elements/UI_SvgCanvas";
-import { NodeEditorModule } from "../../NodeEditorModule";
+import { NodeEditorCanvas } from "../../NodeEditorCanvas";
 import { NodeEditorToolbarController } from "../controllers/NodeEditorToolbarController";
 
 export class NodeEditorToolbarRenderer implements IRenderer<UI_SvgCanvas> {
     private registry: Registry;
     private controller: NodeEditorToolbarController;
-    private canvas: NodeEditorModule;
+    private canvas: NodeEditorCanvas;
 
-    constructor(registry: Registry, canvas: NodeEditorModule, controller: NodeEditorToolbarController) {
+    constructor(registry: Registry, canvas: NodeEditorCanvas, controller: NodeEditorToolbarController) {
         this.registry = registry;
         this.canvas = canvas;
         this.controller = controller;

@@ -1,20 +1,61 @@
-import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
-import { Canvas3dPanel } from "../../models/modules/Canvas3dPanel";
-import { AbstractGameObj } from "../../models/objs/AbstractGameObj";
-import { UI_Region } from "../../models/UI_Panel";
-import { Registry } from "../../Registry";
-import { PointerTracker } from "../PointerHandler";
-import { AbstractTool, createRectFromMousePointer } from "./AbstractTool";
-import { PointerToolLogicForWebGlCanvas } from "./PointerTool";
-import { SelectToolId } from "./SelectTool_Svg";
-import { Cursor } from "./Tool";
+import { Rectangle } from "../../../../../utils/geometry/shapes/Rectangle";
+import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
+import { AbstractGameObj } from "../../../../../core/models/objs/AbstractGameObj";
+import { UI_Region } from "../../../../../core/models/UI_Panel";
+import { Registry } from "../../../../../core/Registry";
+import { PointerTracker } from "../../../../../core/controller/PointerHandler";
+import { AbstractTool, createRectFromMousePointer } from "../../../../../core/controller/tools/AbstractTool";
+import { SelectToolId } from "../../../../graph_editor/main/controllers/tools/SelectTool_2D";
+import { Cursor } from "../../../../../core/controller/tools/Tool";
+import { IObj } from "../../../../../core/models/objs/IObj";
 
-export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
-    private pointerTool: PointerToolLogicForWebGlCanvas;
+class PointerLogic extends AbstractTool<IObj> {
+    pickedItem: AbstractGameObj;    
+    
+    constructor(registry: Registry, canvas: Canvas3dPanel) {
+        super('pointer-tool', canvas, registry);
+        this.registry = registry;
+        this.canvas = canvas;
+    }
+
+    click(pointer: PointerTracker<IObj>): boolean {
+        if (pointer.pickedItem) {
+            this.pickedItem = <AbstractGameObj> pointer.pickedItem;
+            return true;
+        }
+        return false;    
+    }
+
+    up(pointer: PointerTracker<IObj>): boolean {
+        if (this.pickedItem) {
+            this.pickedItem.addTag('select');
+            return true;
+        }
+
+        return false;
+    }
+
+    hover(item: AbstractGameObj) {
+        item.setBoundingBoxVisibility(true);
+        return true;
+    }
+
+    unhover(item: AbstractGameObj) {
+        item.setBoundingBoxVisibility(false);
+        return true;
+    }
+
+    drag(ponter: PointerTracker<IObj>): boolean {
+        return false;
+    }
+}
+
+export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
+    private pointerTool: PointerLogic;
 
     constructor(canvas: Canvas3dPanel, registry: Registry) {
         super(SelectToolId, canvas, registry);
-        this.pointerTool = new PointerToolLogicForWebGlCanvas(registry, canvas);
+        this.pointerTool = new PointerLogic(registry, canvas);
     }
 
     down(pointer: PointerTracker<AbstractGameObj>) {

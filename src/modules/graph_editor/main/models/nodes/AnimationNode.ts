@@ -4,10 +4,10 @@ import { Registry } from "../../../../../core/Registry";
 import { NodeShape } from "../shapes/NodeShape";
 import { AbstractNodeFactory } from "../../api/AbstractNode";
 import { AnimationNodeControllers } from "../../controllers/nodes/AnimationNodeControllers";
-import { NodeEditorPanelId } from "../../../NodeEditorModule";
+import { NodeEditorPanelId } from "../../../NodeEditorCanvas";
 import { Canvas2dPanel } from "../../../../../core/models/modules/Canvas2dPanel";
 import { Canvas3dPanel } from "../../../../../core/models/modules/Canvas3dPanel";
-import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorModule";
+import { SceneEditorPanelId } from "../../../../scene_editor/main/SceneEditorCanvas";
 
 export const AnimationNodeType = 'animation-node-obj';
 
