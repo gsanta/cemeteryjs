@@ -1,12 +1,12 @@
 import { InteractionMode, ZoomInProp, ZoomOutProp } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
 import { CameraToolId } from "../../../../core/controller/tools/CameraTool";
-import { SelectToolId } from "../../../../core/controller/tools/SelectTool";
 import { UI_HtmlCanvas } from "../../../../core/ui_components/elements/UI_HtmlCanvas";
 import { GameViewerProps, SceneEditorToolbarController } from "../../contribs/toolbar/SceneEditorToolbarController";
 import { SceneEditorModule } from "../SceneEditorModule";
 import { GizmoType } from "../GizmoHandler";
 import { UI_Toolbar } from "../../../../core/ui_components/elements/toolbar/UI_Toolbar";
+import { SelectToolId } from "../../../../core/controller/tools/SelectTool_Svg";
 
 export class SceneEditorRenderer implements ICanvasRenderer {
     private canvas: SceneEditorModule;

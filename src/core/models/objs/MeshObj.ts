@@ -87,7 +87,7 @@ export class MeshObj extends AbstractGameObj {
         this.canvas = canvas;
         this.meshAdapter = canvas.engine.meshes;
 
-        this.canvas.data.items.addItem(this);
+        this.canvas.data.items.add(this);
     }
 
     static CreateMesh(canvas: Canvas3dPanel) {

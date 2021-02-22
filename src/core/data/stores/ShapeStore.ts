@@ -18,7 +18,7 @@ export function getIntersectingViews(store: IStore<AbstractShape>, rectangle: Re
 
     const polygon = Polygon.createRectangle(x, y, width, height);
 
-    return store.getAllItems().filter(item => polygon.contains(item.getBounds().toPolygon()));
+    return store.getAll().filter(item => polygon.contains(item.getBounds().toPolygon()));
 }
 
 export interface ShapeStoreHook {
@@ -56,7 +56,7 @@ export class ShapeStore implements IStore<AbstractShape> {
 
     // TODO cache it to make find fast
     find<T>(prop: (item: AbstractShape) => T, expectedVal: T): AbstractShape[] {
-        return this.getAllItems().filter(item => prop(item) === expectedVal);
+        return this.getAll().filter(item => prop(item) === expectedVal);
     }
 
     setIdGenerator(idGenerator: IdGenerator) {
@@ -86,7 +86,7 @@ export class ShapeStore implements IStore<AbstractShape> {
         return this.viewFactories.get(viewType);
     }
 
-    addItem(shape: AbstractShape) {
+    add(shape: AbstractShape) {
         if (!shape.id) {
             shape.id = this.generateId(shape);
         }
@@ -105,12 +105,12 @@ export class ShapeStore implements IStore<AbstractShape> {
         this.hooks.forEach(hook => hook.addViewHook(shape));
     }
 
-    removeItem(shape: AbstractShape) {
+    remove(shape: AbstractShape) {
         if (shape.isSelected()) {
             this.removeSelectedItem(shape);
         }
 
-        shape.deleteConstraiedViews.getViews().forEach(v => this.removeItem(v));
+        shape.deleteConstraiedViews.getViews().forEach(v => this.remove(v));
 
         this.idGenerator.unregisterExistingIdForPrefix(shape.viewType, shape.id);
         this.idMap.delete(shape.id);
@@ -131,13 +131,19 @@ export class ShapeStore implements IStore<AbstractShape> {
         return this.idMap.has(id);
     }
 
-    getItemById(id: string = ''): AbstractShape {
+    getById(id: string = ''): AbstractShape {
         if (id.indexOf('/') !== -1) {
             return this.getByFqn(id);
         }
         
         return this.idMap.get(id);
     }
+
+    getByTag(tag: string): AbstractShape[] {
+        return [];
+    }
+
+    clearTag(tag: string): void {}
 
     private getByFqn(fqn: string): AbstractShape {
         const ids = fqn.split('/');
@@ -151,7 +157,7 @@ export class ShapeStore implements IStore<AbstractShape> {
         return shape;
     }
 
-    getItemsByType(type: string): AbstractShape[] {
+    getByType(type: string): AbstractShape[] {
         return this.shapesByType.get(type) || [];
     }
 
@@ -159,7 +165,7 @@ export class ShapeStore implements IStore<AbstractShape> {
         return Array.from(this.shapesByType.keys());
     }
 
-    getAllItems(): AbstractShape[]  {
+    getAll(): AbstractShape[]  {
         return this.shapes;
     }
 
@@ -180,14 +186,14 @@ export class ShapeStore implements IStore<AbstractShape> {
     }
 
     clear() {
+        this.shapes.forEach(shape => shape.clearTags());
         while(this.shapes.length > 0) {
-            this.removeItem(this.shapes[0]);
+            this.remove(this.shapes[0]);
         }
         this.idMap = new Map();
         this.shapesByType = new Map();
         this.byObjIdMap = new Map();
         this.idGenerator.clear();
-        this.canvas.data.selection.clear();
     }
 
     static newInstance(registry: Registry, canvas: AbstractCanvasPanel<AbstractShape>): ShapeStore {
@@ -201,7 +207,7 @@ const handler = {
     get: function(target: ShapeStore, prop, receiver) {
 		var propValue = target[prop];
         if (typeof propValue != "function") {
-			return target.getItemById(prop);
+			return target.getById(prop);
 		}
 		else{
 			return function(){
@@ -221,6 +227,6 @@ export class ShapeLifeCycleHook extends EmptyShapeStoreHook {
     }
 
     removeViewHook(view: AbstractShape) {
-        view.getObj() && this.registry.data.scene.items.removeItem(view.getObj());
+        view.getObj() && this.registry.data.scene.items.remove(view.getObj());
     }
 }

@@ -96,7 +96,7 @@ export class SaveController extends ParamController {
 
     async click() {
         this.meshObj.physicsImpostorObj = this.impostorObj;
-        this.registry.data.scene.items.addItem(this.impostorObj);
+        this.registry.data.scene.items.add(this.impostorObj);
         this.registry.engine.physics.applyImpostor(this.impostorObj, this.meshObj);
 
         this.registry.services.history.createSnapshot();

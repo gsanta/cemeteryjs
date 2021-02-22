@@ -38,7 +38,7 @@ export class Exporter_Scene extends AbstractModuleExporter {
     }
 
     exportObjs(): ObjJson[] {
-        return this.registry.data.scene.items.getAllItems()
+        return this.registry.data.scene.items.getAll()
             .filter(obj => this.acceptedObjTypes.includes(obj.objType))
             .map(obj => obj.serialize());
     }

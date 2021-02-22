@@ -1,12 +1,17 @@
 
 
 export interface IStore<D> {
-    addItem(item: D);
-    removeItem(item: D);
-    getItemById(id: string): D;
-    getAllItems(): D[];
-    getItemsByType(type: string): D[];
-    generateId(item: D): string;
+    add(item: D);
+    remove(item: D);
+    
+    getById(id: string): D;
+    getAll(): D[];
+    getByType(type: string): D[];
+    getByTag(tag: string): D[];
+    
+    clearTag(tag: string): void;
     clear(): void;
+    
+    generateId(item: D): string;
     find<T>(prop: (item: D) => T, expectedVal: T): D[];
 }

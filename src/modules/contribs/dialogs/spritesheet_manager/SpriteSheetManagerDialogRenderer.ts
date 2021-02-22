@@ -53,7 +53,7 @@ export class SpriteSheetManagerDialogRenderer implements IRenderer<UI_Dialog> {
     }
 
     private renderTableRows(table: UI_Table) {
-        this.registry.data.scene.items.getItemsByType(SpriteSheetObjType).forEach((spriteSheet: SpriteSheetObj) => {
+        this.registry.data.scene.items.getByType(SpriteSheetObjType).forEach((spriteSheet: SpriteSheetObj) => {
             const jsonAsset = this.registry.stores.assetStore.getAssetById(spriteSheet.jsonAssetId);
             const spriteSheetAsset = this.registry.stores.assetStore.getAssetById(spriteSheet.spriteAssetId);
 

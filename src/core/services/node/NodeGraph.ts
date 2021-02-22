@@ -39,7 +39,7 @@ export class NodeGraph {
     }
 
     getNodesByType(nodeType: string) {
-        return (<NodeShape[]> this.registry.data.node.items.getItemsByType(NodeShapeType)).filter(node => node.getObj().type === nodeType);
+        return (<NodeShape[]> this.registry.data.node.items.getByType(NodeShapeType)).filter(node => node.getObj().type === nodeType);
     }
 
     findConnectedNodeWithType<T extends NodeObj>(node: NodeObj, expectedType: string): T {

@@ -29,7 +29,7 @@ export class DeleteTool_Svg extends AbstractTool<AbstractShape> {
         if (hoveredItem.isContainedView()) {
             hoveredItem.containerShape.deleteContainedView(hoveredItem);
         } else {
-            this.canvas.data.items.removeItem(hoveredItem);
+            this.canvas.data.items.remove(hoveredItem);
         }
         
         this.registry.services.level.updateCurrentLevel();
@@ -42,7 +42,7 @@ export class DeleteTool_Svg extends AbstractTool<AbstractShape> {
     
     dragEnd() {
         const intersectingViews = getIntersectingViews(this.canvas.data.items, this.rectangleSelection);
-        intersectingViews.forEach(view =>  this.canvas.data.items.removeItem(view));
+        intersectingViews.forEach(view =>  this.canvas.data.items.remove(view));
 
         this.rectangleSelection = undefined;
 

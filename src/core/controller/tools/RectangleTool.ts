@@ -1,13 +1,12 @@
 import { Rectangle } from '../../../utils/geometry/shapes/Rectangle';
 import { PointerTracker } from '../PointerHandler';
-import { AbstractShape } from '../../models/shapes/AbstractShape';
 import { Registry } from '../../Registry';
-import { ShapeStore } from '../../data/stores/ShapeStore';
 import { AbstractCanvasPanel } from '../../models/modules/AbstractCanvasPanel';
 import { UI_Region } from '../../models/UI_Panel';
 import { createRectFromMousePointer, AbstractTool } from './AbstractTool';
+import { AbstractShape } from "../../models/shapes/AbstractShape";
 
-export abstract class RectangleTool<AbstractShape> extends AbstractTool<AbstractShape> {
+export abstract class RectangleTool extends AbstractTool<AbstractShape> {
     protected rectangleFeedback: Rectangle;
     protected tmpView: AbstractShape;
     protected rectRadius = 50;
@@ -22,8 +21,8 @@ export abstract class RectangleTool<AbstractShape> extends AbstractTool<Abstract
 
         const view = this.createView(rect);
 
-        this.canvas.data.selection.clear()
-        this.canvas.data.selection.addItem(view);
+        this.canvas.data.items.clearTag('select');
+        view.addTag('select');
 
         this.registry.services.level.updateCurrentLevel();
         this.registry.services.history.createSnapshot();

@@ -1,31 +1,26 @@
 
 
 import { FormController } from "../../core/controller/FormController";
-import { ItemData } from "../../core/data/ItemData";
-import { Camera2D } from "../../core/models/misc/camera/Camera2D";
-import { ShapeObservable } from "../../core/models/ShapeObservable";
-import { AbstractShape } from "../../core/models/shapes/AbstractShape";
-import { Canvas2dPanel } from "../../core/models/modules/Canvas2dPanel";
 import { CameraTool } from "../../core/controller/tools/CameraTool";
 import { DeleteTool_Svg } from "../../core/controller/tools/DeleteTool_Svg";
-import { PointerToolLogicForSvgCanvas } from "../../core/controller/tools/PointerTool";
-import { SelectionToolLogicForSvgCanvas, SelectTool } from "../../core/controller/tools/SelectTool";
+import { SelectTool_Svg } from "../../core/controller/tools/SelectTool_Svg";
+import { ItemData } from "../../core/data/ItemData";
+import { ShapeLifeCycleHook, ShapeStore } from "../../core/data/stores/ShapeStore";
+import { TagStore } from "../../core/data/stores/TagStore";
+import { Camera2D } from "../../core/models/misc/camera/Camera2D";
+import { Canvas2dPanel } from "../../core/models/modules/Canvas2dPanel";
+import { AbstractShape } from "../../core/models/shapes/AbstractShape";
 import { UI_Region } from "../../core/models/UI_Panel";
 import { Registry } from "../../core/Registry";
 import { AbstractModuleExporter } from "../../core/services/export/AbstractModuleExporter";
 import { AbstractModuleImporter } from "../../core/services/import/AbstractModuleImporter";
 import { NodeGraphHook } from "../../core/services/NodePlugin";
-import { SelectionStoreForNodeEditor } from "../../core/data/stores/SelectionStoreForNodeEditor";
-import { ShapeLifeCycleHook, ShapeStore } from "../../core/data/stores/ShapeStore";
 import { Point } from "../../utils/geometry/shapes/Point";
 import { NodeEditorToolbarController } from "./main/controllers/NodeEditorToolbarController";
 import { JoinTool } from "./main/controllers/tools/JoinTool";
 import { NodeEditorExporter } from "./main/io/NodeEditorExporter";
 import { NodeEditorImporter } from "./main/io/NodeEditorImporter";
-import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "./main/models/shapes/NodeConnectionShape";
 import { NodeEditorRenderer } from "./main/renderers/NodeEditorRenderer";
-import { SelectTool_Svg } from "../../core/controller/tools/SelectTool_Svg";
-import { TagStore } from "../../core/data/stores/TagStore";
 
 export const NodeEditorPanelId = 'node-editor'; 
 export const NodeEditorToolControllerId = 'node-editor-tool-controller';
@@ -42,8 +37,6 @@ export class NodeEditorModule extends Canvas2dPanel {
 
         this.data = {
             items: ShapeStore.newInstance(registry, this),
-            selection: new SelectionStoreForNodeEditor(),
-            tags: new TagStore(this)
         }
 
         registry.data.node = this.data;

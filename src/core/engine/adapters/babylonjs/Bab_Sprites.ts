@@ -59,7 +59,7 @@ export class Bab_Sprites implements ISpriteAdapter {
     }
 
     createInstance(spriteObj: SpriteObj) {
-        const spriteSheetObj = this.registry.data.scene.items.getItemById(spriteObj.spriteSheetId);
+        const spriteSheetObj = this.registry.data.scene.items.getById(spriteObj.spriteSheetId);
 
         //  TODO: better place for it!
         if (!this.placeholderSpriteManager) {

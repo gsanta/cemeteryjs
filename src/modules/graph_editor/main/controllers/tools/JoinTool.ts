@@ -53,7 +53,7 @@ export class JoinTool extends AbstractTool<AbstractShape> {
 
             connectionShape.setInputPoint(inputPort.getAbsolutePosition());
             connectionShape.setOutputPoint(outputPort.getAbsolutePosition());
-            this.registry.data.node.items.addItem(connectionShape);
+            this.registry.data.node.items.add(connectionShape);
 
             this.registry.services.history.createSnapshot();
 

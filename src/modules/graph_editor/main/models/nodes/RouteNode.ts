@@ -123,14 +123,14 @@ export class RouteNodeExecutor extends AbstractNodeExecutor<RouteNodeParams> {
     private getMeshObj(nodeObj: NodeObj, registry: Registry): MeshObj {
         if (nodeObj.getPort('mesh').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('mesh').getConnectedPorts()[0].getNodeParam();
-            return <MeshObj> registry.data.node.items.getItemById(nodeParam.ownVal)?.getObj();
+            return <MeshObj> registry.data.node.items.getById(nodeParam.ownVal)?.getObj();
         }
     }
 
     private getPathObj(nodeObj: NodeObj, registry: Registry): PathObj {
         if (nodeObj.getPort('path').hasConnectedPort()) {
             const nodeParam = nodeObj.getPort('path').getConnectedPorts()[0].getNodeParam();
-            return <PathObj> registry.data.scene.items.getItemById(nodeParam.ownVal);
+            return <PathObj> registry.data.scene.items.getById(nodeParam.ownVal);
         }
     }
 }

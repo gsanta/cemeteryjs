@@ -6,7 +6,6 @@ import { UI_Region } from "../../../../core/models/UI_Panel";
 import { Registry } from "../../../../core/Registry";
 import { ApplicationError } from "../../../../core/services/ErrorService";
 import { TreeController, TreeData } from "../../../../core/ui_components/elements/complex/tree/TreeController";
-import { MeshShape } from "../../../sketch_editor/main/models/shapes/MeshShape";
 import { MeshLoaderPreviewCanvas } from "./MeshLoaderPreviewCanvas";
 
 export class MeshLoaderDialogControllers extends DialogController {
@@ -276,26 +275,21 @@ export class SaveController extends ParamController {
 
     async click() {
         const { modelObj } = this.meshObj;
-        const meshView = <MeshShape> this.registry.data.sketch.selection.getAllItems()[0];
-        const meshObj = meshView.getObj();
+        const meshObj = this.registry.data.scene.items.getByTag('select')[0] as MeshObj;
         const assetObj = new AssetObj(this.registry.services.module.ui.sceneEditor, {path: modelObj.path, name: modelObj.name, assetType: modelObj.assetType});
         
         this.registry.engine.meshes.deleteInstance(meshObj);
         this.registry.stores.assetStore.addObj(assetObj);
         meshObj.modelObj = assetObj;
         await this.registry.engine.meshLoader.load(meshObj.modelObj);
-        this.registry.engine.meshLoader.setPrimaryMeshNode(meshView.getObj().modelObj, this.controllers.tree.selectedNodeName);
-        await this.registry.engine.meshes.createInstance(meshView.getObj());
-
-        const realDimensions = this.registry.engine.meshes.getDimensions(meshView.getObj());
-        meshView.getBounds().setWidth(realDimensions.x);
-        meshView.getBounds().setHeight(realDimensions.y);
+        this.registry.engine.meshLoader.setPrimaryMeshNode(meshObj.modelObj, this.controllers.tree.selectedNodeName);
+        await this.registry.engine.meshes.createInstance(meshObj);
 
         const textureAssetObj = this.meshObj.textureObj;
         if (textureAssetObj) {
             this.registry.stores.assetStore.addObj(textureAssetObj);
-            meshView.getObj().textureObj = textureAssetObj;
-            this.registry.engine.meshes.createMaterial(meshView.getObj());
+            meshObj.textureObj = textureAssetObj;
+            this.registry.engine.meshes.createMaterial(meshObj);
         }
 
         this.registry.services.history.createSnapshot();

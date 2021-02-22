@@ -1,13 +1,10 @@
 import { Canvas2dPanel } from "../../../../core/models/modules/Canvas2dPanel";
-import { AfterAllObjsDeserialized, IObj, ObjJson } from "../../../../core/models/objs/IObj";
-import { LightObjType } from "../../../../core/models/objs/LightObj";
-import { NodeObj, NodeObjJson, NodeObjType } from "../../../../core/models/objs/node_obj/NodeObj";
-import { SpriteSheetObjType } from "../../../../core/models/objs/SpriteSheetObj";
+import { ObjJson } from "../../../../core/models/objs/IObj";
+import { NodeObj } from "../../../../core/models/objs/node_obj/NodeObj";
 import { AbstractShape, ShapeFactoryAdapter, ShapeJson } from "../../../../core/models/shapes/AbstractShape";
 import { Registry } from "../../../../core/Registry";
 import { AbstractModuleImporter } from "../../../../core/services/import/AbstractModuleImporter";
-import { LightViewFactory } from "../../../sketch_editor/main/models/factories/LightViewFactory";
-import { SketchEditorPanelId } from "../../../sketch_editor/main/SketchEditorModule";
+import { NodeEditorPanelId } from "../../NodeEditorModule";
 import { NodeConnectionShapeFactory, NodeConnectionShapeType } from "../models/shapes/NodeConnectionShape";
 import { NodeShapeType } from "../models/shapes/NodeShape";
 
@@ -24,7 +21,7 @@ export class NodeEditorImporter extends AbstractModuleImporter {
     constructor(registry: Registry) {
         super();
         this.registry = registry;
-        this.shapeFactories.set(NodeConnectionShapeType, new NodeConnectionShapeFactory(<Canvas2dPanel> registry.services.module.ui.getCanvas(SketchEditorPanelId)));
+        this.shapeFactories.set(NodeConnectionShapeType, new NodeConnectionShapeFactory(<Canvas2dPanel> registry.services.module.ui.getCanvas(NodeEditorPanelId)));
     }
 
     import(data: ImportData): void {
@@ -39,14 +36,14 @@ export class NodeEditorImporter extends AbstractModuleImporter {
             let viewInstance: AbstractShape;
         
             if (viewJson.type === NodeShapeType) {
-                const nodeObj = (<NodeObj> this.registry.data.scene.items.getItemById(viewJson.objId));
+                const nodeObj = (<NodeObj> this.registry.data.scene.items.getById(viewJson.objId));
                 viewInstance = this.registry.data.helper.node.createView(nodeObj.type, nodeObj)
                 viewInstance.fromJson(viewJson, this.registry);
             } else {
                 viewInstance = this.shapeFactories.get(viewJson.type).instantiate();
                 viewInstance.fromJson(viewJson, this.registry);
             }
-            store.addItem(viewInstance);
+            store.add(viewInstance);
         });
     }
 

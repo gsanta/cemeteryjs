@@ -11,7 +11,6 @@ export class DataLookup {
     
     scene: ItemData<IObj>;
     node: ItemData<AbstractShape>
-    sketch: ItemData<AbstractShape>;
     
     private _registry: Registry;
 
@@ -23,7 +22,6 @@ export class DataLookup {
     }
 
     clearData() {
-        this.sketch.items.clear();
         this.node.items.clear();
         this.scene.items.clear();
 

@@ -7,8 +7,9 @@ import { Registry } from "../../Registry";
 import { PointerTracker } from "../PointerHandler";
 import { AbstractTool, createRectFromMousePointer } from "./AbstractTool";
 import { PointerToolLogicForSvgCanvas } from "./PointerTool";
-import { SelectToolId } from "./SelectTool";
 import { Cursor } from "./Tool";
+
+export const SelectToolId = 'select-tool';
 
 export class SelectTool_Svg extends AbstractTool<AbstractShape> {
     private pointerTool: PointerToolLogicForSvgCanvas;
@@ -24,7 +25,7 @@ export class SelectTool_Svg extends AbstractTool<AbstractShape> {
 
     click(pointer: PointerTracker<AbstractShape>) {
         if (!this.pointerTool.click(pointer)) {
-            this.canvas.data.selection.clear();
+            this.canvas.data.items.clearTag('select');
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
         }
     }
@@ -47,10 +48,10 @@ export class SelectTool_Svg extends AbstractTool<AbstractShape> {
         if (!changed) {
             if (!this.rectangleSelection) { return }
     
-            const intersectingShapes = this.getIntersectingItems(this.rectangleSelection);
+            const intersectingItems = this.getIntersectingItems(this.rectangleSelection);
             
-            this.canvas.data.selection.clear();
-            intersectingShapes.forEach(shape => this.canvas.data.selection.addItem(shape));
+            this.canvas.data.items.clearTag('select');
+            intersectingItems.forEach(item => item.addTag('select'));
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);

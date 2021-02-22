@@ -9,9 +9,8 @@ import { RayHelperNode } from '../modules/graph_editor/main/models/nodes/RayHelp
 import { RemoveMeshNode } from '../modules/graph_editor/main/models/nodes/RemoveMeshNode';
 import { RotateNode } from '../modules/graph_editor/main/models/nodes/RotateNode';
 import { TriggerZoneNode } from '../modules/graph_editor/main/models/nodes/TriggerZoneNode';
-import { ThumbnailCanvasModule } from '../modules/sketch_editor/contribs/dialog/thumbnail/ThumbnailCanvasModule';
 import { Registry } from './Registry';
-import { ObjLifeCycleHook, ObjStore } from './data/stores/ObjStore';
+import { ObjStore } from './data/stores/ObjStore';
 import { CollisionNode } from '../modules/graph_editor/main/models/nodes/CollisionNode';
 import { DirectionNode } from '../modules/graph_editor/main/models/nodes/DirectionNode';
 import { ArrayNode } from '../modules/graph_editor/main/models/nodes/ArrayNode';
@@ -19,13 +18,11 @@ import { LayoutSettingsModule } from '../modules/contribs/side_panel/layout_sett
 import { FileSettingsModule } from '../modules/contribs/side_panel/file_settings/FileSettingsModule';
 import { NodeLibraryModule } from '../modules/graph_editor/contribs/side_panel/node_library/NodeLibraryModule';
 import { AssetManagerModule } from '../modules/contribs/side_panel/asset_manager/AssetManagerModule';
-import { ObjPropertiesModule } from '../modules/sketch_editor/contribs/side_panel/obj_properties/ObjPropertiesModule';
+import { ObjPropertiesModule } from '../modules/scene_editor/contribs/side_panel/obj_properties/ObjPropertiesModule';
 import { LevelSettingsModule } from '../modules/contribs/side_panel/level_settings/LevelSettingsModule';
-import { ThumbnailDialogModule } from '../modules/sketch_editor/contribs/dialog/thumbnail/ThumbnailDialogModule';
 import { SpriteSheetManagerDialogModule } from '../modules/contribs/dialogs/spritesheet_manager/SpriteSheetManagerDialogModule';
 import { MeshLoaderDialogModule } from '../modules/contribs/dialogs/mesh_loader/MeshLoaderDialogModule';
 import { PhysicsImpostorDialogModule } from '../modules/contribs/dialogs/physics_impostor/PhysicsImpostorDialogModule';
-import { SketchEditorModule } from '../modules/sketch_editor/main/SketchEditorModule';
 import { NodeEditorModule } from '../modules/graph_editor/NodeEditorModule';
 import { SceneEditorModule } from '../modules/scene_editor/main/SceneEditorModule';
 
@@ -42,13 +39,8 @@ export class Editor {
 
         // canvases
         this.registry.services.module.ui.registerCanvas(new SceneEditorModule(this.registry));
-        this.registry.services.module.ui.registerCanvas(new SketchEditorModule(this.registry));
         this.registry.services.module.ui.registerCanvas(new NodeEditorModule(this.registry));
-        this.registry.services.module.ui.registerCanvas(new ThumbnailCanvasModule(this.registry));
 
-        // hooks
-        (this.registry.data.scene.items as ObjStore).addHook(new ObjLifeCycleHook(this.registry));
-        
         // side panels
         this.registry.services.module.ui.registerPanel(new NodeLibraryModule(this.registry))
         this.registry.services.module.ui.registerPanel(new AssetManagerModule(this.registry))
@@ -59,23 +51,18 @@ export class Editor {
         this.registry.services.module.ui.registerPanel(new LevelSettingsModule(this.registry));
 
         // dialogs
-        this.registry.services.module.ui.registerPanel(new ThumbnailDialogModule(this.registry));
         this.registry.services.module.ui.registerPanel(new SpriteSheetManagerDialogModule(this.registry));
         this.registry.services.module.ui.registerPanel(new MeshLoaderDialogModule(this.registry));
         this.registry.services.module.ui.registerPanel(new PhysicsImpostorDialogModule(this.registry));
     
         // nodes
         this.registry.data.helper.node.registerNode(new KeyboardNode(this.registry));
-        // this.registry.data.helper.node.registerNode(new AnimationNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshNode(this.registry));
         this.registry.data.helper.node.registerNode(new MoveNode(this.registry));
         this.registry.data.helper.node.registerNode(new RotateNode(this.registry));
-        // this.registry.data.helper.node.registerNode(new PathNode(this.registry));
-        // this.registry.data.helper.node.registerNode(new RouteNode(this.registry));
         this.registry.data.helper.node.registerNode(new RayCasterNode(this.registry));
         this.registry.data.helper.node.registerNode(new RayHelperNode(this.registry));
         this.registry.data.helper.node.registerNode(new RemoveMeshNode(this.registry));
-        // this.registry.data.helper.node.registerNode(new MeshPropertyNode(this.registry));
         this.registry.data.helper.node.registerNode(new TriggerZoneNode(this.registry));
         this.registry.data.helper.node.registerNode(new MeshVisibilityNode(this.registry));
         this.registry.data.helper.node.registerNode(new FilterMeshNode(this.registry));

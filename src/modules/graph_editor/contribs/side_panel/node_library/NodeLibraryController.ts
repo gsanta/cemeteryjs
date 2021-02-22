@@ -42,8 +42,8 @@ export class DragNodeController extends DragAndDropController {
         const nodeObj = this.registry.data.helper.node.createObj(nodeType);
         const nodeView: NodeShape = this.registry.data.helper.node.createView(nodeType, nodeObj);
 
-        this.registry.data.scene.items.addItem(nodeObj);
-        this.registry.data.node.items.addItem(nodeView);
+        this.registry.data.scene.items.add(nodeObj);
+        this.registry.data.node.items.add(nodeView);
 
         nodeView.getBounds().moveTo(canvas.pointer.pointer.curr);
         this.registry.services.history.createSnapshot();

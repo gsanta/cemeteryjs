@@ -39,7 +39,7 @@ export class LightObj extends AbstractGameObj {
         this.canvas = canvas;
         this.lightAdapter = canvas.engine.lights;
         this.observable = new ObjObservable();
-        this.canvas.data.items.addItem(this);
+        this.canvas.data.items.add(this);
 
         this.lightAdapter.createInstance(this);
         this.lightAdapter.setDiffuseColor(this, "#FFFFFF");
@@ -145,10 +145,10 @@ export class LightObj extends AbstractGameObj {
 
         const afterAllObjsDeserialized = () => {
             if (json.parentId) {
-                const parentPos =  (<MeshObj> this.canvas.data.items.getItemById(json.parentId)).getPosition();
+                const parentPos =  (<MeshObj> this.canvas.data.items.getById(json.parentId)).getPosition();
                 const pos = new Point_3(json.position.x, json.position.y, json.position.z).add(parentPos);
                 this.setPosition(pos);
-                this.setParent(<MeshObj> this.canvas.data.items.getItemById(json.parentId));
+                this.setParent(<MeshObj> this.canvas.data.items.getById(json.parentId));
                 
             } else {
                 this.setPosition(new Point_3(json.position.x, json.position.y, json.position.z));

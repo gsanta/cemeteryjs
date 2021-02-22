@@ -1,16 +1,13 @@
 import { EngineEventAdapter } from "../../../core/controller/EngineEventAdapter";
 import { FormController } from "../../../core/controller/FormController";
 import { CameraTool } from "../../../core/controller/tools/CameraTool";
-import { SelectToolId } from "../../../core/controller/tools/SelectTool";
+import { SelectToolId } from "../../../core/controller/tools/SelectTool_Svg";
 import { SelectTool_Webgl } from "../../../core/controller/tools/SelectTool_Webgl";
 import { ItemData } from "../../../core/data/ItemData";
-import { ObjSelectionStore } from "../../../core/data/stores/ObjSelectionStore";
 import { ObjStore } from "../../../core/data/stores/ObjStore";
-import { TagStore } from "../../../core/data/stores/TagStore";
 import { AxisGizmoType } from "../../../core/engine/adapters/babylonjs/gizmos/Bab_AxisGizmo";
 import { Canvas3dPanel } from "../../../core/models/modules/Canvas3dPanel";
 import { AbstractGameObj } from "../../../core/models/objs/AbstractGameObj";
-import { IObj } from "../../../core/models/objs/IObj";
 import { UI_Region } from "../../../core/models/UI_Panel";
 import { Registry } from "../../../core/Registry";
 import { AbstractModuleExporter } from "../../../core/services/export/AbstractModuleExporter";

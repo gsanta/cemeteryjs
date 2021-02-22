@@ -1,14 +1,7 @@
 import { AbstractGameObj } from "../../models/objs/AbstractGameObj";
 import { IObj } from "../../models/objs/IObj";
-import { LightObj, LightObjType } from "../../models/objs/LightObj";
-import { MeshObj, MeshObjType } from "../../models/objs/MeshObj";
-import { RayObj, RayObjType } from "../../models/objs/RayObj";
-import { SpriteObj, SpriteObjType } from "../../models/objs/SpriteObj";
-import { SpriteSheetObj, SpriteSheetObjType } from "../../models/objs/SpriteSheetObj";
-import { Registry } from "../../Registry";
 import { IdGenerator } from "../IdGenerator";
 import { IStore } from "./IStore";
-
 export interface ObjStoreHook {
     addObjHook(obj: IObj);
     removeObjHook(obj: IObj);
@@ -38,7 +31,7 @@ export class ObjStore implements IStore<AbstractGameObj> {
         return this.idGenerator.generateId(obj.objType);
     }
 
-    addItem(obj: AbstractGameObj) {
+    add(obj: AbstractGameObj) {
         if (obj.id) {
             this.idGenerator.registerExistingIdForPrefix(obj.objType, obj.id);
         } else {
@@ -56,7 +49,7 @@ export class ObjStore implements IStore<AbstractGameObj> {
         this.hooks.forEach(hook => hook.addObjHook(obj));
     }
 
-    removeItem(obj: AbstractGameObj) {
+    remove(obj: AbstractGameObj) {
         this.hooks.forEach(hook => hook.removeObjHook(obj));
 
         this.objs.splice(this.objs.indexOf(obj), 1);
@@ -72,8 +65,16 @@ export class ObjStore implements IStore<AbstractGameObj> {
         obj.dispose();
     }
 
-    getItemById(id: string) {
+    getById(id: string) {
         return this.objById.get(id) || this.getByName(id);
+    }
+
+    getByTag(tag: string): AbstractGameObj[] {
+        return this.objs.filter(obj => obj.hasTag(tag));
+    }
+
+    clearTag(tag: string): void {
+        this.objs.forEach(obj => obj.removeTag(tag));
     }
 
     private getByName(name: string) {
@@ -99,14 +100,14 @@ export class ObjStore implements IStore<AbstractGameObj> {
         this.nameCache.set(name, obj);
     }
 
-    getAllItems(): AbstractGameObj[] {
+    getAll(): AbstractGameObj[] {
         return this.objs;
     }
 
     clear() {
         while(this.objs.length > 0) {
             this.objs[0].clearTags();
-            this.removeItem(this.objs[0]);
+            this.remove(this.objs[0]);
         }
         // this.objs.forEach(obj => this.removeItem(obj));
         this.objs = [];
@@ -124,42 +125,7 @@ export class ObjStore implements IStore<AbstractGameObj> {
         this.hooks.splice(this.hooks.indexOf(hook), 1);
     }
 
-    getItemsByType(type: string): AbstractGameObj[] {
+    getByType(type: string): AbstractGameObj[] {
         return this.objsByType.get(type) || [];
-    }
-}
-
-export class ObjLifeCycleHook implements ObjStoreHook {
-    private registry: Registry;
-
-    constructor(registry: Registry) {
-        this.registry = registry;
-    }
-
-    addObjHook(obj: IObj) {
-        switch(obj.objType) {
-            case MeshObjType:
-                // this.registry.engine.meshes.createInstance(<MeshObj> obj);
-                break;
-            case SpriteObjType:
-                this.registry.engine.sprites.createInstance(<SpriteObj> obj);
-                break;
-            case SpriteSheetObjType:
-                this.registry.engine.spriteLoader.loadSpriteSheet(<SpriteSheetObj> obj);
-                break;
-            case LightObjType:
-                // this.registry.engine.lights.createInstance(<LightObj> obj);
-                break;
-            case RayObjType:
-                this.registry.engine.rays.createInstance(<RayObj> obj);
-                break;
-        }
-    }
-
-    removeObjHook(obj: IObj) {
-        const view = this.registry.data.sketch.items.find(item => item.getObj().id, obj.id)[0];
-        if (view) {
-            this.registry.data.sketch.items.removeItem(view);
-        }
     }
 }

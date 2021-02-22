@@ -1,4 +1,3 @@
-import { GizmoType } from "../../../modules/scene_editor/main/GizmoHandler";
 import { Rectangle } from "../../../utils/geometry/shapes/Rectangle";
 import { Canvas3dPanel } from "../../models/modules/Canvas3dPanel";
 import { AbstractGameObj } from "../../models/objs/AbstractGameObj";
@@ -7,7 +6,7 @@ import { Registry } from "../../Registry";
 import { PointerTracker } from "../PointerHandler";
 import { AbstractTool, createRectFromMousePointer } from "./AbstractTool";
 import { PointerToolLogicForWebGlCanvas } from "./PointerTool";
-import { SelectToolId } from "./SelectTool";
+import { SelectToolId } from "./SelectTool_Svg";
 import { Cursor } from "./Tool";
 
 export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
@@ -24,7 +23,6 @@ export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
 
     click(pointer: PointerTracker<AbstractGameObj>) {
         this.deselectAll();
-        const canvas3d = <Canvas3dPanel> this.canvas;
 
         if (pointer.pickedItem) {
             pointer.pickedItem.addTag('select');
@@ -50,9 +48,9 @@ export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
         if (!changed) {
             if (!this.rectangleSelection) { return }
     
-            const intersectingShapes = this.getIntersectingItems(this.rectangleSelection);
+            const intersectingItems = this.getIntersectingItems(this.rectangleSelection);
             
-            intersectingShapes.forEach(shape => this.canvas.data.selection.addItem(shape));
+            intersectingItems.forEach(item => item.addTag('select'));
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
@@ -86,6 +84,6 @@ export class SelectTool_Webgl extends AbstractTool<AbstractGameObj> {
     }
 
     private deselectAll() {
-        this.canvas.data.items.getAllItems().forEach(item => item.removeTag('select'));
+        this.canvas.data.items.getAll().forEach(item => item.removeTag('select'));
     }
 }

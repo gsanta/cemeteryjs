@@ -39,7 +39,7 @@ export class SpriteObj extends AbstractGameObj {
         this.spriteAdapter = this.canvas.engine.sprites;
         this.observable = new ObjObservable();
 
-        this.canvas.data.items.addItem(this);
+        this.canvas.data.items.add(this);
     }
 
     move(point: Point) {

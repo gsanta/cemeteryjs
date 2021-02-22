@@ -67,7 +67,7 @@ export class RayCasterNodeParams extends NodeParams {
         fromJson: (registry: Registry, nodeParamJson: NodeParamJson) => {
             this.mesh.name = nodeParamJson.name;
             if (nodeParamJson.val) {
-                this.mesh.ownVal = <MeshObj> registry.data.scene.items.getItemById(nodeParamJson.val);
+                this.mesh.ownVal = <MeshObj> registry.data.scene.items.getById(nodeParamJson.val);
             }
         }
     }

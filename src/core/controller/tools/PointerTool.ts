@@ -1,13 +1,6 @@
-import { MoveAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/MoveAxisTool';
-import { RotateAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/RotateAxisTool';
-import { ScaleAxisToolId } from '../../../modules/sketch_editor/main/controllers/tools/ScaleAxisTool';
-import { MoveAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/MoveAxisShape';
-import { RotateAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/RotateAxisShape';
-import { ScaleAxisShapeType } from '../../../modules/sketch_editor/main/models/shapes/edit/ScaleAxisShape';
 import { PointerTracker } from '../PointerHandler';
 import { AbstractGameObj } from '../../models/objs/AbstractGameObj';
 import { IObj } from '../../models/objs/IObj';
-import { ShapeEventType } from '../../models/ShapeObservable';
 import { AbstractShape, ShapeTag } from '../../models/shapes/AbstractShape';
 import { NodePortViewType } from '../../models/shapes/child_views/NodePortShape';
 import { Registry } from '../../Registry';
@@ -47,7 +40,7 @@ export class PointerToolLogicForWebGlCanvas extends AbstractTool<IObj> {
 
     up(pointer: PointerTracker<IObj>): boolean {
         if (this.pickedItem) {
-            this.canvas.data.selection.addItem(this.pickedItem);
+            this.pickedItem.addTag('select');
             return true;
         }
 
@@ -92,16 +85,16 @@ export class PointerToolLogicForSvgCanvas extends AbstractTool<AbstractShape> {
         this.pickedItem = pointer.hoveredItem;
         
         if (!this.pickedItem) {
-            this.canvas.data.selection.clear();
+            this.canvas.data.items.clearTag('select');
         } else if (this.pickedItem.isContainedView()) {
             if (!this.pickedItem.containerShape.isSelected()) {
-                this.canvas.data.selection.clear();
-                this.canvas.data.selection.addItem(this.pickedItem.containerShape);
+                this.canvas.data.items.clearTag('select');
+                this.pickedItem.containerShape.addTag('select');
             }
             this.pickedItem.containerShape.setActiveContainedView(this.pickedItem);
         } else {
-            this.canvas.data.selection.clear();
-            this.canvas.data.selection.addItem(this.pickedItem);
+            this.canvas.data.items.clearTag('select');
+            this.pickedItem.addTag('select');
         }
         
         this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
@@ -117,7 +110,7 @@ export class PointerToolLogicForSvgCanvas extends AbstractTool<AbstractShape> {
     drag(): boolean {
         if (!this.pickedItem) { return false; }
 
-        let shapes = this.pickedItem.isContainedView() ? [this.pickedItem] : this.canvas.data.selection.getAllItems();
+        let shapes = this.pickedItem.isContainedView() ? [this.pickedItem] : this.canvas.data.items.getByTag('select');
         shapes = shapes.filter(shape => !shapes.includes(shape.getParent()));
         shapes.forEach(item => {
             item.move(this.canvas.pointer.pointer.getDiff())
@@ -132,15 +125,6 @@ export class PointerToolLogicForSvgCanvas extends AbstractTool<AbstractShape> {
     hover(shape: AbstractShape) {
         if (shape.viewType === NodePortViewType) {
             this.canvas.tool.setPriorityTool(ToolType.Join);
-        } else if (shape.viewType === MoveAxisShapeType) {
-            this.canvas.tool.setPriorityTool(MoveAxisToolId);
-            this.canvas.tool.getActiveTool().over(shape);
-        } else if (shape.viewType === ScaleAxisShapeType) {
-            this.canvas.tool.setPriorityTool(ScaleAxisToolId);
-            this.canvas.tool.getActiveTool().over(shape);
-        } else if (shape.viewType === RotateAxisShapeType) {
-            this.canvas.tool.setPriorityTool(RotateAxisToolId);
-            this.canvas.tool.getActiveTool().over(shape);
         }
         
         shape.tags.add(ShapeTag.Hovered);

@@ -9,6 +9,7 @@ import { UI_SvgCanvas } from "../../ui_components/elements/UI_SvgCanvas";
 import { IObj } from "../objs/IObj";
 import { ChildShapeContext } from "./ChildShapeContext";
 import { ChildShape } from "./child_views/ChildShape";
+import { CanvasEventType } from "../CanvasObservable";
 
 export interface ShapeJson {
     id: string;
@@ -48,7 +49,7 @@ export interface ShapeRenderer {
 export abstract class AbstractShape {
     id: string;
     viewType: string;
-    tags: Set<ShapeTag> = new Set();
+    tags: Set<string> = new Set();
     layer: number = 10;
 
     containerShape: AbstractShape;
@@ -94,6 +95,28 @@ export abstract class AbstractShape {
         return this.tags.has(ShapeTag.Selected);
     }
 
+    addTag(tag: string): void {
+        this.tags.add(tag);
+        this.canvas.observable.emit({eventType: CanvasEventType.TagChanged})
+    }
+
+    hasTag(tag: string): boolean {
+        return this.tags.has(tag);
+    }
+
+    removeTag(tag: string): void {
+        this.tags.delete(tag);
+        this.canvas.observable.emit({eventType: CanvasEventType.TagChanged})
+    }
+
+    clearTags(): void {
+        this.tags.clear();
+        this.canvas.observable.emit({eventType: CanvasEventType.TagChanged})
+    }
+
+    getAllTags(): string[] {
+        return Array.from(this.tags);
+    }
     
     setActiveContainedView(containedview: ChildShape) {
         this.activeContainedView = containedview;
@@ -179,7 +202,7 @@ export abstract class AbstractShape {
         this.viewType = json.type;
         this.bounds = json.dimensions && Rectangle.fromString(json.dimensions);
         if (!this.getObj() && json.objId) {
-            this.setObj(registry.data.scene.items.getItemById(json.objId));
+            this.setObj(registry.data.scene.items.getById(json.objId));
         }
     }
 }

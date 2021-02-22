@@ -34,11 +34,11 @@ export class NodeEditorExporter extends AbstractModuleExporter {
     }
 
     exportViews(): ShapeJson[] {
-        return this.registry.data.node.items.getAllItems().map(view => view.toJson());
+        return this.registry.data.node.items.getAll().map(view => view.toJson());
     }
 
     exportObjs(): ObjJson[] {
-        return this.registry.data.scene.items.getAllItems()
+        return this.registry.data.scene.items.getAll()
             .filter(obj => this.acceptedObjTypes.includes(obj.objType))
             .map(obj => obj.serialize());
     }

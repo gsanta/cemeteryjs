@@ -24,7 +24,7 @@ export class PathObj extends AbstractGameObj {
         super(canvas);
         this.canvas = canvas;
         
-        canvas.data.items.addItem(this);
+        canvas.data.items.add(this);
     }
 
     dispose() {}

@@ -1,7 +1,6 @@
 import { IRenderer } from "../../../../core/models/IRenderer";
 import { Registry } from "../../../../core/Registry";
 import { UI_Dialog } from "../../../../core/ui_components/elements/surfaces/dialog/UI_Dialog";
-import { ThumbnailCanvasId } from "../../../sketch_editor/contribs/dialog/thumbnail/ThumbnailCanvasModule";
 import { MeshLoaderPreviewCanvasId } from "./MeshLoaderPreviewCanvas";
 import { MeshLoaderDialogControllers } from "./MeshLoaderDialogControllers";
 

@@ -1,6 +1,5 @@
 import { Point } from "../../../utils/geometry/shapes/Point";
 import { Registry } from "../../Registry";
-import { HistoryService } from "../../services/HistoryService";
 import { CanvasEventType } from "../CanvasObservable";
 import { Canvas3dPanel } from "../modules/Canvas3dPanel";
 import { ObjObservable } from "../ObjObservable";

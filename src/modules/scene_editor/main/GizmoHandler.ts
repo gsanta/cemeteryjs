@@ -33,7 +33,7 @@ export class GizmoHandler {
     }
 
     private updateGizmo() {
-        const selectedItems = this.canvas.data.items.getAllItems().filter(item => item.hasTag('select'));
+        const selectedItems = this.canvas.data.items.getAll().filter(item => item.hasTag('select'));
 
         if (selectedItems.length === 1 && this.getSelectedGizmo()) {
             this.canvas.engine.gizmos.applyGizmo(selectedItems[0], this.getSelectedGizmo());

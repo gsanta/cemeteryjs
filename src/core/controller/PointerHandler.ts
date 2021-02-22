@@ -93,7 +93,7 @@ export class PointerHandler<D> {
         this.pointer.down = this.getCanvasPoint(e.pointers[0].pos); 
         this.pointer.downScreen = this.getScreenPoint(e.pointers[0].pos); 
         this.pointer.lastPointerEvent = e;
-        this.pointer.pickedItem = this.canvas.data.items.getItemById(e.pickedItemId);
+        this.pointer.pickedItem = this.canvas.data.items.getById(e.pickedItemId);
         
         this.canvas.tool.getActiveTool().down(this.pointer);
         this.registry.services.render.reRenderScheduled();
@@ -131,7 +131,7 @@ export class PointerHandler<D> {
         this.pointer.prevScreen = this.pointer.currScreen;
         this.pointer.currScreen =  this.getScreenPoint(e.pointers[0].pos);
         this.pointer.lastPointerEvent = e;
-        this.pointer.pickedItem = this.canvas.data.items.getItemById(e.pickedItemId);
+        this.pointer.pickedItem = this.canvas.data.items.getById(e.pickedItemId);
 
         const tool = this.canvas.tool.getActiveTool();
 
@@ -148,7 +148,7 @@ export class PointerHandler<D> {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
         this.pointer.lastPointerEvent = undefined;
 
-        const data = this.canvas.data.items.getItemById(e.pickedItemId);
+        const data = this.canvas.data.items.getById(e.pickedItemId);
         this.pointer.hoveredItem = undefined;
 
         this.canvas.tool.getActiveTool().out(data);
@@ -158,7 +158,7 @@ export class PointerHandler<D> {
 
     pointerOver(e: IPointerEvent) {
         if (!this.registry.ui.helper.hoveredPanel) { return; }
-        const data = this.canvas.data.items.getItemById(e.pickedItemId);
+        const data = this.canvas.data.items.getById(e.pickedItemId);
     
         this.pointer.hoveredItem = data;
         this.pointer.lastPointerEvent = undefined;
