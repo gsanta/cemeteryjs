@@ -7,6 +7,7 @@ import { SceneEditorCanvas } from "../SceneEditorCanvas";
 import { GizmoType } from "../GizmoHandler";
 import { UI_Toolbar } from "../../../../core/ui_components/elements/toolbar/UI_Toolbar";
 import { SelectToolId } from "../../../graph_editor/main/controllers/tools/SelectTool_2D";
+import { DeleteToolId } from "../../../graph_editor/main/controllers/tools/DeleteTool_2D";
 
 export class SceneEditorRenderer implements ICanvasRenderer {
     private canvas: SceneEditorCanvas;
@@ -73,6 +74,13 @@ export class SceneEditorRenderer implements ICanvasRenderer {
         tool.isActive = this.canvas.tool.getToolById(SelectToolId).isSelected;
         tooltip = tool.tooltip();
         tooltip.label = 'Select tool';
+
+        tool = toolbar.tool({key: DeleteToolId});
+        // tool.paramController = this.controller.commonTool; 
+        tool.isActive = selectedTool.id === DeleteToolId;
+        tool.icon = 'delete';
+        tooltip = tool.tooltip();
+        tooltip.label = 'Delete tool';
 
         separator = toolbar.iconSeparator();
         separator.placement = 'left';

@@ -10,6 +10,7 @@ import { IAnimationAdapter } from "./IAnimationAdapter";
 import { IPhysicsAdapter } from "./IPhysicsAdapter";
 import { IGizmoAdapter } from "./IGizmoAdapter";
 import { IEngineEventAdapter } from "./IEngineEventAdapter";
+import { IGuiAdapter } from "./IGuiAdapter";
 
 export interface IEngineFacade {
     spriteLoader: ISpriteLoaderAdapter;
@@ -23,6 +24,7 @@ export interface IEngineFacade {
     animatons: IAnimationAdapter;
     gizmos: IGizmoAdapter;
     events: IEngineEventAdapter;
+    gui: IGuiAdapter;
     
     setup(canvas: HTMLCanvasElement): void;
     clear(): void;

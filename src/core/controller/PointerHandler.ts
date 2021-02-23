@@ -204,7 +204,7 @@ export class PointerHandler<D> {
     
     private getScreenPoint(point: Point): Point {
         const offset = this.registry.ui.helper.hoveredPanel.getOffset();
-        return new Point(point.x - offset.x, point.y - offset.y);
+        return new Point(point.x, point.y);
     }
     
     private getCanvasPoint(point: Point): Point {

@@ -8,6 +8,8 @@ import { AbstractTool, createRectFromMousePointer } from "../../../../../core/co
 import { SelectToolId } from "../../../../graph_editor/main/controllers/tools/SelectTool_2D";
 import { Cursor } from "../../../../../core/controller/tools/Tool";
 import { IObj } from "../../../../../core/models/objs/IObj";
+import { GuiRectObj } from "../../../../../core/models/objs/GuiRectObj";
+import { Point } from "../../../../../utils/geometry/shapes/Point";
 
 class PointerLogic extends AbstractTool<IObj> {
     pickedItem: AbstractGameObj;    
@@ -52,6 +54,7 @@ class PointerLogic extends AbstractTool<IObj> {
 
 export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
     private pointerTool: PointerLogic;
+    private guiRectObj: GuiRectObj;
 
     constructor(canvas: Canvas3dPanel, registry: Registry) {
         super(SelectToolId, canvas, registry);
@@ -72,12 +75,19 @@ export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
     }
 
     drag(pointer: PointerTracker<AbstractGameObj>) {
-        let changed = this.pointerTool.drag(pointer);
+        // let changed = this.pointerTool.drag(pointer);
 
-        if (!changed) {
-            this.rectangleSelection = this.createSelectionRect(pointer);
-            // this.selectionLogic.drag(pointer, this.rectangleSelection);
+        if (!this.guiRectObj) {
+            this.guiRectObj = new GuiRectObj(<Canvas3dPanel> this.canvas);
+        } else {
+            this.guiRectObj.setBounds(this.createSelectionRect(pointer));
         }
+
+        // this.rectangleSelection = this.createSelectionRect(pointer);
+
+        // if (!changed) {
+            // this.selectionLogic.drag(pointer, this.rectangleSelection);
+        // }
 
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
@@ -121,7 +131,32 @@ export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
     }
 
     private createSelectionRect(pointer: PointerTracker<AbstractGameObj>): Rectangle {
-        return createRectFromMousePointer(pointer);
+        const downX = pointer.downScreen.x;
+        const downY = pointer.downScreen.y;
+        const currX = pointer.currScreen.x;
+        const currY = pointer.currScreen.y;
+
+        console.log('dx: ' + downX + '  dy: ' + downY + '  cx: ' + currX + ' cy: ' + currY);
+
+        const topleftX = downX < currX ? downX : currX; 
+        const topleftY = downY < currY ? downY : currY;
+        const botRightX = downX >= currX ? downX : currX; 
+        const botRightY = downY >= currY ? downY : currY;
+        const rectWidth = botRightX - topleftX;
+        const rectHeight = botRightY - topleftY;
+        const canvasWidth = this.canvas.htmlElement.getBoundingClientRect().width;
+        const canvasHeight = this.canvas.htmlElement.getBoundingClientRect().height;
+        // console.log('cw: ' + canvasWidth + '  ch: ' + canvasHeight + '  rw: ' + rectWidth + ' rh: ' + rectHeight);
+        const canvasCenterX = canvasWidth / 2;
+        const canvasCenterY = canvasHeight / 2;
+        const rectWidthHalf = rectWidth / 2;
+        const rectHeightHalf = rectHeight / 2;
+        const left = canvasCenterX - topleftX - rectWidthHalf;
+        const top = canvasCenterY - topleftY - rectHeightHalf;
+        const right = -left + rectWidth;
+        const bottom = -top + rectHeight;
+        
+        return new Rectangle(new Point(-left, -top), new Point(right, bottom));
     }
 
     private deselectAll() {

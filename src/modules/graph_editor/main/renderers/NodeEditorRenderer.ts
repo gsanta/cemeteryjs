@@ -1,4 +1,3 @@
-import { AbstractCanvasPanel } from "../../../../core/models/modules/AbstractCanvasPanel";
 import { ICanvasRenderer } from "../../../../core/models/ICanvasRenderer";
 import { ToolType } from "../../../../core/controller/tools/Tool";
 import { Registry } from "../../../../core/Registry";

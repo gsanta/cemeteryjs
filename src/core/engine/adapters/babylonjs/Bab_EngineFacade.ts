@@ -14,6 +14,8 @@ import { Bab_PhysicsAdapter } from "./Bab_PhysicsAdapter";
 import { Bab_GizmoAdapter } from "./Bab_GizmoAdapter";
 import { Bab_AxisGizmo } from "./gizmos/Bab_AxisGizmo";
 import { Bab_EventAdapter } from "./Bab_EventAdapter";
+import { IGuiAdapter } from "../../IGuiAdapter";
+import { Bab_GuiAdapter } from "./Bab_GuiAdapter";
 
 export class Bab_EngineFacade implements IEngineFacade {
     scene: Scene;
@@ -34,6 +36,7 @@ export class Bab_EngineFacade implements IEngineFacade {
     animatons: Bab_AnimationAdapter;
     gizmos: Bab_GizmoAdapter;
     events: Bab_EventAdapter;
+    gui: IGuiAdapter;
 
     private renderLoops: (() => void)[] = [];
     private onReadyFuncs: (() => void)[] = [];
@@ -54,6 +57,7 @@ export class Bab_EngineFacade implements IEngineFacade {
         this.animatons = new Bab_AnimationAdapter(this.registry, this);
         this.gizmos = new Bab_GizmoAdapter(this.registry, this);
         this.events = new Bab_EventAdapter(this);
+        this.gui = new Bab_GuiAdapter(this);
     }
 
     getCamera(): Camera3D {

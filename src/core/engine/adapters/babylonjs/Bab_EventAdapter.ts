@@ -54,12 +54,15 @@ export class Bab_EventAdapter implements IEngineEventAdapter {
     }
 
     emitPointerOverEvent(pickedItemId: string) {
-        console.log('emit pointer over')
-        this.pointer.emit({eventType: IPointerEventType.PointerOver, pointers: [], pickedItemId: pickedItemId});
+        if (pickedItemId) {
+            this.pointer.emit({eventType: IPointerEventType.PointerOver, pointers: [], pickedItemId: pickedItemId});
+        }
     }
 
     emitPointerOutEvent(pickedItemId: string) {
-        this.pointer.emit({eventType: IPointerEventType.PointerOut, pointers: [], pickedItemId: pickedItemId});
+        if (pickedItemId) {
+            this.pointer.emit({eventType: IPointerEventType.PointerOut, pointers: [], pickedItemId: pickedItemId});
+        }
     }
 
     private convertToPointerEvent(pointerInfo: PointerInfo, eventType: IPointerEventType): IPointerEvent {
@@ -75,7 +78,7 @@ export class Bab_EventAdapter implements IEngineEventAdapter {
         
         return {
             eventType: eventType,
-            pointers: [{id: 1, pos: new Point(pointerInfo.event.clientX, pointerInfo.event.clientY), isDown: false}],
+            pointers: [{id: 1, pos: new Point(pointerInfo.event.offsetX, pointerInfo.event.offsetY), isDown: false}],
             preventDefault: () => pointerInfo.event.preventDefault(),
             button: 'left',
             isAltDown: !!pointerInfo.event.altKey,
