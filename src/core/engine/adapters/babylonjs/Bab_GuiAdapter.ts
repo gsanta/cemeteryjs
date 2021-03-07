@@ -3,6 +3,8 @@ import { GuiRectConfig, IGuiAdapter } from "../../IGuiAdapter";
 import { AdvancedDynamicTexture, Rectangle } from 'babylonjs-gui';
 import { Bab_EngineFacade } from "./Bab_EngineFacade";
 import { IObj } from "../../../models/objs/IObj";
+import { Matrix, Vector3 } from "babylonjs";
+import { MeshObj } from "../../../models/objs/MeshObj";
 
 export class Bab_GuiAdapter implements IGuiAdapter {
     private engineFacade: Bab_EngineFacade;
@@ -45,5 +47,38 @@ export class Bab_GuiAdapter implements IGuiAdapter {
         item.dispose();
         this.texture.removeControl(item);
         this.containers.delete(obj);
+    }
+
+    getIntersectingMeshes(guiRectObj: GuiRectObj): MeshObj[] {
+        const meshAdapter = this.engineFacade.meshes;
+        const meshes = Array.from(meshAdapter.meshes.values()).map(meshData => meshData.meshes[0]);
+        const scene = this.engineFacade.scene;
+        const camera = this.engineFacade.getCamera().camera;
+        const engine = this.engineFacade.engine;
+
+        const selectedMeshes = meshes.filter(mesh => {
+            const bounds = guiRectObj.getBounds();
+            const centerWorld = mesh.getBoundingInfo().boundingBox.centerWorld;
+            const meshScreenPoint = Vector3.Project(centerWorld,
+                Matrix.Identity(),
+                scene.getTransformMatrix(),
+                camera.viewport.toGlobal(
+                engine.getRenderWidth(),
+                engine.getRenderHeight(),
+            ));
+
+            const topLeft = bounds.topLeft;
+            const botRight = bounds.bottomRight;
+    
+            if (
+                topLeft.x < meshScreenPoint.x && botRight.x > meshScreenPoint.x &&
+                topLeft.y < meshScreenPoint.y && botRight.y > meshScreenPoint.y 
+            ) {
+                return true;
+            }
+            return false;
+        });
+        
+        return selectedMeshes.map(mesh => meshAdapter.meshToObj.get(mesh));
     }
 }

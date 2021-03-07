@@ -20,9 +20,9 @@ export class LayoutHandler {
 
     buildLayout() {
         if (!this.registry.ui.helper.getPanel1()) {
-            this.panelIds = [UI_Region.Sidepanel, UI_Region.Canvas2];
+            this.panelIds = [UI_Region.Canvas2];
         } else {
-            this.panelIds = [UI_Region.Sidepanel, UI_Region.Canvas1, UI_Region.Canvas2];
+            this.panelIds = [UI_Region.Canvas1, UI_Region.Canvas2];
         }
 
         if (this.split) {
@@ -32,7 +32,7 @@ export class LayoutHandler {
         let panelIds = this.panelIds;
         let sizes: number[] = [];
 
-        if (this.panelIds.length === 2) {
+        if (this.panelIds.length === 1) {
             sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].twoColumnRatio);
         } else {
             sizes = panelIds.map(panelId => this.registry.preferences.panelSizes[panelId as 'Sidepanel' | 'Canvas1' | 'Canvas2'].threeColumnRatio);
@@ -67,10 +67,9 @@ export class LayoutHandler {
         const [sidepanelWidth] = sizes;
 
         if (this.panelIds.length === 2) {
-            const prevSidepanelWidth = this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio;
             const prevCanvasWidth = this.registry.preferences.panelSizes[UI_Region.Canvas2].twoColumnRatio;
 
-            const canvasWidth = prevCanvasWidth - (sidepanelWidth - prevSidepanelWidth);
+            const canvasWidth = prevCanvasWidth;
 
             const widths: number[] = [sidepanelWidth, canvasWidth]
 
@@ -80,17 +79,15 @@ export class LayoutHandler {
                 widths[0] += 100 - sum;
             }
 
-            this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio = widths[0];
             this.registry.preferences.panelSizes[UI_Region.Canvas2].twoColumnRatio = widths[1];
 
 
         } else {
-            const prevSidepanelWidth = this.registry.preferences.panelSizes.Sidepanel.twoColumnRatio;
             const prevCanvas1Width = this.registry.preferences.panelSizes.Canvas1.twoColumnRatio;
             const prevCanvas2Width = this.registry.preferences.panelSizes.Canvas2.twoColumnRatio;
 
-            const canvas1Width = prevCanvas1Width - (sidepanelWidth - prevSidepanelWidth) / 2;
-            const canvas2Width = prevCanvas2Width - (sidepanelWidth - prevSidepanelWidth) / 2;
+            const canvas1Width = prevCanvas1Width;
+            const canvas2Width = prevCanvas2Width;
 
             const widths: number[] = [sidepanelWidth, canvas1Width, canvas2Width];
 
@@ -100,7 +97,6 @@ export class LayoutHandler {
                 widths[0] += 100 - sum;
             }
 
-            this.registry.preferences.panelSizes.Sidepanel.threeColumnRatio = widths[0];
             this.registry.preferences.panelSizes[UI_Region.Canvas1 as string as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio = widths[1];
             this.registry.preferences.panelSizes[UI_Region.Canvas2 as string as 'sidepanel' | 'canvas1' | 'canvas2'].threeColumnRatio = widths[2];
         }

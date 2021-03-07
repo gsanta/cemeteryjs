@@ -96,9 +96,9 @@ export class App extends React.Component<{}, AppState> {
             <StyledApp className="style-nightshifs">
                 <DndProvider backend={Backend}>
                     <div className="main-content" key="main-content">
-                        <div id="sidepanel" >
+                        {/* <div id="sidepanel" >
                             <SidePanelComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
-                        </div>
+                        </div> */}
                         <MainPanelComp region={UI_Region.Canvas1}/>
                         <MainPanelComp region={UI_Region.Canvas2}/>
                     </div>

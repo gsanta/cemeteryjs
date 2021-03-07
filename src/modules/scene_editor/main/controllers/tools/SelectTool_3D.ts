@@ -94,17 +94,19 @@ export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
 
     dragEnd(pointer: PointerTracker<AbstractGameObj>) {
         let changed = this.pointerTool.up(pointer);
-        // this.selectionLogic.up();
 
         if (!changed) {
-            if (!this.rectangleSelection) { return }
-    
-            const intersectingItems = this.getIntersectingItems(this.rectangleSelection);
+            const intersectingItems = this.getIntersectingItems();
             
             intersectingItems.forEach(item => item.addTag('select'));
     
             this.rectangleSelection = undefined;
             this.registry.services.render.scheduleRendering(this.canvas.region, UI_Region.Sidepanel);
+        }
+
+        if (this.guiRectObj) {
+            this.guiRectObj.dispose();
+            this.guiRectObj = undefined;
         }
     }
 
@@ -126,8 +128,8 @@ export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
         this.registry.services.render.scheduleRendering(this.canvas.region);
     }
 
-    private getIntersectingItems(selection: Rectangle): AbstractGameObj[] {
-        return [];
+    private getIntersectingItems(): AbstractGameObj[] {
+        return (this.canvas as Canvas3dPanel).engine.gui.getIntersectingMeshes(this.guiRectObj);
     }
 
     private createSelectionRect(pointer: PointerTracker<AbstractGameObj>): Rectangle {
@@ -135,28 +137,12 @@ export class SelectTool_3D extends AbstractTool<AbstractGameObj> {
         const downY = pointer.downScreen.y;
         const currX = pointer.currScreen.x;
         const currY = pointer.currScreen.y;
-
-        console.log('dx: ' + downX + '  dy: ' + downY + '  cx: ' + currX + ' cy: ' + currY);
-
         const topleftX = downX < currX ? downX : currX; 
         const topleftY = downY < currY ? downY : currY;
         const botRightX = downX >= currX ? downX : currX; 
         const botRightY = downY >= currY ? downY : currY;
-        const rectWidth = botRightX - topleftX;
-        const rectHeight = botRightY - topleftY;
-        const canvasWidth = this.canvas.htmlElement.getBoundingClientRect().width;
-        const canvasHeight = this.canvas.htmlElement.getBoundingClientRect().height;
-        // console.log('cw: ' + canvasWidth + '  ch: ' + canvasHeight + '  rw: ' + rectWidth + ' rh: ' + rectHeight);
-        const canvasCenterX = canvasWidth / 2;
-        const canvasCenterY = canvasHeight / 2;
-        const rectWidthHalf = rectWidth / 2;
-        const rectHeightHalf = rectHeight / 2;
-        const left = canvasCenterX - topleftX - rectWidthHalf;
-        const top = canvasCenterY - topleftY - rectHeightHalf;
-        const right = -left + rectWidth;
-        const bottom = -top + rectHeight;
-        
-        return new Rectangle(new Point(-left, -top), new Point(right, bottom));
+
+        return new Rectangle(new Point(topleftX, topleftY), new Point(botRightX, botRightY));
     }
 
     private deselectAll() {
