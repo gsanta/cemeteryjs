@@ -95,6 +95,7 @@ export class App extends React.Component<{}, AppState> {
         return (
             <StyledApp className="style-nightshifs">
                 <SidePanelComponent isEditorOpen={this.state.isEditorOpen} toggleEditorOpen={() => this.setState({isEditorOpen: !this.state.isEditorOpen})}/>
+                
                 <DndProvider backend={Backend}>
                     <div className="main-content" key="main-content">
                         {/* <div id="sidepanel" >

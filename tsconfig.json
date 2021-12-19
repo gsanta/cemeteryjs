@@ -20,8 +20,9 @@
     },
     "include": [
       "src/**/*.ts",
-      "test/**/*.ts"
-, "src/core/ui_components/react/data_display/tree/TreeComp.tsx"    ],
+      "src/**/*.tsx",
+      "test/**/*.ts",
+    ],
     "exclude": [
       "node_modules"
     ]
