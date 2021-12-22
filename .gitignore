@@ -3,3 +3,4 @@ node_modules2
 build
 .cache
 dist
+storybook-static
